@@ -4,6 +4,32 @@
 
 このAPIサーバーは、タスクのキューを管理するためのRESTfulなインターフェースを提供します。作成されたタスクは必ずキューに登録され、優先順位に基づいて処理されます。
 
+## セットアップと実行方法
+
+### 必要条件
+- Java 21
+- MongoDB
+
+### ビルドと実行
+```bash
+# プロジェクトのビルド
+./gradlew build
+
+# アプリケーションの実行
+./gradlew :api:task:bootRun
+```
+
+アプリケーションは http://localhost:8080 で起動します。
+
+### 動作確認
+```bash
+# ヘルスチェック
+curl http://localhost:8080/api/health
+
+# タスク一覧の取得
+curl http://localhost:8080/api/v1/tasks
+```
+
 ## 機能
 
 - タスクの作成、読取、更新、削除(CRUD操作)
