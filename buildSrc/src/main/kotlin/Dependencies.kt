@@ -5,6 +5,8 @@ object Versions {
     const val mongodbDriver = "4.11.1"
     const val jjwt = "0.11.5"
     const val jakartaServlet = "6.0.0"
+    const val springdoc = "2.3.0"
+    const val thymeleaf = "3.1.2.RELEASE"
 }
 
 object Dependencies {
@@ -29,4 +31,10 @@ object Dependencies {
 
     // Jakarta
     const val jakartaServletApi = "jakarta.servlet:jakarta.servlet-api:${Versions.jakartaServlet}"
+
+    // Springdoc OpenAPI (Swagger)
+    const val springdocOpenApi = "org.springdoc:springdoc-openapi-starter-webmvc-ui:${Versions.springdoc}"
+
+    // Thymeleaf
+    const val springBootStarterThymeleaf = "org.springframework.boot:spring-boot-starter-thymeleaf"
 }

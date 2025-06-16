@@ -40,6 +40,13 @@ curl http://localhost:8080/api/health
 curl http://localhost:8080/api/v1/tasks
 ```
 
+### 管理パネルとAPI仕様書
+
+アプリケーションを起動後、以下のURLでアクセスできます：
+
+- 管理パネル: http://localhost:8080/admin
+- Swagger UI (API仕様書): http://localhost:8080/swagger-ui.html
+
 ## 機能
 
 - タスクの作成、読取、更新、削除(CRUD操作)
@@ -50,6 +57,8 @@ curl http://localhost:8080/api/v1/tasks
 - GitリポジトリのURL保存機能
 - JWT認証によるセキュアなアクセス制御
 - ログインは環境変数のtokenで行う
+- Swagger/OpenAPIによるAPI仕様書の自動生成
+- 簡易的な管理パネル（タスク、ドキュメント、リポジトリの管理）
 
 ## 技術スタック
 
