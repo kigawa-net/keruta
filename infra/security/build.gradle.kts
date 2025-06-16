@@ -15,6 +15,7 @@ dependencies {
     implementation(Dependencies.jjwtApi)
     implementation(Dependencies.jjwtImpl)
     implementation(Dependencies.jjwtJackson)
+    implementation(Dependencies.springdocOpenApi)
 
     testImplementation(Dependencies.springBootStarterTest)
 }
