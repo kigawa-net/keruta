@@ -49,12 +49,12 @@
                 <div class="position-sticky pt-3 sidebar-sticky">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" th:classappend="${#httpServletRequest.requestURI == '/admin' ? 'active' : ''}" href="/admin">
+                            <a class="nav-link" th:classappend="${#httpServletRequest != null && #httpServletRequest.requestURI == '/admin' ? 'active' : ''}" href="/admin">
                                 Dashboard
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:classappend="${#httpServletRequest.requestURI.startsWith('/admin/tasks') ? 'active' : ''}" href="/admin/tasks">
+                            <a class="nav-link" th:classappend="${#httpServletRequest != null && #httpServletRequest.requestURI != null && #httpServletRequest.requestURI.startsWith('/admin/tasks') ? 'active' : ''}" href="/admin/tasks">
                                 Tasks
                             </a>
                         </li>
@@ -76,7 +76,7 @@
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2" th:text="${pageTitle} ?: 'Dashboard'">Dashboard</h1>
                 </div>
-                
+
                 <div th:replace="~{:: #content}">
                     <!-- Content will be inserted here -->
                 </div>

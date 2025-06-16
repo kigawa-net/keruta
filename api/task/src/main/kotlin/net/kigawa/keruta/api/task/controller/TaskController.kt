@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.domain.model.TaskStatus
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDateTime
 import java.util.*
@@ -57,5 +59,68 @@ class TaskController {
     @DeleteMapping("/{id}")
     fun deleteTask(@PathVariable id: String): Boolean {
         return tasks.removeIf { it.id == id }
+    }
+
+    @GetMapping("/queue/next")
+    @Operation(summary = "Get next task from queue", description = "Retrieves the next task from the queue based on priority")
+    fun getNextTask(): ResponseEntity<Task> {
+        val nextTask = tasks.filter { it.status == TaskStatus.PENDING }
+            .maxByOrNull { it.priority }
+
+        return if (nextTask != null) {
+            ResponseEntity.ok(nextTask)
+        } else {
+            ResponseEntity.noContent().build()
+        }
+    }
+
+    @PatchMapping("/{id}/status")
+    @Operation(summary = "Update task status", description = "Updates the status of a specific task")
+    fun updateTaskStatus(
+        @PathVariable id: String,
+        @RequestBody status: Map<String, String>
+    ): ResponseEntity<Task> {
+        val taskIndex = tasks.indexOfFirst { it.id == id }
+        if (taskIndex == -1) {
+            return ResponseEntity.notFound().build()
+        }
+
+        val newStatus = try {
+            TaskStatus.valueOf(status["status"] ?: return ResponseEntity.badRequest().build())
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.badRequest().build()
+        }
+
+        val task = tasks[taskIndex]
+        val updatedTask = task.copy(
+            status = newStatus,
+            updatedAt = LocalDateTime.now()
+        )
+        tasks[taskIndex] = updatedTask
+
+        return ResponseEntity.ok(updatedTask)
+    }
+
+    @PatchMapping("/{id}/priority")
+    @Operation(summary = "Update task priority", description = "Updates the priority of a specific task")
+    fun updateTaskPriority(
+        @PathVariable id: String,
+        @RequestBody priority: Map<String, Int>
+    ): ResponseEntity<Task> {
+        val taskIndex = tasks.indexOfFirst { it.id == id }
+        if (taskIndex == -1) {
+            return ResponseEntity.notFound().build()
+        }
+
+        val newPriority = priority["priority"] ?: return ResponseEntity.badRequest().build()
+
+        val task = tasks[taskIndex]
+        val updatedTask = task.copy(
+            priority = newPriority,
+            updatedAt = LocalDateTime.now()
+        )
+        tasks[taskIndex] = updatedTask
+
+        return ResponseEntity.ok(updatedTask)
     }
 }
