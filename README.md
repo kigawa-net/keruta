@@ -8,7 +8,17 @@
 
 ### 必要条件
 - Java 21
-- MongoDB
+- Docker と Docker Compose (MongoDBのセットアップ用)
+
+### MongoDBのセットアップ
+```bash
+# docker-composeを使用してMongoDBを起動
+docker-compose up -d
+```
+
+初期認証情報:
+- ユーザー名: admin
+- パスワード: password
 
 ### ビルドと実行
 ```bash
