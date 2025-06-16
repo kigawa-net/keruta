@@ -49,10 +49,11 @@ curl http://localhost:8080/api/v1/tasks
 - ドキュメントの保存機能
 - GitリポジトリのURL保存機能
 - JWT認証によるセキュアなアクセス制御
+- ログインは環境変数のtokenで行う
 
 ## 技術スタック
 
-- Java 21
+- Kotlin
 - Spring Boot
 - MongoDB
 - Gradle (buildSrcによるマルチモジュール構成)
