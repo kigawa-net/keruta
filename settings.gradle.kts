@@ -8,6 +8,7 @@ include("core:usecase")
 include("infra:persistence")
 include("infra:security")
 include("infra:app")
+include("infra:repositorynoapi")
 
 // API modules
 include("api")
