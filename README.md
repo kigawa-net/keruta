@@ -26,7 +26,7 @@ docker-compose up -d
 ./gradlew build
 
 # アプリケーションの実行
-./gradlew :api:task:bootRun
+./gradlew bootRun
 ```
 
 アプリケーションは http://localhost:8080 で起動します。
@@ -44,7 +44,7 @@ curl http://localhost:8080/api/v1/tasks
 
 アプリケーションを起動後、以下のURLでアクセスできます：
 
-- 管理パネル: http://localhost:8080/admin
+- 管理パネル: http://localhost:8080/admin (ログインが必要)
 - Swagger UI (API仕様書): http://localhost:8080/swagger-ui.html
 
 ## 機能

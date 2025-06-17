@@ -27,7 +27,7 @@ class SecurityConfig(
                     // Auth endpoints
                     .requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh").permitAll()
                     // Admin panel
-                    .requestMatchers("/admin/**").permitAll()
+                    .requestMatchers("/admin/**").authenticated()
                     // Swagger UI
                     .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/api-docs/**").permitAll()
                     // Health check
