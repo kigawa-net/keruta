@@ -20,6 +20,7 @@ jobs:
     env:
       harborUser: robot$kigawa-net
       dir: "./"
+      name: ${{ matrix.conf.name }}
     steps:
       # checkout
       - uses: actions/checkout@v4
@@ -47,7 +48,7 @@ jobs:
           #  type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
           tags: |
             type=raw,value=latest
-            type=ref,event=branch,prefix=b-
+            type=ref,event=branch
             type=raw,value=${{ github.ref_name }}-${{ github.sha }}
 
       - uses: docker/build-push-action@v5
