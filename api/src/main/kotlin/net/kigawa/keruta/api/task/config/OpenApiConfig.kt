@@ -1,6 +1,5 @@
-package net.kigawa.keruta.api.app.config
+package net.kigawa.keruta.api.task.config
 
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration

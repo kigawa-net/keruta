@@ -1,12 +1,16 @@
-package net.kigawa.keruta.api.task.controller
+package net.kigawa.keruta.api
 
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.domain.model.TaskStatus
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import java.time.LocalDateTime
-import java.util.*
+import java.util.UUID
 
 @Controller
 @RequestMapping("/admin")
@@ -36,8 +40,9 @@ class AdminController {
             description = "",
             priority = 0,
             status = TaskStatus.PENDING
-        ))
-        model.addAttribute("statuses", TaskStatus.values())
+        )
+        )
+        model.addAttribute("statuses", TaskStatus.entries.toTypedArray())
         return "admin/task-form"
     }
 
@@ -58,7 +63,7 @@ class AdminController {
         if (task != null) {
             model.addAttribute("pageTitle", "Edit Task")
             model.addAttribute("task", task)
-            model.addAttribute("statuses", TaskStatus.values())
+            model.addAttribute("statuses", TaskStatus.entries.toTypedArray())
             return "admin/task-form"
         }
         return "redirect:/admin/tasks"

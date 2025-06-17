@@ -11,4 +11,3 @@ include("infra:app")
 
 // API modules
 include("api")
-include("api:task")
