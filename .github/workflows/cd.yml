@@ -51,7 +51,6 @@ jobs:
             type=raw,${{ github.ref_name }}-${{ github.sha }}
 
       - uses: docker/build-push-action@v5
-        if: github.ref == matrix.branch.ref
         with:
           context: ${{ env.dir }}
           file: ${{ env.dir }}/${{ env.dockerFile }}
