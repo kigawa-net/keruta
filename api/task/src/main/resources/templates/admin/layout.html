@@ -59,12 +59,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" th:classappend="${#httpServletRequest != null && #httpServletRequest.requestURI != null && #httpServletRequest.requestURI.startsWith('/admin/documents') ? 'active' : ''}" href="/admin/documents">
                                 Documents
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" th:classappend="${#httpServletRequest != null && #httpServletRequest.requestURI != null && #httpServletRequest.requestURI.startsWith('/admin/repositories') ? 'active' : ''}" href="/admin/repositories">
                                 Repositories
                             </a>
                         </li>
