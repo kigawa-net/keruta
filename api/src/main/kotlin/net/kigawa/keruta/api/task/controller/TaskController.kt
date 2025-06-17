@@ -2,23 +2,19 @@ package net.kigawa.keruta.api.task.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
-import net.kigawa.keruta.api.job.dto.CreateJobRequest
-import net.kigawa.keruta.api.job.dto.JobResponse
-import net.kigawa.keruta.core.domain.model.Resources
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.domain.model.TaskStatus
 import net.kigawa.keruta.core.usecase.job.JobService
 import net.kigawa.keruta.core.usecase.task.TaskService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/api/v1/tasks")
 @Tag(name = "Task", description = "Task management API")
 class TaskController(
     private val taskService: TaskService,
-    private val jobService: JobService
+    private val jobService: JobService,
 ) {
 
     @GetMapping
@@ -60,7 +56,9 @@ class TaskController(
     }
 
     @GetMapping("/queue/next")
-    @Operation(summary = "Get next task from queue", description = "Retrieves the next task from the queue based on priority")
+    @Operation(
+        summary = "Get next task from queue", description = "Retrieves the next task from the queue based on priority"
+    )
     fun getNextTask(): ResponseEntity<Task> {
         val nextTask = taskService.getNextTaskFromQueue()
         return if (nextTask != null) {
@@ -74,7 +72,7 @@ class TaskController(
     @Operation(summary = "Update task status", description = "Updates the status of a specific task")
     fun updateTaskStatus(
         @PathVariable id: String,
-        @RequestBody status: Map<String, String>
+        @RequestBody status: Map<String, String>,
     ): ResponseEntity<Task> {
         val newStatus = try {
             TaskStatus.valueOf(status["status"] ?: return ResponseEntity.badRequest().build())
@@ -93,7 +91,7 @@ class TaskController(
     @Operation(summary = "Update task priority", description = "Updates the priority of a specific task")
     fun updateTaskPriority(
         @PathVariable id: String,
-        @RequestBody priority: Map<String, Int>
+        @RequestBody priority: Map<String, Int>,
     ): ResponseEntity<Task> {
         val newPriority = priority["priority"] ?: return ResponseEntity.badRequest().build()
 
@@ -116,28 +114,5 @@ class TaskController(
         return ResponseEntity.ok(taskService.getTasksByStatus(taskStatus))
     }
 
-    @PostMapping("/kubernetes/create")
-    @Operation(summary = "Create Kubernetes pod for next task", description = "Creates a Kubernetes pod with the next task's information as environment variables")
-    fun createKubernetesPod(@RequestBody request: CreateJobRequest): ResponseEntity<JobResponse> {
-        val resources = request.resources?.let {
-            Resources(
-                cpu = it.cpu,
-                memory = it.memory
-            )
-        }
 
-        val job = jobService.createJobForNextTask(
-            image = request.image,
-            namespace = request.namespace ?: "default",
-            podName = request.podName,
-            resources = resources,
-            additionalEnv = request.additionalEnv ?: emptyMap()
-        )
-
-        return if (job != null) {
-            ResponseEntity.ok(JobResponse.fromDomain(job))
-        } else {
-            ResponseEntity.noContent().build()
-        }
-    }
 }

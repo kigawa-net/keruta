@@ -38,30 +38,6 @@ class JobController(private val jobService: JobService) {
         return jobService.getJobsByTaskId(taskId).map { JobResponse.fromDomain(it) }
     }
 
-    @PostMapping("/kubernetes/create")
-    @Operation(summary = "Create job for next task", description = "Creates a job for the next task in the queue and creates a Kubernetes pod")
-    fun createJobForNextTask(@RequestBody request: CreateJobRequest): ResponseEntity<JobResponse> {
-        val resources = request.resources?.let {
-            Resources(
-                cpu = it.cpu,
-                memory = it.memory
-            )
-        }
-
-        val job = jobService.createJobForNextTask(
-            image = request.image,
-            namespace = request.namespace ?: "default",
-            podName = request.podName,
-            resources = resources,
-            additionalEnv = request.additionalEnv ?: emptyMap()
-        )
-
-        return if (job != null) {
-            ResponseEntity.ok(JobResponse.fromDomain(job))
-        } else {
-            ResponseEntity.noContent().build()
-        }
-    }
 
     @GetMapping("/{id}/logs")
     @Operation(summary = "Get job logs", description = "Retrieves the logs of a specific job")
