@@ -47,7 +47,7 @@ jobs:
           #  type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
           tags: |
             type=raw,value=latest
-            type=ref,event=branch
+            type=ref,event=branch,prefix=b-
             type=raw,value=${{ github.ref_name }}-${{ github.sha }}
 
       - uses: docker/build-push-action@v5
