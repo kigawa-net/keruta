@@ -4,63 +4,58 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.domain.model.TaskStatus
+import net.kigawa.keruta.core.usecase.task.TaskService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDateTime
-import java.util.*
 
 @RestController
 @RequestMapping("/api/v1/tasks")
 @Tag(name = "Task", description = "Task management API")
-class TaskController {
-
-    private val tasks = mutableListOf<Task>()
+class TaskController(private val taskService: TaskService) {
 
     @GetMapping
     fun getAllTasks(): List<Task> {
-        return tasks
+        return taskService.getAllTasks()
     }
 
     @PostMapping
     fun createTask(@RequestBody task: Task): Task {
-        val newTask = task.copy(
-            id = UUID.randomUUID().toString(),
-            createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now()
-        )
-        tasks.add(newTask)
-        return newTask
+        return taskService.createTask(task)
     }
 
     @GetMapping("/{id}")
-    fun getTaskById(@PathVariable id: String): Task? {
-        return tasks.find { it.id == id }
+    fun getTaskById(@PathVariable id: String): ResponseEntity<Task> {
+        return try {
+            ResponseEntity.ok(taskService.getTaskById(id))
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.notFound().build()
+        }
     }
 
     @PutMapping("/{id}")
-    fun updateTask(@PathVariable id: String, @RequestBody task: Task): Task? {
-        val index = tasks.indexOfFirst { it.id == id }
-        if (index == -1) return null
-
-        val updatedTask = task.copy(
-            id = id,
-            updatedAt = LocalDateTime.now()
-        )
-        tasks[index] = updatedTask
-        return updatedTask
+    fun updateTask(@PathVariable id: String, @RequestBody task: Task): ResponseEntity<Task> {
+        return try {
+            ResponseEntity.ok(taskService.updateTask(id, task))
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.notFound().build()
+        }
     }
 
     @DeleteMapping("/{id}")
-    fun deleteTask(@PathVariable id: String): Boolean {
-        return tasks.removeIf { it.id == id }
+    fun deleteTask(@PathVariable id: String): ResponseEntity<Void> {
+        return try {
+            taskService.deleteTask(id)
+            ResponseEntity.noContent().build()
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.notFound().build()
+        }
     }
 
     @GetMapping("/queue/next")
     @Operation(summary = "Get next task from queue", description = "Retrieves the next task from the queue based on priority")
     fun getNextTask(): ResponseEntity<Task> {
-        val nextTask = tasks.filter { it.status == TaskStatus.PENDING }
-            .maxByOrNull { it.priority }
-
+        val nextTask = taskService.getNextTaskFromQueue()
         return if (nextTask != null) {
             ResponseEntity.ok(nextTask)
         } else {
@@ -74,25 +69,17 @@ class TaskController {
         @PathVariable id: String,
         @RequestBody status: Map<String, String>
     ): ResponseEntity<Task> {
-        val taskIndex = tasks.indexOfFirst { it.id == id }
-        if (taskIndex == -1) {
-            return ResponseEntity.notFound().build()
-        }
-
         val newStatus = try {
             TaskStatus.valueOf(status["status"] ?: return ResponseEntity.badRequest().build())
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.badRequest().build()
         }
 
-        val task = tasks[taskIndex]
-        val updatedTask = task.copy(
-            status = newStatus,
-            updatedAt = LocalDateTime.now()
-        )
-        tasks[taskIndex] = updatedTask
-
-        return ResponseEntity.ok(updatedTask)
+        return try {
+            ResponseEntity.ok(taskService.updateTaskStatus(id, newStatus))
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.notFound().build()
+        }
     }
 
     @PatchMapping("/{id}/priority")
@@ -101,20 +88,24 @@ class TaskController {
         @PathVariable id: String,
         @RequestBody priority: Map<String, Int>
     ): ResponseEntity<Task> {
-        val taskIndex = tasks.indexOfFirst { it.id == id }
-        if (taskIndex == -1) {
-            return ResponseEntity.notFound().build()
-        }
-
         val newPriority = priority["priority"] ?: return ResponseEntity.badRequest().build()
 
-        val task = tasks[taskIndex]
-        val updatedTask = task.copy(
-            priority = newPriority,
-            updatedAt = LocalDateTime.now()
-        )
-        tasks[taskIndex] = updatedTask
-
-        return ResponseEntity.ok(updatedTask)
+        return try {
+            ResponseEntity.ok(taskService.updateTaskPriority(id, newPriority))
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.notFound().build()
+        }
+    }
+    
+    @GetMapping("/status/{status}")
+    @Operation(summary = "Get tasks by status", description = "Retrieves all tasks with the specified status")
+    fun getTasksByStatus(@PathVariable status: String): ResponseEntity<List<Task>> {
+        val taskStatus = try {
+            TaskStatus.valueOf(status)
+        } catch (e: IllegalArgumentException) {
+            return ResponseEntity.badRequest().build()
+        }
+        
+        return ResponseEntity.ok(taskService.getTasksByStatus(taskStatus))
     }
 }

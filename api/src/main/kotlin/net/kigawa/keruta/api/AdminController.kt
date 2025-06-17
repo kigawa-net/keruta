@@ -2,6 +2,7 @@ package net.kigawa.keruta.api
 
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.domain.model.TaskStatus
+import net.kigawa.keruta.core.usecase.repository.TaskRepository
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -14,21 +15,19 @@ import java.util.UUID
 
 @Controller
 @RequestMapping("/admin")
-class AdminController {
-
-    private val tasks = mutableListOf<Task>()
+class AdminController(private val taskRepository: TaskRepository) {
 
     @GetMapping
     fun adminDashboard(model: Model): String {
         model.addAttribute("pageTitle", "Admin Dashboard")
-        model.addAttribute("tasks", tasks)
+        model.addAttribute("tasks", taskRepository.findAll())
         return "admin/dashboard"
     }
 
     @GetMapping("/tasks")
     fun taskList(model: Model): String {
         model.addAttribute("pageTitle", "Task Management")
-        model.addAttribute("tasks", tasks)
+        model.addAttribute("tasks", taskRepository.findAll())
         return "admin/tasks"
     }
 
@@ -53,13 +52,13 @@ class AdminController {
             createdAt = LocalDateTime.now(),
             updatedAt = LocalDateTime.now()
         )
-        tasks.add(newTask)
+        taskRepository.save(newTask)
         return "redirect:/admin/tasks"
     }
 
     @GetMapping("/tasks/edit/{id}")
     fun editTaskForm(@PathVariable id: String, model: Model): String {
-        val task = tasks.find { it.id == id }
+        val task = taskRepository.findById(id)
         if (task != null) {
             model.addAttribute("pageTitle", "Edit Task")
             model.addAttribute("task", task)
@@ -71,20 +70,19 @@ class AdminController {
 
     @PostMapping("/tasks/edit/{id}")
     fun updateTask(@PathVariable id: String, @ModelAttribute task: Task): String {
-        val index = tasks.indexOfFirst { it.id == id }
-        if (index != -1) {
+        if (taskRepository.findById(id) != null) {
             val updatedTask = task.copy(
                 id = id,
                 updatedAt = LocalDateTime.now()
             )
-            tasks[index] = updatedTask
+            taskRepository.save(updatedTask)
         }
         return "redirect:/admin/tasks"
     }
 
     @GetMapping("/tasks/delete/{id}")
     fun deleteTask(@PathVariable id: String): String {
-        tasks.removeIf { it.id == id }
+        taskRepository.deleteById(id)
         return "redirect:/admin/tasks"
     }
 }
