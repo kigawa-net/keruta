@@ -22,7 +22,7 @@ jobs:
       harborUser: robot$kigawa-net
       dir: "./"
       name: ${{ matrix.conf.name }}
-      dockerRepository: harbor.kigawa.net/${{ matrix.branch.harborProject }}
+      dockerRepository: harbor.kigawa.net/${{ matrix.conf.harborProject }}
     steps:
       # checkout
       - uses: actions/checkout@v4
