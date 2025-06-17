@@ -56,7 +56,7 @@ jobs:
       - uses: docker/build-push-action@v5
         with:
           context: ${{ env.dir }}
-          file: ${{ env.dir }}/${{ env.dockerFile }}
+          file: ${{ env.dockerFile }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha
