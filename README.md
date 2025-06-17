@@ -6,12 +6,21 @@
 
 ## クイックスタート
 
+### 方法1: Gradleで実行
+
 ```bash
 # MongoDBの起動
-docker compose up -d
+docker compose up -d mongodb
 
 # アプリケーションの実行
 ./gradlew bootRun
+```
+
+### 方法2: Dockerで実行
+
+```bash
+# アプリケーションとMongoDBの起動
+docker compose up -d
 ```
 
 アプリケーションは http://localhost:8080 で起動します。

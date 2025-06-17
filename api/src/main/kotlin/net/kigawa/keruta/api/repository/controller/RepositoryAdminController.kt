@@ -76,7 +76,8 @@ class RepositoryAdminController {
 
     private fun validateUrl(url: String): Boolean {
         return try {
-            val connection = java.net.URL(url).openConnection() as java.net.HttpURLConnection
+            val uri = java.net.URI(url)
+            val connection = uri.toURL().openConnection() as java.net.HttpURLConnection
             connection.requestMethod = "HEAD"
             connection.connectTimeout = 5000
             connection.readTimeout = 5000
