@@ -26,6 +26,8 @@ class SecurityConfig(
                 auth
                     // Auth endpoints
                     .requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh").permitAll()
+                    // Login page
+                    .requestMatchers("/login", "/css/**", "/js/**").permitAll()
                     // Admin panel
                     .requestMatchers("/admin/**").authenticated()
                     // Swagger UI
@@ -35,9 +37,18 @@ class SecurityConfig(
                     // All other requests need authentication
                     .anyRequest().authenticated()
             }
-            .sessionManagement { session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .formLogin { form ->
+                form
+                    .loginPage("/login")
+                    .defaultSuccessUrl("/admin", true)
+                    .permitAll()
             }
+            .logout { logout ->
+                logout
+                    .logoutSuccessUrl("/login?logout")
+                    .permitAll()
+            }
+            // Keep JWT authentication for API endpoints
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
 
         return http.build()
