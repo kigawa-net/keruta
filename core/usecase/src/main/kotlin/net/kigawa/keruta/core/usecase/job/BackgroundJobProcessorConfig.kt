@@ -1,13 +1,11 @@
 package net.kigawa.keruta.core.usecase.job
 
 import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.boot.context.properties.ConstructorBinding
 
 /**
  * Configuration properties for the background job processor.
  */
 @ConfigurationProperties(prefix = "keruta.job.processor")
-@ConstructorBinding
 data class BackgroundJobProcessorConfig(
     /**
      * The Docker image to use for tasks.
