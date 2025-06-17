@@ -7,8 +7,8 @@ include("core:usecase")
 // Infrastructure modules
 include("infra:persistence")
 include("infra:security")
+include("infra:app")
 
 // API modules
+include("api")
 include("api:task")
-include("api:document")
-include("api:repository")

@@ -54,11 +54,10 @@ curl http://localhost:8080/api/v1/tasks
 - タスクの優先順位付け
 - タスクのステータス管理
 - ドキュメントの保存機能
-- GitリポジトリのURL保存機能
 - JWT認証によるセキュアなアクセス制御
 - ログインは環境変数のtokenで行う
 - Swagger/OpenAPIによるAPI仕様書の自動生成
-- 簡易的な管理パネル（タスク、ドキュメント、リポジトリの管理）
+- 簡易的な管理パネル（タスク、ドキュメントの管理）
 
 ## 技術スタック
 
@@ -80,9 +79,6 @@ keruta/
 │   ├── persistence/            # MongoDB永続化実装
 │   └── security/               # JWT認証実装
 └── api/                        # APIモジュール
-    ├── task/                   # タスク管理API
-    ├── document/               # ドキュメント管理API
-    └── repository/             # Gitリポジトリ管理API
 ```
 
 ## API エンドポイント
@@ -118,13 +114,3 @@ DELETE /api/v1/documents/{id}     # ドキュメントの削除
 GET    /api/v1/documents/search   # ドキュメントの検索
 ```
 
-### Gitリポジトリ管理
-
-```
-GET    /api/v1/repositories       # リポジトリ一覧の取得
-POST   /api/v1/repositories       # 新規リポジトリURLの登録
-GET    /api/v1/repositories/{id}  # 特定リポジトリ情報の取得
-PUT    /api/v1/repositories/{id}  # リポジトリ情報の更新
-DELETE /api/v1/repositories/{id}  # リポジトリ情報の削除
-GET    /api/v1/repositories/{id}/validate # リポジトリURLの有効性確認
-```
