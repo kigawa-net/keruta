@@ -1,7 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="dev" type="CompoundRunConfigurationType">
-    <toRun name="docker" type="docker-deploy" />
-    <toRun name="KerutaApplication" type="SpringBootApplicationConfigurationType" />
-    <method v="2" />
-  </configuration>
-</component>

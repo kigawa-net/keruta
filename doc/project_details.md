@@ -59,6 +59,7 @@ curl http://localhost:8080/api/v1/tasks
 - ログインは環境変数のtokenで行う
 - Swagger/OpenAPIによるAPI仕様書の自動生成
 - 簡易的な管理パネル（タスク、ドキュメント、リポジトリの管理）
+- 最新のタスクを環境変数に入れてKubernetesのPodを作成する機能（[詳細はこちら](kubernetes_integration.md)）
 
 ## 技術スタック
 
@@ -102,6 +103,7 @@ DELETE /api/v1/tasks/{id}         # タスクの削除
 GET    /api/v1/tasks/queue/next   # キューから次のタスクを取得
 PATCH  /api/v1/tasks/{id}/status  # タスクのステータス更新
 PATCH  /api/v1/tasks/{id}/priority # タスクの優先度更新
+POST   /api/v1/tasks/kubernetes/create # タスク情報を環境変数としたKubernetesポッドの作成
 ```
 
 ### ドキュメント管理
@@ -124,4 +126,15 @@ GET    /api/v1/repositories/{id}  # 特定リポジトリ情報の取得
 PUT    /api/v1/repositories/{id}  # リポジトリ情報の更新
 DELETE /api/v1/repositories/{id}  # リポジトリ情報の削除
 GET    /api/v1/repositories/{id}/validate # リポジトリURLの有効性確認
+```
+
+### ジョブ管理
+
+```
+GET    /api/v1/jobs               # ジョブ一覧の取得
+GET    /api/v1/jobs/{id}          # 特定ジョブの取得
+GET    /api/v1/jobs/task/{taskId} # タスクIDに関連するジョブの取得
+POST   /api/v1/jobs/kubernetes/create # 次のタスクのジョブを作成しKubernetesポッドを作成
+GET    /api/v1/jobs/{id}/logs     # ジョブのログを取得
+DELETE /api/v1/jobs/{id}          # ジョブの削除
 ```

@@ -2,8 +2,12 @@ package net.kigawa.keruta.api.task.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import net.kigawa.keruta.api.job.dto.CreateJobRequest
+import net.kigawa.keruta.api.job.dto.JobResponse
+import net.kigawa.keruta.core.domain.model.Resources
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.domain.model.TaskStatus
+import net.kigawa.keruta.core.usecase.job.JobService
 import net.kigawa.keruta.core.usecase.task.TaskService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -12,7 +16,10 @@ import java.time.LocalDateTime
 @RestController
 @RequestMapping("/api/v1/tasks")
 @Tag(name = "Task", description = "Task management API")
-class TaskController(private val taskService: TaskService) {
+class TaskController(
+    private val taskService: TaskService,
+    private val jobService: JobService
+) {
 
     @GetMapping
     fun getAllTasks(): List<Task> {
@@ -96,7 +103,7 @@ class TaskController(private val taskService: TaskService) {
             ResponseEntity.notFound().build()
         }
     }
-    
+
     @GetMapping("/status/{status}")
     @Operation(summary = "Get tasks by status", description = "Retrieves all tasks with the specified status")
     fun getTasksByStatus(@PathVariable status: String): ResponseEntity<List<Task>> {
@@ -105,7 +112,32 @@ class TaskController(private val taskService: TaskService) {
         } catch (e: IllegalArgumentException) {
             return ResponseEntity.badRequest().build()
         }
-        
+
         return ResponseEntity.ok(taskService.getTasksByStatus(taskStatus))
+    }
+
+    @PostMapping("/kubernetes/create")
+    @Operation(summary = "Create Kubernetes pod for next task", description = "Creates a Kubernetes pod with the next task's information as environment variables")
+    fun createKubernetesPod(@RequestBody request: CreateJobRequest): ResponseEntity<JobResponse> {
+        val resources = request.resources?.let {
+            Resources(
+                cpu = it.cpu,
+                memory = it.memory
+            )
+        }
+
+        val job = jobService.createJobForNextTask(
+            image = request.image,
+            namespace = request.namespace ?: "default",
+            podName = request.podName,
+            resources = resources,
+            additionalEnv = request.additionalEnv ?: emptyMap()
+        )
+
+        return if (job != null) {
+            ResponseEntity.ok(JobResponse.fromDomain(job))
+        } else {
+            ResponseEntity.noContent().build()
+        }
     }
 }
