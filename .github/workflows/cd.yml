@@ -74,7 +74,7 @@ jobs:
 
       - name: Update YAML File
         run: |
-          yq -i '.spec.template.spec.containers[0].image = "harbor.kigawa.net/private/${{ matrix.conf.name }}:${{ github.ref_name }}-${{ github.sha }}"' \
+          yq -i '.spec.template.spec.containers[0].image = "harbor.kigawa.net/library/${{ matrix.conf.name }}:${{ github.ref_name }}-${{ github.sha }}"' \
           ${{ matrix.conf.manifestFile }}
 
       - name: push
