@@ -19,6 +19,7 @@ data class Task(
     val podName: String? = null,
     val resources: Resources? = null,
     val additionalEnv: Map<String, String> = emptyMap(),
+    val kubernetesManifest: String? = null,
     val logs: String? = null,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now()

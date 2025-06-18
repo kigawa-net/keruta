@@ -134,4 +134,14 @@ interface TaskService {
         resources: Resources? = null,
         additionalEnv: Map<String, String> = emptyMap()
     ): Task?
+
+    /**
+     * Sets the Kubernetes manifest for a task.
+     *
+     * @param id The ID of the task to update
+     * @param manifest The Kubernetes manifest as a string
+     * @return The updated task
+     * @throws NoSuchElementException if the task is not found
+     */
+    fun setKubernetesManifest(id: String, manifest: String): Task
 }

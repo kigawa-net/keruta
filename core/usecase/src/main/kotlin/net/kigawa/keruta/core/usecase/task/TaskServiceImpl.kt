@@ -164,4 +164,16 @@ class TaskServiceImpl(
             additionalEnv = additionalEnv
         )
     }
+
+    override fun setKubernetesManifest(id: String, manifest: String): Task {
+        logger.info("Setting Kubernetes manifest for task with id: $id")
+
+        val task = getTaskById(id)
+        val updatedTask = task.copy(
+            kubernetesManifest = manifest,
+            updatedAt = LocalDateTime.now()
+        )
+
+        return taskRepository.save(updatedTask)
+    }
 }

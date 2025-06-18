@@ -6,7 +6,7 @@ import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.domain.model.TaskStatus
 import net.kigawa.keruta.core.usecase.agent.AgentService
 import net.kigawa.keruta.core.usecase.document.DocumentService
-import net.kigawa.keruta.core.usecase.job.JobService
+import net.kigawa.keruta.core.usecase.task.TaskService
 import net.kigawa.keruta.core.usecase.repository.GitRepositoryService
 import net.kigawa.keruta.core.usecase.repository.TaskRepository
 import org.springframework.stereotype.Controller
@@ -27,7 +27,7 @@ class AdminController(
     private val agentService: AgentService,
     private val documentService: DocumentService,
     private val gitRepositoryService: GitRepositoryService,
-    private val jobService: JobService
+    private val taskService: TaskService
 ) {
 
     @GetMapping
@@ -124,13 +124,13 @@ class AdminController(
 
     @GetMapping("/tasks/logs/{id}")
     fun viewTaskLogs(@PathVariable id: String, model: Model): String {
-        val task = taskRepository.findById(id)
-        if (task != null) {
+        try {
+            val task = taskService.getTaskById(id)
             model.addAttribute("pageTitle", "Task Logs")
             model.addAttribute("task", task)
-            model.addAttribute("jobs", jobService.getJobsByTaskId(id))
             return "admin/task-logs"
+        } catch (e: NoSuchElementException) {
+            return "redirect:/admin/tasks"
         }
-        return "redirect:/admin/tasks"
     }
 }
