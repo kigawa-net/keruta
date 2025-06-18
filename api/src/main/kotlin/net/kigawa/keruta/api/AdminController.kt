@@ -1,8 +1,12 @@
 package net.kigawa.keruta.api
 
+import net.kigawa.keruta.core.domain.model.Document
+import net.kigawa.keruta.core.domain.model.Repository
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.domain.model.TaskStatus
 import net.kigawa.keruta.core.usecase.agent.AgentService
+import net.kigawa.keruta.core.usecase.document.DocumentService
+import net.kigawa.keruta.core.usecase.repository.GitRepositoryService
 import net.kigawa.keruta.core.usecase.repository.TaskRepository
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -18,7 +23,9 @@ import java.util.UUID
 @RequestMapping("/admin")
 class AdminController(
     private val taskRepository: TaskRepository,
-    private val agentService: AgentService
+    private val agentService: AgentService,
+    private val documentService: DocumentService,
+    private val gitRepositoryService: GitRepositoryService
 ) {
 
     @GetMapping
@@ -44,16 +51,26 @@ class AdminController(
             description = "",
             priority = 0,
             status = TaskStatus.PENDING
-        )
-        )
+        ))
         model.addAttribute("statuses", TaskStatus.entries.toTypedArray())
+        model.addAttribute("documents", documentService.getAllDocuments())
+        model.addAttribute("repositories", gitRepositoryService.getAllRepositories())
         return "admin/task-form"
     }
 
     @PostMapping("/tasks/create")
-    fun createTask(@ModelAttribute task: Task): String {
+    fun createTask(
+        @ModelAttribute task: Task,
+        @RequestParam(required = false) repositoryId: String?,
+        @RequestParam(required = false) documentIds: List<String>?
+    ): String {
+        val repository = if (repositoryId != null) gitRepositoryService.getRepositoryById(repositoryId) else null
+        val documents = documentIds?.mapNotNull { documentService.getDocumentById(it) } ?: emptyList()
+
         val newTask = task.copy(
             id = UUID.randomUUID().toString(),
+            repository = repository,
+            documents = documents,
             createdAt = LocalDateTime.now(),
             updatedAt = LocalDateTime.now()
         )
@@ -68,16 +85,28 @@ class AdminController(
             model.addAttribute("pageTitle", "Edit Task")
             model.addAttribute("task", task)
             model.addAttribute("statuses", TaskStatus.entries.toTypedArray())
+            model.addAttribute("documents", documentService.getAllDocuments())
+            model.addAttribute("repositories", gitRepositoryService.getAllRepositories())
             return "admin/task-form"
         }
         return "redirect:/admin/tasks"
     }
 
     @PostMapping("/tasks/edit/{id}")
-    fun updateTask(@PathVariable id: String, @ModelAttribute task: Task): String {
+    fun updateTask(
+        @PathVariable id: String,
+        @ModelAttribute task: Task,
+        @RequestParam(required = false) repositoryId: String?,
+        @RequestParam(required = false) documentIds: List<String>?
+    ): String {
         if (taskRepository.findById(id) != null) {
+            val repository = if (repositoryId != null) gitRepositoryService.getRepositoryById(repositoryId) else null
+            val documents = documentIds?.mapNotNull { documentService.getDocumentById(it) } ?: emptyList()
+
             val updatedTask = task.copy(
                 id = id,
+                repository = repository,
+                documents = documents,
                 updatedAt = LocalDateTime.now()
             )
             taskRepository.save(updatedTask)

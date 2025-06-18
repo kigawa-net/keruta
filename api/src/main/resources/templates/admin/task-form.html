@@ -12,18 +12,18 @@
                         <label for="title" class="form-label">Title</label>
                         <input type="text" class="form-control" id="title" name="title" th:value="*{title}" required>
                     </div>
-                    
+
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
                         <textarea class="form-control" id="description" name="description" rows="3" th:text="*{description}" required></textarea>
                     </div>
-                    
+
                     <div class="mb-3">
                         <label for="priority" class="form-label">Priority</label>
                         <input type="number" class="form-control" id="priority" name="priority" th:value="*{priority}" min="0" required>
                         <div class="form-text">Higher numbers indicate higher priority.</div>
                     </div>
-                    
+
                     <div class="mb-3">
                         <label for="status" class="form-label">Status</label>
                         <select class="form-select" id="status" name="status" required>
@@ -35,7 +35,33 @@
                             </option>
                         </select>
                     </div>
-                    
+
+                    <div class="mb-3">
+                        <label for="repositoryId" class="form-label">Repository</label>
+                        <select class="form-select" id="repositoryId" name="repositoryId">
+                            <option value="">-- Select Repository --</option>
+                            <option th:each="repo : ${repositories}" 
+                                    th:value="${repo.id}" 
+                                    th:text="${repo.name}"
+                                    th:selected="${task.repository != null && repo.id == task.repository.id}">
+                                Repository Name
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="documentIds" class="form-label">Documents</label>
+                        <select class="form-select" id="documentIds" name="documentIds" multiple>
+                            <option th:each="doc : ${documents}" 
+                                    th:value="${doc.id}" 
+                                    th:text="${doc.title}"
+                                    th:selected="${task.documents != null && task.documents.contains(doc)}">
+                                Document Title
+                            </option>
+                        </select>
+                        <div class="form-text">Hold Ctrl (or Cmd on Mac) to select multiple documents.</div>
+                    </div>
+
                     <div class="d-flex justify-content-between">
                         <a href="/admin/tasks" class="btn btn-secondary">Cancel</a>
                         <button type="submit" class="btn btn-primary">Save</button>

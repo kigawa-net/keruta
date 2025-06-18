@@ -1,22 +1,21 @@
 package net.kigawa.keruta.api.repository.controller
 
 import net.kigawa.keruta.core.domain.model.Repository
+import net.kigawa.keruta.core.usecase.repository.GitRepositoryService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
-import java.time.LocalDateTime
-import java.util.UUID
 
 @Controller
 @RequestMapping("/admin/repositories")
-class RepositoryAdminController {
-
-    private val repositories = mutableListOf<Repository>()
+class RepositoryAdminController(
+    private val gitRepositoryService: GitRepositoryService
+) {
 
     @GetMapping
     fun repositoryList(model: Model): String {
         model.addAttribute("pageTitle", "Repository Management")
-        model.addAttribute("repositories", repositories)
+        model.addAttribute("repositories", gitRepositoryService.getAllRepositories())
         return "admin/repositories"
     }
 
@@ -33,58 +32,39 @@ class RepositoryAdminController {
 
     @PostMapping("/create")
     fun createRepository(@ModelAttribute repository: Repository): String {
-        val newRepository = repository.copy(
-            id = UUID.randomUUID().toString(),
-            isValid = validateUrl(repository.url),
-            createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now()
-        )
-        repositories.add(newRepository)
+        gitRepositoryService.createRepository(repository)
         return "redirect:/admin/repositories"
     }
 
     @GetMapping("/edit/{id}")
     fun editRepositoryForm(@PathVariable id: String, model: Model): String {
-        val repository = repositories.find { it.id == id }
-        if (repository != null) {
+        try {
+            val repository = gitRepositoryService.getRepositoryById(id)
             model.addAttribute("pageTitle", "Edit Repository")
             model.addAttribute("repository", repository)
             return "admin/repository-form"
+        } catch (e: NoSuchElementException) {
+            return "redirect:/admin/repositories"
         }
-        return "redirect:/admin/repositories"
     }
 
     @PostMapping("/edit/{id}")
     fun updateRepository(@PathVariable id: String, @ModelAttribute repository: Repository): String {
-        val index = repositories.indexOfFirst { it.id == id }
-        if (index != -1) {
-            val updatedRepository = repository.copy(
-                id = id,
-                isValid = validateUrl(repository.url),
-                updatedAt = LocalDateTime.now()
-            )
-            repositories[index] = updatedRepository
+        try {
+            gitRepositoryService.updateRepository(id, repository)
+        } catch (e: NoSuchElementException) {
+            // Repository not found, ignore
         }
         return "redirect:/admin/repositories"
     }
 
     @GetMapping("/delete/{id}")
     fun deleteRepository(@PathVariable id: String): String {
-        repositories.removeIf { it.id == id }
-        return "redirect:/admin/repositories"
-    }
-
-    private fun validateUrl(url: String): Boolean {
-        return try {
-            val uri = java.net.URI(url)
-            val connection = uri.toURL().openConnection() as java.net.HttpURLConnection
-            connection.requestMethod = "HEAD"
-            connection.connectTimeout = 5000
-            connection.readTimeout = 5000
-            val responseCode = connection.responseCode
-            responseCode in 200..299
-        } catch (e: Exception) {
-            false
+        try {
+            gitRepositoryService.deleteRepository(id)
+        } catch (e: NoSuchElementException) {
+            // Repository not found, ignore
         }
+        return "redirect:/admin/repositories"
     }
 }
