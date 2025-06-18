@@ -17,6 +17,7 @@ allprojects {
 subprojects {
     apply {
         plugin("io.spring.dependency-management")
+        plugin("java")
     }
 
     the<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension>().apply {
@@ -34,5 +35,9 @@ subprojects {
     tasks.withType<JavaCompile> {
         sourceCompatibility = "21"
         targetCompatibility = "21"
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
     }
 }
