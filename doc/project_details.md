@@ -61,6 +61,8 @@ curl http://localhost:8080/api/v1/tasks
 - 管理パネル: http://localhost:8080/admin (ログインが必要)
 - Swagger UI (API仕様書): http://localhost:8080/swagger-ui.html
 
+管理パネルの詳細については、[管理パネルドキュメント](admin_panel.md)を参照してください。
+
 ## 機能
 
 - タスクの作成、読取、更新、削除(CRUD操作)

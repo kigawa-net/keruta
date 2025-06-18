@@ -1,1 +1,0 @@
-// This file has been intentionally removed as part of the login form removal.
