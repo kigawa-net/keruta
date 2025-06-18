@@ -2,6 +2,7 @@ package net.kigawa.keruta.infra.persistence.entity
 
 import net.kigawa.keruta.core.domain.model.Document as DomainDocument
 import net.kigawa.keruta.core.domain.model.Repository
+import net.kigawa.keruta.core.domain.model.Resources
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.domain.model.TaskStatus
 import org.springframework.data.annotation.Id
@@ -18,6 +19,13 @@ data class TaskEntity(
     val status: String = TaskStatus.PENDING.name,
     val gitRepository: String? = null,
     val document: String? = null,
+    val image: String? = null,
+    val namespace: String = "default",
+    val podName: String? = null,
+    val cpuResource: String? = null,
+    val memoryResource: String? = null,
+    val additionalEnv: Map<String, String> = emptyMap(),
+    val logs: String? = null,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now()
 ) {
@@ -31,6 +39,13 @@ data class TaskEntity(
                 status = task.status.name,
                 gitRepository = task.repository?.url,
                 document = task.documents.firstOrNull()?.content,
+                image = task.image,
+                namespace = task.namespace,
+                podName = task.podName,
+                cpuResource = task.resources?.cpu,
+                memoryResource = task.resources?.memory,
+                additionalEnv = task.additionalEnv,
+                logs = task.logs,
                 createdAt = task.createdAt,
                 updatedAt = task.updatedAt
             )
@@ -46,6 +61,12 @@ data class TaskEntity(
             status = TaskStatus.valueOf(status),
             repository = gitRepository?.let { Repository(url = it, name = it.substringAfterLast('/')) },
             documents = document?.let { listOf(DomainDocument(title = title, content = it)) } ?: emptyList(),
+            image = image,
+            namespace = namespace,
+            podName = podName,
+            resources = if (cpuResource != null && memoryResource != null) Resources(cpuResource, memoryResource) else null,
+            additionalEnv = additionalEnv,
+            logs = logs,
             createdAt = createdAt,
             updatedAt = updatedAt
         )

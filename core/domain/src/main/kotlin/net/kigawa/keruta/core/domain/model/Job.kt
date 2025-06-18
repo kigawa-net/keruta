@@ -29,10 +29,3 @@ enum class JobStatus {
     FAILED
 }
 
-/**
- * Represents the resource requirements for a job.
- */
-data class Resources(
-    val cpu: String,
-    val memory: String
-)
