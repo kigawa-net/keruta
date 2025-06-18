@@ -39,6 +39,7 @@ docker compose up -d
 
 - [プロジェクト詳細](doc/project_details.md) - セットアップ手順、API仕様、技術スタック、環境変数によるDB設定などの詳細情報
 - [Kubernetes統合](doc/kubernetes_integration.md) - タスク情報を環境変数としたKubernetes Pod作成の詳細
+- [Keycloak統合](doc/keycloak_integration.md) - Keycloakを使用した認証・認可の設定詳細
 
 ## 技術スタック
 
