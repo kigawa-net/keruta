@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{admin/layout :: html}">
+<body>
+    <div id="content">
+        <div class="mb-3">
+            <a href="/admin/tasks" class="btn btn-secondary">Back to Tasks</a>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                Task Details
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">ID:</div>
+                    <div class="col-md-9" th:text="${task.id}">ID</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">Title:</div>
+                    <div class="col-md-9" th:text="${task.title}">Title</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">Description:</div>
+                    <div class="col-md-9" th:text="${task.description}">Description</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">Status:</div>
+                    <div class="col-md-9">
+                        <span th:class="${'badge ' + 
+                            (task.status == T(net.kigawa.keruta.core.domain.model.TaskStatus).PENDING ? 'bg-warning' : 
+                            (task.status == T(net.kigawa.keruta.core.domain.model.TaskStatus).IN_PROGRESS ? 'bg-info' : 
+                            (task.status == T(net.kigawa.keruta.core.domain.model.TaskStatus).COMPLETED ? 'bg-success' : 
+                            'bg-danger')))}"
+                            th:text="${task.status}">
+                            Status
+                        </span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">Priority:</div>
+                    <div class="col-md-9" th:text="${task.priority}">Priority</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">Created:</div>
+                    <div class="col-md-9" th:text="${#temporals.format(task.createdAt, 'yyyy-MM-dd HH:mm:ss')}">Created</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">Updated:</div>
+                    <div class="col-md-9" th:text="${#temporals.format(task.updatedAt, 'yyyy-MM-dd HH:mm:ss')}">Updated</div>
+                </div>
+            </div>
+        </div>
+
+        <div th:if="${#lists.isEmpty(jobs)}">
+            <div class="alert alert-info">No jobs found for this task.</div>
+        </div>
+
+        <div th:unless="${#lists.isEmpty(jobs)}">
+            <div th:each="job : ${jobs}" class="card mb-4">
+                <div class="card-header">
+                    Job: <span th:text="${job.id}">Job ID</span>
+                    <span th:class="${'badge float-end ' + 
+                        (job.status == T(net.kigawa.keruta.core.domain.model.JobStatus).PENDING ? 'bg-warning' : 
+                        (job.status == T(net.kigawa.keruta.core.domain.model.JobStatus).RUNNING ? 'bg-info' : 
+                        (job.status == T(net.kigawa.keruta.core.domain.model.JobStatus).COMPLETED ? 'bg-success' : 
+                        'bg-danger')))}"
+                        th:text="${job.status}">
+                        Status
+                    </span>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Image:</div>
+                        <div class="col-md-9" th:text="${job.image}">Image</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Namespace:</div>
+                        <div class="col-md-9" th:text="${job.namespace}">Namespace</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Pod Name:</div>
+                        <div class="col-md-9" th:text="${job.podName ?: 'N/A'}">Pod Name</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Created:</div>
+                        <div class="col-md-9" th:text="${#temporals.format(job.createdAt, 'yyyy-MM-dd HH:mm:ss')}">Created</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3 fw-bold">Updated:</div>
+                        <div class="col-md-9" th:text="${#temporals.format(job.updatedAt, 'yyyy-MM-dd HH:mm:ss')}">Updated</div>
+                    </div>
+                    
+                    <div class="card mt-3">
+                        <div class="card-header">
+                            Logs
+                        </div>
+                        <div class="card-body">
+                            <div th:if="${job.logs == null || job.logs.isEmpty()}">
+                                <p>No logs available.</p>
+                            </div>
+                            <div th:unless="${job.logs == null || job.logs.isEmpty()}">
+                                <pre class="bg-dark text-light p-3 rounded" style="max-height: 300px; overflow-y: auto;" th:text="${job.logs}">Logs</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

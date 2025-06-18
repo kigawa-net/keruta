@@ -6,6 +6,7 @@ import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.domain.model.TaskStatus
 import net.kigawa.keruta.core.usecase.agent.AgentService
 import net.kigawa.keruta.core.usecase.document.DocumentService
+import net.kigawa.keruta.core.usecase.job.JobService
 import net.kigawa.keruta.core.usecase.repository.GitRepositoryService
 import net.kigawa.keruta.core.usecase.repository.TaskRepository
 import org.springframework.stereotype.Controller
@@ -25,7 +26,8 @@ class AdminController(
     private val taskRepository: TaskRepository,
     private val agentService: AgentService,
     private val documentService: DocumentService,
-    private val gitRepositoryService: GitRepositoryService
+    private val gitRepositoryService: GitRepositoryService,
+    private val jobService: JobService
 ) {
 
     @GetMapping
@@ -117,6 +119,18 @@ class AdminController(
     @GetMapping("/tasks/delete/{id}")
     fun deleteTask(@PathVariable id: String): String {
         taskRepository.deleteById(id)
+        return "redirect:/admin/tasks"
+    }
+
+    @GetMapping("/tasks/logs/{id}")
+    fun viewTaskLogs(@PathVariable id: String, model: Model): String {
+        val task = taskRepository.findById(id)
+        if (task != null) {
+            model.addAttribute("pageTitle", "Task Logs")
+            model.addAttribute("task", task)
+            model.addAttribute("jobs", jobService.getJobsByTaskId(id))
+            return "admin/task-logs"
+        }
         return "redirect:/admin/tasks"
     }
 }
