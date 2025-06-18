@@ -35,10 +35,6 @@ class SecurityConfig(
                 auth
                     // Auth endpoints
                     .requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh").permitAll()
-                    // Login page
-                    .requestMatchers("/login", "/css/**", "/js/**").permitAll()
-                    // OAuth2 endpoints
-                    .requestMatchers("/login/oauth2/**", "/oauth2/**").permitAll()
                     // Admin panel
                     .requestMatchers("/admin/**").authenticated()
                     // Swagger UI
@@ -48,15 +44,9 @@ class SecurityConfig(
                     // All other requests need authentication
                     .anyRequest().authenticated()
             }
-            .oauth2Login { oauth2 ->
-                oauth2
-                    .loginPage("/login")
-                    .defaultSuccessUrl("/admin", true)
-                    .permitAll()
-            }
             .logout { logout ->
                 logout
-                    .logoutSuccessUrl("/login?logout")
+                    .logoutSuccessUrl("/")
                     .permitAll()
             }
             // Keep JWT authentication for API endpoints
