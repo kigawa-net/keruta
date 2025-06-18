@@ -24,24 +24,24 @@ import java.util.UUID
 
 @Service
 class KubernetesServiceImpl : KubernetesService {
-    
+
     private val logger = LoggerFactory.getLogger(KubernetesServiceImpl::class.java)
-    
+
     @Value("\${keruta.kubernetes.enabled:false}")
     private val kubernetesEnabled: Boolean = false
-    
+
     @Value("\${keruta.kubernetes.config-path:}")
     private val kubeConfigPath: String = ""
-    
+
     @Value("\${keruta.kubernetes.in-cluster:false}")
     private val inCluster: Boolean = false
-    
+
     @Value("\${keruta.kubernetes.default-namespace:default}")
     private val defaultNamespace: String = "default"
-    
+
     // In-memory storage for demonstration purposes
     private val pods = mutableMapOf<String, PodInfo>()
-    
+
     override fun createPod(
         task: Task,
         image: String,
@@ -54,27 +54,29 @@ class KubernetesServiceImpl : KubernetesService {
             logger.warn("Kubernetes integration is disabled. Enable it by setting keruta.kubernetes.enabled=true")
             return "kubernetes-disabled"
         }
-        
+
         logger.info("Creating Kubernetes pod for task: ${task.id}")
-        
+
         val actualNamespace = namespace.ifEmpty { defaultNamespace }
         val actualPodName = podName ?: "keruta-task-${task.id}"
-        
+
         // Create environment variables map
         val envVars = mutableMapOf<String, String>()
-        
+
         // Add task information as environment variables
         envVars["KERUTA_TASK_ID"] = task.id ?: ""
         envVars["KERUTA_TASK_TITLE"] = task.title
-        envVars["KERUTA_TASK_DESCRIPTION"] = task.description
+        envVars["KERUTA_TASK_DESCRIPTION"] = task.description ?: ""
         envVars["KERUTA_TASK_PRIORITY"] = task.priority.toString()
         envVars["KERUTA_TASK_STATUS"] = task.status.name
+        envVars["KERUTA_TASK_GIT_REPOSITORY"] = task.gitRepository ?: ""
+        envVars["KERUTA_TASK_DOCUMENT"] = task.document ?: ""
         envVars["KERUTA_TASK_CREATED_AT"] = task.createdAt.format(DateTimeFormatter.ISO_DATE_TIME)
         envVars["KERUTA_TASK_UPDATED_AT"] = task.updatedAt.format(DateTimeFormatter.ISO_DATE_TIME)
-        
+
         // Add additional environment variables
         envVars.putAll(additionalEnv)
-        
+
         // Create pod info
         val podInfo = PodInfo(
             name = actualPodName,
@@ -86,48 +88,48 @@ class KubernetesServiceImpl : KubernetesService {
             status = "Running",
             logs = ""
         )
-        
+
         // Store pod info
         pods[actualPodName] = podInfo
-        
+
         logger.info("Created Kubernetes pod: $actualPodName in namespace: $actualNamespace")
-        
+
         return actualPodName
     }
-    
+
     override fun getPodLogs(namespace: String, podName: String): String {
         if (!kubernetesEnabled) {
             logger.warn("Kubernetes integration is disabled. Enable it by setting keruta.kubernetes.enabled=true")
             return "Kubernetes integration is disabled"
         }
-        
+
         logger.info("Getting logs for pod: $podName in namespace: $namespace")
-        
+
         return pods[podName]?.logs ?: "Pod not found"
     }
-    
+
     override fun deletePod(namespace: String, podName: String): Boolean {
         if (!kubernetesEnabled) {
             logger.warn("Kubernetes integration is disabled. Enable it by setting keruta.kubernetes.enabled=true")
             return false
         }
-        
+
         logger.info("Deleting pod: $podName in namespace: $namespace")
-        
+
         return pods.remove(podName) != null
     }
-    
+
     override fun getPodStatus(namespace: String, podName: String): String {
         if (!kubernetesEnabled) {
             logger.warn("Kubernetes integration is disabled. Enable it by setting keruta.kubernetes.enabled=true")
             return "UNKNOWN"
         }
-        
+
         logger.info("Getting status for pod: $podName in namespace: $namespace")
-        
+
         return pods[podName]?.status ?: "NOT_FOUND"
     }
-    
+
     /**
      * Internal class to store pod information.
      */

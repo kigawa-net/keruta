@@ -11,9 +11,11 @@ data class TaskEntity(
     @Id
     val id: String? = null,
     val title: String,
-    val description: String,
+    val description: String? = null,
     val priority: Int = 0,
     val status: String = TaskStatus.PENDING.name,
+    val gitRepository: String? = null,
+    val document: String? = null,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now()
 ) {
@@ -25,12 +27,14 @@ data class TaskEntity(
                 description = task.description,
                 priority = task.priority,
                 status = task.status.name,
+                gitRepository = task.gitRepository,
+                document = task.document,
                 createdAt = task.createdAt,
                 updatedAt = task.updatedAt
             )
         }
     }
-    
+
     fun toDomain(): Task {
         return Task(
             id = id,
@@ -38,6 +42,8 @@ data class TaskEntity(
             description = description,
             priority = priority,
             status = TaskStatus.valueOf(status),
+            gitRepository = gitRepository,
+            document = document,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
