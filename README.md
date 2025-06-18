@@ -37,7 +37,7 @@ docker compose up -d
 
 詳細な情報は以下のドキュメントを参照してください：
 
-- [プロジェクト詳細](doc/project_details.md) - セットアップ手順、API仕様、技術スタックなどの詳細情報
+- [プロジェクト詳細](doc/project_details.md) - セットアップ手順、API仕様、技術スタック、環境変数によるDB設定などの詳細情報
 - [Kubernetes統合](doc/kubernetes_integration.md) - タスク情報を環境変数としたKubernetes Pod作成の詳細
 
 ## 技術スタック

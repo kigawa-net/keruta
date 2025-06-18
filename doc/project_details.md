@@ -20,6 +20,20 @@ docker-compose up -d
 - ユーザー名: admin
 - パスワード: password
 
+### 環境変数によるDB設定
+以下の環境変数を設定することで、MongoDB接続設定をカスタマイズできます:
+
+```
+SPRING_DATA_MONGODB_HOST        # MongoDBホスト名 (デフォルト: localhost)
+SPRING_DATA_MONGODB_PORT        # MongoDBポート番号 (デフォルト: 27017)
+SPRING_DATA_MONGODB_DATABASE    # データベース名 (デフォルト: keruta)
+SPRING_DATA_MONGODB_USERNAME    # ユーザー名 (デフォルト: admin)
+SPRING_DATA_MONGODB_PASSWORD    # パスワード (デフォルト: password)
+SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE  # 認証データベース (デフォルト: admin)
+```
+
+環境変数が設定されていない場合は、デフォルト値が使用されます。
+
 ### ビルドと実行
 ```bash
 # プロジェクトのビルド
