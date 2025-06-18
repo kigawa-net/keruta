@@ -2,6 +2,7 @@ package net.kigawa.keruta.api
 
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.domain.model.TaskStatus
+import net.kigawa.keruta.core.usecase.agent.AgentService
 import net.kigawa.keruta.core.usecase.repository.TaskRepository
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -15,12 +16,16 @@ import java.util.UUID
 
 @Controller
 @RequestMapping("/admin")
-class AdminController(private val taskRepository: TaskRepository) {
+class AdminController(
+    private val taskRepository: TaskRepository,
+    private val agentService: AgentService
+) {
 
     @GetMapping
     fun adminDashboard(model: Model): String {
         model.addAttribute("pageTitle", "Admin Dashboard")
         model.addAttribute("tasks", taskRepository.findAll())
+        model.addAttribute("agents", agentService.getAllAgents())
         return "admin/dashboard"
     }
 
