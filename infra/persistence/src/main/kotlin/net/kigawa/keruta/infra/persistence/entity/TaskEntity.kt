@@ -1,5 +1,7 @@
 package net.kigawa.keruta.infra.persistence.entity
 
+import net.kigawa.keruta.core.domain.model.Document as DomainDocument
+import net.kigawa.keruta.core.domain.model.Repository
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.domain.model.TaskStatus
 import org.springframework.data.annotation.Id
@@ -27,8 +29,8 @@ data class TaskEntity(
                 description = task.description,
                 priority = task.priority,
                 status = task.status.name,
-                gitRepository = task.gitRepository,
-                document = task.document,
+                gitRepository = task.repository?.url,
+                document = task.documents.firstOrNull()?.content,
                 createdAt = task.createdAt,
                 updatedAt = task.updatedAt
             )
@@ -42,8 +44,8 @@ data class TaskEntity(
             description = description,
             priority = priority,
             status = TaskStatus.valueOf(status),
-            gitRepository = gitRepository,
-            document = document,
+            repository = gitRepository?.let { Repository(url = it, name = it.substringAfterLast('/')) },
+            documents = document?.let { listOf(DomainDocument(title = title, content = it)) } ?: emptyList(),
             createdAt = createdAt,
             updatedAt = updatedAt
         )

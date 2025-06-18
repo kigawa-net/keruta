@@ -5,14 +5,15 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 
 /**
- * Controller for handling the root path.
+ * Controller for handling the welcome page.
+ * Redirects to the admin dashboard.
  */
 @Controller
-@RequestMapping("/")
+@RequestMapping("/welcome")
 class RootController {
 
     /**
-     * Redirects the root path to the admin dashboard.
+     * Redirects to the admin dashboard.
      *
      * @return The admin dashboard view name
      */

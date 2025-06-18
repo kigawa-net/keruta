@@ -8,8 +8,14 @@ data class Task(
     val description: String? = null,
     val priority: Int = 0,
     val status: TaskStatus = TaskStatus.PENDING,
-    val gitRepository: String? = null,
-    val document: String? = null,
+    val repository: Repository? = null,
+    val documents: List<Document> = emptyList(),
+    val image: String? = null,
+    val namespace: String = "default",
+    val podName: String? = null,
+    val resources: Resources? = null,
+    val additionalEnv: Map<String, String> = emptyMap(),
+    val logs: String? = null,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now()
 )
@@ -19,5 +25,5 @@ enum class TaskStatus {
     IN_PROGRESS,
     COMPLETED,
     CANCELLED,
-    FAIL
+    FAILED
 }

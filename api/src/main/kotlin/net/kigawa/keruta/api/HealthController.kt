@@ -1,4 +1,4 @@
-package net.kigawa.keruta.api.task.controller
+package net.kigawa.keruta.api
 
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
