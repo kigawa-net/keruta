@@ -35,6 +35,8 @@ class SecurityConfig(
                 auth
                     // Auth endpoints
                     .requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh").permitAll()
+                    // Login page and OAuth2 endpoints
+                    .requestMatchers("/login", "/oauth2/**").permitAll()
                     // Admin panel
                     .requestMatchers("/admin/**").authenticated()
                     // Swagger UI
@@ -43,6 +45,12 @@ class SecurityConfig(
                     .requestMatchers("/api/health").permitAll()
                     // All other requests need authentication
                     .anyRequest().authenticated()
+            }
+            .oauth2Login { oauth2 ->
+                oauth2
+                    .loginPage("/login")
+                    .defaultSuccessUrl("/", true)
+                    .failureUrl("/login?error=true")
             }
             .logout { logout ->
                 logout
