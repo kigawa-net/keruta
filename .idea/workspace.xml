@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="029a032e-6fa0-46c8-846e-f5d29f425399" name="変更" comment="wp">
-      <change beforePath="$PROJECT_DIR$/api/src/main/resources/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/resources/templates/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/SecurityConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/SecurityConfig.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,12 +20,32 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="keruta" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="keruta" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="keruta" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="keruta" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="verification" type="c8890929:TasksNode$1" />
               </path>
             </expand>
             <select />
@@ -38,22 +57,22 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "kigawa01"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;kigawa01&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/kigawa-net/keruta.git",
-    "accountId": "f2146975-cfb2-4e29-b7dd-85b1a706ec3f"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/kigawa-net/keruta.git&quot;,
+    &quot;accountId&quot;: &quot;f2146975-cfb2-4e29-b7dd-85b1a706ec3f&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 4
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2ydtkY9ceOFDpiARbMJUFRAb9hp" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -62,6 +81,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Docker.Dockerfile.executor": "Run",
+    "Gradle.keruta [test].executor": "Run",
     "Gradle.keruta のビルド.executor": "Run",
     "Gradle.ソースのダウンロード.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
@@ -92,12 +112,12 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.KerutaApplication">
+  <component name="RunManager" selected="Gradle.keruta [test]">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="keruta" />
       <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
-      <kind />
+      <kind value="FILE" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <method v="2" />
@@ -106,10 +126,32 @@
       <module name="keruta" />
       <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
-      <kind />
+      <kind value="DIRECTORY" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
+      <method v="2" />
+    </configuration>
+    <configuration name="keruta [test]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="-t" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="KerutaApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
@@ -120,7 +162,9 @@
       </method>
     </configuration>
     <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
-      <deployment type="dockerfile" />
+      <deployment type="dockerfile">
+        <settings />
+      </deployment>
       <method v="2" />
     </configuration>
     <configuration name="Dockerfile" type="docker-deploy" factoryName="dockerfile" temporary="true" server-name="Docker">
@@ -131,8 +175,14 @@
       </deployment>
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Docker.Dockerfile" />
+      <item itemvalue="Gradle.keruta [test]" />
+      <item itemvalue="Spring Boot.KerutaApplication" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.keruta [test]" />
         <item itemvalue="Docker.Dockerfile" />
       </list>
     </recent_temporary>
@@ -152,7 +202,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1750176422656</updated>
-      <workItem from="1750176424494" duration="22040000" />
+      <workItem from="1750176424494" duration="22729000" />
     </task>
     <task id="LOCAL-00001" summary="wp">
       <option name="closed" value="true" />
@@ -322,7 +372,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750228749604</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="wp">
+      <option name="closed" value="true" />
+      <created>1750229729787</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1750229729787</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
