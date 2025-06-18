@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="029a032e-6fa0-46c8-846e-f5d29f425399" name="変更" comment="wp">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/RootController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/RootController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/project_details.md" beforeDir="false" afterPath="$PROJECT_DIR$/doc/project_details.md" afterDir="false" />
-    </list>
+    <list default="true" id="029a032e-6fa0-46c8-846e-f5d29f425399" name="変更" comment="wp" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -204,7 +200,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1750176422656</updated>
-      <workItem from="1750176424494" duration="23348000" />
+      <workItem from="1750176424494" duration="23663000" />
     </task>
     <task id="LOCAL-00001" summary="wp">
       <option name="closed" value="true" />
@@ -398,7 +394,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750233064589</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="wp">
+      <option name="closed" value="true" />
+      <created>1750233536605</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1750233536605</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

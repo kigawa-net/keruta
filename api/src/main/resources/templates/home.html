@@ -20,9 +20,29 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             padding-bottom: 1rem;
             border-bottom: 1px solid #ddd;
+        }
+        .nav {
+            display: flex;
+            background-color: #333;
+            border-radius: 5px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 1rem 1.5rem;
+            display: block;
+            transition: background-color 0.3s;
+        }
+        .nav a:hover {
+            background-color: #555;
+        }
+        .nav a.active {
+            background-color: #3498db;
         }
         .user-info {
             background-color: white;
@@ -76,11 +96,17 @@
                 <button type="submit" class="btn btn-logout">Logout</button>
             </form>
         </div>
-        
+
+        <div class="nav">
+            <a th:href="@{/}" class="active">Home</a>
+            <a th:href="@{/admin}">Admin</a>
+            <a th:href="@{/docs}">Documentation</a>
+        </div>
+
         <div class="user-info" th:if="${name}">
             <h2>Welcome, <span th:text="${name}">User</span>!</h2>
             <p th:if="${email}">Email: <span th:text="${email}">user@example.com</span></p>
-            
+
             <h3>User Attributes</h3>
             <table th:if="${attributes}">
                 <thead>
@@ -97,7 +123,7 @@
                 </tbody>
             </table>
         </div>
-        
+
         <div th:unless="${name}">
             <p>You are not logged in. <a th:href="@{/login}" class="btn">Login</a></p>
         </div>
