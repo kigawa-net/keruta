@@ -17,28 +17,18 @@ import net.kigawa.keruta.core.domain.model.KubernetesConfig
 import net.kigawa.keruta.core.domain.model.Resources
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.usecase.kubernetes.KubernetesService
+import net.kigawa.keruta.core.usecase.repository.KubernetesConfigRepository
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 @Service
-class KubernetesServiceImpl : KubernetesService {
+class KubernetesServiceImpl(
+    private val kubernetesConfigRepository: KubernetesConfigRepository
+) : KubernetesService {
 
     private val logger = LoggerFactory.getLogger(KubernetesServiceImpl::class.java)
-
-    @Value("\${keruta.kubernetes.enabled:false}")
-    private val kubernetesEnabled: Boolean = false
-
-    @Value("\${keruta.kubernetes.config-path:}")
-    private val kubeConfigPath: String = ""
-
-    @Value("\${keruta.kubernetes.in-cluster:false}")
-    private val inCluster: Boolean = false
-
-    @Value("\${keruta.kubernetes.default-namespace:default}")
-    private val defaultNamespace: String = "default"
 
     // In-memory storage for demonstration purposes
     private val pods = mutableMapOf<String, PodInfo>()
@@ -51,14 +41,15 @@ class KubernetesServiceImpl : KubernetesService {
         resources: Resources?,
         additionalEnv: Map<String, String>
     ): String {
-        if (!kubernetesEnabled) {
+        val config = kubernetesConfigRepository.getConfig()
+        if (!config.enabled) {
             logger.warn("Kubernetes integration is disabled. Enable it by setting keruta.kubernetes.enabled=true")
             return "kubernetes-disabled"
         }
 
         logger.info("Creating Kubernetes pod for task: ${task.id}")
 
-        val actualNamespace = namespace.ifEmpty { defaultNamespace }
+        val actualNamespace = namespace.ifEmpty { config.defaultNamespace }
         val actualPodName = podName ?: "keruta-task-${task.id}"
 
         // Create environment variables map
@@ -99,7 +90,8 @@ class KubernetesServiceImpl : KubernetesService {
     }
 
     override fun getPodLogs(namespace: String, podName: String): String {
-        if (!kubernetesEnabled) {
+        val config = kubernetesConfigRepository.getConfig()
+        if (!config.enabled) {
             logger.warn("Kubernetes integration is disabled. Enable it by setting keruta.kubernetes.enabled=true")
             return "Kubernetes integration is disabled"
         }
@@ -110,7 +102,8 @@ class KubernetesServiceImpl : KubernetesService {
     }
 
     override fun deletePod(namespace: String, podName: String): Boolean {
-        if (!kubernetesEnabled) {
+        val config = kubernetesConfigRepository.getConfig()
+        if (!config.enabled) {
             logger.warn("Kubernetes integration is disabled. Enable it by setting keruta.kubernetes.enabled=true")
             return false
         }
@@ -121,7 +114,8 @@ class KubernetesServiceImpl : KubernetesService {
     }
 
     override fun getPodStatus(namespace: String, podName: String): String {
-        if (!kubernetesEnabled) {
+        val config = kubernetesConfigRepository.getConfig()
+        if (!config.enabled) {
             logger.warn("Kubernetes integration is disabled. Enable it by setting keruta.kubernetes.enabled=true")
             return "UNKNOWN"
         }
@@ -146,17 +140,11 @@ class KubernetesServiceImpl : KubernetesService {
     )
 
     override fun getConfig(): KubernetesConfig {
-        return KubernetesConfig(
-            enabled = kubernetesEnabled,
-            configPath = kubeConfigPath,
-            inCluster = inCluster,
-            defaultNamespace = defaultNamespace
-        )
+        return kubernetesConfigRepository.getConfig()
     }
 
     override fun updateConfig(config: KubernetesConfig): KubernetesConfig {
-        // In a real implementation, you would update the configuration in a database or configuration file
         logger.info("Updating Kubernetes configuration: $config")
-        return config
+        return kubernetesConfigRepository.updateConfig(config)
     }
 }

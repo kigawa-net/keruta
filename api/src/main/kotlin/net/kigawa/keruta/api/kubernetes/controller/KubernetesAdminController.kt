@@ -1,8 +1,8 @@
 package net.kigawa.keruta.api.kubernetes.controller
 
 import net.kigawa.keruta.api.kubernetes.dto.KubernetesConfigDto
+import net.kigawa.keruta.core.domain.model.KubernetesConfig
 import net.kigawa.keruta.core.usecase.kubernetes.KubernetesService
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
@@ -10,49 +10,52 @@ import org.springframework.web.bind.annotation.*
 @Controller
 @RequestMapping("/admin/kubernetes")
 class KubernetesAdminController(
-    private val kubernetesService: KubernetesService,
-    
-    @Value("\${keruta.kubernetes.enabled:false}")
-    private val kubernetesEnabled: Boolean,
-    
-    @Value("\${keruta.kubernetes.config-path:}")
-    private val kubernetesConfigPath: String,
-    
-    @Value("\${keruta.kubernetes.in-cluster:false}")
-    private val kubernetesInCluster: Boolean,
-    
-    @Value("\${keruta.kubernetes.default-namespace:default}")
-    private val kubernetesDefaultNamespace: String,
-    
-    @Value("\${keruta.job.processor.default-image:keruta-task-executor:latest}")
-    private val defaultImage: String,
-    
-    @Value("\${keruta.job.processor.default-namespace:default}")
-    private val defaultNamespace: String
+    private val kubernetesService: KubernetesService
 ) {
 
     @GetMapping
     fun kubernetesSettings(model: Model): String {
         model.addAttribute("pageTitle", "Kubernetes Settings")
-        
-        val config = KubernetesConfigDto(
-            enabled = kubernetesEnabled,
-            configPath = kubernetesConfigPath,
-            inCluster = kubernetesInCluster,
-            defaultNamespace = kubernetesDefaultNamespace,
-            defaultImage = defaultImage,
-            processorNamespace = defaultNamespace
+
+        // Get the current configuration from the service
+        val currentConfig = kubernetesService.getConfig()
+
+        // Convert to DTO
+        val configDto = KubernetesConfigDto(
+            enabled = currentConfig.enabled,
+            configPath = currentConfig.configPath,
+            inCluster = currentConfig.inCluster,
+            defaultNamespace = currentConfig.defaultNamespace,
+            defaultImage = currentConfig.defaultImage,
+            processorNamespace = currentConfig.processorNamespace
         )
-        
-        model.addAttribute("config", config)
-        
+
+        model.addAttribute("config", configDto)
+
         return "admin/kubernetes-settings"
     }
-    
+
     @PostMapping("/update")
-    fun updateKubernetesSettings(@ModelAttribute config: KubernetesConfigDto): String {
-        // In a real implementation, this would update the configuration
-        // For now, we'll just log the changes
+    fun updateKubernetesSettings(@ModelAttribute configDto: KubernetesConfigDto): String {
+        // Get the current configuration to preserve the ID
+        val currentConfig = kubernetesService.getConfig()
+
+        // Create a new configuration with the updated values
+        val updatedConfig = KubernetesConfig(
+            id = currentConfig.id,
+            enabled = configDto.enabled,
+            configPath = configDto.configPath,
+            inCluster = configDto.inCluster,
+            defaultNamespace = configDto.defaultNamespace,
+            defaultImage = configDto.defaultImage,
+            processorNamespace = configDto.processorNamespace,
+            createdAt = currentConfig.createdAt,
+            updatedAt = currentConfig.updatedAt
+        )
+
+        // Update the configuration through the service
+        kubernetesService.updateConfig(updatedConfig)
+
         return "redirect:/admin/kubernetes"
     }
 }
