@@ -26,7 +26,7 @@
            │                 └─────────────┘ │
            │                        │        │
            │ ┌─────────────┐ ┌─────────────┐ │
-           │ │    Redis    │ │ PostgreSQL  │ │
+           │ │    Redis    │ │   MongoDB   │ │
            │ │   (Queue)   │ │ (Database)  │ │
            │ └─────────────┘ └─────────────┘ │
            │                        │        │
@@ -146,7 +146,7 @@ class TaskService(
     private val taskRepository: TaskRepository,
     private val redisTemplate: RedisTemplate<String, Any>
 ) {
-    
+
     fun createTask(request: CreateTaskRequest): Task {
         val task = Task(
             title = request.title,
@@ -154,28 +154,28 @@ class TaskService(
             priority = request.priority,
             language = request.language
         )
-        
+
         val savedTask = taskRepository.save(task)
-        
+
         // Redisキューに追加
         redisTemplate.opsForList().leftPush("task_queue", savedTask.id)
-        
+
         return savedTask
     }
-    
+
     fun getTasksByStatus(status: TaskStatus): List<Task> {
         return taskRepository.findByStatusOrderByCreatedAtDesc(status)
     }
-    
+
     fun updateTaskStatus(taskId: String, status: TaskStatus): Task {
         val task = taskRepository.findById(taskId)
             .orElseThrow { TaskNotFoundException(taskId) }
-        
+
         val updatedTask = task.copy(
             status = status,
             updatedAt = LocalDateTime.now()
         )
-        
+
         return taskRepository.save(updatedTask)
     }
 }
@@ -189,18 +189,18 @@ class TaskWorker(
     private val codingAgentService: CodingAgentService,
     private val redisTemplate: RedisTemplate<String, Any>
 ) {
-    
+
     @Scheduled(fixedDelay = 5000) // 5秒間隔
     fun processNextTask() {
         val taskId = redisTemplate.opsForList()
             .rightPop("task_queue") as String? ?: return
-        
+
         try {
             val task = taskService.getTaskById(taskId)
             taskService.updateTaskStatus(taskId, TaskStatus.PROCESSING)
-            
+
             val result = codingAgentService.executeTask(task)
-            
+
             taskService.completeTask(taskId, result)
         } catch (e: Exception) {
             taskService.updateTaskStatus(taskId, TaskStatus.FAILED)
@@ -214,34 +214,34 @@ class TaskWorker(
 ```kotlin
 @Service
 class CodingAgentService {
-    
+
     suspend fun executeTask(task: Task): TaskResult = withContext(Dispatchers.IO) {
         logger.info("Processing task: ${task.title}")
-        
+
         // AIエージェントAPI呼び出し（簡略化）
         val prompt = buildPrompt(task)
         val generatedCode = callAiService(prompt)
-        
+
         // 基本的な検証
         val isValid = validateCode(generatedCode, task.language)
-        
+
         TaskResult(
             code = generatedCode,
             isValid = isValid,
             generatedFiles = extractFiles(generatedCode)
         )
     }
-    
+
     private fun buildPrompt(task: Task): String {
         return """
             言語: ${task.language}
             タスク: ${task.title}
             説明: ${task.description}
-            
+
             上記の要件に基づいてコードを生成してください。
         """.trimIndent()
     }
-    
+
     private suspend fun callAiService(prompt: String): String {
         // 実際のAI APIコール
         return "// 生成されたコード\n// TODO: 実装"
@@ -330,38 +330,38 @@ spec:
 
 ### 6.2 データベース
 ```yaml
-# PostgreSQL
+# MongoDB
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres
+  name: mongodb
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres
+      app: mongodb
   template:
     metadata:
       labels:
-        app: postgres
+        app: mongodb
     spec:
       containers:
-      - name: postgres
-        image: postgres:15
+      - name: mongodb
+        image: mongo:latest
         env:
-        - name: POSTGRES_DB
+        - name: MONGO_INITDB_DATABASE
           value: "taskqueue"
-        - name: POSTGRES_USER
+        - name: MONGO_INITDB_ROOT_USERNAME
           value: "admin"
-        - name: POSTGRES_PASSWORD
+        - name: MONGO_INITDB_ROOT_PASSWORD
           value: "password"
         volumeMounts:
-        - name: postgres-storage
-          mountPath: /var/lib/postgresql/data
+        - name: mongodb-storage
+          mountPath: /data/db
       volumes:
-      - name: postgres-storage
+      - name: mongodb-storage
         persistentVolumeClaim:
-          claimName: postgres-pvc
+          claimName: mongodb-pvc
 
 ---
 # Redis
@@ -391,19 +391,18 @@ spec:
 ### 7.1 application.yml
 ```yaml
 spring:
-  datasource:
-    url: jdbc:postgresql://postgres:5432/taskqueue
-    username: admin
-    password: password
-  
+  data:
+    mongodb:
+      host: mongodb
+      port: 27017
+      database: taskqueue
+      username: admin
+      password: password
+      authentication-database: admin
+
   redis:
     host: redis
     port: 6379
-  
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: false
 
 server:
   port: 8080
@@ -417,14 +416,14 @@ logging:
 ```kotlin
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation ("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-    implementation("org.postgresql:postgresql")
-    
+    implementation("org.mongodb:mongodb-driver-sync")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.testcontainers:postgresql")
+    testImplementation("org.testcontainers:mongodb")
 }
 ```
 
@@ -434,7 +433,7 @@ dependencies {
 ```kotlin
 @RestController
 class HealthController {
-    
+
     @GetMapping("/health")
     fun health(): Map<String, String> {
         return mapOf(
@@ -442,7 +441,7 @@ class HealthController {
             "timestamp" to LocalDateTime.now().toString()
         )
     }
-    
+
     @GetMapping("/metrics")
     fun metrics(): Map<String, Any> {
         return mapOf(
@@ -484,7 +483,7 @@ kubectl logs -f deployment/task-api
 
 **技術スタック**
 - Kotlin + Spring Boot
-- PostgreSQL + Redis
+- MongoDB + Redis
 - Kubernetes（基本機能のみ）
 - Docker
 
