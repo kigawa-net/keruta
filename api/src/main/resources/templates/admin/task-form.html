@@ -55,7 +55,7 @@
                             <option th:each="doc : ${documents}" 
                                     th:value="${doc.id}" 
                                     th:text="${doc.title}"
-                                    th:selected="${task.documents != null && task.documents.contains(doc)}">
+                                    th:selected="${task.documents != null && (task.documents.isEmpty() ? false : task.documents.contains(doc))}">
                                 Document Title
                             </option>
                         </select>
