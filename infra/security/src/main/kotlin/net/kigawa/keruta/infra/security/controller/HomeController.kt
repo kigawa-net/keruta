@@ -19,7 +19,7 @@ class HomeController {
      * @param model Model
      * @return The home view name
      */
-    @GetMapping("/")
+    @GetMapping("/admin")
     fun home(@AuthenticationPrincipal user: OAuth2User?, model: Model): String {
         if (user != null) {
             model.addAttribute("name", user.getAttribute<String>("name") ?: user.name)

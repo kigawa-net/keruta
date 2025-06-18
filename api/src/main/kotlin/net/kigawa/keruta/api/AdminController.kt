@@ -14,7 +14,7 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/")
 class AdminController(private val taskRepository: TaskRepository) {
 
     @GetMapping

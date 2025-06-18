@@ -34,12 +34,12 @@ class SecurityConfig(
                     .requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh").permitAll()
                     // Login page and OAuth2 endpoints
                     .requestMatchers("/login", "/oauth2/**").permitAll()
-                    // Admin panel
-                    .requestMatchers("/admin/**").authenticated()
+                    // Main application (now at /admin)
+                    .requestMatchers("/admin/**").permitAll()
                     // Swagger UI
                     .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/api-docs/**").permitAll()
-                    // Health check
-                    .requestMatchers("/api/health", "/").permitAll()
+                    // Admin panel (now at root)
+                    .requestMatchers("/").authenticated()
                     // All other requests need authentication
                     .anyRequest().authenticated()
             }
