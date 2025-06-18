@@ -29,7 +29,7 @@ docker compose up -d
 
 - タスクの作成、読取、更新、削除(CRUD操作)
 - タスクの自動キュー登録と優先順位付け
-- タスクとジョブの統合管理
+- タスクの統合管理
 - タスクに複数のドキュメントを関連付け可能
 - タスクにリポジトリを関連付け可能
 - ドキュメントとGitリポジトリの管理
@@ -46,6 +46,7 @@ docker compose up -d
 - [管理パネル](doc/admin_panel.md) - 管理パネルの機能と使用方法の詳細
 - [Kubernetes統合](doc/kubernetes_integration.md) - タスク情報を環境変数としたKubernetes Pod作成の詳細
 - [Keycloak統合](doc/keycloak_integration.md) - Keycloakを使用した認証・認可の設定詳細
+- [タスクキューシステム設計](doc/task_queue_system_design.md) - コーディングエージェントタスクキューシステムの詳細設計
 
 ## 技術スタック
 

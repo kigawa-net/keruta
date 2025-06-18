@@ -144,13 +144,3 @@ DELETE /api/v1/repositories/{id}  # リポジトリ情報の削除
 GET    /api/v1/repositories/{id}/validate # リポジトリURLの有効性確認
 ```
 
-### ジョブ管理
-
-```
-GET    /api/v1/jobs               # ジョブ一覧の取得
-GET    /api/v1/jobs/{id}          # 特定ジョブの取得
-GET    /api/v1/jobs/task/{taskId} # タスクIDに関連するジョブの取得
-POST   /api/v1/jobs/kubernetes/create # 次のタスクのジョブを作成しKubernetesポッドを作成
-GET    /api/v1/jobs/{id}/logs     # ジョブのログを取得
-DELETE /api/v1/jobs/{id}          # ジョブの削除
-```
