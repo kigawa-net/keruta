@@ -76,11 +76,6 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:classappend="${#httpServletRequest != null && #httpServletRequest.requestURI != null && #httpServletRequest.requestURI.startsWith('/admin/jobs') ? 'active' : ''}" href="/admin/jobs">
-                                Jobs
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" th:classappend="${#httpServletRequest != null && #httpServletRequest.requestURI != null && #httpServletRequest.requestURI.startsWith('/admin/kubernetes') ? 'active' : ''}" href="/admin/kubernetes">
                                 Kubernetes
                             </a>
