@@ -59,8 +59,9 @@ http://localhost:8080/admin
 
 - ドキュメント管理
 - リポジトリ管理
-- ジョブ管理
 - Kubernetes設定
+
+注：以前は別々だったタスクとジョブの機能は、現在は統合されています。タスク管理画面からKubernetesポッドの作成と管理が可能です。
 
 ## ナビゲーション
 
@@ -70,7 +71,6 @@ http://localhost:8080/admin
 - Tasks - タスク管理画面
 - Documents - ドキュメント管理画面
 - Repositories - リポジトリ管理画面
-- Jobs - ジョブ管理画面
 - Kubernetes - Kubernetes設定画面
 
 ## 技術情報

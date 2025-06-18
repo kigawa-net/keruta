@@ -2,9 +2,9 @@ package net.kigawa.keruta.api.task.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import net.kigawa.keruta.core.domain.model.Resources
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.domain.model.TaskStatus
-import net.kigawa.keruta.core.usecase.job.JobService
 import net.kigawa.keruta.core.usecase.task.TaskService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*
 @Tag(name = "Task", description = "Task management API")
 class TaskController(
     private val taskService: TaskService,
-    private val jobService: JobService,
 ) {
 
     @GetMapping
@@ -114,5 +113,81 @@ class TaskController(
         return ResponseEntity.ok(taskService.getTasksByStatus(taskStatus))
     }
 
+    @GetMapping("/{id}/logs")
+    @Operation(summary = "Get task logs", description = "Retrieves the logs of a specific task")
+    fun getTaskLogs(@PathVariable id: String): ResponseEntity<String> {
+        return try {
+            val task = taskService.getTaskById(id)
+            ResponseEntity.ok(task.logs ?: "No logs available")
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.notFound().build()
+        }
+    }
 
+    @PostMapping("/{id}/pod")
+    @Operation(summary = "Create pod for task", description = "Creates a Kubernetes pod for a specific task")
+    fun createPodForTask(
+        @PathVariable id: String,
+        @RequestBody podConfig: Map<String, Any>
+    ): ResponseEntity<Task> {
+        val image = podConfig["image"] as? String ?: return ResponseEntity.badRequest().build()
+        val namespace = podConfig["namespace"] as? String ?: "default"
+        val podName = podConfig["podName"] as? String
+        val resources = (podConfig["resources"] as? Map<String, String>)?.let {
+            Resources(
+                cpu = it["cpu"] ?: "100m",
+                memory = it["memory"] ?: "128Mi"
+            )
+        }
+        val additionalEnv = podConfig["additionalEnv"] as? Map<String, String> ?: emptyMap()
+
+        return try {
+            ResponseEntity.ok(
+                taskService.createPod(
+                    taskId = id,
+                    image = image,
+                    namespace = namespace,
+                    podName = podName,
+                    resources = resources,
+                    additionalEnv = additionalEnv
+                )
+            )
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.notFound().build()
+        } catch (e: Exception) {
+            ResponseEntity.badRequest().build()
+        }
+    }
+
+    @PostMapping("/queue/next/pod")
+    @Operation(
+        summary = "Create pod for next task",
+        description = "Creates a Kubernetes pod for the next task in the queue"
+    )
+    fun createPodForNextTask(@RequestBody podConfig: Map<String, Any>): ResponseEntity<Task> {
+        val image = podConfig["image"] as? String ?: return ResponseEntity.badRequest().build()
+        val namespace = podConfig["namespace"] as? String ?: "default"
+        val podName = podConfig["podName"] as? String
+        val resources = (podConfig["resources"] as? Map<String, String>)?.let {
+            Resources(
+                cpu = it["cpu"] ?: "100m",
+                memory = it["memory"] ?: "128Mi"
+            )
+        }
+        val additionalEnv = podConfig["additionalEnv"] as? Map<String, String> ?: emptyMap()
+
+        val task = taskService.createPodForNextTask(
+            image = image,
+            namespace = namespace,
+            podName = podName,
+            resources = resources,
+            additionalEnv = additionalEnv
+        )
+
+        return if (task != null) {
+            ResponseEntity.ok(task)
+        } else {
+            ResponseEntity.noContent().build()
+        }
+    }
 }
