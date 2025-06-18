@@ -11,11 +11,14 @@ dependencies {
     implementation(Dependencies.kotlinReflect)
     implementation(Dependencies.springBootStarter)
     implementation(Dependencies.springBootStarterSecurity)
+    implementation(Dependencies.springBootStarterOauth2Client)
     implementation(Dependencies.jakartaServletApi)
     implementation(Dependencies.jjwtApi)
     implementation(Dependencies.jjwtImpl)
     implementation(Dependencies.jjwtJackson)
     implementation(Dependencies.springdocOpenApi)
+    implementation(Dependencies.keycloakSpringBootAdapter)
+    implementation(Dependencies.keycloakSpringSecurityAdapter)
 
     testImplementation(Dependencies.springBootStarterTest)
 }

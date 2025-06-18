@@ -7,6 +7,7 @@ object Versions {
     const val jakartaServlet = "6.0.0"
     const val springdoc = "2.3.0"
     const val thymeleaf = "3.1.2.RELEASE"
+    const val keycloak = "23.0.3"
 }
 
 object Dependencies {
@@ -16,6 +17,7 @@ object Dependencies {
     const val springBootStarterSecurity = "org.springframework.boot:spring-boot-starter-security"
     const val springBootStarterData = "org.springframework.boot:spring-boot-starter-data-mongodb"
     const val springBootStarterTest = "org.springframework.boot:spring-boot-starter-test"
+    const val springBootStarterOauth2Client = "org.springframework.boot:spring-boot-starter-oauth2-client"
 
     // MongoDB
     const val mongodbDriver = "org.mongodb:mongodb-driver-sync:${Versions.mongodbDriver}"
@@ -37,4 +39,8 @@ object Dependencies {
 
     // Thymeleaf
     const val springBootStarterThymeleaf = "org.springframework.boot:spring-boot-starter-thymeleaf"
+
+    // Keycloak
+    const val keycloakSpringBootAdapter = "org.keycloak:keycloak-spring-boot-starter:${Versions.keycloak}"
+    const val keycloakSpringSecurityAdapter = "org.keycloak:keycloak-spring-security-adapter:${Versions.keycloak}"
 }

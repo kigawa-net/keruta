@@ -44,14 +44,14 @@
             <div class="text-center mb-4">
                 <h2 class="h5">Please sign in</h2>
             </div>
-            
+
             <div th:if="${param.error}" class="error-message text-center">
                 Invalid username or password.
             </div>
             <div th:if="${param.logout}" class="alert alert-success text-center">
                 You have been logged out.
             </div>
-            
+
             <div class="form-floating">
                 <input type="text" class="form-control" id="username" name="username" placeholder="Username" required autofocus>
                 <label for="username">Username</label>
@@ -60,8 +60,17 @@
                 <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
                 <label for="password">Password</label>
             </div>
-            
-            <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+
+            <button class="w-100 btn btn-lg btn-primary mb-3" type="submit">Sign in</button>
+
+            <div class="text-center mb-3">
+                <span>Or</span>
+            </div>
+
+            <a href="/oauth2/authorization/keycloak" class="w-100 btn btn-lg btn-secondary">
+                Login with Keycloak
+            </a>
+
             <p class="mt-5 mb-3 text-muted text-center">&copy; 2023 Keruta</p>
         </form>
     </main>
