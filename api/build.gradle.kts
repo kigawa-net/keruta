@@ -9,6 +9,7 @@ dependencies {
     implementation(project(":core:usecase"))
     implementation(project(":infra:persistence"))
     implementation(project(":infra:security"))
+    implementation(project(":infra:app"))
 
     implementation(Dependencies.kotlinStdlib)
     implementation(Dependencies.kotlinReflect)
