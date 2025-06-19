@@ -8,16 +8,14 @@ import java.time.LocalDateTime
  */
 data class Task(
     val id: String? = null,
-    val title: String,
+    val title: String = "a",
     val description: String? = null,
     val priority: Int = 0,
     val status: TaskStatus = TaskStatus.PENDING,
-    val repository: Repository? = null,
     val documents: List<Document> = emptyList(),
     val image: String? = null,
     val namespace: String = "default",
     val podName: String? = null,
-    val resources: Resources? = null,
     val additionalEnv: Map<String, String> = emptyMap(),
     val kubernetesManifest: String? = null,
     val logs: String? = null,

@@ -1,7 +1,6 @@
 package net.kigawa.keruta.api.task.dto
 
 import net.kigawa.keruta.core.domain.model.Document
-import net.kigawa.keruta.core.domain.model.Repository
 import net.kigawa.keruta.core.domain.model.Task
 import java.time.LocalDateTime
 
@@ -14,7 +13,7 @@ data class TaskResponse(
     val description: String?,
     val priority: Int,
     val status: String,
-    val repository: Repository?,
+    // repository property removed from Task model
     val documents: List<Document>,
     val image: String?,
     val namespace: String,
@@ -28,12 +27,8 @@ data class TaskResponse(
 ) {
     companion object {
         fun fromDomain(task: Task): TaskResponse {
-            val resources = task.resources?.let {
-                ResourcesDto(
-                    cpu = it.cpu,
-                    memory = it.memory
-                )
-            }
+            // resources property removed from Task model
+            val resources = null
 
             return TaskResponse(
                 id = task.id ?: "",
@@ -41,7 +36,7 @@ data class TaskResponse(
                 description = task.description,
                 priority = task.priority,
                 status = task.status.name,
-                repository = task.repository,
+                // repository property removed from Task model
                 documents = task.documents,
                 image = task.image,
                 namespace = task.namespace,

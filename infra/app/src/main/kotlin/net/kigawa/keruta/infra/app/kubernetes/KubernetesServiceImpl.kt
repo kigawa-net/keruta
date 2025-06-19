@@ -61,7 +61,7 @@ class KubernetesServiceImpl(
         envVars["KERUTA_TASK_DESCRIPTION"] = task.description ?: ""
         envVars["KERUTA_TASK_PRIORITY"] = task.priority.toString()
         envVars["KERUTA_TASK_STATUS"] = task.status.name
-        envVars["KERUTA_TASK_GIT_REPOSITORY"] = task.repository?.url ?: ""
+        envVars["KERUTA_TASK_GIT_REPOSITORY"] = "" // Repository property removed from Task model
         envVars["KERUTA_TASK_DOCUMENT"] = task.documents.firstOrNull()?.content ?: ""
         envVars["KERUTA_TASK_CREATED_AT"] = task.createdAt.format(DateTimeFormatter.ISO_DATE_TIME)
         envVars["KERUTA_TASK_UPDATED_AT"] = task.updatedAt.format(DateTimeFormatter.ISO_DATE_TIME)

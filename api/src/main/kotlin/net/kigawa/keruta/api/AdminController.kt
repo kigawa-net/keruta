@@ -58,11 +58,27 @@ class AdminController(
     @PostMapping("/tasks/create")
     fun createTask(
         @ModelAttribute task: Task,
-        @RequestParam(required = false) repositoryId: String?,
-        @RequestParam(required = false) documentIds: List<String>?
+        @RequestParam(required = false) repositoryId: String? = null,
+        @RequestParam(required = false) documentIds: List<String>? = null
     ): String {
-        val repository = if (repositoryId != null) gitRepositoryService.getRepositoryById(repositoryId) else null
-        val documents = documentIds?.map { documentService.getDocumentById(it) } ?: emptyList()
+        println("Create task with id: ${task.id}")
+        val repository = if (repositoryId != null) {
+            try {
+                gitRepositoryService.getRepositoryById(repositoryId)
+            } catch (e: NoSuchElementException) {
+                println("Repository not found with id: $repositoryId")
+                null
+            }
+        } else null
+
+        val documents = documentIds?.mapNotNull { 
+            try {
+                documentService.getDocumentById(it)
+            } catch (e: NoSuchElementException) {
+                println("Document not found with id: $it")
+                null
+            }
+        } ?: emptyList()
 
         // Ensure status is not null
         val status = task.status
@@ -79,7 +95,7 @@ class AdminController(
             description = task.description,
             priority = priority,
             status = status,
-            repository = repository,
+            // repository property removed from Task model
             documents = documents,
             createdAt = LocalDateTime.now(),
             updatedAt = LocalDateTime.now()
@@ -117,8 +133,23 @@ class AdminController(
         @RequestParam(required = false) documentIds: List<String>?
     ): String {
         if (taskRepository.findById(id) != null) {
-            val repository = if (repositoryId != null) gitRepositoryService.getRepositoryById(repositoryId) else null
-            val documents = documentIds?.map { documentService.getDocumentById(it) } ?: emptyList()
+            val repository = if (repositoryId != null) {
+                try {
+                    gitRepositoryService.getRepositoryById(repositoryId)
+                } catch (e: NoSuchElementException) {
+                    println("Repository not found with id: $repositoryId")
+                    null
+                }
+            } else null
+
+            val documents = documentIds?.mapNotNull { 
+                try {
+                    documentService.getDocumentById(it)
+                } catch (e: NoSuchElementException) {
+                    println("Document not found with id: $it")
+                    null
+                }
+            } ?: emptyList()
 
             // Ensure status is not null
             val status = task.status
@@ -135,7 +166,7 @@ class AdminController(
                 description = task.description,
                 priority = priority,
                 status = status,
-                repository = repository,
+                // repository property removed from Task model
                 documents = documents,
                 updatedAt = LocalDateTime.now()
             )

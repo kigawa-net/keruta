@@ -37,13 +37,13 @@ data class TaskEntity(
                 description = task.description,
                 priority = task.priority,
                 status = task.status.name,
-                gitRepository = task.repository?.url,
+                gitRepository = null, // Repository property removed from Task model
                 document = task.documents.firstOrNull()?.content,
                 image = task.image,
                 namespace = task.namespace,
                 podName = task.podName,
-                cpuResource = task.resources?.cpu,
-                memoryResource = task.resources?.memory,
+                cpuResource = null, // Resources property removed from Task model
+                memoryResource = null, // Resources property removed from Task model
                 additionalEnv = task.additionalEnv,
                 logs = task.logs,
                 createdAt = task.createdAt,
@@ -59,12 +59,12 @@ data class TaskEntity(
             description = description,
             priority = priority,
             status = TaskStatus.valueOf(status),
-            repository = gitRepository?.let { Repository(url = it, name = it.substringAfterLast('/')) },
+            // repository parameter removed from Task model
             documents = document?.let { listOf(DomainDocument(title = title, content = it)) } ?: emptyList(),
             image = image,
             namespace = namespace,
             podName = podName,
-            resources = if (cpuResource != null && memoryResource != null) Resources(cpuResource, memoryResource) else null,
+            // resources parameter removed from Task model
             additionalEnv = additionalEnv,
             logs = logs,
             createdAt = createdAt,

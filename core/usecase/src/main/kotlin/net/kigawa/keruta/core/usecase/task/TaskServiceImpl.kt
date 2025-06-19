@@ -103,7 +103,6 @@ class TaskServiceImpl(
                 image = image,
                 namespace = namespace,
                 podName = createdPodName,
-                resources = resources,
                 additionalEnv = additionalEnv,
                 status = TaskStatus.IN_PROGRESS,
                 updatedAt = LocalDateTime.now()

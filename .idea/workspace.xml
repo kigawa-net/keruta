@@ -4,13 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="adb03c12-d6fd-4600-a8bb-42d25607284f" name="変更" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/keruta__test_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="adb03c12-d6fd-4600-a8bb-42d25607284f" name="変更" comment="w">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/AdminController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/AdminController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/task/dto/TaskResponse.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/task/dto/TaskResponse.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/domain/src/main/kotlin/net/kigawa/keruta/core/domain/model/Task.kt" beforeDir="false" afterPath="$PROJECT_DIR$/core/domain/src/main/kotlin/net/kigawa/keruta/core/domain/model/Task.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/task/TaskServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/task/TaskServiceImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesServiceImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/entity/TaskEntity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/entity/TaskEntity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infra/persistence/src/test/kotlin/net/kigawa/keruta/infra/persistence/entity/TaskEntityTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/persistence/src/test/kotlin/net/kigawa/keruta/infra/persistence/entity/TaskEntityTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +27,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory"><![CDATA[{
   "lastFilter": {
@@ -51,10 +55,20 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Docker.dev server.executor": "Run",
+    "Docker.dev.executor": "Run",
+    "Docker.docker-compose.yml.app: Compose デプロイ.executor": "Run",
+    "Gradle.keruta のビルド.executor": "Run",
+    "Gradle.ソースのダウンロード.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "Spring Boot.KerutaApplication.executor": "Run",
     "git-widget-placeholder": "main",
     "go.import.settings.migrated": "true",
     "junie.onboarding.icon.badge.shown": "true",
@@ -68,7 +82,12 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="複合.dev">
+    <configuration name="dev" type="CompoundRunConfigurationType">
+      <toRun name="dev server" type="docker-deploy" />
+      <toRun name="KerutaApplication" type="SpringBootApplicationConfigurationType" />
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="keruta" />
       <working_directory value="$PROJECT_DIR$" />
@@ -121,13 +140,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="KerutaApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="keruta.api.main" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="net.kigawa.keruta.api.KerutaApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration default="true" type="Tox" factoryName="Tox">
       <module name="keruta" />
       <option name="ENV_FILES" value="" />
@@ -140,6 +152,20 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <method v="2" />
     </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Docker.dev server" />
+      <item itemvalue="Spring Boot.KerutaApplication" />
+      <item itemvalue="複合.dev" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Docker.dev server" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -156,12 +182,25 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1750349518682</updated>
-      <workItem from="1750349520674" duration="675000" />
+      <workItem from="1750349520674" duration="6565000" />
     </task>
+    <task id="LOCAL-00001" summary="w">
+      <option name="closed" value="true" />
+      <created>1750355269468</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1750355269468</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="w" />
+    <option name="LAST_COMMIT_MESSAGE" value="w" />
   </component>
   <component name="VgoProject">
     <integration-enabled>false</integration-enabled>
