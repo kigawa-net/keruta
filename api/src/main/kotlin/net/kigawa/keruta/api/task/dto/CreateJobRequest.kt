@@ -10,11 +10,3 @@ data class CreateJobRequest(
     val resources: ResourcesDto? = null,
     val additionalEnv: Map<String, String>? = null
 )
-
-/**
- * DTO for resource requirements.
- */
-data class ResourcesDto(
-    val cpu: String,
-    val memory: String
-)
