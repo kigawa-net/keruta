@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f0a2c5d6-5152-4567-8b93-00182a618436" name="変更" comment="wp" />
+    <list default="true" id="adb03c12-d6fd-4600-a8bb-42d25607284f" name="変更" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/keruta__test_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,37 +21,6 @@
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
-  </component>
-  <component name="ExternalProjectsManager">
-    <system id="GRADLE">
-      <state>
-        <task path="$PROJECT_DIR$">
-          <activation />
-        </task>
-        <projects_view>
-          <tree_state>
-            <expand>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="keruta" type="f1a62948:ProjectNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="keruta" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="keruta" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="verification" type="c8890929:TasksNode$1" />
-              </path>
-            </expand>
-            <select />
-          </tree_state>
-        </projects_view>
-      </state>
-    </system>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -61,27 +37,22 @@
     "accountId": "f2146975-cfb2-4e29-b7dd-85b1a706ec3f"
   }
 }]]></component>
-  <component name="JavaAutoRunManager">
-    <enabled-run-configurations>
-      <run-configuration type="GradleRunConfiguration" name="keruta [test]" />
-    </enabled-run-configurations>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="true" />
   </component>
   <component name="ProjectColorInfo"><![CDATA[{
   "customColor": "",
   "associatedIndex": 4
 }]]></component>
-  <component name="ProjectId" id="2yfsy3oVr59BMd84I2uXqKLd7od" />
+  <component name="ProjectId" id="2yjYb39dzuEn7CoGL3E1383zbNZ" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Gradle.keruta [test].executor": "Run",
-    "Gradle.keruta のビルド.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
     "git-widget-placeholder": "main",
@@ -93,23 +64,11 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "アーティファクト",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
     "settings.editor.selected.configurable": "preferences.lookFeel",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/keruta-doc/keruta" />
-    </key>
-    <key name="K2MoveDeclarationsDialog.RECENT_PACKAGE_KEY">
-      <recent name="net.kigawa.keruta.api.agent.controller" />
-      <recent name="net.kigawa.keruta.api.task.controller" />
-    </key>
-  </component>
-  <component name="RunManager" selected="Gradle.keruta [test]">
+  <component name="RunManager">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="keruta" />
       <working_directory value="$PROJECT_DIR$" />
@@ -181,30 +140,6 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <method v="2" />
     </configuration>
-    <configuration default="true" type="tests" factoryName="Autodetect">
-      <module name="kotlin.scripts.KotlinBuildScript.infra:security:build.gradle.kts" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method v="2" />
-    </configuration>
-    <list>
-      <item itemvalue="Gradle.keruta [test]" />
-      <item itemvalue="Spring Boot.KerutaApplication" />
-    </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Gradle.keruta [test]" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -216,227 +151,20 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="デフォルトタスク">
-      <changelist id="f0a2c5d6-5152-4567-8b93-00182a618436" name="変更" comment="" />
-      <created>1750237213313</created>
+      <changelist id="adb03c12-d6fd-4600-a8bb-42d25607284f" name="変更" comment="" />
+      <created>1750349518682</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1750237213313</updated>
-      <workItem from="1750237214808" duration="23113000" />
+      <updated>1750349518682</updated>
+      <workItem from="1750349520674" duration="675000" />
     </task>
-    <task id="LOCAL-00001" summary="wp">
-      <option name="closed" value="true" />
-      <created>1750243072897</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1750243072897</updated>
-    </task>
-    <task id="LOCAL-00002" summary="wp">
-      <option name="closed" value="true" />
-      <created>1750253555615</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1750253555615</updated>
-    </task>
-    <task id="LOCAL-00003" summary="wp">
-      <option name="closed" value="true" />
-      <created>1750254651920</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1750254651920</updated>
-    </task>
-    <task id="LOCAL-00004" summary="wp">
-      <option name="closed" value="true" />
-      <created>1750255195797</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1750255195797</updated>
-    </task>
-    <task id="LOCAL-00005" summary="wp">
-      <option name="closed" value="true" />
-      <created>1750257028950</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1750257028950</updated>
-    </task>
-    <task id="LOCAL-00006" summary="wp">
-      <option name="closed" value="true" />
-      <created>1750259020764</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1750259020764</updated>
-    </task>
-    <task id="LOCAL-00007" summary="wp">
-      <option name="closed" value="true" />
-      <created>1750259612057</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1750259612057</updated>
-    </task>
-    <task id="LOCAL-00008" summary="wp">
-      <option name="closed" value="true" />
-      <created>1750260285678</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1750260285678</updated>
-    </task>
-    <task id="LOCAL-00009" summary="wp">
-      <option name="closed" value="true" />
-      <created>1750260751822</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1750260751822</updated>
-    </task>
-    <task id="LOCAL-00010" summary="wp">
-      <option name="closed" value="true" />
-      <created>1750261408767</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1750261408767</updated>
-    </task>
-    <task id="LOCAL-00011" summary="wp">
-      <option name="closed" value="true" />
-      <created>1750262180330</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1750262180330</updated>
-    </task>
-    <task id="LOCAL-00012" summary="wp">
-      <option name="closed" value="true" />
-      <created>1750263736538</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1750263736538</updated>
-    </task>
-    <task id="LOCAL-00013" summary="wp">
-      <option name="closed" value="true" />
-      <created>1750264581242</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1750264581242</updated>
-    </task>
-    <task id="LOCAL-00014" summary="wp">
-      <option name="closed" value="true" />
-      <created>1750265322381</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1750265322381</updated>
-    </task>
-    <task id="LOCAL-00015" summary="wp">
-      <option name="closed" value="true" />
-      <created>1750266055655</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1750266055655</updated>
-    </task>
-    <task id="LOCAL-00016" summary="wp">
-      <option name="closed" value="true" />
-      <created>1750267130362</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1750267130362</updated>
-    </task>
-    <task id="LOCAL-00017" summary="wp">
-      <option name="closed" value="true" />
-      <created>1750267878573</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1750267878573</updated>
-    </task>
-    <task id="LOCAL-00018" summary="wp">
-      <option name="closed" value="true" />
-      <created>1750296156337</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1750296156337</updated>
-    </task>
-    <task id="LOCAL-00019" summary="wp">
-      <option name="closed" value="true" />
-      <created>1750297429143</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1750297429143</updated>
-    </task>
-    <task id="LOCAL-00020" summary="wp">
-      <option name="closed" value="true" />
-      <created>1750298083100</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1750298083100</updated>
-    </task>
-    <task id="LOCAL-00021" summary="wp">
-      <option name="closed" value="true" />
-      <created>1750298995800</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1750298995800</updated>
-    </task>
-    <task id="LOCAL-00022" summary="wp">
-      <option name="closed" value="true" />
-      <created>1750330339670</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1750330339670</updated>
-    </task>
-    <task id="LOCAL-00023" summary="wp">
-      <option name="closed" value="true" />
-      <created>1750331471864</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1750331471864</updated>
-    </task>
-    <task id="LOCAL-00024" summary="wp">
-      <option name="closed" value="true" />
-      <created>1750331870141</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1750331870141</updated>
-    </task>
-    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="wp" />
-    <option name="LAST_COMMIT_MESSAGE" value="wp" />
-  </component>
   <component name="VgoProject">
+    <integration-enabled>false</integration-enabled>
     <settings-migrated>true</settings-migrated>
   </component>
 </project>

@@ -25,6 +25,11 @@ docker compose up -d
 
 アプリケーションは http://localhost:8080 で起動します。
 
+**注意**: Docker Composeで起動すると、Keycloakに「keruta」レルムが自動的に作成されます。
+- Keycloakの設定は data/keycloak.default.realm.json から自動的にインポートされます
+- 必要に応じて、Keycloak管理コンソール（http://localhost:8180/admin/）にアクセスできます（ユーザー名: admin、パスワード: admin）
+- 詳細な設定については [Keycloak統合](keruta-doc/keruta/keycloak_integration.md) を参照してください
+
 ## 主な機能
 
 - タスクの作成、読取、更新、削除(CRUD操作)
