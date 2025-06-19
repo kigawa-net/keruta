@@ -15,18 +15,18 @@
 
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
-                        <textarea class="form-control" id="description" name="description" rows="3" th:text="*{description}" required></textarea>
+                        <textarea class="form-control" id="description" name="description" rows="3" th:text="*{description}"></textarea>
                     </div>
 
                     <div class="mb-3">
                         <label for="priority" class="form-label">Priority</label>
-                        <input type="number" class="form-control" id="priority" name="priority" th:value="*{priority}" min="0" required>
+                        <input type="number" class="form-control" id="priority" name="priority" th:value="*{priority}" min="0">
                         <div class="form-text">Higher numbers indicate higher priority.</div>
                     </div>
 
                     <div class="mb-3">
                         <label for="status" class="form-label">Status</label>
-                        <select class="form-select" id="status" name="status" required>
+                        <select class="form-select" id="status" name="status">
                             <option th:each="statusOption : ${statuses}" 
                                     th:value="${statusOption}" 
                                     th:text="${statusOption}"

@@ -69,8 +69,20 @@ class AdminController(
         val repository = if (repositoryId != null) gitRepositoryService.getRepositoryById(repositoryId) else null
         val documents = documentIds?.mapNotNull { documentService.getDocumentById(it) } ?: emptyList()
 
+        // Ensure description is not null
+        val description = task.description ?: ""
+
+        // Ensure status is not null
+        val status = task.status ?: TaskStatus.PENDING
+
+        // Ensure priority is not null
+        val priority = task.priority
+
         val newTask = task.copy(
             id = UUID.randomUUID().toString(),
+            description = description,
+            priority = priority,
+            status = status,
             repository = repository,
             documents = documents,
             createdAt = LocalDateTime.now(),
@@ -105,8 +117,20 @@ class AdminController(
             val repository = if (repositoryId != null) gitRepositoryService.getRepositoryById(repositoryId) else null
             val documents = documentIds?.mapNotNull { documentService.getDocumentById(it) } ?: emptyList()
 
+            // Ensure description is not null
+            val description = task.description ?: ""
+
+            // Ensure status is not null
+            val status = task.status ?: TaskStatus.PENDING
+
+            // Ensure priority is not null
+            val priority = task.priority
+
             val updatedTask = task.copy(
                 id = id,
+                description = description,
+                priority = priority,
+                status = status,
                 repository = repository,
                 documents = documents,
                 updatedAt = LocalDateTime.now()
