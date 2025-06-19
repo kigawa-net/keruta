@@ -207,5 +207,5 @@ class AdminController(
         }
     }
 
-    // Agent Management section removed - functionality moved to AdminAgentController
+    // Agent Management section removed - functionality moved to AgentAdminController
 }

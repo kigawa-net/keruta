@@ -15,7 +15,7 @@ import java.util.UUID
 
 @Controller
 @RequestMapping("/admin/agents")
-class AdminAgentController(private val agentService: AgentService) {
+class AgentAdminController(private val agentService: AgentService) {
 
     @GetMapping
     fun agentList(model: Model): String {

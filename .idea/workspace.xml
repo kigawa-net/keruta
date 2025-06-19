@@ -5,15 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="adb03c12-d6fd-4600-a8bb-42d25607284f" name="変更" comment="w">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/AdminController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/AdminController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/task/dto/TaskResponse.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/task/dto/TaskResponse.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/domain/src/main/kotlin/net/kigawa/keruta/core/domain/model/Task.kt" beforeDir="false" afterPath="$PROJECT_DIR$/core/domain/src/main/kotlin/net/kigawa/keruta/core/domain/model/Task.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/task/TaskServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/task/TaskServiceImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesServiceImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/entity/TaskEntity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/entity/TaskEntity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infra/persistence/src/test/kotlin/net/kigawa/keruta/infra/persistence/entity/TaskEntityTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/persistence/src/test/kotlin/net/kigawa/keruta/infra/persistence/entity/TaskEntityTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/agent/controller/AdminAgentController.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-doc" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-doc" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,7 +20,7 @@
     </projectState>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/keruta-doc" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory"><![CDATA[{
@@ -82,7 +76,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="複合.dev">
+  <component name="RunManager" selected="Gradle.keruta [test]">
     <configuration name="dev" type="CompoundRunConfigurationType">
       <toRun name="dev server" type="docker-deploy" />
       <toRun name="KerutaApplication" type="SpringBootApplicationConfigurationType" />
@@ -158,11 +152,13 @@
     </configuration>
     <list>
       <item itemvalue="Docker.dev server" />
+      <item itemvalue="Gradle.keruta [test]" />
       <item itemvalue="Spring Boot.KerutaApplication" />
       <item itemvalue="複合.dev" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.keruta [test]" />
         <item itemvalue="Docker.dev server" />
       </list>
     </recent_temporary>
@@ -182,7 +178,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1750349518682</updated>
-      <workItem from="1750349520674" duration="6565000" />
+      <workItem from="1750349520674" duration="7140000" />
     </task>
     <task id="LOCAL-00001" summary="w">
       <option name="closed" value="true" />
@@ -192,11 +188,30 @@
       <option name="project" value="LOCAL" />
       <updated>1750355269468</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="w">
+      <option name="closed" value="true" />
+      <created>1750356984361</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1750356984361</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="w" />
