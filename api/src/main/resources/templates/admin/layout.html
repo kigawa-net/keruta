@@ -80,6 +80,11 @@
                                 Kubernetes
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:classappend="${#httpServletRequest != null && #httpServletRequest.requestURI != null && #httpServletRequest.requestURI.startsWith('/admin/agents') ? 'active' : ''}" href="/admin/agents">
+                                Agents
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </nav>

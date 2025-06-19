@@ -1,4 +1,4 @@
-package net.kigawa.keruta.api.admin
+package net.kigawa.keruta.api.agent.controller
 
 import net.kigawa.keruta.core.domain.model.Agent
 import net.kigawa.keruta.core.domain.model.AgentStatus
@@ -31,7 +31,8 @@ class AdminAgentController(private val agentService: AgentService) {
             name = "",
             languages = emptyList(),
             status = AgentStatus.AVAILABLE
-        ))
+        )
+        )
         model.addAttribute("statuses", AgentStatus.entries.toTypedArray())
         return "admin/agent-form"
     }

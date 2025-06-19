@@ -1,5 +1,7 @@
 package net.kigawa.keruta.api
 
+import net.kigawa.keruta.core.domain.model.Agent
+import net.kigawa.keruta.core.domain.model.AgentStatus
 import net.kigawa.keruta.core.domain.model.Document
 import net.kigawa.keruta.core.domain.model.Repository
 import net.kigawa.keruta.core.domain.model.Task
@@ -89,7 +91,14 @@ class AdminController(
             createdAt = LocalDateTime.now(),
             updatedAt = LocalDateTime.now()
         )
-        taskRepository.save(newTask)
+        try {
+            taskService.createTask(newTask)
+        } catch (e: Exception) {
+            // Log the error
+            println("Error creating task: ${e.message}")
+            // Fall back to direct repository save if service fails
+            taskRepository.save(newTask)
+        }
         return "redirect:/admin/tasks"
     }
 
@@ -137,14 +146,28 @@ class AdminController(
                 documents = documents,
                 updatedAt = LocalDateTime.now()
             )
-            taskRepository.save(updatedTask)
+            try {
+                taskService.updateTask(id, updatedTask)
+            } catch (e: Exception) {
+                // Log the error
+                println("Error updating task: ${e.message}")
+                // Fall back to direct repository save if service fails
+                taskRepository.save(updatedTask)
+            }
         }
         return "redirect:/admin/tasks"
     }
 
     @GetMapping("/tasks/delete/{id}")
     fun deleteTask(@PathVariable id: String): String {
-        taskRepository.deleteById(id)
+        try {
+            taskService.deleteTask(id)
+        } catch (e: Exception) {
+            // Log the error
+            println("Error deleting task: ${e.message}")
+            // Fall back to direct repository delete if service fails
+            taskRepository.deleteById(id)
+        }
         return "redirect:/admin/tasks"
     }
 
@@ -158,5 +181,86 @@ class AdminController(
         } catch (e: NoSuchElementException) {
             return "redirect:/admin/tasks"
         }
+    }
+
+    // Agent Management
+
+    @GetMapping("/agents")
+    fun agentList(model: Model): String {
+        model.addAttribute("pageTitle", "Agent Management")
+        model.addAttribute("agents", agentService.getAllAgents())
+        return "admin/agents"
+    }
+
+    @GetMapping("/agents/create")
+    fun createAgentForm(model: Model): String {
+        model.addAttribute("pageTitle", "Create Agent")
+        model.addAttribute("agent", Agent(
+            name = "",
+            languages = emptyList(),
+            status = AgentStatus.AVAILABLE
+        ))
+        model.addAttribute("statuses", AgentStatus.entries.toTypedArray())
+        return "admin/agent-form"
+    }
+
+    @PostMapping("/agents/create")
+    fun createAgent(@ModelAttribute agent: Agent, @RequestParam languagesInput: String): String {
+        val languages = languagesInput.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+
+        val newAgent = agent.copy(
+            name = agent.name,
+            languages = languages,
+            status = agent.status ?: AgentStatus.AVAILABLE
+        )
+
+        agentService.createAgent(newAgent)
+        return "redirect:/admin/agents"
+    }
+
+    @GetMapping("/agents/edit/{id}")
+    fun editAgentForm(@PathVariable id: String, model: Model): String {
+        try {
+            val agent = agentService.getAgentById(id)
+            model.addAttribute("pageTitle", "Edit Agent")
+            model.addAttribute("agent", agent)
+            model.addAttribute("statuses", AgentStatus.entries.toTypedArray())
+            return "admin/agent-form"
+        } catch (e: NoSuchElementException) {
+            return "redirect:/admin/agents"
+        }
+    }
+
+    @PostMapping("/agents/edit/{id}")
+    fun updateAgent(
+        @PathVariable id: String,
+        @ModelAttribute agent: Agent,
+        @RequestParam languagesInput: String
+    ): String {
+        try {
+            val languages = languagesInput.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+
+            val updatedAgent = agent.copy(
+                id = id,
+                name = agent.name,
+                languages = languages,
+                status = agent.status ?: AgentStatus.AVAILABLE
+            )
+
+            agentService.updateAgent(id, updatedAgent)
+            return "redirect:/admin/agents"
+        } catch (e: NoSuchElementException) {
+            return "redirect:/admin/agents"
+        }
+    }
+
+    @GetMapping("/agents/delete/{id}")
+    fun deleteAgent(@PathVariable id: String): String {
+        try {
+            agentService.deleteAgent(id)
+        } catch (e: NoSuchElementException) {
+            // Ignore if agent doesn't exist
+        }
+        return "redirect:/admin/agents"
     }
 }

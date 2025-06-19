@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{admin/layout :: html}">
+<body>
+    <div id="content">
+        <div class="card">
+            <div class="card-header">
+                <span th:text="${agent.id == null ? 'Create Agent' : 'Edit Agent'}">Agent Form</span>
+            </div>
+            <div class="card-body">
+                <form th:action="${agent.id == null ? '/admin/agents/create' : '/admin/agents/edit/' + agent.id}" method="post" th:object="${agent}">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" th:value="*{name}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="languagesInput" class="form-label">Languages</label>
+                        <input type="text" class="form-control" id="languagesInput" name="languagesInput" th:value="${#strings.listJoin(agent.languages, ', ')}" required>
+                        <div class="form-text">Enter programming languages separated by commas (e.g., "Java, Python, JavaScript")</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-select" id="status" name="status">
+                            <option th:each="statusOption : ${statuses}" 
+                                    th:value="${statusOption}" 
+                                    th:text="${statusOption}"
+                                    th:selected="${statusOption == agent.status}">
+                                Status
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="/admin/agents" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-package net.kigawa.keruta.api.job.dto
+package net.kigawa.keruta.api.task.dto
 
 /**
  * Request DTO for creating a job.

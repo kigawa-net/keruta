@@ -1,7 +1,6 @@
-package net.kigawa.keruta.api.job.dto
+package net.kigawa.keruta.api.task.dto
 
 import net.kigawa.keruta.core.domain.model.Job
-import net.kigawa.keruta.core.domain.model.JobStatus
 import java.time.LocalDateTime
 
 /**
