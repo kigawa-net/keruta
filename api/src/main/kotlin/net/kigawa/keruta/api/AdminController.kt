@@ -50,7 +50,7 @@ class AdminController(
         model.addAttribute("pageTitle", "Create Task")
         model.addAttribute("task", Task(
             title = "",
-            description = "",
+            description = null,
             priority = 0,
             status = TaskStatus.PENDING
         ))
@@ -69,9 +69,6 @@ class AdminController(
         val repository = if (repositoryId != null) gitRepositoryService.getRepositoryById(repositoryId) else null
         val documents = documentIds?.mapNotNull { documentService.getDocumentById(it) } ?: emptyList()
 
-        // Ensure description is not null
-        val description = task.description ?: ""
-
         // Ensure status is not null
         val status = task.status ?: TaskStatus.PENDING
 
@@ -80,7 +77,7 @@ class AdminController(
 
         val newTask = task.copy(
             id = UUID.randomUUID().toString(),
-            description = description,
+            description = task.description,
             priority = priority,
             status = status,
             repository = repository,
@@ -117,9 +114,6 @@ class AdminController(
             val repository = if (repositoryId != null) gitRepositoryService.getRepositoryById(repositoryId) else null
             val documents = documentIds?.mapNotNull { documentService.getDocumentById(it) } ?: emptyList()
 
-            // Ensure description is not null
-            val description = task.description ?: ""
-
             // Ensure status is not null
             val status = task.status ?: TaskStatus.PENDING
 
@@ -128,7 +122,7 @@ class AdminController(
 
             val updatedTask = task.copy(
                 id = id,
-                description = description,
+                description = task.description,
                 priority = priority,
                 status = status,
                 repository = repository,
