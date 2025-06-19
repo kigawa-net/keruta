@@ -75,8 +75,12 @@ class AdminController(
         // Ensure priority is not null
         val priority = task.priority
 
+        // Ensure title is not empty or null
+        val title = if (task.title.isNullOrBlank()) "Untitled Task" else task.title
+
         val newTask = task.copy(
             id = UUID.randomUUID().toString(),
+            title = title,
             description = task.description,
             priority = priority,
             status = status,
@@ -120,8 +124,12 @@ class AdminController(
             // Ensure priority is not null
             val priority = task.priority
 
+            // Ensure title is not empty or null
+            val title = if (task.title.isNullOrBlank()) "Untitled Task" else task.title
+
             val updatedTask = task.copy(
                 id = id,
+                title = title,
                 description = task.description,
                 priority = priority,
                 status = status,
