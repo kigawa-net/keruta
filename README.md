@@ -42,11 +42,11 @@ docker compose up -d
 
 詳細な情報は以下のドキュメントを参照してください：
 
-- [プロジェクト詳細](doc/project_details.md) - セットアップ手順、API仕様、技術スタック、環境変数によるDB設定などの詳細情報
-- [管理パネル](doc/admin_panel.md) - 管理パネルの機能と使用方法の詳細
-- [Kubernetes統合](doc/kubernetes_integration.md) - タスク情報を環境変数としたKubernetes Pod作成の詳細
-- [Keycloak統合](doc/keycloak_integration.md) - Keycloakを使用した認証・認可の設定詳細
-- [タスクキューシステム設計](doc/task_queue_system_design.md) - コーディングエージェントタスクキューシステムの詳細設計
+- [プロジェクト詳細](keruta-doc/keruta/project_details.md) - セットアップ手順、API仕様、技術スタック、環境変数によるDB設定などの詳細情報
+- [管理パネル](keruta-doc/keruta/admin_panel.md) - 管理パネルの機能と使用方法の詳細
+- [Kubernetes統合](keruta-doc/keruta/kubernetes_integration.md) - タスク情報を環境変数としたKubernetes Pod作成の詳細
+- [Keycloak統合](keruta-doc/keruta/keycloak_integration.md) - Keycloakを使用した認証・認可の設定詳細
+- [タスクキューシステム設計](keruta-doc/keruta/task_queue_system_design.md) - コーディングエージェントタスクキューシステムの詳細設計
 
 ## 技術スタック
 
