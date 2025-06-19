@@ -2,25 +2,18 @@ package net.kigawa.keruta.api
 
 import net.kigawa.keruta.core.domain.model.Agent
 import net.kigawa.keruta.core.domain.model.AgentStatus
-import net.kigawa.keruta.core.domain.model.Document
-import net.kigawa.keruta.core.domain.model.Repository
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.domain.model.TaskStatus
 import net.kigawa.keruta.core.usecase.agent.AgentService
 import net.kigawa.keruta.core.usecase.document.DocumentService
-import net.kigawa.keruta.core.usecase.task.TaskService
 import net.kigawa.keruta.core.usecase.repository.GitRepositoryService
 import net.kigawa.keruta.core.usecase.repository.TaskRepository
+import net.kigawa.keruta.core.usecase.task.TaskService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 
 @Controller
 @RequestMapping("/admin")
@@ -69,16 +62,16 @@ class AdminController(
         @RequestParam(required = false) documentIds: List<String>?
     ): String {
         val repository = if (repositoryId != null) gitRepositoryService.getRepositoryById(repositoryId) else null
-        val documents = documentIds?.mapNotNull { documentService.getDocumentById(it) } ?: emptyList()
+        val documents = documentIds?.map { documentService.getDocumentById(it) } ?: emptyList()
 
         // Ensure status is not null
-        val status = task.status ?: TaskStatus.PENDING
+        val status = task.status
 
         // Ensure priority is not null
         val priority = task.priority
 
         // Ensure title is not empty or null
-        val title = if (task.title.isNullOrBlank()) "Untitled Task" else task.title
+        val title = task.title.ifBlank { "Untitled Task" }
 
         val newTask = task.copy(
             id = UUID.randomUUID().toString(),
@@ -125,16 +118,16 @@ class AdminController(
     ): String {
         if (taskRepository.findById(id) != null) {
             val repository = if (repositoryId != null) gitRepositoryService.getRepositoryById(repositoryId) else null
-            val documents = documentIds?.mapNotNull { documentService.getDocumentById(it) } ?: emptyList()
+            val documents = documentIds?.map { documentService.getDocumentById(it) } ?: emptyList()
 
             // Ensure status is not null
-            val status = task.status ?: TaskStatus.PENDING
+            val status = task.status
 
             // Ensure priority is not null
             val priority = task.priority
 
             // Ensure title is not empty or null
-            val title = if (task.title.isNullOrBlank()) "Untitled Task" else task.title
+            val title = task.title.ifBlank { "Untitled Task" }
 
             val updatedTask = task.copy(
                 id = id,
@@ -178,7 +171,7 @@ class AdminController(
             model.addAttribute("pageTitle", "Task Logs")
             model.addAttribute("task", task)
             return "admin/task-logs"
-        } catch (e: NoSuchElementException) {
+        } catch (_: NoSuchElementException) {
             return "redirect:/admin/tasks"
         }
     }
@@ -211,7 +204,7 @@ class AdminController(
         val newAgent = agent.copy(
             name = agent.name,
             languages = languages,
-            status = agent.status ?: AgentStatus.AVAILABLE
+            status = agent.status
         )
 
         agentService.createAgent(newAgent)
@@ -226,7 +219,7 @@ class AdminController(
             model.addAttribute("agent", agent)
             model.addAttribute("statuses", AgentStatus.entries.toTypedArray())
             return "admin/agent-form"
-        } catch (e: NoSuchElementException) {
+        } catch (_: NoSuchElementException) {
             return "redirect:/admin/agents"
         }
     }
@@ -244,12 +237,12 @@ class AdminController(
                 id = id,
                 name = agent.name,
                 languages = languages,
-                status = agent.status ?: AgentStatus.AVAILABLE
+                status = agent.status
             )
 
             agentService.updateAgent(id, updatedAgent)
             return "redirect:/admin/agents"
-        } catch (e: NoSuchElementException) {
+        } catch (_: NoSuchElementException) {
             return "redirect:/admin/agents"
         }
     }
@@ -258,7 +251,7 @@ class AdminController(
     fun deleteAgent(@PathVariable id: String): String {
         try {
             agentService.deleteAgent(id)
-        } catch (e: NoSuchElementException) {
+        } catch (_: NoSuchElementException) {
             // Ignore if agent doesn't exist
         }
         return "redirect:/admin/agents"
