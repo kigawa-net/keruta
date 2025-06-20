@@ -5,9 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="adb03c12-d6fd-4600-a8bb-42d25607284f" name="変更" comment="w">
-      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/AdminController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/AdminController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/agent/controller/AdminAgentController.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-doc" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-doc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/resources/templates/admin/task-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/resources/templates/admin/task-form.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,6 +17,37 @@
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="keruta" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="keruta" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="keruta" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="verification" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/keruta-doc" />
@@ -38,6 +68,11 @@
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="true" />
   </component>
+  <component name="JavaAutoRunManager">
+    <enabled-run-configurations>
+      <run-configuration type="GradleRunConfiguration" name="keruta [test]" />
+    </enabled-run-configurations>
+  </component>
   <component name="ProjectColorInfo"><![CDATA[{
   "customColor": "",
   "associatedIndex": 4
@@ -52,6 +87,7 @@
     "Docker.dev server.executor": "Run",
     "Docker.dev.executor": "Run",
     "Docker.docker-compose.yml.app: Compose デプロイ.executor": "Run",
+    "Gradle.keruta [test].executor": "Run",
     "Gradle.keruta のビルド.executor": "Run",
     "Gradle.ソースのダウンロード.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
@@ -76,7 +112,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Gradle.keruta [test]">
+  <component name="RunManager" selected="Spring Boot.KerutaApplication">
     <configuration name="dev" type="CompoundRunConfigurationType">
       <toRun name="dev server" type="docker-deploy" />
       <toRun name="KerutaApplication" type="SpringBootApplicationConfigurationType" />
@@ -178,7 +214,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1750349518682</updated>
-      <workItem from="1750349520674" duration="7140000" />
+      <workItem from="1750349520674" duration="7884000" />
     </task>
     <task id="LOCAL-00001" summary="w">
       <option name="closed" value="true" />
@@ -196,7 +232,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750356984361</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="w">
+      <option name="closed" value="true" />
+      <created>1750357610593</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1750357610593</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

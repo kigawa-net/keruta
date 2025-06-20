@@ -42,8 +42,7 @@
                             <option value="">-- Select Repository --</option>
                             <option th:each="repo : ${repositories}" 
                                     th:value="${repo.id}" 
-                                    th:text="${repo.name}"
-                                    th:selected="${task.repository != null && repo.id == task.repository.id}">
+                                    th:text="${repo.name}">
                                 Repository Name
                             </option>
                         </select>
