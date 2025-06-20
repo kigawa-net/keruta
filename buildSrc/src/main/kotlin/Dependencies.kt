@@ -8,6 +8,7 @@ object Versions {
     const val springdoc = "2.3.0"
     const val thymeleaf = "3.1.2.RELEASE"
     const val keycloak = "23.0.3"
+    const val fabric8KubernetesClient = "6.5.1"
 }
 
 object Dependencies {
@@ -43,4 +44,7 @@ object Dependencies {
     // Keycloak
     const val keycloakSpringBootAdapter = "org.keycloak:keycloak-spring-boot-starter:${Versions.keycloak}"
     const val keycloakSpringSecurityAdapter = "org.keycloak:keycloak-spring-security-adapter:${Versions.keycloak}"
+
+    // Kubernetes
+    const val fabric8KubernetesClient = "io.fabric8:kubernetes-client:${Versions.fabric8KubernetesClient}"
 }
