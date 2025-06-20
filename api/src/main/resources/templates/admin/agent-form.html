@@ -31,6 +31,18 @@
                         </select>
                     </div>
 
+                    <div class="mb-3">
+                        <label for="installCommand" class="form-label">Install Command</label>
+                        <textarea class="form-control" id="installCommand" name="installCommand" rows="3" th:text="*{installCommand}"></textarea>
+                        <div class="form-text">Enter the command to install the agent</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="executeCommand" class="form-label">Execute Command</label>
+                        <textarea class="form-control" id="executeCommand" name="executeCommand" rows="3" th:text="*{executeCommand}"></textarea>
+                        <div class="form-text">Enter the command to execute the agent. Available environment variables: KERUTA_TASK_ID, KERUTA_INPUT_FILE_PATH, KERUTA_OUTPUT_DIR</div>
+                    </div>
+
                     <div class="d-flex justify-content-between">
                         <a href="/admin/agents" class="btn btn-secondary">Cancel</a>
                         <button type="submit" class="btn btn-primary">Save</button>

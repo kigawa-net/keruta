@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="adb03c12-d6fd-4600-a8bb-42d25607284f" name="変更" comment="w" />
+    <list default="true" id="adb03c12-d6fd-4600-a8bb-42d25607284f" name="変更" comment="w">
+      <change beforePath="$PROJECT_DIR$/api/src/main/resources/templates/admin/agent-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/resources/templates/admin/agent-form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/resources/templates/admin/agents.html" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/resources/templates/admin/agents.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/domain/src/main/kotlin/net/kigawa/keruta/core/domain/model/Agent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/core/domain/src/main/kotlin/net/kigawa/keruta/core/domain/model/Agent.kt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -121,7 +125,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Spring Boot.KerutaApplication">
+  <component name="RunManager" selected="Gradle.keruta [test]">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="keruta" />
       <working_directory value="$PROJECT_DIR$" />
@@ -224,7 +228,7 @@
       <workItem from="1750349520674" duration="9208000" />
       <workItem from="1750398860278" duration="74000" />
       <workItem from="1750398950691" duration="80000" />
-      <workItem from="1750399043313" duration="1357000" />
+      <workItem from="1750399043313" duration="3479000" />
     </task>
     <task id="LOCAL-00001" summary="w">
       <option name="closed" value="true" />
@@ -282,7 +286,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750399569965</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="w">
+      <option name="closed" value="true" />
+      <created>1750401000437</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1750401000437</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
