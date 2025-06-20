@@ -13,6 +13,9 @@ import io.fabric8.kubernetes.api.model.VolumeMount
 import io.fabric8.kubernetes.api.model.VolumeMountBuilder
 import io.fabric8.kubernetes.api.model.batch.v1.Job
 import io.fabric8.kubernetes.api.model.batch.v1.JobBuilder
+import io.fabric8.kubernetes.api.model.ResourceRequirements
+import io.fabric8.kubernetes.api.model.Quantity
+import io.fabric8.kubernetes.api.model.EnvVar
 import net.kigawa.keruta.core.domain.model.KubernetesConfig
 import net.kigawa.keruta.core.domain.model.Repository
 import net.kigawa.keruta.core.domain.model.Resources
@@ -78,114 +81,134 @@ class KubernetesServiceImpl(
         val actualJobName = jobName ?: "keruta-job-${task.id ?: UUID.randomUUID()}"
 
         try {
-            // Create a job definition
-            val jobBuilder = JobBuilder()
-                .withNewMetadata()
-                    .withName(actualJobName)
-                    .withNamespace(actualNamespace)
-                    .addToLabels("app", "keruta")
-                    .addToLabels("task-id", task.id ?: "")
-                .endMetadata()
-                .withNewSpec()
-                    .withBackoffLimit(4) // Number of retries before considering the job failed
-                    .withNewTemplate()
-                        .withNewMetadata()
-                            .addToLabels("app", "keruta")
-                            .addToLabels("task-id", task.id ?: "")
-                        .endMetadata()
-                        .withNewSpec()
-                            .withRestartPolicy("Never") // Do not restart containers on failure
+            // Create a job definition using direct object creation instead of builder pattern
+            // Create metadata
+            val metadata = io.fabric8.kubernetes.api.model.ObjectMeta()
+            metadata.name = actualJobName
+            metadata.namespace = actualNamespace
+            metadata.labels = mapOf(
+                "app" to "keruta",
+                "task-id" to (task.id ?: "")
+            )
+
+            // Create pod template metadata
+            val podTemplateMetadata = io.fabric8.kubernetes.api.model.ObjectMeta()
+            podTemplateMetadata.labels = mapOf(
+                "app" to "keruta",
+                "task-id" to (task.id ?: "")
+            )
+
+            // Create containers list
+            val containers = mutableListOf<io.fabric8.kubernetes.api.model.Container>()
+
+            // Create main container
+            val mainContainer = io.fabric8.kubernetes.api.model.Container()
+            mainContainer.name = "task-container"
+            mainContainer.image = image
+
+            // Add environment variables to main container
+            val envVars = mutableListOf(
+                EnvVar("KERUTA_TASK_ID", task.id ?: "", null),
+                EnvVar("KERUTA_TASK_TITLE", task.title, null),
+                EnvVar("KERUTA_TASK_DESCRIPTION", task.description ?: "", null),
+                EnvVar("KERUTA_TASK_PRIORITY", task.priority.toString(), null),
+                EnvVar("KERUTA_TASK_STATUS", task.status.name, null),
+                EnvVar("KERUTA_TASK_CREATED_AT", task.createdAt.format(DateTimeFormatter.ISO_DATE_TIME), null),
+                EnvVar("KERUTA_TASK_UPDATED_AT", task.updatedAt.format(DateTimeFormatter.ISO_DATE_TIME), null)
+            )
+
+            // Add additional environment variables
+            additionalEnv.forEach { (key, value) ->
+                envVars.add(EnvVar(key, value, null))
+            }
+
+            mainContainer.env = envVars
+
+            // Add resource requirements if specified
+            if (resources != null) {
+                val resourceRequirements = ResourceRequirements()
+                resourceRequirements.requests = mapOf(
+                    "cpu" to Quantity(resources.cpu),
+                    "memory" to Quantity(resources.memory)
+                )
+                resourceRequirements.limits = mapOf(
+                    "cpu" to Quantity(resources.cpu),
+                    "memory" to Quantity(resources.memory)
+                )
+                mainContainer.resources = resourceRequirements
+            }
+
+            // Add containers to list
+            containers.add(mainContainer)
+
+            // Create volumes list
+            val volumes = mutableListOf<io.fabric8.kubernetes.api.model.Volume>()
+
+            // Add init containers list
+            val initContainers = mutableListOf<io.fabric8.kubernetes.api.model.Container>()
 
             // Add volume for git repository if repository is provided
             if (repository != null) {
                 logger.info("Adding init container for git clone: ${repository.url}")
 
-                // Add volume for git repository
-                jobBuilder.editSpec()
-                    .editTemplate()
-                        .editSpec()
-                            .addNewVolume()
-                                .withName("repo-volume")
-                                .withNewEmptyDir()
-                                .endEmptyDir()
-                            .endVolume()
-                        .endSpec()
-                    .endTemplate()
-                .endSpec()
+                // Create volume for git repository
+                val repoVolume = io.fabric8.kubernetes.api.model.Volume()
+                repoVolume.name = "repo-volume"
+                repoVolume.emptyDir = io.fabric8.kubernetes.api.model.EmptyDirVolumeSource()
+                volumes.add(repoVolume)
 
-                // Add init container for git clone
-                jobBuilder.editSpec()
-                    .editTemplate()
-                        .editSpec()
-                            .addNewInitContainer()
-                                .withName("git-clone")
-                                .withImage("alpine/git")
-                                .withCommand("git", "clone", repository.url, "/repo")
-                                .addNewVolumeMount()
-                                    .withName("repo-volume")
-                                    .withMountPath("/repo")
-                                .endVolumeMount()
-                            .endInitContainer()
-                        .endSpec()
-                    .endTemplate()
-                .endSpec()
+                // Create init container for git clone
+                val gitCloneContainer = io.fabric8.kubernetes.api.model.Container()
+                gitCloneContainer.name = "git-clone"
+                gitCloneContainer.image = "alpine/git"
+                gitCloneContainer.command = listOf("git", "clone", repository.url, "/repo")
+
+                // Add volume mount to git clone container
+                val gitCloneVolumeMount = io.fabric8.kubernetes.api.model.VolumeMount()
+                gitCloneVolumeMount.name = "repo-volume"
+                gitCloneVolumeMount.mountPath = "/repo"
+                gitCloneContainer.volumeMounts = listOf(gitCloneVolumeMount)
+
+                initContainers.add(gitCloneContainer)
+
+                // Add volume mount to main container
+                val mainContainerVolumeMount = io.fabric8.kubernetes.api.model.VolumeMount()
+                mainContainerVolumeMount.name = "repo-volume"
+                mainContainerVolumeMount.mountPath = "/repo"
+
+                // Add volume mount to existing volume mounts or create new list
+                if (mainContainer.volumeMounts == null) {
+                    mainContainer.volumeMounts = mutableListOf(mainContainerVolumeMount)
+                } else {
+                    (mainContainer.volumeMounts as MutableList<io.fabric8.kubernetes.api.model.VolumeMount>).add(mainContainerVolumeMount)
+                }
             }
 
-            // Add main container
-            jobBuilder.editSpec()
-                .editTemplate()
-                    .editSpec()
-                        .addNewContainer()
-                            .withName("task-container")
-                            .withImage(image)
-                            .addNewEnv().withName("KERUTA_TASK_ID").withValue(task.id ?: "").endEnv()
-                            .addNewEnv().withName("KERUTA_TASK_TITLE").withValue(task.title).endEnv()
-                            .addNewEnv().withName("KERUTA_TASK_DESCRIPTION").withValue(task.description ?: "").endEnv()
-                            .addNewEnv().withName("KERUTA_TASK_PRIORITY").withValue(task.priority.toString()).endEnv()
-                            .addNewEnv().withName("KERUTA_TASK_STATUS").withValue(task.status.name).endEnv()
-                            .addNewEnv().withName("KERUTA_TASK_CREATED_AT").withValue(task.createdAt.format(DateTimeFormatter.ISO_DATE_TIME)).endEnv()
-                            .addNewEnv().withName("KERUTA_TASK_UPDATED_AT").withValue(task.updatedAt.format(DateTimeFormatter.ISO_DATE_TIME)).endEnv()
-                        .endContainer()
-                    .endSpec()
-                .endTemplate()
-            .endSpec()
+            // Create pod spec
+            val podSpec = io.fabric8.kubernetes.api.model.PodSpec()
+            podSpec.containers = containers
+            podSpec.volumes = volumes
+            podSpec.restartPolicy = "Never" // Do not restart containers on failure
 
-            // Add volume mount to main container if repository is provided
-            if (repository != null) {
-                jobBuilder.editSpec()
-                    .editTemplate()
-                        .editSpec()
-                            .editContainer(0)
-                                .addNewVolumeMount()
-                                    .withName("repo-volume")
-                                    .withMountPath("/repo")
-                                .endVolumeMount()
-                            .endContainer()
-                        .endSpec()
-                    .endTemplate()
-                .endSpec()
+            // Add init containers if any
+            if (initContainers.isNotEmpty()) {
+                podSpec.initContainers = initContainers
             }
 
-            val job = jobBuilder.build()
+            // Create pod template spec
+            val podTemplateSpec = io.fabric8.kubernetes.api.model.PodTemplateSpec()
+            podTemplateSpec.metadata = podTemplateMetadata
+            podTemplateSpec.spec = podSpec
 
-            // Add additional environment variables
-            additionalEnv.forEach { (key, value) ->
-                job.spec.template.spec.containers[0].env.add(io.fabric8.kubernetes.api.model.EnvVar(key, value, null))
-            }
+            // Create job spec
+            val jobSpec = io.fabric8.kubernetes.api.model.batch.v1.JobSpec()
+            jobSpec.backoffLimit = 4 // Number of retries before considering the job failed
+            jobSpec.template = podTemplateSpec
 
-            // Add resource requirements if specified
-            if (resources != null) {
-                val container = job.spec.template.spec.containers[0]
-                container.resources = io.fabric8.kubernetes.api.model.ResourceRequirements()
-                container.resources.requests = mapOf(
-                    "cpu" to io.fabric8.kubernetes.api.model.Quantity(resources.cpu),
-                    "memory" to io.fabric8.kubernetes.api.model.Quantity(resources.memory)
-                )
-                container.resources.limits = mapOf(
-                    "cpu" to io.fabric8.kubernetes.api.model.Quantity(resources.cpu),
-                    "memory" to io.fabric8.kubernetes.api.model.Quantity(resources.memory)
-                )
-            }
+            // Create job
+            val job = io.fabric8.kubernetes.api.model.batch.v1.Job()
+            job.metadata = metadata
+            job.spec = jobSpec
 
             // Create the job
             val createdJob = client!!.batch().v1().jobs().inNamespace(actualNamespace).create(job)

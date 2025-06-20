@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="adb03c12-d6fd-4600-a8bb-42d25607284f" name="変更" comment="w" />
+    <list default="true" id="adb03c12-d6fd-4600-a8bb-42d25607284f" name="変更" comment="w">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/452f5952-a2b3-4261-b5ad-c884dd574e51.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesServiceImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-doc" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-doc" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -52,7 +58,7 @@
         <entry key="$PROJECT_DIR$/keruta-doc" value="8da01499586cc449fa430ad66dac4644bc1f7a22" />
       </map>
     </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/keruta-doc" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -73,12 +79,13 @@
   <component name="JavaAutoRunManager">
     <enabled-run-configurations>
       <run-configuration type="GradleRunConfiguration" name="keruta [test]" />
+      <run-configuration type="GradleRunConfiguration" name="keruta [test]" />
     </enabled-run-configurations>
   </component>
-  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
-  <component name="KubernetesApiProvider"><![CDATA[{
-  "isMigrated": true
-}]]></component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 4
@@ -126,11 +133,16 @@
   }
 }</component>
   <component name="RunManager" selected="Gradle.keruta [test]">
+    <configuration name="dev" type="CompoundRunConfigurationType">
+      <toRun name="dev server" type="docker-deploy" />
+      <toRun name="KerutaApplication" type="SpringBootApplicationConfigurationType" />
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="keruta" />
       <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
-      <kind />
+      <kind value="FILE" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <method v="2" />
@@ -139,20 +151,10 @@
       <module name="keruta" />
       <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
-      <kind />
+      <kind value="DIRECTORY" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="Application" factoryName="Application">
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="dev" type="CompoundRunConfigurationType">
-      <toRun name="dev server" type="docker-deploy" />
-      <toRun name="KerutaApplication" type="SpringBootApplicationConfigurationType" />
       <method v="2" />
     </configuration>
     <configuration default="true" type="JetRunConfigurationType">
@@ -327,7 +329,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
