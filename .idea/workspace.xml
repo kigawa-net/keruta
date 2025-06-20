@@ -18,7 +18,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="adb03c12-d6fd-4600-a8bb-42d25607284f" name="変更" comment="Add parent task relationship to Task model and API&#10;&#10;Introduced a `parentId` field in the `Task` model to support parent-child task relationships. Updated the persistence layer, API endpoints, and admin UI to handle the new field. Added validation to prevent tasks from being their own parent and adjusted relevant tests to ensure compatibility." />
+    <list default="true" id="adb03c12-d6fd-4600-a8bb-42d25607284f" name="変更" comment="&quot;リポジトリ対応をTaskに追加&quot;" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -66,7 +66,7 @@
         <entry key="$PROJECT_DIR$/keruta-doc" value="8da01499586cc449fa430ad66dac4644bc1f7a22" />
       </map>
     </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/keruta-doc" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -349,7 +349,23 @@
       <option name="project" value="LOCAL" />
       <updated>1750433721590</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="PVC対応の追加">
+      <option name="closed" value="true" />
+      <created>1750435226573</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1750435226573</updated>
+    </task>
+    <task id="LOCAL-00014" summary="&quot;リポジトリ対応をTaskに追加&quot;">
+      <option name="closed" value="true" />
+      <created>1750437140306</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1750437140306</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -381,7 +397,9 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="w" />
     <MESSAGE value="Add parent task relationship to Task model and API&#10;&#10;Introduced a `parentId` field in the `Task` model to support parent-child task relationships. Updated the persistence layer, API endpoints, and admin UI to handle the new field. Added validation to prevent tasks from being their own parent and adjusted relevant tests to ensure compatibility." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add parent task relationship to Task model and API&#10;&#10;Introduced a `parentId` field in the `Task` model to support parent-child task relationships. Updated the persistence layer, API endpoints, and admin UI to handle the new field. Added validation to prevent tasks from being their own parent and adjusted relevant tests to ensure compatibility." />
+    <MESSAGE value="PVC対応の追加" />
+    <MESSAGE value="&quot;リポジトリ対応をTaskに追加&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;リポジトリ対応をTaskに追加&quot;" />
   </component>
   <component name="VgoProject">
     <integration-enabled>false</integration-enabled>

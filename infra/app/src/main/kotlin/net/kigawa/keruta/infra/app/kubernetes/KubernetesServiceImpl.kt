@@ -223,13 +223,115 @@ class KubernetesServiceImpl(
                 val gitCloneContainer = io.fabric8.kubernetes.api.model.Container()
                 gitCloneContainer.name = "git-clone"
                 gitCloneContainer.image = "alpine/git"
-                gitCloneContainer.command = listOf("git", "clone", repository.url, repoMountPath)
 
-                // Add volume mount to git clone container
+                // Add timeout and depth options to git clone for better performance and reliability
+                val gitCloneCommand = mutableListOf(
+                    "git", 
+                    "clone", 
+                    "--depth", "1",  // Shallow clone for faster operation
+                    "--single-branch",  // Clone only the default branch
+                    "--timeout", "30",  // Set timeout to 30 seconds
+                    repository.url, 
+                    repoMountPath
+                )
+
+                gitCloneContainer.command = gitCloneCommand
+
+                // Create volume mount for repository
                 val gitCloneVolumeMount = io.fabric8.kubernetes.api.model.VolumeMount()
                 gitCloneVolumeMount.name = repoVolumeName
                 gitCloneVolumeMount.mountPath = repoMountPath
-                gitCloneContainer.volumeMounts = listOf(gitCloneVolumeMount)
+
+                // Add environment variables for git configuration
+                val gitEnvVars = mutableListOf(
+                    EnvVar("GIT_TERMINAL_PROMPT", "0", null),  // Disable interactive prompts
+                    EnvVar("GIT_CONFIG_COUNT", "2", null),
+                    EnvVar("GIT_CONFIG_KEY_0", "http.connectTimeout", null),
+                    EnvVar("GIT_CONFIG_VALUE_0", "30", null),
+                    EnvVar("GIT_CONFIG_KEY_1", "http.lowSpeedLimit", null),
+                    EnvVar("GIT_CONFIG_VALUE_1", "1000", null)
+                )
+
+                // Check for git credentials secret
+                val secretName = "git-credentials-${repository.id}"
+                try {
+                    val secret = client!!.secrets().inNamespace(actualNamespace).withName(secretName).get()
+                    if (secret != null) {
+                        logger.info("Found git credentials secret: $secretName")
+
+                        // Create secret references for username and password
+                        val usernameEnvVar = EnvVar()
+                        usernameEnvVar.name = "GIT_USERNAME"
+                        val usernameSource = io.fabric8.kubernetes.api.model.EnvVarSource()
+                        val usernameSelector = io.fabric8.kubernetes.api.model.SecretKeySelector()
+                        usernameSelector.name = secretName
+                        usernameSelector.key = "username"
+                        usernameSource.secretKeyRef = usernameSelector
+                        usernameEnvVar.valueFrom = usernameSource
+
+                        val passwordEnvVar = EnvVar()
+                        passwordEnvVar.name = "GIT_PASSWORD"
+                        val passwordSource = io.fabric8.kubernetes.api.model.EnvVarSource()
+                        val passwordSelector = io.fabric8.kubernetes.api.model.SecretKeySelector()
+                        passwordSelector.name = secretName
+                        passwordSelector.key = "password"
+                        passwordSource.secretKeyRef = passwordSelector
+                        passwordEnvVar.valueFrom = passwordSource
+
+                        gitEnvVars.add(usernameEnvVar)
+                        gitEnvVars.add(passwordEnvVar)
+
+                        // Add git config for credential helper using environment variables
+                        // Update GIT_CONFIG_COUNT to 4 (we're adding 2 more configs)
+                        gitEnvVars.removeIf { it.name == "GIT_CONFIG_COUNT" }
+                        gitEnvVars.add(EnvVar("GIT_CONFIG_COUNT", "4", null))
+
+                        // Add credential.helper configs
+                        gitEnvVars.add(EnvVar("GIT_CONFIG_KEY_2", "credential.helper", null))
+                        gitEnvVars.add(EnvVar("GIT_CONFIG_VALUE_2", "store", null))
+                        gitEnvVars.add(EnvVar("GIT_CONFIG_KEY_3", "credential.helper", null))
+                        gitEnvVars.add(EnvVar("GIT_CONFIG_VALUE_3", "cache --timeout=300", null))
+
+                        // Add a script to create git credentials file
+                        val setupScript = listOf(
+                            "set -e",
+                            "echo 'Setting up git credentials'",
+                            "mkdir -p /git-credentials",
+                            "echo \"https://\$GIT_USERNAME:\$GIT_PASSWORD@github.com\" > /git-credentials/.git-credentials",
+                            "git config --global credential.helper 'store --file=/git-credentials/.git-credentials'",
+                            "echo 'Git credentials configured'",
+                            "git clone ${repository.url} ${repoMountPath}"
+                        )
+
+                        // Update the command to use the setup script
+                        gitCloneContainer.command = listOf("/bin/sh", "-c")
+                        gitCloneContainer.args = listOf(setupScript.joinToString("\n"))
+
+                        // Add volume for git credentials
+                        val credentialsVolume = io.fabric8.kubernetes.api.model.Volume()
+                        credentialsVolume.name = "git-credentials"
+                        credentialsVolume.emptyDir = io.fabric8.kubernetes.api.model.EmptyDirVolumeSource()
+                        volumes.add(credentialsVolume)
+
+                        // Add volume mount for git credentials
+                        val credentialsVolumeMount = io.fabric8.kubernetes.api.model.VolumeMount()
+                        credentialsVolumeMount.name = "git-credentials"
+                        credentialsVolumeMount.mountPath = "/git-credentials"
+
+                        // Add to existing volume mounts
+                        val volumeMounts = mutableListOf(gitCloneVolumeMount, credentialsVolumeMount)
+                        gitCloneContainer.volumeMounts = volumeMounts
+                    } else {
+                        // No credentials found, use simple volume mount
+                        gitCloneContainer.volumeMounts = listOf(gitCloneVolumeMount)
+                    }
+                } catch (e: Exception) {
+                    logger.warn("Failed to get git credentials secret: $secretName", e)
+                    // Use simple volume mount in case of error
+                    gitCloneContainer.volumeMounts = listOf(gitCloneVolumeMount)
+                }
+
+                gitCloneContainer.env = gitEnvVars
 
                 initContainers.add(gitCloneContainer)
 

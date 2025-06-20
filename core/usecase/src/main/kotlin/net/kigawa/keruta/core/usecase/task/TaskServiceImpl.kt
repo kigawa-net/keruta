@@ -144,6 +144,10 @@ class TaskServiceImpl(
         }
     }
 
+    @Deprecated(
+        "Use createJob instead to align with documentation",
+        replaceWith = ReplaceWith("createJob(taskId, image, namespace, podName, resources, additionalEnv)")
+    )
     override fun createPod(
         taskId: String,
         image: String,
@@ -202,6 +206,10 @@ class TaskServiceImpl(
         )
     }
 
+    @Deprecated(
+        "Use createJobForNextTask instead to align with documentation",
+        replaceWith = ReplaceWith("createJobForNextTask(image, namespace, podName, resources, additionalEnv)")
+    )
     override fun createPodForNextTask(
         image: String,
         namespace: String,
