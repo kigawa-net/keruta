@@ -15,7 +15,8 @@ data class Task(
     val documents: List<Document> = emptyList(),
     val image: String? = null,
     val namespace: String = "default",
-    val podName: String? = null,
+    val jobName: String? = null,
+    val podName: String? = null, // Kept for backward compatibility
     val additionalEnv: Map<String, String> = emptyMap(),
     val kubernetesManifest: String? = null,
     val logs: String? = null,

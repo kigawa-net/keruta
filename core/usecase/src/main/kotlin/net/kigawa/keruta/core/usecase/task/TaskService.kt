@@ -87,25 +87,43 @@ interface TaskService {
     fun getTasksByStatus(status: TaskStatus): List<Task>
 
     /**
-     * Creates a Kubernetes pod for a task.
+     * Creates a Kubernetes Job for a task.
      *
      * @param taskId The ID of the task
      * @param image The Docker image to use
      * @param namespace The Kubernetes namespace (optional)
-     * @param podName The name of the pod (optional)
+     * @param jobName The name of the job (optional)
      * @param resources The resource requirements (optional)
      * @param additionalEnv Additional environment variables (optional)
-     * @return The updated task with pod information
+     * @return The updated task with job information
      * @throws NoSuchElementException if the task is not found
      */
-    fun createPod(
+    fun createJob(
         taskId: String,
         image: String,
         namespace: String = "default",
-        podName: String? = null,
+        jobName: String? = null,
         resources: Resources? = null,
         additionalEnv: Map<String, String> = emptyMap()
     ): Task
+
+    /**
+     * Creates a Job automatically for the next task in the queue.
+     *
+     * @param image The Docker image to use
+     * @param namespace The Kubernetes namespace (optional)
+     * @param jobName The name of the job (optional)
+     * @param resources The resource requirements (optional)
+     * @param additionalEnv Additional environment variables (optional)
+     * @return The updated task, or null if there are no tasks in the queue
+     */
+    fun createJobForNextTask(
+        image: String,
+        namespace: String = "default",
+        jobName: String? = null,
+        resources: Resources? = null,
+        additionalEnv: Map<String, String> = emptyMap()
+    ): Task?
 
     /**
      * Appends logs to a task.
@@ -118,7 +136,31 @@ interface TaskService {
     fun appendTaskLogs(id: String, logs: String): Task
 
     /**
+     * Creates a Kubernetes pod for a task.
+     * @deprecated Use createJob instead to align with documentation
+     *
+     * @param taskId The ID of the task
+     * @param image The Docker image to use
+     * @param namespace The Kubernetes namespace (optional)
+     * @param podName The name of the pod (optional)
+     * @param resources The resource requirements (optional)
+     * @param additionalEnv Additional environment variables (optional)
+     * @return The updated task with pod information
+     * @throws NoSuchElementException if the task is not found
+     */
+    @Deprecated("Use createJob instead to align with documentation", ReplaceWith("createJob(taskId, image, namespace, podName, resources, additionalEnv)"))
+    fun createPod(
+        taskId: String,
+        image: String,
+        namespace: String = "default",
+        podName: String? = null,
+        resources: Resources? = null,
+        additionalEnv: Map<String, String> = emptyMap()
+    ): Task
+
+    /**
      * Creates a pod automatically for the next task in the queue.
+     * @deprecated Use createJobForNextTask instead to align with documentation
      *
      * @param image The Docker image to use
      * @param namespace The Kubernetes namespace (optional)
@@ -127,6 +169,7 @@ interface TaskService {
      * @param additionalEnv Additional environment variables (optional)
      * @return The updated task, or null if there are no tasks in the queue
      */
+    @Deprecated("Use createJobForNextTask instead to align with documentation", ReplaceWith("createJobForNextTask(image, namespace, podName, resources, additionalEnv)"))
     fun createPodForNextTask(
         image: String,
         namespace: String = "default",

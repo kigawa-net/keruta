@@ -76,6 +76,56 @@ class TaskServiceImpl(
         return taskRepository.findByStatus(status)
     }
 
+    override fun createJob(
+        taskId: String,
+        image: String,
+        namespace: String,
+        jobName: String?,
+        resources: Resources?,
+        additionalEnv: Map<String, String>
+    ): Task {
+        logger.info("Creating Kubernetes job for task with id: $taskId")
+
+        val task = getTaskById(taskId)
+        val actualJobName = jobName ?: "keruta-job-${task.id}"
+
+        try {
+            val createdJobName = kubernetesService.createJob(
+                task = task,
+                image = image,
+                namespace = namespace,
+                jobName = actualJobName,
+                resources = resources,
+                additionalEnv = additionalEnv
+            )
+
+            val updatedTask = task.copy(
+                image = image,
+                namespace = namespace,
+                jobName = createdJobName,
+                podName = createdJobName, // For backward compatibility
+                additionalEnv = additionalEnv,
+                status = TaskStatus.IN_PROGRESS,
+                updatedAt = LocalDateTime.now()
+            )
+
+            val savedTask = taskRepository.save(updatedTask)
+            logger.info("Kubernetes job created for task with id: $taskId, job name: $createdJobName")
+
+            return savedTask
+        } catch (e: Exception) {
+            logger.error("Failed to create Kubernetes job for task with id: $taskId", e)
+
+            val failedTask = task.copy(
+                status = TaskStatus.FAILED,
+                updatedAt = LocalDateTime.now(),
+                logs = "Failed to create Kubernetes job: ${e.message}"
+            )
+
+            return taskRepository.save(failedTask)
+        }
+    }
+
     override fun createPod(
         taskId: String,
         image: String,
@@ -84,45 +134,15 @@ class TaskServiceImpl(
         resources: Resources?,
         additionalEnv: Map<String, String>
     ): Task {
-        logger.info("Creating Kubernetes pod for task with id: $taskId")
-
-        val task = getTaskById(taskId)
-        val actualPodName = podName ?: "keruta-task-${task.id}"
-
-        try {
-            val createdPodName = kubernetesService.createPod(
-                task = task,
-                image = image,
-                namespace = namespace,
-                podName = actualPodName,
-                resources = resources,
-                additionalEnv = additionalEnv
-            )
-
-            val updatedTask = task.copy(
-                image = image,
-                namespace = namespace,
-                podName = createdPodName,
-                additionalEnv = additionalEnv,
-                status = TaskStatus.IN_PROGRESS,
-                updatedAt = LocalDateTime.now()
-            )
-
-            val savedTask = taskRepository.save(updatedTask)
-            logger.info("Kubernetes pod created for task with id: $taskId, pod name: $createdPodName")
-
-            return savedTask
-        } catch (e: Exception) {
-            logger.error("Failed to create Kubernetes pod for task with id: $taskId", e)
-
-            val failedTask = task.copy(
-                status = TaskStatus.FAILED,
-                updatedAt = LocalDateTime.now(),
-                logs = "Failed to create Kubernetes pod: ${e.message}"
-            )
-
-            return taskRepository.save(failedTask)
-        }
+        logger.warn("createPod is deprecated, using createJob instead")
+        return createJob(
+            taskId = taskId,
+            image = image,
+            namespace = namespace,
+            jobName = podName,
+            resources = resources,
+            additionalEnv = additionalEnv
+        )
     }
 
     override fun appendTaskLogs(id: String, logs: String): Task {
@@ -143,6 +163,27 @@ class TaskServiceImpl(
         return taskRepository.save(updatedTask)
     }
 
+    override fun createJobForNextTask(
+        image: String,
+        namespace: String,
+        jobName: String?,
+        resources: Resources?,
+        additionalEnv: Map<String, String>
+    ): Task? {
+        logger.info("Creating job for next task in queue")
+
+        val nextTask = getNextTaskFromQueue() ?: return null
+
+        return createJob(
+            taskId = nextTask.id ?: throw IllegalArgumentException("Task ID cannot be null"),
+            image = image,
+            namespace = namespace,
+            jobName = jobName,
+            resources = resources,
+            additionalEnv = additionalEnv
+        )
+    }
+
     override fun createPodForNextTask(
         image: String,
         namespace: String,
@@ -150,15 +191,11 @@ class TaskServiceImpl(
         resources: Resources?,
         additionalEnv: Map<String, String>
     ): Task? {
-        logger.info("Creating pod for next task in queue")
-
-        val nextTask = getNextTaskFromQueue() ?: return null
-
-        return createPod(
-            taskId = nextTask.id ?: throw IllegalArgumentException("Task ID cannot be null"),
+        logger.warn("createPodForNextTask is deprecated, using createJobForNextTask instead")
+        return createJobForNextTask(
             image = image,
             namespace = namespace,
-            podName = podName,
+            jobName = podName,
             resources = resources,
             additionalEnv = additionalEnv
         )

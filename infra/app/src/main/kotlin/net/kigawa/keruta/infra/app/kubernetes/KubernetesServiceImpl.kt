@@ -7,6 +7,8 @@ import io.fabric8.kubernetes.client.KubernetesClient
 import io.fabric8.kubernetes.client.KubernetesClientBuilder
 import io.fabric8.kubernetes.api.model.Pod
 import io.fabric8.kubernetes.api.model.PodBuilder
+import io.fabric8.kubernetes.api.model.batch.v1.Job
+import io.fabric8.kubernetes.api.model.batch.v1.JobBuilder
 import net.kigawa.keruta.core.domain.model.KubernetesConfig
 import net.kigawa.keruta.core.domain.model.Resources
 import net.kigawa.keruta.core.domain.model.Task
@@ -50,11 +52,11 @@ class KubernetesServiceImpl(
         }
     }
 
-    override fun createPod(
+    override fun createJob(
         task: Task,
         image: String,
         namespace: String,
-        podName: String?,
+        jobName: String?,
         resources: Resources?,
         additionalEnv: Map<String, String>
     ): String {
@@ -64,43 +66,53 @@ class KubernetesServiceImpl(
             return "kubernetes-disabled"
         }
 
-        logger.info("Creating Kubernetes pod for task: ${task.id}")
+        logger.info("Creating Kubernetes job for task: ${task.id}")
 
         val actualNamespace = namespace.ifEmpty { config.defaultNamespace }
-        val actualPodName = podName ?: "keruta-task-${task.id ?: UUID.randomUUID()}"
+        val actualJobName = jobName ?: "keruta-job-${task.id ?: UUID.randomUUID()}"
 
         try {
-            // Create a simple pod definition
-            val pod = PodBuilder()
+            // Create a job definition
+            val job = JobBuilder()
                 .withNewMetadata()
-                    .withName(actualPodName)
+                    .withName(actualJobName)
                     .withNamespace(actualNamespace)
                     .addToLabels("app", "keruta")
                     .addToLabels("task-id", task.id ?: "")
                 .endMetadata()
                 .withNewSpec()
-                    .addNewContainer()
-                        .withName("task-container")
-                        .withImage(image)
-                        .addNewEnv().withName("KERUTA_TASK_ID").withValue(task.id ?: "").endEnv()
-                        .addNewEnv().withName("KERUTA_TASK_TITLE").withValue(task.title).endEnv()
-                        .addNewEnv().withName("KERUTA_TASK_DESCRIPTION").withValue(task.description ?: "").endEnv()
-                        .addNewEnv().withName("KERUTA_TASK_PRIORITY").withValue(task.priority.toString()).endEnv()
-                        .addNewEnv().withName("KERUTA_TASK_STATUS").withValue(task.status.name).endEnv()
-                        .addNewEnv().withName("KERUTA_TASK_CREATED_AT").withValue(task.createdAt.format(DateTimeFormatter.ISO_DATE_TIME)).endEnv()
-                        .addNewEnv().withName("KERUTA_TASK_UPDATED_AT").withValue(task.updatedAt.format(DateTimeFormatter.ISO_DATE_TIME)).endEnv()
-                    .endContainer()
+                    .withBackoffLimit(4) // Number of retries before considering the job failed
+                    .withNewTemplate()
+                        .withNewMetadata()
+                            .addToLabels("app", "keruta")
+                            .addToLabels("task-id", task.id ?: "")
+                        .endMetadata()
+                        .withNewSpec()
+                            .withRestartPolicy("Never") // Do not restart containers on failure
+                            .addNewContainer()
+                                .withName("task-container")
+                                .withImage(image)
+                                .addNewEnv().withName("KERUTA_TASK_ID").withValue(task.id ?: "").endEnv()
+                                .addNewEnv().withName("KERUTA_TASK_TITLE").withValue(task.title).endEnv()
+                                .addNewEnv().withName("KERUTA_TASK_DESCRIPTION").withValue(task.description ?: "").endEnv()
+                                .addNewEnv().withName("KERUTA_TASK_PRIORITY").withValue(task.priority.toString()).endEnv()
+                                .addNewEnv().withName("KERUTA_TASK_STATUS").withValue(task.status.name).endEnv()
+                                .addNewEnv().withName("KERUTA_TASK_CREATED_AT").withValue(task.createdAt.format(DateTimeFormatter.ISO_DATE_TIME)).endEnv()
+                                .addNewEnv().withName("KERUTA_TASK_UPDATED_AT").withValue(task.updatedAt.format(DateTimeFormatter.ISO_DATE_TIME)).endEnv()
+                            .endContainer()
+                        .endSpec()
+                    .endTemplate()
                 .endSpec()
                 .build()
 
             // Add additional environment variables
             additionalEnv.forEach { (key, value) ->
-                pod.spec.containers[0].env.add(io.fabric8.kubernetes.api.model.EnvVar(key, value, null))
+                job.spec.template.spec.containers[0].env.add(io.fabric8.kubernetes.api.model.EnvVar(key, value, null))
             }
 
             // Add resource requirements if specified
             if (resources != null) {
-                val container = pod.spec.containers[0]
+                val container = job.spec.template.spec.containers[0]
                 container.resources = io.fabric8.kubernetes.api.model.ResourceRequirements()
                 container.resources.requests = mapOf(
                     "cpu" to io.fabric8.kubernetes.api.model.Quantity(resources.cpu),
@@ -112,92 +124,167 @@ class KubernetesServiceImpl(
                 )
             }
 
-            // Create the pod
-            val createdPod = client!!.pods().inNamespace(actualNamespace).create(pod)
-            logger.info("Created Kubernetes pod: ${createdPod.metadata.name} in namespace: ${createdPod.metadata.namespace}")
+            // Create the job
+            val createdJob = client!!.batch().v1().jobs().inNamespace(actualNamespace).create(job)
+            logger.info("Created Kubernetes job: ${createdJob.metadata.name} in namespace: ${createdJob.metadata.namespace}")
 
-            return createdPod.metadata.name
+            return createdJob.metadata.name
         } catch (e: Exception) {
-            logger.error("Failed to create Kubernetes pod", e)
+            logger.error("Failed to create Kubernetes job", e)
             return "error-${UUID.randomUUID()}"
         }
     }
 
-    override fun getPodLogs(namespace: String, podName: String): String {
+    override fun createPod(
+        task: Task,
+        image: String,
+        namespace: String,
+        podName: String?,
+        resources: Resources?,
+        additionalEnv: Map<String, String>
+    ): String {
+        logger.warn("createPod is deprecated, using createJob instead")
+        return createJob(task, image, namespace, podName, resources, additionalEnv)
+    }
+
+    override fun getJobLogs(namespace: String, jobName: String): String {
         val config = kubernetesConfigRepository.getConfig()
         if (!config.enabled || client == null) {
             logger.warn("Kubernetes integration is disabled or client is not available")
             return "Kubernetes integration is disabled"
         }
 
-        logger.info("Getting logs for pod: $podName in namespace: $namespace")
+        logger.info("Getting logs for job: $jobName in namespace: $namespace")
 
         try {
-            val pod = client!!.pods().inNamespace(namespace).withName(podName).get()
-            if (pod == null) {
-                logger.warn("Pod not found: $podName in namespace: $namespace")
-                return "Pod not found"
+            // Get the job
+            val job = client!!.batch().v1().jobs().inNamespace(namespace).withName(jobName).get()
+            if (job == null) {
+                logger.warn("Job not found: $jobName in namespace: $namespace")
+                return "Job not found"
             }
 
-            val logs = client!!.pods().inNamespace(namespace).withName(podName).getLog()
+            // Find pods created by this job using label selector
+            val labelSelector = "job-name=$jobName"
+            val pods = client!!.pods().inNamespace(namespace).withLabelSelector(labelSelector).list().items
+
+            if (pods.isEmpty()) {
+                logger.warn("No pods found for job: $jobName in namespace: $namespace")
+                return "No pods found for job"
+            }
+
+            // Get logs from the first pod (usually there's only one for a job)
+            val pod = pods[0]
+            val logs = client!!.pods().inNamespace(namespace).withName(pod.metadata.name).getLog()
             return logs
         } catch (e: Exception) {
-            logger.error("Failed to get pod logs", e)
+            logger.error("Failed to get job logs", e)
             return "Error getting logs: ${e.message}"
         }
     }
 
-    override fun deletePod(namespace: String, podName: String): Boolean {
+    override fun getPodLogs(namespace: String, podName: String): String {
+        logger.warn("getPodLogs is deprecated, using getJobLogs instead")
+        return getJobLogs(namespace, podName)
+    }
+
+    override fun deleteJob(namespace: String, jobName: String): Boolean {
         val config = kubernetesConfigRepository.getConfig()
         if (!config.enabled || client == null) {
             logger.warn("Kubernetes integration is disabled or client is not available")
             return false
         }
 
-        logger.info("Deleting pod: $podName in namespace: $namespace")
+        logger.info("Deleting job: $jobName in namespace: $namespace")
 
         try {
-            // The delete() method returns a boolean indicating whether the pod was deleted
-            val result = client!!.pods().inNamespace(namespace).withName(podName).delete()
-            // If the result is not null and not empty, the pod was deleted
+            // The delete() method returns a boolean indicating whether the job was deleted
+            val result = client!!.batch().v1().jobs().inNamespace(namespace).withName(jobName).delete()
+            // If the result is not null and not empty, the job was deleted
             return result != null && result.isNotEmpty()
         } catch (e: Exception) {
-            logger.error("Failed to delete pod", e)
+            logger.error("Failed to delete job", e)
             return false
         }
     }
 
-    override fun getPodStatus(namespace: String, podName: String): String {
+    override fun deletePod(namespace: String, podName: String): Boolean {
+        logger.warn("deletePod is deprecated, using deleteJob instead")
+        return deleteJob(namespace, podName)
+    }
+
+    override fun getJobStatus(namespace: String, jobName: String): String {
         val config = kubernetesConfigRepository.getConfig()
         if (!config.enabled || client == null) {
             logger.warn("Kubernetes integration is disabled or client is not available")
             return "UNKNOWN"
         }
 
-        logger.info("Getting status for pod: $podName in namespace: $namespace")
+        logger.info("Getting status for job: $jobName in namespace: $namespace")
 
         try {
-            val pod = client!!.pods().inNamespace(namespace).withName(podName).get()
-            if (pod == null) {
-                logger.warn("Pod not found: $podName in namespace: $namespace")
+            val job = client!!.batch().v1().jobs().inNamespace(namespace).withName(jobName).get()
+            if (job == null) {
+                logger.warn("Job not found: $jobName in namespace: $namespace")
                 return "NOT_FOUND"
             }
 
-            // Check for CrashLoopBackOff condition in container statuses
-            pod.status.containerStatuses?.forEach { containerStatus ->
-                val waitingState = containerStatus.state?.waiting
-                if (waitingState != null && waitingState.reason == "CrashLoopBackOff") {
-                    logger.warn("Pod $podName in namespace $namespace is in CrashLoopBackOff state")
-                    return "CRASH_LOOP_BACKOFF"
+            // Check job status conditions
+            val conditions = job.status?.conditions
+            if (conditions != null && conditions.isNotEmpty()) {
+                for (condition in conditions) {
+                    if (condition.type == "Failed" && condition.status == "True") {
+                        logger.warn("Job $jobName in namespace $namespace has failed")
+                        return "FAILED"
+                    }
+                    if (condition.type == "Complete" && condition.status == "True") {
+                        logger.info("Job $jobName in namespace $namespace is complete")
+                        return "COMPLETED"
+                    }
                 }
             }
 
-            val phase = pod.status.phase
-            return phase ?: "UNKNOWN"
+            // Check if job is active
+            val active = job.status?.active
+            if (active != null && active > 0) {
+                return "ACTIVE"
+            }
+
+            // Check if job has succeeded
+            val succeeded = job.status?.succeeded
+            if (succeeded != null && succeeded > 0) {
+                return "SUCCEEDED"
+            }
+
+            // Check if job has failed
+            val failed = job.status?.failed
+            if (failed != null && failed > 0) {
+                return "FAILED"
+            }
+
+            // Check for CrashLoopBackOff in pods created by this job
+            val labelSelector = "job-name=$jobName"
+            val pods = client!!.pods().inNamespace(namespace).withLabelSelector(labelSelector).list().items
+            for (pod in pods) {
+                pod.status.containerStatuses?.forEach { containerStatus ->
+                    val waitingState = containerStatus.state?.waiting
+                    if (waitingState != null && waitingState.reason == "CrashLoopBackOff") {
+                        logger.warn("Pod ${pod.metadata.name} for job $jobName in namespace $namespace is in CrashLoopBackOff state")
+                        return "CRASH_LOOP_BACKOFF"
+                    }
+                }
+            }
+
+            return "PENDING"
         } catch (e: Exception) {
-            logger.error("Failed to get pod status", e)
+            logger.error("Failed to get job status", e)
             return "ERROR"
         }
+    }
+
+    override fun getPodStatus(namespace: String, podName: String): String {
+        logger.warn("getPodStatus is deprecated, using getJobStatus instead")
+        return getJobStatus(namespace, podName)
     }
 
     override fun getConfig(): KubernetesConfig {
