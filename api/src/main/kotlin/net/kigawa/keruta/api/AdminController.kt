@@ -52,6 +52,7 @@ class AdminController(
         model.addAttribute("statuses", TaskStatus.entries.toTypedArray())
         model.addAttribute("documents", documentService.getAllDocuments())
         model.addAttribute("repositories", gitRepositoryService.getAllRepositories())
+        model.addAttribute("agents", agentService.getAllAgents())
         return "admin/task-form"
     }
 
@@ -59,7 +60,8 @@ class AdminController(
     fun createTask(
         @ModelAttribute task: Task,
         @RequestParam(required = false) repositoryId: String? = null,
-        @RequestParam(required = false) documentIds: List<String>? = null
+        @RequestParam(required = false) documentIds: List<String>? = null,
+        @RequestParam(required = false) agentId: String? = null
     ): String {
         println("Create task with id: ${task.id}")
         val repository = if (repositoryId != null) {
@@ -97,6 +99,7 @@ class AdminController(
             status = status,
             // repository property removed from Task model
             documents = documents,
+            agentId = agentId,
             createdAt = LocalDateTime.now(),
             updatedAt = LocalDateTime.now()
         )
@@ -120,6 +123,7 @@ class AdminController(
             model.addAttribute("statuses", TaskStatus.entries.toTypedArray())
             model.addAttribute("documents", documentService.getAllDocuments())
             model.addAttribute("repositories", gitRepositoryService.getAllRepositories())
+            model.addAttribute("agents", agentService.getAllAgents())
             return "admin/task-form"
         }
         return "redirect:/admin/tasks"
@@ -130,7 +134,8 @@ class AdminController(
         @PathVariable id: String,
         @ModelAttribute task: Task,
         @RequestParam(required = false) repositoryId: String?,
-        @RequestParam(required = false) documentIds: List<String>?
+        @RequestParam(required = false) documentIds: List<String>?,
+        @RequestParam(required = false) agentId: String?
     ): String {
         if (taskRepository.findById(id) != null) {
             val repository = if (repositoryId != null) {
@@ -168,6 +173,7 @@ class AdminController(
                 status = status,
                 // repository property removed from Task model
                 documents = documents,
+                agentId = agentId,
                 updatedAt = LocalDateTime.now()
             )
             try {

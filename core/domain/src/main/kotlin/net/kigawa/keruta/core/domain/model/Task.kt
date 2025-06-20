@@ -20,6 +20,7 @@ data class Task(
     val additionalEnv: Map<String, String> = emptyMap(),
     val kubernetesManifest: String? = null,
     val logs: String? = null,
+    val agentId: String? = null,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now()
 )

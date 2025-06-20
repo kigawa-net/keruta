@@ -26,6 +26,7 @@ data class TaskEntity(
     val memoryResource: String? = null,
     val additionalEnv: Map<String, String> = emptyMap(),
     val logs: String? = null,
+    val agentId: String? = null,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now()
 ) {
@@ -46,6 +47,7 @@ data class TaskEntity(
                 memoryResource = null, // Resources property removed from Task model
                 additionalEnv = task.additionalEnv,
                 logs = task.logs,
+                agentId = task.agentId,
                 createdAt = task.createdAt,
                 updatedAt = task.updatedAt
             )
@@ -67,6 +69,7 @@ data class TaskEntity(
             // resources parameter removed from Task model
             additionalEnv = additionalEnv,
             logs = logs,
+            agentId = agentId,
             createdAt = createdAt,
             updatedAt = updatedAt
         )
