@@ -115,13 +115,12 @@ class KubernetesRepositoryHandler(
         gitCloneContainer.name = "git-clone"
         gitCloneContainer.image = "alpine/git"
 
-        // Add timeout and depth options to git clone for better performance and reliability
+        // Add depth options to git clone for better performance
         val gitCloneCommand = mutableListOf(
             "git", 
             "clone", 
             "--depth", "1",  // Shallow clone for faster operation
             "--single-branch",  // Clone only the default branch
-            "--timeout", "30",  // Set timeout to 30 seconds
             repository.url, 
             repoMountPath
         )
