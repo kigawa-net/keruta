@@ -6,6 +6,9 @@
  * @property url The URL of the Git repository
  * @property description A description of the repository
  * @property isValid Whether the repository URL is valid and accessible
+ * @property usePvc Whether to use PersistentVolumeClaim for this repository
+ * @property pvcStorageSize The storage size for the PVC (e.g., "1Gi")
+ * @property pvcAccessMode The access mode for the PVC (e.g., "ReadWriteOnce")
  * @property createdAt The timestamp when the repository was added to the system
  * @property updatedAt The timestamp when the repository was last updated
  */
@@ -19,6 +22,9 @@ data class Repository(
     val url: String,
     val description: String = "",
     val isValid: Boolean = false,
+    val usePvc: Boolean = false,
+    val pvcStorageSize: String = "1Gi",
+    val pvcAccessMode: String = "ReadWriteOnce",
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now()
 )

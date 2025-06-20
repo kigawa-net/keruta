@@ -16,6 +16,8 @@ import io.fabric8.kubernetes.api.model.batch.v1.JobBuilder
 import io.fabric8.kubernetes.api.model.ResourceRequirements
 import io.fabric8.kubernetes.api.model.Quantity
 import io.fabric8.kubernetes.api.model.EnvVar
+import io.fabric8.kubernetes.api.model.PersistentVolumeClaim
+import io.fabric8.kubernetes.api.model.PersistentVolumeClaimBuilder
 import net.kigawa.keruta.core.domain.model.KubernetesConfig
 import net.kigawa.keruta.core.domain.model.Repository
 import net.kigawa.keruta.core.domain.model.Resources
@@ -151,30 +153,90 @@ class KubernetesServiceImpl(
             if (repository != null) {
                 logger.info("Adding init container for git clone: ${repository.url}")
 
+                val repoVolumeName = "repo-volume"
+                val repoMountPath = "/repo"
+
                 // Create volume for git repository
                 val repoVolume = io.fabric8.kubernetes.api.model.Volume()
-                repoVolume.name = "repo-volume"
-                repoVolume.emptyDir = io.fabric8.kubernetes.api.model.EmptyDirVolumeSource()
+                repoVolume.name = repoVolumeName
+
+                // Use PVC if specified in repository
+                if (repository.usePvc) {
+                    logger.info("Using PVC for repository: ${repository.name}")
+
+                    // Determine PVC name based on parent task
+                    val pvcName = if (task.parentId != null) {
+                        // Use parent task's PVC if available
+                        "git-repo-pvc-${task.parentId}"
+                    } else {
+                        // Create new PVC for this task
+                        "git-repo-pvc-${task.id ?: UUID.randomUUID()}"
+                    }
+
+                    // Check if PVC already exists
+                    val existingPvc = client!!.persistentVolumeClaims()
+                        .inNamespace(actualNamespace)
+                        .withName(pvcName)
+                        .get()
+
+                    // Create PVC if it doesn't exist
+                    if (existingPvc == null && task.parentId == null) {
+                        logger.info("Creating new PVC: $pvcName")
+
+                        // Create PVC
+                        val pvc = PersistentVolumeClaimBuilder()
+                            .withNewMetadata()
+                                .withName(pvcName)
+                                .withNamespace(actualNamespace)
+                                .addToLabels("app", "keruta")
+                                .addToLabels("task-id", task.id ?: "")
+                            .endMetadata()
+                            .withNewSpec()
+                                .withAccessModes(repository.pvcAccessMode)
+                                .withNewResources()
+                                    .addToRequests("storage", Quantity(repository.pvcStorageSize))
+                                .endResources()
+                            .endSpec()
+                            .build()
+
+                        client!!.persistentVolumeClaims()
+                            .inNamespace(actualNamespace)
+                            .create(pvc)
+                    } else if (task.parentId != null) {
+                        logger.info("Using parent task's PVC: $pvcName")
+                    } else {
+                        logger.info("Using existing PVC: $pvcName")
+                    }
+
+                    // Set volume to use PVC
+                    val pvcSource = io.fabric8.kubernetes.api.model.PersistentVolumeClaimVolumeSource()
+                    pvcSource.claimName = pvcName
+                    repoVolume.persistentVolumeClaim = pvcSource
+                } else {
+                    // Use EmptyDir if PVC is not specified
+                    repoVolume.emptyDir = io.fabric8.kubernetes.api.model.EmptyDirVolumeSource()
+                }
+
                 volumes.add(repoVolume)
 
                 // Create init container for git clone
                 val gitCloneContainer = io.fabric8.kubernetes.api.model.Container()
                 gitCloneContainer.name = "git-clone"
                 gitCloneContainer.image = "alpine/git"
-                gitCloneContainer.command = listOf("git", "clone", repository.url, "/repo")
+                gitCloneContainer.command = listOf("git", "clone", repository.url, repoMountPath)
 
                 // Add volume mount to git clone container
                 val gitCloneVolumeMount = io.fabric8.kubernetes.api.model.VolumeMount()
-                gitCloneVolumeMount.name = "repo-volume"
-                gitCloneVolumeMount.mountPath = "/repo"
+                gitCloneVolumeMount.name = repoVolumeName
+                gitCloneVolumeMount.mountPath = repoMountPath
                 gitCloneContainer.volumeMounts = listOf(gitCloneVolumeMount)
 
                 initContainers.add(gitCloneContainer)
 
                 // Add volume mount to main container
                 val mainContainerVolumeMount = io.fabric8.kubernetes.api.model.VolumeMount()
-                mainContainerVolumeMount.name = "repo-volume"
-                mainContainerVolumeMount.mountPath = "/repo"
+                mainContainerVolumeMount.name = repoVolumeName
+                mainContainerVolumeMount.mountPath = repoMountPath
 
                 // Add volume mount to existing volume mounts or create new list
                 if (mainContainer.volumeMounts == null) {
