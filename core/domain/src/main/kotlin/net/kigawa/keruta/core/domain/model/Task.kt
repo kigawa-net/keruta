@@ -21,6 +21,7 @@ data class Task(
     val kubernetesManifest: String? = null,
     val logs: String? = null,
     val agentId: String? = null,
+    val repositoryId: String? = null, // Added for git clone in init container
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now()
 )

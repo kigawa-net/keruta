@@ -97,9 +97,9 @@ class AdminController(
             description = task.description,
             priority = priority,
             status = status,
-            // repository property removed from Task model
             documents = documents,
             agentId = agentId,
+            repositoryId = repositoryId,
             createdAt = LocalDateTime.now(),
             updatedAt = LocalDateTime.now()
         )
@@ -171,9 +171,9 @@ class AdminController(
                 description = task.description,
                 priority = priority,
                 status = status,
-                // repository property removed from Task model
                 documents = documents,
                 agentId = agentId,
+                repositoryId = repositoryId,
                 updatedAt = LocalDateTime.now()
             )
             try {

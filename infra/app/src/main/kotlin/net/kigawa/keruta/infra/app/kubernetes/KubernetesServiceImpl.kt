@@ -7,9 +7,14 @@ import io.fabric8.kubernetes.client.KubernetesClient
 import io.fabric8.kubernetes.client.KubernetesClientBuilder
 import io.fabric8.kubernetes.api.model.Pod
 import io.fabric8.kubernetes.api.model.PodBuilder
+import io.fabric8.kubernetes.api.model.Volume
+import io.fabric8.kubernetes.api.model.VolumeBuilder
+import io.fabric8.kubernetes.api.model.VolumeMount
+import io.fabric8.kubernetes.api.model.VolumeMountBuilder
 import io.fabric8.kubernetes.api.model.batch.v1.Job
 import io.fabric8.kubernetes.api.model.batch.v1.JobBuilder
 import net.kigawa.keruta.core.domain.model.KubernetesConfig
+import net.kigawa.keruta.core.domain.model.Repository
 import net.kigawa.keruta.core.domain.model.Resources
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.usecase.kubernetes.KubernetesService
@@ -58,7 +63,8 @@ class KubernetesServiceImpl(
         namespace: String,
         jobName: String?,
         resources: Resources?,
-        additionalEnv: Map<String, String>
+        additionalEnv: Map<String, String>,
+        repository: Repository?
     ): String {
         val config = kubernetesConfigRepository.getConfig()
         if (!config.enabled || client == null) {
@@ -73,7 +79,7 @@ class KubernetesServiceImpl(
 
         try {
             // Create a job definition
-            val job = JobBuilder()
+            val jobBuilder = JobBuilder()
                 .withNewMetadata()
                     .withName(actualJobName)
                     .withNamespace(actualNamespace)
@@ -89,21 +95,78 @@ class KubernetesServiceImpl(
                         .endMetadata()
                         .withNewSpec()
                             .withRestartPolicy("Never") // Do not restart containers on failure
-                            .addNewContainer()
-                                .withName("task-container")
-                                .withImage(image)
-                                .addNewEnv().withName("KERUTA_TASK_ID").withValue(task.id ?: "").endEnv()
-                                .addNewEnv().withName("KERUTA_TASK_TITLE").withValue(task.title).endEnv()
-                                .addNewEnv().withName("KERUTA_TASK_DESCRIPTION").withValue(task.description ?: "").endEnv()
-                                .addNewEnv().withName("KERUTA_TASK_PRIORITY").withValue(task.priority.toString()).endEnv()
-                                .addNewEnv().withName("KERUTA_TASK_STATUS").withValue(task.status.name).endEnv()
-                                .addNewEnv().withName("KERUTA_TASK_CREATED_AT").withValue(task.createdAt.format(DateTimeFormatter.ISO_DATE_TIME)).endEnv()
-                                .addNewEnv().withName("KERUTA_TASK_UPDATED_AT").withValue(task.updatedAt.format(DateTimeFormatter.ISO_DATE_TIME)).endEnv()
+
+            // Add volume for git repository if repository is provided
+            if (repository != null) {
+                logger.info("Adding init container for git clone: ${repository.url}")
+
+                // Add volume for git repository
+                jobBuilder.editSpec()
+                    .editTemplate()
+                        .editSpec()
+                            .addNewVolume()
+                                .withName("repo-volume")
+                                .withNewEmptyDir()
+                                .endEmptyDir()
+                            .endVolume()
+                        .endSpec()
+                    .endTemplate()
+                .endSpec()
+
+                // Add init container for git clone
+                jobBuilder.editSpec()
+                    .editTemplate()
+                        .editSpec()
+                            .addNewInitContainer()
+                                .withName("git-clone")
+                                .withImage("alpine/git")
+                                .withCommand("git", "clone", repository.url, "/repo")
+                                .addNewVolumeMount()
+                                    .withName("repo-volume")
+                                    .withMountPath("/repo")
+                                .endVolumeMount()
+                            .endInitContainer()
+                        .endSpec()
+                    .endTemplate()
+                .endSpec()
+            }
+
+            // Add main container
+            jobBuilder.editSpec()
+                .editTemplate()
+                    .editSpec()
+                        .addNewContainer()
+                            .withName("task-container")
+                            .withImage(image)
+                            .addNewEnv().withName("KERUTA_TASK_ID").withValue(task.id ?: "").endEnv()
+                            .addNewEnv().withName("KERUTA_TASK_TITLE").withValue(task.title).endEnv()
+                            .addNewEnv().withName("KERUTA_TASK_DESCRIPTION").withValue(task.description ?: "").endEnv()
+                            .addNewEnv().withName("KERUTA_TASK_PRIORITY").withValue(task.priority.toString()).endEnv()
+                            .addNewEnv().withName("KERUTA_TASK_STATUS").withValue(task.status.name).endEnv()
+                            .addNewEnv().withName("KERUTA_TASK_CREATED_AT").withValue(task.createdAt.format(DateTimeFormatter.ISO_DATE_TIME)).endEnv()
+                            .addNewEnv().withName("KERUTA_TASK_UPDATED_AT").withValue(task.updatedAt.format(DateTimeFormatter.ISO_DATE_TIME)).endEnv()
+                        .endContainer()
+                    .endSpec()
+                .endTemplate()
+            .endSpec()
+
+            // Add volume mount to main container if repository is provided
+            if (repository != null) {
+                jobBuilder.editSpec()
+                    .editTemplate()
+                        .editSpec()
+                            .editContainer(0)
+                                .addNewVolumeMount()
+                                    .withName("repo-volume")
+                                    .withMountPath("/repo")
+                                .endVolumeMount()
                             .endContainer()
                         .endSpec()
                     .endTemplate()
                 .endSpec()
-                .build()
+            }
+
+            val job = jobBuilder.build()
 
             // Add additional environment variables
             additionalEnv.forEach { (key, value) ->

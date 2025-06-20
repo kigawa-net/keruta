@@ -4,6 +4,7 @@
 package net.kigawa.keruta.core.usecase.kubernetes
 
 import net.kigawa.keruta.core.domain.model.KubernetesConfig
+import net.kigawa.keruta.core.domain.model.Repository
 import net.kigawa.keruta.core.domain.model.Resources
 import net.kigawa.keruta.core.domain.model.Task
 
@@ -26,7 +27,8 @@ interface KubernetesService {
         namespace: String,
         jobName: String?,
         resources: Resources?,
-        additionalEnv: Map<String, String>
+        additionalEnv: Map<String, String>,
+        repository: Repository? = null
     ): String
 
     /**
