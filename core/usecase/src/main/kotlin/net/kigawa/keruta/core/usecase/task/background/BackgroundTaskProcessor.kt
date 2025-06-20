@@ -1,6 +1,7 @@
 package net.kigawa.keruta.core.usecase.task.background
 
 import net.kigawa.keruta.core.domain.model.TaskStatus
+import net.kigawa.keruta.core.usecase.kubernetes.KubernetesService
 import net.kigawa.keruta.core.usecase.task.TaskService
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Scheduled
@@ -14,7 +15,8 @@ import java.util.concurrent.atomic.AtomicBoolean
 @Component
 class BackgroundTaskProcessor(
     private val taskService: TaskService,
-    private val config: BackgroundTaskProcessorConfig
+    private val config: BackgroundTaskProcessorConfig,
+    private val kubernetesService: KubernetesService
 ) {
     private val logger = LoggerFactory.getLogger(BackgroundTaskProcessor::class.java)
     private val isProcessing = AtomicBoolean(false)
@@ -43,10 +45,13 @@ class BackgroundTaskProcessor(
                 return
             }
 
+            // Get Kubernetes config from the database
+            val kubernetesConfig = kubernetesService.getConfig()
+
             // Create a pod for the next task in the queue
             val task = taskService.createPodForNextTask(
-                image = config.defaultImage,
-                namespace = config.defaultNamespace,
+                image = kubernetesConfig.defaultImage,
+                namespace = kubernetesConfig.processorNamespace,
                 resources = null,
                 additionalEnv = emptyMap()
             )
