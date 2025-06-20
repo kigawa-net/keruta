@@ -22,6 +22,7 @@ data class TaskResponse(
     val additionalEnv: Map<String, String>,
     val kubernetesManifest: String?,
     val logs: String?,
+    val parentId: String?,
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime
 ) {
@@ -45,6 +46,7 @@ data class TaskResponse(
                 additionalEnv = task.additionalEnv,
                 kubernetesManifest = task.kubernetesManifest,
                 logs = task.logs,
+                parentId = task.parentId,
                 createdAt = task.createdAt,
                 updatedAt = task.updatedAt
             )

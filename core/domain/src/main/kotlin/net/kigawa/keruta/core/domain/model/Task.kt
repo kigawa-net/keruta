@@ -22,6 +22,7 @@ data class Task(
     val logs: String? = null,
     val agentId: String? = null,
     val repositoryId: String? = null, // Added for git clone in init container
+    val parentId: String? = null, // Added for parent-child task relationship
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now()
 )

@@ -53,6 +53,7 @@ class AdminController(
         model.addAttribute("documents", documentService.getAllDocuments())
         model.addAttribute("repositories", gitRepositoryService.getAllRepositories())
         model.addAttribute("agents", agentService.getAllAgents())
+        model.addAttribute("tasks", taskRepository.findAll())
         return "admin/task-form"
     }
 
@@ -61,7 +62,8 @@ class AdminController(
         @ModelAttribute task: Task,
         @RequestParam(required = false) repositoryId: String? = null,
         @RequestParam(required = false) documentIds: List<String>? = null,
-        @RequestParam(required = false) agentId: String? = null
+        @RequestParam(required = false) agentId: String? = null,
+        @RequestParam(required = false) parentId: String? = null
     ): String {
         println("Create task with id: ${task.id}")
         val repository = if (repositoryId != null) {
@@ -100,6 +102,7 @@ class AdminController(
             documents = documents,
             agentId = agentId,
             repositoryId = repositoryId,
+            parentId = parentId,
             createdAt = LocalDateTime.now(),
             updatedAt = LocalDateTime.now()
         )
@@ -124,6 +127,7 @@ class AdminController(
             model.addAttribute("documents", documentService.getAllDocuments())
             model.addAttribute("repositories", gitRepositoryService.getAllRepositories())
             model.addAttribute("agents", agentService.getAllAgents())
+            model.addAttribute("tasks", taskRepository.findAll())
             return "admin/task-form"
         }
         return "redirect:/admin/tasks"
@@ -135,7 +139,8 @@ class AdminController(
         @ModelAttribute task: Task,
         @RequestParam(required = false) repositoryId: String?,
         @RequestParam(required = false) documentIds: List<String>?,
-        @RequestParam(required = false) agentId: String?
+        @RequestParam(required = false) agentId: String?,
+        @RequestParam(required = false) parentId: String?
     ): String {
         if (taskRepository.findById(id) != null) {
             val repository = if (repositoryId != null) {
@@ -165,6 +170,9 @@ class AdminController(
             // Ensure title is not empty or null
             val title = task.title.ifBlank { "Untitled Task" }
 
+            // Prevent a task from being its own parent
+            val validParentId = if (parentId == id) null else parentId
+
             val updatedTask = task.copy(
                 id = id,
                 title = title,
@@ -174,6 +182,7 @@ class AdminController(
                 documents = documents,
                 agentId = agentId,
                 repositoryId = repositoryId,
+                parentId = validParentId,
                 updatedAt = LocalDateTime.now()
             )
             try {

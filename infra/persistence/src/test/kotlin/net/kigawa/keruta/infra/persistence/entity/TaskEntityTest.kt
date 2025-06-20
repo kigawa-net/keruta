@@ -33,6 +33,7 @@ class TaskEntityTest {
             // resources parameter removed from Task model
             additionalEnv = mapOf("KEY" to "VALUE"),
             logs = "Test logs",
+            parentId = "456",
             createdAt = now,
             updatedAt = now
         )
@@ -55,6 +56,7 @@ class TaskEntityTest {
         assertEquals(null, taskEntity.memoryResource) // Updated since resources property was removed
         assertEquals(mapOf("KEY" to "VALUE"), taskEntity.additionalEnv)
         assertEquals("Test logs", taskEntity.logs)
+        assertEquals("456", taskEntity.parentId)
         assertEquals(now, taskEntity.createdAt)
         assertEquals(now, taskEntity.updatedAt)
     }
@@ -78,6 +80,7 @@ class TaskEntityTest {
             memoryResource = "128Mi",
             additionalEnv = mapOf("KEY" to "VALUE"),
             logs = "Test logs",
+            parentId = "456",
             createdAt = now,
             updatedAt = now
         )
@@ -101,6 +104,7 @@ class TaskEntityTest {
         // resources property removed from Task model
         assertEquals(mapOf("KEY" to "VALUE"), task.additionalEnv)
         assertEquals("Test logs", task.logs)
+        assertEquals("456", task.parentId)
         assertEquals(now, task.createdAt)
         assertEquals(now, task.updatedAt)
     }
@@ -124,6 +128,7 @@ class TaskEntityTest {
             memoryResource = null,
             additionalEnv = emptyMap(),
             logs = null,
+            parentId = null,
             createdAt = now,
             updatedAt = now
         )
@@ -145,6 +150,7 @@ class TaskEntityTest {
         // resources property removed from Task model
         assertEquals(emptyMap<String, String>(), task.additionalEnv)
         assertEquals(null, task.logs)
+        assertEquals(null, task.parentId)
         assertEquals(now, task.createdAt)
         assertEquals(now, task.updatedAt)
     }
@@ -172,6 +178,7 @@ class TaskEntityTest {
             // resources parameter removed from Task model
             additionalEnv = mapOf("KEY" to "VALUE"),
             logs = "Test logs",
+            parentId = "456",
             createdAt = now,
             updatedAt = now
         )
