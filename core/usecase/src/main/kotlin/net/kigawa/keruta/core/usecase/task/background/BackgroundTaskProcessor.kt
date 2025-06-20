@@ -1,5 +1,6 @@
 package net.kigawa.keruta.core.usecase.task.background
 
+import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.domain.model.TaskStatus
 import net.kigawa.keruta.core.usecase.kubernetes.KubernetesService
 import net.kigawa.keruta.core.usecase.task.TaskService
@@ -33,6 +34,9 @@ class BackgroundTaskProcessor(
             return
         }
 
+        // Variable to hold the task being processed
+        var currentTask: Task? = null
+
         try {
             logger.info("Checking for tasks in the queue")
 
@@ -42,6 +46,13 @@ class BackgroundTaskProcessor(
             // If there are running tasks, wait for them to complete
             if (runningTasks.isNotEmpty()) {
                 logger.info("There are ${runningTasks.size} running tasks, waiting for them to complete")
+                return
+            }
+
+            // Get the next task from the queue before creating a pod
+            currentTask = taskService.getNextTaskFromQueue()
+            if (currentTask == null) {
+                logger.debug("No tasks in the queue")
                 return
             }
 
@@ -63,6 +74,20 @@ class BackgroundTaskProcessor(
             }
         } catch (e: Exception) {
             logger.error("Error processing next task", e)
+
+            // Update the status of the task that was being processed
+            if (currentTask != null && currentTask.id != null) {
+                try {
+                    // Update the task status to FAILED
+                    val updatedTask = taskService.updateTaskStatus(currentTask.id!!, TaskStatus.FAILED)
+                    logger.info("Updated task ${updatedTask.id} status to FAILED due to processing error")
+
+                    // Append error message to task logs
+                    taskService.appendTaskLogs(updatedTask.id!!, "Task processing failed: ${e.message}")
+                } catch (ex: Exception) {
+                    logger.error("Failed to update task status", ex)
+                }
+            }
         } finally {
             isProcessing.set(false)
         }
