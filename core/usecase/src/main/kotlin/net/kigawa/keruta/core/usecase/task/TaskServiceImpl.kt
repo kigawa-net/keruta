@@ -4,10 +4,12 @@
  */
 package net.kigawa.keruta.core.usecase.task
 
+import net.kigawa.keruta.core.domain.model.Repository
 import net.kigawa.keruta.core.domain.model.Resources
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.domain.model.TaskStatus
 import net.kigawa.keruta.core.usecase.kubernetes.KubernetesService
+import net.kigawa.keruta.core.usecase.repository.GitRepositoryService
 import net.kigawa.keruta.core.usecase.repository.TaskRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -17,7 +19,8 @@ import java.util.UUID
 @Service
 class TaskServiceImpl(
     private val taskRepository: TaskRepository,
-    private val kubernetesService: KubernetesService
+    private val kubernetesService: KubernetesService,
+    private val gitRepositoryService: GitRepositoryService
 ) : TaskService {
 
     private val logger = LoggerFactory.getLogger(TaskServiceImpl::class.java)
@@ -90,13 +93,28 @@ class TaskServiceImpl(
         val actualJobName = jobName ?: "keruta-job-${task.id}"
 
         try {
+            // Get repository if repositoryId is provided
+            var repository: Repository? = null
+            val repositoryId = task.repositoryId
+            if (repositoryId != null) {
+                try {
+                    repository = gitRepositoryService.getRepositoryById(repositoryId)
+                    logger.info("Found repository for task: ${repository.name} (${repository.url})")
+                } catch (e: NoSuchElementException) {
+                    logger.warn("Repository with ID $repositoryId not found", e)
+                } catch (e: Exception) {
+                    logger.error("Error retrieving repository with ID $repositoryId", e)
+                }
+            }
+
             val createdJobName = kubernetesService.createJob(
                 task = task,
                 image = image,
                 namespace = namespace,
                 jobName = actualJobName,
                 resources = resources,
-                additionalEnv = additionalEnv
+                additionalEnv = additionalEnv,
+                repository = repository
             )
 
             val updatedTask = task.copy(
