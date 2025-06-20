@@ -20,9 +20,6 @@
   <component name="ChangeListManager">
     <list default="true" id="adb03c12-d6fd-4600-a8bb-42d25607284f" name="変更" comment="&quot;リポジトリ対応をTaskに追加&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/AdminController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/AdminController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/repository/TaskRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/repository/TaskRepositoryImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-doc" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-doc" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +131,7 @@
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
     "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "Spring Boot.KerutaApplication.executor": "Run",
+    "Spring Boot.KerutaApplication.executor": "Debug",
     "cidr.known.project.marker": "true",
     "git-widget-placeholder": "main",
     "go.import.settings.migrated": "true",
@@ -386,7 +383,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750439542967</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="&quot;リポジトリ対応をTaskに追加&quot;">
+      <option name="closed" value="true" />
+      <created>1750440430728</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1750440430728</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -433,6 +438,11 @@
           <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/3.2.0/1c98c48b9fde0624337e19f3577fce20d19b78ea/spring-data-commons-3.2.0.jar!/org/springframework/data/repository/CrudRepository.class</url>
           <line>11</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/AdminController.kt</url>
+          <line>67</line>
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

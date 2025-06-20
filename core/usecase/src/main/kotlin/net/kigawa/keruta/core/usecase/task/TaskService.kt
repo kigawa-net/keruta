@@ -136,49 +136,6 @@ interface TaskService {
     fun appendTaskLogs(id: String, logs: String): Task
 
     /**
-     * Creates a Kubernetes pod for a task.
-     * @deprecated Use createJob instead to align with documentation
-     *
-     * @param taskId The ID of the task
-     * @param image The Docker image to use
-     * @param namespace The Kubernetes namespace (optional)
-     * @param podName The name of the pod (optional)
-     * @param resources The resource requirements (optional)
-     * @param additionalEnv Additional environment variables (optional)
-     * @return The updated task with pod information
-     * @throws NoSuchElementException if the task is not found
-     */
-    @Deprecated("Use createJob instead to align with documentation", ReplaceWith("createJob(taskId, image, namespace, podName, resources, additionalEnv)"))
-    fun createPod(
-        taskId: String,
-        image: String,
-        namespace: String = "default",
-        podName: String? = null,
-        resources: Resources? = null,
-        additionalEnv: Map<String, String> = emptyMap()
-    ): Task
-
-    /**
-     * Creates a pod automatically for the next task in the queue.
-     * @deprecated Use createJobForNextTask instead to align with documentation
-     *
-     * @param image The Docker image to use
-     * @param namespace The Kubernetes namespace (optional)
-     * @param podName The name of the pod (optional)
-     * @param resources The resource requirements (optional)
-     * @param additionalEnv Additional environment variables (optional)
-     * @return The updated task, or null if there are no tasks in the queue
-     */
-    @Deprecated("Use createJobForNextTask instead to align with documentation", ReplaceWith("createJobForNextTask(image, namespace, podName, resources, additionalEnv)"))
-    fun createPodForNextTask(
-        image: String,
-        namespace: String = "default",
-        podName: String? = null,
-        resources: Resources? = null,
-        additionalEnv: Map<String, String> = emptyMap()
-    ): Task?
-
-    /**
      * Sets the Kubernetes manifest for a task.
      *
      * @param id The ID of the task to update

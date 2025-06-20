@@ -74,7 +74,8 @@ data class TaskEntity(
             agentId = agentId,
             parentId = parentId,
             createdAt = createdAt,
-            updatedAt = updatedAt
+            updatedAt = updatedAt,
+            repositoryId = gitRepository,
         )
     }
 }

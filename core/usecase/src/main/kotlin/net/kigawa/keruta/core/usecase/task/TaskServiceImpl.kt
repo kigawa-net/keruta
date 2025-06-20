@@ -14,7 +14,6 @@ import net.kigawa.keruta.core.usecase.repository.TaskRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
-import java.util.UUID
 
 @Service
 class TaskServiceImpl(
@@ -144,29 +143,6 @@ class TaskServiceImpl(
         }
     }
 
-    @Deprecated(
-        "Use createJob instead to align with documentation",
-        replaceWith = ReplaceWith("createJob(taskId, image, namespace, podName, resources, additionalEnv)")
-    )
-    override fun createPod(
-        taskId: String,
-        image: String,
-        namespace: String,
-        podName: String?,
-        resources: Resources?,
-        additionalEnv: Map<String, String>
-    ): Task {
-        logger.warn("createPod is deprecated, using createJob instead")
-        return createJob(
-            taskId = taskId,
-            image = image,
-            namespace = namespace,
-            jobName = podName,
-            resources = resources,
-            additionalEnv = additionalEnv
-        )
-    }
-
     override fun appendTaskLogs(id: String, logs: String): Task {
         logger.info("Appending logs to task with id: $id")
 
@@ -201,27 +177,6 @@ class TaskServiceImpl(
             image = image,
             namespace = namespace,
             jobName = jobName,
-            resources = resources,
-            additionalEnv = additionalEnv
-        )
-    }
-
-    @Deprecated(
-        "Use createJobForNextTask instead to align with documentation",
-        replaceWith = ReplaceWith("createJobForNextTask(image, namespace, podName, resources, additionalEnv)")
-    )
-    override fun createPodForNextTask(
-        image: String,
-        namespace: String,
-        podName: String?,
-        resources: Resources?,
-        additionalEnv: Map<String, String>
-    ): Task? {
-        logger.warn("createPodForNextTask is deprecated, using createJobForNextTask instead")
-        return createJobForNextTask(
-            image = image,
-            namespace = namespace,
-            jobName = podName,
             resources = resources,
             additionalEnv = additionalEnv
         )
