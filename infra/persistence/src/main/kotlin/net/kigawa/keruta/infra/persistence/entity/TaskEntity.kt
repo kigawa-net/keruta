@@ -39,7 +39,7 @@ data class TaskEntity(
                 description = task.description,
                 priority = task.priority,
                 status = task.status.name,
-                gitRepository = null, // Repository property removed from Task model
+                gitRepository = task.repositoryId, // Repository property removed from Task model
                 document = task.documents.firstOrNull()?.content,
                 image = task.image,
                 namespace = task.namespace,

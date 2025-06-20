@@ -22,7 +22,9 @@ class TaskRepositoryImpl(private val mongoTaskRepository: MongoTaskRepository) :
     }
 
     override fun save(task: Task): Task {
+        println(task)
         val entity = TaskEntity.fromDomain(task)
+        println(entity)
         return mongoTaskRepository.save(entity).toDomain()
     }
 

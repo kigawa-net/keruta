@@ -1,7 +1,5 @@
 package net.kigawa.keruta.api
 
-import net.kigawa.keruta.core.domain.model.Agent
-import net.kigawa.keruta.core.domain.model.AgentStatus
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.domain.model.TaskStatus
 import net.kigawa.keruta.core.usecase.agent.AgentService
@@ -22,7 +20,7 @@ class AdminController(
     private val agentService: AgentService,
     private val documentService: DocumentService,
     private val gitRepositoryService: GitRepositoryService,
-    private val taskService: TaskService
+    private val taskService: TaskService,
 ) {
 
     @GetMapping
@@ -43,12 +41,14 @@ class AdminController(
     @GetMapping("/tasks/create")
     fun createTaskForm(model: Model): String {
         model.addAttribute("pageTitle", "Create Task")
-        model.addAttribute("task", Task(
-            title = "",
-            description = null,
-            priority = 0,
-            status = TaskStatus.PENDING
-        ))
+        model.addAttribute(
+            "task", Task(
+                title = "",
+                description = null,
+                priority = 0,
+                status = TaskStatus.PENDING
+            )
+        )
         model.addAttribute("statuses", TaskStatus.entries.toTypedArray())
         model.addAttribute("documents", documentService.getAllDocuments())
         model.addAttribute("repositories", gitRepositoryService.getAllRepositories())
@@ -63,7 +63,7 @@ class AdminController(
         @RequestParam(required = false) repositoryId: String? = null,
         @RequestParam(required = false) documentIds: List<String>? = null,
         @RequestParam(required = false) agentId: String? = null,
-        @RequestParam(required = false) parentId: String? = null
+        @RequestParam(required = false) parentId: String? = null,
     ): String {
         println("Create task with id: ${task.id}")
         val repository = if (repositoryId != null) {
@@ -74,8 +74,8 @@ class AdminController(
                 null
             }
         } else null
-
-        val documents = documentIds?.mapNotNull { 
+        if (repositoryId == null) println("RepositoryId is null")
+        val documents = documentIds?.mapNotNull {
             try {
                 documentService.getDocumentById(it)
             } catch (e: NoSuchElementException) {
@@ -140,7 +140,7 @@ class AdminController(
         @RequestParam(required = false) repositoryId: String?,
         @RequestParam(required = false) documentIds: List<String>?,
         @RequestParam(required = false) agentId: String?,
-        @RequestParam(required = false) parentId: String?
+        @RequestParam(required = false) parentId: String?,
     ): String {
         if (taskRepository.findById(id) != null) {
             val repository = if (repositoryId != null) {
@@ -152,7 +152,7 @@ class AdminController(
                 }
             } else null
 
-            val documents = documentIds?.mapNotNull { 
+            val documents = documentIds?.mapNotNull {
                 try {
                     documentService.getDocumentById(it)
                 } catch (e: NoSuchElementException) {
