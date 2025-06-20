@@ -3,20 +3,10 @@
  */
 package net.kigawa.keruta.infra.app.kubernetes
 
-import io.fabric8.kubernetes.client.KubernetesClient
 import io.fabric8.kubernetes.client.KubernetesClientBuilder
-import io.fabric8.kubernetes.api.model.Pod
-import io.fabric8.kubernetes.api.model.PodBuilder
-import io.fabric8.kubernetes.api.model.Volume
-import io.fabric8.kubernetes.api.model.VolumeBuilder
-import io.fabric8.kubernetes.api.model.VolumeMount
-import io.fabric8.kubernetes.api.model.VolumeMountBuilder
-import io.fabric8.kubernetes.api.model.batch.v1.Job
-import io.fabric8.kubernetes.api.model.batch.v1.JobBuilder
 import io.fabric8.kubernetes.api.model.ResourceRequirements
 import io.fabric8.kubernetes.api.model.Quantity
 import io.fabric8.kubernetes.api.model.EnvVar
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimBuilder
 import net.kigawa.keruta.core.domain.model.KubernetesConfig
 import net.kigawa.keruta.core.domain.model.Repository
@@ -385,18 +375,6 @@ class KubernetesServiceImpl(
         }
     }
 
-    override fun createPod(
-        task: Task,
-        image: String,
-        namespace: String,
-        podName: String?,
-        resources: Resources?,
-        additionalEnv: Map<String, String>
-    ): String {
-        logger.warn("createPod is deprecated, using createJob instead")
-        return createJob(task, image, namespace, podName, resources, additionalEnv)
-    }
-
     override fun getJobLogs(namespace: String, jobName: String): String {
         val config = kubernetesConfigRepository.getConfig()
         if (!config.enabled || client == null) {
@@ -433,11 +411,6 @@ class KubernetesServiceImpl(
         }
     }
 
-    override fun getPodLogs(namespace: String, podName: String): String {
-        logger.warn("getPodLogs is deprecated, using getJobLogs instead")
-        return getJobLogs(namespace, podName)
-    }
-
     override fun deleteJob(namespace: String, jobName: String): Boolean {
         val config = kubernetesConfigRepository.getConfig()
         if (!config.enabled || client == null) {
@@ -456,11 +429,6 @@ class KubernetesServiceImpl(
             logger.error("Failed to delete job", e)
             return false
         }
-    }
-
-    override fun deletePod(namespace: String, podName: String): Boolean {
-        logger.warn("deletePod is deprecated, using deleteJob instead")
-        return deleteJob(namespace, podName)
     }
 
     override fun getJobStatus(namespace: String, jobName: String): String {
@@ -530,11 +498,6 @@ class KubernetesServiceImpl(
             logger.error("Failed to get job status", e)
             return "ERROR"
         }
-    }
-
-    override fun getPodStatus(namespace: String, podName: String): String {
-        logger.warn("getPodStatus is deprecated, using getJobStatus instead")
-        return getJobStatus(namespace, podName)
     }
 
     override fun getConfig(): KubernetesConfig {
