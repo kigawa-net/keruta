@@ -18,8 +18,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="adb03c12-d6fd-4600-a8bb-42d25607284f" name="変更" comment="&quot;リポジトリ対応をTaskに追加&quot;">
+    <list default="true" id="adb03c12-d6fd-4600-a8bb-42d25607284f" name="変更" comment="リポジトリ対応をTaskに追加">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesServiceImpl.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -391,7 +392,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750440430728</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="リポジトリ対応をTaskに追加">
+      <option name="closed" value="true" />
+      <created>1750441804847</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1750441804847</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -425,7 +434,8 @@
     <MESSAGE value="Add parent task relationship to Task model and API&#10;&#10;Introduced a `parentId` field in the `Task` model to support parent-child task relationships. Updated the persistence layer, API endpoints, and admin UI to handle the new field. Added validation to prevent tasks from being their own parent and adjusted relevant tests to ensure compatibility." />
     <MESSAGE value="PVC対応の追加" />
     <MESSAGE value="&quot;リポジトリ対応をTaskに追加&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;リポジトリ対応をTaskに追加&quot;" />
+    <MESSAGE value="リポジトリ対応をTaskに追加" />
+    <option name="LAST_COMMIT_MESSAGE" value="リポジトリ対応をTaskに追加" />
   </component>
   <component name="VgoProject">
     <integration-enabled>false</integration-enabled>
@@ -440,9 +450,9 @@
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/AdminController.kt</url>
-          <line>67</line>
-          <option name="timeStamp" value="2" />
+          <url>file://$PROJECT_DIR$/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/task/background/BackgroundTaskProcessor.kt</url>
+          <line>66</line>
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
