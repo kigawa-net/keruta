@@ -23,7 +23,7 @@ class KubernetesServiceImpl(
 ) : KubernetesService {
 
     private val logger = LoggerFactory.getLogger(KubernetesServiceImpl::class.java)
-    
+
     // Lazy initialization of the Kubernetes client
     private val client by lazy {
         try {
@@ -181,6 +181,15 @@ class KubernetesServiceImpl(
             if (pod == null) {
                 logger.warn("Pod not found: $podName in namespace: $namespace")
                 return "NOT_FOUND"
+            }
+
+            // Check for CrashLoopBackOff condition in container statuses
+            pod.status.containerStatuses?.forEach { containerStatus ->
+                val waitingState = containerStatus.state?.waiting
+                if (waitingState != null && waitingState.reason == "CrashLoopBackOff") {
+                    logger.warn("Pod $podName in namespace $namespace is in CrashLoopBackOff state")
+                    return "CRASH_LOOP_BACKOFF"
+                }
             }
 
             val phase = pod.status.phase

@@ -7,7 +7,9 @@ import net.kigawa.keruta.core.usecase.task.TaskService
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
+import java.time.Instant
 
 /**
  * Component that processes tasks in the background.
@@ -21,6 +23,11 @@ class BackgroundTaskProcessor(
 ) {
     private val logger = LoggerFactory.getLogger(BackgroundTaskProcessor::class.java)
     private val isProcessing = AtomicBoolean(false)
+    private val isMonitoring = AtomicBoolean(false)
+
+    // Map to track when pods enter CrashLoopBackOff state
+    // Key: podName, Value: timestamp when CrashLoopBackOff was first detected
+    private val crashLoopBackOffPods = ConcurrentHashMap<String, Instant>()
 
     /**
      * Scheduled method that processes the next task in the queue.
@@ -90,6 +97,100 @@ class BackgroundTaskProcessor(
             }
         } finally {
             isProcessing.set(false)
+        }
+    }
+
+    /**
+     * Scheduled method that monitors the status of pods for tasks that are in progress.
+     * It checks for pods in CrashLoopBackOff state and marks tasks as failed if they've been in that state for too long.
+     */
+    @Scheduled(fixedDelayString = "\${keruta.task.processor.monitoring-delay:10000}") // Use configured delay or default to 10 seconds
+    fun monitorPodStatus() {
+        // If already monitoring, skip this run
+        if (!isMonitoring.compareAndSet(false, true)) {
+            logger.debug("Already monitoring pod status, skipping this run")
+            return
+        }
+
+        try {
+            logger.debug("Monitoring pod status for tasks in progress")
+
+            // Get tasks that are in progress
+            val inProgressTasks = taskService.getTasksByStatus(TaskStatus.IN_PROGRESS)
+
+            // If there are no tasks in progress, clear the map and return
+            if (inProgressTasks.isEmpty()) {
+                crashLoopBackOffPods.clear()
+                return
+            }
+
+            // Check the status of each pod
+            for (task in inProgressTasks) {
+                val podName = task.podName
+                val namespace = task.namespace
+
+                if (podName == null || namespace == null) {
+                    continue
+                }
+
+                val podStatus = kubernetesService.getPodStatus(namespace, podName)
+
+                if (podStatus == "CRASH_LOOP_BACKOFF") {
+                    logger.warn("Pod $podName for task ${task.id} is in CrashLoopBackOff state")
+
+                    // If this is the first time we've seen this pod in CrashLoopBackOff state, record the time
+                    if (!crashLoopBackOffPods.containsKey(podName)) {
+                        crashLoopBackOffPods[podName] = Instant.now()
+                        logger.info("Started tracking CrashLoopBackOff for pod $podName")
+                    }
+
+                    // Check if the pod has been in CrashLoopBackOff state for too long
+                    val firstDetected = crashLoopBackOffPods[podName]
+                    if (firstDetected != null) {
+                        val elapsedMillis = Instant.now().toEpochMilli() - firstDetected.toEpochMilli()
+
+                        if (elapsedMillis > config.crashLoopBackOffTimeout) {
+                            logger.error("Pod $podName for task ${task.id} has been in CrashLoopBackOff state for too long (${elapsedMillis}ms), marking task as failed")
+
+                            try {
+                                // Update the task status to FAILED
+                                val taskId = task.id
+                                if (taskId != null) {
+                                    val updatedTask = taskService.updateTaskStatus(taskId, TaskStatus.FAILED)
+                                    logger.info("Updated task ${updatedTask.id} status to FAILED due to prolonged CrashLoopBackOff")
+
+                                    // Append error message to task logs
+                                    taskService.appendTaskLogs(updatedTask.id!!, "Task failed: Pod $podName was in CrashLoopBackOff state for too long (${elapsedMillis}ms)")
+                                }
+
+                                // Remove the pod from the tracking map
+                                crashLoopBackOffPods.remove(podName)
+                            } catch (ex: Exception) {
+                                logger.error("Failed to update task status", ex)
+                            }
+                        } else {
+                            logger.debug("Pod $podName has been in CrashLoopBackOff state for ${elapsedMillis}ms, will mark as failed after ${config.crashLoopBackOffTimeout}ms")
+                        }
+                    }
+                } else if (crashLoopBackOffPods.containsKey(podName)) {
+                    // If the pod is no longer in CrashLoopBackOff state, remove it from the tracking map
+                    logger.info("Pod $podName is no longer in CrashLoopBackOff state, current status: $podStatus")
+                    crashLoopBackOffPods.remove(podName)
+                }
+            }
+
+            // Clean up any pods in the tracking map that are no longer associated with in-progress tasks
+            val activePodNames = inProgressTasks.mapNotNull { it.podName }.toSet()
+            val podsToRemove = crashLoopBackOffPods.keys().toList().filter { !activePodNames.contains(it) }
+
+            for (podName in podsToRemove) {
+                logger.info("Removing pod $podName from CrashLoopBackOff tracking as it's no longer associated with an in-progress task")
+                crashLoopBackOffPods.remove(podName)
+            }
+        } catch (e: Exception) {
+            logger.error("Error monitoring pod status", e)
+        } finally {
+            isMonitoring.set(false)
         }
     }
 }
