@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -38,9 +39,15 @@ class AgentAdminController(private val agentService: AgentService) {
     }
 
     @PostMapping("/create")
-    fun createAgent(@ModelAttribute agent: Agent): String {
+    fun createAgent(
+        @ModelAttribute agent: Agent,
+        @RequestParam(required = false) languages: String?
+    ): String {
+        val languagesList = languages?.split(",")?.map { it.trim() }?.filter { it.isNotEmpty() } ?: emptyList()
+
         val newAgent = agent.copy(
             id = UUID.randomUUID().toString(),
+            languages = languagesList,
             createdAt = LocalDateTime.now(),
             updatedAt = LocalDateTime.now()
         )
@@ -62,10 +69,17 @@ class AgentAdminController(private val agentService: AgentService) {
     }
 
     @PostMapping("/edit/{id}")
-    fun updateAgent(@PathVariable id: String, @ModelAttribute agent: Agent): String {
+    fun updateAgent(
+        @PathVariable id: String, 
+        @ModelAttribute agent: Agent,
+        @RequestParam(required = false) languages: String?
+    ): String {
         try {
+            val languagesList = languages?.split(",")?.map { it.trim() }?.filter { it.isNotEmpty() } ?: emptyList()
+
             val updatedAgent = agent.copy(
                 id = id,
+                languages = languagesList,
                 updatedAt = LocalDateTime.now()
             )
             agentService.updateAgent(id, updatedAgent)
