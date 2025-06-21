@@ -18,7 +18,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1dfe4d3d-966d-4748-a960-e33dc0c24d2f" name="変更" comment="Add repository setup script functionality&#10;&#10;Introduced a setup script feature to automate dependency installation and environment setup after cloning a repository. Implemented an API endpoint to fetch the setup script, added a default script template, and extended the repository model to store the script. Updated documentation and modified related project configuration files." />
+    <list default="true" id="1dfe4d3d-966d-4748-a960-e33dc0c24d2f" name="変更" comment="管理画面に「Task Pods」のナビゲーション追加およびリポジトリ管理・インストールスクリプト機能を強化">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/AdminController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/AdminController.kt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -61,21 +65,21 @@
     </system>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/keruta-doc" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "kigawa01"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;kigawa01&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/kigawa-net/keruta.git",
-    "accountId": "f2146975-cfb2-4e29-b7dd-85b1a706ec3f"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/kigawa-net/keruta.git&quot;,
+    &quot;accountId&quot;: &quot;f2146975-cfb2-4e29-b7dd-85b1a706ec3f&quot;
   }
-}]]></component>
+}</component>
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="true" />
   </component>
@@ -84,51 +88,51 @@
       <run-configuration type="GradleRunConfiguration" name="keruta [test]" />
     </enabled-run-configurations>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 4
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2yoqy4X7Xh2ThLJ7DCgLRrx2p2m" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.keruta [test].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "NIXITCH_NIXPKGS_CONFIG": "",
-    "NIXITCH_NIX_CONF_DIR": "",
-    "NIXITCH_NIX_OTHER_STORES": "",
-    "NIXITCH_NIX_PATH": "",
-    "NIXITCH_NIX_PROFILES": "/nix/var/nix/profiles/default /home/kigawa/.nix-profile",
-    "NIXITCH_NIX_REMOTE": "",
-    "NIXITCH_NIX_USER_PROFILE_DIR": "",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "git-widget-placeholder": "main",
-    "go.import.settings.migrated": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/mnt/rook-cephfs/dev/hal",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "プロジェクト",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "ml.llm.AIAssistantPromptsLibrary",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.keruta [test].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;NIXITCH_NIXPKGS_CONFIG&quot;: &quot;&quot;,
+    &quot;NIXITCH_NIX_CONF_DIR&quot;: &quot;&quot;,
+    &quot;NIXITCH_NIX_OTHER_STORES&quot;: &quot;&quot;,
+    &quot;NIXITCH_NIX_PATH&quot;: &quot;&quot;,
+    &quot;NIXITCH_NIX_PROFILES&quot;: &quot;/nix/var/nix/profiles/default /home/kigawa/.nix-profile&quot;,
+    &quot;NIXITCH_NIX_REMOTE&quot;: &quot;&quot;,
+    &quot;NIXITCH_NIX_USER_PROFILE_DIR&quot;: &quot;&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/mnt/rook-cephfs/dev/hal&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;プロジェクト&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;ml.llm.AIAssistantPromptsLibrary&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Gradle.keruta [test]">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="keruta" />
       <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
-      <kind />
+      <kind value="FILE" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <method v="2" />
@@ -137,7 +141,7 @@
       <module name="keruta" />
       <working_directory value="$PROJECT_DIR$" />
       <go_parameters value="-i" />
-      <kind />
+      <kind value="DIRECTORY" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
@@ -238,7 +242,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1750511525874</updated>
-      <workItem from="1750511527328" duration="3299000" />
+      <workItem from="1750511527328" duration="6352000" />
+      <workItem from="1750527892192" duration="44000" />
     </task>
     <task id="LOCAL-00001" summary="Add repository setup script functionality&#10;&#10;Introduced a setup script feature to automate dependency installation and environment setup after cloning a repository. Implemented an API endpoint to fetch the setup script, added a default script template, and extended the repository model to store the script. Updated documentation and modified related project configuration files.">
       <option name="closed" value="true" />
@@ -248,7 +253,23 @@
       <option name="project" value="LOCAL" />
       <updated>1750519878705</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="管理画面に「Task Pods」のナビゲーション追加およびリポジトリ管理・インストールスクリプト機能を強化">
+      <option name="closed" value="true" />
+      <created>1750521022932</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1750521022932</updated>
+    </task>
+    <task id="LOCAL-00003" summary="管理画面に「Task Pods」のナビゲーション追加およびリポジトリ管理・インストールスクリプト機能を強化">
+      <option name="closed" value="true" />
+      <created>1750523634431</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1750523634431</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -268,7 +289,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add repository setup script functionality&#10;&#10;Introduced setup scripts to automate dependency installations after cloning repositories. Added API endpoints to retrieve setup scripts, updated domain and persistence models to include the script, and implemented default script generation logic." />
     <MESSAGE value="Add repository setup script functionality&#10;&#10;Introduced a setup script feature to automate dependency installation and environment setup after cloning a repository. Implemented an API endpoint to fetch the setup script, added a default script template, and extended the repository model to store the script. Updated documentation and modified related project configuration files." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add repository setup script functionality&#10;&#10;Introduced a setup script feature to automate dependency installation and environment setup after cloning a repository. Implemented an API endpoint to fetch the setup script, added a default script template, and extended the repository model to store the script. Updated documentation and modified related project configuration files." />
+    <MESSAGE value="管理画面に「Task Pods」のナビゲーション追加およびリポジトリ管理・インストールスクリプト機能を強化" />
+    <option name="LAST_COMMIT_MESSAGE" value="管理画面に「Task Pods」のナビゲーション追加およびリポジトリ管理・インストールスクリプト機能を強化" />
   </component>
   <component name="VgoProject">
     <integration-enabled>false</integration-enabled>

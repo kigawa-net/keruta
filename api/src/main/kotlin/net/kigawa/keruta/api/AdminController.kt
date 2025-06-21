@@ -28,6 +28,8 @@ class AdminController(
         model.addAttribute("pageTitle", "Admin Dashboard")
         model.addAttribute("tasks", taskRepository.findAll())
         model.addAttribute("agents", agentService.getAllAgents())
+        model.addAttribute("repositories", gitRepositoryService.getAllRepositories())
+        model.addAttribute("documents", documentService.getAllDocuments())
         return "admin/dashboard"
     }
 
