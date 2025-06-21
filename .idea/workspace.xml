@@ -18,10 +18,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1dfe4d3d-966d-4748-a960-e33dc0c24d2f" name="変更" comment="管理画面に「Task Pods」のナビゲーション追加およびリポジトリ管理・インストールスクリプト機能を強化">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="1dfe4d3d-966d-4748-a960-e33dc0c24d2f" name="変更" comment="管理画面にリポジトリおよびドキュメント情報の表示機能を追加">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/AdminController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/AdminController.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +63,7 @@
     </system>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/keruta-doc" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -243,7 +241,7 @@
       <option name="presentableId" value="Default" />
       <updated>1750511525874</updated>
       <workItem from="1750511527328" duration="6352000" />
-      <workItem from="1750527892192" duration="44000" />
+      <workItem from="1750527892192" duration="1640000" />
     </task>
     <task id="LOCAL-00001" summary="Add repository setup script functionality&#10;&#10;Introduced a setup script feature to automate dependency installation and environment setup after cloning a repository. Implemented an API endpoint to fetch the setup script, added a default script template, and extended the repository model to store the script. Updated documentation and modified related project configuration files.">
       <option name="closed" value="true" />
@@ -269,7 +267,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750523634431</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="管理画面にリポジトリおよびドキュメント情報の表示機能を追加">
+      <option name="closed" value="true" />
+      <created>1750528066922</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1750528066922</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -290,7 +296,8 @@
     <MESSAGE value="Add repository setup script functionality&#10;&#10;Introduced setup scripts to automate dependency installations after cloning repositories. Added API endpoints to retrieve setup scripts, updated domain and persistence models to include the script, and implemented default script generation logic." />
     <MESSAGE value="Add repository setup script functionality&#10;&#10;Introduced a setup script feature to automate dependency installation and environment setup after cloning a repository. Implemented an API endpoint to fetch the setup script, added a default script template, and extended the repository model to store the script. Updated documentation and modified related project configuration files." />
     <MESSAGE value="管理画面に「Task Pods」のナビゲーション追加およびリポジトリ管理・インストールスクリプト機能を強化" />
-    <option name="LAST_COMMIT_MESSAGE" value="管理画面に「Task Pods」のナビゲーション追加およびリポジトリ管理・インストールスクリプト機能を強化" />
+    <MESSAGE value="管理画面にリポジトリおよびドキュメント情報の表示機能を追加" />
+    <option name="LAST_COMMIT_MESSAGE" value="管理画面にリポジトリおよびドキュメント情報の表示機能を追加" />
   </component>
   <component name="VgoProject">
     <integration-enabled>false</integration-enabled>

@@ -7,6 +7,7 @@ import io.fabric8.kubernetes.api.model.PodTemplateSpec
 import io.fabric8.kubernetes.api.model.ResourceRequirements
 import io.fabric8.kubernetes.api.model.Quantity
 import io.fabric8.kubernetes.api.model.Volume
+import io.fabric8.kubernetes.api.model.VolumeMount
 import io.fabric8.kubernetes.api.model.batch.v1.Job
 import io.fabric8.kubernetes.api.model.batch.v1.JobSpec
 import net.kigawa.keruta.core.domain.model.Repository
@@ -24,7 +25,8 @@ import java.util.UUID
 @Component
 class KubernetesJobCreator(
     private val clientProvider: KubernetesClientProvider,
-    private val repositoryHandler: KubernetesRepositoryHandler
+    private val repositoryHandler: KubernetesRepositoryHandler,
+    private val initContainerHandler: KubernetesInitContainerHandler
 ) {
     private val logger = LoggerFactory.getLogger(KubernetesJobCreator::class.java)
 
@@ -51,7 +53,7 @@ class KubernetesJobCreator(
     ): String {
         val config = clientProvider.getConfig()
         val client = clientProvider.getClient()
-        
+
         if (!config.enabled || client == null) {
             logger.warn("Kubernetes integration is disabled or client is not available")
             return "kubernetes-disabled"
@@ -129,8 +131,9 @@ class KubernetesJobCreator(
             // Add init containers list
             val initContainers = mutableListOf<Container>()
 
-            // Add volume for git repository if repository is provided
-            if (repository != null) {
+            // Create work volume if not already created for repository
+            val workVolumeName = if (repository != null) {
+                // Use repository volume if available
                 repositoryHandler.setupRepository(
                     task,
                     repository,
@@ -139,7 +142,39 @@ class KubernetesJobCreator(
                     initContainers,
                     mainContainer
                 )
+                "repo-volume" // Use the volume name from repositoryHandler
+            } else {
+                // Create a new work volume
+                val workVolume = Volume()
+                workVolume.name = "work-volume"
+                workVolume.emptyDir = io.fabric8.kubernetes.api.model.EmptyDirVolumeSource()
+                volumes.add(workVolume)
+
+                // Add volume mount to main container
+                val workVolumeMount = VolumeMount()
+                workVolumeMount.name = "work-volume"
+                workVolumeMount.mountPath = "/work"
+
+                // Add volume mount to existing volume mounts or create new list
+                if (mainContainer.volumeMounts == null) {
+                    mainContainer.volumeMounts = mutableListOf(workVolumeMount)
+                } else {
+                    (mainContainer.volumeMounts as MutableList<VolumeMount>).add(workVolumeMount)
+                }
+
+                "work-volume" // Return the volume name
             }
+
+            // Set up init containers for setup script execution and file download
+            val workMountPath = if (repository != null) "/repo" else "/work"
+            initContainerHandler.setupInitContainers(
+                task,
+                actualNamespace,
+                volumes,
+                initContainers,
+                workVolumeName,
+                workMountPath
+            )
 
             // Create pod spec
             val podSpec = io.fabric8.kubernetes.api.model.PodSpec()
