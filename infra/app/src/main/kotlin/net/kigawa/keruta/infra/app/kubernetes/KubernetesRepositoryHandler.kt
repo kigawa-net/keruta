@@ -115,17 +115,17 @@ class KubernetesRepositoryHandler(
         gitCloneContainer.name = "git-clone"
         gitCloneContainer.image = "alpine/git"
 
-        // Add depth options to git clone for better performance
-        val gitCloneCommand = mutableListOf(
-            "git", 
-            "clone", 
-            "--depth", "1",  // Shallow clone for faster operation
-            "--single-branch",  // Clone only the default branch
-            repository.url, 
-            repoMountPath
+        // Create a shell script that performs git clone and sets up exclusions
+        val gitCloneScript = listOf(
+            "set -e",
+            "git clone --depth 1 --single-branch ${repository.url} ${repoMountPath}",
+            "echo 'Setting up git exclusions'",
+            "echo '/.keruta' >> ${repoMountPath}/.git/info/exclude",
+            "echo 'Git exclusions configured'"
         )
 
-        gitCloneContainer.command = gitCloneCommand
+        gitCloneContainer.command = listOf("/bin/sh", "-c")
+        gitCloneContainer.args = listOf(gitCloneScript.joinToString("\n"))
 
         // Create volume mount for repository
         val gitCloneVolumeMount = VolumeMount()
@@ -184,7 +184,7 @@ class KubernetesRepositoryHandler(
                 gitEnvVars.add(EnvVar("GIT_CONFIG_KEY_3", "credential.helper", null))
                 gitEnvVars.add(EnvVar("GIT_CONFIG_VALUE_3", "cache --timeout=300", null))
 
-                // Add a script to create git credentials file
+                // Add a script to create git credentials file and set up git exclusions
                 val setupScript = listOf(
                     "set -e",
                     "echo 'Setting up git credentials'",
@@ -192,7 +192,10 @@ class KubernetesRepositoryHandler(
                     "echo \"https://\$GIT_USERNAME:\$GIT_PASSWORD@github.com\" > /git-credentials/.git-credentials",
                     "git config --global credential.helper 'store --file=/git-credentials/.git-credentials'",
                     "echo 'Git credentials configured'",
-                    "git clone ${repository.url} ${repoMountPath}"
+                    "git clone ${repository.url} ${repoMountPath}",
+                    "echo 'Setting up git exclusions'",
+                    "echo '/.keruta' >> ${repoMountPath}/.git/info/exclude",
+                    "echo 'Git exclusions configured'"
                 )
 
                 // Update the command to use the setup script
