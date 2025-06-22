@@ -14,6 +14,8 @@ data class AgentEntity(
     val languages: List<String>,
     val status: String = AgentStatus.AVAILABLE.name,
     val currentTaskId: String? = null,
+    val installCommand: String = "",
+    val executeCommand: String = "",
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now()
 ) {
@@ -25,6 +27,8 @@ data class AgentEntity(
                 languages = agent.languages,
                 status = agent.status.name,
                 currentTaskId = agent.currentTaskId,
+                installCommand = agent.installCommand,
+                executeCommand = agent.executeCommand,
                 createdAt = agent.createdAt,
                 updatedAt = agent.updatedAt
             )
@@ -38,6 +42,8 @@ data class AgentEntity(
             languages = languages,
             status = AgentStatus.valueOf(status),
             currentTaskId = currentTaskId,
+            installCommand = installCommand,
+            executeCommand = executeCommand,
             createdAt = createdAt,
             updatedAt = updatedAt
         )

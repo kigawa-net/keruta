@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: io.fabric8:kubernetes-model-apps:6.5.1" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="io.fabric8" artifactId="kubernetes-model-apps" version="6.5.1" baseVersion="6.5.1" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.fabric8/kubernetes-model-apps/6.5.1/f7710e5c17f3284903b3fd0858141850619d73c9/kubernetes-model-apps-6.5.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

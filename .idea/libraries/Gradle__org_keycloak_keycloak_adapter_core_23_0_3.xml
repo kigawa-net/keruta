@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: org.keycloak:keycloak-adapter-core:23.0.3" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="org.keycloak" artifactId="keycloak-adapter-core" version="23.0.3" baseVersion="23.0.3" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.keycloak/keycloak-adapter-core/23.0.3/185031da26c994d2d2b0e009af83660ec6c94c0d/keycloak-adapter-core-23.0.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

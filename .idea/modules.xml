@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/keruta.iml" filepath="$PROJECT_DIR$/.idea/modules/keruta.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api/keruta.api.iml" filepath="$PROJECT_DIR$/.idea/modules/api/keruta.api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api/keruta.api.main.iml" filepath="$PROJECT_DIR$/.idea/modules/api/keruta.api.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api/keruta.api.test.iml" filepath="$PROJECT_DIR$/.idea/modules/api/keruta.api.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/buildSrc/keruta.buildSrc.iml" filepath="$PROJECT_DIR$/.idea/modules/buildSrc/keruta.buildSrc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/buildSrc/keruta.buildSrc.main.iml" filepath="$PROJECT_DIR$/.idea/modules/buildSrc/keruta.buildSrc.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/buildSrc/keruta.buildSrc.test.iml" filepath="$PROJECT_DIR$/.idea/modules/buildSrc/keruta.buildSrc.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/keruta.core.iml" filepath="$PROJECT_DIR$/.idea/modules/core/keruta.core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/domain/keruta.core.domain.iml" filepath="$PROJECT_DIR$/.idea/modules/core/domain/keruta.core.domain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/domain/keruta.core.domain.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core/domain/keruta.core.domain.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/domain/keruta.core.domain.test.iml" filepath="$PROJECT_DIR$/.idea/modules/core/domain/keruta.core.domain.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/keruta.core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core/keruta.core.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/keruta.core.test.iml" filepath="$PROJECT_DIR$/.idea/modules/core/keruta.core.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/usecase/keruta.core.usecase.iml" filepath="$PROJECT_DIR$/.idea/modules/core/usecase/keruta.core.usecase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/usecase/keruta.core.usecase.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core/usecase/keruta.core.usecase.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/usecase/keruta.core.usecase.test.iml" filepath="$PROJECT_DIR$/.idea/modules/core/usecase/keruta.core.usecase.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/infra/keruta.infra.iml" filepath="$PROJECT_DIR$/.idea/modules/infra/keruta.infra.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/infra/app/keruta.infra.app.iml" filepath="$PROJECT_DIR$/.idea/modules/infra/app/keruta.infra.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/infra/app/keruta.infra.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/infra/app/keruta.infra.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/infra/app/keruta.infra.app.test.iml" filepath="$PROJECT_DIR$/.idea/modules/infra/app/keruta.infra.app.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/infra/keruta.infra.main.iml" filepath="$PROJECT_DIR$/.idea/modules/infra/keruta.infra.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/infra/persistence/keruta.infra.persistence.iml" filepath="$PROJECT_DIR$/.idea/modules/infra/persistence/keruta.infra.persistence.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/infra/persistence/keruta.infra.persistence.main.iml" filepath="$PROJECT_DIR$/.idea/modules/infra/persistence/keruta.infra.persistence.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/infra/persistence/keruta.infra.persistence.test.iml" filepath="$PROJECT_DIR$/.idea/modules/infra/persistence/keruta.infra.persistence.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/infra/security/keruta.infra.security.iml" filepath="$PROJECT_DIR$/.idea/modules/infra/security/keruta.infra.security.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/infra/security/keruta.infra.security.main.iml" filepath="$PROJECT_DIR$/.idea/modules/infra/security/keruta.infra.security.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/infra/security/keruta.infra.security.test.iml" filepath="$PROJECT_DIR$/.idea/modules/infra/security/keruta.infra.security.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/infra/keruta.infra.test.iml" filepath="$PROJECT_DIR$/.idea/modules/infra/keruta.infra.test.iml" />
+    </modules>
+  </component>
+</project>

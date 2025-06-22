@@ -3,6 +3,7 @@ package net.kigawa.keruta.api.agent.controller
 import net.kigawa.keruta.core.domain.model.Agent
 import net.kigawa.keruta.core.domain.model.AgentStatus
 import net.kigawa.keruta.core.usecase.agent.AgentService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -16,7 +17,7 @@ import java.util.UUID
 
 @Controller
 @RequestMapping("/admin/agents")
-class AgentAdminController(private val agentService: AgentService) {
+class AgentAdminController @Autowired constructor(private val agentService: AgentService) {
 
     @GetMapping
     fun agentList(model: Model): String {
@@ -38,23 +39,6 @@ class AgentAdminController(private val agentService: AgentService) {
         return "admin/agent-form"
     }
 
-    @PostMapping("/create")
-    fun createAgent(
-        @ModelAttribute agent: Agent,
-        @RequestParam(required = false) languages: String?
-    ): String {
-        val languagesList = languages?.split(",")?.map { it.trim() }?.filter { it.isNotEmpty() } ?: emptyList()
-
-        val newAgent = agent.copy(
-            id = UUID.randomUUID().toString(),
-            languages = languagesList,
-            createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now()
-        )
-        agentService.createAgent(newAgent)
-        return "redirect:/admin/agents"
-    }
-
     @GetMapping("/edit/{id}")
     fun editAgentForm(@PathVariable id: String, model: Model): String {
         try {
@@ -66,27 +50,6 @@ class AgentAdminController(private val agentService: AgentService) {
         } catch (e: NoSuchElementException) {
             return "redirect:/admin/agents"
         }
-    }
-
-    @PostMapping("/edit/{id}")
-    fun updateAgent(
-        @PathVariable id: String, 
-        @ModelAttribute agent: Agent,
-        @RequestParam(required = false) languages: String?
-    ): String {
-        try {
-            val languagesList = languages?.split(",")?.map { it.trim() }?.filter { it.isNotEmpty() } ?: emptyList()
-
-            val updatedAgent = agent.copy(
-                id = id,
-                languages = languagesList,
-                updatedAt = LocalDateTime.now()
-            )
-            agentService.updateAgent(id, updatedAgent)
-        } catch (e: NoSuchElementException) {
-            // Ignore if agent not found
-        }
-        return "redirect:/admin/agents"
     }
 
     @GetMapping("/delete/{id}")
@@ -109,5 +72,27 @@ class AgentAdminController(private val agentService: AgentService) {
         } catch (e: NoSuchElementException) {
             return "redirect:/admin/agents"
         }
+    }
+
+    @PostMapping("/create")
+    fun createAgent(@ModelAttribute agent: Agent): String {
+        try {
+            agentService.createAgent(agent)
+        } catch (e: Exception) {
+            // Log error and handle exception
+            // For now, just redirect to the list page
+        }
+        return "redirect:/admin/agents"
+    }
+
+    @PostMapping("/edit/{id}")
+    fun updateAgent(@PathVariable id: String, @ModelAttribute agent: Agent): String {
+        try {
+            agentService.updateAgent(id, agent)
+        } catch (e: Exception) {
+            // Log error and handle exception
+            // For now, just redirect to the list page
+        }
+        return "redirect:/admin/agents"
     }
 }

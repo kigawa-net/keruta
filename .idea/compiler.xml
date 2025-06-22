@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="23" />
+    <bytecodeTargetLevel target="23">
+      <module name="keruta.api.main" target="21" />
+      <module name="keruta.api.test" target="21" />
+      <module name="keruta.buildSrc" target="21" />
+      <module name="keruta.buildSrc.main" target="21" />
+      <module name="keruta.buildSrc.test" target="21" />
+      <module name="keruta.core.domain.main" target="21" />
+      <module name="keruta.core.domain.test" target="21" />
+      <module name="keruta.core.main" target="21" />
+      <module name="keruta.core.test" target="21" />
+      <module name="keruta.core.usecase.main" target="21" />
+      <module name="keruta.core.usecase.test" target="21" />
+      <module name="keruta.infra.app.main" target="21" />
+      <module name="keruta.infra.app.test" target="21" />
+      <module name="keruta.infra.main" target="21" />
+      <module name="keruta.infra.persistence.main" target="21" />
+      <module name="keruta.infra.persistence.test" target="21" />
+      <module name="keruta.infra.security.main" target="21" />
+      <module name="keruta.infra.security.test" target="21" />
+      <module name="keruta.infra.test" target="21" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

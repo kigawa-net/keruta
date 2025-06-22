@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: org.keycloak:spring-boot-container-bundle:23.0.3" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="org.keycloak" artifactId="spring-boot-container-bundle" version="23.0.3" baseVersion="23.0.3" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.keycloak/spring-boot-container-bundle/23.0.3/9a6a925b32745a7713d06f0e0c8e5968ed48fdb1/spring-boot-container-bundle-23.0.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

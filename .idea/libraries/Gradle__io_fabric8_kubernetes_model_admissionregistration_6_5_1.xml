@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: io.fabric8:kubernetes-model-admissionregistration:6.5.1" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="io.fabric8" artifactId="kubernetes-model-admissionregistration" version="6.5.1" baseVersion="6.5.1" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.fabric8/kubernetes-model-admissionregistration/6.5.1/43b9d128ba1e56588da359a1b2491d36bc6c821/kubernetes-model-admissionregistration-6.5.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

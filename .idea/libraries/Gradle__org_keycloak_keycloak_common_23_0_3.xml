@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: org.keycloak:keycloak-common:23.0.3" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="org.keycloak" artifactId="keycloak-common" version="23.0.3" baseVersion="23.0.3" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.keycloak/keycloak-common/23.0.3/f3628ed82c88adf1086000394044322980b0c915/keycloak-common-23.0.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
