@@ -12,7 +12,7 @@ interface GitRepositoryService {
      * @return List of all repositories
      */
     fun getAllRepositories(): List<Repository>
-    
+
     /**
      * Gets a Git repository by its ID.
      *
@@ -21,7 +21,16 @@ interface GitRepositoryService {
      * @throws NoSuchElementException if the repository is not found
      */
     fun getRepositoryById(id: String): Repository
-    
+
+    /**
+     * Gets the setup script for a repository.
+     *
+     * @param id The ID of the repository
+     * @return The setup script content
+     * @throws NoSuchElementException if the repository is not found
+     */
+    fun getSetupScript(id: String): String
+
     /**
      * Creates a new Git repository.
      *
@@ -29,7 +38,7 @@ interface GitRepositoryService {
      * @return The created repository with generated ID
      */
     fun createRepository(repository: Repository): Repository
-    
+
     /**
      * Updates an existing Git repository.
      *
@@ -39,7 +48,7 @@ interface GitRepositoryService {
      * @throws NoSuchElementException if the repository is not found
      */
     fun updateRepository(id: String, repository: Repository): Repository
-    
+
     /**
      * Deletes a Git repository by its ID.
      *
@@ -47,7 +56,7 @@ interface GitRepositoryService {
      * @throws NoSuchElementException if the repository is not found
      */
     fun deleteRepository(id: String)
-    
+
     /**
      * Validates a Git repository URL.
      *
@@ -55,7 +64,7 @@ interface GitRepositoryService {
      * @return true if the URL is valid and accessible, false otherwise
      */
     fun validateRepositoryUrl(url: String): Boolean
-    
+
     /**
      * Gets repositories by name.
      *

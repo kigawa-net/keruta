@@ -64,6 +64,13 @@
                             <a class="nav-link" th:classappend="${#httpServletRequest != null && #httpServletRequest.requestURI != null && #httpServletRequest.requestURI.startsWith('/admin/tasks') ? 'active' : ''}" href="/admin/tasks">
                                 Tasks
                             </a>
+                            <ul class="nav flex-column ms-3">
+                                <li class="nav-item">
+                                    <a class="nav-link small" th:classappend="${#httpServletRequest != null && #httpServletRequest.requestURI != null && #httpServletRequest.requestURI.startsWith('/admin/tasks/pods') ? 'active' : ''}" href="/admin/tasks/pods">
+                                        Task Pods
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" th:classappend="${#httpServletRequest != null && #httpServletRequest.requestURI != null && #httpServletRequest.requestURI.startsWith('/admin/documents') ? 'active' : ''}" href="/admin/documents">

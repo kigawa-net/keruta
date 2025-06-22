@@ -16,6 +16,7 @@ data class RepositoryEntity(
     val url: String,
     val description: String = "",
     val isValid: Boolean = false,
+    val setupScript: String = "",
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now()
 ) {
@@ -33,12 +34,13 @@ data class RepositoryEntity(
                 url = repository.url,
                 description = repository.description,
                 isValid = repository.isValid,
+                setupScript = repository.setupScript,
                 createdAt = repository.createdAt,
                 updatedAt = repository.updatedAt
             )
         }
     }
-    
+
     /**
      * Converts this entity to a domain model.
      *
@@ -51,6 +53,7 @@ data class RepositoryEntity(
             url = url,
             description = description,
             isValid = isValid,
+            setupScript = setupScript,
             createdAt = createdAt,
             updatedAt = updatedAt
         )

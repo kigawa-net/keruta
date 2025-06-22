@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{admin/layout :: html}">
+<body>
+    <div id="content">
+        <div class="mb-3">
+            <a href="/admin/tasks/pods" class="btn btn-secondary">Back to Task Pods</a>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                Task Pod Details
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">ID:</div>
+                    <div class="col-md-9" th:text="${task.id}">ID</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">Title:</div>
+                    <div class="col-md-9" th:text="${task.title}">Title</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">Description:</div>
+                    <div class="col-md-9" th:text="${task.description ?: 'N/A'}">Description</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">Status:</div>
+                    <div class="col-md-9">
+                        <span th:class="${'badge ' + 
+                            (task.status == T(net.kigawa.keruta.core.domain.model.TaskStatus).PENDING ? 'bg-warning' : 
+                            (task.status == T(net.kigawa.keruta.core.domain.model.TaskStatus).IN_PROGRESS ? 'bg-info' : 
+                            (task.status == T(net.kigawa.keruta.core.domain.model.TaskStatus).COMPLETED ? 'bg-success' : 
+                            'bg-danger')))}"
+                            th:text="${task.status}">
+                            Status
+                        </span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">Priority:</div>
+                    <div class="col-md-9" th:text="${task.priority}">Priority</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">Pod Name:</div>
+                    <div class="col-md-9" th:text="${task.podName ?: 'N/A'}">Pod Name</div>
+                </div>
+                <div class="row mb-3" th:if="${task.repositoryId != null}">
+                    <div class="col-md-3 fw-bold">Repository:</div>
+                    <div class="col-md-9" th:text="${task.repositoryId}">Repository ID</div>
+                </div>
+                <div class="row mb-3" th:if="${task.agentId != null}">
+                    <div class="col-md-3 fw-bold">Agent:</div>
+                    <div class="col-md-9" th:text="${task.agentId}">Agent ID</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">Created:</div>
+                    <div class="col-md-9" th:text="${#temporals.format(task.createdAt, 'yyyy-MM-dd HH:mm:ss')}">Created</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">Updated:</div>
+                    <div class="col-md-9" th:text="${#temporals.format(task.updatedAt, 'yyyy-MM-dd HH:mm:ss')}">Updated</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                Pod Logs
+            </div>
+            <div class="card-body">
+                <div th:if="${task.logs == null || task.logs.isEmpty()}">
+                    <p>No logs available.</p>
+                </div>
+                <div th:unless="${task.logs == null || task.logs.isEmpty()}">
+                    <pre class="bg-dark text-light p-3 rounded" style="max-height: 500px; overflow-y: auto;" th:text="${task.logs}">Logs</pre>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-3">
+            <a th:href="@{/admin/tasks/{id}/kubernetes-manifest(id=${task.id})}" class="btn btn-primary">View Kubernetes Manifest</a>
+        </div>
+    </div>
+</body>
+</html>
