@@ -58,7 +58,8 @@ class KubernetesInitContainerHandler(
         // Create environment variables for setup container
         val setupEnvVars = mutableListOf<EnvVar>()
 
-        // Add task metadata environment variables
+        // Add task metadata environment variables (ConfigMap is optional)
+        logger.info("Adding environment variables from task-metadata ConfigMap (optional)")
         setupEnvVars.add(createConfigMapEnvVar("KERUTA_REPOSITORY_ID", "task-metadata", "repositoryId"))
         setupEnvVars.add(createConfigMapEnvVar("KERUTA_DOCUMENT_ID", "task-metadata", "documentId"))
 
@@ -73,8 +74,10 @@ class KubernetesInitContainerHandler(
             "set -e",
             "mkdir -p ./.keruta",
             "",
-            "# APIからインストールスクリプトを取得して実行",
-            "if [ -n \"\$KERUTA_REPOSITORY_ID\" ]; then",
+            "# Check if environment variables are set (they might be empty if ConfigMap doesn't exist)",
+            "if [ -z \"\$KERUTA_REPOSITORY_ID\" ]; then",
+            "  echo \"KERUTA_REPOSITORY_ID is not set or empty. Skipping repository script.\"",
+            "else",
             "  echo \"Fetching install script for repository: \$KERUTA_REPOSITORY_ID\"",
             "  SCRIPT_URL=\"\${KERUTA_API_ENDPOINT}/api/v1/repositories/\${KERUTA_REPOSITORY_ID}/script\"",
             "",
@@ -90,8 +93,10 @@ class KubernetesInitContainerHandler(
             "  sh ./.keruta/install.sh",
             "fi",
             "",
-            "# APIからドキュメントを取得",
-            "if [ -n \"\$KERUTA_DOCUMENT_ID\" ]; then",
+            "# Check if document ID is set",
+            "if [ -z \"\$KERUTA_DOCUMENT_ID\" ]; then",
+            "  echo \"KERUTA_DOCUMENT_ID is not set or empty. Skipping document download.\"",
+            "else",
             "  echo \"Fetching document: \$KERUTA_DOCUMENT_ID\"",
             "  DOC_URL=\"\${KERUTA_API_ENDPOINT}/api/v1/documents/\${KERUTA_DOCUMENT_ID}/content\"",
             "  curl -sfL -o ./.keruta/README.md \"\$DOC_URL\"",
@@ -124,6 +129,7 @@ class KubernetesInitContainerHandler(
         val configMapKeyRef = io.fabric8.kubernetes.api.model.ConfigMapKeySelector()
         configMapKeyRef.name = configMapName
         configMapKeyRef.key = configMapKey
+        configMapKeyRef.optional = true  // Make the ConfigMap reference optional
 
         valueFrom.configMapKeyRef = configMapKeyRef
         envVar.valueFrom = valueFrom
