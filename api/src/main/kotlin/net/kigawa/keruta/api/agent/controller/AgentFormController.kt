@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping
 @Controller
 @RequestMapping("/admin/agents")
 class AgentFormController(private val agentService: AgentService) {
+    private val logger = org.slf4j.LoggerFactory.getLogger(this::class.java)
 
     @PostMapping("/create")
     fun createAgent(@ModelAttribute agent: Agent): String {
+        logger.debug("createAgent $agent")
         try {
             agentService.createAgent(agent)
         } catch (e: Exception) {
@@ -25,6 +27,7 @@ class AgentFormController(private val agentService: AgentService) {
 
     @PostMapping("/edit/{id}")
     fun updateAgent(@PathVariable id: String, @ModelAttribute agent: Agent): String {
+        logger.debug("updateAgent $agent")
         try {
             agentService.updateAgent(id, agent)
         } catch (e: Exception) {
