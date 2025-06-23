@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AIAssistantCustomInstructionsStorage">
+    <option name="instructions">
+      <map>
+        <entry key="AIAssistant.VCS.GenerateCommitMessage">
+          <value>
+            <AIAssistantStoredInstruction>
+              <option name="actionId" value="AIAssistant.VCS.GenerateCommitMessage" />
+              <option name="content" value="日本語一言で" />
+            </AIAssistantStoredInstruction>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79b091c2-ce92-4e99-91ac-ce57e480d71a" name="変更" comment="w">
-      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/agent/controller/AgentAdminController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/agent/controller/AgentAdminController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/resources/application.properties" afterDir="false" />
-    </list>
+    <list default="true" id="79b091c2-ce92-4e99-91ac-ce57e480d71a" name="変更" comment="Remove `ExtendedAgentAdminController` and IntelliJ project-specific configuration files.&#10;&#10;Cleaned up unused controller and redundant IntelliJ files, including data sources, run configurations, and shelved changes, for a leaner and more maintainable codebase." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,6 +26,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="ProjectColorInfo"><![CDATA[{
   "customColor": "",
@@ -28,9 +40,24 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Docker.docker-compose.yml: Compose デプロイ.executor": "Run",
+    "Docker.server.executor": "Run",
+    "Gradle.keruta のビルド.executor": "Run",
+    "Gradle.ソースのダウンロード.executor": "Run",
+    "NIXITCH_NIXPKGS_CONFIG": "",
+    "NIXITCH_NIX_CONF_DIR": "",
+    "NIXITCH_NIX_OTHER_STORES": "",
+    "NIXITCH_NIX_PATH": "",
+    "NIXITCH_NIX_PROFILES": "/nix/var/nix/profiles/default /home/kigawa/.nix-profile",
+    "NIXITCH_NIX_REMOTE": "",
+    "NIXITCH_NIX_USER_PROFILE_DIR": "",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "Spring Boot.KerutaApplication.executor": "Run",
     "git-widget-placeholder": "main",
     "go.import.settings.migrated": "true",
     "junie.onboarding.icon.badge.shown": "true",
@@ -39,16 +66,28 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "ml.llm.AIAssistantPromptsLibrary",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="複合.dev">
+    <configuration name="dev" type="CompoundRunConfigurationType">
+      <toRun name="server" type="docker-deploy" />
+      <toRun name="KerutaApplication" type="SpringBootApplicationConfigurationType" />
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
       <deployment type="docker-compose.yml" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Docker.server" />
+      <item itemvalue="Spring Boot.KerutaApplication" />
+      <item itemvalue="複合.dev" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Spring Boot.KerutaApplication" />
         <item itemvalue="Docker.server" />
       </list>
     </recent_temporary>
@@ -68,7 +107,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1750675107331</updated>
-      <workItem from="1750675108809" duration="477000" />
+      <workItem from="1750675108809" duration="1523000" />
     </task>
     <task id="LOCAL-00001" summary="w">
       <option name="closed" value="true" />
@@ -78,7 +117,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750675351212</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Remove `ExtendedAgentAdminController` and IntelliJ project-specific configuration files.&#10;&#10;Cleaned up unused controller and redundant IntelliJ files, including data sources, run configurations, and shelved changes, for a leaner and more maintainable codebase.">
+      <option name="closed" value="true" />
+      <created>1750682498726</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1750682498726</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -97,7 +144,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="w" />
-    <option name="LAST_COMMIT_MESSAGE" value="w" />
+    <MESSAGE value="Remove `ExtendedAgentAdminController` and IntelliJ project-specific configuration files.&#10;&#10;Cleaned up unused controller and redundant IntelliJ files, including data sources, run configurations, and shelved changes, for a leaner and more maintainable codebase." />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove `ExtendedAgentAdminController` and IntelliJ project-specific configuration files.&#10;&#10;Cleaned up unused controller and redundant IntelliJ files, including data sources, run configurations, and shelved changes, for a leaner and more maintainable codebase." />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

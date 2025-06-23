@@ -12,18 +12,24 @@
                         <label for="name" class="form-label">Name</label>
                         <input type="text" class="form-control" id="name" name="name" th:value="*{name}" required>
                     </div>
-                    
+
                     <div class="mb-3">
                         <label for="repositoryUrl" class="form-label">URL</label>
                         <input type="url" class="form-control" id="repositoryUrl" name="url" th:value="*{url}" required>
                         <div class="form-text">Enter the full URL of the Git repository (e.g., https://github.com/username/repo)</div>
                     </div>
-                    
+
                     <div class="mb-3">
                         <label for="repositoryDescription" class="form-label">Description</label>
                         <textarea class="form-control" id="repositoryDescription" name="description" rows="3" th:text="*{description}"></textarea>
                     </div>
-                    
+
+                    <div class="mb-3">
+                        <label for="setupScript" class="form-label">Setup Script</label>
+                        <textarea class="form-control" id="setupScript" name="setupScript" rows="6" th:text="*{setupScript}"></textarea>
+                        <div class="form-text">Enter the script to be executed after cloning the repository. This script will be run in the repository root directory.</div>
+                    </div>
+
                     <div class="d-flex justify-content-between">
                         <a href="/admin/repositories" class="btn btn-secondary">Cancel</a>
                         <button type="submit" class="btn btn-primary">Save</button>
