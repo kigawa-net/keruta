@@ -95,10 +95,24 @@ class KubernetesJobCreator(
 
             // Set up script execution in the main container
             val workMountPath = if (repository != null) "/repo" else "/work"
+
+            // Extract metadata for ConfigMap
+            val repositoryId = repository?.id ?: task.repositoryId ?: ""
+            val documentId = task.documents.firstOrNull()?.id ?: ""
+            val agentId = task.agentId ?: ""
+
+            // Set up script execution with ConfigMap creation
             containerHandler.setupScriptExecution(
                 mainContainer,
                 workVolumeName,
-                workMountPath
+                workMountPath,
+                true, // Create ConfigMap
+                task,
+                repositoryId,
+                documentId,
+                agentId,
+                "", // agentInstallCommand - not available here
+                ""  // agentExecuteCommand - not available here
             )
 
             // Create pod spec and pod template spec

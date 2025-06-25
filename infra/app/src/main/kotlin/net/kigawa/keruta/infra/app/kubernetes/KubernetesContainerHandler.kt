@@ -43,13 +43,38 @@ class KubernetesContainerHandler(
      * @param container The container to set up script execution for
      * @param workVolumeName The name of the work volume
      * @param workMountPath The mount path of the work volume
+     * @param createConfigMap Whether to create the ConfigMap if it doesn't exist
+     * @param task The task to create metadata for (required if createConfigMap is true)
+     * @param repositoryId The repository ID (required if createConfigMap is true)
+     * @param documentId The document ID (required if createConfigMap is true)
+     * @param agentId The agent ID (required if createConfigMap is true)
+     * @param agentInstallCommand The agent install command (required if createConfigMap is true)
+     * @param agentExecuteCommand The agent execute command (required if createConfigMap is true)
      */
     fun setupScriptExecution(
         container: Container,
         workVolumeName: String,
-        workMountPath: String
+        workMountPath: String,
+        createConfigMap: Boolean = false,
+        task: Task? = null,
+        repositoryId: String = "",
+        documentId: String = "",
+        agentId: String = "",
+        agentInstallCommand: String = "",
+        agentExecuteCommand: String = ""
     ) {
         logger.info("Delegating script execution setup to KubernetesScriptExecutionHandler")
-        scriptExecutionHandler.setupScriptExecution(container, workVolumeName, workMountPath)
+        scriptExecutionHandler.setupScriptExecution(
+            container,
+            workVolumeName,
+            workMountPath,
+            createConfigMap,
+            task,
+            repositoryId,
+            documentId,
+            agentId,
+            agentInstallCommand,
+            agentExecuteCommand
+        )
     }
 }
