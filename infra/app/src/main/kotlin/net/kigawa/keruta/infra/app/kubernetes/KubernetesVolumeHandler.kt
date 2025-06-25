@@ -15,7 +15,8 @@ import java.util.UUID
  */
 @Component
 class KubernetesVolumeHandler(
-    private val clientProvider: KubernetesClientProvider
+    private val clientProvider: KubernetesClientProvider,
+    private val volumeMountHandler: KubernetesVolumeMountHandler
 ) {
     private val logger = LoggerFactory.getLogger(KubernetesVolumeHandler::class.java)
 
@@ -107,4 +108,39 @@ class KubernetesVolumeHandler(
 
         return volumeName
     }
-}
+
+    /**
+     * Mounts an existing PVC to a container.
+     * Creates a volume that references the PVC and adds it to the volumes list.
+     * Also adds a volume mount to the container.
+     *
+     * @param volumes The list of volumes to add to
+     * @param container The container to add the volume mount to
+     * @param pvcName The name of the existing PVC to mount
+     * @param volumeName The name to use for the volume (optional, defaults to "pvc-volume")
+     * @param mountPath The path where the volume should be mounted (optional, defaults to "/pvc")
+     * @return The name of the created volume
+     */
+    fun mountExistingPvc(
+        volumes: MutableList<Volume>,
+        container: Container,
+        pvcName: String,
+        volumeName: String = "pvc-volume",
+        mountPath: String = "/pvc"
+    ): String {
+        logger.info("Mounting existing PVC: $pvcName as volume: $volumeName at path: $mountPath")
+
+        // Create volume using existing PVC
+        val pvcVolume = Volume()
+        pvcVolume.name = volumeName
+        val pvcSource = io.fabric8.kubernetes.api.model.PersistentVolumeClaimVolumeSource()
+        pvcSource.claimName = pvcName
+        pvcVolume.persistentVolumeClaim = pvcSource
+        volumes.add(pvcVolume)
+
+        // Add volume mount to container
+        volumeMountHandler.setupVolumeMount(container, volumeName, mountPath)
+
+        return volumeName
+    }
+    }

@@ -78,6 +78,10 @@ class KubernetesJobCreator(
             // Add init containers list
             val initContainers = mutableListOf<Container>()
 
+            // Check if a PVC name is specified in additionalEnv
+            val pvcName = additionalEnv["KERUTA_PVC_NAME"]
+            val pvcMountPath = additionalEnv["KERUTA_PVC_MOUNT_PATH"] ?: "/pvc"
+
             // Create work volume if not already created for repository
             val workVolumeName = if (repository != null) {
                 // Use repository volume if available
@@ -90,13 +94,17 @@ class KubernetesJobCreator(
                     mainContainer
                 )
                 "repo-volume" // Use the volume name from repositoryHandler
+            } else if (pvcName != null) {
+                // Mount existing PVC if specified
+                logger.info("Mounting existing PVC: $pvcName at path: $pvcMountPath")
+                volumeHandler.mountExistingPvc(volumes, mainContainer, pvcName, "pvc-volume", pvcMountPath)
             } else {
                 // Create a new work volume with task's storageClass if provided
                 volumeHandler.createWorkVolume(volumes, mainContainer, actualNamespace, task)
             }
 
             // Set up script execution in the main container
-            val workMountPath = if (repository != null) "/repo" else "/work"
+
 
             // Extract metadata for ConfigMap
             val repositoryId = repository?.id ?: task.repositoryId ?: ""
@@ -115,6 +123,13 @@ class KubernetesJobCreator(
                 } catch (e: Exception) {
                     logger.warn("Failed to get agent $agentId: ${e.message}")
                 }
+            }
+
+            // Determine the work mount path based on the volume type
+            val workMountPath = when {
+                repository != null -> "/repo"
+                pvcName != null -> pvcMountPath
+                else -> "/work"
             }
 
             // Set up script execution with ConfigMap creation
