@@ -18,8 +18,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79b091c2-ce92-4e99-91ac-ce57e480d71a" name="変更" comment="Kubernetes関連のコンテナ、ジョブ、メタデータ、ポッド仕様、ボリューム処理を担当する新しいハンドラを追加し、コードのモジュール化と再利用性を向上。MongoDBテスト設定およびTestContainers対応も実施。">
-      <change beforePath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesInitContainerHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesInitContainerHandler.kt" afterDir="false" />
+    <list default="true" id="79b091c2-ce92-4e99-91ac-ce57e480d71a" name="変更" comment="Kubernetes関連のコンテナ処理をより細分化し、各機能を担当する新しいハンドラ（ConfigMap, ボリュームマウント, 環境変数, スクリプト実行）を追加。コードの再利用性とモジュール化を向上。関連テストも更新。">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.keruta/install.sh" beforeDir="false" afterPath="$PROJECT_DIR$/.keruta/install.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesInitContainerHandler.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesScriptHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesScriptHandler.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,7 +160,7 @@
       <updated>1750675107331</updated>
       <workItem from="1750675108809" duration="9531000" />
       <workItem from="1750692326275" duration="1343000" />
-      <workItem from="1750766713217" duration="5117000" />
+      <workItem from="1750766713217" duration="14216000" />
     </task>
     <task id="LOCAL-00001" summary="w">
       <option name="closed" value="true" />
@@ -199,7 +202,71 @@
       <option name="project" value="LOCAL" />
       <updated>1750810131185</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="ConfigMap存在確認処理を追加し、存在しない場合はデフォルト値を空文字列に設定">
+      <option name="closed" value="true" />
+      <created>1750810405495</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1750810405495</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Kubernetes初期化コンテナでローカルスクリプトのチェックおよびGitリポジトリ管理ボリュームの作成処理を追加">
+      <option name="closed" value="true" />
+      <created>1750810828926</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1750810828926</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Kubernetes関連のリポジトリ、Gitクレデンシャル、ボリューム処理を担当する新しいハンドラを追加し、コードをモジュール化。">
+      <option name="closed" value="true" />
+      <created>1750812791315</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1750812791315</updated>
+    </task>
+    <task id="LOCAL-00009" summary="初期化コンテナおよびGitクレデンシャル関連の処理をリファクタリングし、コンテナ設定のモジュール化と再利用性を向上。">
+      <option name="closed" value="true" />
+      <created>1750813704068</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1750813704068</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Kubernetes関連のコンテナハンドラにスクリプト実行設定機能を追加し、関連テストを実装。Gitリポジトリクローンとボリュームマウント処理を担当する新しいハンドラを追加し、再利用性を向上。">
+      <option name="closed" value="true" />
+      <created>1750815085145</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1750815085145</updated>
+    </task>
+    <task id="LOCAL-00011" summary="未使用の初期化コンテナ処理を削除し、ボリュームマウント設定で既存マウントのチェック処理を追加。関連テストを整理。">
+      <option name="closed" value="true" />
+      <created>1750818008318</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1750818008318</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Javaの自動インストール処理をKubernetes関連のコンテナハンドラに追加し、スクリプトの汎用性を向上。">
+      <option name="closed" value="true" />
+      <created>1750818672365</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1750818672365</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Kubernetes関連のコンテナ処理をより細分化し、各機能を担当する新しいハンドラ（ConfigMap, ボリュームマウント, 環境変数, スクリプト実行）を追加。コードの再利用性とモジュール化を向上。関連テストも更新。">
+      <option name="closed" value="true" />
+      <created>1750827973840</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1750827973840</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -222,7 +289,15 @@
     <MESSAGE value="リポジトリ管理機能追加: テスト、スクリプト設定、UI改善" />
     <MESSAGE value="ConfigMapをオプション化し、環境変数未設定時の処理を追加" />
     <MESSAGE value="Kubernetes関連のコンテナ、ジョブ、メタデータ、ポッド仕様、ボリューム処理を担当する新しいハンドラを追加し、コードのモジュール化と再利用性を向上。MongoDBテスト設定およびTestContainers対応も実施。" />
-    <option name="LAST_COMMIT_MESSAGE" value="Kubernetes関連のコンテナ、ジョブ、メタデータ、ポッド仕様、ボリューム処理を担当する新しいハンドラを追加し、コードのモジュール化と再利用性を向上。MongoDBテスト設定およびTestContainers対応も実施。" />
+    <MESSAGE value="ConfigMap存在確認処理を追加し、存在しない場合はデフォルト値を空文字列に設定" />
+    <MESSAGE value="Kubernetes初期化コンテナでローカルスクリプトのチェックおよびGitリポジトリ管理ボリュームの作成処理を追加" />
+    <MESSAGE value="Kubernetes関連のリポジトリ、Gitクレデンシャル、ボリューム処理を担当する新しいハンドラを追加し、コードをモジュール化。" />
+    <MESSAGE value="初期化コンテナおよびGitクレデンシャル関連の処理をリファクタリングし、コンテナ設定のモジュール化と再利用性を向上。" />
+    <MESSAGE value="Kubernetes関連のコンテナハンドラにスクリプト実行設定機能を追加し、関連テストを実装。Gitリポジトリクローンとボリュームマウント処理を担当する新しいハンドラを追加し、再利用性を向上。" />
+    <MESSAGE value="未使用の初期化コンテナ処理を削除し、ボリュームマウント設定で既存マウントのチェック処理を追加。関連テストを整理。" />
+    <MESSAGE value="Javaの自動インストール処理をKubernetes関連のコンテナハンドラに追加し、スクリプトの汎用性を向上。" />
+    <MESSAGE value="Kubernetes関連のコンテナ処理をより細分化し、各機能を担当する新しいハンドラ（ConfigMap, ボリュームマウント, 環境変数, スクリプト実行）を追加。コードの再利用性とモジュール化を向上。関連テストも更新。" />
+    <option name="LAST_COMMIT_MESSAGE" value="Kubernetes関連のコンテナ処理をより細分化し、各機能を担当する新しいハンドラ（ConfigMap, ボリュームマウント, 環境変数, スクリプト実行）を追加。コードの再利用性とモジュール化を向上。関連テストも更新。" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
