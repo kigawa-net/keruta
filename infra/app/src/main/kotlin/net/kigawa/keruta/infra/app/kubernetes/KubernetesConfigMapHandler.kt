@@ -46,6 +46,8 @@ class KubernetesConfigMapHandler(
             // Create a new ConfigMap
             logger.info("Creating ConfigMap $name in namespace $actualNamespace")
             val configMap = ConfigMap()
+            // Initialize metadata before setting its properties
+            configMap.metadata = io.fabric8.kubernetes.api.model.ObjectMeta()
             configMap.metadata.name = name
             configMap.data = data
 

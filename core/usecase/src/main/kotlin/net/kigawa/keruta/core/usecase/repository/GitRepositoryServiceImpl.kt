@@ -53,6 +53,9 @@ echo "Setup script completed successfully"
     }
 
     override fun getRepositoryById(id: String): Repository {
+        if (id.isBlank()) {
+            throw IllegalArgumentException("Repository ID cannot be empty")
+        }
         return gitRepositoryRepository.findById(id) ?: throw NoSuchElementException("Repository not found with id: $id")
     }
 
