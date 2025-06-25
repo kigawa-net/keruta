@@ -2,7 +2,6 @@
  * Represents the Kubernetes configuration settings in the system.
  *
  * @property id The unique identifier of the configuration
- * @property enabled Whether Kubernetes integration is enabled
  * @property configPath The path to the Kubernetes configuration file
  * @property inCluster Whether the application is running inside a Kubernetes cluster
  * @property defaultNamespace The default Kubernetes namespace

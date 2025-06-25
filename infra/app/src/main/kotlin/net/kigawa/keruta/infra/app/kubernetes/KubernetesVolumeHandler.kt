@@ -16,7 +16,8 @@ import java.util.UUID
 @Component
 class KubernetesVolumeHandler(
     private val clientProvider: KubernetesClientProvider,
-    private val volumeMountHandler: KubernetesVolumeMountHandler
+    private val volumeMountHandler: KubernetesVolumeMountHandler,
+    private val taskRepository: net.kigawa.keruta.core.usecase.repository.TaskRepository
 ) {
     private val logger = LoggerFactory.getLogger(KubernetesVolumeHandler::class.java)
 
@@ -40,16 +41,63 @@ class KubernetesVolumeHandler(
         logger.info("Creating work volume using PVC")
 
         val volumeName = "work-volume"
+
+        // Check if task has a parent with a PVC
+        var parentPvcName: String? = null
+        if (task != null) {
+            val parentId = task.parentId
+            if (parentId != null) {
+                val parentTask = taskRepository.findById(parentId)
+                if (parentTask != null && parentTask.pvcName != null) {
+                    parentPvcName = parentTask.pvcName
+                    logger.info("Found parent task with PVC: $parentPvcName")
+                }
+            }
+        }
+
+        // Use parent's PVC if available, otherwise create a new one
+        if (parentPvcName != null) {
+            logger.info("Using parent's PVC: $parentPvcName")
+
+            // Create volume using parent's PVC
+            val workVolume = Volume()
+            workVolume.name = volumeName
+            val pvcSource = io.fabric8.kubernetes.api.model.PersistentVolumeClaimVolumeSource()
+            pvcSource.claimName = parentPvcName
+            workVolume.persistentVolumeClaim = pvcSource
+            volumes.add(workVolume)
+
+            // Add volume mount to main container
+            val workVolumeMount = VolumeMount()
+            workVolumeMount.name = volumeName
+            workVolumeMount.mountPath = "/work"
+
+            // Add volume mount to existing volume mounts or create new list
+            if (mainContainer.volumeMounts == null) {
+                mainContainer.volumeMounts = mutableListOf(workVolumeMount)
+            } else {
+                (mainContainer.volumeMounts as MutableList<VolumeMount>).add(workVolumeMount)
+            }
+
+            // Update task with parent's PVC name
+            if (task != null) {
+                val updatedTask = task.copy(pvcName = parentPvcName)
+                taskRepository.save(updatedTask)
+                logger.info("Updated task ${task.id} with parent's PVC name: $parentPvcName")
+            }
+
+            return volumeName
+        }
+
+        // Create a new PVC
         val pvcName = "work-pvc-${UUID.randomUUID()}"
+        logger.info("Creating new PVC: $pvcName")
 
         // Get Kubernetes client
         val client = clientProvider.getClient() ?: return volumeName
 
         // Get Kubernetes config for default values
         val kubernetesConfig = clientProvider.getConfig()
-
-        // Create PVC
-        logger.info("Creating new PVC: $pvcName")
 
         // Use task's storageClass if provided, otherwise use default from KubernetesConfig
         val storageSize = kubernetesConfig.defaultPvcStorageSize
@@ -104,6 +152,13 @@ class KubernetesVolumeHandler(
             mainContainer.volumeMounts = mutableListOf(workVolumeMount)
         } else {
             (mainContainer.volumeMounts as MutableList<VolumeMount>).add(workVolumeMount)
+        }
+
+        // Update task with PVC name
+        if (task != null) {
+            val updatedTask = task.copy(pvcName = pvcName)
+            taskRepository.save(updatedTask)
+            logger.info("Updated task ${task.id} with PVC name: $pvcName")
         }
 
         return volumeName

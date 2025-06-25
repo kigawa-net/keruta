@@ -29,6 +29,7 @@ data class TaskEntity(
     val agentId: String? = null,
     val parentId: String? = null,
     val storageClass: String = "",
+    val pvcName: String? = null,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now()
 ) {
@@ -52,6 +53,7 @@ data class TaskEntity(
                 agentId = task.agentId,
                 parentId = task.parentId,
                 storageClass = task.storageClass,
+                pvcName = task.pvcName,
                 createdAt = task.createdAt,
                 updatedAt = task.updatedAt
             )
@@ -76,6 +78,7 @@ data class TaskEntity(
             agentId = agentId,
             parentId = parentId,
             storageClass = storageClass,
+            pvcName = pvcName,
             createdAt = createdAt,
             updatedAt = updatedAt,
             repositoryId = gitRepository,
