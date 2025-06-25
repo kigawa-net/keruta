@@ -92,7 +92,7 @@ class KubernetesJobCreator(
                 "repo-volume" // Use the volume name from repositoryHandler
             } else {
                 // Create a new work volume
-                volumeHandler.createWorkVolume(volumes, mainContainer)
+                volumeHandler.createWorkVolume(volumes, mainContainer, actualNamespace)
             }
 
             // Set up script execution in the main container
