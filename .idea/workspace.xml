@@ -18,11 +18,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79b091c2-ce92-4e99-91ac-ce57e480d71a" name="変更" comment="Kubernetes関連のコンテナ処理をより細分化し、各機能を担当する新しいハンドラ（ConfigMap, ボリュームマウント, 環境変数, スクリプト実行）を追加。コードの再利用性とモジュール化を向上。関連テストも更新。">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.keruta/install.sh" beforeDir="false" afterPath="$PROJECT_DIR$/.keruta/install.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesInitContainerHandler.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesScriptHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesScriptHandler.kt" afterDir="false" />
+    <list default="true" id="79b091c2-ce92-4e99-91ac-ce57e480d71a" name="変更" comment="PVC使用フラグを削除し、PVC作成・利用ロジックを常に適用するよう変更。関連コードをリファクタリング。">
+      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/AdminController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/AdminController.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,6 +61,13 @@
         </projects_view>
       </state>
     </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -108,7 +112,7 @@
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Spring Boot.KerutaApplication.executor": "Run",
+    "Spring Boot.KerutaApplication.executor": "Debug",
     "git-widget-placeholder": "main",
     "go.import.settings.migrated": "true",
     "junie.onboarding.icon.badge.shown": "true",
@@ -124,7 +128,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Gradle.keruta [test]">
+  <component name="RunManager" selected="Spring Boot.KerutaApplication">
     <configuration name="dev" type="CompoundRunConfigurationType">
       <toRun name="server" type="docker-deploy" />
       <toRun name="KerutaApplication" type="SpringBootApplicationConfigurationType" />
@@ -160,7 +164,7 @@
       <updated>1750675107331</updated>
       <workItem from="1750675108809" duration="9531000" />
       <workItem from="1750692326275" duration="1343000" />
-      <workItem from="1750766713217" duration="14216000" />
+      <workItem from="1750766713217" duration="22980000" />
     </task>
     <task id="LOCAL-00001" summary="w">
       <option name="closed" value="true" />
@@ -266,7 +270,63 @@
       <option name="project" value="LOCAL" />
       <updated>1750827973840</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="未使用のKubernetes初期化コンテナ処理を削除し、環境変数およびスクリプト設計を改善。Javaインストールロジックをスクリプトへ移動し、設定の整理を実施。">
+      <option name="closed" value="true" />
+      <created>1750829370470</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1750829370470</updated>
+    </task>
+    <task id="LOCAL-00015" summary="ConfigMap作成および更新機能を追加し、タスクメタデータ用ConfigMap生成処理を実装。関連する環境変数設定およびスクリプト実行設定を拡張。">
+      <option name="closed" value="true" />
+      <created>1750833501911</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1750833501911</updated>
+    </task>
+    <task id="LOCAL-00016" summary="ConfigMap初期化処理を追加し、リポジトリIDのバリデーションを実装">
+      <option name="closed" value="true" />
+      <created>1750834401042</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1750834401042</updated>
+    </task>
+    <task id="LOCAL-00017" summary="リポジトリIDの空チェック追加およびドキュメント修正">
+      <option name="closed" value="true" />
+      <created>1750839625506</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1750839625506</updated>
+    </task>
+    <task id="LOCAL-00018" summary="ドキュメント構成とAPI/データモデルの詳細更新、およびエージェントコマンド処理をKubernetes関連コードに追加">
+      <option name="closed" value="true" />
+      <created>1750846814798</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1750846814798</updated>
+    </task>
+    <task id="LOCAL-00019" summary="タスクIDのnull許容を廃止し、CreateTaskFormを追加。タスク作成フォームのモデルとテンプレートを更新。ロギング設定を調整。">
+      <option name="closed" value="true" />
+      <created>1750851168783</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1750851168783</updated>
+    </task>
+    <task id="LOCAL-00020" summary="PVC使用フラグを削除し、PVC作成・利用ロジックを常に適用するよう変更。関連コードをリファクタリング。">
+      <option name="closed" value="true" />
+      <created>1750851391906</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1750851391906</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -297,7 +357,14 @@
     <MESSAGE value="未使用の初期化コンテナ処理を削除し、ボリュームマウント設定で既存マウントのチェック処理を追加。関連テストを整理。" />
     <MESSAGE value="Javaの自動インストール処理をKubernetes関連のコンテナハンドラに追加し、スクリプトの汎用性を向上。" />
     <MESSAGE value="Kubernetes関連のコンテナ処理をより細分化し、各機能を担当する新しいハンドラ（ConfigMap, ボリュームマウント, 環境変数, スクリプト実行）を追加。コードの再利用性とモジュール化を向上。関連テストも更新。" />
-    <option name="LAST_COMMIT_MESSAGE" value="Kubernetes関連のコンテナ処理をより細分化し、各機能を担当する新しいハンドラ（ConfigMap, ボリュームマウント, 環境変数, スクリプト実行）を追加。コードの再利用性とモジュール化を向上。関連テストも更新。" />
+    <MESSAGE value="未使用のKubernetes初期化コンテナ処理を削除し、環境変数およびスクリプト設計を改善。Javaインストールロジックをスクリプトへ移動し、設定の整理を実施。" />
+    <MESSAGE value="ConfigMap作成および更新機能を追加し、タスクメタデータ用ConfigMap生成処理を実装。関連する環境変数設定およびスクリプト実行設定を拡張。" />
+    <MESSAGE value="ConfigMap初期化処理を追加し、リポジトリIDのバリデーションを実装" />
+    <MESSAGE value="リポジトリIDの空チェック追加およびドキュメント修正" />
+    <MESSAGE value="ドキュメント構成とAPI/データモデルの詳細更新、およびエージェントコマンド処理をKubernetes関連コードに追加" />
+    <MESSAGE value="タスクIDのnull許容を廃止し、CreateTaskFormを追加。タスク作成フォームのモデルとテンプレートを更新。ロギング設定を調整。" />
+    <MESSAGE value="PVC使用フラグを削除し、PVC作成・利用ロジックを常に適用するよう変更。関連コードをリファクタリング。" />
+    <option name="LAST_COMMIT_MESSAGE" value="PVC使用フラグを削除し、PVC作成・利用ロジックを常に適用するよう変更。関連コードをリファクタリング。" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

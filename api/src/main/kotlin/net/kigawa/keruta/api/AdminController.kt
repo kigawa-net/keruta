@@ -79,7 +79,7 @@ class AdminController(
         val documents = documentIds?.mapNotNull {
             try {
                 documentService.getDocumentById(it)
-            } catch (e: NoSuchElementException) {
+            } catch (_: NoSuchElementException) {
                 println("Document not found with id: $it")
                 null
             }

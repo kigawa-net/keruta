@@ -95,4 +95,13 @@ class KubernetesServiceImpl(
         logger.debug("Delegating config update to KubernetesClientProvider")
         return clientProvider.updateConfig(config)
     }
+
+    /**
+     * Deletes a PersistentVolumeClaim.
+     * Delegates to KubernetesJobMonitor.
+     */
+    override fun deletePVC(namespace: String, pvcName: String): Boolean {
+        logger.debug("Delegating PVC deletion to KubernetesJobMonitor")
+        return jobMonitor.deletePVC(namespace, pvcName)
+    }
 }

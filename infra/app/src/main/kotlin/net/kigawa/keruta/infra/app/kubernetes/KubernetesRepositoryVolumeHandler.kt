@@ -96,7 +96,7 @@ class KubernetesRepositoryVolumeHandler(
                 .withName(pvcName)
                 .withNamespace(namespace)
                 .addToLabels("app", "keruta")
-                .addToLabels("task-id", task.id ?: "")
+                .addToLabels("task-id", task.id)
             .endMetadata()
             .withNewSpec()
                 .withAccessModes(repository.pvcAccessMode)

@@ -73,4 +73,12 @@ interface KubernetesService {
      */
     fun updateConfig(config: KubernetesConfig): KubernetesConfig
 
+    /**
+     * Deletes a PersistentVolumeClaim.
+     *
+     * @param namespace The namespace of the PVC
+     * @param pvcName The name of the PVC
+     * @return true if the PVC was deleted, false otherwise
+     */
+    fun deletePVC(namespace: String, pvcName: String): Boolean
 }

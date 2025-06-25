@@ -23,7 +23,7 @@ class KubernetesJobMonitor(
     fun getJobLogs(namespace: String, jobName: String): String {
         val client = clientProvider.getClient()
         val config = clientProvider.getConfig()
-        
+
         if (!config.enabled || client == null) {
             logger.warn("Kubernetes integration is disabled or client is not available")
             return "Kubernetes integration is disabled"
@@ -68,7 +68,7 @@ class KubernetesJobMonitor(
     fun deleteJob(namespace: String, jobName: String): Boolean {
         val client = clientProvider.getClient()
         val config = clientProvider.getConfig()
-        
+
         if (!config.enabled || client == null) {
             logger.warn("Kubernetes integration is disabled or client is not available")
             return false
@@ -97,7 +97,7 @@ class KubernetesJobMonitor(
     fun getJobStatus(namespace: String, jobName: String): String {
         val client = clientProvider.getClient()
         val config = clientProvider.getConfig()
-        
+
         if (!config.enabled || client == null) {
             logger.warn("Kubernetes integration is disabled or client is not available")
             return "UNKNOWN"
@@ -162,6 +162,35 @@ class KubernetesJobMonitor(
         } catch (e: Exception) {
             logger.error("Failed to get job status", e)
             return "ERROR"
+        }
+    }
+
+    /**
+     * Deletes a PersistentVolumeClaim.
+     *
+     * @param namespace The namespace of the PVC
+     * @param pvcName The name of the PVC
+     * @return true if the PVC was deleted, false otherwise
+     */
+    fun deletePVC(namespace: String, pvcName: String): Boolean {
+        val client = clientProvider.getClient()
+        val config = clientProvider.getConfig()
+
+        if (!config.enabled || client == null) {
+            logger.warn("Kubernetes integration is disabled or client is not available")
+            return false
+        }
+
+        logger.info("Deleting PVC: $pvcName in namespace: $namespace")
+
+        try {
+            // The delete() method returns a boolean indicating whether the PVC was deleted
+            val result = client.persistentVolumeClaims().inNamespace(namespace).withName(pvcName).delete()
+            // If the result is not null and not empty, the PVC was deleted
+            return result != null && result.isNotEmpty()
+        } catch (e: Exception) {
+            logger.error("Failed to delete PVC", e)
+            return false
         }
     }
 }

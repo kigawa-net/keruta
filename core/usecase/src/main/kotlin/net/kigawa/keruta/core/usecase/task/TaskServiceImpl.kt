@@ -47,6 +47,35 @@ class TaskServiceImpl(
     }
 
     override fun deleteTask(id: String) {
+        // Get the task before deleting it
+        val task = taskRepository.findById(id) ?: throw NoSuchElementException("Task not found with id: $id")
+
+        // Delete the Kubernetes job if it exists
+        val jobName = task.jobName
+        val namespace = task.namespace
+        if (jobName != null && namespace != null) {
+            try {
+                logger.info("Deleting Kubernetes job: $jobName in namespace: $namespace")
+                kubernetesService.deleteJob(namespace, jobName)
+            } catch (e: Exception) {
+                logger.error("Failed to delete Kubernetes job", e)
+            }
+        }
+
+        // Delete the PVC if it exists
+        val taskId = task.id
+        if (taskId != null) {
+            try {
+                val pvcName = "git-repo-pvc-$taskId"
+                val pvcNamespace = namespace ?: "default"
+                logger.info("Deleting PVC: $pvcName in namespace: $pvcNamespace")
+                kubernetesService.deletePVC(pvcNamespace, pvcName)
+            } catch (e: Exception) {
+                logger.error("Failed to delete PVC", e)
+            }
+        }
+
+        // Delete the task from the repository
         if (!taskRepository.deleteById(id)) {
             throw NoSuchElementException("Task not found with id: $id")
         }
