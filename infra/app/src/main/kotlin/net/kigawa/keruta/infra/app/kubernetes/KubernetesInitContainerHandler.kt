@@ -44,7 +44,7 @@ class KubernetesInitContainerHandler(
         // Create setup container for script execution and file download
         val setupContainer = Container()
         setupContainer.name = "setup"
-        setupContainer.image = "curlimages/curl" // Image with curl and sh
+        setupContainer.image = "ubuntu:latest" // Ubuntu image with curl and sh
         setupContainer.workingDir = workMountPath
 
         // Create volume mount for work directory
@@ -72,6 +72,8 @@ class KubernetesInitContainerHandler(
         // Create setup script
         val setupScript = listOf(
             "set -e",
+            "# Install curl if not already installed",
+            "apt-get update && apt-get install -y --no-install-recommends curl && apt-get clean && rm -rf /var/lib/apt/lists/*",
             "mkdir -p ./.keruta",
             "",
             "# Check if environment variables are set (they might be empty if ConfigMap doesn't exist)",
