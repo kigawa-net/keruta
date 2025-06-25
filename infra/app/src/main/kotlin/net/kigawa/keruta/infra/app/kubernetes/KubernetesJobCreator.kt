@@ -67,7 +67,7 @@ class KubernetesJobCreator(
 
             // Create main container
             val mainContainer = containerHandler.createMainContainer(task, image, resources, additionalEnv)
-            
+
             // Create containers list and add main container
             val containers = mutableListOf<Container>()
             containers.add(mainContainer)
@@ -95,13 +95,10 @@ class KubernetesJobCreator(
                 volumeHandler.createWorkVolume(volumes, mainContainer)
             }
 
-            // Set up init containers for setup script execution and file download
+            // Set up script execution in the main container
             val workMountPath = if (repository != null) "/repo" else "/work"
-            initContainerHandler.setupInitContainers(
-                task,
-                actualNamespace,
-                volumes,
-                initContainers,
+            containerHandler.setupScriptExecution(
+                mainContainer,
                 workVolumeName,
                 workMountPath
             )
