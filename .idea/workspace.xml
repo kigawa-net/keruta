@@ -18,17 +18,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79b091c2-ce92-4e99-91ac-ce57e480d71a" name="変更" comment="ConfigMapをオプション化し、環境変数未設定時の処理を追加">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_slf4j_slf4j_api_2_0_9.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_slf4j_slf4j_api_2_0_9.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_data_spring_data_commons_3_2_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_data_spring_data_commons_3_2_0.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_context_6_1_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_context_6_1_1.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_web_6_1_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_web_6_1_1.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/api/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/test/kotlin/net/kigawa/keruta/api/KerutaApplicationTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/test/kotlin/net/kigawa/keruta/api/KerutaApplicationTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buildSrc/src/main/kotlin/Dependencies.kt" beforeDir="false" afterPath="$PROJECT_DIR$/buildSrc/src/main/kotlin/Dependencies.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesJobCreator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesJobCreator.kt" afterDir="false" />
+    <list default="true" id="79b091c2-ce92-4e99-91ac-ce57e480d71a" name="変更" comment="Kubernetes関連のコンテナ、ジョブ、メタデータ、ポッド仕様、ボリューム処理を担当する新しいハンドラを追加し、コードのモジュール化と再利用性を向上。MongoDBテスト設定およびTestContainers対応も実施。">
+      <change beforePath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesInitContainerHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesInitContainerHandler.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -166,7 +157,7 @@
       <updated>1750675107331</updated>
       <workItem from="1750675108809" duration="9531000" />
       <workItem from="1750692326275" duration="1343000" />
-      <workItem from="1750766713217" duration="4806000" />
+      <workItem from="1750766713217" duration="5117000" />
     </task>
     <task id="LOCAL-00001" summary="w">
       <option name="closed" value="true" />
@@ -200,7 +191,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750688156496</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Kubernetes関連のコンテナ、ジョブ、メタデータ、ポッド仕様、ボリューム処理を担当する新しいハンドラを追加し、コードのモジュール化と再利用性を向上。MongoDBテスト設定およびTestContainers対応も実施。">
+      <option name="closed" value="true" />
+      <created>1750810131185</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1750810131185</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -222,7 +221,8 @@
     <MESSAGE value="Remove `ExtendedAgentAdminController` and IntelliJ project-specific configuration files.&#10;&#10;Cleaned up unused controller and redundant IntelliJ files, including data sources, run configurations, and shelved changes, for a leaner and more maintainable codebase." />
     <MESSAGE value="リポジトリ管理機能追加: テスト、スクリプト設定、UI改善" />
     <MESSAGE value="ConfigMapをオプション化し、環境変数未設定時の処理を追加" />
-    <option name="LAST_COMMIT_MESSAGE" value="ConfigMapをオプション化し、環境変数未設定時の処理を追加" />
+    <MESSAGE value="Kubernetes関連のコンテナ、ジョブ、メタデータ、ポッド仕様、ボリューム処理を担当する新しいハンドラを追加し、コードのモジュール化と再利用性を向上。MongoDBテスト設定およびTestContainers対応も実施。" />
+    <option name="LAST_COMMIT_MESSAGE" value="Kubernetes関連のコンテナ、ジョブ、メタデータ、ポッド仕様、ボリューム処理を担当する新しいハンドラを追加し、コードのモジュール化と再利用性を向上。MongoDBテスト設定およびTestContainers対応も実施。" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
