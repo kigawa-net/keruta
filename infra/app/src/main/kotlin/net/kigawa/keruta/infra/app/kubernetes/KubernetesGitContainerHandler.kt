@@ -29,13 +29,11 @@ class KubernetesGitContainerHandler {
     ): Container {
         val gitCloneContainer = Container()
         gitCloneContainer.name = "git-clone"
-        gitCloneContainer.image = "ubuntu:latest"
+        gitCloneContainer.image = "alpine/git:latest"
 
         // Create a shell script that performs git clone and sets up exclusions
         val gitCloneScript = listOf(
             "set -e",
-            "# Install git if not already installed",
-            "apt-get update && apt-get install -y --no-install-recommends git && apt-get clean && rm -rf /var/lib/apt/lists/*",
             "git clone --depth 1 --single-branch ${repository.url} $mountPath",
             "echo 'Setting up git exclusions'",
             "echo '/.keruta' >> $mountPath/.git/info/exclude",

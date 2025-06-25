@@ -41,20 +41,61 @@ class KubernetesInitContainerHandler(
     ): Boolean {
         logger.info("Setting up init containers for task: ${task.id}")
 
-        // Create setup container for script execution and file download
+        // Create setup container
+        val setupContainer = createSetupContainer(workMountPath)
+
+        // Setup volume mounts
+        setupVolumeMount(setupContainer, workVolumeName, workMountPath)
+
+        // Setup environment variables
+        setupEnvironmentVariables(setupContainer)
+
+        // Setup script and command
+        setupScriptAndCommand(setupContainer)
+
+        // Add setup container to init containers
+        initContainers.add(setupContainer)
+
+        return true
+    }
+
+    /**
+     * Creates a setup container for script execution and file download.
+     *
+     * @param workMountPath The mount path of the work volume
+     * @return The created container
+     */
+    private fun createSetupContainer(workMountPath: String): Container {
         val setupContainer = Container()
         setupContainer.name = "setup"
         setupContainer.image = "ubuntu:latest" // Ubuntu image with curl and sh
         setupContainer.workingDir = workMountPath
+        return setupContainer
+    }
 
+    /**
+     * Sets up volume mount for the container.
+     *
+     * @param container The container to set up volume mounts for
+     * @param workVolumeName The name of the work volume
+     * @param workMountPath The mount path of the work volume
+     */
+    private fun setupVolumeMount(container: Container, workVolumeName: String, workMountPath: String) {
         // Create volume mount for work directory
         val workVolumeMount = VolumeMount()
         workVolumeMount.name = workVolumeName
         workVolumeMount.mountPath = workMountPath
 
-        // Add volume mount to setup container
-        setupContainer.volumeMounts = listOf(workVolumeMount)
+        // Add volume mount to container
+        container.volumeMounts = listOf(workVolumeMount)
+    }
 
+    /**
+     * Sets up environment variables for the container.
+     *
+     * @param container The container to set up environment variables for
+     */
+    private fun setupEnvironmentVariables(container: Container) {
         // Create environment variables for setup container
         val setupEnvVars = mutableListOf<EnvVar>()
 
@@ -67,10 +108,30 @@ class KubernetesInitContainerHandler(
         setupEnvVars.add(EnvVar("KERUTA_API_ENDPOINT", "http://keruta-api.keruta.svc.cluster.local", null))
 
         // Add environment variables to setup container
-        setupContainer.env = setupEnvVars
+        container.env = setupEnvVars
+    }
 
+    /**
+     * Sets up script and command for the container.
+     *
+     * @param container The container to set up script and command for
+     */
+    private fun setupScriptAndCommand(container: Container) {
         // Create setup script
-        val setupScript = listOf(
+        val setupScript = createSetupScript()
+
+        // Set command and args for setup container
+        container.command = listOf("sh", "-c")
+        container.args = listOf(setupScript.joinToString("\n"))
+    }
+
+    /**
+     * Creates the setup script for the container.
+     *
+     * @return The setup script as a list of strings
+     */
+    private fun createSetupScript(): List<String> {
+        return listOf(
             "set -e",
             "# Install curl if not already installed",
             "apt-get update && apt-get install -y --no-install-recommends curl && apt-get clean && rm -rf /var/lib/apt/lists/*",
@@ -107,15 +168,6 @@ class KubernetesInitContainerHandler(
             "  curl -sfL -o ./.keruta/README.md \"\$DOC_URL\"",
             "fi"
         )
-
-        // Set command and args for setup container
-        setupContainer.command = listOf("sh", "-c")
-        setupContainer.args = listOf(setupScript.joinToString("\n"))
-
-        // Add setup container to init containers
-        initContainers.add(setupContainer)
-
-        return true
     }
 
     /**
