@@ -23,6 +23,7 @@ data class Task(
     val agentId: String? = null,
     val repositoryId: String? = null, // Added for git clone in init container
     val parentId: String? = null, // Added for parent-child task relationship
+    val storageClass: String = "", // Storage class for PVC
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now()
 )
