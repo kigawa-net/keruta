@@ -52,6 +52,27 @@ class RepositoryAdminController @Autowired constructor(
         }
     }
 
+    @PostMapping("/edit/{id}")
+    fun updateRepository(@PathVariable id: String, @ModelAttribute repository: Repository): String {
+        try {
+            val existingRepository = gitRepositoryService.getRepositoryById(id)
+            val updatedRepository = existingRepository.copy(
+                name = repository.name,
+                url = repository.url,
+                description = repository.description,
+                setupScript = repository.setupScript,
+                pvcStorageSize = repository.pvcStorageSize,
+                pvcAccessMode = repository.pvcAccessMode,
+                pvcStorageClass = repository.pvcStorageClass,
+                updatedAt = java.time.LocalDateTime.now()
+            )
+            gitRepositoryService.updateRepository(id, updatedRepository)
+            return "redirect:/admin/repositories"
+        } catch (e: NoSuchElementException) {
+            return "redirect:/admin/repositories"
+        }
+    }
+
 
 
     @GetMapping("/delete/{id}")

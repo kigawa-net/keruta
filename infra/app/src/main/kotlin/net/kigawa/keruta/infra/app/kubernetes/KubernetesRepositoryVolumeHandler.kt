@@ -14,7 +14,8 @@ import java.util.UUID
  */
 @Component
 class KubernetesRepositoryVolumeHandler(
-    private val clientProvider: KubernetesClientProvider
+    private val clientProvider: KubernetesClientProvider,
+    private val kubernetesService: net.kigawa.keruta.core.usecase.kubernetes.KubernetesService
 ) {
     private val logger = LoggerFactory.getLogger(KubernetesRepositoryVolumeHandler::class.java)
 
@@ -90,8 +91,18 @@ class KubernetesRepositoryVolumeHandler(
     ) {
         logger.info("Creating new PVC: $pvcName")
 
+        // Get Kubernetes config for default values
+        val kubernetesConfig = kubernetesService.getConfig()
+
+        // Determine PVC settings, using defaults from KubernetesConfig if repository values are empty
+        val storageSize = if (repository.pvcStorageSize.isBlank()) kubernetesConfig.defaultPvcStorageSize else repository.pvcStorageSize
+        val accessMode = if (repository.pvcAccessMode.isBlank()) kubernetesConfig.defaultPvcAccessMode else repository.pvcAccessMode
+        val storageClass = if (repository.pvcStorageClass.isBlank()) kubernetesConfig.defaultPvcStorageClass else repository.pvcStorageClass
+
+        logger.info("Using PVC settings - Size: $storageSize, Access Mode: $accessMode, Storage Class: $storageClass")
+
         // Create PVC
-        val pvc = PersistentVolumeClaimBuilder()
+        val pvcBuilder = PersistentVolumeClaimBuilder()
             .withNewMetadata()
                 .withName(pvcName)
                 .withNamespace(namespace)
@@ -99,12 +110,17 @@ class KubernetesRepositoryVolumeHandler(
                 .addToLabels("task-id", task.id)
             .endMetadata()
             .withNewSpec()
-                .withAccessModes(repository.pvcAccessMode)
+                .withAccessModes(accessMode)
                 .withNewResources()
-                    .addToRequests("storage", io.fabric8.kubernetes.api.model.Quantity(repository.pvcStorageSize))
+                    .addToRequests("storage", io.fabric8.kubernetes.api.model.Quantity(storageSize))
                 .endResources()
-            .endSpec()
-            .build()
+
+        // Set storageClass if provided
+        if (storageClass.isNotBlank()) {
+            pvcBuilder.withStorageClassName(storageClass)
+        }
+
+        val pvc = pvcBuilder.endSpec().build()
 
         client.persistentVolumeClaims()
             .inNamespace(namespace)

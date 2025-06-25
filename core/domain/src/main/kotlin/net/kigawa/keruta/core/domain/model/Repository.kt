@@ -10,6 +10,7 @@
  * @property usePvc Whether to use PersistentVolumeClaim for this repository
  * @property pvcStorageSize The storage size for the PVC (e.g., "1Gi")
  * @property pvcAccessMode The access mode for the PVC (e.g., "ReadWriteOnce")
+ * @property pvcStorageClass The storage class for the PVC (e.g., "standard")
  * @property createdAt The timestamp when the repository was added to the system
  * @property updatedAt The timestamp when the repository was last updated
  */
@@ -26,6 +27,7 @@ data class Repository(
     val setupScript: String = "",
     val pvcStorageSize: String = "1Gi",
     val pvcAccessMode: String = "ReadWriteOnce",
+    val pvcStorageClass: String = "",
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now()
 )

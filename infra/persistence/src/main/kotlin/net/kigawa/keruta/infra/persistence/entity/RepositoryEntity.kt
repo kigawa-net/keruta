@@ -17,6 +17,9 @@ data class RepositoryEntity(
     val description: String = "",
     val isValid: Boolean = false,
     val setupScript: String = "",
+    val pvcStorageSize: String = "1Gi",
+    val pvcAccessMode: String = "ReadWriteOnce",
+    val pvcStorageClass: String = "",
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now()
 ) {
@@ -35,6 +38,9 @@ data class RepositoryEntity(
                 description = repository.description,
                 isValid = repository.isValid,
                 setupScript = repository.setupScript,
+                pvcStorageSize = repository.pvcStorageSize,
+                pvcAccessMode = repository.pvcAccessMode,
+                pvcStorageClass = repository.pvcStorageClass,
                 createdAt = repository.createdAt,
                 updatedAt = repository.updatedAt
             )
@@ -54,6 +60,9 @@ data class RepositoryEntity(
             description = description,
             isValid = isValid,
             setupScript = setupScript,
+            pvcStorageSize = pvcStorageSize,
+            pvcAccessMode = pvcAccessMode,
+            pvcStorageClass = pvcStorageClass,
             createdAt = createdAt,
             updatedAt = updatedAt
         )

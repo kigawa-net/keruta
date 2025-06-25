@@ -18,6 +18,9 @@ data class KubernetesConfigEntity(
     val defaultNamespace: String = "default",
     val defaultImage: String = "keruta-task-executor:latest",
     val processorNamespace: String = "default",
+    val defaultPvcStorageSize: String = "1Gi",
+    val defaultPvcAccessMode: String = "ReadWriteOnce",
+    val defaultPvcStorageClass: String = "",
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now()
 ) {
@@ -31,6 +34,9 @@ data class KubernetesConfigEntity(
                 defaultNamespace = config.defaultNamespace,
                 defaultImage = config.defaultImage,
                 processorNamespace = config.processorNamespace,
+                defaultPvcStorageSize = config.defaultPvcStorageSize,
+                defaultPvcAccessMode = config.defaultPvcAccessMode,
+                defaultPvcStorageClass = config.defaultPvcStorageClass,
                 createdAt = config.createdAt,
                 updatedAt = config.updatedAt
             )
@@ -46,6 +52,9 @@ data class KubernetesConfigEntity(
             defaultNamespace = defaultNamespace,
             defaultImage = defaultImage,
             processorNamespace = processorNamespace,
+            defaultPvcStorageSize = defaultPvcStorageSize,
+            defaultPvcAccessMode = defaultPvcAccessMode,
+            defaultPvcStorageClass = defaultPvcStorageClass,
             createdAt = createdAt,
             updatedAt = updatedAt
         )

@@ -8,6 +8,9 @@
  * @property defaultNamespace The default Kubernetes namespace
  * @property defaultImage The default Docker image for task execution
  * @property processorNamespace The namespace for the job processor
+ * @property defaultPvcStorageSize The default storage size for PVCs (e.g., "1Gi")
+ * @property defaultPvcAccessMode The default access mode for PVCs (e.g., "ReadWriteOnce")
+ * @property defaultPvcStorageClass The default storage class for PVCs
  * @property createdAt The timestamp when the configuration was created
  * @property updatedAt The timestamp when the configuration was last updated
  */
@@ -23,6 +26,9 @@ data class KubernetesConfig(
     val defaultNamespace: String = "default",
     val defaultImage: String = "keruta-task-executor:latest",
     val processorNamespace: String = "default",
+    val defaultPvcStorageSize: String = "1Gi",
+    val defaultPvcAccessMode: String = "ReadWriteOnce",
+    val defaultPvcStorageClass: String = "",
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now()
 )
