@@ -22,5 +22,13 @@ dependencies {
     // Thymeleaf
     implementation(Dependencies.springBootStarterThymeleaf)
 
+    // MongoDB
+    implementation(Dependencies.springBootStarterData)
+    implementation(Dependencies.mongodbDriver)
+
     testImplementation(Dependencies.springBootStarterTest)
+    testImplementation(Dependencies.testcontainersJunit)
+    testImplementation(Dependencies.testcontainersCore)
+    testImplementation(Dependencies.testcontainersMongodb)
+    testImplementation(Dependencies.testcontainersPostgresql)
 }

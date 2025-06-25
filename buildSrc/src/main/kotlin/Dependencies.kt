@@ -9,6 +9,7 @@ object Versions {
     const val thymeleaf = "3.1.2.RELEASE"
     const val keycloak = "23.0.3"
     const val fabric8KubernetesClient = "6.5.1"
+    const val testcontainers = "1.19.3"
 }
 
 object Dependencies {
@@ -47,4 +48,10 @@ object Dependencies {
 
     // Kubernetes
     const val fabric8KubernetesClient = "io.fabric8:kubernetes-client:${Versions.fabric8KubernetesClient}"
+
+    // TestContainers
+    const val testcontainersJunit = "org.testcontainers:junit-jupiter:${Versions.testcontainers}"
+    const val testcontainersCore = "org.testcontainers:testcontainers:${Versions.testcontainers}"
+    const val testcontainersMongodb = "org.testcontainers:mongodb:${Versions.testcontainers}"
+    const val testcontainersPostgresql = "org.testcontainers:postgresql:${Versions.testcontainers}"
 }
