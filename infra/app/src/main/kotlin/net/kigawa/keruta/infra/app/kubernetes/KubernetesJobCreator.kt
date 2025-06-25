@@ -17,7 +17,6 @@ import java.util.UUID
 class KubernetesJobCreator(
     private val clientProvider: KubernetesClientProvider,
     private val repositoryHandler: KubernetesRepositoryHandler,
-    private val initContainerHandler: KubernetesInitContainerHandler,
     private val metadataHandler: KubernetesMetadataHandler,
     private val containerHandler: KubernetesContainerHandler,
     private val volumeHandler: KubernetesVolumeHandler,

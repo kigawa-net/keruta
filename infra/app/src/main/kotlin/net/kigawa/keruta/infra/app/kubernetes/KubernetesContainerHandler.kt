@@ -111,13 +111,21 @@ class KubernetesContainerHandler(
      * @param workMountPath The mount path of the work volume
      */
     private fun setupVolumeMount(container: Container, workVolumeName: String, workMountPath: String) {
+        // Check if a volume mount with the same path already exists
+        val volumeMounts = container.volumeMounts ?: mutableListOf()
+        val existingMount = volumeMounts.find { it.mountPath == workMountPath }
+
+        if (existingMount != null) {
+            logger.info("Volume mount with path $workMountPath already exists, skipping")
+            return
+        }
+
         // Create volume mount for work directory
         val workVolumeMount = VolumeMount()
         workVolumeMount.name = workVolumeName
         workVolumeMount.mountPath = workMountPath
 
         // Add volume mount to container
-        val volumeMounts = container.volumeMounts ?: mutableListOf()
         volumeMounts.add(workVolumeMount)
         container.volumeMounts = volumeMounts
     }

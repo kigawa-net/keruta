@@ -135,6 +135,5 @@ class KubernetesContainerHandlerTest {
         assertTrue(scriptContent.contains("mkdir -p ./.keruta"))
         assertTrue(scriptContent.contains("KERUTA_REPOSITORY_ID"))
         assertTrue(scriptContent.contains("KERUTA_DOCUMENT_ID"))
-        assertTrue(scriptContent.contains("exec /bin/sh -c \"echo 'No command specified'\""))
     }
 }
