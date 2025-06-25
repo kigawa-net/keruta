@@ -14,8 +14,7 @@ import java.util.UUID
  */
 @Component
 class KubernetesRepositoryVolumeHandler(
-    private val clientProvider: KubernetesClientProvider,
-    private val kubernetesService: net.kigawa.keruta.core.usecase.kubernetes.KubernetesService
+    private val clientProvider: KubernetesClientProvider
 ) {
     private val logger = LoggerFactory.getLogger(KubernetesRepositoryVolumeHandler::class.java)
 
@@ -92,7 +91,7 @@ class KubernetesRepositoryVolumeHandler(
         logger.info("Creating new PVC: $pvcName")
 
         // Get Kubernetes config for default values
-        val kubernetesConfig = kubernetesService.getConfig()
+        val kubernetesConfig = clientProvider.getConfig()
 
         // Determine PVC settings, using defaults from KubernetesConfig if repository values are empty
         val storageSize = if (repository.pvcStorageSize.isBlank()) kubernetesConfig.defaultPvcStorageSize else repository.pvcStorageSize
