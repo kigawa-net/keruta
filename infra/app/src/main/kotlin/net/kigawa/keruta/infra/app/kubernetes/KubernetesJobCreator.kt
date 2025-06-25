@@ -7,7 +7,7 @@ import net.kigawa.keruta.core.domain.model.Resources
 import net.kigawa.keruta.core.domain.model.Task
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
-import java.util.UUID
+import java.util.*
 
 /**
  * Creator for Kubernetes jobs.
@@ -21,7 +21,7 @@ class KubernetesJobCreator(
     private val containerHandler: KubernetesContainerHandler,
     private val volumeHandler: KubernetesVolumeHandler,
     private val podSpecHandler: KubernetesPodSpecHandler,
-    private val jobSpecHandler: KubernetesJobSpecHandler
+    private val jobSpecHandler: KubernetesJobSpecHandler,
 ) {
     private val logger = LoggerFactory.getLogger(KubernetesJobCreator::class.java)
 
@@ -44,7 +44,7 @@ class KubernetesJobCreator(
         jobName: String?,
         resources: Resources?,
         additionalEnv: Map<String, String>,
-        repository: Repository?
+        repository: Repository?,
     ): String {
         val config = clientProvider.getConfig()
         val client = clientProvider.getClient()
@@ -68,8 +68,7 @@ class KubernetesJobCreator(
             val mainContainer = containerHandler.createMainContainer(task, image, resources, additionalEnv)
 
             // Create containers list and add main container
-            val containers = mutableListOf<Container>()
-            containers.add(mainContainer)
+            val containers = mutableListOf(mainContainer)
 
             // Create volumes list
             val volumes = mutableListOf<Volume>()
@@ -112,7 +111,9 @@ class KubernetesJobCreator(
 
             // Create the job
             val createdJob = client.batch().v1().jobs().inNamespace(actualNamespace).create(job)
-            logger.info("Created Kubernetes job: ${createdJob.metadata.name} in namespace: ${createdJob.metadata.namespace}")
+            logger.info(
+                "Created Kubernetes job: ${createdJob.metadata.name} in namespace: ${createdJob.metadata.namespace}"
+            )
 
             return createdJob.metadata.name
         } catch (e: Exception) {
