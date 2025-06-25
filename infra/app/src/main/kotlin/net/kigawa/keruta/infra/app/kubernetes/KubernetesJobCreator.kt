@@ -5,6 +5,7 @@ import io.fabric8.kubernetes.api.model.Volume
 import net.kigawa.keruta.core.domain.model.Repository
 import net.kigawa.keruta.core.domain.model.Resources
 import net.kigawa.keruta.core.domain.model.Task
+import net.kigawa.keruta.core.usecase.agent.AgentService
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import java.util.*
@@ -22,6 +23,7 @@ class KubernetesJobCreator(
     private val volumeHandler: KubernetesVolumeHandler,
     private val podSpecHandler: KubernetesPodSpecHandler,
     private val jobSpecHandler: KubernetesJobSpecHandler,
+    private val agentService: AgentService,
 ) {
     private val logger = LoggerFactory.getLogger(KubernetesJobCreator::class.java)
 
@@ -101,6 +103,20 @@ class KubernetesJobCreator(
             val documentId = task.documents.firstOrNull()?.id ?: ""
             val agentId = task.agentId ?: ""
 
+            // Get agent install and execute commands if agentId is available
+            var agentInstallCommand = ""
+            var agentExecuteCommand = ""
+            if (agentId.isNotEmpty()) {
+                try {
+                    val agent = agentService.getAgentById(agentId)
+                    agentInstallCommand = agent.installCommand
+                    agentExecuteCommand = agent.executeCommand
+                    logger.info("Using agent commands for agent $agentId: install='$agentInstallCommand', execute='$agentExecuteCommand'")
+                } catch (e: Exception) {
+                    logger.warn("Failed to get agent $agentId: ${e.message}")
+                }
+            }
+
             // Set up script execution with ConfigMap creation
             containerHandler.setupScriptExecution(
                 mainContainer,
@@ -111,8 +127,8 @@ class KubernetesJobCreator(
                 repositoryId,
                 documentId,
                 agentId,
-                "", // agentInstallCommand - not available here
-                ""  // agentExecuteCommand - not available here
+                agentInstallCommand,
+                agentExecuteCommand
             )
 
             // Create pod spec and pod template spec

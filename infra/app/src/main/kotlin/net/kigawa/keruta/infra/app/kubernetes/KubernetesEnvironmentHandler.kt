@@ -11,57 +11,20 @@ import org.springframework.stereotype.Component
  * Responsible for setting up environment variables for containers.
  */
 @Component
-class KubernetesEnvironmentHandler(
-    private val configMapHandler: KubernetesConfigMapHandler
-) {
+class KubernetesEnvironmentHandler {
     private val logger = LoggerFactory.getLogger(KubernetesEnvironmentHandler::class.java)
-
-    /**
-     * Creates a task metadata ConfigMap with the given data.
-     *
-     * @param task The task to create metadata for
-     * @param repositoryId The repository ID
-     * @param documentId The document ID
-     * @param agentId The agent ID
-     * @param agentInstallCommand The agent install command
-     * @param agentExecuteCommand The agent execute command
-     * @param namespace The namespace to create the ConfigMap in (optional)
-     * @return True if the ConfigMap was created successfully, false otherwise
-     */
-    fun createTaskMetadataConfigMap(
-        task: Task,
-        repositoryId: String,
-        documentId: String,
-        agentId: String,
-        agentInstallCommand: String,
-        agentExecuteCommand: String,
-        namespace: String = ""
-    ): Boolean {
-        logger.info("Creating task-metadata ConfigMap for task: ${task.id}")
-
-        val data = mapOf(
-            "repositoryId" to repositoryId,
-            "documentId" to documentId,
-            "agentId" to agentId,
-            "agentInstallCommand" to agentInstallCommand,
-            "agentExecuteCommand" to agentExecuteCommand
-        )
-
-        val configMap = configMapHandler.createConfigMap("task-metadata", data, namespace)
-        return configMap != null
-    }
 
     /**
      * Sets up environment variables for the container.
      *
      * @param container The container to set up environment variables for
-     * @param createConfigMap Whether to create the ConfigMap if it doesn't exist
-     * @param task The task to create metadata for (required if createConfigMap is true)
-     * @param repositoryId The repository ID (required if createConfigMap is true)
-     * @param documentId The document ID (required if createConfigMap is true)
-     * @param agentId The agent ID (required if createConfigMap is true)
-     * @param agentInstallCommand The agent install command (required if createConfigMap is true)
-     * @param agentExecuteCommand The agent execute command (required if createConfigMap is true)
+     * @param createConfigMap Whether to create the ConfigMap if it doesn't exist (deprecated, kept for compatibility)
+     * @param task The task to create metadata for (not used anymore)
+     * @param repositoryId The repository ID
+     * @param documentId The document ID
+     * @param agentId The agent ID
+     * @param agentInstallCommand The agent install command
+     * @param agentExecuteCommand The agent execute command
      */
     fun setupEnvironmentVariables(
         container: Container,
@@ -73,34 +36,18 @@ class KubernetesEnvironmentHandler(
         agentInstallCommand: String = "",
         agentExecuteCommand: String = ""
     ) {
-        // Create the ConfigMap if requested
-        if (createConfigMap && task != null) {
-            val created = createTaskMetadataConfigMap(
-                task,
-                repositoryId,
-                documentId,
-                agentId,
-                agentInstallCommand,
-                agentExecuteCommand
-            )
-            if (created) {
-                logger.info("Created task-metadata ConfigMap successfully")
-            } else {
-                logger.warn("Failed to create task-metadata ConfigMap")
-            }
-        }
-
-        // Add task metadata environment variables (ConfigMap is optional)
-        logger.info("Adding environment variables from task-metadata ConfigMap (optional)")
+        // Add task metadata environment variables directly
+        logger.info("Adding environment variables directly")
         val envVars = container.env ?: mutableListOf()
 
-        envVars.add(configMapHandler.createConfigMapEnvVar("KERUTA_REPOSITORY_ID", "task-metadata", "repositoryId"))
-        envVars.add(configMapHandler.createConfigMapEnvVar("KERUTA_DOCUMENT_ID", "task-metadata", "documentId"))
+        // Add repository and document environment variables
+        envVars.add(EnvVar("KERUTA_REPOSITORY_ID", repositoryId, null))
+        envVars.add(EnvVar("KERUTA_DOCUMENT_ID", documentId, null))
 
         // Add agent-related environment variables
-        envVars.add(configMapHandler.createConfigMapEnvVar("KERUTA_AGENT_ID", "task-metadata", "agentId"))
-        envVars.add(configMapHandler.createConfigMapEnvVar("KERUTA_AGENT_INSTALL_COMMAND", "task-metadata", "agentInstallCommand"))
-        envVars.add(configMapHandler.createConfigMapEnvVar("KERUTA_AGENT_EXECUTE_COMMAND", "task-metadata", "agentExecuteCommand"))
+        envVars.add(EnvVar("KERUTA_AGENT_ID", agentId, null))
+        envVars.add(EnvVar("KERUTA_AGENT_INSTALL_COMMAND", agentInstallCommand, null))
+        envVars.add(EnvVar("KERUTA_AGENT_EXECUTE_COMMAND", agentExecuteCommand, null))
 
         // Add API endpoint environment variable
         envVars.add(EnvVar("KERUTA_API_ENDPOINT", "http://keruta-api.keruta.svc.cluster.local", null))
