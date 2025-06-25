@@ -68,14 +68,13 @@ class AdminController(
         @RequestParam(required = false) agentId: String? = null,
         @RequestParam(required = false) parentId: String? = null,
     ): String {
-        val repository = if (repositoryId != null && repositoryId.isNotBlank()) {
+        if (repositoryId != null && repositoryId.isNotBlank()) {
             try {
                 gitRepositoryService.getRepositoryById(repositoryId)
             } catch (e: NoSuchElementException) {
                 println("Repository not found with id: $repositoryId")
-                null
             }
-        } else null
+        }
         if (repositoryId == null) println("RepositoryId is null")
         val documents = documentIds?.mapNotNull {
             try {

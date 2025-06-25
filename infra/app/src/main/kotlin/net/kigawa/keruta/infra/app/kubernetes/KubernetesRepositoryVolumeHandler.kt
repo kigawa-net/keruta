@@ -36,43 +36,38 @@ class KubernetesRepositoryVolumeHandler(
         val repoVolume = Volume()
         repoVolume.name = volumeName
 
-        if (repository.usePvc) {
-            logger.info("Using PVC for repository: ${repository.name}")
+        logger.info("Using PVC for repository: ${repository.name}")
 
-            // Determine PVC name based on parent task
-            val pvcName = if (task.parentId != null) {
-                // Use parent task's PVC if available
-                "git-repo-pvc-${task.parentId}"
-            } else {
-                // Create new PVC for this task
-                "git-repo-pvc-${task.id}"
-            }
-
-            val client = clientProvider.getClient() ?: return null
-
-            // Check if PVC already exists
-            val existingPvc = client.persistentVolumeClaims()
-                .inNamespace(namespace)
-                .withName(pvcName)
-                .get()
-
-            // Create PVC if it doesn't exist
-            if (existingPvc == null && task.parentId == null) {
-                createPersistentVolumeClaim(client, task, repository, namespace, pvcName)
-            } else if (task.parentId != null) {
-                logger.info("Using parent task's PVC: $pvcName")
-            } else {
-                logger.info("Using existing PVC: $pvcName")
-            }
-
-            // Set volume to use PVC
-            val pvcSource = io.fabric8.kubernetes.api.model.PersistentVolumeClaimVolumeSource()
-            pvcSource.claimName = pvcName
-            repoVolume.persistentVolumeClaim = pvcSource
+        // Determine PVC name based on parent task
+        val pvcName = if (task.parentId != null) {
+            // Use parent task's PVC if available
+            "git-repo-pvc-${task.parentId}"
         } else {
-            // Use EmptyDir if PVC is not specified
-            repoVolume.emptyDir = io.fabric8.kubernetes.api.model.EmptyDirVolumeSource()
+            // Create new PVC for this task
+            "git-repo-pvc-${task.id}"
         }
+
+        val client = clientProvider.getClient() ?: return null
+
+        // Check if PVC already exists
+        val existingPvc = client.persistentVolumeClaims()
+            .inNamespace(namespace)
+            .withName(pvcName)
+            .get()
+
+        // Create PVC if it doesn't exist
+        if (existingPvc == null && task.parentId == null) {
+            createPersistentVolumeClaim(client, task, repository, namespace, pvcName)
+        } else if (task.parentId != null) {
+            logger.info("Using parent task's PVC: $pvcName")
+        } else {
+            logger.info("Using existing PVC: $pvcName")
+        }
+
+        // Set volume to use PVC
+        val pvcSource = io.fabric8.kubernetes.api.model.PersistentVolumeClaimVolumeSource()
+        pvcSource.claimName = pvcName
+        repoVolume.persistentVolumeClaim = pvcSource
 
         return repoVolume
     }

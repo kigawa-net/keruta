@@ -24,7 +24,6 @@ data class Repository(
     val description: String = "",
     val isValid: Boolean = false,
     val setupScript: String = "",
-    val usePvc: Boolean = false,
     val pvcStorageSize: String = "1Gi",
     val pvcAccessMode: String = "ReadWriteOnce",
     val createdAt: LocalDateTime = LocalDateTime.now(),
