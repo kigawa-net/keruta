@@ -2,6 +2,7 @@ package net.kigawa.keruta.infra.app.kubernetes
 
 import io.fabric8.kubernetes.api.model.Container
 import io.fabric8.kubernetes.api.model.Volume
+import io.fabric8.kubernetes.api.model.VolumeMount
 import net.kigawa.keruta.core.domain.model.Repository
 import net.kigawa.keruta.core.domain.model.Task
 import org.slf4j.LoggerFactory
@@ -15,58 +16,73 @@ import org.springframework.stereotype.Component
 class KubernetesRepositoryHandler(
     private val repositoryVolumeHandler: KubernetesRepositoryVolumeHandler,
     private val gitContainerHandler: KubernetesGitContainerHandler,
-    private val gitCredentialsHandler: KubernetesGitCredentialsHandler
+    private val gitCredentialsHandler: KubernetesGitCredentialsHandler,
 ) {
     private val logger = LoggerFactory.getLogger(KubernetesRepositoryHandler::class.java)
 
+    data class SetupRepositoryResult(
+        val setupped: Boolean,
+        val gitCloneContainer: Container?,
+        val volumeMount: List<VolumeMount>?,
+        val volumes: List<Volume>,
+    )
+
     /**
      * Sets up a Git repository for a Kubernetes job.
-     * 
+     *
      * @param task The task associated with the job
      * @param repository The Git repository to set up
      * @param namespace The Kubernetes namespace
-     * @param volumes The list of volumes to add to
-     * @param initContainers The list of init containers to add to
-     * @param mainContainer The main container to add volume mounts to
      * @return True if the repository was set up successfully, false otherwise
      */
     fun setupRepository(
         task: Task,
         repository: Repository,
         namespace: String,
-        volumes: MutableList<Volume>,
-        initContainers: MutableList<Container>,
-        mainContainer: Container
-    ): Boolean {
+        pvcName: String,
+    ): SetupRepositoryResult {
         logger.info("Adding init container for git clone: ${repository.url}")
 
         val repoVolumeName = "repo-volume"
-        val repoMountPath = "/repo"
+        val repoMountPath = "/work"
 
         // Create and add repository volume
-        val repoVolume = repositoryVolumeHandler.createRepositoryVolume(task, repository, namespace, repoVolumeName)
-            ?: return false
-        volumes.add(repoVolume)
+        val repoVolume = repositoryVolumeHandler.createRepositoryVolume(
+            task, repository, namespace, repoVolumeName,
+            pvcName
+        )
+            ?: return SetupRepositoryResult(
+                setupped = false,
+                gitCloneContainer = null,
+                volumeMount = null,
+                volumes = emptyList(),
+            )
 
         // Create git clone container
-        val gitCloneContainer = gitContainerHandler.createGitCloneContainer(repository, repoVolumeName, repoMountPath)
+        val gitCloneContainer = gitContainerHandler.createGitCloneContainer(repository, repoMountPath)
 
         // Setup git environment variables and handle credentials
-        gitCredentialsHandler.setupGitCredentials(
+        val result = gitCredentialsHandler.setupGitCredentials(
             repository,
             namespace,
-            gitCloneContainer,
             repoVolumeName,
-            repoMountPath,
-            volumes
-        )
+            repoMountPath
+        )?.also {
+            gitCloneContainer.env = it.gitEnvVars
+            gitCloneContainer.command = it.command
+            gitCloneContainer.args = it.args
+            gitCloneContainer.volumeMounts = it.volumeMounts
+        }
 
-        // Add the container to the list of init containers
-        initContainers.add(gitCloneContainer)
 
         // Add volume mount to main container
-        gitContainerHandler.addVolumeToMainContainer(mainContainer, repoVolumeName, repoMountPath)
+        val addResult = gitContainerHandler.addVolumeToMainContainer(repoVolumeName, repoMountPath)
 
-        return true
+        return SetupRepositoryResult(
+            setupped = true,
+            gitCloneContainer = gitCloneContainer,
+            volumeMount = addResult,
+            volumes = listOfNotNull(repoVolume, result?.credentialsVolume)
+        )
     }
 }

@@ -3,7 +3,6 @@ package net.kigawa.keruta.infra.app.kubernetes
 import io.fabric8.kubernetes.api.model.Container
 import io.fabric8.kubernetes.api.model.VolumeMount
 import net.kigawa.keruta.core.domain.model.Repository
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
 /**
@@ -12,20 +11,17 @@ import org.springframework.stereotype.Component
  */
 @Component
 class KubernetesGitContainerHandler {
-    private val logger = LoggerFactory.getLogger(KubernetesGitContainerHandler::class.java)
 
     /**
      * Creates a container for git clone operations.
-     * 
+     *
      * @param repository The Git repository
-     * @param volumeName The name of the volume to mount
      * @param mountPath The path where the volume should be mounted
      * @return The created container
      */
     fun createGitCloneContainer(
         repository: Repository,
-        volumeName: String,
-        mountPath: String
+        mountPath: String,
     ): Container {
         val gitCloneContainer = Container()
         gitCloneContainer.name = "git-clone"
@@ -48,25 +44,18 @@ class KubernetesGitContainerHandler {
 
     /**
      * Adds a volume mount to the main container.
-     * 
-     * @param container The container to add the volume mount to
+     *
      * @param volumeName The name of the volume to mount
      * @param mountPath The path where the volume should be mounted
      */
     fun addVolumeToMainContainer(
-        container: Container,
         volumeName: String,
-        mountPath: String
-    ) {
+        mountPath: String,
+    ): List<VolumeMount> {
         val volumeMount = VolumeMount()
         volumeMount.name = volumeName
         volumeMount.mountPath = mountPath
 
-        // Add volume mount to existing volume mounts or create new list
-        if (container.volumeMounts == null) {
-            container.volumeMounts = mutableListOf(volumeMount)
-        } else {
-            (container.volumeMounts as MutableList<VolumeMount>).add(volumeMount)
-        }
+        return listOf(volumeMount)
     }
 }

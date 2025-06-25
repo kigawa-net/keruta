@@ -19,7 +19,7 @@ import java.time.LocalDateTime
 class TaskServiceImpl(
     private val taskRepository: TaskRepository,
     private val kubernetesService: KubernetesService,
-    private val gitRepositoryService: GitRepositoryService
+    private val gitRepositoryService: GitRepositoryService,
 ) : TaskService {
 
     private val logger = LoggerFactory.getLogger(TaskServiceImpl::class.java)
@@ -113,11 +113,12 @@ class TaskServiceImpl(
         namespace: String,
         jobName: String?,
         resources: Resources?,
-        additionalEnv: Map<String, String>
+        additionalEnv: Map<String, String>,
     ): Task {
         logger.info("Creating Kubernetes job for task with id: $taskId")
 
         val task = getTaskById(taskId)
+        val pvcName = "pvc-" + (task.parentId?.let { getTaskById(it) }?.pvcName ?: taskId)
         val actualJobName = jobName ?: "keruta-job-${task.id}"
 
         try {
@@ -142,7 +143,8 @@ class TaskServiceImpl(
                 jobName = actualJobName,
                 resources = resources,
                 additionalEnv = additionalEnv,
-                repository = repository
+                repository = repository,
+                pvcName
             )
 
             val updatedTask = task.copy(
@@ -195,7 +197,7 @@ class TaskServiceImpl(
         namespace: String,
         jobName: String?,
         resources: Resources?,
-        additionalEnv: Map<String, String>
+        additionalEnv: Map<String, String>,
     ): Task? {
         logger.info("Creating job for next task in queue")
 

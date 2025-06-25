@@ -6,7 +6,6 @@ import net.kigawa.keruta.core.domain.model.Repository
 import net.kigawa.keruta.core.domain.model.Task
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
-import java.util.UUID
 
 /**
  * Handler for repository volume operations in Kubernetes.
@@ -14,13 +13,13 @@ import java.util.UUID
  */
 @Component
 class KubernetesRepositoryVolumeHandler(
-    private val clientProvider: KubernetesClientProvider
+    private val clientProvider: KubernetesClientProvider,
 ) {
     private val logger = LoggerFactory.getLogger(KubernetesRepositoryVolumeHandler::class.java)
 
     /**
      * Creates a volume for the repository.
-     * 
+     *
      * @param task The task associated with the job
      * @param repository The Git repository
      * @param namespace The Kubernetes namespace
@@ -31,21 +30,14 @@ class KubernetesRepositoryVolumeHandler(
         task: Task,
         repository: Repository,
         namespace: String,
-        volumeName: String
+        volumeName: String,
+        pvcName: String,
     ): Volume? {
         val repoVolume = Volume()
         repoVolume.name = volumeName
 
         logger.info("Using PVC for repository: ${repository.name}")
 
-        // Determine PVC name based on parent task
-        val pvcName = if (task.parentId != null) {
-            // Use parent task's PVC if available
-            "git-repo-pvc-${task.parentId}"
-        } else {
-            // Create new PVC for this task
-            "git-repo-pvc-${task.id}"
-        }
 
         val client = clientProvider.getClient() ?: return null
 
@@ -74,7 +66,7 @@ class KubernetesRepositoryVolumeHandler(
 
     /**
      * Creates a persistent volume claim for the repository.
-     * 
+     *
      * @param client The Kubernetes client
      * @param task The task associated with the job
      * @param repository The Git repository
@@ -86,7 +78,7 @@ class KubernetesRepositoryVolumeHandler(
         task: Task,
         repository: Repository,
         namespace: String,
-        pvcName: String
+        pvcName: String,
     ) {
         logger.info("Creating new PVC: $pvcName")
 
@@ -103,16 +95,16 @@ class KubernetesRepositoryVolumeHandler(
         // Create PVC
         val pvcBuilder = PersistentVolumeClaimBuilder()
             .withNewMetadata()
-                .withName(pvcName)
-                .withNamespace(namespace)
-                .addToLabels("app", "keruta")
-                .addToLabels("task-id", task.id)
+            .withName(pvcName)
+            .withNamespace(namespace)
+            .addToLabels("app", "keruta")
+            .addToLabels("task-id", task.id)
             .endMetadata()
             .withNewSpec()
-                .withAccessModes(accessMode)
-                .withNewResources()
-                    .addToRequests("storage", io.fabric8.kubernetes.api.model.Quantity(storageSize))
-                .endResources()
+            .withAccessModes(accessMode)
+            .withNewResources()
+            .addToRequests("storage", io.fabric8.kubernetes.api.model.Quantity(storageSize))
+            .endResources()
 
         // Set storageClass if provided
         if (storageClass.isNotBlank()) {

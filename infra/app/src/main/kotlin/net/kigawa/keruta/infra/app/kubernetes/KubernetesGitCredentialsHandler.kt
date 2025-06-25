@@ -1,6 +1,5 @@
 package net.kigawa.keruta.infra.app.kubernetes
 
-import io.fabric8.kubernetes.api.model.Container
 import io.fabric8.kubernetes.api.model.EnvVar
 import io.fabric8.kubernetes.api.model.Volume
 import io.fabric8.kubernetes.api.model.VolumeMount
@@ -14,72 +13,79 @@ import org.springframework.stereotype.Component
  */
 @Component
 class KubernetesGitCredentialsHandler(
-    private val clientProvider: KubernetesClientProvider
+    private val clientProvider: KubernetesClientProvider,
 ) {
     private val logger = LoggerFactory.getLogger(KubernetesGitCredentialsHandler::class.java)
 
+    data class SetupGitCredentialsResult(
+        val gitEnvVars: List<EnvVar>?,
+        val command: List<String>?,
+        val args: List<String>?,
+        val volumeMounts: List<VolumeMount>,
+        val credentialsVolume: Volume?,
+    )
+
     /**
      * Sets up git credentials and environment variables for the container.
-     * 
-     * @param client The Kubernetes client
+     *
      * @param repository The Git repository
      * @param namespace The Kubernetes namespace
-     * @param container The container to configure
      * @param volumeName The name of the repository volume
      * @param mountPath The path where the repository volume is mounted
-     * @param volumes The list of volumes to add to
      */
     fun setupGitCredentials(
         repository: Repository,
         namespace: String,
-        container: Container,
         volumeName: String,
         mountPath: String,
-        volumes: MutableList<Volume>
-    ) {
-        val client = clientProvider.getClient() ?: return
+    ): SetupGitCredentialsResult? {
+        val client = clientProvider.getClient() ?: return null
 
-        // Create volume mount for repository
         val gitCloneVolumeMount = VolumeMount()
         gitCloneVolumeMount.name = volumeName
         gitCloneVolumeMount.mountPath = mountPath
 
-        // Add environment variables for git configuration
-        val gitEnvVars = createBasicGitEnvVars()
-
-        // Check for git credentials secret
         val secretName = "git-credentials-${repository.id}"
         try {
             val secret = client.secrets().inNamespace(namespace).withName(secretName).get()
-            if (secret != null) {
-                logger.info("Found git credentials secret: $secretName")
+            if (secret == null) return SetupGitCredentialsResult(
+                gitEnvVars = null,
+                command = null,
+                args = null,
+                volumeMounts = listOf(gitCloneVolumeMount),
+                credentialsVolume = null,
+            )
+            logger.info("Found git credentials secret: $secretName")
 
-                // Configure container with credentials
-                configureContainerWithCredentials(
-                    container,
-                    repository,
-                    secretName,
-                    gitEnvVars,
-                    gitCloneVolumeMount,
-                    mountPath,
-                    volumes
+            configureContainerWithCredentials(
+                repository,
+                secretName,
+                gitCloneVolumeMount,
+                mountPath
+            ).also {
+                return SetupGitCredentialsResult(
+                    gitEnvVars = it.gitEnvVars,
+                    command = it.command,
+                    args = it.args,
+                    volumeMounts = it.volumeMounts,
+                    credentialsVolume = it.credentialsVolume,
                 )
-            } else {
-                // No credentials found, use simple volume mount
-                container.volumeMounts = listOf(gitCloneVolumeMount)
             }
         } catch (e: Exception) {
             logger.warn("Failed to get git credentials secret: $secretName", e)
-            // Use simple volume mount in case of error
-            container.volumeMounts = listOf(gitCloneVolumeMount)
+            return SetupGitCredentialsResult(
+                gitEnvVars = null,
+                command = null,
+                args = null,
+                volumeMounts = listOf(gitCloneVolumeMount),
+                credentialsVolume = null,
+            )
         }
-
-        container.env = gitEnvVars
     }
 
     /**
      * Creates basic git environment variables.
-     * 
+     *
      * @return List of environment variables
      */
     private fun createBasicGitEnvVars(): MutableList<EnvVar> {
@@ -93,32 +99,32 @@ class KubernetesGitCredentialsHandler(
         )
     }
 
+    data class ConfigureContainerWithCredentialsResult(
+        val gitEnvVars: List<EnvVar>,
+        val command: List<String>,
+        val args: List<String>,
+        val volumeMounts: MutableList<VolumeMount>,
+        val credentialsVolume: Volume,
+    )
+
     /**
      * Configures a container with git credentials.
-     * 
-     * @param container The container to configure
+     *
      * @param repository The Git repository
      * @param secretName The name of the secret containing credentials
-     * @param gitEnvVars The list of environment variables to add to
      * @param repoVolumeMount The volume mount for the repository
      * @param mountPath The path where the repository volume is mounted
-     * @param volumes The list of volumes to add to
      */
     private fun configureContainerWithCredentials(
-        container: Container,
         repository: Repository,
         secretName: String,
-        gitEnvVars: MutableList<EnvVar>,
         repoVolumeMount: VolumeMount,
         mountPath: String,
-        volumes: MutableList<Volume>
-    ) {
-        // Create secret references for username and password
-        val usernameEnvVar = createSecretEnvVar("GIT_USERNAME", secretName, "username")
-        val passwordEnvVar = createSecretEnvVar("GIT_PASSWORD", secretName, "password")
+    ): ConfigureContainerWithCredentialsResult {
+        val gitEnvVars = createBasicGitEnvVars()
 
-        gitEnvVars.add(usernameEnvVar)
-        gitEnvVars.add(passwordEnvVar)
+        gitEnvVars.add(createSecretEnvVar("GIT_USERNAME", secretName, "username"))
+        gitEnvVars.add(createSecretEnvVar("GIT_PASSWORD", secretName, "password"))
 
         // Add git config for credential helper using environment variables
         // Update GIT_CONFIG_COUNT to 4 (we're adding 2 more configs)
@@ -131,32 +137,29 @@ class KubernetesGitCredentialsHandler(
         gitEnvVars.add(EnvVar("GIT_CONFIG_KEY_3", "credential.helper", null))
         gitEnvVars.add(EnvVar("GIT_CONFIG_VALUE_3", "cache --timeout=300", null))
 
-        // Add a script to create git credentials file and set up git exclusions
-        val setupScript = createGitSetupScript(repository.url, mountPath)
-
-        // Update the command to use the setup script
-        container.command = listOf("/bin/sh", "-c")
-        container.args = listOf(setupScript.joinToString("\n"))
 
         // Add volume for git credentials
         val credentialsVolume = Volume()
         credentialsVolume.name = "git-credentials"
         credentialsVolume.emptyDir = io.fabric8.kubernetes.api.model.EmptyDirVolumeSource()
-        volumes.add(credentialsVolume)
 
         // Add volume mount for git credentials
         val credentialsVolumeMount = VolumeMount()
         credentialsVolumeMount.name = "git-credentials"
         credentialsVolumeMount.mountPath = "/git-credentials"
 
-        // Add to existing volume mounts
-        val volumeMounts = mutableListOf(repoVolumeMount, credentialsVolumeMount)
-        container.volumeMounts = volumeMounts
+        return ConfigureContainerWithCredentialsResult(
+            gitEnvVars = gitEnvVars,
+            command = listOf("/bin/sh", "-c"),
+            args = listOf(createGitSetupScript(repository.url, mountPath).joinToString("\n")),
+            volumeMounts = mutableListOf(repoVolumeMount, credentialsVolumeMount),
+            credentialsVolume = credentialsVolume
+        )
     }
 
     /**
      * Creates an environment variable that references a secret.
-     * 
+     *
      * @param name The name of the environment variable
      * @param secretName The name of the secret
      * @param secretKey The key within the secret
@@ -176,7 +179,7 @@ class KubernetesGitCredentialsHandler(
 
     /**
      * Creates a script for git setup with credentials.
-     * 
+     *
      * @param repoUrl The URL of the git repository
      * @param mountPath The path where the repository volume is mounted
      * @return List of script lines

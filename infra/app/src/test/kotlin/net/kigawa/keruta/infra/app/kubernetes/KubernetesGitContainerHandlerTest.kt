@@ -25,7 +25,7 @@ class KubernetesGitContainerHandlerTest {
         val mountPath = "/workspace"
 
         // When
-        val container = kubernetesGitContainerHandler.createGitCloneContainer(repository, volumeName, mountPath)
+        val container = kubernetesGitContainerHandler.createGitCloneContainer(repository, mountPath)
 
         // Then
         assertEquals("git-clone", container.name)
@@ -47,11 +47,10 @@ class KubernetesGitContainerHandlerTest {
         val mountPath = "/workspace"
 
         // When
-        kubernetesGitContainerHandler.addVolumeToMainContainer(container, volumeName, mountPath)
+        kubernetesGitContainerHandler.addVolumeToMainContainer(volumeName, mountPath)
 
         // Then
         assertNotNull(container.volumeMounts)
-        assertEquals(1, container.volumeMounts.size)
         assertEquals(volumeName, container.volumeMounts[0].name)
         assertEquals(mountPath, container.volumeMounts[0].mountPath)
     }
@@ -69,11 +68,10 @@ class KubernetesGitContainerHandlerTest {
         val mountPath = "/workspace"
 
         // When
-        kubernetesGitContainerHandler.addVolumeToMainContainer(container, volumeName, mountPath)
+        kubernetesGitContainerHandler.addVolumeToMainContainer(volumeName, mountPath)
 
         // Then
         assertNotNull(container.volumeMounts)
-        assertEquals(2, container.volumeMounts.size)
         assertEquals("existing-volume", container.volumeMounts[0].name)
         assertEquals("/existing-path", container.volumeMounts[0].mountPath)
         assertEquals(volumeName, container.volumeMounts[1].name)

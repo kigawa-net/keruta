@@ -37,7 +37,8 @@ class KubernetesServiceImpl(
         jobName: String?,
         resources: Resources?,
         additionalEnv: Map<String, String>,
-        repository: Repository?
+        repository: Repository?,
+        pvcName: String
     ): String {
         logger.debug("Delegating job creation to KubernetesJobCreator")
         return jobCreator.createJob(
@@ -47,7 +48,8 @@ class KubernetesServiceImpl(
             jobName,
             resources,
             additionalEnv,
-            repository
+            repository,
+            pvcName
         )
     }
 

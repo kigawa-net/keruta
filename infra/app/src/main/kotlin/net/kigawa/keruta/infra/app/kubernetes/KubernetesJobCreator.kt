@@ -2,6 +2,7 @@ package net.kigawa.keruta.infra.app.kubernetes
 
 import io.fabric8.kubernetes.api.model.Container
 import io.fabric8.kubernetes.api.model.Volume
+import io.fabric8.kubernetes.api.model.VolumeMount
 import net.kigawa.keruta.core.domain.model.Repository
 import net.kigawa.keruta.core.domain.model.Resources
 import net.kigawa.keruta.core.domain.model.Task
@@ -47,6 +48,7 @@ class KubernetesJobCreator(
         resources: Resources?,
         additionalEnv: Map<String, String>,
         repository: Repository?,
+        pvcName: String,
     ): String {
         val config = clientProvider.getConfig()
         val client = clientProvider.getClient()
@@ -59,7 +61,7 @@ class KubernetesJobCreator(
         logger.info("Creating Kubernetes job for task: ${task.id}")
 
         val actualNamespace = namespace.ifEmpty { config.defaultNamespace }
-        val actualJobName = jobName ?: "keruta-job-${task.id ?: UUID.randomUUID()}"
+        val actualJobName = jobName ?: "keruta-job-${task.id}"
 
         try {
             // Create job and pod metadata
@@ -78,8 +80,6 @@ class KubernetesJobCreator(
             // Add init containers list
             val initContainers = mutableListOf<Container>()
 
-            // Check if a PVC name is specified in additionalEnv
-            val pvcName = additionalEnv["KERUTA_PVC_NAME"]
             val pvcMountPath = additionalEnv["KERUTA_PVC_MOUNT_PATH"] ?: "/pvc"
 
             // Create work volume if not already created for repository
@@ -88,19 +88,18 @@ class KubernetesJobCreator(
                 repositoryHandler.setupRepository(
                     task,
                     repository,
-                    actualNamespace,
-                    volumes,
-                    initContainers,
-                    mainContainer
-                )
+                    actualNamespace, pvcName
+                ).also {
+                    mainContainer.volumeMounts = (mainContainer.volumeMounts ?: listOf<VolumeMount>()) +
+                            (it.volumeMount ?: listOf())
+                    it.gitCloneContainer?.let { element -> initContainers.add(element) }
+                    volumes.addAll(it.volumes)
+                }
                 "repo-volume" // Use the volume name from repositoryHandler
-            } else if (pvcName != null) {
+            } else run {
                 // Mount existing PVC if specified
                 logger.info("Mounting existing PVC: $pvcName at path: $pvcMountPath")
                 volumeHandler.mountExistingPvc(volumes, mainContainer, pvcName, "pvc-volume", pvcMountPath)
-            } else {
-                // Create a new work volume with task's storageClass if provided
-                volumeHandler.createWorkVolume(volumes, mainContainer, actualNamespace, task)
             }
 
             // Set up script execution in the main container
@@ -119,18 +118,16 @@ class KubernetesJobCreator(
                     val agent = agentService.getAgentById(agentId)
                     agentInstallCommand = agent.installCommand
                     agentExecuteCommand = agent.executeCommand
-                    logger.info("Using agent commands for agent $agentId: install='$agentInstallCommand', execute='$agentExecuteCommand'")
+                    logger.info(
+                        "Using agent commands for agent $agentId: install='$agentInstallCommand', execute='$agentExecuteCommand'"
+                    )
                 } catch (e: Exception) {
                     logger.warn("Failed to get agent $agentId: ${e.message}")
                 }
             }
 
             // Determine the work mount path based on the volume type
-            val workMountPath = when {
-                repository != null -> "/repo"
-                pvcName != null -> pvcMountPath
-                else -> "/work"
-            }
+            val workMountPath = pvcMountPath
 
             // Set up script execution with ConfigMap creation
             containerHandler.setupScriptExecution(

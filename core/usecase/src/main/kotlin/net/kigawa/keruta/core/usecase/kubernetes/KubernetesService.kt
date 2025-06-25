@@ -28,7 +28,8 @@ interface KubernetesService {
         jobName: String?,
         resources: Resources?,
         additionalEnv: Map<String, String>,
-        repository: Repository? = null
+        repository: Repository? = null,
+        pvcName: String
     ): String
 
     /**
