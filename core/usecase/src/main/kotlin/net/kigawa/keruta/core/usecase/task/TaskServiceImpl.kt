@@ -95,7 +95,7 @@ class TaskServiceImpl(
             // Get repository if repositoryId is provided
             var repository: Repository? = null
             val repositoryId = task.repositoryId
-            if (repositoryId != null) {
+            if (repositoryId != null && repositoryId.isNotBlank()) {
                 try {
                     repository = gitRepositoryService.getRepositoryById(repositoryId)
                     logger.info("Found repository for task: ${repository.name} (${repository.url})")

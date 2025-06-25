@@ -68,7 +68,7 @@ class AdminController(
         @RequestParam(required = false) parentId: String? = null,
     ): String {
         println("Create task with id: ${task.id}")
-        val repository = if (repositoryId != null) {
+        val repository = if (repositoryId != null && repositoryId.isNotBlank()) {
             try {
                 gitRepositoryService.getRepositoryById(repositoryId)
             } catch (e: NoSuchElementException) {
@@ -145,7 +145,7 @@ class AdminController(
         @RequestParam(required = false) parentId: String?,
     ): String {
         if (taskRepository.findById(id) != null) {
-            val repository = if (repositoryId != null) {
+            val repository = if (repositoryId != null && repositoryId.isNotBlank()) {
                 try {
                     gitRepositoryService.getRepositoryById(repositoryId)
                 } catch (e: NoSuchElementException) {
