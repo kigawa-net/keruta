@@ -45,7 +45,7 @@ class KubernetesRepositoryVolumeHandler(
                 "git-repo-pvc-${task.parentId}"
             } else {
                 // Create new PVC for this task
-                "git-repo-pvc-${task.id ?: UUID.randomUUID()}"
+                "git-repo-pvc-${task.id}"
             }
 
             val client = clientProvider.getClient() ?: return null

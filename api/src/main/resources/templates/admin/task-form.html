@@ -27,8 +27,8 @@
                     <div class="mb-3">
                         <label for="status" class="form-label">Status</label>
                         <select class="form-select" id="status" name="status">
-                            <option th:each="statusOption : ${statuses}" 
-                                    th:value="${statusOption}" 
+                            <option th:each="statusOption : ${statuses}"
+                                    th:value="${statusOption}"
                                     th:text="${statusOption}"
                                     th:selected="${statusOption == task.status}">
                                 Status
@@ -40,8 +40,8 @@
                         <label for="repositoryId" class="form-label">Repository</label>
                         <select class="form-select" id="repositoryId" name="repositoryId">
                             <option value="">-- Select Repository --</option>
-                            <option th:each="repo : ${repositories}" 
-                                    th:value="${repo.id}" 
+                            <option th:each="repo : ${repositories}"
+                                    th:value="${repo.id}"
                                     th:text="${repo.name}"
                                     th:selected="${repo.id == task.repositoryId}">
                                 Repository Name
@@ -52,8 +52,8 @@
                     <div class="mb-3">
                         <label for="documentIds" class="form-label">Documents</label>
                         <select class="form-select" id="documentIds" name="documentIds" multiple>
-                            <option th:each="doc : ${documents}" 
-                                    th:value="${doc.id}" 
+                            <option th:each="doc : ${documents}"
+                                    th:value="${doc.id}"
                                     th:text="${doc.title}"
                                     th:selected="${task.documents != null && (task.documents.isEmpty() ? false : task.documents.contains(doc))}">
                                 Document Title
@@ -66,8 +66,8 @@
                         <label for="agentId" class="form-label">Agent</label>
                         <select class="form-select" id="agentId" name="agentId">
                             <option value="">-- Select Agent --</option>
-                            <option th:each="agent : ${agents}" 
-                                    th:value="${agent.id}" 
+                            <option th:each="agent : ${agents}"
+                                    th:value="${agent.id}"
                                     th:text="${agent.name}"
                                     th:selected="${agent.id == task.agentId}">
                                 Agent Name
@@ -79,9 +79,9 @@
                         <label for="parentId" class="form-label">Parent Task</label>
                         <select class="form-select" id="parentId" name="parentId">
                             <option value="">-- Select Parent Task --</option>
-                            <option th:each="parentTask : ${tasks}" 
+                            <option th:each="parentTask : ${tasks}"
                                     th:if="${parentTask.id != task.id}"
-                                    th:value="${parentTask.id}" 
+                                    th:value="${parentTask.id}"
                                     th:text="${parentTask.title}"
                                     th:selected="${parentTask.id == task.parentId}">
                                 Parent Task

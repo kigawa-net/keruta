@@ -1,5 +1,6 @@
 package net.kigawa.keruta.api
 
+import net.kigawa.keruta.core.domain.model.CreateTaskForm
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.domain.model.TaskStatus
 import net.kigawa.keruta.core.usecase.agent.AgentService
@@ -44,11 +45,11 @@ class AdminController(
     fun createTaskForm(model: Model): String {
         model.addAttribute("pageTitle", "Create Task")
         model.addAttribute(
-            "task", Task(
+            "task", CreateTaskForm(
                 title = "",
                 description = null,
                 priority = 0,
-                status = TaskStatus.PENDING
+                status = TaskStatus.PENDING,
             )
         )
         model.addAttribute("statuses", TaskStatus.entries.toTypedArray())
@@ -61,13 +62,12 @@ class AdminController(
 
     @PostMapping("/tasks/create")
     fun createTask(
-        @ModelAttribute task: Task,
+        @ModelAttribute task: CreateTaskForm,
         @RequestParam(required = false) repositoryId: String? = null,
         @RequestParam(required = false) documentIds: List<String>? = null,
         @RequestParam(required = false) agentId: String? = null,
         @RequestParam(required = false) parentId: String? = null,
     ): String {
-        println("Create task with id: ${task.id}")
         val repository = if (repositoryId != null && repositoryId.isNotBlank()) {
             try {
                 gitRepositoryService.getRepositoryById(repositoryId)
@@ -95,7 +95,7 @@ class AdminController(
         // Ensure title is not empty or null
         val title = task.title.ifBlank { "Untitled Task" }
 
-        val newTask = task.copy(
+        val newTask = Task(
             id = UUID.randomUUID().toString(),
             title = title,
             description = task.description,

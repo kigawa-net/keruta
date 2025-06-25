@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 @Document(collection = "tasks")
 data class TaskEntity(
     @Id
-    val id: String? = null,
+    val id: String,
     val title: String,
     val description: String? = null,
     val priority: Int = 0,
