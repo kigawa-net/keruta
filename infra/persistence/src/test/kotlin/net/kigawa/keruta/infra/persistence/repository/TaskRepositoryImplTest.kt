@@ -263,7 +263,8 @@ class TaskRepositoryImplTest {
             status = status,
             logs = logs,
             createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now()
+            updatedAt = LocalDateTime.now(),
+            namespace = "test-namespace",
         )
     }
 }

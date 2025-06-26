@@ -69,7 +69,7 @@ class BackgroundTaskProcessor(
             // Create a job for the next task in the queue
             val task = taskService.createJobForNextTask(
                 image = kubernetesConfig.defaultImage,
-                namespace = kubernetesConfig.processorNamespace,
+                namespace = kubernetesConfig.defaultNamespace,
                 resources = null,
                 additionalEnv = emptyMap()
             )

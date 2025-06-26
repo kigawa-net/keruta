@@ -24,7 +24,6 @@ data class KubernetesConfig(
     val inCluster: Boolean = false,
     val defaultNamespace: String = "default",
     val defaultImage: String = "keruta-task-executor:latest",
-    val processorNamespace: String = "default",
     val defaultPvcStorageSize: String = "1Gi",
     val defaultPvcAccessMode: String = "ReadWriteOnce",
     val defaultPvcStorageClass: String = "",

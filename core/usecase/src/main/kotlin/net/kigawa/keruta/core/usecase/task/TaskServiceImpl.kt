@@ -4,6 +4,7 @@
  */
 package net.kigawa.keruta.core.usecase.task
 
+import net.kigawa.keruta.core.domain.model.KubernetesConfig
 import net.kigawa.keruta.core.domain.model.Repository
 import net.kigawa.keruta.core.domain.model.Resources
 import net.kigawa.keruta.core.domain.model.Task
@@ -20,6 +21,7 @@ class TaskServiceImpl(
     private val taskRepository: TaskRepository,
     private val kubernetesService: KubernetesService,
     private val gitRepositoryService: GitRepositoryService,
+    private val kubernetesConfig: KubernetesConfig
 ) : TaskService {
 
     private val logger = LoggerFactory.getLogger(TaskServiceImpl::class.java)
@@ -53,7 +55,7 @@ class TaskServiceImpl(
         // Delete the Kubernetes job if it exists
         val jobName = task.jobName
         val namespace = task.namespace
-        if (jobName != null && namespace != null) {
+        if (jobName != null) {
             try {
                 logger.info("Deleting Kubernetes job: $jobName in namespace: $namespace")
                 kubernetesService.deleteJob(namespace, jobName)
@@ -64,15 +66,13 @@ class TaskServiceImpl(
 
         // Delete the PVC if it exists
         val taskId = task.id
-        if (taskId != null) {
-            try {
-                val pvcName = "git-repo-pvc-$taskId"
-                val pvcNamespace = namespace ?: "default"
-                logger.info("Deleting PVC: $pvcName in namespace: $pvcNamespace")
-                kubernetesService.deletePVC(pvcNamespace, pvcName)
-            } catch (e: Exception) {
-                logger.error("Failed to delete PVC", e)
-            }
+        try {
+            val pvcName = "git-repo-pvc-$taskId"
+            val pvcNamespace = namespace
+            logger.info("Deleting PVC: $pvcName in namespace: $pvcNamespace")
+            kubernetesService.deletePVC(pvcNamespace, pvcName)
+        } catch (e: Exception) {
+            logger.error("Failed to delete PVC", e)
         }
 
         // Delete the task from the repository
@@ -224,7 +224,7 @@ class TaskServiceImpl(
         val nextTask = getNextTaskFromQueue() ?: return null
 
         return createJob(
-            taskId = nextTask.id ?: throw IllegalArgumentException("Task ID cannot be null"),
+            taskId = nextTask.id,
             image = image,
             namespace = namespace,
             jobName = jobName,

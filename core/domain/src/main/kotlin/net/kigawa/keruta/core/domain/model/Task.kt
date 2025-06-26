@@ -14,7 +14,7 @@ data class Task(
     val status: TaskStatus = TaskStatus.PENDING,
     val documents: List<Document> = emptyList(),
     val image: String? = null,
-    val namespace: String = "default",
+    val namespace: String,
     val jobName: String? = null,
     val podName: String? = null, // Kept for backward compatibility
     val additionalEnv: Map<String, String> = emptyMap(),
