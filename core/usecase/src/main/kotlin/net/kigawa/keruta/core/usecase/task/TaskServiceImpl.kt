@@ -118,7 +118,9 @@ class TaskServiceImpl(
         logger.info("Creating Kubernetes job for task with id: $taskId")
 
         val task = getTaskById(taskId)
-        val pvcName = "pvc-" + (task.parentId?.let { getTaskById(it) }?.pvcName ?: taskId)
+        val pvcName = "pvc-" + (task.parentId?.let {
+            if (it.isBlank()) null else getTaskById(it)
+        }?.pvcName ?: taskId)
         val actualJobName = jobName ?: "keruta-job-${task.id}"
 
         try {
