@@ -1,16 +1,28 @@
 package net.kigawa.keruta.infra.app.config
 
 import net.kigawa.keruta.core.domain.model.KubernetesConfig
-import org.springframework.boot.context.properties.ConfigurationProperties
+import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import java.time.LocalDateTime
 
 @Configuration
+@EnableConfigurationProperties(KubernetesProperties::class)
 class KubernetesConfiguration {
 
     @Bean
-    @ConfigurationProperties(prefix = "keruta.kubernetes")
-    fun kubernetesConfig(): KubernetesConfig {
-        return KubernetesConfig()
+    fun kubernetesConfig(properties: KubernetesProperties): KubernetesConfig {
+        return KubernetesConfig(
+            enabled = properties.enabled,
+            configPath = properties.configPath,
+            inCluster = properties.inCluster,
+            defaultNamespace = properties.defaultNamespace,
+            defaultImage = properties.defaultImage,
+            defaultPvcStorageSize = properties.defaultPvcStorageSize,
+            defaultPvcAccessMode = properties.defaultPvcAccessMode,
+            defaultPvcStorageClass = properties.defaultPvcStorageClass,
+            createdAt = LocalDateTime.now(),
+            updatedAt = LocalDateTime.now()
+        )
     }
 }

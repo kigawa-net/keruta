@@ -161,7 +161,7 @@
       <workItem from="1750675108809" duration="9531000" />
       <workItem from="1750692326275" duration="1343000" />
       <workItem from="1750766713217" duration="22980000" />
-      <workItem from="1750921736975" duration="1372000" />
+      <workItem from="1750921736975" duration="1717000" />
     </task>
     <task id="LOCAL-00001" summary="w">
       <option name="closed" value="true" />
@@ -355,7 +355,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750934978613</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="PVC関連コードをリファクタリングし、Kubernetes設定の不要な項目を削除。">
+      <option name="closed" value="true" />
+      <created>1750935429125</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1750935429125</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
