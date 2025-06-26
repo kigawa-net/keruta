@@ -4,11 +4,7 @@
  */
 package net.kigawa.keruta.core.usecase.task
 
-import net.kigawa.keruta.core.domain.model.KubernetesConfig
-import net.kigawa.keruta.core.domain.model.Repository
-import net.kigawa.keruta.core.domain.model.Resources
-import net.kigawa.keruta.core.domain.model.Task
-import net.kigawa.keruta.core.domain.model.TaskStatus
+import net.kigawa.keruta.core.domain.model.*
 import net.kigawa.keruta.core.usecase.kubernetes.KubernetesService
 import net.kigawa.keruta.core.usecase.repository.GitRepositoryService
 import net.kigawa.keruta.core.usecase.repository.TaskRepository
@@ -118,9 +114,9 @@ class TaskServiceImpl(
         logger.info("Creating Kubernetes job for task with id: $taskId")
 
         val task = getTaskById(taskId)
-        val pvcName = "pvc-" + (task.parentId?.let {
+        val pvcName = task.parentId?.let {
             if (it.isBlank()) null else getTaskById(it)
-        }?.pvcName ?: taskId)
+        }?.pvcName ?: ("pvc-" + taskId)
         val actualJobName = jobName ?: "keruta-job-${task.id}"
 
         try {
