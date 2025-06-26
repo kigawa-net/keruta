@@ -138,6 +138,23 @@ class TaskServiceImpl(
                 }
             }
 
+            // Create PVC if task doesn't have a parent or if parent's PVC doesn't exist
+            if (task.parentId == null || task.parentId?.isBlank() == true) {
+                logger.info("Creating PVC for task: $pvcName")
+                val pvcCreated = kubernetesService.createPVC(
+                    namespace = namespace,
+                    pvcName = pvcName,
+                    taskId = taskId
+                )
+                if (pvcCreated) {
+                    logger.info("PVC created successfully: $pvcName")
+                } else {
+                    logger.warn("Failed to create PVC: $pvcName")
+                }
+            } else {
+                logger.info("Using parent task's PVC: $pvcName")
+            }
+
             val createdJobName = kubernetesService.createJob(
                 task = task,
                 image = image,
@@ -156,6 +173,7 @@ class TaskServiceImpl(
                 podName = createdJobName, // For backward compatibility
                 additionalEnv = additionalEnv,
                 status = TaskStatus.IN_PROGRESS,
+                pvcName = pvcName,
                 updatedAt = LocalDateTime.now()
             )
 

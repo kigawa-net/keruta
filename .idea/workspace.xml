@@ -18,21 +18,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79b091c2-ce92-4e99-91ac-ce57e480d71a" name="変更" comment="PVC使用フラグを削除し、PVC作成・利用ロジックを常に適用するよう変更。関連コードをリファクタリング。">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/e352595a-c0ac-4cee-bc9d-687b69e1d077.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/api/keruta.api.test.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/buildSrc/keruta.buildSrc.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/buildSrc/keruta.buildSrc.main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/core/domain/keruta.core.domain.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/core/domain/keruta.core.domain.main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/core/domain/keruta.core.domain.test.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/core/keruta.core.main.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/core/keruta.core.test.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/core/usecase/keruta.core.usecase.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/core/usecase/keruta.core.usecase.main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/core/usecase/keruta.core.usecase.test.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/app/keruta.infra.app.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/infra/app/keruta.infra.app.main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/keruta.infra.main.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/keruta.infra.test.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/persistence/keruta.infra.persistence.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/infra/persistence/keruta.infra.persistence.main.iml" afterDir="false" />
+    <list default="true" id="79b091c2-ce92-4e99-91ac-ce57e480d71a" name="変更" comment="不要なIDE設定ファイルを削除。">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -340,7 +326,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750851391906</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="不要なIDE設定ファイルを削除。">
+      <option name="closed" value="true" />
+      <created>1750907559987</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1750907559987</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -378,7 +372,8 @@
     <MESSAGE value="ドキュメント構成とAPI/データモデルの詳細更新、およびエージェントコマンド処理をKubernetes関連コードに追加" />
     <MESSAGE value="タスクIDのnull許容を廃止し、CreateTaskFormを追加。タスク作成フォームのモデルとテンプレートを更新。ロギング設定を調整。" />
     <MESSAGE value="PVC使用フラグを削除し、PVC作成・利用ロジックを常に適用するよう変更。関連コードをリファクタリング。" />
-    <option name="LAST_COMMIT_MESSAGE" value="PVC使用フラグを削除し、PVC作成・利用ロジックを常に適用するよう変更。関連コードをリファクタリング。" />
+    <MESSAGE value="不要なIDE設定ファイルを削除。" />
+    <option name="LAST_COMMIT_MESSAGE" value="不要なIDE設定ファイルを削除。" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

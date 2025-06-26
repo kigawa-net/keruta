@@ -75,6 +75,26 @@ interface KubernetesService {
     fun updateConfig(config: KubernetesConfig): KubernetesConfig
 
     /**
+     * Creates a PersistentVolumeClaim.
+     *
+     * @param namespace The namespace of the PVC
+     * @param pvcName The name of the PVC
+     * @param storageSize The storage size of the PVC
+     * @param accessMode The access mode of the PVC
+     * @param storageClass The storage class of the PVC
+     * @param taskId The ID of the task associated with the PVC
+     * @return true if the PVC was created, false otherwise
+     */
+    fun createPVC(
+        namespace: String,
+        pvcName: String,
+        storageSize: String = "",
+        accessMode: String = "",
+        storageClass: String = "",
+        taskId: String
+    ): Boolean
+
+    /**
      * Deletes a PersistentVolumeClaim.
      *
      * @param namespace The namespace of the PVC

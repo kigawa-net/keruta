@@ -166,6 +166,86 @@ class KubernetesJobMonitor(
     }
 
     /**
+     * Creates a PersistentVolumeClaim.
+     *
+     * @param namespace The namespace of the PVC
+     * @param pvcName The name of the PVC
+     * @param storageSize The storage size of the PVC
+     * @param accessMode The access mode of the PVC
+     * @param storageClass The storage class of the PVC
+     * @param taskId The ID of the task associated with the PVC
+     * @return true if the PVC was created, false otherwise
+     */
+    fun createPVC(
+        namespace: String,
+        pvcName: String,
+        storageSize: String = "",
+        accessMode: String = "",
+        storageClass: String = "",
+        taskId: String
+    ): Boolean {
+        val client = clientProvider.getClient()
+        val config = clientProvider.getConfig()
+
+        if (!config.enabled || client == null) {
+            logger.warn("Kubernetes integration is disabled or client is not available")
+            return false
+        }
+
+        logger.info("Creating PVC: $pvcName in namespace: $namespace")
+
+        try {
+            // Check if PVC already exists
+            val existingPvc = client.persistentVolumeClaims()
+                .inNamespace(namespace)
+                .withName(pvcName)
+                .get()
+
+            if (existingPvc != null) {
+                logger.info("PVC already exists: $pvcName in namespace: $namespace")
+                return true
+            }
+
+            // Determine PVC settings, using defaults from KubernetesConfig if provided values are empty
+            val actualStorageSize = if (storageSize.isBlank()) config.defaultPvcStorageSize else storageSize
+            val actualAccessMode = if (accessMode.isBlank()) config.defaultPvcAccessMode else accessMode
+            val actualStorageClass = if (storageClass.isBlank()) config.defaultPvcStorageClass else storageClass
+
+            logger.info("Using PVC settings - Size: $actualStorageSize, Access Mode: $actualAccessMode, Storage Class: $actualStorageClass")
+
+            // Create PVC
+            val pvcBuilder = io.fabric8.kubernetes.api.model.PersistentVolumeClaimBuilder()
+                .withNewMetadata()
+                .withName(pvcName)
+                .withNamespace(namespace)
+                .addToLabels("app", "keruta")
+                .addToLabels("task-id", taskId)
+                .endMetadata()
+                .withNewSpec()
+                .withAccessModes(actualAccessMode)
+                .withNewResources()
+                .addToRequests("storage", io.fabric8.kubernetes.api.model.Quantity(actualStorageSize))
+                .endResources()
+
+            // Set storageClass if provided
+            if (actualStorageClass.isNotBlank()) {
+                pvcBuilder.withStorageClassName(actualStorageClass)
+            }
+
+            val pvc = pvcBuilder.endSpec().build()
+
+            client.persistentVolumeClaims()
+                .inNamespace(namespace)
+                .create(pvc)
+
+            return true
+        } catch (e: Exception) {
+            logger.error("Failed to create PVC", e)
+            return false
+        }
+    }
+
+    /**
      * Deletes a PersistentVolumeClaim.
      *
      * @param namespace The namespace of the PVC

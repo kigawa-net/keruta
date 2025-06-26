@@ -99,6 +99,22 @@ class KubernetesServiceImpl(
     }
 
     /**
+     * Creates a PersistentVolumeClaim.
+     * Delegates to KubernetesJobMonitor.
+     */
+    override fun createPVC(
+        namespace: String,
+        pvcName: String,
+        storageSize: String,
+        accessMode: String,
+        storageClass: String,
+        taskId: String
+    ): Boolean {
+        logger.debug("Delegating PVC creation to KubernetesJobMonitor")
+        return jobMonitor.createPVC(namespace, pvcName, storageSize, accessMode, storageClass, taskId)
+    }
+
+    /**
      * Deletes a PersistentVolumeClaim.
      * Delegates to KubernetesJobMonitor.
      */
