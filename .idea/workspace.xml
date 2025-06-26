@@ -18,13 +18,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79b091c2-ce92-4e99-91ac-ce57e480d71a" name="変更" comment="タスク用PVC作成ロジックを追加し、Kubernetes連携コードを修正。">
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/keruta__test_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/keruta__test_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/AdminController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/AdminController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/entity/KubernetesConfigEntity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/entity/KubernetesConfigEntity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/repository/KubernetesConfigRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/repository/KubernetesConfigRepositoryImpl.kt" afterDir="false" />
-    </list>
+    <list default="true" id="79b091c2-ce92-4e99-91ac-ce57e480d71a" name="変更" comment="PVC関連コードをリファクタリングし、Kubernetes設定の不要な項目を削除。" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -89,44 +83,47 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Docker.docker-compose.yml: Compose デプロイ.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.server.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.keruta [test].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.keruta のビルド.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ソースのダウンロード.executor&quot;: &quot;Run&quot;,
-    &quot;NIXITCH_NIXPKGS_CONFIG&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_CONF_DIR&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_OTHER_STORES&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_PATH&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_PROFILES&quot;: &quot;/nix/var/nix/profiles/default /home/kigawa/.nix-profile&quot;,
-    &quot;NIXITCH_NIX_REMOTE&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_USER_PROFILE_DIR&quot;: &quot;&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Spring Boot.KerutaApplication.executor&quot;: &quot;Debug&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;モジュール&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;ml.llm.AIAssistantPromptsLibrary&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Docker.docker-compose.yml: Compose デプロイ.executor": "Run",
+    "Docker.server.executor": "Run",
+    "Gradle.keruta [test].executor": "Run",
+    "Gradle.keruta のビルド.executor": "Run",
+    "Gradle.ソースのダウンロード.executor": "Run",
+    "NIXITCH_NIXPKGS_CONFIG": "",
+    "NIXITCH_NIX_CONF_DIR": "",
+    "NIXITCH_NIX_OTHER_STORES": "",
+    "NIXITCH_NIX_PATH": "",
+    "NIXITCH_NIX_PROFILES": "/nix/var/nix/profiles/default /home/kigawa/.nix-profile",
+    "NIXITCH_NIX_REMOTE": "",
+    "NIXITCH_NIX_USER_PROFILE_DIR": "",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.KerutaApplication.executor": "Debug",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "モジュール",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "ml.llm.AIAssistantPromptsLibrary",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Gradle.keruta [test]">
     <configuration name="dev" type="CompoundRunConfigurationType">
       <toRun name="server" type="docker-deploy" />
@@ -164,6 +161,7 @@
       <workItem from="1750675108809" duration="9531000" />
       <workItem from="1750692326275" duration="1343000" />
       <workItem from="1750766713217" duration="22980000" />
+      <workItem from="1750921736975" duration="1372000" />
     </task>
     <task id="LOCAL-00001" summary="w">
       <option name="closed" value="true" />
@@ -349,7 +347,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750908934612</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="PVC関連コードをリファクタリングし、Kubernetes設定の不要な項目を削除。">
+      <option name="closed" value="true" />
+      <created>1750934978613</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1750934978613</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -389,7 +395,8 @@
     <MESSAGE value="PVC使用フラグを削除し、PVC作成・利用ロジックを常に適用するよう変更。関連コードをリファクタリング。" />
     <MESSAGE value="不要なIDE設定ファイルを削除。" />
     <MESSAGE value="タスク用PVC作成ロジックを追加し、Kubernetes連携コードを修正。" />
-    <option name="LAST_COMMIT_MESSAGE" value="タスク用PVC作成ロジックを追加し、Kubernetes連携コードを修正。" />
+    <MESSAGE value="PVC関連コードをリファクタリングし、Kubernetes設定の不要な項目を削除。" />
+    <option name="LAST_COMMIT_MESSAGE" value="PVC関連コードをリファクタリングし、Kubernetes設定の不要な項目を削除。" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
