@@ -1,6 +1,7 @@
 package net.kigawa.keruta.api
 
 import net.kigawa.keruta.core.domain.model.CreateTaskForm
+import net.kigawa.keruta.core.domain.model.KubernetesConfig
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.domain.model.TaskStatus
 import net.kigawa.keruta.core.usecase.agent.AgentService
@@ -22,6 +23,7 @@ class AdminController(
     private val documentService: DocumentService,
     private val gitRepositoryService: GitRepositoryService,
     private val taskService: TaskService,
+    private val kubernetesConfig: KubernetesConfig,
 ) {
 
     @GetMapping
@@ -105,7 +107,8 @@ class AdminController(
             repositoryId = repositoryId,
             parentId = parentId,
             createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now()
+            updatedAt = LocalDateTime.now(),
+            namespace = kubernetesConfig.defaultNamespace
         )
         try {
             taskService.createTask(newTask)

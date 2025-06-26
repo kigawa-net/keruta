@@ -18,8 +18,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79b091c2-ce92-4e99-91ac-ce57e480d71a" name="変更" comment="不要なIDE設定ファイルを削除。">
+    <list default="true" id="79b091c2-ce92-4e99-91ac-ce57e480d71a" name="変更" comment="タスク用PVC作成ロジックを追加し、Kubernetes連携コードを修正。">
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/keruta__test_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/keruta__test_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/AdminController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/AdminController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/entity/KubernetesConfigEntity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/entity/KubernetesConfigEntity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/repository/KubernetesConfigRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/repository/KubernetesConfigRepositoryImpl.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,11 +77,6 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
-  <component name="JavaAutoRunManager">
-    <enabled-run-configurations>
-      <run-configuration type="GradleRunConfiguration" name="keruta [test]" />
-    </enabled-run-configurations>
-  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -128,7 +127,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Spring Boot.KerutaApplication">
+  <component name="RunManager" selected="Gradle.keruta [test]">
     <configuration name="dev" type="CompoundRunConfigurationType">
       <toRun name="server" type="docker-deploy" />
       <toRun name="KerutaApplication" type="SpringBootApplicationConfigurationType" />
@@ -334,7 +333,23 @@
       <option name="project" value="LOCAL" />
       <updated>1750907559987</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="タスク用PVC作成ロジックを追加し、Kubernetes連携コードを修正。">
+      <option name="closed" value="true" />
+      <created>1750908661405</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1750908661405</updated>
+    </task>
+    <task id="LOCAL-00023" summary="タスク用PVC作成ロジックを追加し、Kubernetes連携コードを修正。">
+      <option name="closed" value="true" />
+      <created>1750908934612</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1750908934612</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -373,7 +388,8 @@
     <MESSAGE value="タスクIDのnull許容を廃止し、CreateTaskFormを追加。タスク作成フォームのモデルとテンプレートを更新。ロギング設定を調整。" />
     <MESSAGE value="PVC使用フラグを削除し、PVC作成・利用ロジックを常に適用するよう変更。関連コードをリファクタリング。" />
     <MESSAGE value="不要なIDE設定ファイルを削除。" />
-    <option name="LAST_COMMIT_MESSAGE" value="不要なIDE設定ファイルを削除。" />
+    <MESSAGE value="タスク用PVC作成ロジックを追加し、Kubernetes連携コードを修正。" />
+    <option name="LAST_COMMIT_MESSAGE" value="タスク用PVC作成ロジックを追加し、Kubernetes連携コードを修正。" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

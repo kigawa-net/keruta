@@ -29,9 +29,6 @@ class KubernetesConfigRepositoryImpl(
     
     @Value("\${keruta.job.processor.default-image:keruta-task-executor:latest}")
     private val defaultImage: String,
-    
-    @Value("\${keruta.job.processor.default-namespace:default}")
-    private val defaultProcessorNamespace: String
 ) : KubernetesConfigRepository {
 
     override fun getConfig(): KubernetesConfig {
@@ -50,7 +47,6 @@ class KubernetesConfigRepositoryImpl(
                 inCluster = defaultInCluster,
                 defaultNamespace = defaultNamespace,
                 defaultImage = defaultImage,
-                processorNamespace = defaultProcessorNamespace,
                 createdAt = LocalDateTime.now(),
                 updatedAt = LocalDateTime.now()
             )

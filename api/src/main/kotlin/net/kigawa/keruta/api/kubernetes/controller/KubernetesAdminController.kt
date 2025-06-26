@@ -27,7 +27,6 @@ class KubernetesAdminController(
             inCluster = currentConfig.inCluster,
             defaultNamespace = currentConfig.defaultNamespace,
             defaultImage = currentConfig.defaultImage,
-            processorNamespace = currentConfig.processorNamespace,
             defaultPvcStorageSize = currentConfig.defaultPvcStorageSize,
             defaultPvcAccessMode = currentConfig.defaultPvcAccessMode,
             defaultPvcStorageClass = currentConfig.defaultPvcStorageClass
@@ -51,7 +50,6 @@ class KubernetesAdminController(
             inCluster = configDto.inCluster,
             defaultNamespace = configDto.defaultNamespace,
             defaultImage = configDto.defaultImage,
-            processorNamespace = configDto.processorNamespace,
             defaultPvcStorageSize = configDto.defaultPvcStorageSize,
             defaultPvcAccessMode = configDto.defaultPvcAccessMode,
             defaultPvcStorageClass = configDto.defaultPvcStorageClass,

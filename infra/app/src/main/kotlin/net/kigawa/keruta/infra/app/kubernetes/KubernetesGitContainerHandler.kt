@@ -41,12 +41,12 @@ class KubernetesGitContainerHandler {
 
         return gitCloneContainer
     }
-
     /**
-     * Adds a volume mount to the main container.
+     * Creates a volume mount for the main container.
      *
      * @param volumeName The name of the volume to mount
      * @param mountPath The path where the volume should be mounted
+     * @return A list containing the created volume mount
      */
     fun addVolumeToMainContainer(
         volumeName: String,
