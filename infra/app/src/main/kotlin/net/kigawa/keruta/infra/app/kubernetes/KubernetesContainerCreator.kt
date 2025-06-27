@@ -40,7 +40,7 @@ class KubernetesContainerCreator(
         mainContainer.image = image
 
         // Set command and args for keruta-agent
-        mainContainer.command = listOf("keruta-agent")
+        mainContainer.command = listOf("/usr/local/bin/keruta-agent")
         mainContainer.args = listOf(
             "execute",
             "--task-id",
