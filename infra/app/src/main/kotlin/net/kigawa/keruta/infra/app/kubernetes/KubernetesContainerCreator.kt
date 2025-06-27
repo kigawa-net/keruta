@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter
  */
 @Component
 class KubernetesContainerCreator(
-    private val clientProvider: KubernetesClientProvider
+    private val clientProvider: KubernetesClientProvider,
 ) {
     private val logger = LoggerFactory.getLogger(KubernetesContainerCreator::class.java)
 
@@ -23,6 +23,8 @@ class KubernetesContainerCreator(
      * @param task The task to create a container for
      * @param image The Docker image to use
      * @param resources The resource requirements
+     * @param volumeMounts The volume mounts to add to the container
+     * @param envVars Additional environment variables to add to the container
      * @return The created container
      */
     fun createMainContainer(
@@ -34,13 +36,46 @@ class KubernetesContainerCreator(
     ): Container {
         logger.info("Creating main container for task: ${task.id}")
 
-        // Create main container
-        val mainContainer = Container()
-        mainContainer.name = "task-container"
-        mainContainer.image = image
+        // Create main container with basic configuration
+        val mainContainer = createBasicContainer(image)
 
-        // Set command and args for a shell script that will download and execute keruta-agent
-        mainContainer.command = listOf("/bin/sh", "-c")
+        // Set command and args for the container
+        setupContainerCommand(mainContainer)
+
+        // Add environment variables to the container
+        setupEnvironmentVariables(mainContainer, task, envVars)
+
+        // Add resource requirements if specified
+        if (resources != null) {
+            setupResourceRequirements(mainContainer, resources)
+        }
+
+        // Add volume mounts
+        mainContainer.volumeMounts = volumeMounts
+
+        return mainContainer
+    }
+
+    /**
+     * Creates a basic container with name and image.
+     *
+     * @param image The Docker image to use
+     * @return The created container
+     */
+    private fun createBasicContainer(image: String): Container {
+        val container = Container()
+        container.name = "task-container"
+        container.image = image
+        return container
+    }
+
+    /**
+     * Sets up the command and args for the container.
+     *
+     * @param container The container to set up
+     */
+    private fun setupContainerCommand(container: Container) {
+        container.command = listOf("/bin/sh", "-c")
         val shellScript = listOf(
             "set -ue",
             "# Download and install keruta-agent if it doesn't exist",
@@ -60,13 +95,58 @@ class KubernetesContainerCreator(
             "# Execute keruta-agent",
             "/usr/local/bin/keruta-agent execute --task-id \"\$KERUTA_TASK_ID\" --api-url \"\$KERUTA_API_URL\""
         )
-        mainContainer.args = listOf(shellScript.joinToString("\n"))
+        container.args = listOf(shellScript.joinToString("\n"))
+    }
 
+    /**
+     * Sets up the environment variables for the container.
+     *
+     * @param container The container to set up
+     * @param task The task to create environment variables for
+     * @param additionalEnvVars Additional environment variables to add
+     */
+    private fun setupEnvironmentVariables(container: Container, task: Task, additionalEnvVars: List<EnvVar>) {
         // Get the namespace from the client provider's config
         val namespace = clientProvider.getConfig().defaultNamespace
 
-        // Create environment variables list
-        val environmentVars = mutableListOf(
+        // Check if the keruta-api-token secret exists, or create it if it doesn't
+        val secretName = "keruta-api-token"
+
+        // Try to get or create the API token secret
+        val token = clientProvider.getOrCreateApiTokenSecret(namespace)
+
+        if (token != null) {
+            // Create SecretKeySelector for API token
+            val secretKeySelector = SecretKeySelector()
+            secretKeySelector.name = secretName
+            secretKeySelector.key = "token"
+
+            // Create EnvVarSource for API token
+            val envVarSource = EnvVarSource()
+            envVarSource.secretKeyRef = secretKeySelector
+
+            // Create task-related environment variables
+            val taskEnvVars = createTaskEnvironmentVariables(task)
+
+            // Add API token environment variable to the list
+            container.env = taskEnvVars + EnvVar("KERUTA_API_TOKEN", null, envVarSource) + additionalEnvVars
+        } else {
+            val errorMessage = "Failed to get or create secret '$secretName' in namespace '$namespace'. KERUTA_API_TOKEN is required for operation."
+            logger.error(errorMessage)
+            throw IllegalStateException(
+                "設定の初期化に失敗しました: 設定の検証に失敗: KERUTA_API_TOKEN が設定されていません"
+            )
+        }
+    }
+
+    /**
+     * Creates environment variables for a task.
+     *
+     * @param task The task to create environment variables for
+     * @return The list of environment variables
+     */
+    private fun createTaskEnvironmentVariables(task: Task): List<EnvVar> {
+        return listOf(
             EnvVar("KERUTA_TASK_ID", task.id, null),
             EnvVar("KERUTA_TASK_TITLE", task.title, null),
             EnvVar("KERUTA_TASK_DESCRIPTION", task.description ?: "", null),
@@ -77,42 +157,24 @@ class KubernetesContainerCreator(
             // Add API URL environment variable
             EnvVar("KERUTA_API_URL", "http://keruta-api.keruta.svc.cluster.local", null)
         )
+    }
 
-        // Check if the keruta-api-token secret exists
-        val secretName = "keruta-api-token"
-        if (clientProvider.secretExists(secretName, namespace)) {
-            // Create SecretKeySelector for API token
-            val secretKeySelector = SecretKeySelector()
-            secretKeySelector.name = secretName
-            secretKeySelector.key = "token"
-
-            // Create EnvVarSource for API token
-            val envVarSource = EnvVarSource()
-            envVarSource.secretKeyRef = secretKeySelector
-
-            // Add API token environment variable
-            environmentVars.add(EnvVar("KERUTA_API_TOKEN", null, envVarSource))
-        } else {
-            logger.warn("Secret '$secretName' not found in namespace '$namespace'. KERUTA_API_TOKEN environment variable will not be set.")
-        }
-
-        // Add environment variables to main container
-        mainContainer.env = environmentVars + envVars
-
-        // Add resource requirements if specified
-        if (resources != null) {
-            val resourceRequirements = ResourceRequirements()
-            resourceRequirements.requests = mapOf(
-                "cpu" to Quantity(resources.cpu),
-                "memory" to Quantity(resources.memory)
-            )
-            resourceRequirements.limits = mapOf(
-                "cpu" to Quantity(resources.cpu),
-                "memory" to Quantity(resources.memory)
-            )
-            mainContainer.resources = resourceRequirements
-        }
-        mainContainer.volumeMounts = volumeMounts
-        return mainContainer
+    /**
+     * Sets up resource requirements for the container.
+     *
+     * @param container The container to set up
+     * @param resources The resource requirements
+     */
+    private fun setupResourceRequirements(container: Container, resources: Resources) {
+        val resourceRequirements = ResourceRequirements()
+        resourceRequirements.requests = mapOf(
+            "cpu" to Quantity(resources.cpu),
+            "memory" to Quantity(resources.memory)
+        )
+        resourceRequirements.limits = mapOf(
+            "cpu" to Quantity(resources.cpu),
+            "memory" to Quantity(resources.memory)
+        )
+        container.resources = resourceRequirements
     }
 }

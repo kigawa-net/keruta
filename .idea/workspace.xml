@@ -18,12 +18,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79b091c2-ce92-4e99-91ac-ce57e480d71a" name="変更" comment="KubernetesContainerCreatorにおける環境変数設定ロジックを改善し、APIトークン用シークレットの存在確認機能を追加。">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="79b091c2-ce92-4e99-91ac-ce57e480d71a" name="変更" comment="未コミットの変更内容を棚上げし、関連テストコードを一部修正">
+      <change beforePath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesClientProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesClientProvider.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesContainerCreator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesContainerCreator.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesScriptExecutionHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesScriptExecutionHandler.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesScriptHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesScriptHandler.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-doc" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-doc" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +131,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="複合.dev">
+  <component name="RunManager" selected="Gradle.keruta [test]">
     <configuration name="dev" type="CompoundRunConfigurationType">
       <toRun name="server" type="docker-deploy" />
       <toRun name="KerutaApplication" type="SpringBootApplicationConfigurationType" />
@@ -431,7 +428,23 @@
       <option name="project" value="LOCAL" />
       <updated>1751009639148</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="未コミットの変更内容を棚上げし、関連テストコードを一部修正">
+      <option name="closed" value="true" />
+      <created>1751035957627</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1751035957627</updated>
+    </task>
+    <task id="LOCAL-00034" summary="未コミットの変更内容を棚上げし、関連テストコードを一部修正">
+      <option name="closed" value="true" />
+      <created>1751036365198</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1751036365198</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -449,7 +462,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="w" />
     <MESSAGE value="Remove `ExtendedAgentAdminController` and IntelliJ project-specific configuration files.&#10;&#10;Cleaned up unused controller and redundant IntelliJ files, including data sources, run configurations, and shelved changes, for a leaner and more maintainable codebase." />
     <MESSAGE value="リポジトリ管理機能追加: テスト、スクリプト設定、UI改善" />
     <MESSAGE value="ConfigMapをオプション化し、環境変数未設定時の処理を追加" />
@@ -474,7 +486,8 @@
     <MESSAGE value="PVC関連コードをリファクタリングし、Kubernetes設定の不要な項目を削除。" />
     <MESSAGE value="&quot;KerutaAgentService及びそのGitHubリリース取得機能追加。&quot;" />
     <MESSAGE value="KubernetesContainerCreatorにおける環境変数設定ロジックを改善し、APIトークン用シークレットの存在確認機能を追加。" />
-    <option name="LAST_COMMIT_MESSAGE" value="KubernetesContainerCreatorにおける環境変数設定ロジックを改善し、APIトークン用シークレットの存在確認機能を追加。" />
+    <MESSAGE value="未コミットの変更内容を棚上げし、関連テストコードを一部修正" />
+    <option name="LAST_COMMIT_MESSAGE" value="未コミットの変更内容を棚上げし、関連テストコードを一部修正" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

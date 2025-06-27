@@ -1,10 +1,14 @@
 package net.kigawa.keruta.infra.app.kubernetes
 
+import io.fabric8.kubernetes.api.model.Secret
+import io.fabric8.kubernetes.api.model.SecretBuilder
 import io.fabric8.kubernetes.client.KubernetesClientBuilder
 import net.kigawa.keruta.core.domain.model.KubernetesConfig
 import net.kigawa.keruta.core.usecase.repository.KubernetesConfigRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import java.util.Base64
+import java.util.UUID
 
 /**
  * Provider for Kubernetes client.
@@ -73,6 +77,77 @@ class KubernetesClientProvider(
         } catch (e: Exception) {
             logger.warn("Failed to check if secret $secretName exists in namespace $namespace", e)
             return false
+        }
+    }
+
+    /**
+     * Creates a secret with the specified name in the specified namespace.
+     *
+     * @param secretName The name of the secret to create
+     * @param namespace The namespace to create the secret in
+     * @param data The data to store in the secret
+     * @return The created secret, or null if creation failed
+     */
+    fun createSecret(secretName: String, namespace: String, data: Map<String, String>): Secret? {
+        try {
+            val client = getClient() ?: return null
+
+            // Create a new Secret object
+            val secret = Secret()
+
+            // Set metadata
+            val metadata = io.fabric8.kubernetes.api.model.ObjectMeta()
+            metadata.name = secretName
+            metadata.namespace = namespace
+            secret.metadata = metadata
+
+            // Encode the data values in Base64
+            val encodedData = mutableMapOf<String, String>()
+            data.forEach { (key, value) ->
+                encodedData[key] = Base64.getEncoder().encodeToString(value.toByteArray())
+            }
+
+            // Set the data
+            secret.data = encodedData
+
+            // Create the secret in Kubernetes
+            val createdSecret = client.secrets().inNamespace(namespace).create(secret)
+            logger.info("Created secret $secretName in namespace $namespace")
+            return createdSecret
+        } catch (e: Exception) {
+            logger.error("Failed to create secret $secretName in namespace $namespace", e)
+            return null
+        }
+    }
+
+    /**
+     * Gets or creates the keruta-api-token secret in the specified namespace.
+     *
+     * @param namespace The namespace to get or create the secret in
+     * @return The token value, or null if creation failed
+     */
+    fun getOrCreateApiTokenSecret(namespace: String): String? {
+        val secretName = "keruta-api-token"
+
+        // Check if the secret already exists
+        if (secretExists(secretName, namespace)) {
+            logger.info("Secret $secretName already exists in namespace $namespace")
+            return "existing-token" // We don't actually retrieve the token value for security reasons
+        }
+
+        // Generate a random token
+        val token = UUID.randomUUID().toString()
+
+        // Create the secret
+        val data = mapOf("token" to token)
+        val createdSecret = createSecret(secretName, namespace, data)
+
+        return if (createdSecret != null) {
+            logger.info("Created keruta-api-token secret in namespace $namespace")
+            token
+        } else {
+            logger.error("Failed to create keruta-api-token secret in namespace $namespace")
+            null
         }
     }
 }
