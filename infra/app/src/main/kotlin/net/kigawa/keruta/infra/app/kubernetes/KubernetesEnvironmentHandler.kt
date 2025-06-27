@@ -1,6 +1,7 @@
 package net.kigawa.keruta.infra.app.kubernetes
 
 import io.fabric8.kubernetes.api.model.EnvVar
+import net.kigawa.keruta.core.usecase.agent.KerutaAgentService
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
@@ -9,7 +10,9 @@ import org.springframework.stereotype.Component
  * Responsible for setting up environment variables for containers.
  */
 @Component
-class KubernetesEnvironmentHandler {
+class KubernetesEnvironmentHandler(
+    private val kerutaAgentService: KerutaAgentService
+) {
     private val logger = LoggerFactory.getLogger(KubernetesEnvironmentHandler::class.java)
 
     /**
@@ -28,6 +31,17 @@ class KubernetesEnvironmentHandler {
         agentInstallCommand: String = "",
         agentExecuteCommand: String = "",
     ): List<EnvVar> {
+        // Get the latest release URL of keruta-agent from GitHub
+        val latestReleaseUrl = try {
+            kerutaAgentService.getLatestReleaseUrl()
+        } catch (e: Exception) {
+            logger.error("Failed to get latest release URL of keruta-agent from GitHub", e)
+            // Fallback URL in case of failure
+            "https://github.com/kigawa-net/keruta-agent/releases/latest/download/keruta-agent-linux-amd64"
+        }
+
+        logger.info("Latest release URL of keruta-agent: $latestReleaseUrl")
+
         // Add task metadata environment variables directly
         logger.info("Adding environment variables directly")
         return listOf(
@@ -37,6 +51,9 @@ class KubernetesEnvironmentHandler {
             EnvVar("KERUTA_AGENT_ID", agentId, null),
             EnvVar("KERUTA_AGENT_INSTALL_COMMAND", agentInstallCommand, null),
             EnvVar("KERUTA_AGENT_EXECUTE_COMMAND", agentExecuteCommand, null),
+
+            // Add keruta-agent latest release URL
+            EnvVar("KERUTA_AGENT_LATEST_RELEASE_URL", latestReleaseUrl, null),
 
             // Add API endpoint environment variable
             EnvVar("KERUTA_API_ENDPOINT", "http://keruta-api.keruta.svc.cluster.local", null),

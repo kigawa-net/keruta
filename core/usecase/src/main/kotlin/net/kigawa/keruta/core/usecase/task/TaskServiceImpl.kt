@@ -5,6 +5,7 @@
 package net.kigawa.keruta.core.usecase.task
 
 import net.kigawa.keruta.core.domain.model.*
+import net.kigawa.keruta.core.usecase.agent.AgentService
 import net.kigawa.keruta.core.usecase.kubernetes.KubernetesService
 import net.kigawa.keruta.core.usecase.repository.GitRepositoryService
 import net.kigawa.keruta.core.usecase.repository.TaskRepository
@@ -17,7 +18,8 @@ class TaskServiceImpl(
     private val taskRepository: TaskRepository,
     private val kubernetesService: KubernetesService,
     private val gitRepositoryService: GitRepositoryService,
-    private val kubernetesConfig: KubernetesConfig
+    private val kubernetesConfig: KubernetesConfig,
+    private val agentService: AgentService
 ) : TaskService {
 
     private val logger = LoggerFactory.getLogger(TaskServiceImpl::class.java)
@@ -115,7 +117,7 @@ class TaskServiceImpl(
         val task = getTaskById(taskId)
         val pvcName = task.parentId?.let {
             if (it.isBlank()) null else getTaskById(it)
-        }?.pvcName ?: ("pvc-" + taskId)
+        }?.pvcName ?: ("pvc-$taskId")
         val actualJobName = jobName ?: "keruta-job-${task.id}"
 
         try {
