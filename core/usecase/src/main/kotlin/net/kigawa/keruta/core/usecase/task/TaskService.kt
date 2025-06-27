@@ -94,7 +94,6 @@ interface TaskService {
      * @param namespace The Kubernetes namespace (optional)
      * @param jobName The name of the job (optional)
      * @param resources The resource requirements (optional)
-     * @param additionalEnv Additional environment variables (optional)
      * @return The updated task with job information
      * @throws NoSuchElementException if the task is not found
      */
@@ -104,7 +103,6 @@ interface TaskService {
         namespace: String = "default",
         jobName: String? = null,
         resources: Resources? = null,
-        additionalEnv: Map<String, String> = emptyMap()
     ): Task
 
     /**
@@ -114,7 +112,6 @@ interface TaskService {
      * @param namespace The Kubernetes namespace (optional)
      * @param jobName The name of the job (optional)
      * @param resources The resource requirements (optional)
-     * @param additionalEnv Additional environment variables (optional)
      * @return The updated task, or null if there are no tasks in the queue
      */
     fun createJobForNextTask(
@@ -122,7 +119,6 @@ interface TaskService {
         namespace: String = "default",
         jobName: String? = null,
         resources: Resources? = null,
-        additionalEnv: Map<String, String> = emptyMap()
     ): Task?
 
     /**

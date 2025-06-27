@@ -1,6 +1,7 @@
 package net.kigawa.keruta.infra.app.kubernetes
 
-import io.fabric8.kubernetes.api.model.Container
+import io.fabric8.kubernetes.api.model.EnvVar
+import io.fabric8.kubernetes.api.model.VolumeMount
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
@@ -12,46 +13,41 @@ import org.springframework.stereotype.Component
 class KubernetesScriptExecutionHandler(
     private val volumeMountHandler: KubernetesVolumeMountHandler,
     private val environmentHandler: KubernetesEnvironmentHandler,
-    private val scriptHandler: KubernetesScriptHandler
+    private val scriptHandler: KubernetesScriptHandler,
 ) {
     private val logger = LoggerFactory.getLogger(KubernetesScriptExecutionHandler::class.java)
 
     /**
      * Sets up script execution in the main container.
      *
-     * @param container The container to set up script execution for
      * @param workVolumeName The name of the work volume
      * @param workMountPath The mount path of the work volume
-     * @param createConfigMap Whether to create the ConfigMap if it doesn't exist
-     * @param task The task to create metadata for (required if createConfigMap is true)
      * @param repositoryId The repository ID (required if createConfigMap is true)
      * @param documentId The document ID (required if createConfigMap is true)
      * @param agentId The agent ID (required if createConfigMap is true)
      * @param agentInstallCommand The agent install command (required if createConfigMap is true)
      * @param agentExecuteCommand The agent execute command (required if createConfigMap is true)
+     * @param existingMounts List of existing volume mounts
+     * @param container Optional container to set up script and command for
      */
     fun setupScriptExecution(
-        container: Container,
         workVolumeName: String,
         workMountPath: String,
-        createConfigMap: Boolean = false,
-        task: net.kigawa.keruta.core.domain.model.Task? = null,
         repositoryId: String = "",
         documentId: String = "",
         agentId: String = "",
         agentInstallCommand: String = "",
-        agentExecuteCommand: String = ""
-    ) {
+        agentExecuteCommand: String = "",
+        existingMounts: List<VolumeMount>,
+        container: io.fabric8.kubernetes.api.model.Container? = null
+    ): Pair<VolumeMount?, List<EnvVar>> {
         logger.info("Setting up script execution in main container")
 
         // Setup volume mount
-        volumeMountHandler.setupVolumeMount(container, workVolumeName, workMountPath)
+        val volumeMount = volumeMountHandler.setupVolumeMount(workVolumeName, workMountPath, existingMounts)
 
         // Setup environment variables
-        environmentHandler.setupEnvironmentVariables(
-            container,
-            createConfigMap,
-            task,
+        val envVars = environmentHandler.setupEnvironmentVariables(
             repositoryId,
             documentId,
             agentId,
@@ -59,7 +55,11 @@ class KubernetesScriptExecutionHandler(
             agentExecuteCommand
         )
 
-        // Setup script and command
-        scriptHandler.setupScriptAndCommand(container, workMountPath)
+        // Setup script and command if container is provided
+        container?.let {
+            scriptHandler.setupScriptAndCommand(it, workMountPath)
+        }
+
+        return Pair(volumeMount, envVars)
     }
 }

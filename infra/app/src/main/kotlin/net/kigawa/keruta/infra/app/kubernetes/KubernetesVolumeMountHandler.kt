@@ -1,6 +1,5 @@
 package net.kigawa.keruta.infra.app.kubernetes
 
-import io.fabric8.kubernetes.api.model.Container
 import io.fabric8.kubernetes.api.model.VolumeMount
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -16,18 +15,19 @@ class KubernetesVolumeMountHandler {
     /**
      * Sets up volume mount for the container.
      *
-     * @param container The container to set up volume mounts for
      * @param volumeName The name of the volume
      * @param mountPath The mount path of the volume
      */
-    fun setupVolumeMount(container: Container, volumeName: String, mountPath: String) {
+    fun setupVolumeMount(
+        volumeName: String, mountPath: String,
+        existingMounts: List<VolumeMount>,
+    ): VolumeMount? {
         // Check if a volume mount with the same path already exists
-        val volumeMounts = container.volumeMounts ?: mutableListOf()
-        val existingMount = volumeMounts.find { it.mountPath == mountPath }
+        val existingMount = existingMounts.find { it.mountPath == mountPath }
 
         if (existingMount != null) {
             logger.info("Volume mount with path $mountPath already exists, skipping")
-            return
+            return null
         }
 
         // Create volume mount for work directory
@@ -35,8 +35,6 @@ class KubernetesVolumeMountHandler {
         volumeMount.name = volumeName
         volumeMount.mountPath = mountPath
 
-        // Add volume mount to container
-        volumeMounts.add(volumeMount)
-        container.volumeMounts = volumeMounts
+        return volumeMount
     }
 }

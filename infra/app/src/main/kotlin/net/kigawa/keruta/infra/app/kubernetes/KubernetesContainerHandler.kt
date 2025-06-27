@@ -1,6 +1,8 @@
 package net.kigawa.keruta.infra.app.kubernetes
 
 import io.fabric8.kubernetes.api.model.Container
+import io.fabric8.kubernetes.api.model.EnvVar
+import io.fabric8.kubernetes.api.model.VolumeMount
 import net.kigawa.keruta.core.domain.model.Resources
 import net.kigawa.keruta.core.domain.model.Task
 import org.slf4j.LoggerFactory
@@ -14,7 +16,7 @@ import org.springframework.stereotype.Component
 @Component
 class KubernetesContainerHandler(
     private val containerCreator: KubernetesContainerCreator,
-    private val scriptExecutionHandler: KubernetesScriptExecutionHandler
+    private val scriptExecutionHandler: KubernetesScriptExecutionHandler,
 ) {
     private val logger = LoggerFactory.getLogger(KubernetesContainerHandler::class.java)
 
@@ -24,57 +26,54 @@ class KubernetesContainerHandler(
      * @param task The task to create a container for
      * @param image The Docker image to use
      * @param resources The resource requirements
-     * @param additionalEnv Additional environment variables
      * @return The created container
      */
     fun createMainContainer(
         task: Task,
         image: String,
         resources: Resources?,
-        additionalEnv: Map<String, String>
+        volumeMounts: List<VolumeMount>,
+        envVars: List<EnvVar>,
     ): Container {
         logger.info("Delegating main container creation to KubernetesContainerCreator")
-        return containerCreator.createMainContainer(task, image, resources, additionalEnv)
+        return containerCreator.createMainContainer(task, image, resources, volumeMounts, envVars)
     }
 
     /**
      * Sets up script execution in the main container.
      *
-     * @param container The container to set up script execution for
      * @param workVolumeName The name of the work volume
      * @param workMountPath The mount path of the work volume
-     * @param createConfigMap Whether to create the ConfigMap if it doesn't exist
-     * @param task The task to create metadata for (required if createConfigMap is true)
      * @param repositoryId The repository ID (required if createConfigMap is true)
      * @param documentId The document ID (required if createConfigMap is true)
      * @param agentId The agent ID (required if createConfigMap is true)
      * @param agentInstallCommand The agent install command (required if createConfigMap is true)
      * @param agentExecuteCommand The agent execute command (required if createConfigMap is true)
+     * @param existingMounts List of existing volume mounts
+     * @param container Optional container to set up script and command for
      */
     fun setupScriptExecution(
-        container: Container,
         workVolumeName: String,
         workMountPath: String,
-        createConfigMap: Boolean = false,
-        task: Task? = null,
         repositoryId: String = "",
         documentId: String = "",
         agentId: String = "",
         agentInstallCommand: String = "",
-        agentExecuteCommand: String = ""
-    ) {
+        agentExecuteCommand: String = "",
+        existingMounts: List<VolumeMount>,
+        container: Container? = null
+    ): Pair<VolumeMount?, List<EnvVar>> {
         logger.info("Delegating script execution setup to KubernetesScriptExecutionHandler")
-        scriptExecutionHandler.setupScriptExecution(
-            container,
+        return scriptExecutionHandler.setupScriptExecution(
             workVolumeName,
             workMountPath,
-            createConfigMap,
-            task,
             repositoryId,
             documentId,
             agentId,
             agentInstallCommand,
-            agentExecuteCommand
+            agentExecuteCommand,
+            existingMounts,
+            container
         )
     }
 }

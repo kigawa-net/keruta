@@ -109,7 +109,6 @@ class TaskServiceImpl(
         namespace: String,
         jobName: String?,
         resources: Resources?,
-        additionalEnv: Map<String, String>,
     ): Task {
         logger.info("Creating Kubernetes job for task with id: $taskId")
 
@@ -157,7 +156,6 @@ class TaskServiceImpl(
                 namespace = namespace,
                 jobName = actualJobName,
                 resources = resources,
-                additionalEnv = additionalEnv,
                 repository = repository,
                 pvcName
             )
@@ -167,7 +165,6 @@ class TaskServiceImpl(
                 namespace = namespace,
                 jobName = createdJobName,
                 podName = createdJobName, // For backward compatibility
-                additionalEnv = additionalEnv,
                 status = TaskStatus.IN_PROGRESS,
                 pvcName = pvcName,
                 updatedAt = LocalDateTime.now()
@@ -213,7 +210,6 @@ class TaskServiceImpl(
         namespace: String,
         jobName: String?,
         resources: Resources?,
-        additionalEnv: Map<String, String>,
     ): Task? {
         logger.info("Creating job for next task in queue")
 
@@ -225,7 +221,6 @@ class TaskServiceImpl(
             namespace = namespace,
             jobName = jobName,
             resources = resources,
-            additionalEnv = additionalEnv
         )
     }
 

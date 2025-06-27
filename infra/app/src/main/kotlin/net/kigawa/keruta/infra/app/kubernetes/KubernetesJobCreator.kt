@@ -36,7 +36,6 @@ class KubernetesJobCreator(
      * @param namespace The Kubernetes namespace
      * @param jobName The name of the job
      * @param resources The resource requirements
-     * @param additionalEnv Additional environment variables
      * @param repository The Git repository to use
      * @return The name of the created job
      */
@@ -45,10 +44,9 @@ class KubernetesJobCreator(
         image: String,
         namespace: String,
         jobName: String?,
-        resources: Resources?,
-        additionalEnv: Map<String, String>,
         repository: Repository?,
         pvcName: String,
+        resources: Resources?,
     ): String {
         val config = clientProvider.getConfig()
         val client = clientProvider.getClient()
@@ -69,10 +67,7 @@ class KubernetesJobCreator(
             val podTemplateMetadata = metadataHandler.createPodTemplateMetadata(task.id)
 
             // Create main container
-            val mainContainer = containerHandler.createMainContainer(task, image, resources, additionalEnv)
 
-            // Create containers list and add main container
-            val containers = mutableListOf(mainContainer)
 
             // Create volumes list
             val volumes = mutableListOf<Volume>()
@@ -80,8 +75,8 @@ class KubernetesJobCreator(
             // Add init containers list
             val initContainers = mutableListOf<Container>()
 
-            val pvcMountPath = additionalEnv["KERUTA_PVC_MOUNT_PATH"] ?: "/pvc"
-
+            val pvcMountPath = "/pvc"
+            var volumeMounts = listOf<VolumeMount>()
             // Create work volume if not already created for repository
             val workVolumeName = if (repository != null) {
                 // Use repository volume if available
@@ -89,17 +84,20 @@ class KubernetesJobCreator(
                     task,
                     repository,
                     actualNamespace, pvcName
-                ).also {
-                    mainContainer.volumeMounts = (mainContainer.volumeMounts ?: listOf<VolumeMount>()) +
-                            (it.volumeMount ?: listOf())
-                    it.gitCloneContainer?.let { element -> initContainers.add(element) }
-                    volumes.addAll(it.volumes)
+                ).also { result ->
+                    result.volumeMount?.let { it -> volumeMounts = it }
+                    result.gitCloneContainer?.let { element -> initContainers.add(element) }
+                    volumes.addAll(result.volumes)
                 }
                 "repo-volume" // Use the volume name from repositoryHandler
-            } else run {
+            } else {
                 // Mount existing PVC if specified
                 logger.info("Mounting existing PVC: $pvcName at path: $pvcMountPath")
-                volumeHandler.mountExistingPvc(volumes, mainContainer, pvcName, "pvc-volume", pvcMountPath)
+                val mountExistingPvcResult = volumeHandler.mountExistingPvc(
+                    volumes, pvcName, "pvc-volume", pvcMountPath, volumeMounts
+                )
+                mountExistingPvcResult.second?.let { volumeMounts += it }
+                "pvc-volume" // Use the volume name from volumeHandler
             }
 
             // Set up script execution in the main container
@@ -130,21 +128,27 @@ class KubernetesJobCreator(
             val workMountPath = pvcMountPath
 
             // Set up script execution with ConfigMap creation
-            containerHandler.setupScriptExecution(
-                mainContainer,
+            val setupScriptExecutionResult = containerHandler.setupScriptExecution(
                 workVolumeName,
                 workMountPath,
-                true, // Create ConfigMap
-                task,
+                // Create ConfigMap
                 repositoryId,
                 documentId,
                 agentId,
                 agentInstallCommand,
-                agentExecuteCommand
+                agentExecuteCommand,
+                volumeMounts,
+                null // No container available at this point
             )
+            setupScriptExecutionResult.first?.let { volumeMounts += it }
+            val envVars = setupScriptExecutionResult.second
 
             // Create pod spec and pod template spec
-            val podSpec = podSpecHandler.createPodSpec(containers, volumes, initContainers)
+            val podSpec = podSpecHandler.createPodSpec(
+                mutableListOf(
+                    containerHandler.createMainContainer(task, image, resources, volumeMounts, envVars)
+                ), volumes, initContainers
+            )
             val podTemplateSpec = podSpecHandler.createPodTemplateSpec(podTemplateMetadata, podSpec)
 
             // Create job spec and job

@@ -71,7 +71,6 @@ class BackgroundTaskProcessor(
                 image = kubernetesConfig.defaultImage,
                 namespace = kubernetesConfig.defaultNamespace,
                 resources = null,
-                additionalEnv = emptyMap()
             )
 
             if (task != null) {
@@ -83,14 +82,14 @@ class BackgroundTaskProcessor(
             logger.error("Error processing next task", e)
 
             // Update the status of the task that was being processed
-            if (currentTask != null && currentTask.id != null) {
+            if (currentTask != null) {
                 try {
                     // Update the task status to FAILED
-                    val updatedTask = taskService.updateTaskStatus(currentTask.id!!, TaskStatus.FAILED)
+                    val updatedTask = taskService.updateTaskStatus(currentTask.id, TaskStatus.FAILED)
                     logger.info("Updated task ${updatedTask.id} status to FAILED due to processing error")
 
                     // Append error message to task logs
-                    taskService.appendTaskLogs(updatedTask.id!!, "Task processing failed: ${e.message}")
+                    taskService.appendTaskLogs(updatedTask.id, "Task processing failed: ${e.message}")
                 } catch (ex: Exception) {
                     logger.error("Failed to update task status", ex)
                 }

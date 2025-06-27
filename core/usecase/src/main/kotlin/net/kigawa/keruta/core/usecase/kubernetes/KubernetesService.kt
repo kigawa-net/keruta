@@ -18,7 +18,6 @@ interface KubernetesService {
      * @param namespace The Kubernetes namespace
      * @param jobName The name of the job
      * @param resources The resource requirements
-     * @param additionalEnv Additional environment variables
      * @return The name of the created job
      */
     fun createJob(
@@ -27,7 +26,6 @@ interface KubernetesService {
         namespace: String,
         jobName: String?,
         resources: Resources?,
-        additionalEnv: Map<String, String>,
         repository: Repository? = null,
         pvcName: String
     ): String

@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service
 class KubernetesServiceImpl(
     private val clientProvider: KubernetesClientProvider,
     private val jobCreator: KubernetesJobCreator,
-    private val jobMonitor: KubernetesJobMonitor
+    private val jobMonitor: KubernetesJobMonitor,
 ) : KubernetesService {
 
     private val logger = LoggerFactory.getLogger(KubernetesServiceImpl::class.java)
@@ -36,9 +36,8 @@ class KubernetesServiceImpl(
         namespace: String,
         jobName: String?,
         resources: Resources?,
-        additionalEnv: Map<String, String>,
         repository: Repository?,
-        pvcName: String
+        pvcName: String,
     ): String {
         logger.debug("Delegating job creation to KubernetesJobCreator")
         return jobCreator.createJob(
@@ -46,10 +45,9 @@ class KubernetesServiceImpl(
             image,
             namespace,
             jobName,
-            resources,
-            additionalEnv,
             repository,
-            pvcName
+            pvcName,
+            resources,
         )
     }
 
@@ -108,7 +106,7 @@ class KubernetesServiceImpl(
         storageSize: String,
         accessMode: String,
         storageClass: String,
-        taskId: String
+        taskId: String,
     ): Boolean {
         logger.debug("Delegating PVC creation to KubernetesJobMonitor")
         return jobMonitor.createPVC(namespace, pvcName, storageSize, accessMode, storageClass, taskId)

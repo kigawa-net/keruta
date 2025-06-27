@@ -7,7 +7,7 @@ import io.fabric8.kubernetes.api.model.VolumeMount
 import net.kigawa.keruta.core.domain.model.Task
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
-import java.util.UUID
+import java.util.*
 
 /**
  * Handler for Kubernetes volumes.
@@ -17,7 +17,7 @@ import java.util.UUID
 class KubernetesVolumeHandler(
     private val clientProvider: KubernetesClientProvider,
     private val volumeMountHandler: KubernetesVolumeMountHandler,
-    private val taskRepository: net.kigawa.keruta.core.usecase.repository.TaskRepository
+    private val taskRepository: net.kigawa.keruta.core.usecase.repository.TaskRepository,
 ) {
     private val logger = LoggerFactory.getLogger(KubernetesVolumeHandler::class.java)
 
@@ -36,7 +36,7 @@ class KubernetesVolumeHandler(
         volumes: MutableList<Volume>,
         mainContainer: Container,
         namespace: String,
-        task: Task? = null
+        task: Task? = null,
     ): String {
         logger.info("Creating work volume using PVC")
 
@@ -170,7 +170,6 @@ class KubernetesVolumeHandler(
      * Also adds a volume mount to the container.
      *
      * @param volumes The list of volumes to add to
-     * @param container The container to add the volume mount to
      * @param pvcName The name of the existing PVC to mount
      * @param volumeName The name to use for the volume (optional, defaults to "pvc-volume")
      * @param mountPath The path where the volume should be mounted (optional, defaults to "/pvc")
@@ -178,11 +177,11 @@ class KubernetesVolumeHandler(
      */
     fun mountExistingPvc(
         volumes: MutableList<Volume>,
-        container: Container,
         pvcName: String,
         volumeName: String = "pvc-volume",
-        mountPath: String = "/pvc"
-    ): String {
+        mountPath: String = "/pvc",
+        existingMounts: List<VolumeMount>,
+    ): Pair<String, VolumeMount?> {
         logger.info("Mounting existing PVC: $pvcName as volume: $volumeName at path: $mountPath")
 
         // Create volume using existing PVC
@@ -194,8 +193,8 @@ class KubernetesVolumeHandler(
         volumes.add(pvcVolume)
 
         // Add volume mount to container
-        volumeMountHandler.setupVolumeMount(container, volumeName, mountPath)
+        val volumeMount = volumeMountHandler.setupVolumeMount(volumeName, mountPath, existingMounts)
 
-        return volumeName
+        return Pair(volumeName, volumeMount)
     }
-    }
+}

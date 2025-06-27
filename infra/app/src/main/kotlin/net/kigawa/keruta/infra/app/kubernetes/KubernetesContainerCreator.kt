@@ -1,9 +1,6 @@
 package net.kigawa.keruta.infra.app.kubernetes
 
-import io.fabric8.kubernetes.api.model.Container
-import io.fabric8.kubernetes.api.model.EnvVar
-import io.fabric8.kubernetes.api.model.Quantity
-import io.fabric8.kubernetes.api.model.ResourceRequirements
+import io.fabric8.kubernetes.api.model.*
 import net.kigawa.keruta.core.domain.model.Resources
 import net.kigawa.keruta.core.domain.model.Task
 import org.slf4j.LoggerFactory
@@ -24,14 +21,14 @@ class KubernetesContainerCreator {
      * @param task The task to create a container for
      * @param image The Docker image to use
      * @param resources The resource requirements
-     * @param additionalEnv Additional environment variables
      * @return The created container
      */
     fun createMainContainer(
         task: Task,
         image: String,
         resources: Resources?,
-        additionalEnv: Map<String, String>,
+        volumeMounts: List<VolumeMount>,
+        envVars: List<EnvVar>,
     ): Container {
         logger.info("Creating main container for task: ${task.id}")
 
@@ -41,17 +38,15 @@ class KubernetesContainerCreator {
         mainContainer.image = image
 
         // Add environment variables to main container
-        mutableListOf(
-            EnvVar("KERUTA_TASK_ID", task.id ?: "", null),
+        mainContainer.env = listOf(
+            EnvVar("KERUTA_TASK_ID", task.id, null),
             EnvVar("KERUTA_TASK_TITLE", task.title, null),
             EnvVar("KERUTA_TASK_DESCRIPTION", task.description ?: "", null),
             EnvVar("KERUTA_TASK_PRIORITY", task.priority.toString(), null),
             EnvVar("KERUTA_TASK_STATUS", task.status.name, null),
             EnvVar("KERUTA_TASK_CREATED_AT", task.createdAt.format(DateTimeFormatter.ISO_DATE_TIME), null),
             EnvVar("KERUTA_TASK_UPDATED_AT", task.updatedAt.format(DateTimeFormatter.ISO_DATE_TIME), null)
-        ) + additionalEnv.map { (key, value) ->
-            EnvVar(key, value, null)
-        }.also { mainContainer.env = it }
+        ) + envVars
 
         // Add resource requirements if specified
         if (resources != null) {
@@ -66,7 +61,7 @@ class KubernetesContainerCreator {
             )
             mainContainer.resources = resourceRequirements
         }
-
+        mainContainer.volumeMounts = volumeMounts
         return mainContainer
     }
 }

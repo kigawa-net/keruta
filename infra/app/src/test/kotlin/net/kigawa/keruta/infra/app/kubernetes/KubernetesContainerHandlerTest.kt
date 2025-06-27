@@ -1,14 +1,8 @@
 package net.kigawa.keruta.infra.app.kubernetes
 
 import io.fabric8.kubernetes.api.model.Container
-import io.fabric8.kubernetes.api.model.ConfigMap
-import io.fabric8.kubernetes.api.model.ConfigMapList
 import io.fabric8.kubernetes.client.KubernetesClient
-import io.fabric8.kubernetes.client.dsl.MixedOperation
-import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation
-import io.fabric8.kubernetes.client.dsl.Resource
 import net.kigawa.keruta.core.domain.model.KubernetesConfig
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.*
@@ -54,13 +48,39 @@ class KubernetesContainerHandlerTest {
 
         val workVolumeName = "test-volume"
         val workMountPath = "/workspace"
+        val repositoryId = "repo-123"
+        val documentId = "doc-456"
+        val agentId = "agent-789"
+        val agentInstallCommand = "install-command"
+        val agentExecuteCommand = "execute-command"
+        val existingMounts = emptyList<io.fabric8.kubernetes.api.model.VolumeMount>()
 
         // When
-        kubernetesContainerHandler.setupScriptExecution(container, workVolumeName, workMountPath)
+        kubernetesContainerHandler.setupScriptExecution(
+            workVolumeName,
+            workMountPath,
+            repositoryId,
+            documentId,
+            agentId,
+            agentInstallCommand,
+            agentExecuteCommand,
+            existingMounts,
+            container
+        )
 
         // Then
         // Verify that the handler delegates to scriptExecutionHandler
-        verify(scriptExecutionHandler).setupScriptExecution(container, workVolumeName, workMountPath)
+        verify(scriptExecutionHandler).setupScriptExecution(
+            workVolumeName,
+            workMountPath,
+            repositoryId,
+            documentId,
+            agentId,
+            agentInstallCommand,
+            agentExecuteCommand,
+            existingMounts,
+            container
+        )
     }
 
     @Test
@@ -69,13 +89,14 @@ class KubernetesContainerHandlerTest {
         val task = mock(net.kigawa.keruta.core.domain.model.Task::class.java)
         val image = "test-image"
         val resources = mock(net.kigawa.keruta.core.domain.model.Resources::class.java)
-        val additionalEnv = mapOf("key" to "value")
+        val volumeMounts = emptyList<io.fabric8.kubernetes.api.model.VolumeMount>()
+        val envVars = emptyList<io.fabric8.kubernetes.api.model.EnvVar>()
 
         // When
-        kubernetesContainerHandler.createMainContainer(task, image, resources, additionalEnv)
+        kubernetesContainerHandler.createMainContainer(task, image, resources, volumeMounts, envVars)
 
         // Then
         // Verify that the handler delegates to containerCreator
-        verify(containerCreator).createMainContainer(task, image, resources, additionalEnv)
+        verify(containerCreator).createMainContainer(task, image, resources, volumeMounts, envVars)
     }
 }
