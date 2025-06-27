@@ -39,15 +39,26 @@ class KubernetesContainerCreator(
         mainContainer.name = "task-container"
         mainContainer.image = image
 
-        // Set command and args for keruta-agent
-        mainContainer.command = listOf("/usr/local/bin/keruta-agent")
-        mainContainer.args = listOf(
-            "execute",
-            "--task-id",
-            "$(KERUTA_TASK_ID)",
-            "--api-url",
-            "$(KERUTA_API_URL)"
+        // Set command and args for a shell script that will download and execute keruta-agent
+        mainContainer.command = listOf("/bin/sh", "-c")
+        val shellScript = listOf(
+            "# Download and install keruta-agent if it doesn't exist",
+            "if [ ! -f /usr/local/bin/keruta-agent ]; then",
+            "    echo \"keruta-agent not found, downloading from KERUTA_AGENT_LATEST_RELEASE_URL\"",
+            "    if [ -z \"\$KERUTA_AGENT_LATEST_RELEASE_URL\" ]; then",
+            "        echo \"KERUTA_AGENT_LATEST_RELEASE_URL is not set or empty. Cannot download keruta-agent.\"",
+            "        exit 1",
+            "    fi",
+            "    mkdir -p /usr/local/bin",
+            "    curl -sfL -o /usr/local/bin/keruta-agent \"\$KERUTA_AGENT_LATEST_RELEASE_URL\"",
+            "    chmod +x /usr/local/bin/keruta-agent",
+            "    echo \"keruta-agent downloaded and installed successfully\"",
+            "fi",
+            "",
+            "# Execute keruta-agent",
+            "/usr/local/bin/keruta-agent execute --task-id \"\$KERUTA_TASK_ID\" --api-url \"\$KERUTA_API_URL\""
         )
+        mainContainer.args = listOf(shellScript.joinToString("\n"))
 
         // Get the namespace from the client provider's config
         val namespace = clientProvider.getConfig().defaultNamespace

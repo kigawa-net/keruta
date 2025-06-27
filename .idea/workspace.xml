@@ -18,8 +18,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79b091c2-ce92-4e99-91ac-ce57e480d71a" name="変更" comment="&quot;KerutaAgentService及びそのGitHubリリース取得機能追加。&quot;">
-      <change beforePath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/agent/KerutaAgentServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/agent/KerutaAgentServiceImpl.kt" afterDir="false" />
+    <list default="true" id="79b091c2-ce92-4e99-91ac-ce57e480d71a" name="変更" comment="KubernetesContainerCreatorにおける環境変数設定ロジックを改善し、APIトークン用シークレットの存在確認機能を追加。">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesContainerCreator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesContainerCreator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesScriptExecutionHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesScriptExecutionHandler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesScriptHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesScriptHandler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-doc" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-doc" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +74,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/keruta-doc" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
@@ -169,7 +173,7 @@
       <workItem from="1750766713217" duration="22980000" />
       <workItem from="1750921736975" duration="1717000" />
       <workItem from="1750935863454" duration="6775000" />
-      <workItem from="1751002106869" duration="4842000" />
+      <workItem from="1751002106869" duration="6896000" />
     </task>
     <task id="LOCAL-00001" summary="w">
       <option name="closed" value="true" />
@@ -403,7 +407,31 @@
       <option name="project" value="LOCAL" />
       <updated>1751005659835</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="&quot;KerutaAgentService及びそのGitHubリリース取得機能追加。&quot;">
+      <option name="closed" value="true" />
+      <created>1751008493976</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1751008493976</updated>
+    </task>
+    <task id="LOCAL-00031" summary="KubernetesContainerCreatorにおける環境変数設定ロジックを改善し、APIトークン用シークレットの存在確認機能を追加。">
+      <option name="closed" value="true" />
+      <created>1751008928084</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1751008928084</updated>
+    </task>
+    <task id="LOCAL-00032" summary="KubernetesContainerCreatorにおける環境変数設定ロジックを改善し、APIトークン用シークレットの存在確認機能を追加。">
+      <option name="closed" value="true" />
+      <created>1751009639148</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1751009639148</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -445,7 +473,8 @@
     <MESSAGE value="タスク用PVC作成ロジックを追加し、Kubernetes連携コードを修正。" />
     <MESSAGE value="PVC関連コードをリファクタリングし、Kubernetes設定の不要な項目を削除。" />
     <MESSAGE value="&quot;KerutaAgentService及びそのGitHubリリース取得機能追加。&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;KerutaAgentService及びそのGitHubリリース取得機能追加。&quot;" />
+    <MESSAGE value="KubernetesContainerCreatorにおける環境変数設定ロジックを改善し、APIトークン用シークレットの存在確認機能を追加。" />
+    <option name="LAST_COMMIT_MESSAGE" value="KubernetesContainerCreatorにおける環境変数設定ロジックを改善し、APIトークン用シークレットの存在確認機能を追加。" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

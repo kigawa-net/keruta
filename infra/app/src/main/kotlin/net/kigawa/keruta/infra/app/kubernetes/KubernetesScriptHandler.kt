@@ -1,6 +1,5 @@
 package net.kigawa.keruta.infra.app.kubernetes
 
-import io.fabric8.kubernetes.api.model.Container
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
@@ -15,17 +14,11 @@ class KubernetesScriptHandler {
     /**
      * Sets up script and command for the container.
      *
-     * @param container The container to set up script and command for
-     * @param workMountPath The mount path of the work volume
      */
-    fun setupScriptAndCommand(container: Container, workMountPath: String) {
-
-        // Get original command and args
-        val originalCommand = container.command
-        val originalArgs = container.args
-
-        // Set working directory
-        container.workingDir = workMountPath
+    fun setupScriptAndCommand(
+        originalCommand: List<String>? = null,
+        originalArgs: List<String>? = null
+    ): Pair<List<String>, List<String>> {
 
         // Create a wrapper script that runs the setup script and then the original command
         val wrapperScript = mutableListOf(
@@ -47,8 +40,7 @@ class KubernetesScriptHandler {
         }
 
         // Set command and args for container
-        container.command = listOf("/bin/sh", "-c")
-        container.args = listOf(wrapperScript.joinToString("\n"))
+        return Pair(listOf("/bin/sh", "-c"), listOf(wrapperScript.joinToString("\n")))
     }
 
     /**

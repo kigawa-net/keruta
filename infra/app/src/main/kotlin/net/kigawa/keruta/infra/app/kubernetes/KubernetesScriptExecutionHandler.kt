@@ -57,8 +57,11 @@ class KubernetesScriptExecutionHandler(
 
         // Setup script and command if container is provided
         container?.let {
-            scriptHandler.setupScriptAndCommand(it, workMountPath)
+            val (command, args) = scriptHandler.setupScriptAndCommand(it.command, it.args)
+            it.command = command
+            it.args = args
         }
+        container?.workingDir = workMountPath
 
         return Pair(volumeMount, envVars)
     }
