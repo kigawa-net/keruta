@@ -12,7 +12,9 @@ import java.time.format.DateTimeFormatter
  * Responsible for creating and configuring main containers for Kubernetes jobs.
  */
 @Component
-class KubernetesContainerCreator {
+class KubernetesContainerCreator(
+    private val clientProvider: KubernetesClientProvider
+) {
     private val logger = LoggerFactory.getLogger(KubernetesContainerCreator::class.java)
 
     /**
@@ -47,17 +49,11 @@ class KubernetesContainerCreator {
             "$(KERUTA_API_URL)"
         )
 
-        // Create SecretKeySelector for API token
-        val secretKeySelector = SecretKeySelector()
-        secretKeySelector.name = "keruta-api-token"
-        secretKeySelector.key = "token"
+        // Get the namespace from the client provider's config
+        val namespace = clientProvider.getConfig().defaultNamespace
 
-        // Create EnvVarSource for API token
-        val envVarSource = EnvVarSource()
-        envVarSource.secretKeyRef = secretKeySelector
-
-        // Add environment variables to main container
-        mainContainer.env = listOf(
+        // Create environment variables list
+        val environmentVars = mutableListOf(
             EnvVar("KERUTA_TASK_ID", task.id, null),
             EnvVar("KERUTA_TASK_TITLE", task.title, null),
             EnvVar("KERUTA_TASK_DESCRIPTION", task.description ?: "", null),
@@ -65,10 +61,30 @@ class KubernetesContainerCreator {
             EnvVar("KERUTA_TASK_STATUS", task.status.name, null),
             EnvVar("KERUTA_TASK_CREATED_AT", task.createdAt.format(DateTimeFormatter.ISO_DATE_TIME), null),
             EnvVar("KERUTA_TASK_UPDATED_AT", task.updatedAt.format(DateTimeFormatter.ISO_DATE_TIME), null),
-            // Add API URL and token environment variables
-            EnvVar("KERUTA_API_URL", "http://keruta-api.keruta.svc.cluster.local", null),
-            EnvVar("KERUTA_API_TOKEN", null, envVarSource)
-        ) + envVars
+            // Add API URL environment variable
+            EnvVar("KERUTA_API_URL", "http://keruta-api.keruta.svc.cluster.local", null)
+        )
+
+        // Check if the keruta-api-token secret exists
+        val secretName = "keruta-api-token"
+        if (clientProvider.secretExists(secretName, namespace)) {
+            // Create SecretKeySelector for API token
+            val secretKeySelector = SecretKeySelector()
+            secretKeySelector.name = secretName
+            secretKeySelector.key = "token"
+
+            // Create EnvVarSource for API token
+            val envVarSource = EnvVarSource()
+            envVarSource.secretKeyRef = secretKeySelector
+
+            // Add API token environment variable
+            environmentVars.add(EnvVar("KERUTA_API_TOKEN", null, envVarSource))
+        } else {
+            logger.warn("Secret '$secretName' not found in namespace '$namespace'. KERUTA_API_TOKEN environment variable will not be set.")
+        }
+
+        // Add environment variables to main container
+        mainContainer.env = environmentVars + envVars
 
         // Add resource requirements if specified
         if (resources != null) {

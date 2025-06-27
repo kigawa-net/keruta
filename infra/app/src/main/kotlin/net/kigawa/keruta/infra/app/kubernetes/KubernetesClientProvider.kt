@@ -57,4 +57,22 @@ class KubernetesClientProvider(
         logger.info("Updating Kubernetes configuration: $config")
         return kubernetesConfigRepository.updateConfig(config)
     }
+
+    /**
+     * Checks if a secret exists in the specified namespace.
+     *
+     * @param secretName The name of the secret to check
+     * @param namespace The namespace to check in
+     * @return true if the secret exists, false otherwise
+     */
+    fun secretExists(secretName: String, namespace: String): Boolean {
+        try {
+            val client = getClient() ?: return false
+            val secret = client.secrets().inNamespace(namespace).withName(secretName).get()
+            return secret != null
+        } catch (e: Exception) {
+            logger.warn("Failed to check if secret $secretName exists in namespace $namespace", e)
+            return false
+        }
+    }
 }
