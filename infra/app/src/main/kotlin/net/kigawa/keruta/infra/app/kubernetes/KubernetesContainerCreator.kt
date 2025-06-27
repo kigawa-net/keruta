@@ -42,8 +42,10 @@ class KubernetesContainerCreator(
         // Set command and args for a shell script that will download and execute keruta-agent
         mainContainer.command = listOf("/bin/sh", "-c")
         val shellScript = listOf(
+            "set -ue",
             "# Download and install keruta-agent if it doesn't exist",
             "if [ ! -f /usr/local/bin/keruta-agent ]; then",
+            "    apt install curl",
             "    echo \"keruta-agent not found, downloading from KERUTA_AGENT_LATEST_RELEASE_URL\"",
             "    if [ -z \"\$KERUTA_AGENT_LATEST_RELEASE_URL\" ]; then",
             "        echo \"KERUTA_AGENT_LATEST_RELEASE_URL is not set or empty. Cannot download keruta-agent.\"",
