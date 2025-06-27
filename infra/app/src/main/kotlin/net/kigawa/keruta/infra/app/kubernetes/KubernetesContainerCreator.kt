@@ -37,6 +37,25 @@ class KubernetesContainerCreator {
         mainContainer.name = "task-container"
         mainContainer.image = image
 
+        // Set command and args for keruta-agent
+        mainContainer.command = listOf("keruta-agent")
+        mainContainer.args = listOf(
+            "execute",
+            "--task-id",
+            "$(KERUTA_TASK_ID)",
+            "--api-url",
+            "$(KERUTA_API_URL)"
+        )
+
+        // Create SecretKeySelector for API token
+        val secretKeySelector = SecretKeySelector()
+        secretKeySelector.name = "keruta-api-token"
+        secretKeySelector.key = "token"
+
+        // Create EnvVarSource for API token
+        val envVarSource = EnvVarSource()
+        envVarSource.secretKeyRef = secretKeySelector
+
         // Add environment variables to main container
         mainContainer.env = listOf(
             EnvVar("KERUTA_TASK_ID", task.id, null),
@@ -45,7 +64,10 @@ class KubernetesContainerCreator {
             EnvVar("KERUTA_TASK_PRIORITY", task.priority.toString(), null),
             EnvVar("KERUTA_TASK_STATUS", task.status.name, null),
             EnvVar("KERUTA_TASK_CREATED_AT", task.createdAt.format(DateTimeFormatter.ISO_DATE_TIME), null),
-            EnvVar("KERUTA_TASK_UPDATED_AT", task.updatedAt.format(DateTimeFormatter.ISO_DATE_TIME), null)
+            EnvVar("KERUTA_TASK_UPDATED_AT", task.updatedAt.format(DateTimeFormatter.ISO_DATE_TIME), null),
+            // Add API URL and token environment variables
+            EnvVar("KERUTA_API_URL", "http://keruta-api.keruta.svc.cluster.local", null),
+            EnvVar("KERUTA_API_TOKEN", null, envVarSource)
         ) + envVars
 
         // Add resource requirements if specified

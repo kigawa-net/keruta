@@ -66,9 +66,6 @@ class KubernetesJobCreator(
             val metadata = metadataHandler.createJobMetadata(task.id, actualJobName, actualNamespace)
             val podTemplateMetadata = metadataHandler.createPodTemplateMetadata(task.id)
 
-            // Create main container
-
-
             // Create volumes list
             val volumes = mutableListOf<Volume>()
 
@@ -99,9 +96,6 @@ class KubernetesJobCreator(
                 mountExistingPvcResult.second?.let { volumeMounts += it }
                 "pvc-volume" // Use the volume name from volumeHandler
             }
-
-            // Set up script execution in the main container
-
 
             // Extract metadata for ConfigMap
             val repositoryId = repository?.id ?: task.repositoryId ?: ""
