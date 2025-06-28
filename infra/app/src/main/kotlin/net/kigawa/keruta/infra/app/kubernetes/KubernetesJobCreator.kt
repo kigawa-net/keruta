@@ -1,12 +1,8 @@
 package net.kigawa.keruta.infra.app.kubernetes
 
-import io.fabric8.kubernetes.api.model.Container
-import io.fabric8.kubernetes.api.model.Volume
-import io.fabric8.kubernetes.api.model.VolumeMount
 import net.kigawa.keruta.core.domain.model.Repository
 import net.kigawa.keruta.core.domain.model.Resources
 import net.kigawa.keruta.core.domain.model.Task
-import net.kigawa.keruta.core.usecase.agent.AgentService
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import java.util.*
@@ -14,17 +10,17 @@ import java.util.*
 /**
  * Creator for Kubernetes jobs.
  * Responsible for creating Kubernetes jobs for tasks.
+ * This class delegates to specialized components for different aspects of job creation.
  */
 @Component
 class KubernetesJobCreator(
-    private val clientProvider: KubernetesClientProvider,
-    private val repositoryHandler: KubernetesRepositoryHandler,
-    private val metadataHandler: KubernetesMetadataHandler,
-    private val containerHandler: KubernetesContainerHandler,
-    private val volumeHandler: KubernetesVolumeHandler,
-    private val podSpecHandler: KubernetesPodSpecHandler,
-    private val jobSpecHandler: KubernetesJobSpecHandler,
-    private val agentService: AgentService,
+    private val clientValidator: KubernetesClientValidator,
+    private val namespaceHandler: KubernetesNamespaceHandler,
+    private val metadataCreator: KubernetesMetadataCreator,
+    private val volumeSetup: KubernetesVolumeSetup,
+    private val agentCommandHandler: KubernetesAgentCommandHandler,
+    private val scriptExecutionSetup: KubernetesScriptExecutionSetup,
+    private val jobSubmitter: KubernetesJobSubmitter,
 ) {
     private val logger = LoggerFactory.getLogger(KubernetesJobCreator::class.java)
 
@@ -48,114 +44,63 @@ class KubernetesJobCreator(
         pvcName: String,
         resources: Resources?,
     ): String {
-        val config = clientProvider.getConfig()
-        val client = clientProvider.getClient()
-
-        if (!config.enabled || client == null) {
-            logger.warn("Kubernetes integration is disabled or client is not available")
-            return "kubernetes-disabled"
+        // Validate client and configuration
+        val clientValidationResult = clientValidator.validateClient()
+        if (clientValidationResult != null) {
+            return clientValidationResult
         }
 
         logger.info("Creating Kubernetes job for task: ${task.id}")
 
-        val actualNamespace = namespace.ifEmpty { config.defaultNamespace }
-        val actualJobName = jobName ?: "keruta-job-${task.id}"
+        // Determine namespace and job name
+        val (actualNamespace, actualJobName) = namespaceHandler.determineNamespaceAndJobName(namespace, jobName, task.id)
 
         try {
-            // Create job and pod metadata
-            val metadata = metadataHandler.createJobMetadata(task.id, actualJobName, actualNamespace)
-            val podTemplateMetadata = metadataHandler.createPodTemplateMetadata(task.id)
+            // Create metadata
+            val (metadata, podTemplateMetadata) = metadataCreator.createMetadata(task.id, actualJobName, actualNamespace)
 
-            // Create volumes list
-            val volumes = mutableListOf<Volume>()
+            // Set up volumes and containers
+            val volumeSetupResult = volumeSetup.setupVolumesAndContainers(task, repository, actualNamespace, pvcName)
+            val volumes = volumeSetupResult.volumes
+            val initContainers = volumeSetupResult.initContainers
+            var volumeMounts = volumeSetupResult.volumeMounts
+            val workVolumeName = volumeSetupResult.workVolumeName
 
-            // Add init containers list
-            val initContainers = mutableListOf<Container>()
+            // Get agent commands
+            val agentCommandsResult = agentCommandHandler.getAgentCommands(task, repository)
+            val repositoryId = agentCommandsResult.repositoryId
+            val documentId = agentCommandsResult.documentId
+            val agentId = agentCommandsResult.agentId
+            val agentInstallCommand = agentCommandsResult.installCommand
+            val agentExecuteCommand = agentCommandsResult.executeCommand
 
-            val pvcMountPath = "/pvc"
-            var volumeMounts = listOf<VolumeMount>()
-            // Create work volume if not already created for repository
-            val workVolumeName = if (repository != null) {
-                // Use repository volume if available
-                repositoryHandler.setupRepository(
-                    task,
-                    repository,
-                    actualNamespace, pvcName
-                ).also { result ->
-                    result.volumeMount?.let { it -> volumeMounts = it }
-                    result.gitCloneContainer?.let { element -> initContainers.add(element) }
-                    volumes.addAll(result.volumes)
-                }
-                "repo-volume" // Use the volume name from repositoryHandler
-            } else {
-                // Mount existing PVC if specified
-                logger.info("Mounting existing PVC: $pvcName at path: $pvcMountPath")
-                val mountExistingPvcResult = volumeHandler.mountExistingPvc(
-                    volumes, pvcName, "pvc-volume", pvcMountPath, volumeMounts
-                )
-                mountExistingPvcResult.second?.let { volumeMounts += it }
-                "pvc-volume" // Use the volume name from volumeHandler
-            }
-
-            // Extract metadata for ConfigMap
-            val repositoryId = repository?.id ?: task.repositoryId ?: ""
-            val documentId = task.documents.firstOrNull()?.id ?: ""
-            val agentId = task.agentId ?: ""
-
-            // Get agent install and execute commands if agentId is available
-            var agentInstallCommand = ""
-            var agentExecuteCommand = ""
-            if (agentId.isNotEmpty()) {
-                try {
-                    val agent = agentService.getAgentById(agentId)
-                    agentInstallCommand = agent.installCommand
-                    agentExecuteCommand = agent.executeCommand
-                    logger.info(
-                        "Using agent commands for agent $agentId: install='$agentInstallCommand', execute='$agentExecuteCommand'"
-                    )
-                } catch (e: Exception) {
-                    logger.warn("Failed to get agent $agentId: ${e.message}")
-                }
-            }
-
-            // Determine the work mount path based on the volume type
-            val workMountPath = pvcMountPath
-
-            // Set up script execution with ConfigMap creation
-            val setupScriptExecutionResult = containerHandler.setupScriptExecution(
+            // Set up script execution
+            val scriptExecutionResult = scriptExecutionSetup.setupScriptExecution(
                 workVolumeName,
-                workMountPath,
-                // Create ConfigMap
+                volumeSetupResult.workMountPath,
                 repositoryId,
                 documentId,
                 agentId,
                 agentInstallCommand,
                 agentExecuteCommand,
+                volumeMounts
+            )
+            scriptExecutionResult.first?.let { volumeMounts = volumeMounts + it }
+            val envVars = scriptExecutionResult.second
+
+            // Create and submit job
+            return jobSubmitter.createAndSubmitJob(
+                task,
+                image,
+                resources,
                 volumeMounts,
-                null // No container available at this point
+                envVars,
+                volumes,
+                initContainers,
+                metadata,
+                podTemplateMetadata,
+                actualNamespace
             )
-            setupScriptExecutionResult.first?.let { volumeMounts += it }
-            val envVars = setupScriptExecutionResult.second
-
-            // Create pod spec and pod template spec
-            val podSpec = podSpecHandler.createPodSpec(
-                mutableListOf(
-                    containerHandler.createMainContainer(task, image, resources, volumeMounts, envVars)
-                ), volumes, initContainers
-            )
-            val podTemplateSpec = podSpecHandler.createPodTemplateSpec(podTemplateMetadata, podSpec)
-
-            // Create job spec and job
-            val jobSpec = jobSpecHandler.createJobSpec(podTemplateSpec)
-            val job = jobSpecHandler.createJob(metadata, jobSpec)
-
-            // Create the job
-            val createdJob = client.batch().v1().jobs().inNamespace(actualNamespace).create(job)
-            logger.info(
-                "Created Kubernetes job: ${createdJob.metadata.name} in namespace: ${createdJob.metadata.namespace}"
-            )
-
-            return createdJob.metadata.name
         } catch (e: Exception) {
             logger.error("Failed to create Kubernetes job", e)
             return "error-${UUID.randomUUID()}"

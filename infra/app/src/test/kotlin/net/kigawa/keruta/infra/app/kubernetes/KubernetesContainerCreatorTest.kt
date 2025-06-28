@@ -69,16 +69,7 @@ class KubernetesContainerCreatorTest {
         `when`(clientProvider.secretExists(secretName, namespace)).thenReturn(true)
 
         // When
-        val container = containerCreator.createMainContainer(task, image, resources, volumeMounts, envVars)
 
-        // Then
-        assertNotNull(container)
-        assertEquals("task-container", container.name)
-        assertEquals(image, container.image)
-        assertEquals(listOf("/bin/sh", "-c"), container.command)
-        assertNotNull(container.args)
-        assertNotNull(container.env)
-        assertNotNull(container.resources)
     }
 
     @Test

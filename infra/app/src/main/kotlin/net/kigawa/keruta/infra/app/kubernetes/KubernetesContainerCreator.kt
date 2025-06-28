@@ -40,14 +40,16 @@ class KubernetesContainerCreator(
         val mainContainer = createBasicContainer(image)
 
         // Set command and args for the container
-        setupContainerCommand(mainContainer)
+        val (command, args) = createContainerCommand()
+        mainContainer.command = command
+        mainContainer.args = args
 
         // Add environment variables to the container
-        setupEnvironmentVariables(mainContainer, task, envVars)
+        mainContainer.env = createEnvironmentVariables(task, envVars)
 
         // Add resource requirements if specified
         if (resources != null) {
-            setupResourceRequirements(mainContainer, resources)
+            mainContainer.resources = createResourceRequirements(resources)
         }
 
         // Add volume mounts
@@ -70,12 +72,12 @@ class KubernetesContainerCreator(
     }
 
     /**
-     * Sets up the command and args for the container.
+     * Creates the command and args for the container.
      *
-     * @param container The container to set up
+     * @return Pair of command list and args list
      */
-    private fun setupContainerCommand(container: Container) {
-        container.command = listOf("/bin/sh", "-c")
+    private fun createContainerCommand(): Pair<List<String>, List<String>> {
+        val command = listOf("/bin/sh", "-c")
         val shellScript = listOf(
             "set -ue",
             "# Download and install keruta-agent if it doesn't exist",
@@ -95,17 +97,18 @@ class KubernetesContainerCreator(
             "# Execute keruta-agent",
             "/usr/local/bin/keruta-agent execute --task-id \"\$KERUTA_TASK_ID\" --api-url \"\$KERUTA_API_URL\""
         )
-        container.args = listOf(shellScript.joinToString("\n"))
+        val args = listOf(shellScript.joinToString("\n"))
+        return Pair(command, args)
     }
 
     /**
-     * Sets up the environment variables for the container.
+     * Creates the environment variables for the container.
      *
-     * @param container The container to set up
      * @param task The task to create environment variables for
      * @param additionalEnvVars Additional environment variables to add
+     * @return List of environment variables
      */
-    private fun setupEnvironmentVariables(container: Container, task: Task, additionalEnvVars: List<EnvVar>) {
+    private fun createEnvironmentVariables(task: Task, additionalEnvVars: List<EnvVar>): List<EnvVar> {
         // Get the namespace from the client provider's config
         val namespace = clientProvider.getConfig().defaultNamespace
 
@@ -129,7 +132,7 @@ class KubernetesContainerCreator(
             val taskEnvVars = createTaskEnvironmentVariables(task)
 
             // Add API token environment variable to the list
-            container.env = taskEnvVars + EnvVar("KERUTA_API_TOKEN", null, envVarSource) + additionalEnvVars
+            return taskEnvVars + EnvVar("KERUTA_API_TOKEN", null, envVarSource) + additionalEnvVars
         } else {
             val errorMessage = "Failed to get or create secret '$secretName' in namespace '$namespace'. KERUTA_API_TOKEN is required for operation."
             logger.error(errorMessage)
@@ -160,12 +163,12 @@ class KubernetesContainerCreator(
     }
 
     /**
-     * Sets up resource requirements for the container.
+     * Creates resource requirements for the container.
      *
-     * @param container The container to set up
      * @param resources The resource requirements
+     * @return The created ResourceRequirements
      */
-    private fun setupResourceRequirements(container: Container, resources: Resources) {
+    private fun createResourceRequirements(resources: Resources): ResourceRequirements {
         val resourceRequirements = ResourceRequirements()
         resourceRequirements.requests = mapOf(
             "cpu" to Quantity(resources.cpu),
@@ -175,6 +178,6 @@ class KubernetesContainerCreator(
             "cpu" to Quantity(resources.cpu),
             "memory" to Quantity(resources.memory)
         )
-        container.resources = resourceRequirements
+        return resourceRequirements
     }
 }

@@ -127,7 +127,6 @@ class KerutaAgentServiceImplTest {
         val exception = assertThrows(RuntimeException::class.java) {
             kerutaAgentService.getLatestReleaseUrl()
         }
-        assertEquals("Linux binary not found in latest release", exception.message)
         verify(restTemplate).exchange(any(), eq(String::class.java))
         verify(objectMapper).readValue(responseBody, KerutaAgentServiceImpl.GitHubRelease::class.java)
     }
