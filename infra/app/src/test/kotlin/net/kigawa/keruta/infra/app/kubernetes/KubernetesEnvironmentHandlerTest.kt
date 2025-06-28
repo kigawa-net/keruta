@@ -1,6 +1,7 @@
 package net.kigawa.keruta.infra.app.kubernetes
 
 import io.fabric8.kubernetes.api.model.EnvVar
+import net.kigawa.keruta.core.domain.model.KubernetesConfig
 import net.kigawa.keruta.core.usecase.agent.KerutaAgentService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -16,11 +17,15 @@ class KubernetesEnvironmentHandlerTest {
     @Mock
     private lateinit var kerutaAgentService: KerutaAgentService
 
+    @Mock
+    private lateinit var kubernetesConfig: KubernetesConfig
+
     private lateinit var environmentHandler: KubernetesEnvironmentHandler
 
     @BeforeEach
     fun setUp() {
-        environmentHandler = KubernetesEnvironmentHandler(kerutaAgentService)
+        `when`(kubernetesConfig.apiUrl).thenReturn("http://keruta-api")
+        environmentHandler = KubernetesEnvironmentHandler(kerutaAgentService, kubernetesConfig)
     }
 
     @Test
@@ -50,7 +55,7 @@ class KubernetesEnvironmentHandlerTest {
         assertEquals("agent-789", envVars.find { it.name == "KERUTA_AGENT_ID" }?.value)
         assertEquals("install-command", envVars.find { it.name == "KERUTA_AGENT_INSTALL_COMMAND" }?.value)
         assertEquals("execute-command", envVars.find { it.name == "KERUTA_AGENT_EXECUTE_COMMAND" }?.value)
-        assertEquals("http://keruta-api.keruta.svc.cluster.local", envVars.find { it.name == "KERUTA_API_ENDPOINT" }?.value)
+        assertEquals("http://keruta-api", envVars.find { it.name == "KERUTA_API_ENDPOINT" }?.value)
 
         // Verify that the kerutaAgentService was called
         verify(kerutaAgentService).getLatestReleaseUrl()

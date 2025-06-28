@@ -1,6 +1,7 @@
 package net.kigawa.keruta.infra.app.kubernetes
 
 import io.fabric8.kubernetes.api.model.*
+import net.kigawa.keruta.core.domain.model.KubernetesConfig
 import net.kigawa.keruta.core.domain.model.Resources
 import net.kigawa.keruta.core.domain.model.Task
 import org.slf4j.LoggerFactory
@@ -14,6 +15,7 @@ import java.time.format.DateTimeFormatter
 @Component
 class KubernetesContainerCreator(
     private val clientProvider: KubernetesClientProvider,
+    private val kubernetesConfig: KubernetesConfig,
 ) {
     private val logger = LoggerFactory.getLogger(KubernetesContainerCreator::class.java)
 
@@ -157,8 +159,8 @@ class KubernetesContainerCreator(
             EnvVar("KERUTA_TASK_STATUS", task.status.name, null),
             EnvVar("KERUTA_TASK_CREATED_AT", task.createdAt.format(DateTimeFormatter.ISO_DATE_TIME), null),
             EnvVar("KERUTA_TASK_UPDATED_AT", task.updatedAt.format(DateTimeFormatter.ISO_DATE_TIME), null),
-            // Add API URL environment variable
-            EnvVar("KERUTA_API_URL", "http://keruta-api.keruta.svc.cluster.local", null)
+            // Add API URL environment variable from configuration
+            EnvVar("KERUTA_API_URL", kubernetesConfig.apiUrl, null)
         )
     }
 

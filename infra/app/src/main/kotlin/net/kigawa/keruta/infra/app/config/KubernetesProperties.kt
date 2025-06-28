@@ -11,5 +11,6 @@ data class KubernetesProperties(
     var defaultImage: String = "keruta-task-executor:latest",
     var defaultPvcStorageSize: String = "1Gi",
     var defaultPvcAccessMode: String = "ReadWriteOnce",
-    var defaultPvcStorageClass: String = ""
+    var defaultPvcStorageClass: String = "",
+    var apiUrl: String = "http://keruta-api"
 )

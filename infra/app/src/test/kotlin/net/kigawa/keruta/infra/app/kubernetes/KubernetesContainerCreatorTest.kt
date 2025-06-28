@@ -31,7 +31,8 @@ class KubernetesContainerCreatorTest {
         client = mock(KubernetesClient::class.java)
         config = KubernetesConfig(
             enabled = true,
-            defaultNamespace = "test-namespace"
+            defaultNamespace = "test-namespace",
+            apiUrl = "http://keruta-api"
         )
 
         `when`(clientProvider.getClient()).thenReturn(client)
@@ -53,7 +54,7 @@ class KubernetesContainerCreatorTest {
         `when`(resources.memory).thenReturn("128Mi")
 
         // Create the container creator with the mocked dependencies
-        containerCreator = KubernetesContainerCreator(clientProvider)
+        containerCreator = KubernetesContainerCreator(clientProvider, config)
     }
 
     @Test

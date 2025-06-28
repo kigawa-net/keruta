@@ -27,6 +27,7 @@ data class KubernetesConfig(
     val defaultPvcStorageSize: String = "1Gi",
     val defaultPvcAccessMode: String = "ReadWriteOnce",
     val defaultPvcStorageClass: String = "",
+    val apiUrl: String = "http://keruta-api",
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now()
 )

@@ -1,6 +1,7 @@
 package net.kigawa.keruta.infra.app.kubernetes
 
 import io.fabric8.kubernetes.api.model.EnvVar
+import net.kigawa.keruta.core.domain.model.KubernetesConfig
 import net.kigawa.keruta.core.usecase.agent.KerutaAgentService
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -11,7 +12,8 @@ import org.springframework.stereotype.Component
  */
 @Component
 class KubernetesEnvironmentHandler(
-    private val kerutaAgentService: KerutaAgentService
+    private val kerutaAgentService: KerutaAgentService,
+    private val kubernetesConfig: KubernetesConfig
 ) {
     private val logger = LoggerFactory.getLogger(KubernetesEnvironmentHandler::class.java)
 
@@ -55,8 +57,8 @@ class KubernetesEnvironmentHandler(
             // Add keruta-agent latest release URL
             EnvVar("KERUTA_AGENT_LATEST_RELEASE_URL", latestReleaseUrl, null),
 
-            // Add API endpoint environment variable
-            EnvVar("KERUTA_API_ENDPOINT", "http://keruta-api.keruta.svc.cluster.local", null),
+            // Add API endpoint environment variable from configuration
+            EnvVar("KERUTA_API_ENDPOINT", kubernetesConfig.apiUrl, null),
         )
     }
 }
