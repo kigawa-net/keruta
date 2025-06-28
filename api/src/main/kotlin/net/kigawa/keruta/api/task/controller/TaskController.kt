@@ -3,6 +3,7 @@ package net.kigawa.keruta.api.task.controller
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import net.kigawa.keruta.api.task.dto.TaskResponse
+import net.kigawa.keruta.api.task.websocket.TaskLogWebSocketHandler
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.usecase.task.TaskService
 import org.springframework.http.ResponseEntity
@@ -11,7 +12,10 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/v1/tasks")
 @Tag(name = "Task", description = "Task management API")
-class TaskController(private val taskService: TaskService) {
+class TaskController(
+    private val taskService: TaskService,
+    private val taskLogWebSocketHandler: TaskLogWebSocketHandler
+) {
 
     @GetMapping
     @Operation(summary = "Get all tasks", description = "Retrieves all tasks in the system")
@@ -42,11 +46,39 @@ class TaskController(private val taskService: TaskService) {
     }
 
     @GetMapping("/{id}/logs")
-    @Operation(summary = "Get task logs", description = "Retrieves the logs of a specific task")
+    @Operation(
+        summary = "Get task logs", 
+        description = "Retrieves the logs of a specific task. For real-time log streaming, use the WebSocket endpoint at /ws/tasks/{id}/logs"
+    )
     fun getTaskLogs(@PathVariable id: String): ResponseEntity<String> {
         return try {
             val task = taskService.getTaskById(id)
             ResponseEntity.ok(task.logs ?: "No logs available")
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.notFound().build()
+        }
+    }
+
+    @PostMapping("/{id}/logs/stream")
+    @Operation(
+        summary = "Stream log update", 
+        description = "Sends a log update to all connected WebSocket clients for this task"
+    )
+    fun streamLogUpdate(
+        @PathVariable id: String,
+        @RequestParam source: String = "stdout",
+        @RequestParam level: String = "INFO",
+        @RequestBody logContent: String
+    ): ResponseEntity<Void> {
+        return try {
+            // Verify task exists and append logs to the database
+            val task = taskService.getTaskById(id)
+            taskService.appendTaskLogs(id, logContent)
+
+            // Send log update to WebSocket clients
+            taskLogWebSocketHandler.sendLogUpdate(id, logContent, source, level)
+
+            ResponseEntity.ok().build()
         } catch (e: NoSuchElementException) {
             ResponseEntity.notFound().build()
         }

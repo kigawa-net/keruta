@@ -15,6 +15,7 @@ dependencies {
     implementation(Dependencies.kotlinReflect)
     implementation(Dependencies.springBootStarter)
     implementation(Dependencies.springBootStarterWeb)
+    implementation(Dependencies.springBootStarterWebsocket)
 
     // Swagger/OpenAPI
     implementation(Dependencies.springdocOpenApi)
