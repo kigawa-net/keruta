@@ -27,6 +27,7 @@ class ApiSecurityConfig {
             .csrf { it.disable() }
             .authorizeHttpRequests { auth ->
                 auth
+                    .requestMatchers("/api/health").permitAll()
                     // Auth endpoints
                     .requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh").permitAll()
                     // All other API requests need authentication

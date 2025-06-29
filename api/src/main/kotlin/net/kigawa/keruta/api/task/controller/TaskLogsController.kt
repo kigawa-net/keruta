@@ -45,7 +45,7 @@ class TaskLogsController(
             
             // Redirect back to logs view
             return "redirect:/admin/tasks/${id}/logs"
-        } catch (e: NoSuchElementException) {
+        } catch (_: NoSuchElementException) {
             return "redirect:/admin/tasks/pods"
         } catch (e: Exception) {
             model.addAttribute("errorMessage", "Failed to add log: ${e.message}")
