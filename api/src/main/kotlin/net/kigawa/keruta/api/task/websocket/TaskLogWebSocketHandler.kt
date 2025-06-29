@@ -60,7 +60,7 @@ class TaskLogWebSocketHandler(
     private fun extractTaskId(session: WebSocketSession): String? {
         val path = session.uri?.path ?: return null
         val parts = path.split("/")
-        return if (parts.size >= 4 && parts[1] == "ws" && parts[2] == "tasks" && parts[4] == "logs") {
+        return if (parts.size >= 4 && parts[1] == "ws" && parts[2] == "tasks") {
             parts[3]
         } else {
             null

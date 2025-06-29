@@ -13,7 +13,7 @@ class WebSocketConfig(
 ) : WebSocketConfigurer {
 
     override fun registerWebSocketHandlers(registry: WebSocketHandlerRegistry) {
-        registry.addHandler(taskLogWebSocketHandler, "/ws/tasks/{taskId}/logs")
+        registry.addHandler(taskLogWebSocketHandler, "/ws/tasks/{taskId}")
             .setAllowedOrigins("*")
     }
 }

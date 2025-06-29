@@ -18,7 +18,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79b091c2-ce92-4e99-91ac-ce57e480d71a" name="変更" comment="Kubernetesタスク管理のための新規コンポーネントを作成し、ロジックをモジュール化・リファクタリング" />
+    <list default="true" id="79b091c2-ce92-4e99-91ac-ce57e480d71a" name="変更" comment="Kubernetesタスク管理のための新規コンポーネントを作成し、ロジックをモジュール化・リファクタリング">
+      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/task/controller/TaskAdminController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/task/controller/TaskAdminController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/resources/templates/admin/task-logs.html" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/resources/templates/admin/task-logs.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/resources/templates/admin/task-pod-details.html" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/resources/templates/admin/task-pod-details.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -68,7 +72,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/keruta-doc" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
@@ -168,7 +172,7 @@
       <workItem from="1750921736975" duration="1717000" />
       <workItem from="1750935863454" duration="6775000" />
       <workItem from="1751002106869" duration="6896000" />
-      <workItem from="1751080020634" duration="6308000" />
+      <workItem from="1751080020634" duration="9263000" />
     </task>
     <task id="LOCAL-00001" summary="w">
       <option name="closed" value="true" />
@@ -490,7 +494,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751123998114</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="Kubernetesタスク管理のための新規コンポーネントを作成し、ロジックをモジュール化・リファクタリング">
+      <option name="closed" value="true" />
+      <created>1751126306070</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1751126306070</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

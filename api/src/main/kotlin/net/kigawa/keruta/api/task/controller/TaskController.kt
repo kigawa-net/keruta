@@ -48,7 +48,7 @@ class TaskController(
     @GetMapping("/{id}/logs")
     @Operation(
         summary = "Get task logs", 
-        description = "Retrieves the logs of a specific task. For real-time log streaming, use the WebSocket endpoint at /ws/tasks/{id}/logs"
+        description = "Retrieves the logs of a specific task. For real-time log streaming, use the WebSocket endpoint at /ws/tasks/{id}"
     )
     fun getTaskLogs(@PathVariable id: String): ResponseEntity<String> {
         return try {
