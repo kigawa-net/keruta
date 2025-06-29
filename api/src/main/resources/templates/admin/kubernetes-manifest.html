@@ -4,6 +4,7 @@
     <div id="content">
         <div class="mb-3">
             <a th:href="@{/admin/tasks/{id}/pod(id=${task.id})}" class="btn btn-secondary">Back to Task Pod Details</a>
+            <a th:href="@{/admin/tasks/{id}/logs(id=${task.id})}" class="btn btn-secondary ms-2">View Task Logs</a>
         </div>
 
         <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
@@ -29,7 +30,7 @@
                     <div class="col-md-3 fw-bold">Pod Name:</div>
                     <div class="col-md-9" th:text="${task.podName ?: 'N/A'}">Pod Name</div>
                 </div>
-                
+
                 <form th:action="@{/admin/tasks/{id}/kubernetes-manifest(id=${task.id})}" method="post">
                     <div class="form-group">
                         <label for="manifest" class="form-label">Kubernetes Manifest:</label>

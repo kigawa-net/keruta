@@ -44,6 +44,7 @@
                                     <div class="btn-group" role="group">
                                         <a th:href="@{/admin/tasks/{id}/pod(id=${task.id})}" class="btn btn-sm btn-outline-info">Details</a>
                                         <a th:href="@{/admin/tasks/{id}/kubernetes-manifest(id=${task.id})}" class="btn btn-sm btn-outline-primary">Manifest</a>
+                                        <a th:href="@{/admin/tasks/{id}/logs(id=${task.id})}" class="btn btn-sm btn-outline-secondary">Logs</a>
                                     </div>
                                 </td>
                             </tr>
