@@ -2,6 +2,8 @@ package net.kigawa.keruta.api.task.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import net.kigawa.keruta.api.task.dto.ScriptRequest
+import net.kigawa.keruta.api.task.dto.ScriptResponse
 import net.kigawa.keruta.api.task.dto.TaskResponse
 import net.kigawa.keruta.api.task.websocket.TaskLogWebSocketHandler
 import net.kigawa.keruta.core.domain.model.Task
@@ -101,6 +103,36 @@ class TaskController(
         return try {
             taskService.deleteTask(id)
             ResponseEntity.noContent().build()
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.notFound().build()
+        }
+    }
+
+    @GetMapping("/{id}/script")
+    @Operation(summary = "Get task script", description = "Retrieves the script for a specific task")
+    fun getTaskScript(@PathVariable id: String): ResponseEntity<ScriptResponse> {
+        return try {
+            val script = taskService.getTaskScript(id)
+            ResponseEntity.ok(ScriptResponse.fromDomain(script))
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.notFound().build()
+        }
+    }
+
+    @PutMapping("/{id}/script")
+    @Operation(summary = "Update task script", description = "Updates the script for a specific task")
+    fun updateTaskScript(
+        @PathVariable id: String,
+        @RequestBody request: ScriptRequest
+    ): ResponseEntity<ScriptResponse> {
+        return try {
+            val updatedScript = taskService.updateTaskScript(
+                id,
+                request.installScript,
+                request.executeScript,
+                request.cleanupScript
+            )
+            ResponseEntity.ok(ScriptResponse.fromDomain(updatedScript))
         } catch (e: NoSuchElementException) {
             ResponseEntity.notFound().build()
         }

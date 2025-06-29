@@ -5,6 +5,7 @@
 package net.kigawa.keruta.core.usecase.task
 
 import net.kigawa.keruta.core.domain.model.Resources
+import net.kigawa.keruta.core.domain.model.Script
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.domain.model.TaskStatus
 
@@ -140,4 +141,25 @@ interface TaskService {
      * @throws NoSuchElementException if the task is not found
      */
     fun setKubernetesManifest(id: String, manifest: String): Task
+
+    /**
+     * Gets the script for a task.
+     *
+     * @param id The ID of the task
+     * @return The script for the task
+     * @throws NoSuchElementException if the task or script is not found
+     */
+    fun getTaskScript(id: String): Script
+
+    /**
+     * Updates the script for a task.
+     *
+     * @param id The ID of the task
+     * @param installScript The installation script
+     * @param executeScript The execution script
+     * @param cleanupScript The cleanup script
+     * @return The updated script
+     * @throws NoSuchElementException if the task is not found
+     */
+    fun updateTaskScript(id: String, installScript: String, executeScript: String, cleanupScript: String): Script
 }
