@@ -12,5 +12,6 @@ data class KubernetesProperties(
     var defaultPvcStorageSize: String = "1Gi",
     var defaultPvcAccessMode: String = "ReadWriteOnce",
     var defaultPvcStorageClass: String = "",
-    var apiUrl: String = "http://keruta-api"
+    var apiUrl: String = "http://keruta-api",
+    var apiPort: Int? = null
 )

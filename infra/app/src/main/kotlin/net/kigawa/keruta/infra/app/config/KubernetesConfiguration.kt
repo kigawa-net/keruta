@@ -22,6 +22,7 @@ class KubernetesConfiguration {
             defaultPvcAccessMode = properties.defaultPvcAccessMode,
             defaultPvcStorageClass = properties.defaultPvcStorageClass,
             apiUrl = properties.apiUrl,
+            apiPort = properties.apiPort,
             createdAt = LocalDateTime.now(),
             updatedAt = LocalDateTime.now()
         )

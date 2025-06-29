@@ -131,7 +131,7 @@ class KubernetesContainerCreator(
             envVarSource.secretKeyRef = secretKeySelector
 
             // Create task-related environment variables
-            val taskEnvVars = createTaskEnvironmentVariables(task)
+            val taskEnvVars = createTaskEnvironmentVariables(task, kubernetesConfig.getFullApiUrl())
 
             // Add API token environment variable to the list
             return taskEnvVars + EnvVar("KERUTA_API_TOKEN", null, envVarSource) + additionalEnvVars
@@ -148,9 +148,10 @@ class KubernetesContainerCreator(
      * Creates environment variables for a task.
      *
      * @param task The task to create environment variables for
+     * @param apiUrl The API URL to use
      * @return The list of environment variables
      */
-    private fun createTaskEnvironmentVariables(task: Task): List<EnvVar> {
+    private fun createTaskEnvironmentVariables(task: Task, apiUrl: String): List<EnvVar> {
         return listOf(
             EnvVar("KERUTA_TASK_ID", task.id, null),
             EnvVar("KERUTA_TASK_TITLE", task.title, null),
@@ -159,8 +160,8 @@ class KubernetesContainerCreator(
             EnvVar("KERUTA_TASK_STATUS", task.status.name, null),
             EnvVar("KERUTA_TASK_CREATED_AT", task.createdAt.format(DateTimeFormatter.ISO_DATE_TIME), null),
             EnvVar("KERUTA_TASK_UPDATED_AT", task.updatedAt.format(DateTimeFormatter.ISO_DATE_TIME), null),
-            // Add API URL environment variable from configuration
-            EnvVar("KERUTA_API_URL", kubernetesConfig.apiUrl, null)
+            // Add API URL environment variable
+            EnvVar("KERUTA_API_URL", apiUrl, null)
         )
     }
 
