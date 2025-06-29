@@ -12,6 +12,7 @@ import net.kigawa.keruta.core.usecase.repository.TaskRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import java.util.concurrent.ConcurrentHashMap
 
 @Service
 class TaskServiceImpl(
@@ -23,6 +24,9 @@ class TaskServiceImpl(
 ) : TaskService {
 
     private val logger = LoggerFactory.getLogger(TaskServiceImpl::class.java)
+
+    // In-memory storage for scripts
+    private val scriptStorage = ConcurrentHashMap<String, Script>()
 
     override fun getAllTasks(): List<Task> {
         return taskRepository.findAll()
@@ -236,5 +240,36 @@ class TaskServiceImpl(
         )
 
         return taskRepository.save(updatedTask)
+    }
+
+    override fun getTaskScript(id: String): Script {
+        logger.info("Getting script for task with id: $id")
+
+        // Verify that the task exists
+        getTaskById(id)
+
+        // Return the script from storage or throw an exception if not found
+        return scriptStorage[id] ?: throw NoSuchElementException("Script not found for task with id: $id")
+    }
+
+    override fun updateTaskScript(id: String, installScript: String, executeScript: String, cleanupScript: String): Script {
+        logger.info("Updating script for task with id: $id")
+
+        // Verify that the task exists
+        getTaskById(id)
+
+        // Create or update the script
+        val script = Script(
+            taskId = id,
+            installScript = installScript,
+            executeScript = executeScript,
+            cleanupScript = cleanupScript,
+            updatedAt = LocalDateTime.now()
+        )
+
+        // Store the script
+        scriptStorage[id] = script
+
+        return script
     }
 }
