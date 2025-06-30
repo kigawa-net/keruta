@@ -130,7 +130,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Gradle.keruta [test]">
+  <component name="RunManager" selected="複合.dev">
     <configuration name="dev" type="CompoundRunConfigurationType">
       <toRun name="server" type="docker-deploy" />
       <toRun name="KerutaApplication" type="SpringBootApplicationConfigurationType" />

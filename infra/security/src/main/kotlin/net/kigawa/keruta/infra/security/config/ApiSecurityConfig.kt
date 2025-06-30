@@ -1,11 +1,14 @@
 package net.kigawa.keruta.infra.security.config
 
+import net.kigawa.keruta.infra.security.jwt.JwtAuthenticationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Lazy
 import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 /**
  * Security configuration for API endpoints.
@@ -27,9 +30,14 @@ class ApiSecurityConfig {
             .csrf { it.disable() }
             .authorizeHttpRequests { auth ->
                 auth
+                    // Health endpoint
                     .requestMatchers("/api/health").permitAll()
                     // Auth endpoints
                     .requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh").permitAll()
+                    // Swagger UI and API docs
+                    .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/api-docs/**").permitAll()
+                    // API root endpoint
+                    .requestMatchers("/api", "/api/").permitAll()
                     // All other API requests need authentication
                     .anyRequest().authenticated()
             }

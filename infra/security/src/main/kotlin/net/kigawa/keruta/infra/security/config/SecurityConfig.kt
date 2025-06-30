@@ -36,6 +36,7 @@ class SecurityConfig(
                     .requestMatchers("/login", "/oauth2/**").permitAll()
                     // Main application (now at /admin)
                     .requestMatchers("/admin/**").permitAll()
+                    .requestMatchers("/error").permitAll()
                     // User home page
                     .requestMatchers("/user-home").permitAll()
                     // Swagger UI
