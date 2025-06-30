@@ -3,16 +3,38 @@ package net.kigawa.keruta.api.config
 import net.kigawa.keruta.api.task.websocket.TaskLogWebSocketHandler
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import org.springframework.web.socket.config.annotation.EnableWebSocket
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 import org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean
+import java.util.concurrent.Executor
 
 @Configuration
 @EnableWebSocket
 class WebSocketConfig(
     private val taskLogWebSocketHandler: TaskLogWebSocketHandler
 ) : WebSocketConfigurer {
+
+    /**
+     * Creates a dedicated thread pool for WebSocket operations.
+     * This helps prevent WebSocket connections from hogging CPU resources.
+     */
+    @Bean(name = ["webSocketTaskExecutor"])
+    fun webSocketTaskExecutor(): Executor {
+        val executor = ThreadPoolTaskExecutor()
+        // Set core pool size (number of threads to keep in the pool, even if they are idle)
+        executor.corePoolSize = 10
+        // Set max pool size (maximum number of threads to allow in the pool)
+        executor.maxPoolSize = 30
+        // Set queue capacity (size of the queue used for holding tasks before they are executed)
+        executor.queueCapacity = 50
+        // Set thread name prefix for better identification in logs and monitoring
+        executor.setThreadNamePrefix("WebSocket-")
+        // Initialize the executor
+        executor.initialize()
+        return executor
+    }
 
     @Bean
     fun createWebSocketContainer(): ServletServerContainerFactoryBean {
