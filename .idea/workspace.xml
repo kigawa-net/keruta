@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0affa348-36af-4c8f-bdc9-26d08e600a4c" name="変更" comment="WebSocketの設定を拡張し、バッファサイズとタイムアウトオプションを追加">
-      <change beforePath="$PROJECT_DIR$/api/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/api/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/config/WebSocketConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/config/WebSocketConfig.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infra/app/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/infra/app/src/main/resources/application.properties" afterDir="false" />
+    <list default="true" id="0affa348-36af-4c8f-bdc9-26d08e600a4c" name="変更" comment="WebSocket認証でJWTトークンの検証機能を追加">
+      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/config/AsyncConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/kotlin/net/kigawa/keruta/api/config/AsyncConfig.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/config/AsyncConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/config/AsyncConfig.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +72,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1751282272873</updated>
-      <workItem from="1751282275368" duration="4729000" />
+      <workItem from="1751282275368" duration="5178000" />
     </task>
     <task id="LOCAL-00001" summary="WebSocketの設定を拡張し、バッファサイズとタイムアウトオプションを追加">
       <option name="closed" value="true" />
@@ -92,7 +90,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751285504352</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="WebSocket認証でJWTトークンの検証機能を追加">
+      <option name="closed" value="true" />
+      <created>1751288249869</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1751288249869</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -100,7 +106,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="WebSocketの設定を拡張し、バッファサイズとタイムアウトオプションを追加" />
-    <option name="LAST_COMMIT_MESSAGE" value="WebSocketの設定を拡張し、バッファサイズとタイムアウトオプションを追加" />
+    <MESSAGE value="WebSocket認証でJWTトークンの検証機能を追加" />
+    <option name="LAST_COMMIT_MESSAGE" value="WebSocket認証でJWTトークンの検証機能を追加" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
