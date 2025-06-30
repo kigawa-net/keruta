@@ -16,6 +16,7 @@ dependencies {
     implementation(Dependencies.springBootStarter)
     implementation(Dependencies.springBootStarterWeb)
     implementation(Dependencies.springBootStarterWebsocket)
+    implementation(Dependencies.springBootStarterSecurity)
 
     // Swagger/OpenAPI
     implementation(Dependencies.springdocOpenApi)
