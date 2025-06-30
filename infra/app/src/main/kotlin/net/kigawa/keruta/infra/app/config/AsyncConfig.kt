@@ -19,7 +19,7 @@ class AsyncConfig {
      * 
      * @return A configured ThreadPoolTaskExecutor
      */
-    @Bean(name = ["taskExecutor"])
+    @Bean(name = ["infraTaskExecutor"])
     fun taskExecutor(): Executor {
         val executor = ThreadPoolTaskExecutor()
 
