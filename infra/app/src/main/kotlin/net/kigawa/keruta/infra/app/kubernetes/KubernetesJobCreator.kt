@@ -4,8 +4,10 @@ import net.kigawa.keruta.core.domain.model.Repository
 import net.kigawa.keruta.core.domain.model.Resources
 import net.kigawa.keruta.core.domain.model.Task
 import org.slf4j.LoggerFactory
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
 import java.util.*
+import java.util.concurrent.CompletableFuture
 
 /**
  * Creator for Kubernetes jobs.
@@ -55,12 +57,42 @@ class KubernetesJobCreator(
         // Determine namespace and job name
         val (actualNamespace, actualJobName) = namespaceHandler.determineNamespaceAndJobName(namespace, jobName, task.id)
 
+        // Start asynchronous job creation
+        createJobAsync(task, image, actualNamespace, actualJobName, repository, pvcName, resources)
+
+        // Return the job name immediately
+        return actualJobName
+    }
+
+    /**
+     * Creates a Kubernetes job for a task asynchronously.
+     *
+     * @param task The task to create a job for
+     * @param image The Docker image to use
+     * @param namespace The Kubernetes namespace
+     * @param jobName The name of the job
+     * @param resources The resource requirements
+     * @param repository The Git repository to use
+     * @return A CompletableFuture that will complete with the name of the created job
+     */
+    @Async("infraTaskExecutor")
+    fun createJobAsync(
+        task: Task,
+        image: String,
+        namespace: String,
+        jobName: String,
+        repository: Repository?,
+        pvcName: String,
+        resources: Resources?,
+    ): CompletableFuture<String> {
+        val future = CompletableFuture<String>()
+
         try {
             // Create metadata
-            val (metadata, podTemplateMetadata) = metadataCreator.createMetadata(task.id, actualJobName, actualNamespace)
+            val (metadata, podTemplateMetadata) = metadataCreator.createMetadata(task.id, jobName, namespace)
 
             // Set up volumes and containers
-            val volumeSetupResult = volumeSetup.setupVolumesAndContainers(task, repository, actualNamespace, pvcName)
+            val volumeSetupResult = volumeSetup.setupVolumesAndContainers(task, repository, namespace, pvcName)
             val volumes = volumeSetupResult.volumes
             val initContainers = volumeSetupResult.initContainers
             var volumeMounts = volumeSetupResult.volumeMounts
@@ -89,7 +121,7 @@ class KubernetesJobCreator(
             val envVars = scriptExecutionResult.second
 
             // Create and submit job
-            return jobSubmitter.createAndSubmitJob(
+            val createdJobName = jobSubmitter.createAndSubmitJob(
                 task,
                 image,
                 resources,
@@ -99,11 +131,15 @@ class KubernetesJobCreator(
                 initContainers,
                 metadata,
                 podTemplateMetadata,
-                actualNamespace
+                namespace
             )
+
+            future.complete(createdJobName)
         } catch (e: Exception) {
-            logger.error("Failed to create Kubernetes job", e)
-            return "error-${UUID.randomUUID()}"
+            logger.error("Failed to create Kubernetes job asynchronously", e)
+            future.completeExceptionally(e)
         }
+
+        return future
     }
 }

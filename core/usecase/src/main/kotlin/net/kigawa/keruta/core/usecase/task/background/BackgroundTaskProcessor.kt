@@ -103,7 +103,7 @@ class BackgroundTaskProcessor(
      * Scheduled method that monitors the status of jobs for tasks that are in progress.
      * It checks for jobs in CRASH_LOOP_BACKOFF state and marks tasks as failed if they've been in that state for too long.
      */
-    @Scheduled(fixedDelayString = "\${keruta.task.processor.monitoring-delay:10000}") // Use configured delay or default to 10 seconds
+//    @Scheduled(fixedDelayString = "\${keruta.task.processor.monitoring-delay:10000}") // Use configured delay or default to 10 seconds
     fun monitorJobStatus() {
         // If already monitoring, skip this run
         if (!isMonitoring.compareAndSet(false, true)) {
