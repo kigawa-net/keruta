@@ -19,33 +19,33 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 class ApiSecurityConfig {
 
-    @Bean
-    @Order(1) // Higher priority than the default SecurityFilterChain
-    fun apiSecurityFilterChain(http: HttpSecurity): SecurityFilterChain {
-        // Create a RestAuthenticationEntryPoint for API endpoints
-        val restAuthenticationEntryPoint = RestAuthenticationEntryPoint()
-
-        http
-            .securityMatcher("/api/**") // Only apply this configuration to API endpoints
-            .csrf { it.disable() }
-            .authorizeHttpRequests { auth ->
-                auth
-                    // Health endpoint
-                    .requestMatchers("/api/health").permitAll()
-                    // Auth endpoints
-                    .requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh").permitAll()
-                    // Swagger UI and API docs
-                    .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/api-docs/**").permitAll()
-                    // API root endpoint
-                    .requestMatchers("/api", "/api/").permitAll()
-                    // All other API requests need authentication
-                    .anyRequest().authenticated()
-            }
-            .exceptionHandling { exceptionHandling ->
-                // Use RestAuthenticationEntryPoint for API endpoints
-                exceptionHandling.authenticationEntryPoint(restAuthenticationEntryPoint)
-            }
-
-        return http.build()
-    }
+//    @Bean
+//    @Order(1) // Higher priority than the default SecurityFilterChain
+//    fun apiSecurityFilterChain(http: HttpSecurity): SecurityFilterChain {
+//        // Create a RestAuthenticationEntryPoint for API endpoints
+//        val restAuthenticationEntryPoint = RestAuthenticationEntryPoint()
+//
+//        http
+//            .securityMatcher("/api/**") // Only apply this configuration to API endpoints
+//            .csrf { it.disable() }
+//            .authorizeHttpRequests { auth ->
+//                auth
+//                    // Health endpoint
+//                    .requestMatchers("/api/health").permitAll()
+//                    // Auth endpoints
+//                    .requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh").permitAll()
+//                    // Swagger UI and API docs
+//                    .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/api-docs/**").permitAll()
+//                    // API root endpoint
+//                    .requestMatchers("/api", "/api/").permitAll()
+//                    // All other API requests need authentication
+//                    .anyRequest().authenticated()
+//            }
+//            .exceptionHandling { exceptionHandling ->
+//                // Use RestAuthenticationEntryPoint for API endpoints
+//                exceptionHandling.authenticationEntryPoint(restAuthenticationEntryPoint)
+//            }
+//
+//        return http.build()
+//    }
 }

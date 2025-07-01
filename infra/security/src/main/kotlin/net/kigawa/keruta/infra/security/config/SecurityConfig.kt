@@ -24,44 +24,43 @@ class SecurityConfig(
     @Lazy private val jwtAuthenticationFilter: JwtAuthenticationFilter,
 ) {
 
-    @Bean
-    fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
-        http
-            .csrf { it.disable() }
-            .authorizeHttpRequests { auth ->
-                auth
-                    // Auth endpoints
-                    .requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh").permitAll()
-                    // Login page and OAuth2 endpoints
-                    .requestMatchers("/login", "/oauth2/**").permitAll()
-                    // Main application (now at /admin)
-                    .requestMatchers("/admin/**").permitAll()
-                    .requestMatchers("/error").permitAll()
-                    // User home page
-                    .requestMatchers("/user-home").permitAll()
-                    // Swagger UI
-                    .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/api-docs/**").permitAll()
-                    // Admin panel (now at root)
-                    .requestMatchers("/").authenticated()
-                    // All other requests need authentication
-                    .anyRequest().authenticated()
-            }
-            .oauth2Login { oauth2 ->
-                oauth2
-                    .loginPage("/login")
-                    .defaultSuccessUrl("/", true)
-                    .failureUrl("/login?error=true")
-            }
-            .logout { logout ->
-                logout
-                    .logoutSuccessUrl("/")
-                    .permitAll()
-            }
-            // Keep JWT authentication for API endpoints
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
-
-        return http.build()
-    }
+//    @Bean
+//    fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
+//        http
+//            .csrf { it.disable() }
+//            .authorizeHttpRequests { auth ->
+//                auth
+//                    // Auth endpoints
+//                    .requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh").permitAll()
+//                    // Login page and OAuth2 endpoints
+//                    .requestMatchers("/login", "/oauth2/**").permitAll()
+//                    // Main application (now at /admin)
+//                    .requestMatchers("/error").permitAll()
+//                    // User home page
+//                    .requestMatchers("/user-home").permitAll()
+//                    // Swagger UI
+//                    .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/api-docs/**").permitAll()
+//                    // Admin panel (now at root)
+//                    .requestMatchers("/").authenticated()
+//                    // All other requests need authentication
+//                    .anyRequest().authenticated()
+//            }
+//            .oauth2Login { oauth2 ->
+//                oauth2
+//                    .loginPage("/login")
+//                    .defaultSuccessUrl("/", true)
+//                    .failureUrl("/login?error=true")
+//            }
+//            .logout { logout ->
+//                logout
+//                    .logoutSuccessUrl("/")
+//                    .permitAll()
+//            }
+//            // Keep JWT authentication for API endpoints
+//            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+//
+//        return http.build()
+//    }
 
     @Bean
     fun passwordEncoder(): PasswordEncoder {
