@@ -4,7 +4,6 @@ plugins {
 
 dependencies {
     implementation(project(":core:domain"))
-    implementation(project(":infra:core"))
 
     implementation(Dependencies.kotlinStdlib)
     implementation(Dependencies.kotlinReflect)

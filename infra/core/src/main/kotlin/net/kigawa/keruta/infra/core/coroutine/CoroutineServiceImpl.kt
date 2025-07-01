@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import net.kigawa.keruta.core.usecase.CoroutineService
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 

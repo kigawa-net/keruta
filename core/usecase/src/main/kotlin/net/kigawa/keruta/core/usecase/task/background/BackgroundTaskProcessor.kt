@@ -1,17 +1,16 @@
 package net.kigawa.keruta.core.usecase.task.background
 
-import kotlinx.coroutines.CoroutineScope
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.domain.model.TaskStatus
+import net.kigawa.keruta.core.usecase.CoroutineService
 import net.kigawa.keruta.core.usecase.kubernetes.KubernetesService
 import net.kigawa.keruta.core.usecase.task.TaskService
-import net.kigawa.keruta.infra.core.coroutine.CoroutineService
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
+import java.time.Instant
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
-import java.time.Instant
 
 /**
  * Component that processes tasks in the background.
@@ -22,7 +21,7 @@ class BackgroundTaskProcessor(
     private val taskService: TaskService,
     private val config: BackgroundTaskProcessorConfig,
     private val kubernetesService: KubernetesService,
-    private val coroutineService: CoroutineService
+    private val coroutineService: CoroutineService,
 ) {
     private val logger = LoggerFactory.getLogger(BackgroundTaskProcessor::class.java)
     private val isProcessing = AtomicBoolean(false)
@@ -37,7 +36,9 @@ class BackgroundTaskProcessor(
      * It ensures that only one task is processed at a time.
      * This method launches a coroutine to process the task asynchronously.
      */
-    @Scheduled(fixedDelayString = "\${keruta.task.processor.processing-delay:5000}") // Use configured delay or default to 5 seconds
+    @Scheduled(
+        fixedDelayString = "\${keruta.task.processor.processing-delay:5000}"
+    ) // Use configured delay or default to 5 seconds
     fun processNextTask() {
         // If already processing a task, skip this run
         if (!isProcessing.compareAndSet(false, true)) {
@@ -250,7 +251,9 @@ class BackgroundTaskProcessor(
         if (elapsedMillis > config.crashLoopBackOffTimeout) {
             handleProlongedCrashLoopBackOff(task, jobName, elapsedMillis)
         } else {
-            logger.debug("Job $jobName has been in CrashLoopBackOff state for ${elapsedMillis}ms, will mark as failed after ${config.crashLoopBackOffTimeout}ms")
+            logger.debug(
+                "Job $jobName has been in CrashLoopBackOff state for ${elapsedMillis}ms, will mark as failed after ${config.crashLoopBackOffTimeout}ms"
+            )
         }
     }
 
@@ -270,7 +273,9 @@ class BackgroundTaskProcessor(
      * @param elapsedMillis the time the job has been in CrashLoopBackOff state
      */
     private fun handleProlongedCrashLoopBackOff(task: Task, jobName: String, elapsedMillis: Long) {
-        logger.error("Job $jobName for task ${task.id} has been in CrashLoopBackOff state for too long (${elapsedMillis}ms), marking task as failed")
+        logger.error(
+            "Job $jobName for task ${task.id} has been in CrashLoopBackOff state for too long (${elapsedMillis}ms), marking task as failed"
+        )
 
         try {
             // Update the task status to FAILED
@@ -279,7 +284,10 @@ class BackgroundTaskProcessor(
             logger.info("Updated task ${updatedTask.id} status to FAILED due to prolonged CrashLoopBackOff")
 
             // Append error message to task logs
-            taskService.appendTaskLogs(updatedTask.id, "Task failed: Job $jobName had pods in CrashLoopBackOff state for too long (${elapsedMillis}ms)")
+            taskService.appendTaskLogs(
+                updatedTask.id,
+                "Task failed: Job $jobName had pods in CrashLoopBackOff state for too long (${elapsedMillis}ms)"
+            )
 
             // Remove the job from the tracking map
             crashLoopBackOffPods.remove(jobName)
@@ -346,7 +354,9 @@ class BackgroundTaskProcessor(
         val jobsToRemove = crashLoopBackOffPods.keys().toList().filter { !activeJobNames.contains(it) }
 
         for (jobName in jobsToRemove) {
-            logger.info("Removing job $jobName from CrashLoopBackOff tracking as it's no longer associated with an in-progress task")
+            logger.info(
+                "Removing job $jobName from CrashLoopBackOff tracking as it's no longer associated with an in-progress task"
+            )
             crashLoopBackOffPods.remove(jobName)
         }
     }

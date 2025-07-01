@@ -1,4 +1,4 @@
-package net.kigawa.keruta.infra.core.coroutine
+package net.kigawa.keruta.core.usecase
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -14,7 +14,7 @@ interface CoroutineService {
      * @return A Job that can be used to cancel the coroutine.
      */
     fun launch(block: suspend CoroutineScope.() -> Unit): Job
-    
+
     /**
      * Launches a coroutine that executes the given block and handles any exceptions.
      *
