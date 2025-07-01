@@ -1,5 +1,6 @@
 package net.kigawa.keruta.infra.security.config
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
@@ -14,13 +15,13 @@ import org.springframework.security.web.SecurityFilterChain
  */
 @Configuration
 @EnableWebSecurity
-class ApiSecurityConfig {
+class ApiSecurityConfig(private val objectMapper: ObjectMapper) {
 
     @Bean
     @Order(1) // Higher priority than the default SecurityFilterChain
     fun apiSecurityFilterChain(http: HttpSecurity): SecurityFilterChain {
         // Create a RestAuthenticationEntryPoint for API endpoints
-        val restAuthenticationEntryPoint = RestAuthenticationEntryPoint()
+        val restAuthenticationEntryPoint = RestAuthenticationEntryPoint(objectMapper)
 
         http
             .securityMatcher("/api/**") // Only apply this configuration to API endpoints
