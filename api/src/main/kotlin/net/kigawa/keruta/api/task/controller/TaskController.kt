@@ -137,4 +137,26 @@ class TaskController(
             ResponseEntity.notFound().build()
         }
     }
+
+    @PutMapping("/{id}/status")
+    @Operation(summary = "Update task status", description = "Updates the status of a specific task")
+    fun updateTaskStatus(
+        @PathVariable id: String,
+        @RequestBody statusRequest: Map<String, String>
+    ): ResponseEntity<TaskResponse> {
+        val statusStr = statusRequest["status"] ?: return ResponseEntity.badRequest().build()
+
+        return try {
+            val taskStatus = try {
+                net.kigawa.keruta.core.domain.model.TaskStatus.valueOf(statusStr.uppercase())
+            } catch (e: IllegalArgumentException) {
+                return ResponseEntity.badRequest().build()
+            }
+
+            val updatedTask = taskService.updateTaskStatus(id, taskStatus)
+            ResponseEntity.ok(TaskResponse.fromDomain(updatedTask))
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.notFound().build()
+        }
+    }
 }
