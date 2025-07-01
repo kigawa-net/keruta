@@ -59,7 +59,7 @@ class AgentRepositoryImpl(private val mongoAgentRepository: MongoAgentRepository
         val updatedAgent = agent.copy(
             status = AgentStatus.BUSY,
             currentTaskId = taskId,
-            updatedAt = LocalDateTime.now()
+            updatedAt = LocalDateTime.now(),
         )
         return save(updatedAgent)
     }
@@ -69,7 +69,7 @@ class AgentRepositoryImpl(private val mongoAgentRepository: MongoAgentRepository
         val updatedAgent = agent.copy(
             status = AgentStatus.AVAILABLE,
             currentTaskId = null,
-            updatedAt = LocalDateTime.now()
+            updatedAt = LocalDateTime.now(),
         )
         return save(updatedAgent)
     }

@@ -61,7 +61,7 @@ class KubernetesContainerHandler(
         agentInstallCommand: String = "",
         agentExecuteCommand: String = "",
         existingMounts: List<VolumeMount>,
-        container: Container? = null
+        container: Container? = null,
     ): Pair<VolumeMount?, List<EnvVar>> {
         logger.info("Delegating script execution setup to KubernetesScriptExecutionHandler")
         return scriptExecutionHandler.setupScriptExecution(
@@ -73,7 +73,7 @@ class KubernetesContainerHandler(
             agentInstallCommand,
             agentExecuteCommand,
             existingMounts,
-            container
+            container,
         )
     }
 }

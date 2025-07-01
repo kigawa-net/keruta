@@ -14,10 +14,10 @@ import org.springframework.data.mongodb.core.MongoTemplate
 @Configuration
 @Profile("test")
 class MongoTestConfig {
-    
+
     @Value("\${spring.data.mongodb.uri}")
     private lateinit var mongoUri: String
-    
+
     @Bean
     @Primary
     fun mongoClient(): MongoClient {
@@ -27,7 +27,7 @@ class MongoTestConfig {
             .build()
         return MongoClients.create(clientSettings)
     }
-    
+
     @Bean
     @Primary
     fun mongoTemplate(mongoClient: MongoClient): MongoTemplate {

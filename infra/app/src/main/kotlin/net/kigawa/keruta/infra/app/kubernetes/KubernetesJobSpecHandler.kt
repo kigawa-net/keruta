@@ -23,12 +23,12 @@ class KubernetesJobSpecHandler {
      */
     fun createJobSpec(podTemplateSpec: PodTemplateSpec): JobSpec {
         logger.info("Creating job spec")
-        
+
         // Create job spec
         val jobSpec = JobSpec()
         jobSpec.backoffLimit = 4 // Number of retries before considering the job failed
         jobSpec.template = podTemplateSpec
-        
+
         return jobSpec
     }
 
@@ -41,12 +41,12 @@ class KubernetesJobSpecHandler {
      */
     fun createJob(metadata: ObjectMeta, jobSpec: JobSpec): Job {
         logger.info("Creating job")
-        
+
         // Create job
         val job = Job()
         job.metadata = metadata
         job.spec = jobSpec
-        
+
         return job
     }
 }

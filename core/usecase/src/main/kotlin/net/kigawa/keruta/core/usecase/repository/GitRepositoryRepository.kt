@@ -12,7 +12,7 @@ interface GitRepositoryRepository {
      * @return List of all repositories
      */
     fun findAll(): List<Repository>
-    
+
     /**
      * Finds a Git repository by its ID.
      *
@@ -20,7 +20,7 @@ interface GitRepositoryRepository {
      * @return The repository if found, null otherwise
      */
     fun findById(id: String): Repository?
-    
+
     /**
      * Saves a Git repository to the repository.
      *
@@ -28,7 +28,7 @@ interface GitRepositoryRepository {
      * @return The saved repository with generated ID if it was a new repository
      */
     fun save(repository: Repository): Repository
-    
+
     /**
      * Deletes a Git repository by its ID.
      *
@@ -36,7 +36,7 @@ interface GitRepositoryRepository {
      * @return true if the repository was deleted, false otherwise
      */
     fun deleteById(id: String): Boolean
-    
+
     /**
      * Validates a Git repository URL.
      *
@@ -44,7 +44,7 @@ interface GitRepositoryRepository {
      * @return true if the URL is valid and accessible, false otherwise
      */
     fun validateUrl(url: String): Boolean
-    
+
     /**
      * Finds Git repositories by name.
      *

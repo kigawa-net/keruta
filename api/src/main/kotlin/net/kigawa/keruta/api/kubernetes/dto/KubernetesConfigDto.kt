@@ -11,5 +11,5 @@ data class KubernetesConfigDto(
     val defaultImage: String = "keruta-task-executor:latest",
     val defaultPvcStorageSize: String = "1Gi",
     val defaultPvcAccessMode: String = "ReadWriteOnce",
-    val defaultPvcStorageClass: String = ""
+    val defaultPvcStorageClass: String = "",
 )

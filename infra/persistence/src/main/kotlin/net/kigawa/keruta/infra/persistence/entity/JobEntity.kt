@@ -21,7 +21,7 @@ data class JobEntity(
     val status: String = JobStatus.PENDING.name,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now(),
-    val logs: String? = null
+    val logs: String? = null,
 ) {
     companion object {
         fun fromDomain(job: Job): JobEntity {
@@ -37,18 +37,18 @@ data class JobEntity(
                 status = job.status.name,
                 createdAt = job.createdAt,
                 updatedAt = job.updatedAt,
-                logs = job.logs
+                logs = job.logs,
             )
         }
     }
-    
+
     fun toDomain(): Job {
         val resources = if (cpu != null && memory != null) {
             Resources(cpu = cpu, memory = memory)
         } else {
             null
         }
-        
+
         return Job(
             id = id,
             taskId = taskId,
@@ -60,7 +60,7 @@ data class JobEntity(
             status = JobStatus.valueOf(status),
             createdAt = createdAt,
             updatedAt = updatedAt,
-            logs = logs
+            logs = logs,
         )
     }
 }

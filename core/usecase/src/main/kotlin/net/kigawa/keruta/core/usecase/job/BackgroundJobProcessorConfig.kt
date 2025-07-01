@@ -20,5 +20,5 @@ data class BackgroundJobProcessorConfig(
     /**
      * The delay between job processing attempts in milliseconds.
      */
-    val processingDelay: Long = 5000
+    val processingDelay: Long = 5000,
 )

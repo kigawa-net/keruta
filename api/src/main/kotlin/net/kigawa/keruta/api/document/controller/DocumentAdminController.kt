@@ -5,13 +5,11 @@ import net.kigawa.keruta.core.usecase.document.DocumentService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
-import java.time.LocalDateTime
-import java.util.UUID
 
 @Controller
 @RequestMapping("/admin/documents")
 class DocumentAdminController(
-    private val documentService: DocumentService
+    private val documentService: DocumentService,
 ) {
 
     @GetMapping
@@ -24,11 +22,14 @@ class DocumentAdminController(
     @GetMapping("/create")
     fun createDocumentForm(model: Model): String {
         model.addAttribute("pageTitle", "Create Document")
-        model.addAttribute("document", Document(
-            title = "",
-            content = "",
-            tags = emptyList()
-        ))
+        model.addAttribute(
+            "document",
+            Document(
+                title = "",
+                content = "",
+                tags = emptyList(),
+            ),
+        )
         return "admin/document-form"
     }
 

@@ -49,7 +49,7 @@ class KubernetesRepositoryHandler(
         // Create and add repository volume
         val repoVolume = repositoryVolumeHandler.createRepositoryVolume(
             task, repository, namespace, repoVolumeName,
-            pvcName
+            pvcName,
         )
             ?: return SetupRepositoryResult(
                 setupped = false,
@@ -66,14 +66,13 @@ class KubernetesRepositoryHandler(
             repository,
             namespace,
             repoVolumeName,
-            repoMountPath
+            repoMountPath,
         )?.also {
             gitCloneContainer.env = it.gitEnvVars
             gitCloneContainer.command = it.command
             gitCloneContainer.args = it.args
             gitCloneContainer.volumeMounts = it.volumeMounts
         }
-
 
         // Add volume mount to main container
         val addResult = gitContainerHandler.addVolumeToMainContainer(repoVolumeName, repoMountPath)
@@ -82,7 +81,7 @@ class KubernetesRepositoryHandler(
             setupped = true,
             gitCloneContainer = gitCloneContainer,
             volumeMount = addResult,
-            volumes = listOfNotNull(repoVolume, result?.credentialsVolume)
+            volumes = listOfNotNull(repoVolume, result?.credentialsVolume),
         )
     }
 }

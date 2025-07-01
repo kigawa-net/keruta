@@ -24,7 +24,7 @@ data class TaskResponse(
     val logs: String?,
     val parentId: String?,
     val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime
+    val updatedAt: LocalDateTime,
 ) {
     companion object {
         fun fromDomain(task: Task): TaskResponse {
@@ -48,7 +48,7 @@ data class TaskResponse(
                 logs = task.logs,
                 parentId = task.parentId,
                 createdAt = task.createdAt,
-                updatedAt = task.updatedAt
+                updatedAt = task.updatedAt,
             )
         }
     }

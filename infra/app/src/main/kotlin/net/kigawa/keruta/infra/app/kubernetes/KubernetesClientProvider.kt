@@ -1,7 +1,6 @@
 package net.kigawa.keruta.infra.app.kubernetes
 
 import io.fabric8.kubernetes.api.model.Secret
-import io.fabric8.kubernetes.api.model.SecretBuilder
 import io.fabric8.kubernetes.client.KubernetesClientBuilder
 import net.kigawa.keruta.core.domain.model.KubernetesConfig
 import net.kigawa.keruta.core.usecase.repository.KubernetesConfigRepository
@@ -16,7 +15,7 @@ import java.util.UUID
  */
 @Component
 class KubernetesClientProvider(
-    private val kubernetesConfigRepository: KubernetesConfigRepository
+    private val kubernetesConfigRepository: KubernetesConfigRepository,
 ) {
     private val logger = LoggerFactory.getLogger(KubernetesClientProvider::class.java)
 

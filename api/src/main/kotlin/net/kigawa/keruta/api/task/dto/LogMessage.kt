@@ -10,5 +10,5 @@ data class LogMessage(
     val level: String,
     val message: String,
     val lineNumber: Int? = null,
-    val metadata: Map<String, Any> = emptyMap()
+    val metadata: Map<String, Any> = emptyMap(),
 )

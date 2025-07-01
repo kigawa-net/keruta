@@ -20,7 +20,7 @@ class TaskServiceImpl(
     private val kubernetesService: KubernetesService,
     private val gitRepositoryService: GitRepositoryService,
     private val kubernetesConfig: KubernetesConfig,
-    private val agentService: AgentService
+    private val agentService: AgentService,
 ) : TaskService {
 
     private val logger = LoggerFactory.getLogger(TaskServiceImpl::class.java)
@@ -45,7 +45,7 @@ class TaskServiceImpl(
         val updatedTask = task.copy(
             id = existingTask.id,
             createdAt = existingTask.createdAt,
-            updatedAt = LocalDateTime.now()
+            updatedAt = LocalDateTime.now(),
         )
         return taskRepository.save(updatedTask)
     }
@@ -91,7 +91,7 @@ class TaskServiceImpl(
         val existingTask = getTaskById(id)
         val updatedTask = existingTask.copy(
             status = status,
-            updatedAt = LocalDateTime.now()
+            updatedAt = LocalDateTime.now(),
         )
         return taskRepository.save(updatedTask)
     }
@@ -100,7 +100,7 @@ class TaskServiceImpl(
         val existingTask = getTaskById(id)
         val updatedTask = existingTask.copy(
             priority = priority,
-            updatedAt = LocalDateTime.now()
+            updatedAt = LocalDateTime.now(),
         )
         return taskRepository.save(updatedTask)
     }
@@ -145,7 +145,7 @@ class TaskServiceImpl(
                 val pvcCreated = kubernetesService.createPVC(
                     namespace = namespace,
                     pvcName = pvcName,
-                    taskId = taskId
+                    taskId = taskId,
                 )
                 if (pvcCreated) {
                     logger.info("PVC created successfully: $pvcName")
@@ -163,7 +163,7 @@ class TaskServiceImpl(
                 jobName = actualJobName,
                 resources = resources,
                 repository = repository,
-                pvcName
+                pvcName,
             )
 
             val updatedTask = task.copy(
@@ -173,7 +173,7 @@ class TaskServiceImpl(
                 podName = createdJobName, // For backward compatibility
                 status = TaskStatus.IN_PROGRESS,
                 pvcName = pvcName,
-                updatedAt = LocalDateTime.now()
+                updatedAt = LocalDateTime.now(),
             )
 
             val savedTask = taskRepository.save(updatedTask)
@@ -186,7 +186,7 @@ class TaskServiceImpl(
             val failedTask = task.copy(
                 status = TaskStatus.FAILED,
                 updatedAt = LocalDateTime.now(),
-                logs = "Failed to create Kubernetes job: ${e.message}"
+                logs = "Failed to create Kubernetes job: ${e.message}",
             )
 
             return taskRepository.save(failedTask)
@@ -205,7 +205,7 @@ class TaskServiceImpl(
 
         val updatedTask = task.copy(
             logs = updatedLogs,
-            updatedAt = LocalDateTime.now()
+            updatedAt = LocalDateTime.now(),
         )
 
         return taskRepository.save(updatedTask)
@@ -236,7 +236,7 @@ class TaskServiceImpl(
         val task = getTaskById(id)
         val updatedTask = task.copy(
             kubernetesManifest = manifest,
-            updatedAt = LocalDateTime.now()
+            updatedAt = LocalDateTime.now(),
         )
 
         return taskRepository.save(updatedTask)
@@ -264,7 +264,7 @@ class TaskServiceImpl(
             installScript = installScript,
             executeScript = executeScript,
             cleanupScript = cleanupScript,
-            updatedAt = LocalDateTime.now()
+            updatedAt = LocalDateTime.now(),
         )
 
         // Store the script

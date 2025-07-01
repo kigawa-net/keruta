@@ -18,5 +18,5 @@ data class Document(
     val content: String,
     val tags: List<String> = emptyList(),
     val createdAt: LocalDateTime = LocalDateTime.now(),
-    val updatedAt: LocalDateTime = LocalDateTime.now()
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
 )

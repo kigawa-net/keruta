@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component
 @Component
 class KubernetesEnvironmentHandler(
     private val kerutaAgentService: KerutaAgentService,
-    private val kubernetesConfig: KubernetesConfig
+    private val kubernetesConfig: KubernetesConfig,
 ) {
     private val logger = LoggerFactory.getLogger(KubernetesEnvironmentHandler::class.java)
 

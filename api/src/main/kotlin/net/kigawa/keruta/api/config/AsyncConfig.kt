@@ -16,7 +16,7 @@ class AsyncConfig {
 
     /**
      * Creates a custom thread pool task executor with increased thread counts.
-     * 
+     *
      * @return A configured ThreadPoolTaskExecutor
      */
     @Bean(name = ["taskExecutor"])

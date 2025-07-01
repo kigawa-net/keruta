@@ -17,7 +17,7 @@ interface MongoAgentRepository : MongoRepository<AgentEntity, String> {
      * @return List of agents with the specified status
      */
     fun findByStatus(status: String): List<AgentEntity>
-    
+
     /**
      * Finds agents that support a specific language.
      *
@@ -26,7 +26,7 @@ interface MongoAgentRepository : MongoRepository<AgentEntity, String> {
      */
     @Query("{ 'languages': ?0 }")
     fun findByLanguage(language: String): List<AgentEntity>
-    
+
     /**
      * Finds available agents that support a specific language.
      *

@@ -14,19 +14,19 @@ import java.util.UUID
 @Component
 class KubernetesConfigRepositoryImpl(
     private val mongoKubernetesConfigRepository: MongoKubernetesConfigRepository,
-    
+
     @Value("\${keruta.kubernetes.enabled:false}")
     private val defaultEnabled: Boolean,
-    
+
     @Value("\${keruta.kubernetes.config-path:}")
     private val defaultConfigPath: String,
-    
+
     @Value("\${keruta.kubernetes.in-cluster:false}")
     private val defaultInCluster: Boolean,
-    
+
     @Value("\${keruta.kubernetes.default-namespace:default}")
     private val defaultNamespace: String,
-    
+
     @Value("\${keruta.job.processor.default-image:keruta-task-executor:latest}")
     private val defaultImage: String,
 ) : KubernetesConfigRepository {
@@ -34,7 +34,7 @@ class KubernetesConfigRepositoryImpl(
     override fun getConfig(): KubernetesConfig {
         // Try to get the configuration from the database
         val entity = mongoKubernetesConfigRepository.findFirstByOrderByCreatedAtAsc()
-        
+
         // If no configuration exists, create a default one
         return if (entity != null) {
             entity.toDomain()
@@ -48,9 +48,9 @@ class KubernetesConfigRepositoryImpl(
                 defaultNamespace = defaultNamespace,
                 defaultImage = defaultImage,
                 createdAt = LocalDateTime.now(),
-                updatedAt = LocalDateTime.now()
+                updatedAt = LocalDateTime.now(),
             )
-            
+
             // Save the default configuration to the database
             val savedEntity = mongoKubernetesConfigRepository.save(KubernetesConfigEntity.fromDomain(defaultConfig))
             savedEntity.toDomain()
@@ -65,7 +65,7 @@ class KubernetesConfigRepositoryImpl(
         } else {
             config.copy(updatedAt = LocalDateTime.now())
         }
-        
+
         // Save the configuration to the database
         val entity = KubernetesConfigEntity.fromDomain(configWithId)
         return mongoKubernetesConfigRepository.save(entity).toDomain()

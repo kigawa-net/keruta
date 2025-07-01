@@ -17,9 +17,8 @@ class KubernetesScriptHandler {
      */
     fun setupScriptAndCommand(
         originalCommand: List<String>? = null,
-        originalArgs: List<String>? = null
+        originalArgs: List<String>? = null,
     ): Pair<List<String>, List<String>> {
-
         // Create a wrapper script that runs the setup script and then the original command
         val wrapperScript = mutableListOf(
             "#!/bin/sh",
@@ -28,7 +27,7 @@ class KubernetesScriptHandler {
             "# Run setup script",
             createSetupScript().joinToString("\n"),
             "",
-            "# Run original command"
+            "# Run original command",
         )
 
         if (originalCommand != null && originalCommand.isNotEmpty()) {
@@ -125,7 +124,7 @@ class KubernetesScriptHandler {
             "else",
             "  echo \"Executing agent with command: \$KERUTA_AGENT_EXECUTE_COMMAND\"",
             "  eval \"\$KERUTA_AGENT_EXECUTE_COMMAND\"",
-            "fi"
+            "fi",
         )
     }
 }

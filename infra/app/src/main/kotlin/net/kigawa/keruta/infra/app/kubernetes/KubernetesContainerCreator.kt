@@ -97,7 +97,7 @@ class KubernetesContainerCreator(
             "fi",
             "",
             "# Execute keruta-agent",
-            "/usr/local/bin/keruta-agent execute --task-id \"\$KERUTA_TASK_ID\" --api-url \"\$KERUTA_API_URL\""
+            "/usr/local/bin/keruta-agent execute --task-id \"\$KERUTA_TASK_ID\" --api-url \"\$KERUTA_API_URL\"",
         )
         val args = listOf(shellScript.joinToString("\n"))
         return Pair(command, args)
@@ -139,7 +139,7 @@ class KubernetesContainerCreator(
             val errorMessage = "Failed to get or create secret '$secretName' in namespace '$namespace'. KERUTA_API_TOKEN is required for operation."
             logger.error(errorMessage)
             throw IllegalStateException(
-                "設定の初期化に失敗しました: 設定の検証に失敗: KERUTA_API_TOKEN が設定されていません"
+                "設定の初期化に失敗しました: 設定の検証に失敗: KERUTA_API_TOKEN が設定されていません",
             )
         }
     }
@@ -161,7 +161,7 @@ class KubernetesContainerCreator(
             EnvVar("KERUTA_TASK_CREATED_AT", task.createdAt.format(DateTimeFormatter.ISO_DATE_TIME), null),
             EnvVar("KERUTA_TASK_UPDATED_AT", task.updatedAt.format(DateTimeFormatter.ISO_DATE_TIME), null),
             // Add API URL environment variable
-            EnvVar("KERUTA_API_URL", apiUrl, null)
+            EnvVar("KERUTA_API_URL", apiUrl, null),
         )
     }
 
@@ -175,11 +175,11 @@ class KubernetesContainerCreator(
         val resourceRequirements = ResourceRequirements()
         resourceRequirements.requests = mapOf(
             "cpu" to Quantity(resources.cpu),
-            "memory" to Quantity(resources.memory)
+            "memory" to Quantity(resources.memory),
         )
         resourceRequirements.limits = mapOf(
             "cpu" to Quantity(resources.cpu),
-            "memory" to Quantity(resources.memory)
+            "memory" to Quantity(resources.memory),
         )
         return resourceRequirements
     }

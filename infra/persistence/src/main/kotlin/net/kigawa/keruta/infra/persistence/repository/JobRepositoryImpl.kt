@@ -12,33 +12,33 @@ import java.time.LocalDateTime
 
 @Component
 class JobRepositoryImpl(private val mongoJobRepository: MongoJobRepository) : JobRepository {
-    
+
     override fun findAll(): List<Job> {
         return mongoJobRepository.findAll().map { it.toDomain() }
     }
-    
+
     override fun findById(id: String): Job? {
         return mongoJobRepository.findById(id).orElse(null)?.toDomain()
     }
-    
+
     override fun findByTaskId(taskId: String): List<Job> {
         return mongoJobRepository.findByTaskId(taskId).map { it.toDomain() }
     }
-    
+
     override fun save(job: Job): Job {
         val entity = JobEntity.fromDomain(job)
         return mongoJobRepository.save(entity).toDomain()
     }
-    
+
     override fun updateStatus(id: String, status: JobStatus): Job {
         val job = findById(id) ?: throw NoSuchElementException("Job not found with id: $id")
         val updatedJob = job.copy(
             status = status,
-            updatedAt = LocalDateTime.now()
+            updatedAt = LocalDateTime.now(),
         )
         return save(updatedJob)
     }
-    
+
     override fun updateLogs(id: String, logs: String): Job {
         val job = findById(id) ?: throw NoSuchElementException("Job not found with id: $id")
         val updatedLogs = if (job.logs != null) {
@@ -48,11 +48,11 @@ class JobRepositoryImpl(private val mongoJobRepository: MongoJobRepository) : Jo
         }
         val updatedJob = job.copy(
             logs = updatedLogs,
-            updatedAt = LocalDateTime.now()
+            updatedAt = LocalDateTime.now(),
         )
         return save(updatedJob)
     }
-    
+
     override fun deleteById(id: String): Boolean {
         return if (mongoJobRepository.existsById(id)) {
             mongoJobRepository.deleteById(id)
@@ -61,7 +61,7 @@ class JobRepositoryImpl(private val mongoJobRepository: MongoJobRepository) : Jo
             false
         }
     }
-    
+
     override fun findByStatus(status: JobStatus): List<Job> {
         return mongoJobRepository.findByStatus(status.name).map { it.toDomain() }
     }

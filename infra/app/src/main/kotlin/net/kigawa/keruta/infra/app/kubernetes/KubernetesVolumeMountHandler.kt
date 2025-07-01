@@ -19,7 +19,8 @@ class KubernetesVolumeMountHandler {
      * @param mountPath The mount path of the volume
      */
     fun setupVolumeMount(
-        volumeName: String, mountPath: String,
+        volumeName: String,
+        mountPath: String,
         existingMounts: List<VolumeMount>,
     ): VolumeMount? {
         // Check if a volume mount with the same path already exists

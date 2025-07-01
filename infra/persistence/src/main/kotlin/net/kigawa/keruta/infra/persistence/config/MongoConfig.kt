@@ -37,7 +37,7 @@ class MongoConfig : AbstractMongoClientConfiguration() {
 
     override fun mongoClient(): MongoClient {
         val connectionString = ConnectionString(
-            "mongodb://$username:$password@$host:$port/$database?authSource=$authSource"
+            "mongodb://$username:$password@$host:$port/$database?authSource=$authSource",
         )
 
         val clientSettings = MongoClientSettings.builder()

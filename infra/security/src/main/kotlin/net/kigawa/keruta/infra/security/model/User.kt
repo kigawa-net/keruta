@@ -14,7 +14,7 @@ data class User(
     private val accountNonExpired: Boolean = true,
     private val accountNonLocked: Boolean = true,
     private val credentialsNonExpired: Boolean = true,
-    private val enabled: Boolean = true
+    private val enabled: Boolean = true,
 ) : UserDetails {
 
     override fun getUsername(): String = username

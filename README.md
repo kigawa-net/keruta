@@ -59,3 +59,37 @@ docker compose up -d
 - Spring Boot
 - MongoDB
 - Gradle (マルチモジュール構成)
+
+## コード品質
+
+### Linter (ktlint)
+
+このプロジェクトでは、Kotlinコードの品質を保つためにktlintを使用しています。
+
+#### 使用方法
+
+コードのチェック:
+```bash
+./gradlew ktlintCheck        # 単一モジュールのチェック
+./gradlew ktlintCheckAll     # すべてのモジュールをチェック
+```
+
+コードの自動フォーマット:
+```bash
+./gradlew ktlintFormat       # 単一モジュールのフォーマット
+./gradlew ktlintFormatAll    # すべてのモジュールをフォーマット
+```
+
+#### 設定
+
+- ktlintの設定は`.editorconfig`ファイルで管理されています
+- IDEの設定を`.editorconfig`に合わせることで、コーディング中に一貫したスタイルを維持できます
+
+#### 現在の設定について
+
+現在、以下のルールは段階的な移行を容易にするために無効化されています：
+- `ktlint_standard_no-wildcard-imports`: ワイルドカードインポートを禁止するルール
+- `ktlint_standard_filename`: ファイル名をクラス名と一致させるルール
+- `ktlint_standard_max-line-length`: 行の長さを制限するルール
+
+これらのルールは将来的に有効化される予定です。新しいコードを書く際は、これらのルールに従うことをお勧めします。

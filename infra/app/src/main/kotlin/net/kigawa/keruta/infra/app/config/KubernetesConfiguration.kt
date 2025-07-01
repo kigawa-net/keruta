@@ -24,7 +24,7 @@ class KubernetesConfiguration {
             apiUrl = properties.apiUrl,
             apiPort = properties.apiPort,
             createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now()
+            updatedAt = LocalDateTime.now(),
         )
     }
 }

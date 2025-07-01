@@ -12,5 +12,5 @@ data class Script(
     val cleanupScript: String,
     val environment: Map<String, String> = emptyMap(),
     val createdAt: LocalDateTime = LocalDateTime.now(),
-    val updatedAt: LocalDateTime = LocalDateTime.now()
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
 )

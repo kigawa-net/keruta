@@ -24,6 +24,6 @@ interface CoroutineService {
      */
     fun launchWithErrorHandling(
         block: suspend CoroutineScope.() -> Unit,
-        onError: (Throwable) -> Unit
+        onError: (Throwable) -> Unit,
     ): Job
 }

@@ -38,7 +38,6 @@ class KubernetesRepositoryVolumeHandler(
 
         logger.info("Using PVC for repository: ${repository.name}")
 
-
         val client = clientProvider.getClient() ?: return null
 
         // Check if PVC already exists

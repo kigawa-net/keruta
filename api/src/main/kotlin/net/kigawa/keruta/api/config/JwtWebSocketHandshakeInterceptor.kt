@@ -4,25 +4,23 @@ import net.kigawa.keruta.infra.security.jwt.JwtTokenProvider
 import org.springframework.http.HttpHeaders
 import org.springframework.http.server.ServerHttpRequest
 import org.springframework.http.server.ServerHttpResponse
-import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
 import org.springframework.web.socket.WebSocketHandler
 import org.springframework.web.socket.server.HandshakeInterceptor
-import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Interceptor for WebSocket handshake requests that validates JWT tokens.
  */
 @Component
 class JwtWebSocketHandshakeInterceptor(
-    private val jwtTokenProvider: JwtTokenProvider
+    private val jwtTokenProvider: JwtTokenProvider,
 ) : HandshakeInterceptor {
 
     override fun beforeHandshake(
         request: ServerHttpRequest,
         response: ServerHttpResponse,
         wsHandler: WebSocketHandler,
-        attributes: MutableMap<String, Any>
+        attributes: MutableMap<String, Any>,
     ): Boolean {
         // Extract the token from the request headers or query parameters
         val token = extractToken(request)
@@ -48,14 +46,14 @@ class JwtWebSocketHandshakeInterceptor(
         request: ServerHttpRequest,
         response: ServerHttpResponse,
         wsHandler: WebSocketHandler,
-        exception: Exception?
+        exception: Exception?,
     ) {
         // No action needed after handshake
     }
 
     /**
      * Extracts the JWT token from the request.
-     * 
+     *
      * @param request The HTTP request
      * @return The JWT token, or null if not found
      */

@@ -71,13 +71,19 @@ class AgentController(
     }
 
     @GetMapping("/language/{language}")
-    @Operation(summary = "Get agents by language", description = "Retrieves all agents that support the specified language")
+    @Operation(
+        summary = "Get agents by language",
+        description = "Retrieves all agents that support the specified language",
+    )
     fun getAgentsByLanguage(@PathVariable language: String): List<Agent> {
         return agentService.getAgentsByLanguage(language)
     }
 
     @GetMapping("/available/language/{language}")
-    @Operation(summary = "Get available agents by language", description = "Retrieves all available agents that support the specified language")
+    @Operation(
+        summary = "Get available agents by language",
+        description = "Retrieves all available agents that support the specified language",
+    )
     fun getAvailableAgentsByLanguage(@PathVariable language: String): List<Agent> {
         return agentService.getAvailableAgentsByLanguage(language)
     }
@@ -127,7 +133,10 @@ class AgentController(
     }
 
     @GetMapping("/best/language/{language}")
-    @Operation(summary = "Find best agent for language", description = "Finds the best available agent for a specific language")
+    @Operation(
+        summary = "Find best agent for language",
+        description = "Finds the best available agent for a specific language",
+    )
     fun findBestAgentForLanguage(@PathVariable language: String): ResponseEntity<Agent> {
         val agent = agentService.findBestAgentForLanguage(language)
         return if (agent != null) {

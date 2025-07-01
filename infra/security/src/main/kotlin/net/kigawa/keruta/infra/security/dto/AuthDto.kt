@@ -5,14 +5,14 @@ package net.kigawa.keruta.infra.security.dto
  */
 data class LoginRequest(
     val username: String,
-    val password: String
+    val password: String,
 )
 
 /**
  * Request for token refresh.
  */
 data class RefreshTokenRequest(
-    val refreshToken: String
+    val refreshToken: String,
 )
 
 /**
@@ -21,5 +21,5 @@ data class RefreshTokenRequest(
 data class TokenResponse(
     val accessToken: String,
     val refreshToken: String,
-    val tokenType: String = "Bearer"
+    val tokenType: String = "Bearer",
 )

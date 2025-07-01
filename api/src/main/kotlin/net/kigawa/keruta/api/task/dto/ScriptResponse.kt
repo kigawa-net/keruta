@@ -11,7 +11,7 @@ data class ScriptResponse(
     val script: ScriptContent,
     val environment: Map<String, String>,
     val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime
+    val updatedAt: LocalDateTime,
 ) {
     companion object {
         fun fromDomain(script: Script): ScriptResponse {
@@ -20,11 +20,11 @@ data class ScriptResponse(
                 script = ScriptContent(
                     installScript = script.installScript,
                     executeScript = script.executeScript,
-                    cleanupScript = script.cleanupScript
+                    cleanupScript = script.cleanupScript,
                 ),
                 environment = script.environment,
                 createdAt = script.createdAt,
-                updatedAt = script.updatedAt
+                updatedAt = script.updatedAt,
             )
         }
     }
@@ -36,5 +36,5 @@ data class ScriptResponse(
 data class ScriptContent(
     val installScript: String,
     val executeScript: String,
-    val cleanupScript: String
+    val cleanupScript: String,
 )

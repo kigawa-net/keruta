@@ -21,7 +21,7 @@ data class KubernetesConfigEntity(
     val defaultPvcAccessMode: String = "ReadWriteOnce",
     val defaultPvcStorageClass: String = "",
     val createdAt: LocalDateTime = LocalDateTime.now(),
-    val updatedAt: LocalDateTime = LocalDateTime.now()
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
 ) {
     companion object {
         fun fromDomain(config: KubernetesConfig): KubernetesConfigEntity {
@@ -36,7 +36,7 @@ data class KubernetesConfigEntity(
                 defaultPvcAccessMode = config.defaultPvcAccessMode,
                 defaultPvcStorageClass = config.defaultPvcStorageClass,
                 createdAt = config.createdAt,
-                updatedAt = config.updatedAt
+                updatedAt = config.updatedAt,
             )
         }
     }
@@ -53,7 +53,7 @@ data class KubernetesConfigEntity(
             defaultPvcAccessMode = defaultPvcAccessMode,
             defaultPvcStorageClass = defaultPvcStorageClass,
             createdAt = createdAt,
-            updatedAt = updatedAt
+            updatedAt = updatedAt,
         )
     }
 }

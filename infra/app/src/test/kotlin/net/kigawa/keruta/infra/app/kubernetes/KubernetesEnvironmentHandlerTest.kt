@@ -1,15 +1,14 @@
 package net.kigawa.keruta.infra.app.kubernetes
 
-import io.fabric8.kubernetes.api.model.EnvVar
 import net.kigawa.keruta.core.domain.model.KubernetesConfig
 import net.kigawa.keruta.core.usecase.agent.KerutaAgentService
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
-import org.junit.jupiter.api.Assertions.*
 
 @ExtendWith(MockitoExtension::class)
 class KubernetesEnvironmentHandlerTest {
@@ -40,7 +39,7 @@ class KubernetesEnvironmentHandlerTest {
             documentId = "doc-456",
             agentId = "agent-789",
             agentInstallCommand = "install-command",
-            agentExecuteCommand = "execute-command"
+            agentExecuteCommand = "execute-command",
         )
 
         // Then
@@ -73,7 +72,10 @@ class KubernetesEnvironmentHandlerTest {
         // Verify that the environment variables include the fallback URL
         val latestReleaseUrlEnvVar = envVars.find { it.name == "KERUTA_AGENT_LATEST_RELEASE_URL" }
         assertNotNull(latestReleaseUrlEnvVar)
-        assertEquals("https://github.com/kigawa-net/keruta-agent/releases/latest/download/keruta-agent-linux-amd64", latestReleaseUrlEnvVar?.value)
+        assertEquals(
+            "https://github.com/kigawa-net/keruta-agent/releases/latest/download/keruta-agent-linux-amd64",
+            latestReleaseUrlEnvVar?.value,
+        )
 
         // Verify that the kerutaAgentService was called
         verify(kerutaAgentService).getLatestReleaseUrl()

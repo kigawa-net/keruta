@@ -23,7 +23,7 @@ class KubernetesContainerHandlerTest {
         client = mock(KubernetesClient::class.java)
         config = KubernetesConfig(
             enabled = true,
-            defaultNamespace = "test-namespace"
+            defaultNamespace = "test-namespace",
         )
 
         `when`(clientProvider.getClient()).thenReturn(client)
@@ -65,7 +65,7 @@ class KubernetesContainerHandlerTest {
             agentInstallCommand,
             agentExecuteCommand,
             existingMounts,
-            container
+            container,
         )
 
         // Then
@@ -79,7 +79,7 @@ class KubernetesContainerHandlerTest {
             agentInstallCommand,
             agentExecuteCommand,
             existingMounts,
-            container
+            container,
         )
     }
 

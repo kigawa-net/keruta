@@ -27,10 +27,10 @@ class KubernetesPodSpecHandler {
     fun createPodSpec(
         containers: List<Container>,
         volumes: List<Volume>,
-        initContainers: List<Container>
+        initContainers: List<Container>,
     ): PodSpec {
         logger.info("Creating pod spec")
-        
+
         // Create pod spec
         val podSpec = PodSpec()
         podSpec.containers = containers
@@ -41,7 +41,7 @@ class KubernetesPodSpecHandler {
         if (initContainers.isNotEmpty()) {
             podSpec.initContainers = initContainers
         }
-        
+
         return podSpec
     }
 
@@ -54,15 +54,15 @@ class KubernetesPodSpecHandler {
      */
     fun createPodTemplateSpec(
         metadata: ObjectMeta,
-        podSpec: PodSpec
+        podSpec: PodSpec,
     ): PodTemplateSpec {
         logger.info("Creating pod template spec")
-        
+
         // Create pod template spec
         val podTemplateSpec = PodTemplateSpec()
         podTemplateSpec.metadata = metadata
         podTemplateSpec.spec = podSpec
-        
+
         return podTemplateSpec
     }
 }

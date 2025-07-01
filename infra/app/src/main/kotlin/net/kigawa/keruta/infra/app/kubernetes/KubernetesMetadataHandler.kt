@@ -1,7 +1,6 @@
 package net.kigawa.keruta.infra.app.kubernetes
 
 import io.fabric8.kubernetes.api.model.ObjectMeta
-import net.kigawa.keruta.core.domain.model.Task
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
@@ -23,15 +22,15 @@ class KubernetesMetadataHandler {
      */
     fun createJobMetadata(taskId: String?, jobName: String, namespace: String): ObjectMeta {
         logger.info("Creating job metadata for task: $taskId")
-        
+
         val metadata = ObjectMeta()
         metadata.name = jobName
         metadata.namespace = namespace
         metadata.labels = mapOf(
             "app" to "keruta",
-            "task-id" to (taskId ?: "")
+            "task-id" to (taskId ?: ""),
         )
-        
+
         return metadata
     }
 
@@ -43,13 +42,13 @@ class KubernetesMetadataHandler {
      */
     fun createPodTemplateMetadata(taskId: String?): ObjectMeta {
         logger.info("Creating pod template metadata for task: $taskId")
-        
+
         val podTemplateMetadata = ObjectMeta()
         podTemplateMetadata.labels = mapOf(
             "app" to "keruta",
-            "task-id" to (taskId ?: "")
+            "task-id" to (taskId ?: ""),
         )
-        
+
         return podTemplateMetadata
     }
 }

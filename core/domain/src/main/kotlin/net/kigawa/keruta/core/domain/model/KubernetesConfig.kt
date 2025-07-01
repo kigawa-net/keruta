@@ -32,7 +32,7 @@ data class KubernetesConfig(
     val apiUrl: String = "http://keruta-api",
     val apiPort: Int? = null,
     val createdAt: LocalDateTime = LocalDateTime.now(),
-    val updatedAt: LocalDateTime = LocalDateTime.now()
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
 ) {
     /**
      * Generates the full API URL including port if specified.

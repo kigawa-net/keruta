@@ -21,7 +21,7 @@ data class RepositoryEntity(
     val pvcAccessMode: String = "ReadWriteOnce",
     val pvcStorageClass: String = "",
     val createdAt: LocalDateTime = LocalDateTime.now(),
-    val updatedAt: LocalDateTime = LocalDateTime.now()
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
 ) {
     companion object {
         /**
@@ -42,7 +42,7 @@ data class RepositoryEntity(
                 pvcAccessMode = repository.pvcAccessMode,
                 pvcStorageClass = repository.pvcStorageClass,
                 createdAt = repository.createdAt,
-                updatedAt = repository.updatedAt
+                updatedAt = repository.updatedAt,
             )
         }
     }
@@ -64,7 +64,7 @@ data class RepositoryEntity(
             pvcAccessMode = pvcAccessMode,
             pvcStorageClass = pvcStorageClass,
             createdAt = createdAt,
-            updatedAt = updatedAt
+            updatedAt = updatedAt,
         )
     }
 }

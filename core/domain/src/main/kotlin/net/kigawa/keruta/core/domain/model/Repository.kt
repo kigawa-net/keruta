@@ -29,5 +29,5 @@ data class Repository(
     val pvcAccessMode: String = "ReadWriteOnce",
     val pvcStorageClass: String = "",
     val createdAt: LocalDateTime = LocalDateTime.now(),
-    val updatedAt: LocalDateTime = LocalDateTime.now()
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
 )

@@ -27,7 +27,7 @@ class DocumentController {
         val newDocument = document.copy(
             id = UUID.randomUUID().toString(),
             createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now()
+            updatedAt = LocalDateTime.now(),
         )
         documents.add(newDocument)
         return newDocument
@@ -54,7 +54,7 @@ class DocumentController {
 
         val updatedDocument = document.copy(
             id = id,
-            updatedAt = LocalDateTime.now()
+            updatedAt = LocalDateTime.now(),
         )
         documents[index] = updatedDocument
         return ResponseEntity.ok(updatedDocument)
@@ -75,7 +75,7 @@ class DocumentController {
     @Operation(summary = "Search documents", description = "Searches for documents based on query parameters")
     fun searchDocuments(
         @RequestParam(required = false) title: String?,
-        @RequestParam(required = false) tag: String?
+        @RequestParam(required = false) tag: String?,
     ): List<Document> {
         var filteredDocuments: List<Document> = documents
 

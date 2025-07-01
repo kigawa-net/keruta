@@ -47,12 +47,13 @@ class AdminController(
     fun createTaskForm(model: Model): String {
         model.addAttribute("pageTitle", "Create Task")
         model.addAttribute(
-            "task", CreateTaskForm(
+            "task",
+            CreateTaskForm(
                 title = "",
                 description = null,
                 priority = 0,
                 status = TaskStatus.PENDING,
-            )
+            ),
         )
         model.addAttribute("statuses", TaskStatus.entries.toTypedArray())
         model.addAttribute("documents", documentService.getAllDocuments())
@@ -108,7 +109,7 @@ class AdminController(
             parentId = parentId,
             createdAt = LocalDateTime.now(),
             updatedAt = LocalDateTime.now(),
-            namespace = kubernetesConfig.defaultNamespace
+            namespace = kubernetesConfig.defaultNamespace,
         )
         try {
             taskService.createTask(newTask)
@@ -154,7 +155,9 @@ class AdminController(
                     println("Repository not found with id: $repositoryId")
                     null
                 }
-            } else null
+            } else {
+                null
+            }
 
             val documents = documentIds?.mapNotNull {
                 try {
@@ -187,7 +190,7 @@ class AdminController(
                 agentId = agentId,
                 repositoryId = repositoryId,
                 parentId = validParentId,
-                updatedAt = LocalDateTime.now()
+                updatedAt = LocalDateTime.now(),
             )
             try {
                 taskService.updateTask(id, updatedTask)

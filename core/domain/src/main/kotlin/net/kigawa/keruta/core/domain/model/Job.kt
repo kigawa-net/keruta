@@ -16,7 +16,7 @@ data class Job(
     val status: JobStatus = JobStatus.PENDING,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now(),
-    val logs: String? = null
+    val logs: String? = null,
 )
 
 /**
@@ -26,6 +26,5 @@ enum class JobStatus {
     PENDING,
     RUNNING,
     COMPLETED,
-    FAILED
+    FAILED,
 }
-

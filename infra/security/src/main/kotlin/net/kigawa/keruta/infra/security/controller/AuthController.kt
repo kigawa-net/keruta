@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController
 @Tag(name = "Authentication", description = "Authentication API")
 class AuthController(
     private val userService: UserService,
-    private val jwtTokenProvider: JwtTokenProvider
+    private val jwtTokenProvider: JwtTokenProvider,
 ) {
 
     /**
@@ -36,21 +36,21 @@ class AuthController(
     @Operation(summary = "Login", description = "Authenticates a user and returns JWT tokens")
     fun login(@RequestBody loginRequest: LoginRequest): ResponseEntity<TokenResponse> {
         val isValid = userService.validateCredentials(loginRequest.username, loginRequest.password)
-        
+
         if (!isValid) {
             return ResponseEntity.badRequest().build()
         }
-        
+
         val userDetails = userService.loadUserByUsername(loginRequest.username)
         val authentication = UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
         SecurityContextHolder.getContext().authentication = authentication
-        
+
         val accessToken = jwtTokenProvider.createToken(authentication)
         val refreshToken = jwtTokenProvider.createRefreshToken(authentication)
-        
+
         return ResponseEntity.ok(TokenResponse(accessToken, refreshToken))
     }
-    
+
     /**
      * Refresh token endpoint.
      *
@@ -61,16 +61,16 @@ class AuthController(
     @Operation(summary = "Refresh token", description = "Refreshes JWT tokens using a refresh token")
     fun refresh(@RequestBody refreshTokenRequest: RefreshTokenRequest): ResponseEntity<TokenResponse> {
         val refreshToken = refreshTokenRequest.refreshToken
-        
+
         if (!jwtTokenProvider.validateToken(refreshToken)) {
             return ResponseEntity.badRequest().build()
         }
-        
+
         val authentication = jwtTokenProvider.getAuthentication(refreshToken)
-        
+
         val accessToken = jwtTokenProvider.createToken(authentication)
         val newRefreshToken = jwtTokenProvider.createRefreshToken(authentication)
-        
+
         return ResponseEntity.ok(TokenResponse(accessToken, newRefreshToken))
     }
 }

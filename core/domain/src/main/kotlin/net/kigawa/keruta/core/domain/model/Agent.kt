@@ -24,7 +24,7 @@ data class Agent(
     val installCommand: String = "",
     val executeCommand: String = "",
     val createdAt: LocalDateTime = LocalDateTime.now(),
-    val updatedAt: LocalDateTime = LocalDateTime.now()
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
 )
 
 /**
@@ -33,5 +33,5 @@ data class Agent(
 enum class AgentStatus {
     AVAILABLE,
     BUSY,
-    OFFLINE
+    OFFLINE,
 }

@@ -25,11 +25,12 @@ class AgentAdminController @Autowired constructor(private val agentService: Agen
     fun createAgentForm(model: Model): String {
         model.addAttribute("pageTitle", "Create Agent")
         model.addAttribute(
-            "agent", Agent(
+            "agent",
+            Agent(
                 name = "",
                 languages = emptyList(),
-                status = AgentStatus.AVAILABLE
-            )
+                status = AgentStatus.AVAILABLE,
+            ),
         )
         model.addAttribute("statuses", AgentStatus.entries.toTypedArray())
         return "admin/agent-form"
@@ -69,6 +70,4 @@ class AgentAdminController @Autowired constructor(private val agentService: Agen
             return "redirect:/admin/agents"
         }
     }
-
-
 }

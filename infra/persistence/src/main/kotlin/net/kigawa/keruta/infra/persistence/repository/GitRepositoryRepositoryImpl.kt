@@ -11,21 +11,23 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 @Component
-class GitRepositoryRepositoryImpl(private val mongoRepositoryRepository: MongoRepositoryRepository) : GitRepositoryRepository {
-    
+class GitRepositoryRepositoryImpl(
+    private val mongoRepositoryRepository: MongoRepositoryRepository,
+) : GitRepositoryRepository {
+
     override fun findAll(): List<Repository> {
         return mongoRepositoryRepository.findAll().map { it.toDomain() }
     }
-    
+
     override fun findById(id: String): Repository? {
         return mongoRepositoryRepository.findById(id).orElse(null)?.toDomain()
     }
-    
+
     override fun save(repository: Repository): Repository {
         val entity = RepositoryEntity.fromDomain(repository)
         return mongoRepositoryRepository.save(entity).toDomain()
     }
-    
+
     override fun deleteById(id: String): Boolean {
         return if (mongoRepositoryRepository.existsById(id)) {
             mongoRepositoryRepository.deleteById(id)
@@ -34,7 +36,7 @@ class GitRepositoryRepositoryImpl(private val mongoRepositoryRepository: MongoRe
             false
         }
     }
-    
+
     override fun validateUrl(url: String): Boolean {
         return try {
             val connection = URL(url).openConnection() as HttpURLConnection
@@ -47,7 +49,7 @@ class GitRepositoryRepositoryImpl(private val mongoRepositoryRepository: MongoRe
             false
         }
     }
-    
+
     override fun findByName(name: String): List<Repository> {
         return mongoRepositoryRepository.findByName(name).map { it.toDomain() }
     }

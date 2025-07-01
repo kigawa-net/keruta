@@ -67,7 +67,7 @@ echo "Setup script completed successfully"
     override fun createRepository(repository: Repository): Repository {
         val validatedRepository = repository.copy(
             isValid = validateRepositoryUrl(repository.url),
-            setupScript = if (repository.setupScript == "") DEFAULT_SETUP_SCRIPT else repository.setupScript
+            setupScript = if (repository.setupScript == "") DEFAULT_SETUP_SCRIPT else repository.setupScript,
         )
         return gitRepositoryRepository.save(validatedRepository)
     }
@@ -79,7 +79,7 @@ echo "Setup script completed successfully"
             isValid = validateRepositoryUrl(repository.url),
             setupScript = if (repository.setupScript == "") existingRepository.setupScript else repository.setupScript,
             createdAt = existingRepository.createdAt,
-            updatedAt = LocalDateTime.now()
+            updatedAt = LocalDateTime.now(),
         )
         return gitRepositoryRepository.save(updatedRepository)
     }

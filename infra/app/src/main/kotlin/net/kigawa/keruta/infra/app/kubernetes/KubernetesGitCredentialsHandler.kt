@@ -48,20 +48,22 @@ class KubernetesGitCredentialsHandler(
         val secretName = "git-credentials-${repository.id}"
         try {
             val secret = client.secrets().inNamespace(namespace).withName(secretName).get()
-            if (secret == null) return SetupGitCredentialsResult(
-                gitEnvVars = null,
-                command = null,
-                args = null,
-                volumeMounts = listOf(gitCloneVolumeMount),
-                credentialsVolume = null,
-            )
+            if (secret == null) {
+                return SetupGitCredentialsResult(
+                    gitEnvVars = null,
+                    command = null,
+                    args = null,
+                    volumeMounts = listOf(gitCloneVolumeMount),
+                    credentialsVolume = null,
+                )
+            }
             logger.info("Found git credentials secret: $secretName")
 
             configureContainerWithCredentials(
                 repository,
                 secretName,
                 gitCloneVolumeMount,
-                mountPath
+                mountPath,
             ).also {
                 return SetupGitCredentialsResult(
                     gitEnvVars = it.gitEnvVars,
@@ -90,12 +92,12 @@ class KubernetesGitCredentialsHandler(
      */
     private fun createBasicGitEnvVars(): MutableList<EnvVar> {
         return mutableListOf(
-            EnvVar("GIT_TERMINAL_PROMPT", "0", null),  // Disable interactive prompts
+            EnvVar("GIT_TERMINAL_PROMPT", "0", null), // Disable interactive prompts
             EnvVar("GIT_CONFIG_COUNT", "2", null),
             EnvVar("GIT_CONFIG_KEY_0", "http.connectTimeout", null),
             EnvVar("GIT_CONFIG_VALUE_0", "30", null),
             EnvVar("GIT_CONFIG_KEY_1", "http.lowSpeedLimit", null),
-            EnvVar("GIT_CONFIG_VALUE_1", "1000", null)
+            EnvVar("GIT_CONFIG_VALUE_1", "1000", null),
         )
     }
 
@@ -137,7 +139,6 @@ class KubernetesGitCredentialsHandler(
         gitEnvVars.add(EnvVar("GIT_CONFIG_KEY_3", "credential.helper", null))
         gitEnvVars.add(EnvVar("GIT_CONFIG_VALUE_3", "cache --timeout=300", null))
 
-
         // Add volume for git credentials
         val credentialsVolume = Volume()
         credentialsVolume.name = "git-credentials"
@@ -153,7 +154,7 @@ class KubernetesGitCredentialsHandler(
             command = listOf("/bin/sh", "-c"),
             args = listOf(createGitSetupScript(repository.url, mountPath).joinToString("\n")),
             volumeMounts = mutableListOf(repoVolumeMount, credentialsVolumeMount),
-            credentialsVolume = credentialsVolume
+            credentialsVolume = credentialsVolume,
         )
     }
 
@@ -195,7 +196,7 @@ class KubernetesGitCredentialsHandler(
             "git clone $repoUrl $mountPath",
             "echo 'Setting up git exclusions'",
             "echo '/.keruta' >> $mountPath/.git/info/exclude",
-            "echo 'Git exclusions configured'"
+            "echo 'Git exclusions configured'",
         )
     }
 }

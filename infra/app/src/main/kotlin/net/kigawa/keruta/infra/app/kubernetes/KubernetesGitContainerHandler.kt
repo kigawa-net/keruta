@@ -33,7 +33,7 @@ class KubernetesGitContainerHandler {
             "git clone --depth 1 --single-branch ${repository.url} $mountPath",
             "echo 'Setting up git exclusions'",
             "echo '/.keruta' >> $mountPath/.git/info/exclude",
-            "echo 'Git exclusions configured'"
+            "echo 'Git exclusions configured'",
         )
 
         gitCloneContainer.command = listOf("/bin/sh", "-c")
@@ -41,6 +41,7 @@ class KubernetesGitContainerHandler {
 
         return gitCloneContainer
     }
+
     /**
      * Creates a volume mount for the main container.
      *

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
  */
 @Component
 class KubernetesConfigMapHandler(
-    private val clientProvider: KubernetesClientProvider
+    private val clientProvider: KubernetesClientProvider,
 ) {
     private val logger = LoggerFactory.getLogger(KubernetesConfigMapHandler::class.java)
 
@@ -84,7 +84,7 @@ class KubernetesConfigMapHandler(
                     val configMapKeyRef = io.fabric8.kubernetes.api.model.ConfigMapKeySelector()
                     configMapKeyRef.name = configMapName
                     configMapKeyRef.key = configMapKey
-                    configMapKeyRef.optional = true  // Make the ConfigMap reference optional
+                    configMapKeyRef.optional = true // Make the ConfigMap reference optional
 
                     valueFrom.configMapKeyRef = configMapKeyRef
                     envVar.valueFrom = valueFrom

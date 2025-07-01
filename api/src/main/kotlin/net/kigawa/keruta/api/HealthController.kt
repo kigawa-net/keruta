@@ -14,7 +14,7 @@ class HealthController {
         return mapOf(
             "status" to "UP",
             "timestamp" to LocalDateTime.now().toString(),
-            "message" to "Keruta API is running"
+            "message" to "Keruta API is running",
         )
     }
 }

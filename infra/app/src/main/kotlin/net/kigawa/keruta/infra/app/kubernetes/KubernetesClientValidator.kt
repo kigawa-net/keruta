@@ -15,7 +15,7 @@ class KubernetesClientValidator(
 
     /**
      * Validates the Kubernetes client and configuration.
-     * 
+     *
      * @return null if validation succeeds, or an error string if it fails
      */
     fun validateClient(): String? {

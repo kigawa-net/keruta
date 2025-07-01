@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 @Controller
 @RequestMapping("/admin/kubernetes")
 class KubernetesAdminController(
-    private val kubernetesService: KubernetesService
+    private val kubernetesService: KubernetesService,
 ) {
 
     @GetMapping
@@ -29,7 +29,7 @@ class KubernetesAdminController(
             defaultImage = currentConfig.defaultImage,
             defaultPvcStorageSize = currentConfig.defaultPvcStorageSize,
             defaultPvcAccessMode = currentConfig.defaultPvcAccessMode,
-            defaultPvcStorageClass = currentConfig.defaultPvcStorageClass
+            defaultPvcStorageClass = currentConfig.defaultPvcStorageClass,
         )
 
         model.addAttribute("config", configDto)
@@ -54,7 +54,7 @@ class KubernetesAdminController(
             defaultPvcAccessMode = configDto.defaultPvcAccessMode,
             defaultPvcStorageClass = configDto.defaultPvcStorageClass,
             createdAt = currentConfig.createdAt,
-            updatedAt = currentConfig.updatedAt
+            updatedAt = currentConfig.updatedAt,
         )
 
         // Update the configuration through the service

@@ -2,16 +2,16 @@ package net.kigawa.keruta.api.repository.controller
 
 import net.kigawa.keruta.core.domain.model.Repository
 import net.kigawa.keruta.core.usecase.repository.GitRepositoryService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.ResponseEntity
 
 @Controller
 @RequestMapping("/admin/repositories")
 class RepositoryAdminController @Autowired constructor(
-    private val gitRepositoryService: GitRepositoryService
+    private val gitRepositoryService: GitRepositoryService,
 ) {
 
     @GetMapping
@@ -24,11 +24,14 @@ class RepositoryAdminController @Autowired constructor(
     @GetMapping("/create")
     fun createRepositoryForm(model: Model): String {
         model.addAttribute("pageTitle", "Create Repository")
-        model.addAttribute("repository", Repository(
-            name = "",
-            url = "",
-            description = ""
-        ))
+        model.addAttribute(
+            "repository",
+            Repository(
+                name = "",
+                url = "",
+                description = "",
+            ),
+        )
         return "admin/repository-form"
     }
 
@@ -37,8 +40,6 @@ class RepositoryAdminController @Autowired constructor(
         gitRepositoryService.createRepository(repository)
         return "redirect:/admin/repositories"
     }
-
-
 
     @GetMapping("/edit/{id}")
     fun editRepositoryForm(@PathVariable id: String, model: Model): String {
@@ -64,7 +65,7 @@ class RepositoryAdminController @Autowired constructor(
                 pvcStorageSize = repository.pvcStorageSize,
                 pvcAccessMode = repository.pvcAccessMode,
                 pvcStorageClass = repository.pvcStorageClass,
-                updatedAt = java.time.LocalDateTime.now()
+                updatedAt = java.time.LocalDateTime.now(),
             )
             gitRepositoryService.updateRepository(id, updatedRepository)
             return "redirect:/admin/repositories"
@@ -72,8 +73,6 @@ class RepositoryAdminController @Autowired constructor(
             return "redirect:/admin/repositories"
         }
     }
-
-
 
     @GetMapping("/delete/{id}")
     fun deleteRepository(@PathVariable id: String): String {
@@ -109,7 +108,7 @@ class RepositoryAdminController @Autowired constructor(
             val repository = gitRepositoryService.getRepositoryById(id)
             val updatedRepository = repository.copy(
                 setupScript = setupScript,
-                updatedAt = java.time.LocalDateTime.now()
+                updatedAt = java.time.LocalDateTime.now(),
             )
             gitRepositoryService.updateRepository(id, updatedRepository)
             return "redirect:/admin/repositories"
@@ -125,7 +124,10 @@ class RepositoryAdminController @Autowired constructor(
      */
     @PostMapping("/script/{id}/test")
     @ResponseBody
-    fun testRepositoryScript(@PathVariable id: String, @RequestParam setupScript: String): ResponseEntity<Map<String, String>> {
+    fun testRepositoryScript(
+        @PathVariable id: String,
+        @RequestParam setupScript: String,
+    ): ResponseEntity<Map<String, String>> {
         try {
             // In a real implementation, this would execute the script in a controlled environment
             // and return the actual output

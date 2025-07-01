@@ -33,5 +33,5 @@ data class BackgroundTaskProcessorConfig(
      * The maximum time in milliseconds a pod can be in CrashLoopBackOff state before marking the task as failed.
      * Default is 5 minutes (300000 milliseconds).
      */
-    val crashLoopBackOffTimeout: Long = 300000
+    val crashLoopBackOffTimeout: Long = 300000,
 )

@@ -147,7 +147,9 @@ class TaskRepositoryImplTest {
         // Given
         val taskEntity1 = createTaskEntity("1", "Task 1", TaskStatus.IN_PROGRESS)
         val taskEntity2 = createTaskEntity("2", "Task 2", TaskStatus.IN_PROGRESS)
-        `when`(mongoTaskRepository.findByStatus(TaskStatus.IN_PROGRESS.name)).thenReturn(listOf(taskEntity1, taskEntity2))
+        `when`(
+            mongoTaskRepository.findByStatus(TaskStatus.IN_PROGRESS.name),
+        ).thenReturn(listOf(taskEntity1, taskEntity2))
 
         // When
         val result = taskRepositoryImpl.findByStatus(TaskStatus.IN_PROGRESS)
@@ -168,7 +170,7 @@ class TaskRepositoryImplTest {
         val task = createTask("1", "Task 1")
         val updatedTask = task.copy(status = TaskStatus.IN_PROGRESS, updatedAt = LocalDateTime.now())
         val updatedTaskEntity = TaskEntity.fromDomain(updatedTask)
-        
+
         `when`(mongoTaskRepository.findById("1")).thenReturn(Optional.of(TaskEntity.fromDomain(task)))
         `when`(mongoTaskRepository.save(any(TaskEntity::class.java))).thenReturn(updatedTaskEntity)
 
@@ -198,7 +200,7 @@ class TaskRepositoryImplTest {
         val task = createTask("1", "Task 1", logs = "Initial logs")
         val updatedTask = task.copy(logs = "Initial logs\nNew logs", updatedAt = LocalDateTime.now())
         val updatedTaskEntity = TaskEntity.fromDomain(updatedTask)
-        
+
         `when`(mongoTaskRepository.findById("1")).thenReturn(Optional.of(TaskEntity.fromDomain(task)))
         `when`(mongoTaskRepository.save(any(TaskEntity::class.java))).thenReturn(updatedTaskEntity)
 
@@ -217,7 +219,7 @@ class TaskRepositoryImplTest {
         val task = createTask("1", "Task 1", logs = null)
         val updatedTask = task.copy(logs = "New logs", updatedAt = LocalDateTime.now())
         val updatedTaskEntity = TaskEntity.fromDomain(updatedTask)
-        
+
         `when`(mongoTaskRepository.findById("1")).thenReturn(Optional.of(TaskEntity.fromDomain(task)))
         `when`(mongoTaskRepository.save(any(TaskEntity::class.java))).thenReturn(updatedTaskEntity)
 
@@ -250,7 +252,7 @@ class TaskRepositoryImplTest {
             status = status.name,
             logs = logs,
             createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now()
+            updatedAt = LocalDateTime.now(),
         )
     }
 

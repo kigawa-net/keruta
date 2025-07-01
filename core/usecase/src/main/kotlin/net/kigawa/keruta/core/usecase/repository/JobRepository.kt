@@ -13,7 +13,7 @@ interface JobRepository {
      * @return List of all jobs
      */
     fun findAll(): List<Job>
-    
+
     /**
      * Finds a job by its ID.
      *
@@ -21,7 +21,7 @@ interface JobRepository {
      * @return The job if found, null otherwise
      */
     fun findById(id: String): Job?
-    
+
     /**
      * Finds jobs by task ID.
      *
@@ -29,7 +29,7 @@ interface JobRepository {
      * @return List of jobs associated with the task
      */
     fun findByTaskId(taskId: String): List<Job>
-    
+
     /**
      * Saves a job to the repository.
      *
@@ -37,7 +37,7 @@ interface JobRepository {
      * @return The saved job with generated ID if it was a new job
      */
     fun save(job: Job): Job
-    
+
     /**
      * Updates the status of a job.
      *
@@ -46,7 +46,7 @@ interface JobRepository {
      * @return The updated job
      */
     fun updateStatus(id: String, status: JobStatus): Job
-    
+
     /**
      * Updates the logs of a job.
      *
@@ -55,7 +55,7 @@ interface JobRepository {
      * @return The updated job
      */
     fun updateLogs(id: String, logs: String): Job
-    
+
     /**
      * Deletes a job by its ID.
      *
@@ -63,7 +63,7 @@ interface JobRepository {
      * @return true if the job was deleted, false otherwise
      */
     fun deleteById(id: String): Boolean
-    
+
     /**
      * Finds jobs by their status.
      *

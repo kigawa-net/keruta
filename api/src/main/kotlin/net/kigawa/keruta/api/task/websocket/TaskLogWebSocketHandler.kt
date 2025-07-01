@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap
 @Component
 class TaskLogWebSocketHandler(
     private val taskService: TaskService,
-    private val objectMapper: ObjectMapper
+    private val objectMapper: ObjectMapper,
 ) : TextWebSocketHandler() {
 
     private val sessions = ConcurrentHashMap<String, MutableSet<WebSocketSession>>()
@@ -40,7 +40,7 @@ class TaskLogWebSocketHandler(
             taskId = taskId,
             source = source,
             level = level,
-            message = logContent
+            message = logContent,
         )
 
         val messageJson = objectMapper.writeValueAsString(logMessage)

@@ -15,7 +15,7 @@ dependencies {
     implementation(Dependencies.kotlinStdlib)
     implementation(Dependencies.kotlinReflect)
     implementation(Dependencies.springBootStarter)
-    
+
     // Coroutines
     implementation(Dependencies.kotlinxCoroutinesCore)
     implementation(Dependencies.kotlinxCoroutinesReactor)

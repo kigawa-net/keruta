@@ -17,14 +17,14 @@ data class JobResponse(
     val status: String,
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime,
-    val logs: String?
+    val logs: String?,
 ) {
     companion object {
         fun fromDomain(job: Job): JobResponse {
             val resources = job.resources?.let {
                 ResourcesDto(
                     cpu = it.cpu,
-                    memory = it.memory
+                    memory = it.memory,
                 )
             }
 
@@ -39,7 +39,7 @@ data class JobResponse(
                 status = job.status.name,
                 createdAt = job.createdAt,
                 updatedAt = job.updatedAt,
-                logs = job.logs
+                logs = job.logs,
             )
         }
     }

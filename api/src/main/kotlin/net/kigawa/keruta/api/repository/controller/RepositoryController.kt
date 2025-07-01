@@ -58,7 +58,10 @@ class RepositoryController(private val gitRepositoryService: GitRepositoryServic
     }
 
     @GetMapping("/{id}/validate")
-    @Operation(summary = "Validate repository URL", description = "Validates if a Git repository URL is valid and accessible")
+    @Operation(
+        summary = "Validate repository URL",
+        description = "Validates if a Git repository URL is valid and accessible",
+    )
     fun validateRepositoryUrl(@PathVariable id: String): ResponseEntity<Map<String, Boolean>> {
         return try {
             val repository = gitRepositoryService.getRepositoryById(id)

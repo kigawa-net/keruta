@@ -13,7 +13,7 @@ import java.util.UUID
 
 @Service
 class AgentServiceImpl(
-    private val agentRepository: AgentRepository
+    private val agentRepository: AgentRepository,
 ) : AgentService {
 
     private val logger = LoggerFactory.getLogger(AgentServiceImpl::class.java)
@@ -30,7 +30,7 @@ class AgentServiceImpl(
         val newAgent = agent.copy(
             id = agent.id ?: UUID.randomUUID().toString(),
             createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now()
+            updatedAt = LocalDateTime.now(),
         )
         logger.info("Creating new agent: ${newAgent.name}")
         return agentRepository.save(newAgent)
@@ -41,7 +41,7 @@ class AgentServiceImpl(
         val updatedAgent = agent.copy(
             id = existingAgent.id,
             createdAt = existingAgent.createdAt,
-            updatedAt = LocalDateTime.now()
+            updatedAt = LocalDateTime.now(),
         )
         logger.info("Updating agent with id: $id")
         return agentRepository.save(updatedAgent)
@@ -84,7 +84,7 @@ class AgentServiceImpl(
     override fun findBestAgentForLanguage(language: String): Agent? {
         logger.info("Finding best agent for language: $language")
         val availableAgents = getAvailableAgentsByLanguage(language)
-        
+
         // Simple implementation: just return the first available agent
         // In a real-world scenario, you might want to implement a more sophisticated
         // algorithm that considers factors like agent performance, load balancing, etc.

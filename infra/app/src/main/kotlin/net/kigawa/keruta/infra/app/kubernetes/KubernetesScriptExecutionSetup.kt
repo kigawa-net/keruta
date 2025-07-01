@@ -17,7 +17,7 @@ class KubernetesScriptExecutionSetup(
 
     /**
      * Sets up script execution for the job.
-     * 
+     *
      * @param workVolumeName The work volume name
      * @param workMountPath The work mount path
      * @param repositoryId The repository ID
@@ -36,7 +36,7 @@ class KubernetesScriptExecutionSetup(
         agentId: String,
         agentInstallCommand: String,
         agentExecuteCommand: String,
-        volumeMounts: List<VolumeMount>
+        volumeMounts: List<VolumeMount>,
     ): Pair<VolumeMount?, List<EnvVar>> {
         logger.info("Setting up script execution for repository $repositoryId, document $documentId, agent $agentId")
         return containerHandler.setupScriptExecution(
@@ -48,7 +48,7 @@ class KubernetesScriptExecutionSetup(
             agentInstallCommand,
             agentExecuteCommand,
             volumeMounts,
-            null // No container available at this point
+            null, // No container available at this point
         )
     }
 }

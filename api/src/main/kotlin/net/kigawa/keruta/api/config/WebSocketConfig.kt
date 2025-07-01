@@ -17,7 +17,7 @@ import java.util.concurrent.Executor
 @Configuration
 @EnableWebSocket
 class WebSocketConfig(
-    private val taskLogWebSocketHandler: TaskLogWebSocketHandler
+    private val taskLogWebSocketHandler: TaskLogWebSocketHandler,
 ) : WebSocketConfigurer {
 
     /**
@@ -69,7 +69,7 @@ class WebSocketConfig(
                 request: ServerHttpRequest,
                 response: ServerHttpResponse,
                 wsHandler: WebSocketHandler,
-                attributes: MutableMap<String, Any>
+                attributes: MutableMap<String, Any>,
             ): Boolean {
                 // Extract the token from the query parameters
                 val uri = request.uri
@@ -96,7 +96,7 @@ class WebSocketConfig(
                 request: ServerHttpRequest,
                 response: ServerHttpResponse,
                 wsHandler: WebSocketHandler,
-                exception: Exception?
+                exception: Exception?,
             ) {
                 // No action needed after handshake
             }

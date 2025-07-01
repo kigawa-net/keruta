@@ -1,13 +1,11 @@
 package net.kigawa.keruta.infra.persistence.entity
 
-import net.kigawa.keruta.core.domain.model.Document as DomainDocument
-import net.kigawa.keruta.core.domain.model.Repository
-import net.kigawa.keruta.core.domain.model.Resources
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.domain.model.TaskStatus
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
+import net.kigawa.keruta.core.domain.model.Document as DomainDocument
 
 @Document(collection = "tasks")
 data class TaskEntity(
@@ -31,7 +29,7 @@ data class TaskEntity(
     val storageClass: String = "",
     val pvcName: String? = null,
     val createdAt: LocalDateTime = LocalDateTime.now(),
-    val updatedAt: LocalDateTime = LocalDateTime.now()
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
 ) {
     companion object {
         fun fromDomain(task: Task): TaskEntity {
@@ -55,7 +53,7 @@ data class TaskEntity(
                 storageClass = task.storageClass,
                 pvcName = task.pvcName,
                 createdAt = task.createdAt,
-                updatedAt = task.updatedAt
+                updatedAt = task.updatedAt,
             )
         }
     }

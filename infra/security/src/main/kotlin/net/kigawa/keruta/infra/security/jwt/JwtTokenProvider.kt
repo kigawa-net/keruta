@@ -17,21 +17,21 @@ import javax.crypto.SecretKey
 
 @Component
 class JwtTokenProvider(
-    private val userDetailsService: UserDetailsService
+    private val userDetailsService: UserDetailsService,
 ) {
     @Value("\${jwt.secret:defaultSecretKeyForDevelopmentEnvironmentOnly}")
     private lateinit var secretString: String
-    
+
     @Value("\${jwt.expiration:86400000}")
     private var validityInMilliseconds: Long = 0 // 24h by default
-    
+
     @Value("\${jwt.refresh-expiration:604800000}")
     private var refreshValidityInMilliseconds: Long = 0 // 7 days by default
-    
+
     private val secretKey: SecretKey by lazy {
         Keys.hmacShaKeyFor(secretString.toByteArray())
     }
-    
+
     /**
      * Creates a JWT token for the given authentication.
      *
@@ -42,7 +42,7 @@ class JwtTokenProvider(
         val username = authentication.name
         val now = Date()
         val validity = Date(now.time + validityInMilliseconds)
-        
+
         return Jwts.builder()
             .setSubject(username)
             .setIssuedAt(now)
@@ -50,7 +50,7 @@ class JwtTokenProvider(
             .signWith(secretKey, SignatureAlgorithm.HS256)
             .compact()
     }
-    
+
     /**
      * Creates a refresh token for the given authentication.
      *
@@ -61,7 +61,7 @@ class JwtTokenProvider(
         val username = authentication.name
         val now = Date()
         val validity = Date(now.time + refreshValidityInMilliseconds)
-        
+
         return Jwts.builder()
             .setSubject(username)
             .setIssuedAt(now)
@@ -70,7 +70,7 @@ class JwtTokenProvider(
             .signWith(secretKey, SignatureAlgorithm.HS256)
             .compact()
     }
-    
+
     /**
      * Gets the authentication from a JWT token.
      *
@@ -81,10 +81,10 @@ class JwtTokenProvider(
         val claims = getClaims(token)
         val username = claims.subject
         val userDetails = userDetailsService.loadUserByUsername(username)
-        
+
         return UsernamePasswordAuthenticationToken(userDetails, "", userDetails.authorities)
     }
-    
+
     /**
      * Validates a JWT token.
      *
@@ -99,7 +99,7 @@ class JwtTokenProvider(
             false
         }
     }
-    
+
     /**
      * Gets the claims from a JWT token.
      *

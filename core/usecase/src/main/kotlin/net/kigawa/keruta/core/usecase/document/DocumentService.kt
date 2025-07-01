@@ -12,7 +12,7 @@ interface DocumentService {
      * @return List of all documents
      */
     fun getAllDocuments(): List<Document>
-    
+
     /**
      * Gets a document by its ID.
      *
@@ -21,7 +21,7 @@ interface DocumentService {
      * @throws NoSuchElementException if the document is not found
      */
     fun getDocumentById(id: String): Document
-    
+
     /**
      * Creates a new document.
      *
@@ -29,7 +29,7 @@ interface DocumentService {
      * @return The created document with generated ID
      */
     fun createDocument(document: Document): Document
-    
+
     /**
      * Updates an existing document.
      *
@@ -39,7 +39,7 @@ interface DocumentService {
      * @throws NoSuchElementException if the document is not found
      */
     fun updateDocument(id: String, document: Document): Document
-    
+
     /**
      * Deletes a document by its ID.
      *
@@ -47,7 +47,7 @@ interface DocumentService {
      * @throws NoSuchElementException if the document is not found
      */
     fun deleteDocument(id: String)
-    
+
     /**
      * Searches for documents by title or content.
      *
@@ -55,7 +55,7 @@ interface DocumentService {
      * @return List of documents matching the query
      */
     fun searchDocuments(query: String): List<Document>
-    
+
     /**
      * Gets documents by tag.
      *

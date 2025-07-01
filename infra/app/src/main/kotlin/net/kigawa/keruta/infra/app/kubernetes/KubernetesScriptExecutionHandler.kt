@@ -39,7 +39,7 @@ class KubernetesScriptExecutionHandler(
         agentInstallCommand: String = "",
         agentExecuteCommand: String = "",
         existingMounts: List<VolumeMount>,
-        container: io.fabric8.kubernetes.api.model.Container? = null
+        container: io.fabric8.kubernetes.api.model.Container? = null,
     ): Pair<VolumeMount?, List<EnvVar>> {
         logger.info("Setting up script execution in main container")
 
@@ -52,7 +52,7 @@ class KubernetesScriptExecutionHandler(
             documentId,
             agentId,
             agentInstallCommand,
-            agentExecuteCommand
+            agentExecuteCommand,
         )
 
         // Setup script and command if container is provided

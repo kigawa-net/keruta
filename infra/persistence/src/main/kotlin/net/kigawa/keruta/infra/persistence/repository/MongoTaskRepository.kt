@@ -17,7 +17,7 @@ interface MongoTaskRepository : MongoRepository<TaskEntity, String> {
      * @return List of tasks with the specified status
      */
     fun findByStatus(status: String): List<TaskEntity>
-    
+
     /**
      * Finds the next task in the queue based on priority.
      *

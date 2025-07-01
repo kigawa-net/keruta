@@ -1,7 +1,5 @@
 package net.kigawa.keruta.infra.app.kubernetes
 
-import io.fabric8.kubernetes.api.model.Container
-import io.fabric8.kubernetes.api.model.VolumeMount
 import net.kigawa.keruta.core.domain.model.Repository
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
@@ -87,7 +85,7 @@ class KubernetesGitContainerHandlerTest {
             description = "Test repository",
             isValid = true,
             createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now()
+            updatedAt = LocalDateTime.now(),
         )
     }
 }

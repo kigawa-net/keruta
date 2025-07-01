@@ -1,18 +1,16 @@
 package net.kigawa.keruta.infra.app.agent
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.jupiter.MockitoExtension
-import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.client.RestTemplate
-import java.net.URI
-import org.junit.jupiter.api.Assertions.*
 
 @ExtendWith(MockitoExtension::class)
 class KerutaAgentServiceImplTest {
@@ -69,13 +67,13 @@ class KerutaAgentServiceImplTest {
             assets = listOf(
                 KerutaAgentServiceImpl.GitHubAsset(
                     name = "keruta-agent-linux-amd64",
-                    browserDownloadUrl = "https://github.com/kigawa-net/keruta-agent/releases/download/v1.0.0/keruta-agent-linux-amd64"
+                    browserDownloadUrl = "https://github.com/kigawa-net/keruta-agent/releases/download/v1.0.0/keruta-agent-linux-amd64",
                 ),
                 KerutaAgentServiceImpl.GitHubAsset(
                     name = "keruta-agent-linux-amd64.sha256",
-                    browserDownloadUrl = "https://github.com/kigawa-net/keruta-agent/releases/download/v1.0.0/keruta-agent-linux-amd64.sha256"
-                )
-            )
+                    browserDownloadUrl = "https://github.com/kigawa-net/keruta-agent/releases/download/v1.0.0/keruta-agent-linux-amd64.sha256",
+                ),
+            ),
         )
         `when`(objectMapper.readValue(responseBody, KerutaAgentServiceImpl.GitHubRelease::class.java))
             .thenReturn(release)
@@ -84,7 +82,10 @@ class KerutaAgentServiceImplTest {
         val url = kerutaAgentService.getLatestReleaseUrl()
 
         // Then
-        assertEquals("https://github.com/kigawa-net/keruta-agent/releases/download/v1.0.0/keruta-agent-linux-amd64", url)
+        assertEquals(
+            "https://github.com/kigawa-net/keruta-agent/releases/download/v1.0.0/keruta-agent-linux-amd64",
+            url,
+        )
         verify(restTemplate).exchange(any(), eq(String::class.java))
         verify(objectMapper).readValue(responseBody, KerutaAgentServiceImpl.GitHubRelease::class.java)
     }
@@ -116,9 +117,9 @@ class KerutaAgentServiceImplTest {
             assets = listOf(
                 KerutaAgentServiceImpl.GitHubAsset(
                     name = "keruta-agent-windows-amd64",
-                    browserDownloadUrl = "https://github.com/kigawa-net/keruta-agent/releases/download/v1.0.0/keruta-agent-windows-amd64"
-                )
-            )
+                    browserDownloadUrl = "https://github.com/kigawa-net/keruta-agent/releases/download/v1.0.0/keruta-agent-windows-amd64",
+                ),
+            ),
         )
         `when`(objectMapper.readValue(responseBody, KerutaAgentServiceImpl.GitHubRelease::class.java))
             .thenReturn(release)

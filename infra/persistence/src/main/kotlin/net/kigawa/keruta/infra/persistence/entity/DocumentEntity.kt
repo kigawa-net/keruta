@@ -5,8 +5,8 @@ package net.kigawa.keruta.infra.persistence.entity
 
 import net.kigawa.keruta.core.domain.model.Document
 import org.springframework.data.annotation.Id
-import org.springframework.data.mongodb.core.mapping.Document as MongoDocument
 import java.time.LocalDateTime
+import org.springframework.data.mongodb.core.mapping.Document as MongoDocument
 
 @MongoDocument(collection = "documents")
 data class DocumentEntity(
@@ -16,7 +16,7 @@ data class DocumentEntity(
     val content: String,
     val tags: List<String> = emptyList(),
     val createdAt: LocalDateTime = LocalDateTime.now(),
-    val updatedAt: LocalDateTime = LocalDateTime.now()
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
 ) {
     companion object {
         /**
@@ -32,11 +32,11 @@ data class DocumentEntity(
                 content = document.content,
                 tags = document.tags,
                 createdAt = document.createdAt,
-                updatedAt = document.updatedAt
+                updatedAt = document.updatedAt,
             )
         }
     }
-    
+
     /**
      * Converts this entity to a domain model.
      *
@@ -49,7 +49,7 @@ data class DocumentEntity(
             content = content,
             tags = tags,
             createdAt = createdAt,
-            updatedAt = updatedAt
+            updatedAt = updatedAt,
         )
     }
 }

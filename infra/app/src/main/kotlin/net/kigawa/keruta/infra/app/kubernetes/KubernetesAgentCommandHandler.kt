@@ -24,12 +24,12 @@ class KubernetesAgentCommandHandler(
         val documentId: String,
         val agentId: String,
         val installCommand: String,
-        val executeCommand: String
+        val executeCommand: String,
     )
 
     /**
      * Gets agent commands for the task.
-     * 
+     *
      * @param task The task
      * @param repository The repository
      * @return A data class containing repository ID, document ID, agent ID, install command, and execute command
@@ -47,7 +47,7 @@ class KubernetesAgentCommandHandler(
                 agentInstallCommand = agent.installCommand
                 agentExecuteCommand = agent.executeCommand
                 logger.info(
-                    "Using agent commands for agent $agentId: install='$agentInstallCommand', execute='$agentExecuteCommand'"
+                    "Using agent commands for agent $agentId: install='$agentInstallCommand', execute='$agentExecuteCommand'",
                 )
             } catch (e: Exception) {
                 logger.warn("Failed to get agent $agentId: ${e.message}")

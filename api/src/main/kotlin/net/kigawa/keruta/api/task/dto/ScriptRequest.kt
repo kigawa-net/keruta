@@ -6,5 +6,5 @@ package net.kigawa.keruta.api.task.dto
 data class ScriptRequest(
     val installScript: String,
     val executeScript: String,
-    val cleanupScript: String
+    val cleanupScript: String,
 )

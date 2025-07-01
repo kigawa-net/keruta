@@ -12,7 +12,7 @@ class KubernetesNamespaceHandler(
 ) {
     /**
      * Determines the actual namespace and job name to use.
-     * 
+     *
      * @param namespace The requested namespace
      * @param jobName The requested job name
      * @param taskId The task ID

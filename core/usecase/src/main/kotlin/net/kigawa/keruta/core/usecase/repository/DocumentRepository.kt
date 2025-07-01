@@ -12,7 +12,7 @@ interface DocumentRepository {
      * @return List of all documents
      */
     fun findAll(): List<Document>
-    
+
     /**
      * Finds a document by its ID.
      *
@@ -20,7 +20,7 @@ interface DocumentRepository {
      * @return The document if found, null otherwise
      */
     fun findById(id: String): Document?
-    
+
     /**
      * Saves a document to the repository.
      *
@@ -28,7 +28,7 @@ interface DocumentRepository {
      * @return The saved document with generated ID if it was a new document
      */
     fun save(document: Document): Document
-    
+
     /**
      * Deletes a document by its ID.
      *
@@ -36,7 +36,7 @@ interface DocumentRepository {
      * @return true if the document was deleted, false otherwise
      */
     fun deleteById(id: String): Boolean
-    
+
     /**
      * Searches for documents by title or content.
      *
@@ -44,7 +44,7 @@ interface DocumentRepository {
      * @return List of documents matching the query
      */
     fun search(query: String): List<Document>
-    
+
     /**
      * Finds documents by tag.
      *

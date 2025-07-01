@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service
  */
 @Service
 class UserService(
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
 ) : UserDetailsService {
 
     @Value("\${auth.admin.username:admin}")

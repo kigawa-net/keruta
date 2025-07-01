@@ -17,7 +17,7 @@ data class AgentEntity(
     val installCommand: String = "",
     val executeCommand: String = "",
     val createdAt: LocalDateTime = LocalDateTime.now(),
-    val updatedAt: LocalDateTime = LocalDateTime.now()
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
 ) {
     companion object {
         fun fromDomain(agent: Agent): AgentEntity {
@@ -30,7 +30,7 @@ data class AgentEntity(
                 installCommand = agent.installCommand,
                 executeCommand = agent.executeCommand,
                 createdAt = agent.createdAt,
-                updatedAt = agent.updatedAt
+                updatedAt = agent.updatedAt,
             )
         }
     }
@@ -45,7 +45,7 @@ data class AgentEntity(
             installCommand = installCommand,
             executeCommand = executeCommand,
             createdAt = createdAt,
-            updatedAt = updatedAt
+            updatedAt = updatedAt,
         )
     }
 }

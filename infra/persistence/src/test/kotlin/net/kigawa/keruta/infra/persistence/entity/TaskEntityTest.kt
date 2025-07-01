@@ -1,7 +1,6 @@
 package net.kigawa.keruta.infra.persistence.entity
 
 import net.kigawa.keruta.core.domain.model.Document
-import net.kigawa.keruta.core.domain.model.Resources
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.domain.model.TaskStatus
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -24,8 +23,8 @@ class TaskEntityTest {
             documents = listOf(
                 Document(
                     title = "Test Document",
-                    content = "Test Content"
-                )
+                    content = "Test Content",
+                ),
             ),
             image = "test-image",
             namespace = "test-namespace",
@@ -35,7 +34,7 @@ class TaskEntityTest {
             logs = "Test logs",
             parentId = "456",
             createdAt = now,
-            updatedAt = now
+            updatedAt = now,
         )
 
         // When
@@ -82,7 +81,7 @@ class TaskEntityTest {
             logs = "Test logs",
             parentId = "456",
             createdAt = now,
-            updatedAt = now
+            updatedAt = now,
         )
 
         // When
@@ -130,7 +129,7 @@ class TaskEntityTest {
             logs = null,
             parentId = null,
             createdAt = now,
-            updatedAt = now
+            updatedAt = now,
         )
 
         // When
@@ -169,8 +168,8 @@ class TaskEntityTest {
             documents = listOf(
                 Document(
                     title = "Test Document",
-                    content = "Test Content"
-                )
+                    content = "Test Content",
+                ),
             ),
             image = "test-image",
             namespace = "test-namespace",
@@ -180,7 +179,7 @@ class TaskEntityTest {
             logs = "Test logs",
             parentId = "456",
             createdAt = now,
-            updatedAt = now
+            updatedAt = now,
         )
 
         // When

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
  */
 @Component
 class KubernetesJobMonitor(
-    private val clientProvider: KubernetesClientProvider
+    private val clientProvider: KubernetesClientProvider,
 ) {
     private val logger = LoggerFactory.getLogger(KubernetesJobMonitor::class.java)
 
@@ -152,7 +152,9 @@ class KubernetesJobMonitor(
                 pod.status.containerStatuses?.forEach { containerStatus ->
                     val waitingState = containerStatus.state?.waiting
                     if (waitingState != null && waitingState.reason == "CrashLoopBackOff") {
-                        logger.warn("Pod ${pod.metadata.name} for job $jobName in namespace $namespace is in CrashLoopBackOff state")
+                        logger.warn(
+                            "Pod ${pod.metadata.name} for job $jobName in namespace $namespace is in CrashLoopBackOff state",
+                        )
                         return "CRASH_LOOP_BACKOFF"
                     }
                 }
@@ -182,7 +184,7 @@ class KubernetesJobMonitor(
         storageSize: String = "",
         accessMode: String = "",
         storageClass: String = "",
-        taskId: String
+        taskId: String,
     ): Boolean {
         val client = clientProvider.getClient()
         val config = clientProvider.getConfig()
@@ -211,7 +213,9 @@ class KubernetesJobMonitor(
             val actualAccessMode = if (accessMode.isBlank()) config.defaultPvcAccessMode else accessMode
             val actualStorageClass = if (storageClass.isBlank()) config.defaultPvcStorageClass else storageClass
 
-            logger.info("Using PVC settings - Size: $actualStorageSize, Access Mode: $actualAccessMode, Storage Class: $actualStorageClass")
+            logger.info(
+                "Using PVC settings - Size: $actualStorageSize, Access Mode: $actualAccessMode, Storage Class: $actualStorageClass",
+            )
 
             // Create PVC
             val pvcBuilder = io.fabric8.kubernetes.api.model.PersistentVolumeClaimBuilder()

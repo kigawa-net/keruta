@@ -55,7 +55,11 @@ class KubernetesJobCreator(
         logger.info("Creating Kubernetes job for task: ${task.id}")
 
         // Determine namespace and job name
-        val (actualNamespace, actualJobName) = namespaceHandler.determineNamespaceAndJobName(namespace, jobName, task.id)
+        val (actualNamespace, actualJobName) = namespaceHandler.determineNamespaceAndJobName(
+            namespace,
+            jobName,
+            task.id,
+        )
 
         // Start asynchronous job creation
         createJobAsync(task, image, actualNamespace, actualJobName, repository, pvcName, resources)
@@ -115,7 +119,7 @@ class KubernetesJobCreator(
                 agentId,
                 agentInstallCommand,
                 agentExecuteCommand,
-                volumeMounts
+                volumeMounts,
             )
             scriptExecutionResult.first?.let { volumeMounts = volumeMounts + it }
             val envVars = scriptExecutionResult.second
@@ -131,7 +135,7 @@ class KubernetesJobCreator(
                 initContainers,
                 metadata,
                 podTemplateMetadata,
-                namespace
+                namespace,
             )
 
             future.complete(createdJobName)

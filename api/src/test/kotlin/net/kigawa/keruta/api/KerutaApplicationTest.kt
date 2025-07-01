@@ -31,7 +31,6 @@ class KerutaApplicationTest {
             .withEnv("MONGO_INITDB_ROOT_USERNAME") { "admin" }
             .withEnv("MONGO_INITDB_ROOT_PASSWORD") { "password" }
 
-
         @Container
         val postgresContainer: PostgreSQLContainer<*> = PostgreSQLContainer("postgres:15.6-alpine").withNetwork(network)
             .withExposedPorts(5432)
@@ -62,9 +61,8 @@ class KerutaApplicationTest {
             .withFileSystemBind(
                 "../data/keycloak.default.realm.json",
                 "/opt/bitnami/keycloak/data/import/keycloak.default.realm.json",
-                BindMode.READ_ONLY
+                BindMode.READ_ONLY,
             )
-
 
         @DynamicPropertySource
         @JvmStatic
@@ -74,12 +72,12 @@ class KerutaApplicationTest {
             registry.add("spring.data.mongodb.port") { mongoDBContainer.getMappedPort(27017).toString() }
             registry.add("spring.data.mongodb.database") { "keruta" }
             registry.add(
-                "spring.security.oauth2.client.provider.keycloak.issuer-uri"
+                "spring.security.oauth2.client.provider.keycloak.issuer-uri",
             ) {
                 "http://${keycloakContainer.host}:${keycloakContainer.getMappedPort(8080)}/realms/keruta"
             }
             registry.add(
-                "keycloak.auth-server-url"
+                "keycloak.auth-server-url",
             ) {
                 "http://${keycloakContainer.host}:${keycloakContainer.getMappedPort(8080)}"
             }
@@ -96,7 +94,8 @@ class KerutaApplicationTest {
     fun `application has all required beans`() {
         // Verify that key beans are available in the application context
         assertNotNull(
-            applicationContext.getBean(KerutaApplication::class.java), "KerutaApplication bean should be available"
+            applicationContext.getBean(KerutaApplication::class.java),
+            "KerutaApplication bean should be available",
         )
     }
 
@@ -105,7 +104,7 @@ class KerutaApplicationTest {
         // Verify that scheduling is enabled by checking for the presence of scheduling-related beans
         assertNotNull(
             applicationContext.getBean(ScheduledAnnotationBeanPostProcessor::class.java),
-            "ScheduledAnnotationBeanPostProcessor bean should be available when scheduling is enabled"
+            "ScheduledAnnotationBeanPostProcessor bean should be available when scheduling is enabled",
         )
     }
 
@@ -127,7 +126,7 @@ class KerutaApplicationTest {
         val beanDefinitionNames = applicationContext.beanDefinitionNames
         assertTrue(
             beanDefinitionNames.any { it.contains("keruta") },
-            "Bean definitions should include beans from the keruta package"
+            "Bean definitions should include beans from the keruta package",
         )
     }
 }

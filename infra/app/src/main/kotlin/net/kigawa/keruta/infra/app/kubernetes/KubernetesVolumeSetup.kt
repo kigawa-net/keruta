@@ -27,12 +27,12 @@ class KubernetesVolumeSetup(
         val initContainers: MutableList<Container>,
         val volumeMounts: List<VolumeMount>,
         val workVolumeName: String,
-        val workMountPath: String
+        val workMountPath: String,
     )
 
     /**
      * Sets up volumes and containers for the job.
-     * 
+     *
      * @param task The task
      * @param repository The repository
      * @param namespace The namespace
@@ -43,7 +43,7 @@ class KubernetesVolumeSetup(
         task: Task,
         repository: Repository?,
         namespace: String,
-        pvcName: String
+        pvcName: String,
     ): VolumeSetupResult {
         val volumes = mutableListOf<Volume>()
         val initContainers = mutableListOf<Container>()
@@ -55,7 +55,8 @@ class KubernetesVolumeSetup(
             repositoryHandler.setupRepository(
                 task,
                 repository,
-                namespace, pvcName
+                namespace,
+                pvcName,
             ).also { result ->
                 result.volumeMount?.let { it -> volumeMounts = it }
                 result.gitCloneContainer?.let { element -> initContainers.add(element) }
@@ -66,7 +67,11 @@ class KubernetesVolumeSetup(
             // Mount existing PVC if specified
             logger.info("Mounting existing PVC: $pvcName at path: $pvcMountPath")
             val mountExistingPvcResult = volumeHandler.mountExistingPvc(
-                volumes, pvcName, "pvc-volume", pvcMountPath, volumeMounts
+                volumes,
+                pvcName,
+                "pvc-volume",
+                pvcMountPath,
+                volumeMounts,
             )
             mountExistingPvcResult.second?.let { volumeMounts += it }
             "pvc-volume" // Use the volume name from volumeHandler

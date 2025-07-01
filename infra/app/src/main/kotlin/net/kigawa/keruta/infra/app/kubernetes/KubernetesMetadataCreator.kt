@@ -16,7 +16,7 @@ class KubernetesMetadataCreator(
 
     /**
      * Creates metadata for the job and pod template.
-     * 
+     *
      * @param taskId The task ID
      * @param jobName The job name
      * @param namespace The namespace

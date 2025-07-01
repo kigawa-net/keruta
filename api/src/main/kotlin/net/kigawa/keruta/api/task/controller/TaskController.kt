@@ -6,7 +6,6 @@ import net.kigawa.keruta.api.task.dto.ScriptRequest
 import net.kigawa.keruta.api.task.dto.ScriptResponse
 import net.kigawa.keruta.api.task.dto.TaskResponse
 import net.kigawa.keruta.api.task.websocket.TaskLogWebSocketHandler
-import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.usecase.task.TaskService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.*
 @Tag(name = "Task", description = "Task management API")
 class TaskController(
     private val taskService: TaskService,
-    private val taskLogWebSocketHandler: TaskLogWebSocketHandler
+    private val taskLogWebSocketHandler: TaskLogWebSocketHandler,
 ) {
 
     @GetMapping
@@ -49,8 +48,8 @@ class TaskController(
 
     @GetMapping("/{id}/logs")
     @Operation(
-        summary = "Get task logs", 
-        description = "Retrieves the logs of a specific task. For real-time log streaming, use the WebSocket endpoint at /ws/tasks/{id}"
+        summary = "Get task logs",
+        description = "Retrieves the logs of a specific task. For real-time log streaming, use the WebSocket endpoint at /ws/tasks/{id}",
     )
     fun getTaskLogs(@PathVariable id: String): ResponseEntity<String> {
         return try {
@@ -63,14 +62,14 @@ class TaskController(
 
     @PostMapping("/{id}/logs/stream")
     @Operation(
-        summary = "Stream log update", 
-        description = "Sends a log update to all connected WebSocket clients for this task"
+        summary = "Stream log update",
+        description = "Sends a log update to all connected WebSocket clients for this task",
     )
     fun streamLogUpdate(
         @PathVariable id: String,
         @RequestParam source: String = "stdout",
         @RequestParam level: String = "INFO",
-        @RequestBody logContent: String
+        @RequestBody logContent: String,
     ): ResponseEntity<Void> {
         return try {
             // Verify task exists and append logs to the database
@@ -123,14 +122,14 @@ class TaskController(
     @Operation(summary = "Update task script", description = "Updates the script for a specific task")
     fun updateTaskScript(
         @PathVariable id: String,
-        @RequestBody request: ScriptRequest
+        @RequestBody request: ScriptRequest,
     ): ResponseEntity<ScriptResponse> {
         return try {
             val updatedScript = taskService.updateTaskScript(
                 id,
                 request.installScript,
                 request.executeScript,
-                request.cleanupScript
+                request.cleanupScript,
             )
             ResponseEntity.ok(ScriptResponse.fromDomain(updatedScript))
         } catch (e: NoSuchElementException) {
@@ -142,7 +141,7 @@ class TaskController(
     @Operation(summary = "Update task status", description = "Updates the status of a specific task")
     fun updateTaskStatus(
         @PathVariable id: String,
-        @RequestBody statusRequest: Map<String, String>
+        @RequestBody statusRequest: Map<String, String>,
     ): ResponseEntity<TaskResponse> {
         val statusStr = statusRequest["status"] ?: return ResponseEntity.badRequest().build()
 

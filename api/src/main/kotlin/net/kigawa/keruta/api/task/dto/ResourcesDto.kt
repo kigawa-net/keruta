@@ -5,5 +5,5 @@ package net.kigawa.keruta.api.task.dto
  */
 data class ResourcesDto(
     val cpu: String,
-    val memory: String
+    val memory: String,
 )

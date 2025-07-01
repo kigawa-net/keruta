@@ -2,7 +2,6 @@ package net.kigawa.keruta.infra.persistence.repository
 
 import net.kigawa.keruta.infra.persistence.entity.JobEntity
 import org.springframework.data.mongodb.repository.MongoRepository
-import org.springframework.data.mongodb.repository.Query
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -14,7 +13,7 @@ interface MongoJobRepository : MongoRepository<JobEntity, String> {
      * @return List of jobs associated with the task
      */
     fun findByTaskId(taskId: String): List<JobEntity>
-    
+
     /**
      * Finds jobs by status.
      *

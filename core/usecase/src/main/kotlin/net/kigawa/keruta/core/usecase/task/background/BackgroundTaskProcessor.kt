@@ -37,7 +37,7 @@ class BackgroundTaskProcessor(
      * This method launches a coroutine to process the task asynchronously.
      */
     @Scheduled(
-        fixedDelayString = "\${keruta.task.processor.processing-delay:5000}"
+        fixedDelayString = "\${keruta.task.processor.processing-delay:5000}",
     ) // Use configured delay or default to 5 seconds
     fun processNextTask() {
         // If already processing a task, skip this run
@@ -54,7 +54,7 @@ class BackgroundTaskProcessor(
             onError = { error ->
                 logger.error("Error in coroutine while processing next task", error)
                 isProcessing.set(false)
-            }
+            },
         )
     }
 
@@ -252,7 +252,7 @@ class BackgroundTaskProcessor(
             handleProlongedCrashLoopBackOff(task, jobName, elapsedMillis)
         } else {
             logger.debug(
-                "Job $jobName has been in CrashLoopBackOff state for ${elapsedMillis}ms, will mark as failed after ${config.crashLoopBackOffTimeout}ms"
+                "Job $jobName has been in CrashLoopBackOff state for ${elapsedMillis}ms, will mark as failed after ${config.crashLoopBackOffTimeout}ms",
             )
         }
     }
@@ -274,7 +274,7 @@ class BackgroundTaskProcessor(
      */
     private fun handleProlongedCrashLoopBackOff(task: Task, jobName: String, elapsedMillis: Long) {
         logger.error(
-            "Job $jobName for task ${task.id} has been in CrashLoopBackOff state for too long (${elapsedMillis}ms), marking task as failed"
+            "Job $jobName for task ${task.id} has been in CrashLoopBackOff state for too long (${elapsedMillis}ms), marking task as failed",
         )
 
         try {
@@ -286,7 +286,7 @@ class BackgroundTaskProcessor(
             // Append error message to task logs
             taskService.appendTaskLogs(
                 updatedTask.id,
-                "Task failed: Job $jobName had pods in CrashLoopBackOff state for too long (${elapsedMillis}ms)"
+                "Task failed: Job $jobName had pods in CrashLoopBackOff state for too long (${elapsedMillis}ms)",
             )
 
             // Remove the job from the tracking map
@@ -355,7 +355,7 @@ class BackgroundTaskProcessor(
 
         for (jobName in jobsToRemove) {
             logger.info(
-                "Removing job $jobName from CrashLoopBackOff tracking as it's no longer associated with an in-progress task"
+                "Removing job $jobName from CrashLoopBackOff tracking as it's no longer associated with an in-progress task",
             )
             crashLoopBackOffPods.remove(jobName)
         }

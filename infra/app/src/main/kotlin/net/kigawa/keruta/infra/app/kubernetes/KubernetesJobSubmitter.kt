@@ -24,7 +24,7 @@ class KubernetesJobSubmitter(
 
     /**
      * Creates and submits the job to Kubernetes.
-     * 
+     *
      * @param task The task
      * @param image The image
      * @param resources The resources
@@ -47,15 +47,17 @@ class KubernetesJobSubmitter(
         initContainers: MutableList<Container>,
         metadata: io.fabric8.kubernetes.api.model.ObjectMeta,
         podTemplateMetadata: io.fabric8.kubernetes.api.model.ObjectMeta,
-        namespace: String
+        namespace: String,
     ): String {
         val client = clientProvider.getClient()!!
 
         // Create pod spec and pod template spec
         val podSpec = podSpecHandler.createPodSpec(
             mutableListOf(
-                containerHandler.createMainContainer(task, image, resources, volumeMounts, envVars)
-            ), volumes, initContainers
+                containerHandler.createMainContainer(task, image, resources, volumeMounts, envVars),
+            ),
+            volumes,
+            initContainers,
         )
         val podTemplateSpec = podSpecHandler.createPodTemplateSpec(podTemplateMetadata, podSpec)
 
@@ -66,7 +68,7 @@ class KubernetesJobSubmitter(
         // Create the job
         val createdJob = client.batch().v1().jobs().inNamespace(namespace).create(job)
         logger.info(
-            "Created Kubernetes job: ${createdJob.metadata.name} in namespace: ${createdJob.metadata.namespace}"
+            "Created Kubernetes job: ${createdJob.metadata.name} in namespace: ${createdJob.metadata.namespace}",
         )
 
         return createdJob.metadata.name

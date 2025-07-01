@@ -17,7 +17,7 @@ interface MongoDocumentRepository : MongoRepository<DocumentEntity, String> {
      * @return List of documents with the specified tag
      */
     fun findByTagsContaining(tag: String): List<DocumentEntity>
-    
+
     /**
      * Searches for documents by title or content.
      *

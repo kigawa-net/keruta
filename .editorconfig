@@ -1,0 +1,28 @@
+# EditorConfig is supported by most IDEs and editors
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+max_line_length = 120
+tab_width = 4
+trim_trailing_whitespace = true
+
+[*.{kt,kts}]
+# Ktlint specific rules
+ktlint_code_style = intellij_idea
+# Disable rules that require manual fixes for now to allow gradual migration
+ktlint_standard_no-wildcard-imports = disabled
+ktlint_standard_filename = disabled
+ktlint_standard_max-line-length = disabled
+ktlint_standard_trailing-comma-on-call-site = true
+ktlint_standard_trailing-comma-on-declaration-site = true
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.{yml,yaml}]
+indent_size = 2

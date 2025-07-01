@@ -1,8 +1,6 @@
 package net.kigawa.keruta.infra.app.kubernetes
 
-import io.fabric8.kubernetes.api.model.Container
 import io.fabric8.kubernetes.api.model.EnvVar
-import io.fabric8.kubernetes.api.model.Secret
 import io.fabric8.kubernetes.api.model.VolumeMount
 import io.fabric8.kubernetes.client.KubernetesClient
 import net.kigawa.keruta.core.domain.model.KubernetesConfig
@@ -32,7 +30,7 @@ class KubernetesContainerCreatorTest {
         config = KubernetesConfig(
             enabled = true,
             defaultNamespace = "test-namespace",
-            apiUrl = "http://keruta-api"
+            apiUrl = "http://keruta-api",
         )
 
         `when`(clientProvider.getClient()).thenReturn(client)
@@ -70,7 +68,6 @@ class KubernetesContainerCreatorTest {
         `when`(clientProvider.secretExists(secretName, namespace)).thenReturn(true)
 
         // When
-
     }
 
     @Test

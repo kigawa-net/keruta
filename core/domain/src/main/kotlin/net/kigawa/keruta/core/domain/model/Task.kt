@@ -26,7 +26,7 @@ data class Task(
     val storageClass: String = "", // Storage class for PVC
     val pvcName: String? = null, // Name of the PVC used by this task
     val createdAt: LocalDateTime = LocalDateTime.now(),
-    val updatedAt: LocalDateTime = LocalDateTime.now()
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
 )
 
 /**
@@ -35,10 +35,10 @@ data class Task(
  */
 enum class TaskStatus {
     PENDING,
-    IN_PROGRESS,  // Equivalent to RUNNING in the previous JobStatus
+    IN_PROGRESS, // Equivalent to RUNNING in the previous JobStatus
     COMPLETED,
     CANCELLED,
-    FAILED
+    FAILED,
 }
 
 /**
@@ -46,5 +46,5 @@ enum class TaskStatus {
  */
 data class Resources(
     val cpu: String,
-    val memory: String
+    val memory: String,
 )

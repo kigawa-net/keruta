@@ -27,7 +27,7 @@ interface KubernetesService {
         jobName: String?,
         resources: Resources?,
         repository: Repository? = null,
-        pvcName: String
+        pvcName: String,
     ): String
 
     /**
@@ -89,7 +89,7 @@ interface KubernetesService {
         storageSize: String = "",
         accessMode: String = "",
         storageClass: String = "",
-        taskId: String
+        taskId: String,
     ): Boolean
 
     /**

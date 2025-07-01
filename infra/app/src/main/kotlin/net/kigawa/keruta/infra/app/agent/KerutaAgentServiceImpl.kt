@@ -4,16 +4,16 @@
  */
 package net.kigawa.keruta.infra.app.agent
 
-import net.kigawa.keruta.core.usecase.agent.KerutaAgentService
-import org.slf4j.LoggerFactory
-import org.springframework.stereotype.Service
-import org.springframework.web.client.RestTemplate
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
+import net.kigawa.keruta.core.usecase.agent.KerutaAgentService
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.RequestEntity
+import org.springframework.stereotype.Service
+import org.springframework.web.client.RestTemplate
 import java.net.URI
 
 @Service
@@ -37,7 +37,7 @@ class KerutaAgentServiceImpl : KerutaAgentService {
             val requestEntity = RequestEntity<Void>(
                 headers,
                 HttpMethod.GET,
-                URI.create("https://api.github.com/repos/kigawa-net/keruta-agent/releases/latest")
+                URI.create("https://api.github.com/repos/kigawa-net/keruta-agent/releases/latest"),
             )
 
             // Make request to GitHub API
@@ -62,7 +62,7 @@ class KerutaAgentServiceImpl : KerutaAgentService {
     @JsonIgnoreProperties(ignoreUnknown = true)
     data class GitHubRelease(
         @JsonProperty("tag_name") val tagName: String,
-        @JsonProperty("assets") val assets: List<GitHubAsset>
+        @JsonProperty("assets") val assets: List<GitHubAsset>,
     )
 
     /**
@@ -71,6 +71,6 @@ class KerutaAgentServiceImpl : KerutaAgentService {
     @JsonIgnoreProperties(ignoreUnknown = true)
     data class GitHubAsset(
         @JsonProperty("name") val name: String,
-        @JsonProperty("browser_download_url") val browserDownloadUrl: String
+        @JsonProperty("browser_download_url") val browserDownloadUrl: String,
     )
 }

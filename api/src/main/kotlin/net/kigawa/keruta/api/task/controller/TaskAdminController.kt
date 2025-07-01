@@ -1,6 +1,5 @@
 package net.kigawa.keruta.api.task.controller
 
-import net.kigawa.keruta.api.task.websocket.TaskLogWebSocketHandler
 import net.kigawa.keruta.core.usecase.task.TaskService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -49,7 +48,7 @@ class TaskAdminController(private val taskService: TaskService) {
     fun updateKubernetesManifest(
         @PathVariable id: String,
         @RequestParam manifest: String,
-        model: Model
+        model: Model,
     ): String {
         try {
             val updatedTask = taskService.setKubernetesManifest(id, manifest)
