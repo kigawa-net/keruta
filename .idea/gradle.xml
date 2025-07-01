@@ -26,6 +26,7 @@
             <option value="$PROJECT_DIR$/core/usecase" />
             <option value="$PROJECT_DIR$/infra" />
             <option value="$PROJECT_DIR$/infra/app" />
+            <option value="$PROJECT_DIR$/infra/core" />
             <option value="$PROJECT_DIR$/infra/persistence" />
             <option value="$PROJECT_DIR$/infra/security" />
           </set>

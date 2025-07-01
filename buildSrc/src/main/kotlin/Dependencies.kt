@@ -10,6 +10,7 @@ object Versions {
     const val keycloak = "23.0.3"
     const val fabric8KubernetesClient = "6.5.1"
     const val testcontainers = "1.19.3"
+    const val kotlinxCoroutines = "1.7.3"
 }
 
 object Dependencies {
@@ -33,6 +34,10 @@ object Dependencies {
     // Kotlin
     const val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect"
     const val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib"
+
+    // Kotlin Coroutines
+    const val kotlinxCoroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutines}"
+    const val kotlinxCoroutinesReactor = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor:${Versions.kotlinxCoroutines}"
 
     // Jakarta
     const val jakartaServletApi = "jakarta.servlet:jakarta.servlet-api:${Versions.jakartaServlet}"

@@ -1,9 +1,11 @@
 package net.kigawa.keruta.core.usecase.task.background
 
+import kotlinx.coroutines.CoroutineScope
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.domain.model.TaskStatus
 import net.kigawa.keruta.core.usecase.kubernetes.KubernetesService
 import net.kigawa.keruta.core.usecase.task.TaskService
+import net.kigawa.keruta.infra.core.coroutine.CoroutineService
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
@@ -19,7 +21,8 @@ import java.time.Instant
 class BackgroundTaskProcessor(
     private val taskService: TaskService,
     private val config: BackgroundTaskProcessorConfig,
-    private val kubernetesService: KubernetesService
+    private val kubernetesService: KubernetesService,
+    private val coroutineService: CoroutineService
 ) {
     private val logger = LoggerFactory.getLogger(BackgroundTaskProcessor::class.java)
     private val isProcessing = AtomicBoolean(false)
@@ -32,6 +35,7 @@ class BackgroundTaskProcessor(
     /**
      * Scheduled method that processes the next task in the queue.
      * It ensures that only one task is processed at a time.
+     * This method launches a coroutine to process the task asynchronously.
      */
     @Scheduled(fixedDelayString = "\${keruta.task.processor.processing-delay:5000}") // Use configured delay or default to 5 seconds
     fun processNextTask() {
@@ -41,6 +45,23 @@ class BackgroundTaskProcessor(
             return
         }
 
+        // Launch a coroutine to process the task asynchronously
+        coroutineService.launchWithErrorHandling(
+            block = {
+                processNextTaskInternal()
+            },
+            onError = { error ->
+                logger.error("Error in coroutine while processing next task", error)
+                isProcessing.set(false)
+            }
+        )
+    }
+
+    /**
+     * Internal suspend function that processes the next task in the queue.
+     * This function is called from a coroutine.
+     */
+    private suspend fun processNextTaskInternal() {
         // Variable to hold the task being processed
         var currentTask: Task? = null
 
@@ -101,7 +122,7 @@ class BackgroundTaskProcessor(
 
     /**
      * Scheduled method that monitors the status of jobs for tasks that are in progress.
-     * It checks for jobs in CRASH_LOOP_BACKOFF state and marks tasks as failed if they've been in that state for too long.
+     * It checks for jobs in the CRASH_LOOP_BACKOFF state and marks tasks as failed if they've been in that state for too long.
      */
 //    @Scheduled(fixedDelayString = "\${keruta.task.processor.monitoring-delay:10000}") // Use configured delay or default to 10 seconds
     fun monitorJobStatus() {
@@ -128,7 +149,7 @@ class BackgroundTaskProcessor(
                 val jobName = task.jobName ?: task.podName // For backward compatibility
                 val namespace = task.namespace
 
-                if (jobName == null || namespace == null) {
+                if (jobName == null) {
                     continue
                 }
 
@@ -154,13 +175,11 @@ class BackgroundTaskProcessor(
                             try {
                                 // Update the task status to FAILED
                                 val taskId = task.id
-                                if (taskId != null) {
-                                    val updatedTask = taskService.updateTaskStatus(taskId, TaskStatus.FAILED)
-                                    logger.info("Updated task ${updatedTask.id} status to FAILED due to prolonged CrashLoopBackOff")
+                                val updatedTask = taskService.updateTaskStatus(taskId, TaskStatus.FAILED)
+                                logger.info("Updated task ${updatedTask.id} status to FAILED due to prolonged CrashLoopBackOff")
 
-                                    // Append error message to task logs
-                                    taskService.appendTaskLogs(updatedTask.id!!, "Task failed: Job $jobName had pods in CrashLoopBackOff state for too long (${elapsedMillis}ms)")
-                                }
+                                // Append error message to task logs
+                                taskService.appendTaskLogs(updatedTask.id, "Task failed: Job $jobName had pods in CrashLoopBackOff state for too long (${elapsedMillis}ms)")
 
                                 // Remove the job from the tracking map
                                 crashLoopBackOffPods.remove(jobName)
@@ -177,14 +196,12 @@ class BackgroundTaskProcessor(
 
                     try {
                         val taskId = task.id
-                        if (taskId != null) {
-                            val newStatus = if (jobStatus == "FAILED") TaskStatus.FAILED else TaskStatus.COMPLETED
-                            val updatedTask = taskService.updateTaskStatus(taskId, newStatus)
-                            logger.info("Updated task ${updatedTask.id} status to $newStatus based on job status $jobStatus")
+                        val newStatus = if (jobStatus == "FAILED") TaskStatus.FAILED else TaskStatus.COMPLETED
+                        val updatedTask = taskService.updateTaskStatus(taskId, newStatus)
+                        logger.info("Updated task ${updatedTask.id} status to $newStatus based on job status $jobStatus")
 
-                            // Append status message to task logs
-                            taskService.appendTaskLogs(updatedTask.id!!, "Task $newStatus: Job $jobName completed with status $jobStatus")
-                        }
+                        // Append status message to task logs
+                        taskService.appendTaskLogs(updatedTask.id, "Task $newStatus: Job $jobName completed with status $jobStatus")
 
                         // Remove the job from tracking if it was being tracked
                         if (crashLoopBackOffPods.containsKey(jobName)) {
