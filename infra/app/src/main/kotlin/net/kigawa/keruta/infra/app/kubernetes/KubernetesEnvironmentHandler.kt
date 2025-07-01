@@ -33,7 +33,7 @@ class KubernetesEnvironmentHandler(
         agentId: String = "",
         agentInstallCommand: String = "",
         agentExecuteCommand: String = "",
-        apiUrl: String = kubernetesConfig.getFullApiUrl(),
+        apiUrl: String? = kubernetesConfig.getFullApiUrl(),
     ): List<EnvVar> {
         // Get the latest release URL of keruta-agent from GitHub
         val latestReleaseUrl = try {
@@ -60,7 +60,7 @@ class KubernetesEnvironmentHandler(
             EnvVar("KERUTA_AGENT_LATEST_RELEASE_URL", latestReleaseUrl, null),
 
             // Add API endpoint environment variable
-            EnvVar("KERUTA_API_ENDPOINT", apiUrl, null),
+            EnvVar("KERUTA_API_ENDPOINT", apiUrl ?: "http://keruta-api", null),
         )
     }
 }
