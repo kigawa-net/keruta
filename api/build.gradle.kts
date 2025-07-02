@@ -18,6 +18,7 @@ dependencies {
     implementation(Dependencies.springBootStarterWeb)
     implementation(Dependencies.springBootStarterWebsocket)
     implementation(Dependencies.springBootStarterSecurity)
+    implementation("jakarta.websocket:jakarta.websocket-api:2.1.0")
 
     // Swagger/OpenAPI
     implementation(Dependencies.springdocOpenApi)

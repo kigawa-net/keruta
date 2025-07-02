@@ -12,6 +12,9 @@ import org.springframework.web.socket.config.annotation.WebSocketConfigurer
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 import org.springframework.web.socket.server.HandshakeInterceptor
 import org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean
+import jakarta.websocket.server.ServerContainer
+import org.springframework.web.socket.server.jetty.JettyRequestUpgradeStrategy
+import org.springframework.web.socket.server.support.DefaultHandshakeHandler
 import java.util.concurrent.Executor
 
 @Configuration
@@ -53,10 +56,16 @@ class WebSocketConfig(
         return container
     }
 
+    @Bean
+    fun handshakeHandler(): DefaultHandshakeHandler {
+        return DefaultHandshakeHandler()
+    }
+
     override fun registerWebSocketHandlers(registry: WebSocketHandlerRegistry) {
         registry.addHandler(taskLogWebSocketHandler, "/ws/tasks/{taskId}")
             .setAllowedOrigins("*")
             .addInterceptors(tokenAuthenticationInterceptor())
+            .setHandshakeHandler(handshakeHandler())
     }
 
     /**
