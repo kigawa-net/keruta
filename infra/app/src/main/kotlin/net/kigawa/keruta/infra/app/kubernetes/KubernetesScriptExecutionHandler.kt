@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component
 class KubernetesScriptExecutionHandler(
     private val volumeMountHandler: KubernetesVolumeMountHandler,
     private val environmentHandler: KubernetesEnvironmentHandler,
-    private val scriptHandler: KubernetesScriptHandler,
 ) {
     private val logger = LoggerFactory.getLogger(KubernetesScriptExecutionHandler::class.java)
 
@@ -54,13 +53,6 @@ class KubernetesScriptExecutionHandler(
             agentInstallCommand,
             agentExecuteCommand,
         )
-
-        // Setup script and command if container is provided
-        container?.let {
-            val (command, args) = scriptHandler.setupScriptAndCommand(it.command, it.args)
-            it.command = command
-            it.args = args
-        }
         container?.workingDir = workMountPath
 
         return Pair(volumeMount, envVars)
