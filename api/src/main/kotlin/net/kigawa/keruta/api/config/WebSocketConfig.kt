@@ -21,6 +21,7 @@ import java.util.concurrent.Executor
 @EnableWebSocket
 class WebSocketConfig(
     private val taskLogWebSocketHandler: TaskLogWebSocketHandler,
+    private val jwtWebSocketHandshakeInterceptor: JwtWebSocketHandshakeInterceptor,
 ) : WebSocketConfigurer {
 
     /**
@@ -64,51 +65,8 @@ class WebSocketConfig(
     override fun registerWebSocketHandlers(registry: WebSocketHandlerRegistry) {
         registry.addHandler(taskLogWebSocketHandler, "/ws/tasks/{taskId}")
             .setAllowedOrigins("*")
-            .addInterceptors(tokenAuthenticationInterceptor())
+            .addInterceptors(jwtWebSocketHandshakeInterceptor)
             .setHandshakeHandler(handshakeHandler())
     }
 
-    /**
-     * Creates a HandshakeInterceptor that checks for a token parameter in the URL.
-     * This implements a simple token-based authentication for WebSocket connections.
-     */
-    private fun tokenAuthenticationInterceptor(): HandshakeInterceptor {
-        return object : HandshakeInterceptor {
-            override fun beforeHandshake(
-                request: ServerHttpRequest,
-                response: ServerHttpResponse,
-                wsHandler: WebSocketHandler,
-                attributes: MutableMap<String, Any>,
-            ): Boolean {
-                // Extract the token from the query parameters
-                val uri = request.uri
-                val query = uri.query
-
-                if (query != null) {
-                    val params = query.split("&")
-                    for (param in params) {
-                        val parts = param.split("=")
-                        if (parts.size == 2 && parts[0] == "token") {
-                            val token = parts[1]
-                            // Store the token in the attributes for later use
-                            attributes["token"] = token
-                            return true
-                        }
-                    }
-                }
-
-                // If no token is provided, reject the handshake
-                return false
-            }
-
-            override fun afterHandshake(
-                request: ServerHttpRequest,
-                response: ServerHttpResponse,
-                wsHandler: WebSocketHandler,
-                exception: Exception?,
-            ) {
-                // No action needed after handshake
-            }
-        }
-    }
 }
