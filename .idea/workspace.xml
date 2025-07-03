@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0affa348-36af-4c8f-bdc9-26d08e600a4c" name="変更" comment="コードベース全体におけるフォーマッティング修正の適用と、EditorConfigおよびktlint設定の追加" />
+    <list default="true" id="0affa348-36af-4c8f-bdc9-26d08e600a4c" name="変更" comment="コードベース全体におけるフォーマッティング修正の適用と、EditorConfigおよびktlint設定の追加">
+      <change afterPath="$PROJECT_DIR$/.junie/guidelines.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/keruta-agent" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/kigawa-net-k8s" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-agent/internal/api/websocket.go" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/internal/api/websocket.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-agent/internal/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/internal/config/config.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -64,6 +72,7 @@
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/var/user/dev/kigawa-net/keruta&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -73,6 +82,9 @@
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
     <key name="K2MoveDeclarationsDialog.RECENT_PACKAGE_KEY">
       <recent name="net.kigawa.keruta.core.usecase" />
     </key>
@@ -107,6 +119,9 @@
       <workItem from="1751388613063" duration="3154000" />
       <workItem from="1751471391012" duration="5357000" />
       <workItem from="1751532056784" duration="25000" />
+      <workItem from="1751538931809" duration="918000" />
+      <workItem from="1751556292921" duration="292000" />
+      <workItem from="1751556593547" duration="665000" />
     </task>
     <task id="LOCAL-00001" summary="WebSocketの設定を拡張し、バッファサイズとタイムアウトオプションを追加">
       <option name="closed" value="true" />
@@ -196,7 +211,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751476103604</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="コードベース全体におけるフォーマッティング修正の適用と、EditorConfigおよびktlint設定の追加">
+      <option name="closed" value="true" />
+      <created>1751539036719</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1751539036719</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -1,3 +1,9 @@
 [submodule "keruta-doc"]
 	path = keruta-doc
 	url = https://github.com/kigawa-net/keruta-doc.git
+[submodule "keruta-agent"]
+	path = keruta-agent
+	url = https://github.com/kigawa-net/keruta-agent.git
+[submodule "kigawa-net-k8s"]
+	path = kigawa-net-k8s
+	url = https://github.com/kigawa-net/kigawa-net-k8s.git
