@@ -113,4 +113,24 @@ class JwtTokenProvider(
             .parseClaimsJws(token)
             .body
     }
+
+    /**
+     * Creates a JWT token for API access.
+     * This method doesn't require an Authentication object and is useful for system-generated tokens.
+     *
+     * @param subject The subject of the token (usually a username or identifier)
+     * @return The JWT token
+     */
+    fun createApiToken(subject: String): String {
+        val now = Date()
+        val validity = Date(now.time + validityInMilliseconds)
+
+        return Jwts.builder()
+            .setSubject(subject)
+            .setIssuedAt(now)
+            .setExpiration(validity)
+            .claim("type", "api")
+            .signWith(secretKey, SignatureAlgorithm.HS256)
+            .compact()
+    }
 }

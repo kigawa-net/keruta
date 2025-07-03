@@ -4,6 +4,7 @@ import io.fabric8.kubernetes.api.model.Secret
 import io.fabric8.kubernetes.client.KubernetesClientBuilder
 import net.kigawa.keruta.core.domain.model.KubernetesConfig
 import net.kigawa.keruta.core.usecase.repository.KubernetesConfigRepository
+import net.kigawa.keruta.infra.security.jwt.JwtTokenProvider
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import java.util.Base64
@@ -16,6 +17,7 @@ import java.util.UUID
 @Component
 class KubernetesClientProvider(
     private val kubernetesConfigRepository: KubernetesConfigRepository,
+    private val jwtTokenProvider: JwtTokenProvider,
 ) {
     private val logger = LoggerFactory.getLogger(KubernetesClientProvider::class.java)
 
@@ -134,8 +136,8 @@ class KubernetesClientProvider(
             return "existing-token" // We don't actually retrieve the token value for security reasons
         }
 
-        // Generate a random token
-        val token = UUID.randomUUID().toString()
+        // Generate a JWT token for API access
+        val token = jwtTokenProvider.createApiToken("keruta-api")
 
         // Create the secret
         val data = mapOf("token" to token)
@@ -163,8 +165,8 @@ class KubernetesClientProvider(
         try {
             val client = getClient() ?: return null
 
-            // Generate a new random token
-            val token = UUID.randomUUID().toString()
+            // Generate a new JWT token for API access
+            val token = jwtTokenProvider.createApiToken("keruta-api")
 
             // Encode the token in Base64
             val encodedToken = Base64.getEncoder().encodeToString(token.toByteArray())
