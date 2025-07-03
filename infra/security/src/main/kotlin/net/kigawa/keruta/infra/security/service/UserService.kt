@@ -23,17 +23,29 @@ class UserService(
     @Value("\${auth.admin.password:password}")
     private lateinit var adminPassword: String
 
+    @Value("\${auth.api.username:keruta-api}")
+    private lateinit var apiUsername: String
+
+    @Value("\${auth.api.password:api-password}")
+    private lateinit var apiPassword: String
+
     private val users = mutableMapOf<String, User>()
 
     /**
-     * Initializes the user service with a default admin user.
+     * Initializes the user service with default users.
      */
     @PostConstruct
     fun init() {
         if (users.isEmpty()) {
-            val encodedPassword = passwordEncoder.encode(adminPassword)
-            val adminUser = User.create(adminUsername, encodedPassword, listOf("ADMIN"))
+            // Create admin user
+            val encodedAdminPassword = passwordEncoder.encode(adminPassword)
+            val adminUser = User.create(adminUsername, encodedAdminPassword, listOf("ADMIN"))
             users[adminUsername] = adminUser
+
+            // Create API user
+            val encodedApiPassword = passwordEncoder.encode(apiPassword)
+            val apiUser = User.create(apiUsername, encodedApiPassword, listOf("API"))
+            users[apiUsername] = apiUser
         }
     }
 

@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0affa348-36af-4c8f-bdc9-26d08e600a4c" name="変更" comment="コードベース全体におけるフォーマッティング修正の適用と、EditorConfigおよびktlint設定の追加">
-      <change beforePath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesClientProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesClientProvider.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/jwt/JwtTokenProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/jwt/JwtTokenProvider.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-doc" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-doc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kigawa-net-k8s" beforeDir="false" afterPath="$PROJECT_DIR$/kigawa-net-k8s" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infra/app/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/infra/app/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/service/UserService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/service/UserService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/todo.md" beforeDir="false" afterPath="$PROJECT_DIR$/todo.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +42,7 @@
   </component>
   <component name="GOROOT" url="file://$USER_HOME$/sdk/go1.24.2" />
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/kigawa-net-k8s" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -121,7 +121,7 @@
       <workItem from="1751538931809" duration="918000" />
       <workItem from="1751556292921" duration="292000" />
       <workItem from="1751556593547" duration="665000" />
-      <workItem from="1751557267591" duration="2678000" />
+      <workItem from="1751557267591" duration="4231000" />
     </task>
     <task id="LOCAL-00001" summary="WebSocketの設定を拡張し、バッファサイズとタイムアウトオプションを追加">
       <option name="closed" value="true" />
@@ -235,11 +235,42 @@
       <option name="project" value="LOCAL" />
       <updated>1751558955140</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="コードベース全体におけるフォーマッティング修正の適用と、EditorConfigおよびktlint設定の追加">
+      <option name="closed" value="true" />
+      <created>1751560268194</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1751560268194</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="WebSocketの設定を拡張し、バッファサイズとタイムアウトオプションを追加" />

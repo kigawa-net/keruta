@@ -22,6 +22,10 @@
 
 ## Error Handling
 
+- [x] Fix authentication issue with keruta-api user
+  - Added proper configuration for keruta-api user in UserService
+  - Added documentation for in-memory authentication mechanism
+
 - [ ] Improve error logging for API connection failures
   - Add more detailed error messages to help diagnose connection issues
   - Include request details in error logs
@@ -35,6 +39,13 @@
 - [ ] Update documentation with troubleshooting information
   - Add a section on common connection issues and how to resolve them
   - Include information on required environment variables and their format
+
+## Kubernetes Configuration
+
+- [x] Update Kubernetes manifest with authentication environment variables
+  - Added environment variables for API user authentication (AUTH_API_USERNAME, AUTH_API_PASSWORD)
+  - Added environment variables for admin user authentication (AUTH_ADMIN_USERNAME, AUTH_ADMIN_PASSWORD)
+  - Updated the manifest to use secrets for sensitive information
 
 ## Testing
 
