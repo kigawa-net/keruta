@@ -63,26 +63,10 @@ class KubernetesContainerCreatorTest {
         val envVars = emptyList<EnvVar>()
         val namespace = "test-namespace"
         val secretName = "keruta-api-token"
+        val token = "updated-token"
 
-        // Mock that the secret exists
-        `when`(clientProvider.secretExists(secretName, namespace)).thenReturn(true)
-
-        // When
-    }
-
-    @Test
-    fun `createMainContainer should create a container with the correct configuration when secret does not exist but can be created`() {
-        // Given
-        val image = "test-image"
-        val volumeMounts = emptyList<VolumeMount>()
-        val envVars = emptyList<EnvVar>()
-        val namespace = "test-namespace"
-        val secretName = "keruta-api-token"
-        val token = "test-token"
-
-        // Mock that the secret does not exist but can be created
-        `when`(clientProvider.secretExists(secretName, namespace)).thenReturn(false)
-        `when`(clientProvider.getOrCreateApiTokenSecret(namespace)).thenReturn(token)
+        // Mock that the secret exists and can be updated
+        `when`(clientProvider.updateApiTokenSecret(namespace)).thenReturn(token)
 
         // When
         val container = containerCreator.createMainContainer(task, image, resources, volumeMounts, envVars)
@@ -96,8 +80,37 @@ class KubernetesContainerCreatorTest {
         assertNotNull(container.env)
         assertNotNull(container.resources)
 
-        // Verify that getOrCreateApiTokenSecret was called
-        verify(clientProvider).getOrCreateApiTokenSecret(namespace)
+        // Verify that updateApiTokenSecret was called
+        verify(clientProvider).updateApiTokenSecret(namespace)
+    }
+
+    @Test
+    fun `createMainContainer should create a container with the correct configuration when secret does not exist but can be created`() {
+        // Given
+        val image = "test-image"
+        val volumeMounts = emptyList<VolumeMount>()
+        val envVars = emptyList<EnvVar>()
+        val namespace = "test-namespace"
+        val secretName = "keruta-api-token"
+        val token = "test-token"
+
+        // Mock that the secret can be created or updated
+        `when`(clientProvider.updateApiTokenSecret(namespace)).thenReturn(token)
+
+        // When
+        val container = containerCreator.createMainContainer(task, image, resources, volumeMounts, envVars)
+
+        // Then
+        assertNotNull(container)
+        assertEquals("task-container", container.name)
+        assertEquals(image, container.image)
+        assertEquals(listOf("/bin/sh", "-c"), container.command)
+        assertNotNull(container.args)
+        assertNotNull(container.env)
+        assertNotNull(container.resources)
+
+        // Verify that updateApiTokenSecret was called
+        verify(clientProvider).updateApiTokenSecret(namespace)
     }
 
     @Test
@@ -108,8 +121,8 @@ class KubernetesContainerCreatorTest {
         val envVars = emptyList<EnvVar>()
         val namespace = "test-namespace"
 
-        // Mock that the secret does not exist and cannot be created
-        `when`(clientProvider.getOrCreateApiTokenSecret(namespace)).thenReturn(null)
+        // Mock that the secret cannot be updated or created
+        `when`(clientProvider.updateApiTokenSecret(namespace)).thenReturn(null)
 
         // When/Then
         try {
@@ -119,7 +132,7 @@ class KubernetesContainerCreatorTest {
             assertEquals("設定の初期化に失敗しました: 設定の検証に失敗: KERUTA_API_TOKEN が設定されていません", e.message)
         }
 
-        // Verify that getOrCreateApiTokenSecret was called
-        verify(clientProvider).getOrCreateApiTokenSecret(namespace)
+        // Verify that updateApiTokenSecret was called
+        verify(clientProvider).updateApiTokenSecret(namespace)
     }
 }

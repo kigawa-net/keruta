@@ -118,8 +118,8 @@ class KubernetesContainerCreator(
         // Check if the keruta-api-token secret exists, or create it if it doesn't
         val secretName = "keruta-api-token"
 
-        // Try to get or create the API token secret
-        val token = clientProvider.getOrCreateApiTokenSecret(namespace)
+        // Update the API token secret to ensure it's the latest before job execution
+        val token = clientProvider.updateApiTokenSecret(namespace)
 
         if (token != null) {
             // Create SecretKeySelector for API token

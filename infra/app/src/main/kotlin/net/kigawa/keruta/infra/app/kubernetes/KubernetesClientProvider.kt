@@ -149,4 +149,57 @@ class KubernetesClientProvider(
             null
         }
     }
+
+    /**
+     * Updates the keruta-api-token secret in the specified namespace with a new token.
+     * If the secret doesn't exist, it will be created.
+     *
+     * @param namespace The namespace to update or create the secret in
+     * @return The new token value, or null if update/creation failed
+     */
+    fun updateApiTokenSecret(namespace: String): String? {
+        val secretName = "keruta-api-token"
+
+        try {
+            val client = getClient() ?: return null
+
+            // Generate a new random token
+            val token = UUID.randomUUID().toString()
+
+            // Encode the token in Base64
+            val encodedToken = Base64.getEncoder().encodeToString(token.toByteArray())
+
+            // Check if the secret exists
+            if (secretExists(secretName, namespace)) {
+                // Get the existing secret
+                val existingSecret = client.secrets().inNamespace(namespace).withName(secretName).get()
+
+                // Update the token
+                if (existingSecret.data == null) {
+                    existingSecret.data = mutableMapOf()
+                }
+                existingSecret.data["token"] = encodedToken
+
+                // Update the secret in Kubernetes
+                client.secrets().inNamespace(namespace).withName(secretName).replace(existingSecret)
+                logger.info("Updated keruta-api-token secret in namespace $namespace")
+                return token
+            } else {
+                // Create a new secret
+                val data = mapOf("token" to token)
+                val createdSecret = createSecret(secretName, namespace, data)
+
+                return if (createdSecret != null) {
+                    logger.info("Created keruta-api-token secret in namespace $namespace")
+                    token
+                } else {
+                    logger.error("Failed to create keruta-api-token secret in namespace $namespace")
+                    null
+                }
+            }
+        } catch (e: Exception) {
+            logger.error("Failed to update keruta-api-token secret in namespace $namespace", e)
+            return null
+        }
+    }
 }
