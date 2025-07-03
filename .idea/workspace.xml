@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0affa348-36af-4c8f-bdc9-26d08e600a4c" name="変更" comment="コードベース全体におけるフォーマッティング修正の適用と、EditorConfigおよびktlint設定の追加">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesScriptExecutionHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesScriptExecutionHandler.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesScriptHandler.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-doc" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-doc" afterDir="false" />
-    </list>
+    <list default="true" id="0affa348-36af-4c8f-bdc9-26d08e600a4c" name="変更" comment="コードベース全体におけるフォーマッティング修正の適用と、EditorConfigおよびktlint設定の追加" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -111,6 +106,7 @@
       <workItem from="1751386183911" duration="2404000" />
       <workItem from="1751388613063" duration="3154000" />
       <workItem from="1751471391012" duration="5357000" />
+      <workItem from="1751532056784" duration="25000" />
     </task>
     <task id="LOCAL-00001" summary="WebSocketの設定を拡張し、バッファサイズとタイムアウトオプションを追加">
       <option name="closed" value="true" />

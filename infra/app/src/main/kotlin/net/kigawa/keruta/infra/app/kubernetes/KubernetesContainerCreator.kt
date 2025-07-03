@@ -85,6 +85,7 @@ class KubernetesContainerCreator(
             "if [ ! -f /usr/local/bin/keruta-agent ]; then",
             "    apt update && apt install -y curl",
             "    echo \"keruta-agent not found, downloading from KERUTA_AGENT_LATEST_RELEASE_URL\"",
+            "    echo KERUTA_AGENT_LATEST_RELEASE_URL=\"\$KERUTA_AGENT_LATEST_RELEASE_URL\"",
             "    if [ -z \"\$KERUTA_AGENT_LATEST_RELEASE_URL\" ]; then",
             "        echo \"KERUTA_AGENT_LATEST_RELEASE_URL is not set or empty. Cannot download keruta-agent.\"",
             "        echo",
