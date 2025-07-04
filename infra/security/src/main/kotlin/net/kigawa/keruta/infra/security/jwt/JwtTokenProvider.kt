@@ -1,12 +1,19 @@
 /**
  * Provider for JWT token generation and validation.
+ * This component handles all JWT token operations, including creation,
+ * validation, and extraction of authentication information.
  */
 package net.kigawa.keruta.infra.security.jwt
 
 import io.jsonwebtoken.Claims
+import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.MalformedJwtException
 import io.jsonwebtoken.SignatureAlgorithm
+import io.jsonwebtoken.SignatureException
+import io.jsonwebtoken.UnsupportedJwtException
 import io.jsonwebtoken.security.Keys
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -19,7 +26,8 @@ import javax.crypto.SecretKey
 class JwtTokenProvider(
     private val userDetailsService: UserDetailsService,
 ) {
-    @Value("\${jwt.secret:defaultSecretKeyForDevelopmentEnvironmentOnly}")
+    private val logger = LoggerFactory.getLogger(JwtTokenProvider::class.java)
+    @Value("\${jwt.secret:your-secret-key-here-should-be-very-long-and-secure}")
     private lateinit var secretString: String
 
     @Value("\${jwt.expiration:86400000}")
@@ -43,12 +51,16 @@ class JwtTokenProvider(
         val now = Date()
         val validity = Date(now.time + validityInMilliseconds)
 
+        logger.debug("Creating JWT token for user: $username, valid until: $validity")
+
         return Jwts.builder()
             .setSubject(username)
             .setIssuedAt(now)
             .setExpiration(validity)
             .signWith(secretKey, SignatureAlgorithm.HS256)
-            .compact()
+            .compact().also {
+                logger.debug("JWT token created successfully for user: $username")
+            }
     }
 
     /**
@@ -62,13 +74,17 @@ class JwtTokenProvider(
         val now = Date()
         val validity = Date(now.time + refreshValidityInMilliseconds)
 
+        logger.debug("Creating refresh token for user: $username, valid until: $validity")
+
         return Jwts.builder()
             .setSubject(username)
             .setIssuedAt(now)
             .setExpiration(validity)
             .claim("refresh", true)
             .signWith(secretKey, SignatureAlgorithm.HS256)
-            .compact()
+            .compact().also {
+                logger.debug("Refresh token created successfully for user: $username")
+            }
     }
 
     /**
@@ -78,11 +94,18 @@ class JwtTokenProvider(
      * @return The authentication object
      */
     fun getAuthentication(token: String): Authentication {
+        logger.debug("Getting authentication from JWT token")
+
         val claims = getClaims(token)
         val username = claims.subject
-        val userDetails = userDetailsService.loadUserByUsername(username)
+        logger.debug("JWT token subject: $username")
 
-        return UsernamePasswordAuthenticationToken(userDetails, "", userDetails.authorities)
+        val userDetails = userDetailsService.loadUserByUsername(username)
+        logger.debug("User details loaded for user: $username, authorities: ${userDetails.authorities}")
+
+        return UsernamePasswordAuthenticationToken(userDetails, "", userDetails.authorities).also {
+            logger.debug("Authentication created for user: $username with authorities: ${it.authorities}")
+        }
     }
 
     /**
@@ -92,10 +115,33 @@ class JwtTokenProvider(
      * @return true if the token is valid, false otherwise
      */
     fun validateToken(token: String): Boolean {
+        logger.debug("Validating JWT token")
+
         return try {
             val claims = getClaims(token)
-            !claims.expiration.before(Date())
+            val isValid = !claims.expiration.before(Date())
+
+            if (isValid) {
+                logger.debug("JWT token is valid, subject: ${claims.subject}, expiration: ${claims.expiration}")
+            } else {
+                logger.warn("JWT token is expired, subject: ${claims.subject}, expiration: ${claims.expiration}")
+            }
+
+            isValid
+        } catch (e: ExpiredJwtException) {
+            logger.warn("JWT token is expired: ${e.message}")
+            false
+        } catch (e: UnsupportedJwtException) {
+            logger.warn("JWT token is unsupported: ${e.message}")
+            false
+        } catch (e: MalformedJwtException) {
+            logger.warn("JWT token is malformed: ${e.message}")
+            false
+        } catch (e: SignatureException) {
+            logger.warn("JWT token has invalid signature: ${e.message}")
+            false
         } catch (e: Exception) {
+            logger.error("JWT token validation error", e)
             false
         }
     }
@@ -107,11 +153,20 @@ class JwtTokenProvider(
      * @return The claims
      */
     private fun getClaims(token: String): Claims {
-        return Jwts.parserBuilder()
-            .setSigningKey(secretKey)
-            .build()
-            .parseClaimsJws(token)
-            .body
+        logger.debug("Parsing JWT token to extract claims")
+
+        return try {
+            Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .body.also {
+                    logger.debug("JWT claims extracted successfully: subject=${it.subject}, expiration=${it.expiration}")
+                }
+        } catch (e: Exception) {
+            logger.error("Failed to parse JWT token", e)
+            throw e
+        }
     }
 
     /**
@@ -125,12 +180,16 @@ class JwtTokenProvider(
         val now = Date()
         val validity = Date(now.time + validityInMilliseconds)
 
+        logger.debug("Creating API token for subject: $subject, valid until: $validity")
+
         return Jwts.builder()
             .setSubject(subject)
             .setIssuedAt(now)
             .setExpiration(validity)
             .claim("type", "api")
             .signWith(secretKey, SignatureAlgorithm.HS256)
-            .compact()
+            .compact().also {
+                logger.debug("API token created successfully for subject: $subject")
+            }
     }
 }
