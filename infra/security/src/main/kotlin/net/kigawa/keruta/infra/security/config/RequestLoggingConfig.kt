@@ -18,7 +18,7 @@ class RequestLoggingConfig {
      * @return The configured CommonsRequestLoggingFilter
      */
     @Bean
-    fun requestLoggingFilter(): CommonsRequestLoggingFilter {
+    fun commonsRequestLoggingFilter(): CommonsRequestLoggingFilter {
         val filter = CommonsRequestLoggingFilter()
         filter.setIncludeQueryString(true)
         filter.setIncludePayload(true)

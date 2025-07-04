@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.MDC
+import org.springframework.core.annotation.Order
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
@@ -14,6 +15,7 @@ import java.util.UUID
  * This enhances logs with contextual information like request IDs and user IDs.
  */
 @Component
+@Order(-100) // Ensure this filter runs early in the chain
 class LoggingFilter : OncePerRequestFilter() {
 
     override fun doFilterInternal(

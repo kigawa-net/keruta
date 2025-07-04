@@ -3,6 +3,7 @@ package net.kigawa.keruta.infra.security.filter
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import org.springframework.web.util.ContentCachingRequestWrapper
@@ -15,6 +16,7 @@ import java.nio.charset.StandardCharsets
  * which is useful for debugging and monitoring.
  */
 @Component
+@Order(-90) // Run after LoggingFilter (-100) but before most other filters
 class RequestLoggingFilter : OncePerRequestFilter() {
 
     override fun doFilterInternal(
