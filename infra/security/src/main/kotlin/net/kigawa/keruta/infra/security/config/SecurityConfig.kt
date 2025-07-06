@@ -1,7 +1,5 @@
 package net.kigawa.keruta.infra.security.config
 
-import net.kigawa.keruta.infra.security.filter.LoggingFilter
-import net.kigawa.keruta.infra.security.filter.RequestLoggingFilter
 import net.kigawa.keruta.infra.security.jwt.JwtAuthenticationFilter
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,9 +24,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    @Lazy private val jwtAuthenticationFilter: JwtAuthenticationFilter,
-    @Lazy private val loggingFilter: LoggingFilter,
-    @Lazy private val requestLoggingFilter: RequestLoggingFilter,
 ) {
 
     @Bean
@@ -65,12 +60,6 @@ class SecurityConfig(
                     .logoutSuccessUrl("/")
                     .permitAll()
             }
-            // Add logging filter for all requests (first to populate MDC)
-            .addFilterBefore(loggingFilter, UsernamePasswordAuthenticationFilter::class.java)
-            // Add request logging filter (after MDC is populated, before authentication)
-            .addFilterAfter(requestLoggingFilter, LoggingFilter::class.java)
-            // Keep JWT authentication for API endpoints
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
 
         return http.build()
     }
