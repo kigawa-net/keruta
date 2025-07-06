@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.MDC
+import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
@@ -16,7 +17,11 @@ import java.util.UUID
  */
 @Component
 @Order(-100) // Ensure this filter runs early in the chain
-class LoggingFilter : OncePerRequestFilter() {
+class LoggingFilter : OncePerRequestFilter(), Ordered {
+
+    override fun getOrder(): Int {
+        return -100 // Same order as the @Order annotation
+    }
 
     override fun doFilterInternal(
         request: HttpServletRequest,
