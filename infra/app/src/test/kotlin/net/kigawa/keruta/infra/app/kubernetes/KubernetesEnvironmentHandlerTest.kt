@@ -19,12 +19,15 @@ class KubernetesEnvironmentHandlerTest {
     @Mock
     private lateinit var kubernetesConfig: KubernetesConfig
 
+    @Mock
+    private lateinit var clientProvider: KubernetesClientProvider
+
     private lateinit var environmentHandler: KubernetesEnvironmentHandler
 
     @BeforeEach
     fun setUp() {
         `when`(kubernetesConfig.apiUrl).thenReturn("http://keruta-api")
-        environmentHandler = KubernetesEnvironmentHandler(kerutaAgentService, kubernetesConfig)
+        environmentHandler = KubernetesEnvironmentHandler(kerutaAgentService, kubernetesConfig, clientProvider)
     }
 
     @Test

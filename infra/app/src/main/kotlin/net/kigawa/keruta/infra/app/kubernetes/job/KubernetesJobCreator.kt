@@ -1,12 +1,18 @@
-package net.kigawa.keruta.infra.app.kubernetes
+package net.kigawa.keruta.infra.app.kubernetes.job
 
 import net.kigawa.keruta.core.domain.model.Repository
 import net.kigawa.keruta.core.domain.model.Resources
 import net.kigawa.keruta.core.domain.model.Task
+import net.kigawa.keruta.infra.app.kubernetes.args.KubernetesAgentCommandHandler
+import net.kigawa.keruta.infra.app.kubernetes.client.ClientValidateResult
+import net.kigawa.keruta.infra.app.kubernetes.client.KubernetesClientValidator
+import net.kigawa.keruta.infra.app.kubernetes.KubernetesMetadataCreator
+import net.kigawa.keruta.infra.app.kubernetes.KubernetesNamespaceHandler
+import net.kigawa.keruta.infra.app.kubernetes.KubernetesScriptExecutionSetup
+import net.kigawa.keruta.infra.app.kubernetes.KubernetesVolumeSetup
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
-import java.util.*
 import java.util.concurrent.CompletableFuture
 
 /**
@@ -48,8 +54,9 @@ class KubernetesJobCreator(
     ): String {
         // Validate client and configuration
         val clientValidationResult = clientValidator.validateClient()
-        if (clientValidationResult != null) {
-            return clientValidationResult
+        when (clientValidationResult) {
+            is ClientValidateResult.Error -> return clientValidationResult.message
+            is ClientValidateResult.Success -> {} // Continue with job creation
         }
 
         logger.info("Creating Kubernetes job for task: ${task.id}")

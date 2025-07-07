@@ -9,6 +9,8 @@ import net.kigawa.keruta.core.domain.model.Repository
 import net.kigawa.keruta.core.domain.model.Resources
 import net.kigawa.keruta.core.domain.model.Task
 import net.kigawa.keruta.core.usecase.kubernetes.KubernetesService
+import net.kigawa.keruta.infra.app.kubernetes.job.KubernetesJobCreator
+import net.kigawa.keruta.infra.app.kubernetes.job.KubernetesJobMonitor
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 

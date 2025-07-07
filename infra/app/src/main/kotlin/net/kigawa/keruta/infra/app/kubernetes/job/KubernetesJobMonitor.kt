@@ -1,5 +1,8 @@
-package net.kigawa.keruta.infra.app.kubernetes
+package net.kigawa.keruta.infra.app.kubernetes.job
 
+import io.fabric8.kubernetes.api.model.PersistentVolumeClaimBuilder
+import io.fabric8.kubernetes.api.model.Quantity
+import net.kigawa.keruta.infra.app.kubernetes.KubernetesClientProvider
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
@@ -218,7 +221,7 @@ class KubernetesJobMonitor(
             )
 
             // Create PVC
-            val pvcBuilder = io.fabric8.kubernetes.api.model.PersistentVolumeClaimBuilder()
+            val pvcBuilder = PersistentVolumeClaimBuilder()
                 .withNewMetadata()
                 .withName(pvcName)
                 .withNamespace(namespace)
@@ -228,7 +231,7 @@ class KubernetesJobMonitor(
                 .withNewSpec()
                 .withAccessModes(actualAccessMode)
                 .withNewResources()
-                .addToRequests("storage", io.fabric8.kubernetes.api.model.Quantity(actualStorageSize))
+                .addToRequests("storage", Quantity(actualStorageSize))
                 .endResources()
 
             // Set storageClass if provided

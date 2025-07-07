@@ -1,4 +1,4 @@
-package net.kigawa.keruta.infra.app.kubernetes
+package net.kigawa.keruta.infra.app.kubernetes.args
 
 import net.kigawa.keruta.core.domain.model.Repository
 import net.kigawa.keruta.core.domain.model.Task

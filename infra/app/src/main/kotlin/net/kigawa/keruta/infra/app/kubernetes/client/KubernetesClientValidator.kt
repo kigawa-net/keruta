@@ -1,5 +1,6 @@
-package net.kigawa.keruta.infra.app.kubernetes
+package net.kigawa.keruta.infra.app.kubernetes.client
 
+import net.kigawa.keruta.infra.app.kubernetes.KubernetesClientProvider
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
@@ -18,15 +19,15 @@ class KubernetesClientValidator(
      *
      * @return null if validation succeeds, or an error string if it fails
      */
-    fun validateClient(): String? {
+    fun validateClient(): ClientValidateResult {
         val config = clientProvider.getConfig()
         val client = clientProvider.getClient()
 
         if (!config.enabled || client == null) {
             logger.warn("Kubernetes integration is disabled or client is not available")
-            return "kubernetes-disabled"
+            return ClientValidateResult.Error("Kubernetes integration is disabled or client is not available")
         }
 
-        return null
+        return ClientValidateResult.Success
     }
 }

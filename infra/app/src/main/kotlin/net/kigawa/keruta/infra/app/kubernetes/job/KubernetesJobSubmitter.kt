@@ -1,11 +1,15 @@
-package net.kigawa.keruta.infra.app.kubernetes
+package net.kigawa.keruta.infra.app.kubernetes.job
 
 import io.fabric8.kubernetes.api.model.Container
 import io.fabric8.kubernetes.api.model.EnvVar
+import io.fabric8.kubernetes.api.model.ObjectMeta
 import io.fabric8.kubernetes.api.model.Volume
 import io.fabric8.kubernetes.api.model.VolumeMount
 import net.kigawa.keruta.core.domain.model.Resources
 import net.kigawa.keruta.core.domain.model.Task
+import net.kigawa.keruta.infra.app.kubernetes.KubernetesClientProvider
+import net.kigawa.keruta.infra.app.kubernetes.KubernetesContainerHandler
+import net.kigawa.keruta.infra.app.kubernetes.KubernetesPodSpecHandler
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
@@ -45,8 +49,8 @@ class KubernetesJobSubmitter(
         envVars: List<EnvVar>,
         volumes: MutableList<Volume>,
         initContainers: MutableList<Container>,
-        metadata: io.fabric8.kubernetes.api.model.ObjectMeta,
-        podTemplateMetadata: io.fabric8.kubernetes.api.model.ObjectMeta,
+        metadata: ObjectMeta,
+        podTemplateMetadata: ObjectMeta,
         namespace: String,
     ): String {
         val client = clientProvider.getClient()!!
