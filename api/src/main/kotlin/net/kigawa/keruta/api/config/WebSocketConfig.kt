@@ -67,6 +67,12 @@ class WebSocketConfig(
             .setAllowedOrigins("*")
             .addInterceptors(jwtWebSocketHandshakeInterceptor)
             .setHandshakeHandler(handshakeHandler())
+
+        // Add endpoint for agent connections
+        registry.addHandler(taskLogWebSocketHandler, "/ws/agent")
+            .setAllowedOrigins("*")
+            .addInterceptors(jwtWebSocketHandshakeInterceptor)
+            .setHandshakeHandler(handshakeHandler())
     }
 
 }
