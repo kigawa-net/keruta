@@ -1,6 +1,6 @@
 package net.kigawa.keruta.api.task.controller
 
-import net.kigawa.keruta.api.task.websocket.TaskLogWebSocketHandler
+import net.kigawa.keruta.api.task.log.TaskLogHandler
 import net.kigawa.keruta.core.usecase.task.TaskService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/admin/tasks")
 class TaskLogsController(
     private val taskService: TaskService,
-    private val taskLogWebSocketHandler: TaskLogWebSocketHandler,
+    private val taskLogHandler: TaskLogHandler,
 ) {
 
     @GetMapping("/{id}/logs")
@@ -40,8 +40,8 @@ class TaskLogsController(
             // Append log to the database
             taskService.appendTaskLogs(id, message)
 
-            // Send log update to WebSocket clients
-            taskLogWebSocketHandler.sendLogUpdate(id, message, source, level)
+            // Send log update
+            taskLogHandler.sendLogUpdate(id, message, source, level)
 
             // Redirect back to logs view
             return "redirect:/admin/tasks/$id/logs"

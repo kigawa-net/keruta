@@ -16,9 +16,11 @@ dependencies {
     implementation(Dependencies.kotlinReflect)
     implementation(Dependencies.springBootStarter)
     implementation(Dependencies.springBootStarterWeb)
-    implementation(Dependencies.springBootStarterWebsocket)
+    // WebSocket functionality has been removed
+    // implementation(Dependencies.springBootStarterWebsocket)
     implementation(Dependencies.springBootStarterSecurity)
-    implementation("jakarta.websocket:jakarta.websocket-api:2.1.0")
+    // WebSocket functionality has been removed
+    // implementation("jakarta.websocket:jakarta.websocket-api:2.1.0")
 
     // Swagger/OpenAPI
     implementation(Dependencies.springdocOpenApi)

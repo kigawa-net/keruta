@@ -47,14 +47,7 @@ class KubernetesEnvironmentHandler(
 
         logger.info("Latest release URL of keruta-agent: $latestReleaseUrl")
 
-        // Get or create agent token for WebSocket authentication
-        val namespace = kubernetesConfig.defaultNamespace
-        val agentToken = clientProvider.getOrCreateAgentTokenSecret(namespace) ?: ""
-        if (agentToken.isEmpty()) {
-            logger.warn("Failed to get or create agent token for WebSocket authentication")
-        } else {
-            logger.info("Successfully retrieved agent token for WebSocket authentication")
-        }
+        // WebSocket authentication has been removed
 
         // Add task metadata environment variables directly
         logger.info("Adding environment variables directly")
@@ -71,9 +64,6 @@ class KubernetesEnvironmentHandler(
 
             // Add API endpoint environment variable
             EnvVar("KERUTA_API_ENDPOINT", apiUrl ?: "http://keruta-api", null),
-
-            // Add agent token for WebSocket authentication
-            EnvVar("KERUTA_AGENT_TOKEN", agentToken, null),
         )
     }
 }

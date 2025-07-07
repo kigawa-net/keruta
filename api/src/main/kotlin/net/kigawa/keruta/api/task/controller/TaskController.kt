@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import net.kigawa.keruta.api.task.dto.ScriptRequest
 import net.kigawa.keruta.api.task.dto.ScriptResponse
 import net.kigawa.keruta.api.task.dto.TaskResponse
-import net.kigawa.keruta.api.task.websocket.TaskLogWebSocketHandler
+import net.kigawa.keruta.api.task.log.TaskLogHandler
 import net.kigawa.keruta.core.usecase.task.TaskService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*
 @Tag(name = "Task", description = "Task management API")
 class TaskController(
     private val taskService: TaskService,
-    private val taskLogWebSocketHandler: TaskLogWebSocketHandler,
+    private val taskLogHandler: TaskLogHandler,
 ) {
 
     @GetMapping
@@ -76,8 +76,8 @@ class TaskController(
             val task = taskService.getTaskById(id)
             taskService.appendTaskLogs(id, logContent)
 
-            // Send log update to WebSocket clients
-            taskLogWebSocketHandler.sendLogUpdate(id, logContent, source, level)
+            // Send log update
+            taskLogHandler.sendLogUpdate(id, logContent, source, level)
 
             ResponseEntity.ok().build()
         } catch (e: NoSuchElementException) {

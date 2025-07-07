@@ -21,7 +21,8 @@ object Dependencies {
     const val springBootStarterData = "org.springframework.boot:spring-boot-starter-data-mongodb"
     const val springBootStarterTest = "org.springframework.boot:spring-boot-starter-test"
     const val springBootStarterOauth2Client = "org.springframework.boot:spring-boot-starter-oauth2-client"
-    const val springBootStarterWebsocket = "org.springframework.boot:spring-boot-starter-websocket"
+    // WebSocket functionality has been removed
+    // const val springBootStarterWebsocket = "org.springframework.boot:spring-boot-starter-websocket"
 
     // MongoDB
     const val mongodbDriver = "org.mongodb:mongodb-driver-sync:${Versions.mongodbDriver}"
