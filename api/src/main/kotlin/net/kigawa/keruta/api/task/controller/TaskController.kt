@@ -7,6 +7,7 @@ import net.kigawa.keruta.api.task.dto.ScriptResponse
 import net.kigawa.keruta.api.task.dto.TaskResponse
 import net.kigawa.keruta.api.task.log.TaskLogHandler
 import net.kigawa.keruta.core.usecase.task.TaskService
+import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -17,6 +18,7 @@ class TaskController(
     private val taskService: TaskService,
     private val taskLogHandler: TaskLogHandler,
 ) {
+    private val logger = LoggerFactory.getLogger(this::class.java)
 
     @GetMapping
     @Operation(summary = "Get all tasks", description = "Retrieves all tasks in the system")
@@ -143,18 +145,24 @@ class TaskController(
         @PathVariable id: String,
         @RequestBody statusRequest: Map<String, String>,
     ): ResponseEntity<TaskResponse> {
+        logger.info("updateTaskStatus id={} status={}", id, statusRequest)
         val statusStr = statusRequest["status"] ?: return ResponseEntity.badRequest().build()
-
+        logger.info("updateTaskStatus id={} status={}", id, statusStr)
         return try {
+            logger.info("updateTaskStatus id={} status={}", id, statusStr)
             val taskStatus = try {
+                logger.info("updateTaskStatus id={} status={}", id, statusStr)
                 net.kigawa.keruta.core.domain.model.TaskStatus.valueOf(statusStr.uppercase())
             } catch (e: IllegalArgumentException) {
+                logger.error("updateTaskStatus id={} status={}", id, statusStr, e)
                 return ResponseEntity.badRequest().build()
             }
-
+            logger.info("updateTaskStatus id={} status={}", id, statusStr)
             val updatedTask = taskService.updateTaskStatus(id, taskStatus)
+            logger.info("updateTaskStatus id={} status={}", id, statusStr)
             ResponseEntity.ok(TaskResponse.fromDomain(updatedTask))
         } catch (e: NoSuchElementException) {
+            logger.error("updateTaskStatus id={} status={}", id, statusStr, e)
             ResponseEntity.notFound().build()
         }
     }
