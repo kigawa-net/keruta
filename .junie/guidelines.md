@@ -4,10 +4,9 @@
 
 ## Documents
 
-* 常に最初に`/README.md`を読む
-* 常に最初に`/todo.md`を読む
-* 常に最初に`/structure.md`を読む
-    * ファイル構造やアーキテクチャを書く
+* 常に`/README.md`を読む
+* 常に`/todo.md`を読む
+* 常に`/structure.md`を読む
 * ドキュメントは常に更新する
 
 ## Programs
