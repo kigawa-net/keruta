@@ -4,6 +4,7 @@
 
 ## Documents
 
+* 最初にドキュメントを更新
 * 常に`/README.md`を更新
 * 常に`/todo.md`を更新
 * 常に`/structure.md`を更新

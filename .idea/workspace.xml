@@ -19,17 +19,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a0c78284-c429-42af-9da0-33dfca68a810" name="変更" comment="Add detailed API error logging across API calls&#10;&#10;Introduced a reusable `logAPIError` function to centralize and improve error logging for API calls in various modules. This ensures consistent, detailed error and request context logging, including headers and bodies, while masking sensitive information like authentication details. Updated affected API operations (e.g., task status updates, artifact uploads) to utilize the new logging method.">
-      <change afterPath="$PROJECT_DIR$/keruta-agent/internal/api/error_logger.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.junie/guidelines.md" beforeDir="false" afterPath="$PROJECT_DIR$/.junie/guidelines.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keruta-agent" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-agent/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-agent/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keruta-agent/internal/api/artifacts.go" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/internal/api/artifacts.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keruta-agent/internal/api/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/internal/api/client.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keruta-agent/internal/api/logging.go" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/internal/api/logging.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keruta-agent/internal/api/script.go" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/internal/api/script.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keruta-agent/internal/api/task_status.go" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/internal/api/task_status.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-agent/internal/commands/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/internal/commands/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-agent/internal/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/internal/config/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-agent/internal/config/token_refresh.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-agent/pkg/health/checker.go" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/pkg/health/checker.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/todo.md" beforeDir="false" afterPath="$PROJECT_DIR$/todo.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -80,6 +81,9 @@
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 4
@@ -161,7 +165,7 @@
       <workItem from="1751934383312" duration="611000" />
       <workItem from="1751935076823" duration="2611000" />
       <workItem from="1751943147033" duration="2117000" />
-      <workItem from="1751954492837" duration="1131000" />
+      <workItem from="1751954492837" duration="2453000" />
     </task>
     <task id="LOCAL-00001" summary="wp">
       <option name="closed" value="true" />
@@ -235,7 +239,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751955136745</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Add detailed API error logging across API calls&#10;&#10;Introduced a reusable `logAPIError` function to centralize and improve error logging for API calls in various modules. This ensures consistent, detailed error and request context logging, including headers and bodies, while masking sensitive information like authentication details. Updated affected API operations (e.g., task status updates, artifact uploads) to utilize the new logging method.">
+      <option name="closed" value="true" />
+      <created>1751955923680</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1751955923680</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
