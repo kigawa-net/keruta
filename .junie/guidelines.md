@@ -4,9 +4,9 @@
 
 ## Documents
 
-* 常に`/README.md`を読む
-* 常に`/todo.md`を読む
-* 常に`/structure.md`を読む
+* 常に`/README.md`を更新
+* 常に`/todo.md`を更新
+* 常に`/structure.md`を更新
 * 常にドキュメントを更新する
 
 ## Programs
