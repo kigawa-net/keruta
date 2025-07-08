@@ -7,7 +7,7 @@
 * 常に`/README.md`を読む
 * 常に`/todo.md`を読む
 * 常に`/structure.md`を読む
-* ドキュメントは常に更新する
+* 常にドキュメントを更新する
 
 ## Programs
 
