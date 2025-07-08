@@ -4,7 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0c78284-c429-42af-9da0-33dfca68a810" name="変更" comment="wp" />
+    <list default="true" id="a0c78284-c429-42af-9da0-33dfca68a810" name="変更" comment="wp">
+      <change afterPath="$PROJECT_DIR$/keruta-agent/keruta-agent.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/buildSrc/keruta.buildSrc.main.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/core/usecase/keruta.core.usecase.main.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/app/keruta.infra.app.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/infra/app/keruta.infra.app.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/persistence/keruta.infra.persistence.main.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/persistence/keruta.infra.persistence.test.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/keruta.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/keruta.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-agent" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-agent/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/.gitmodules" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-agent/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-agent/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-agent/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-agent/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-agent/keruta-doc" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -22,6 +39,7 @@
       </list>
     </option>
   </component>
+  <component name="GOROOT" url="file://$USER_HOME$/go/go1.24.4" />
   <component name="Git.Settings">
     <excluded-from-favorite>
       <branch-storage>
@@ -61,35 +79,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Docker.server.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.keruta のビルド.executor&quot;: &quot;Run&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;Spring Boot.KerutaApplication.executor&quot;: &quot;Run&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;モジュール&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Docker.server.executor": "Run",
+    "Gradle.keruta のビルド.executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.KerutaApplication.executor": "Run",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "モジュール",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="K2MoveDeclarationsDialog.RECENT_PACKAGE_KEY">
       <recent name="net.kigawa.keruta.infra.app.kubernetes.client" />
@@ -128,6 +147,8 @@
       <workItem from="1751669770703" duration="1435000" />
       <workItem from="1751861229029" duration="8359000" />
       <workItem from="1751934383312" duration="611000" />
+      <workItem from="1751935076823" duration="2611000" />
+      <workItem from="1751943147033" duration="2117000" />
     </task>
     <task id="LOCAL-00001" summary="wp">
       <option name="closed" value="true" />
@@ -185,7 +206,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751934950581</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="wp">
+      <option name="closed" value="true" />
+      <created>1751935402704</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1751935402704</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -3,12 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/keruta.iml" filepath="$PROJECT_DIR$/.idea/modules/keruta.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/buildSrc/keruta.buildSrc.main.iml" filepath="$PROJECT_DIR$/.idea/modules/buildSrc/keruta.buildSrc.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/keruta-agent/keruta-agent.iml" filepath="$PROJECT_DIR$/keruta-agent/keruta-agent.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/domain/keruta.core.domain.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core/domain/keruta.core.domain.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/usecase/keruta.core.usecase.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core/usecase/keruta.core.usecase.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/infra/app/keruta.infra.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/infra/app/keruta.infra.app.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/infra/persistence/keruta.infra.persistence.main.iml" filepath="$PROJECT_DIR$/.idea/modules/infra/persistence/keruta.infra.persistence.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/infra/persistence/keruta.infra.persistence.test.iml" filepath="$PROJECT_DIR$/.idea/modules/infra/persistence/keruta.infra.persistence.test.iml" />
     </modules>
   </component>
 </project>
