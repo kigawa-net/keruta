@@ -35,7 +35,9 @@ jobs:
 
       - name: Build and run application
         run: |
-          ./gradlew bootRun --args='--spring.profiles.active=test' &
+          # set -e を追加してコマンド失敗時にスクリプトを終了
+          set -e
+          ./gradlew :api:bootRun --args='--spring.profiles.active=test' || { echo "Gradleビルドに失敗しました"; exit 1; } &
           echo "Waiting for application to start..."
 
           # Health check instead of sleep
@@ -57,17 +59,18 @@ jobs:
 
           echo "Application is healthy! Proceeding with OpenAPI generation."
           mkdir -p /tmp
-          curl -s http://localhost:8080/api-docs > /tmp/openapi.json
-          curl -s http://localhost:8080/api-docs.yaml > /tmp/openapi.yaml
+          curl -s -f http://localhost:8080/api-docs > /tmp/openapi.json || { echo "OpenAPI JSONの取得に失敗しました"; exit 1; }
+          curl -s -f http://localhost:8080/api-docs.yaml > /tmp/openapi.yaml || { echo "OpenAPI YAMLの取得に失敗しました"; exit 1; }
           echo "OpenAPI specification generated"
 
 
       - name: Clone keruta-doc repository
         run: |
-          git clone https://${{ secrets.GIT_TOKEN }}@github.com/kigawa-net/keruta-doc.git /tmp/keruta-doc
+          set -e
+          git clone https://${{ secrets.GIT_TOKEN }}@github.com/kigawa-net/keruta-doc.git /tmp/keruta-doc || { echo "リポジトリのクローンに失敗しました"; exit 1; }
           mkdir -p /tmp/keruta-doc/common/apiSpec
-          cp /tmp/openapi.json /tmp/keruta-doc/common/apiSpec/
-          cp /tmp/openapi.yaml /tmp/keruta-doc/common/apiSpec/
+          cp /tmp/openapi.json /tmp/keruta-doc/common/apiSpec/ || { echo "OpenAPI JSONのコピーに失敗しました"; exit 1; }
+          cp /tmp/openapi.yaml /tmp/keruta-doc/common/apiSpec/ || { echo "OpenAPI YAMLのコピーに失敗しました"; exit 1; }
 
       - name: Commit and push to keruta-doc repository
         run: |

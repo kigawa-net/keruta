@@ -13,7 +13,7 @@
 docker compose up -d mongodb
 
 # アプリケーションの実行
-./gradlew bootRun
+./gradlew :api:bootRun
 ```
 
 ### 方法2: Dockerで実行

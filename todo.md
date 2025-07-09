@@ -5,6 +5,12 @@
 
 ## Completed Tasks
 
+- Fixed bootRun task configuration
+    - Change: Updated GitHub workflow and README to specify the api module for bootRun task
+    - Details: Changed `./gradlew bootRun` to `./gradlew :api:bootRun` and disabled bootRun task in infra/core module
+    - Location: /.github/workflows/generate-openapi.yml, /infra/core/build.gradle.kts, /README.md
+    - Reason: The main application class is in the api module, not in the infra/core module
+
 - Replaced sleep with health check in GitHub workflow
     - Change: Modified GitHub workflow to use /api/v1/health endpoint instead of fixed sleep
     - Details: Implemented a retry loop with timeout in generate-openapi.yml
