@@ -37,7 +37,7 @@ jobs:
         run: |
           ./gradlew bootRun --args='--spring.profiles.active=test' &
           echo "Waiting for application to start..."
-          sleep 60  # Give the application time to start
+          sleep 120  # Give the application time to start
 
       - name: Generate OpenAPI specification
         run: |
