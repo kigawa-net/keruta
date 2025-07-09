@@ -22,14 +22,29 @@ class RestAuthenticationEntryPoint(private val objectMapper: ObjectMapper) : Aut
         response: HttpServletResponse,
         authException: AuthenticationException,
     ) {
-        // Include the detailed cause of the error in the response
-        val errorMessage = authException.message ?: "Unauthorized"
+        // Get the authentication error message
+        val originalMessage = authException.message
+
+        // Create a more polite and detailed error message
+        val errorMessage = when {
+            originalMessage?.contains("expired", ignoreCase = true) == true ->
+                "Your session has expired. Please log in again to continue."
+            originalMessage?.contains("bad credentials", ignoreCase = true) == true ->
+                "The provided credentials are incorrect. Please check your username and password and try again."
+            originalMessage?.contains("disabled", ignoreCase = true) == true ->
+                "Your account is currently disabled. Please contact support for assistance."
+            originalMessage?.contains("locked", ignoreCase = true) == true ->
+                "Your account is locked. Please contact support for assistance."
+            else ->
+                "Authentication is required to access this resource. Please log in with valid credentials."
+        }
 
         // Format error response according to API specifications
         val errorResponse = mapOf(
             "error" to mapOf(
                 "code" to "UNAUTHORIZED",
-                "message" to errorMessage
+                "message" to errorMessage,
+                "status" to HttpServletResponse.SC_UNAUTHORIZED
             ),
             "meta" to mapOf(
                 "timestamp" to ZonedDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME),

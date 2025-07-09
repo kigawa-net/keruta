@@ -5,6 +5,12 @@
 
 ## Completed Tasks
 
+- 改善されたエラーレスポンス
+    - Change: エラーレスポンスをより丁寧で詳細なものに改善
+    - Details: GlobalExceptionHandlerを作成してアプリケーション全体の例外を処理し、RestAuthenticationEntryPointを更新して認証エラーメッセージを改善
+    - Location: /infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/GlobalExceptionHandler.kt, /infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/RestAuthenticationEntryPoint.kt
+    - Reason: ユーザーがエラーの原因をより理解しやすくし、適切な対応を取れるようにするため
+
 - Removed authentication from the application
     - Change: Removed OAuth2/Keycloak authentication and made all endpoints publicly accessible
     - Details: Removed OAuth2 login configuration from SecurityConfig, commented out Keycloak and JWT configuration in application.properties, and updated README.md
