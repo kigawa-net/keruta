@@ -46,12 +46,24 @@ jobs:
           curl -s http://localhost:8080/api-docs.yaml > keruta-doc/common/apiSpec/openapi.yaml
           echo "OpenAPI specification generated"
 
-      - name: Commit and push OpenAPI specification
+      - name: Clone keruta-doc repository
         run: |
+          git clone https://${{ secrets.GIT_TOKEN }}@github.com/kigawa-net/keruta-doc.git /tmp/keruta-doc
+          mkdir -p /tmp/keruta-doc/common/apiSpec
+          cp keruta-doc/common/apiSpec/openapi.json /tmp/keruta-doc/common/apiSpec/
+          cp keruta-doc/common/apiSpec/openapi.yaml /tmp/keruta-doc/common/apiSpec/
+          cp keruta-doc/README.md /tmp/keruta-doc/
+          cp keruta-doc/structure.md /tmp/keruta-doc/
+          cp keruta-doc/todo.md /tmp/keruta-doc/
+
+      - name: Commit and push to keruta-doc repository
+        run: |
+          cd /tmp/keruta-doc
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add keruta-doc/common/apiSpec/openapi.json keruta-doc/common/apiSpec/openapi.yaml
-          git commit -m "Update OpenAPI specification" || echo "No changes to commit"
+          git add common/apiSpec/openapi.json common/apiSpec/openapi.yaml
+          git add README.md structure.md todo.md
+          git commit -m "Update documentation and OpenAPI specification" || echo "No changes to commit"
           git push
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}

@@ -1,8 +1,15 @@
 # Todo List
 
 - structure.mdの改善
+- keruta-docリポジトリへの完全な移行
 
 ## Completed Tasks
+
+- Set up keruta-doc repository migration
+    - Change: Prepared keruta-doc directory for migration to a separate repository
+    - Details: Created structure.md and todo.md files, updated README.md with migration notice
+    - Location: keruta-doc directory and https://github.com/kigawa-net/keruta-doc
+    - Reason: To separate documentation from the main codebase for better organization
 
 - Added GitHub Action for automatic OpenAPI specification generation
     - Change: Created a workflow that generates OpenAPI specification files on push
