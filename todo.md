@@ -5,6 +5,18 @@
 
 ## Completed Tasks
 
+- Removed authentication from the application
+    - Change: Removed OAuth2/Keycloak authentication and made all endpoints publicly accessible
+    - Details: Removed OAuth2 login configuration from SecurityConfig, commented out Keycloak and JWT configuration in application.properties, and updated README.md
+    - Location: /infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/SecurityConfig.kt, /api/src/main/resources/application.properties, /README.md
+    - Reason: Simplified application access by removing authentication requirement
+
+- Fixed OAuth2 client configuration issue
+    - Change: Updated SecurityConfig to properly configure OAuth2 login
+    - Details: Added OAuth2 login configuration to securityFilterChain method and updated imports
+    - Location: /infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/SecurityConfig.kt
+    - Reason: Fixed Spring Security initialization error related to OAuth2 client configuration
+
 - Fixed bootRun task configuration
     - Change: Updated GitHub workflow and README to specify the api module for bootRun task
     - Details: Changed `./gradlew bootRun` to `./gradlew :api:bootRun` and disabled bootRun task in infra/core module
