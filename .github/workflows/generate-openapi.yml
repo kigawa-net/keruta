@@ -37,24 +37,37 @@ jobs:
         run: |
           ./gradlew bootRun --args='--spring.profiles.active=test' &
           echo "Waiting for application to start..."
-          sleep 120  # Give the application time to start
 
-      - name: Generate OpenAPI specification
-        run: |
-          mkdir -p keruta-doc/common/apiSpec
-          curl -s http://localhost:8080/api-docs > keruta-doc/common/apiSpec/openapi.json
-          curl -s http://localhost:8080/api-docs.yaml > keruta-doc/common/apiSpec/openapi.yaml
+          # Health check instead of sleep
+          MAX_RETRIES=60
+          RETRY_INTERVAL=5
+          RETRY_COUNT=0
+
+          echo "Checking health endpoint at /api/v1/health..."
+          until curl -s -f http://localhost:8080/api/v1/health > /dev/null || [ $RETRY_COUNT -eq $MAX_RETRIES ]; do
+            echo "Health check attempt $((RETRY_COUNT+1))/$MAX_RETRIES failed, retrying in ${RETRY_INTERVAL}s..."
+            sleep $RETRY_INTERVAL
+            RETRY_COUNT=$((RETRY_COUNT+1))
+          done
+
+          if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
+            echo "Health check failed after $MAX_RETRIES attempts. Exiting."
+            exit 1
+          fi
+
+          echo "Application is healthy! Proceeding with OpenAPI generation."
+          mkdir -p /tmp
+          curl -s http://localhost:8080/api-docs > /tmp/openapi.json
+          curl -s http://localhost:8080/api-docs.yaml > /tmp/openapi.yaml
           echo "OpenAPI specification generated"
+
 
       - name: Clone keruta-doc repository
         run: |
           git clone https://${{ secrets.GIT_TOKEN }}@github.com/kigawa-net/keruta-doc.git /tmp/keruta-doc
           mkdir -p /tmp/keruta-doc/common/apiSpec
-          cp keruta-doc/common/apiSpec/openapi.json /tmp/keruta-doc/common/apiSpec/
-          cp keruta-doc/common/apiSpec/openapi.yaml /tmp/keruta-doc/common/apiSpec/
-          cp keruta-doc/README.md /tmp/keruta-doc/
-          cp keruta-doc/structure.md /tmp/keruta-doc/
-          cp keruta-doc/todo.md /tmp/keruta-doc/
+          cp /tmp/openapi.json /tmp/keruta-doc/common/apiSpec/
+          cp /tmp/openapi.yaml /tmp/keruta-doc/common/apiSpec/
 
       - name: Commit and push to keruta-doc repository
         run: |

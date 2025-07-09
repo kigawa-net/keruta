@@ -36,6 +36,7 @@ docker compose up -d
 - Kubernetesとの統合（タスク情報を環境変数としたPod作成）
 - Kubernetesのデフォルト設定をデータベースに保存
 - 管理パネル（/admin からアクセス可能）
+- ヘルスチェックエンドポイント（/api/health および /api/v1/health）
 
 ## 詳細ドキュメント
 

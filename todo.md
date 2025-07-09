@@ -5,6 +5,18 @@
 
 ## Completed Tasks
 
+- Replaced sleep with health check in GitHub workflow
+    - Change: Modified GitHub workflow to use /api/v1/health endpoint instead of fixed sleep
+    - Details: Implemented a retry loop with timeout in generate-openapi.yml
+    - Location: /.github/workflows/generate-openapi.yml
+    - Reason: More reliable application startup detection for OpenAPI generation
+
+- Added health check endpoint for s1leep management
+    - Change: Implemented a new health check endpoint at /api/v1/health
+    - Details: Created a new HealthController in the v1 API package
+    - Location: /api/src/main/kotlin/net/kigawa/keruta/api/v1/HealthController.kt
+    - Reason: To provide health status information for s1leep management
+
 - Set up keruta-doc repository migration
     - Change: Prepared keruta-doc directory for migration to a separate repository
     - Details: Created structure.md and todo.md files, updated README.md with migration notice
