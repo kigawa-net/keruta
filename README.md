@@ -46,6 +46,7 @@ docker compose up -d
 - [Kubernetes統合](keruta-doc/keruta/kubernetes_integration.md) - タスク情報を環境変数としたKubernetes Pod作成の詳細
 - [タスクキューシステム設計](keruta-doc/keruta/task_queue_system_design.md) - コーディングエージェントタスクキューシステムの詳細設計
 - [ログ設定](keruta-doc/keruta/misc/logging.md) - アプリケーションのログ設定と詳細なログ出力の説明
+- [API仕様](keruta-doc/common/apiSpec) - 自動生成されたOpenAPI仕様書（JSON/YAML形式）
 
 ## 技術スタック
 

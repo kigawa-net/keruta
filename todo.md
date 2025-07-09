@@ -4,6 +4,12 @@
 
 ## Completed Tasks
 
+- Added GitHub Action for automatic OpenAPI specification generation
+    - Change: Created a workflow that generates OpenAPI specification files on push
+    - Details: Added .github/workflows/generate-openapi.yml that builds the app, extracts OpenAPI specs, and commits them
+    - Location: OpenAPI specs are stored in keruta-doc/common/apiSpec directory
+    - Formats: Both JSON and YAML formats are generated
+
 - Removed API authentication requirement
     - Change: Removed token-based authentication from all API endpoints
     - Details: Removed token field from Client struct, removed Authorization headers from all API requests, and updated configuration to not require a token
