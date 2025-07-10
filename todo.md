@@ -5,6 +5,12 @@
 
 ## Completed Tasks
 
+- Fixed task status update endpoint to handle message field
+    - Change: Modified TaskController to properly handle the message field in task status update requests
+    - Details: Updated the updateTaskStatus method to extract the message from the request and update the task's description field
+    - Location: /api/src/main/kotlin/net/kigawa/keruta/api/task/controller/TaskController.kt
+    - Reason: To fix a 400 error that occurred when the client included a message field in the request
+
 - 改善されたエラーレスポンス
     - Change: エラーレスポンスをより丁寧で詳細なものに改善
     - Details: GlobalExceptionHandlerを作成してアプリケーション全体の例外を処理し、RestAuthenticationEntryPointを更新して認証エラーメッセージを改善

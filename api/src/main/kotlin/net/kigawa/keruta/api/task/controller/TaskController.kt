@@ -145,24 +145,38 @@ class TaskController(
         @PathVariable id: String,
         @RequestBody statusRequest: Map<String, String>,
     ): ResponseEntity<TaskResponse> {
-        logger.info("updateTaskStatus id={} status={}", id, statusRequest)
+        logger.info("updateTaskStatus id={} status={} message={}", id, statusRequest["status"], statusRequest["message"])
         val statusStr = statusRequest["status"] ?: return ResponseEntity.badRequest().build()
-        logger.info("updateTaskStatus id={} status={}", id, statusStr)
+        val message = statusRequest["message"]
+
         return try {
-            logger.info("updateTaskStatus id={} status={}", id, statusStr)
             val taskStatus = try {
-                logger.info("updateTaskStatus id={} status={}", id, statusStr)
                 net.kigawa.keruta.core.domain.model.TaskStatus.valueOf(statusStr.uppercase())
             } catch (e: IllegalArgumentException) {
-                logger.error("updateTaskStatus id={} status={}", id, statusStr, e)
+                logger.error("Invalid task status: {}", statusStr, e)
                 return ResponseEntity.badRequest().build()
             }
-            logger.info("updateTaskStatus id={} status={}", id, statusStr)
-            val updatedTask = taskService.updateTaskStatus(id, taskStatus)
-            logger.info("updateTaskStatus id={} status={}", id, statusStr)
+
+            // Get the current task
+            val task = taskService.getTaskById(id)
+
+            // Update the task status
+            val updatedTask = if (message != null) {
+                // If message is provided, update both status and description
+                val taskWithMessage = task.copy(
+                    status = taskStatus,
+                    description = message
+                )
+                taskService.updateTask(id, taskWithMessage)
+            } else {
+                // If no message, just update the status
+                taskService.updateTaskStatus(id, taskStatus)
+            }
+
+            logger.info("Task status updated successfully: id={} status={} message={}", id, statusStr, message)
             ResponseEntity.ok(TaskResponse.fromDomain(updatedTask))
         } catch (e: NoSuchElementException) {
-            logger.error("updateTaskStatus id={} status={}", id, statusStr, e)
+            logger.error("Task not found: id={}", id, e)
             ResponseEntity.notFound().build()
         }
     }
