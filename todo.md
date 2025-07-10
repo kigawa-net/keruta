@@ -5,6 +5,12 @@
 
 ## Completed Tasks
 
+- Fixed health endpoint path
+    - Change: Updated the health endpoint path from /api/health to /api/v1/health
+    - Details: Modified the RequestMapping annotation in HealthController
+    - Location: /api/src/main/kotlin/net/kigawa/keruta/api/v1/HealthController.kt
+    - Reason: To match the expected path in tests and GitHub workflow
+
 - Fixed task status update endpoint to handle message field
     - Change: Modified TaskController to properly handle the message field in task status update requests
     - Details: Updated the updateTaskStatus method to extract the message from the request and update the task's description field
