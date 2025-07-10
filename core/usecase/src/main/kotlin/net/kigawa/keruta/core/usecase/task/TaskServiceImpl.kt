@@ -88,12 +88,23 @@ class TaskServiceImpl(
     }
 
     override fun updateTaskStatus(id: String, status: TaskStatus): Task {
-        val existingTask = getTaskById(id)
-        val updatedTask = existingTask.copy(
-            status = status,
-            updatedAt = LocalDateTime.now(),
-        )
-        return taskRepository.save(updatedTask)
+        logger.info("Updating task status: id={} status={}", id, status)
+        try {
+            val existingTask = getTaskById(id)
+            val updatedTask = existingTask.copy(
+                status = status,
+                updatedAt = LocalDateTime.now(),
+            )
+            val savedTask = taskRepository.save(updatedTask)
+            logger.info("Task status updated successfully: id={} status={}", id, status)
+            return savedTask
+        } catch (e: NoSuchElementException) {
+            logger.error("Task not found with id: {}", id, e)
+            throw e
+        } catch (e: Exception) {
+            logger.error("Failed to update task status: id={} status={}", id, status, e)
+            throw e
+        }
     }
 
     override fun updateTaskPriority(id: String, priority: Int): Task {

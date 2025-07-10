@@ -179,6 +179,9 @@ class TaskController(
         } catch (e: NoSuchElementException) {
             logger.error("Task not found: id={}", id, e)
             ResponseEntity.notFound().build()
+        } catch (e: Exception) {
+            logger.error("Failed to update task status: id={} status={} message={}", id, statusStr, message, e)
+            ResponseEntity.internalServerError().build()
         }
     }
 }
