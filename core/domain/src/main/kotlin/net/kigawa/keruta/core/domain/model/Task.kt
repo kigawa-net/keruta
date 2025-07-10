@@ -39,6 +39,7 @@ enum class TaskStatus {
     COMPLETED,
     CANCELLED,
     FAILED,
+    WAITING_FOR_INPUT, // Added for agent communication
 }
 
 /**

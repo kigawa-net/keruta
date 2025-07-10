@@ -1,0 +1,156 @@
+Index: .idea/shelf/2025_07_03_0_34______.xml
+===================================================================
+diff --git a/.idea/shelf/2025_07_03_0_34______.xml b/.idea/shelf/2025_07_03_0_34______.xml
+deleted file mode 100644
+--- a/.idea/shelf/2025_07_03_0_34______.xml	(revision df9a677230e6b344982e93b8fad6e549ce4b1285)
++++ /dev/null	(revision df9a677230e6b344982e93b8fad6e549ce4b1285)
+@@ -1,4 +0,0 @@
+-<changelist name="2025_07_03_0_34_の_更新_前の未コミットの変更_[変更]" date="1751470456958" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/2025_07_03_0_34_の_更新_前の未コミットの変更_[変更]/shelved.patch" />
+-  <option name="DESCRIPTION" value="2025/07/03 0:34 の 更新 前の未コミットの変更 [変更]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AIAssistantCustomInstructionsStorage\">\n    <option name=\"instructions\">\n      <map>\n        <entry key=\"AIAssistant.VCS.GenerateCommitMessage\">\n          <value>\n            <AIAssistantStoredInstruction>\n              <option name=\"actionId\" value=\"AIAssistant.VCS.GenerateCommitMessage\" />\n              <option name=\"content\" value=\"日本語一文\" />\n            </AIAssistantStoredInstruction>\n          </value>\n        </entry>\n      </map>\n    </option>\n  </component>\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"a0c78284-c429-42af-9da0-33dfca68a810\" name=\"変更\" comment=\"wp\">\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/README.md\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/README.md\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/todo.md\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/todo.md\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"ExternalProjectsData\">\n    <projectState path=\"$PROJECT_DIR$\">\n      <ProjectState />\n    </projectState>\n  </component>\n  <component name=\"FileTemplateManagerImpl\">\n    <option name=\"RECENT_TEMPLATES\">\n      <list>\n        <option value=\"Kotlin Class\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"GOROOT\" url=\"file://$USER_HOME$/go/go1.24.4\" />\n  <component name=\"Git.Settings\">\n    <excluded-from-favorite>\n      <branch-storage>\n        <map>\n          <entry type=\"REMOTE\">\n            <value>\n              <list>\n                <branch-info repo=\"$PROJECT_DIR$/keruta-agent\" source=\"origin/main\" />\n              </list>\n            </value>\n          </entry>\n        </map>\n      </branch-storage>\n    </excluded-from-favorite>\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\n      <map>\n        <entry key=\"$PROJECT_DIR$/keruta-agent\" value=\"96e61f2467163a6234bc977706a88d0254542c19\" />\n        <entry key=\"$PROJECT_DIR$/kigawa-net-k8s\" value=\"8ca9747eebfc8a76532ce4722ed6af1201bb069d\" />\n      </map>\n    </option>\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n    <option name=\"ROOT_SYNC\" value=\"DONT_SYNC\" />\n  </component>\n  <component name=\"GoLibraries\">\n    <option name=\"indexEntireGoPath\" value=\"true\" />\n  </component>\n  <component name=\"KubernetesApiPersistence\">{}</component>\n  <component name=\"KubernetesApiProvider\">{\n  &quot;isMigrated&quot;: true\n}</component>\n  <component name=\"ProblemsViewState\">\n    <option name=\"selectedTabId\" value=\"CurrentFile\" />\n  </component>\n  <component name=\"ProjectColorInfo\">{\n  &quot;customColor&quot;: &quot;&quot;,\n  &quot;associatedIndex&quot;: 4\n}</component>\n  <component name=\"ProjectId\" id=\"2zQibJSLQBViRzTXFgj5nsb8086\" />\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\">{\n  &quot;keyToString&quot;: {\n    &quot;Docker.server.executor&quot;: &quot;Run&quot;,\n    &quot;Gradle.keruta のビルド.executor&quot;: &quot;Run&quot;,\n    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,\n    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,\n    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,\n    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,\n    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\n    &quot;Spring Boot.KerutaApplication.executor&quot;: &quot;Run&quot;,\n    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,\n    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,\n    &quot;git-widget-placeholder&quot;: &quot;main&quot;,\n    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,\n    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\n    &quot;project.structure.last.edited&quot;: &quot;モジュール&quot;,\n    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,\n    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,\n    &quot;settings.editor.selected.configurable&quot;: &quot;ml.llm.AIAssistantPromptsLibrary&quot;,\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\n  }\n}</component>\n  <component name=\"RecentsManager\">\n    <key name=\"K2MoveDeclarationsDialog.RECENT_PACKAGE_KEY\">\n      <recent name=\"net.kigawa.keruta.infra.app.kubernetes.client\" />\n      <recent name=\"net.kigawa.keruta.infra.app.kubernetes.args\" />\n      <recent name=\"net.kigawa.keruta.infra.app.kubernetes.job\" />\n    </key>\n  </component>\n  <component name=\"RunManager\" selected=\"Spring Boot.KerutaApplication\">\n    <configuration default=\"true\" type=\"AppleRunConfiguration\" factoryName=\"Application\" REDIRECT_INPUT=\"false\" ELEVATE=\"false\" USE_EXTERNAL_CONSOLE=\"false\" EMULATE_TERMINAL=\"false\" PASS_PARENT_ENVS_2=\"true\" IS_LOCATION_SIMULATION_SUPPORTED=\"false\" IS_LOCATION_SIMULATION_ALLOWED=\"true\" APPLICATION_LANGUAGE=\"IDELaunchSchemeLanguageUseSystemLanguage\" APPLICATION_REGION=\"\" MAKE_ACTIVE=\"TRUE\" SHOULD_DEBUG_EXTENSIONS=\"false\">\n      <embedded_app_extension_list />\n      <method v=\"2\">\n        <option name=\"com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <list>\n      <item itemvalue=\"Docker.server\" />\n      <item itemvalue=\"Gradle.keruta [test]\" />\n      <item itemvalue=\"Spring Boot.KerutaApplication\" />\n      <item itemvalue=\"複合.dev\" />\n    </list>\n  </component>\n  <component name=\"SharedIndexes\">\n    <attachedChunks>\n      <set>\n        <option value=\"bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.26927.53\" />\n        <option value=\"bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-IU-251.26927.53\" />\n      </set>\n    </attachedChunks>\n  </component>\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"デフォルトタスク\">\n      <changelist id=\"a0c78284-c429-42af-9da0-33dfca68a810\" name=\"変更\" comment=\"\" />\n      <created>1751669768752</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1751669768752</updated>\n      <workItem from=\"1751669770703\" duration=\"1435000\" />\n      <workItem from=\"1751861229029\" duration=\"8359000\" />\n      <workItem from=\"1751934383312\" duration=\"611000\" />\n      <workItem from=\"1751935076823\" duration=\"2611000\" />\n      <workItem from=\"1751943147033\" duration=\"2117000\" />\n      <workItem from=\"1751954492837\" duration=\"2453000\" />\n      <workItem from=\"1752047629283\" duration=\"3942000\" />\n    </task>\n    <task id=\"LOCAL-00001\" summary=\"wp\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1751669794572</created>\n      <option name=\"number\" value=\"00001\" />\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1751669794572</updated>\n    </task>\n    <task id=\"LOCAL-00002\" summary=\"wp\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1751862674913</created>\n      <option name=\"number\" value=\"00002\" />\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1751862674913</updated>\n    </task>\n    <task id=\"LOCAL-00003\" summary=\"wp\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1751863972800</created>\n      <option name=\"number\" value=\"00003\" />\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1751863972800</updated>\n    </task>\n    <task id=\"LOCAL-00004\" summary=\"wp\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1751865098404</created>\n      <option name=\"number\" value=\"00004\" />\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1751865098404</updated>\n    </task>\n    <task id=\"LOCAL-00005\" summary=\"wp\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1751934399282</created>\n      <option name=\"number\" value=\"00005\" />\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1751934399282</updated>\n    </task>\n    <task id=\"LOCAL-00006\" summary=\"wp\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1751934887213</created>\n      <option name=\"number\" value=\"00006\" />\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1751934887213</updated>\n    </task>\n    <task id=\"LOCAL-00007\" summary=\"wp\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1751934950581</created>\n      <option name=\"number\" value=\"00007\" />\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1751934950581</updated>\n    </task>\n    <task id=\"LOCAL-00008\" summary=\"wp\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1751935402704</created>\n      <option name=\"number\" value=\"00008\" />\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1751935402704</updated>\n    </task>\n    <task id=\"LOCAL-00009\" summary=\"wp\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1751955136745</created>\n      <option name=\"number\" value=\"00009\" />\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1751955136745</updated>\n    </task>\n    <task id=\"LOCAL-00010\" summary=\"Add detailed API error logging across API calls&#10;&#10;Introduced a reusable `logAPIError` function to centralize and improve error logging for API calls in various modules. This ensures consistent, detailed error and request context logging, including headers and bodies, while masking sensitive information like authentication details. Updated affected API operations (e.g., task status updates, artifact uploads) to utilize the new logging method.\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1751955923680</created>\n      <option name=\"number\" value=\"00010\" />\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1751955923680</updated>\n    </task>\n    <task id=\"LOCAL-00011\" summary=\"wp\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1752049987943</created>\n      <option name=\"number\" value=\"00011\" />\n      <option name=\"presentableId\" value=\"LOCAL-00011\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1752049987943</updated>\n    </task>\n    <option name=\"localTasksCounter\" value=\"12\" />\n    <servers />\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"3\" />\n  </component>\n  <component name=\"Vcs.Log.Tabs.Properties\">\n    <option name=\"TAB_STATES\">\n      <map>\n        <entry key=\"MAIN\">\n          <value>\n            <State>\n              <option name=\"FILTERS\">\n                <map>\n                  <entry key=\"branch\">\n                    <value>\n                      <list>\n                        <option value=\"main\" />\n                      </list>\n                    </value>\n                  </entry>\n                </map>\n              </option>\n            </State>\n          </value>\n        </entry>\n      </map>\n    </option>\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <MESSAGE value=\"Add detailed API error logging across API calls&#10;&#10;Introduced a reusable `logAPIError` function to centralize and improve error logging for API calls in various modules. This ensures consistent, detailed error and request context logging, including headers and bodies, while masking sensitive information like authentication details. Updated affected API operations (e.g., task status updates, artifact uploads) to utilize the new logging method.\" />\n    <MESSAGE value=\"wp\" />\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"wp\" />\n  </component>\n  <component name=\"VgoProject\">\n    <settings-migrated>true</settings-migrated>\n  </component>\n  <component name=\"XSLT-Support.FileAssociations.UIState\">\n    <expand />\n    <select />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision df9a677230e6b344982e93b8fad6e549ce4b1285)
++++ b/.idea/workspace.xml	(date 1752145667525)
+@@ -19,9 +19,8 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="a0c78284-c429-42af-9da0-33dfca68a810" name="変更" comment="wp">
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/2025_07_03_0_34______.xml" beforeDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/todo.md" beforeDir="false" afterPath="$PROJECT_DIR$/todo.md" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -40,7 +39,7 @@
+       </list>
+     </option>
+   </component>
+-  <component name="GOROOT" url="file://$USER_HOME$/go/go1.24.4" />
++  <component name="GOROOT" url="file://$USER_HOME$/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.4.linux-amd64" />
+   <component name="Git.Settings">
+     <excluded-from-favorite>
+       <branch-storage>
+@@ -102,6 +101,7 @@
+     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
++    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
+     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+@@ -128,6 +128,23 @@
+       <method v="2">
+         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+       </method>
++    </configuration>
++    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
++      <working_directory value="$PROJECT_DIR$" />
++      <go_parameters value="-i" />
++      <kind value="FILE" />
++      <directory value="$PROJECT_DIR$" />
++      <filePath value="$PROJECT_DIR$" />
++      <method v="2" />
++    </configuration>
++    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
++      <working_directory value="$PROJECT_DIR$" />
++      <go_parameters value="-i" />
++      <kind value="DIRECTORY" />
++      <directory value="$PROJECT_DIR$" />
++      <filePath value="$PROJECT_DIR$" />
++      <framework value="gotest" />
++      <method v="2" />
+     </configuration>
+     <list>
+       <item itemvalue="Docker.server" />
+@@ -158,6 +175,8 @@
+       <workItem from="1751943147033" duration="2117000" />
+       <workItem from="1751954492837" duration="2453000" />
+       <workItem from="1752047629283" duration="3942000" />
++      <workItem from="1752080781312" duration="6941000" />
++      <workItem from="1752145119175" duration="548000" />
+     </task>
+     <task id="LOCAL-00001" summary="wp">
+       <option name="closed" value="true" />
+@@ -247,7 +266,71 @@
+       <option name="project" value="LOCAL" />
+       <updated>1752049987943</updated>
+     </task>
+-    <option name="localTasksCounter" value="12" />
++    <task id="LOCAL-00012" summary="wp">
++      <option name="closed" value="true" />
++      <created>1752081125598</created>
++      <option name="number" value="00012" />
++      <option name="presentableId" value="LOCAL-00012" />
++      <option name="project" value="LOCAL" />
++      <updated>1752081125598</updated>
++    </task>
++    <task id="LOCAL-00013" summary="wp">
++      <option name="closed" value="true" />
++      <created>1752081196126</created>
++      <option name="number" value="00013" />
++      <option name="presentableId" value="LOCAL-00013" />
++      <option name="project" value="LOCAL" />
++      <updated>1752081196126</updated>
++    </task>
++    <task id="LOCAL-00014" summary="wp">
++      <option name="closed" value="true" />
++      <created>1752081531752</created>
++      <option name="number" value="00014" />
++      <option name="presentableId" value="LOCAL-00014" />
++      <option name="project" value="LOCAL" />
++      <updated>1752081531752</updated>
++    </task>
++    <task id="LOCAL-00015" summary="wp">
++      <option name="closed" value="true" />
++      <created>1752084278747</created>
++      <option name="number" value="00015" />
++      <option name="presentableId" value="LOCAL-00015" />
++      <option name="project" value="LOCAL" />
++      <updated>1752084278747</updated>
++    </task>
++    <task id="LOCAL-00016" summary="wp">
++      <option name="closed" value="true" />
++      <created>1752084370035</created>
++      <option name="number" value="00016" />
++      <option name="presentableId" value="LOCAL-00016" />
++      <option name="project" value="LOCAL" />
++      <updated>1752084370035</updated>
++    </task>
++    <task id="LOCAL-00017" summary="wp">
++      <option name="closed" value="true" />
++      <created>1752084901888</created>
++      <option name="number" value="00017" />
++      <option name="presentableId" value="LOCAL-00017" />
++      <option name="project" value="LOCAL" />
++      <updated>1752084901889</updated>
++    </task>
++    <task id="LOCAL-00018" summary="wp">
++      <option name="closed" value="true" />
++      <created>1752111964252</created>
++      <option name="number" value="00018" />
++      <option name="presentableId" value="LOCAL-00018" />
++      <option name="project" value="LOCAL" />
++      <updated>1752111964252</updated>
++    </task>
++    <task id="LOCAL-00019" summary="wp">
++      <option name="closed" value="true" />
++      <created>1752112737665</created>
++      <option name="number" value="00019" />
++      <option name="presentableId" value="LOCAL-00019" />
++      <option name="project" value="LOCAL" />
++      <updated>1752112737666</updated>
++    </task>
++    <option name="localTasksCounter" value="20" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">

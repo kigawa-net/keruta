@@ -19,9 +19,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a0c78284-c429-42af-9da0-33dfca68a810" name="変更" comment="wp">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/2025_07_03_0_34______.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/todo.md" beforeDir="false" afterPath="$PROJECT_DIR$/todo.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +39,7 @@
       </list>
     </option>
   </component>
-  <component name="GOROOT" url="file://$USER_HOME$/go/go1.24.4" />
+  <component name="GOROOT" url="file://$USER_HOME$/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.4.linux-amd64" />
   <component name="Git.Settings">
     <excluded-from-favorite>
       <branch-storage>
@@ -102,6 +101,7 @@
     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -128,6 +128,23 @@
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
+    </configuration>
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <working_directory value="$PROJECT_DIR$" />
+      <go_parameters value="-i" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+      <working_directory value="$PROJECT_DIR$" />
+      <go_parameters value="-i" />
+      <kind value="DIRECTORY" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <method v="2" />
     </configuration>
     <list>
       <item itemvalue="Docker.server" />
@@ -158,6 +175,8 @@
       <workItem from="1751943147033" duration="2117000" />
       <workItem from="1751954492837" duration="2453000" />
       <workItem from="1752047629283" duration="3942000" />
+      <workItem from="1752080781312" duration="6941000" />
+      <workItem from="1752145119175" duration="548000" />
     </task>
     <task id="LOCAL-00001" summary="wp">
       <option name="closed" value="true" />
@@ -247,7 +266,71 @@
       <option name="project" value="LOCAL" />
       <updated>1752049987943</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="wp">
+      <option name="closed" value="true" />
+      <created>1752081125598</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1752081125598</updated>
+    </task>
+    <task id="LOCAL-00013" summary="wp">
+      <option name="closed" value="true" />
+      <created>1752081196126</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1752081196126</updated>
+    </task>
+    <task id="LOCAL-00014" summary="wp">
+      <option name="closed" value="true" />
+      <created>1752081531752</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1752081531752</updated>
+    </task>
+    <task id="LOCAL-00015" summary="wp">
+      <option name="closed" value="true" />
+      <created>1752084278747</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1752084278747</updated>
+    </task>
+    <task id="LOCAL-00016" summary="wp">
+      <option name="closed" value="true" />
+      <created>1752084370035</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1752084370035</updated>
+    </task>
+    <task id="LOCAL-00017" summary="wp">
+      <option name="closed" value="true" />
+      <created>1752084901888</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1752084901889</updated>
+    </task>
+    <task id="LOCAL-00018" summary="wp">
+      <option name="closed" value="true" />
+      <created>1752111964252</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1752111964252</updated>
+    </task>
+    <task id="LOCAL-00019" summary="wp">
+      <option name="closed" value="true" />
+      <created>1752112737665</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1752112737666</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

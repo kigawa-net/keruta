@@ -246,10 +246,24 @@ class TaskServiceImpl(
         logger.info("Getting script for task with id: $id")
 
         // Verify that the task exists
-        getTaskById(id)
+        val task = getTaskById(id)
 
-        // Return the script from storage or throw an exception if not found
-        return scriptStorage[id] ?: throw NoSuchElementException("Script not found for task with id: $id")
+        // Return the script from storage or create a default script if not found
+        return scriptStorage[id] ?: run {
+            logger.info("Script not found for task with id: $id, creating default script")
+            val defaultScript = Script(
+                taskId = id,
+                installScript = "#!/bin/bash\necho 'No install script provided'",
+                executeScript = "#!/bin/bash\necho 'No execute script provided'",
+                cleanupScript = "#!/bin/bash\necho 'No cleanup script provided'",
+                environment = emptyMap(),
+                createdAt = LocalDateTime.now(),
+                updatedAt = LocalDateTime.now()
+            )
+            // Store the default script for future use
+            scriptStorage[id] = defaultScript
+            defaultScript
+        }
     }
 
     override fun updateTaskScript(id: String, installScript: String, executeScript: String, cleanupScript: String): Script {
