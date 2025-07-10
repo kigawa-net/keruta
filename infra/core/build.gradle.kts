@@ -8,6 +8,10 @@ tasks.bootJar {
     enabled = false
 }
 
+tasks.bootRun {
+    enabled = false
+}
+
 dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:usecase"))

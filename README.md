@@ -13,7 +13,7 @@
 docker compose up -d mongodb
 
 # アプリケーションの実行
-./gradlew bootRun
+./gradlew :api:bootRun
 ```
 
 ### 方法2: Dockerで実行
@@ -36,6 +36,8 @@ docker compose up -d
 - Kubernetesとの統合（タスク情報を環境変数としたPod作成）
 - Kubernetesのデフォルト設定をデータベースに保存
 - 管理パネル（/admin からアクセス可能）
+- ヘルスチェックエンドポイント（/api/health および /api/v1/health）
+- 丁寧で詳細なエラーレスポンス（ユーザーフレンドリーなエラーメッセージ）
 
 ## 詳細ドキュメント
 
@@ -46,6 +48,7 @@ docker compose up -d
 - [Kubernetes統合](keruta-doc/keruta/kubernetes_integration.md) - タスク情報を環境変数としたKubernetes Pod作成の詳細
 - [タスクキューシステム設計](keruta-doc/keruta/task_queue_system_design.md) - コーディングエージェントタスクキューシステムの詳細設計
 - [ログ設定](keruta-doc/keruta/misc/logging.md) - アプリケーションのログ設定と詳細なログ出力の説明
+- [エラーハンドリング](keruta-doc/keruta/misc/error_handling.md) - アプリケーションのエラーレスポンス形式と例外処理の詳細
 - [API仕様](keruta-doc/common/apiSpec) - 自動生成されたOpenAPI仕様書（JSON/YAML形式）
 
 ## 技術スタック
