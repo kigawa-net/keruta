@@ -1,11 +1,13 @@
 # project structure
 
 * /.github/workflows - GitHub Actions ワークフロー設定
-* /api - APIサーバーのソースコード
-* /core - コアドメインとユースケース
-* /infra - インフラストラクチャ層の実装
-  * /security - セキュリティ関連の実装
-    * /config - セキュリティ設定（認証、エラーハンドリングなど）
+* /keruta-api - バックエンドAPIサーバー (サブモジュール)
+  * /api - APIサーバーのソースコード
+  * /core - コアドメインとユースケース
+  * /infra - インフラストラクチャ層の実装
+    * /security - セキュリティ関連の実装
+      * /config - セキュリティ設定（認証、エラーハンドリングなど）
+* /keruta-admin - 管理パネルフロントエンド (サブモジュール)
 * /keruta-agent - エージェント関連のコード
   * /cmd - コマンドラインインターフェース
     * /keruta-agent - メインエントリーポイント

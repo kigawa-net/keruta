@@ -7,3 +7,9 @@
 [submodule "kigawa-net-k8s"]
 	path = kigawa-net-k8s
 	url = https://github.com/kigawa-net/kigawa-net-k8s.git
+[submodule "keruta-admin"]
+	path = keruta-admin
+	url = https://github.com/kigawa-net/keruta-admin.git
+[submodule "keruta-api"]
+	path = keruta-api
+	url = https://github.com/kigawa-net/keruta-api.git

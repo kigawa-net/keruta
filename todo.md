@@ -1,9 +1,14 @@
 # Todo List
 
-- structure.mdの改善
 - keruta-docリポジトリへの完全な移行
 
 ## Completed Tasks
+
+- バックエンドの実装をkeruta-apiとkeruta-adminに移動
+    - Change: バックエンドの実装をkeruta-apiサブモジュールに移動し、keruta-adminサブモジュールと連携
+    - Details: api、core、infraディレクトリの内容をkeruta-apiサブモジュールに移動し、プロジェクト構造を更新
+    - Location: /keruta-api、/keruta-admin
+    - Reason: プロジェクト構造を改善し、バックエンドとフロントエンドを分離するため
 
 - Fixed health endpoint path
     - Change: Updated the health endpoint path from /api/health to /api/v1/health

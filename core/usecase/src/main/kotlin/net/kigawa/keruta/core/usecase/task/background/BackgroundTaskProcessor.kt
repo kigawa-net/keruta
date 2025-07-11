@@ -6,7 +6,6 @@ import net.kigawa.keruta.core.usecase.CoroutineService
 import net.kigawa.keruta.core.usecase.kubernetes.KubernetesService
 import net.kigawa.keruta.core.usecase.task.TaskService
 import org.slf4j.LoggerFactory
-import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.time.Instant
 import java.util.concurrent.ConcurrentHashMap
@@ -36,9 +35,6 @@ class BackgroundTaskProcessor(
      * It ensures that only one task is processed at a time.
      * This method launches a coroutine to process the task asynchronously.
      */
-    @Scheduled(
-        fixedDelayString = "\${keruta.task.processor.processing-delay:5000}",
-    ) // Use configured delay or default to 5 seconds
     fun processNextTask() {
         // If already processing a task, skip this run
         if (!isProcessing.compareAndSet(false, true)) {

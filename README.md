@@ -4,11 +4,23 @@
 
 このAPIサーバーは、タスクのキューを管理するためのRESTfulなインターフェースを提供します。作成されたタスクは必ずキューに登録され、優先順位に基づいて処理されます。
 
+## プロジェクト構成
+
+このプロジェクトは以下のサブモジュールで構成されています：
+
+- **keruta-api**: バックエンドAPIサーバー
+- **keruta-admin**: 管理パネルフロントエンド
+- **keruta-agent**: タスク実行エージェント
+- **keruta-doc**: プロジェクトドキュメント
+
 ## クイックスタート
 
 ### 方法1: Gradleで実行
 
 ```bash
+# keruta-apiディレクトリに移動
+cd keruta-api
+
 # MongoDBの起動
 docker compose up -d mongodb
 

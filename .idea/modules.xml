@@ -4,8 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/keruta.iml" filepath="$PROJECT_DIR$/.idea/modules/keruta.iml" />
       <module fileurl="file://$PROJECT_DIR$/keruta-agent/keruta-agent.iml" filepath="$PROJECT_DIR$/keruta-agent/keruta-agent.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/domain/keruta.core.domain.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core/domain/keruta.core.domain.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/infra/app/keruta.infra.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/infra/app/keruta.infra.app.main.iml" />
     </modules>
   </component>
 </project>
