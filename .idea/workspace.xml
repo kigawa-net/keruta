@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d0b77ed1-a9a0-4430-943a-8e082f8417dc" name="変更" comment="wp">
-      <change beforePath="$PROJECT_DIR$/keruta-doc" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-doc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-doc/structure.md" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-doc/structure.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/structure.md" beforeDir="false" afterPath="$PROJECT_DIR$/structure.md" afterDir="false" />
-    </list>
+    <list default="true" id="d0b77ed1-a9a0-4430-943a-8e082f8417dc" name="変更" comment="wp" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -134,7 +130,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1752201933293</updated>
-      <workItem from="1752201934517" duration="534000" />
+      <workItem from="1752201934517" duration="775000" />
     </task>
     <task id="LOCAL-00001" summary="wp">
       <option name="closed" value="true" />
@@ -160,7 +156,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752202259448</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="wp">
+      <option name="closed" value="true" />
+      <created>1752203336522</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1752203336522</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
