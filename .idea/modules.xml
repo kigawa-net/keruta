@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/keruta.iml" filepath="$PROJECT_DIR$/.idea/modules/keruta.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/keruta.iml" filepath="$PROJECT_DIR$/.idea/keruta.iml" />
+      <module fileurl="file://$PROJECT_DIR$/keruta-admin/keruta-admin.iml" filepath="$PROJECT_DIR$/keruta-admin/keruta-admin.iml" />
       <module fileurl="file://$PROJECT_DIR$/keruta-agent/keruta-agent.iml" filepath="$PROJECT_DIR$/keruta-agent/keruta-agent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/keruta-doc/keruta-doc.iml" filepath="$PROJECT_DIR$/keruta-doc/keruta-doc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kigawa-net-k8s/kigawa-net-k8s.iml" filepath="$PROJECT_DIR$/kigawa-net-k8s/kigawa-net-k8s.iml" />
     </modules>
   </component>
 </project>
