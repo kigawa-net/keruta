@@ -4,6 +4,18 @@
 
 ## Completed Tasks
 
+- apiから管理パネルを削除
+    - Change: APIサーバーから管理パネル機能を削除
+    - Details: AdminController、TaskAdminController、AgentAdminController、DocumentAdminController、KubernetesAdminController、RepositoryAdminControllerなどの管理パネル関連のコントローラーを削除し、RootControllerを更新
+    - Location: /keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/
+    - Reason: 管理パネル機能をkeruta-adminモジュールに移行するため
+
+- adminに新規タスク作成機能追加
+    - Change: keruta-adminモジュールに新規タスク作成機能を追加
+    - Details: 新規タスク作成フォームのルート(tasks.new.tsx)を作成し、タスク一覧ページの「新規タスク作成」ボタンに機能を追加
+    - Location: /keruta-admin/app/routes/tasks.new.tsx, /keruta-admin/app/routes/tasks._index.tsx
+    - Reason: ユーザーが管理パネルから新しいタスクを作成できるようにするため
+
 - バックエンドの実装をkeruta-apiとkeruta-adminに移動
     - Change: バックエンドの実装をkeruta-apiサブモジュールに移動し、keruta-adminサブモジュールと連携
     - Details: api、core、infraディレクトリの内容をkeruta-apiサブモジュールに移動し、プロジェクト構造を更新
