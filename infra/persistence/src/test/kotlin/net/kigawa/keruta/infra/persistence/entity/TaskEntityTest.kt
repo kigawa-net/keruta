@@ -28,11 +28,13 @@ class TaskEntityTest {
             ),
             image = "test-image",
             namespace = "test-namespace",
+            jobName = "test-job",
             podName = "test-pod",
             // resources parameter removed from Task model
             additionalEnv = mapOf("KEY" to "VALUE"),
             logs = "Test logs",
             parentId = "456",
+            kubernetesManifest = "test-manifest",
             createdAt = now,
             updatedAt = now,
         )
@@ -50,12 +52,14 @@ class TaskEntityTest {
         assertEquals("Test Content", taskEntity.document)
         assertEquals("test-image", taskEntity.image)
         assertEquals("test-namespace", taskEntity.namespace)
+        assertEquals("test-job", taskEntity.jobName)
         assertEquals("test-pod", taskEntity.podName)
         assertEquals(null, taskEntity.cpuResource) // Updated since resources property was removed
         assertEquals(null, taskEntity.memoryResource) // Updated since resources property was removed
         assertEquals(mapOf("KEY" to "VALUE"), taskEntity.additionalEnv)
         assertEquals("Test logs", taskEntity.logs)
         assertEquals("456", taskEntity.parentId)
+        assertEquals("test-manifest", taskEntity.kubernetesManifest)
         assertEquals(now, taskEntity.createdAt)
         assertEquals(now, taskEntity.updatedAt)
     }
@@ -74,12 +78,14 @@ class TaskEntityTest {
             document = "Test Content",
             image = "test-image",
             namespace = "test-namespace",
+            jobName = "test-job",
             podName = "test-pod",
             cpuResource = "100m",
             memoryResource = "128Mi",
             additionalEnv = mapOf("KEY" to "VALUE"),
             logs = "Test logs",
             parentId = "456",
+            kubernetesManifest = "test-manifest",
             createdAt = now,
             updatedAt = now,
         )
@@ -99,11 +105,13 @@ class TaskEntityTest {
         assertEquals("Test Content", task.documents[0].content)
         assertEquals("test-image", task.image)
         assertEquals("test-namespace", task.namespace)
+        assertEquals("test-job", task.jobName)
         assertEquals("test-pod", task.podName)
         // resources property removed from Task model
         assertEquals(mapOf("KEY" to "VALUE"), task.additionalEnv)
         assertEquals("Test logs", task.logs)
         assertEquals("456", task.parentId)
+        assertEquals("test-manifest", task.kubernetesManifest)
         assertEquals(now, task.createdAt)
         assertEquals(now, task.updatedAt)
     }
@@ -122,12 +130,14 @@ class TaskEntityTest {
             document = null,
             image = null,
             namespace = "default",
+            jobName = null,
             podName = null,
             cpuResource = null,
             memoryResource = null,
             additionalEnv = emptyMap(),
             logs = null,
             parentId = null,
+            kubernetesManifest = null,
             createdAt = now,
             updatedAt = now,
         )
@@ -145,11 +155,13 @@ class TaskEntityTest {
         assertEquals(emptyList<Document>(), task.documents)
         assertEquals(null, task.image)
         assertEquals("default", task.namespace)
+        assertEquals(null, task.jobName)
         assertEquals(null, task.podName)
         // resources property removed from Task model
         assertEquals(emptyMap<String, String>(), task.additionalEnv)
         assertEquals(null, task.logs)
         assertEquals(null, task.parentId)
+        assertEquals(null, task.kubernetesManifest)
         assertEquals(now, task.createdAt)
         assertEquals(now, task.updatedAt)
     }
@@ -173,11 +185,13 @@ class TaskEntityTest {
             ),
             image = "test-image",
             namespace = "test-namespace",
+            jobName = "test-job",
             podName = "test-pod",
             // resources parameter removed from Task model
             additionalEnv = mapOf("KEY" to "VALUE"),
             logs = "Test logs",
             parentId = "456",
+            kubernetesManifest = "test-manifest",
             createdAt = now,
             updatedAt = now,
         )
@@ -195,10 +209,13 @@ class TaskEntityTest {
         // repository property removed from Task model
         assertEquals(originalTask.image, convertedTask.image)
         assertEquals(originalTask.namespace, convertedTask.namespace)
+        assertEquals(originalTask.jobName, convertedTask.jobName)
         assertEquals(originalTask.podName, convertedTask.podName)
         // resources property removed from Task model
         assertEquals(originalTask.additionalEnv, convertedTask.additionalEnv)
         assertEquals(originalTask.logs, convertedTask.logs)
+        assertEquals(originalTask.parentId, convertedTask.parentId)
+        assertEquals(originalTask.kubernetesManifest, convertedTask.kubernetesManifest)
         assertEquals(originalTask.createdAt, convertedTask.createdAt)
         assertEquals(originalTask.updatedAt, convertedTask.updatedAt)
     }

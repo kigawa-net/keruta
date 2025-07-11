@@ -1,7 +1,22 @@
 # CLAUDE.md
 
-ユーザーには日本語で応答する
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+* ユーザーには日本語で応答する
+* 大きなファイルは細分化する
+
+## Documents
+
+* 最初にドキュメントを読む
+* 常に`/README.md`を更新
+* 常に`/todo.md`を更新
+* 常に`/structure.md`を更新
+* 常にドキュメントを更新する
+
+## Programs
+
+* 純粋関数を使う
+* SOLID原則に従う
 
 ## Development Commands
 

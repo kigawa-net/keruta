@@ -19,6 +19,7 @@ data class TaskEntity(
     val document: String? = null,
     val image: String? = null,
     val namespace: String = "default",
+    val jobName: String? = null,
     val podName: String? = null,
     val cpuResource: String? = null,
     val memoryResource: String? = null,
@@ -28,6 +29,7 @@ data class TaskEntity(
     val parentId: String? = null,
     val storageClass: String = "",
     val pvcName: String? = null,
+    val kubernetesManifest: String? = null,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now(),
 ) {
@@ -43,6 +45,7 @@ data class TaskEntity(
                 document = task.documents.firstOrNull()?.content,
                 image = task.image,
                 namespace = task.namespace,
+                jobName = task.jobName,
                 podName = task.podName,
                 cpuResource = null, // Resources property removed from Task model
                 memoryResource = null, // Resources property removed from Task model
@@ -52,6 +55,7 @@ data class TaskEntity(
                 parentId = task.parentId,
                 storageClass = task.storageClass,
                 pvcName = task.pvcName,
+                kubernetesManifest = task.kubernetesManifest,
                 createdAt = task.createdAt,
                 updatedAt = task.updatedAt,
             )
@@ -69,6 +73,7 @@ data class TaskEntity(
             documents = document?.let { listOf(DomainDocument(title = title, content = it)) } ?: emptyList(),
             image = image,
             namespace = namespace,
+            jobName = jobName,
             podName = podName,
             // resources parameter removed from Task model
             additionalEnv = additionalEnv,
@@ -77,6 +82,7 @@ data class TaskEntity(
             parentId = parentId,
             storageClass = storageClass,
             pvcName = pvcName,
+            kubernetesManifest = kubernetesManifest,
             createdAt = createdAt,
             updatedAt = updatedAt,
             repositoryId = gitRepository,
