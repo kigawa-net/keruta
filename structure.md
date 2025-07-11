@@ -38,6 +38,16 @@
     * /artifacts - 成果物管理
     * /health - ヘルスチェック
   * /scripts - ビルドスクリプトなど
+* /keruta-executor - keruta-apiのタスクをcoderで実行するアプリケーション (サブモジュール)
+  * /src - ソースコード
+    * /main - メインソースコード
+      * /kotlin - Kotlinソースコード
+        * /net/kigawa/keruta/executor - メインパッケージ
+          * /config - 設定
+          * /domain - ドメインモデル
+          * /service - サービス
+      * /resources - リソースファイル
+    * /test - テストコード
 * /keruta-doc - プロジェクトドキュメント (https://github.com/kigawa-net/keruta-doc に移行中)
 * /kigawa-net-k8s - Kubernetes関連の設定
   * /keruta - Kerutaのデプロイメントマニフェスト

@@ -5,8 +5,21 @@
 * adminにtask削除ボタン実装
 * adminにtask編集ボタン実装
 * adminにtask詳細ボタン実装
+* keruta-executorのcoderコマンドの実装
 
 ## Completed Tasks
+
+- keruta-executorのドキュメントを日本語に翻訳
+    - Change: keruta-executorのREADME.mdを日本語に翻訳
+    - Details: 英語で書かれていたREADME.mdの内容を日本語に翻訳し、日本語ユーザーが理解しやすいようにした
+    - Location: /keruta-executor/README.md
+    - Reason: 日本語ユーザーがドキュメントを理解しやすくするため
+
+- keruta-executorにkeruta-apiのタスクをcoderで実行するアプリケーションを実装
+    - Change: keruta-executorにKotlinでタスク実行アプリケーションを実装
+    - Details: Spring Bootアプリケーションとして、TaskProcessor、TaskApiService、CoderExecutionServiceを実装し、keruta-apiからタスクを取得して実行する機能を追加
+    - Location: /keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/
+    - Reason: keruta-apiのタスクをcoderで実行するため
 
 - apiから管理パネルを削除
     - Change: APIサーバーから管理パネル機能を削除
