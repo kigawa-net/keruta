@@ -1,7 +1,5 @@
 # Todo List
 
-- keruta-docリポジトリへの完全な移行
-
 ## Completed Tasks
 
 - apiから管理パネルを削除
