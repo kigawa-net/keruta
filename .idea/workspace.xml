@@ -5,14 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d0b77ed1-a9a0-4430-943a-8e082f8417dc" name="変更" comment="wp">
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keruta-admin" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-admin/app/root.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/root.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/_layout.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/tasks._index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/tasks._index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-admin/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kigawa-net-k8s" beforeDir="false" afterPath="$PROJECT_DIR$/kigawa-net-k8s" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-admin/app/utils/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/utils/api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-admin/app/utils/apiConfig.ts" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/utils/apiConfig.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -179,7 +176,7 @@
       <option name="presentableId" value="Default" />
       <updated>1752201933293</updated>
       <workItem from="1752201934517" duration="3776000" />
-      <workItem from="1752238197823" duration="1948000" />
+      <workItem from="1752238197823" duration="3149000" />
     </task>
     <task id="LOCAL-00001" summary="wp">
       <option name="closed" value="true" />
@@ -269,7 +266,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752206455470</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="wp">
+      <option name="closed" value="true" />
+      <created>1752240186339</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1752240186339</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
