@@ -1,12 +1,17 @@
 # Todo List
+
 * fix err
     * Warning: Use the `defaultValue` or `value` props on <select> instead of setting
+* adminにtask削除ボタン実装
+* adminにtask編集ボタン実装
+* adminにtask詳細ボタン実装
 
 ## Completed Tasks
 
 - apiから管理パネルを削除
     - Change: APIサーバーから管理パネル機能を削除
-    - Details: AdminController、TaskAdminController、AgentAdminController、DocumentAdminController、KubernetesAdminController、RepositoryAdminControllerなどの管理パネル関連のコントローラーを削除し、RootControllerを更新
+    - Details:
+      AdminController、TaskAdminController、AgentAdminController、DocumentAdminController、KubernetesAdminController、RepositoryAdminControllerなどの管理パネル関連のコントローラーを削除し、RootControllerを更新
     - Location: /keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/
     - Reason: 管理パネル機能をkeruta-adminモジュールに移行するため
 
@@ -30,20 +35,24 @@
 
 - Fixed task status update endpoint to handle message field
     - Change: Modified TaskController to properly handle the message field in task status update requests
-    - Details: Updated the updateTaskStatus method to extract the message from the request and update the task's description field
+    - Details: Updated the updateTaskStatus method to extract the message from the request and update the task's
+      description field
     - Location: /api/src/main/kotlin/net/kigawa/keruta/api/task/controller/TaskController.kt
     - Reason: To fix a 400 error that occurred when the client included a message field in the request
 
 - 改善されたエラーレスポンス
     - Change: エラーレスポンスをより丁寧で詳細なものに改善
     - Details: GlobalExceptionHandlerを作成してアプリケーション全体の例外を処理し、RestAuthenticationEntryPointを更新して認証エラーメッセージを改善
-    - Location: /infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/GlobalExceptionHandler.kt, /infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/RestAuthenticationEntryPoint.kt
+    - Location: /infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/GlobalExceptionHandler.kt,
+      /infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/RestAuthenticationEntryPoint.kt
     - Reason: ユーザーがエラーの原因をより理解しやすくし、適切な対応を取れるようにするため
 
 - Removed authentication from the application
     - Change: Removed OAuth2/Keycloak authentication and made all endpoints publicly accessible
-    - Details: Removed OAuth2 login configuration from SecurityConfig, commented out Keycloak and JWT configuration in application.properties, and updated README.md
-    - Location: /infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/SecurityConfig.kt, /api/src/main/resources/application.properties, /README.md
+    - Details: Removed OAuth2 login configuration from SecurityConfig, commented out Keycloak and JWT configuration in
+      application.properties, and updated README.md
+    - Location: /infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/SecurityConfig.kt,
+      /api/src/main/resources/application.properties, /README.md
     - Reason: Simplified application access by removing authentication requirement
 
 - Fixed OAuth2 client configuration issue
@@ -78,13 +87,15 @@
 
 - Added GitHub Action for automatic OpenAPI specification generation
     - Change: Created a workflow that generates OpenAPI specification files on push
-    - Details: Added .github/workflows/generate-openapi.yml that builds the app, extracts OpenAPI specs, and commits them
+    - Details: Added .github/workflows/generate-openapi.yml that builds the app, extracts OpenAPI specs, and commits
+      them
     - Location: OpenAPI specs are stored in keruta-doc/common/apiSpec directory
     - Formats: Both JSON and YAML formats are generated
 
 - Removed API authentication requirement
     - Change: Removed token-based authentication from all API endpoints
-    - Details: Removed token field from Client struct, removed Authorization headers from all API requests, and updated configuration to not require a token
+    - Details: Removed token field from Client struct, removed Authorization headers from all API requests, and updated
+      configuration to not require a token
     - Reason: Simplified API access by removing authentication requirement
 
 - Improved keruta-agent implementation
@@ -100,6 +111,8 @@
 
 - Changed HTTP input polling interval to 5 seconds
     - Change: Modified the polling interval for HTTP input from 10 seconds to 5 seconds
-    - Details: Updated all sleep durations in client.go, http_client.go, and input.go, and updated comments to reflect the new maximum polling time
-    - Location: /keruta-agent/internal/api/client.go, /keruta-agent/internal/api/http_client.go, /keruta-agent/internal/api/input.go
+    - Details: Updated all sleep durations in client.go, http_client.go, and input.go, and updated comments to reflect
+      the new maximum polling time
+    - Location: /keruta-agent/internal/api/client.go, /keruta-agent/internal/api/http_client.go,
+      /keruta-agent/internal/api/input.go
     - Reason: To make the agent poll the server for input every 5 seconds as specified in the requirements

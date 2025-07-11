@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d0b77ed1-a9a0-4430-943a-8e082f8417dc" name="変更" comment="wp" />
+    <list default="true" id="d0b77ed1-a9a0-4430-943a-8e082f8417dc" name="変更" comment="wp">
+      <change afterPath="$PROJECT_DIR$/keruta-admin/keruta-executor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-admin" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-admin/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/.gitmodules" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/todo.md" beforeDir="false" afterPath="$PROJECT_DIR$/todo.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -37,7 +42,7 @@
         <entry key="$PROJECT_DIR$/kigawa-net-k8s" value="9c025473b2e5eee3c2938e03adba41afdea35575" />
       </map>
     </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/keruta-api" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -168,7 +173,6 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Docker.server" />
         <item itemvalue="Gradle.keruta-api:api [bootRun]" />
       </list>
     </recent_temporary>
@@ -190,6 +194,7 @@
       <updated>1752201933293</updated>
       <workItem from="1752201934517" duration="3776000" />
       <workItem from="1752238197823" duration="7711000" />
+      <workItem from="1752249310395" duration="4822000" />
     </task>
     <task id="LOCAL-00001" summary="wp">
       <option name="closed" value="true" />
@@ -311,11 +316,46 @@
       <option name="project" value="LOCAL" />
       <updated>1752246846040</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="wp">
+      <option name="closed" value="true" />
+      <created>1752250699582</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1752250699582</updated>
+    </task>
+    <task id="LOCAL-00017" summary="wp">
+      <option name="closed" value="true" />
+      <created>1752252046370</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1752252046370</updated>
+    </task>
+    <task id="LOCAL-00018" summary="wp">
+      <option name="closed" value="true" />
+      <created>1752255509534</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1752255509534</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="wp" />

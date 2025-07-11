@@ -13,3 +13,6 @@
 [submodule "keruta-api"]
 	path = keruta-api
 	url = https://github.com/kigawa-net/keruta-api.git
+[submodule "keruta-executor"]
+	path = keruta-executor
+	url = https://github.com/kigawa-net/keruta-executor.git
