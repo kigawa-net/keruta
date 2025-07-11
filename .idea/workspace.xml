@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d0b77ed1-a9a0-4430-943a-8e082f8417dc" name="変更" comment="wp">
-      <change beforePath="$PROJECT_DIR$/keruta-admin" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-admin/app/utils/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/utils/api.ts" afterDir="false" />
-    </list>
+    <list default="true" id="d0b77ed1-a9a0-4430-943a-8e082f8417dc" name="変更" comment="wp" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -58,7 +55,7 @@
   </component>
   <component name="GOROOT" url="file://$USER_HOME$/go/go1.24.4" />
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/keruta-api" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/keruta-admin" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory"><![CDATA[{
@@ -104,6 +101,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "npm.build.executor": "Run",
     "project.structure.last.edited": "モジュール",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
@@ -111,7 +109,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Gradle.keruta-api:api [bootRun]">
+  <component name="RunManager" selected="Spring Boot.KerutaApplication">
     <configuration default="true" type="AppleRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" IS_LOCATION_SIMULATION_SUPPORTED="false" IS_LOCATION_SIMULATION_ALLOWED="true" APPLICATION_LANGUAGE="IDELaunchSchemeLanguageUseSystemLanguage" APPLICATION_REGION="" MAKE_ACTIVE="TRUE" SHOULD_DEBUG_EXTENSIONS="false">
       <embedded_app_extension_list />
       <method v="2">
@@ -164,15 +162,14 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="KerutaApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="keruta-api.api.main" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="net.kigawa.keruta.api.KerutaApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+    <list>
+      <item itemvalue="Gradle.keruta-api:api [bootRun]" />
+      <item itemvalue="npm.build" />
+      <item itemvalue="Spring Boot.KerutaApplication" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.build" />
         <item itemvalue="Gradle.keruta-api:api [bootRun]" />
       </list>
     </recent_temporary>
@@ -192,7 +189,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1752201933293</updated>
-      <workItem from="1752201934517" duration="3415000" />
+      <workItem from="1752201934517" duration="3546000" />
     </task>
     <task id="LOCAL-00001" summary="wp">
       <option name="closed" value="true" />
@@ -266,7 +263,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752205721998</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="wp">
+      <option name="closed" value="true" />
+      <created>1752206128658</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1752206128658</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
