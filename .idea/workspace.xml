@@ -5,21 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d0b77ed1-a9a0-4430-943a-8e082f8417dc" name="変更" comment="wp">
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/server.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-admin" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-admin/app/components/Client.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/components/Client.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-admin/app/components/ExampleApiComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/components/ExampleApiComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/api.$.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/api.$.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/api.tasks.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/api.tasks.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-admin/app/utils/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/utils/api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-admin/app/utils/apiConfig.ts" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/utils/apiConfig.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-admin/app/utils/backendConfig.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/utils/backendConfig.server.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/config/JwtWebSocketHandshakeInterceptor.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/config/WebSocketConfig.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/repository/TaskRepositoryImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/repository/TaskRepositoryImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kigawa-net-k8s" beforeDir="false" afterPath="$PROJECT_DIR$/kigawa-net-k8s" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -203,7 +189,7 @@
       <option name="presentableId" value="Default" />
       <updated>1752201933293</updated>
       <workItem from="1752201934517" duration="3776000" />
-      <workItem from="1752238197823" duration="6434000" />
+      <workItem from="1752238197823" duration="7066000" />
     </task>
     <task id="LOCAL-00001" summary="wp">
       <option name="closed" value="true" />
@@ -309,7 +295,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752243640158</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="wp">
+      <option name="closed" value="true" />
+      <created>1752246113727</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1752246113727</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
