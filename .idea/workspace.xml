@@ -5,11 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d0b77ed1-a9a0-4430-943a-8e082f8417dc" name="変更" comment="wp">
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/server.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keruta-admin" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/tasks._index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/tasks._index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-admin/app/components/Client.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/components/Client.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-admin/app/components/ExampleApiComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/components/ExampleApiComponent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/api.$.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/api.$.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/api.tasks.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/api.tasks.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keruta-admin/app/utils/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/utils/api.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keruta-admin/app/utils/apiConfig.ts" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/utils/apiConfig.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-admin/app/utils/backendConfig.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/utils/backendConfig.server.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/config/JwtWebSocketHandshakeInterceptor.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/config/WebSocketConfig.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/repository/TaskRepositoryImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/repository/TaskRepositoryImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kigawa-net-k8s" beforeDir="false" afterPath="$PROJECT_DIR$/kigawa-net-k8s" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +53,7 @@
         <entry key="$PROJECT_DIR$/kigawa-net-k8s" value="9c025473b2e5eee3c2938e03adba41afdea35575" />
       </map>
     </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/keruta-admin" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/keruta-api" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -72,6 +82,9 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Docker.keruta-api: Compose デプロイ.executor": "Run",
+    "Docker.server.executor": "Run",
+    "Gradle.keruta-api のビルド.executor": "Run",
     "Gradle.keruta-api:api [bootRun].executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -79,6 +92,8 @@
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
     "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.KerutaApplication.executor": "Run",
     "android.gradle.sync.needed": "true",
     "cidr.known.project.marker": "true",
     "dart.analysis.tool.window.visible": "false",
@@ -102,6 +117,11 @@
   }
 }]]></component>
   <component name="RunManager" selected="npm.dev">
+    <configuration name="dev" type="CompoundRunConfigurationType">
+      <toRun name="server" type="docker-deploy" />
+      <toRun name="KerutaApplication" type="SpringBootApplicationConfigurationType" />
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="keruta" />
       <working_directory value="$PROJECT_DIR$" />
@@ -148,14 +168,21 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml" />
+      <method v="2" />
+    </configuration>
     <list>
+      <item itemvalue="Docker.server" />
       <item itemvalue="Gradle.keruta-api:api [bootRun]" />
       <item itemvalue="npm.build" />
       <item itemvalue="npm.dev" />
       <item itemvalue="Spring Boot.KerutaApplication" />
+      <item itemvalue="複合.dev" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Docker.server" />
         <item itemvalue="Gradle.keruta-api:api [bootRun]" />
       </list>
     </recent_temporary>
@@ -176,7 +203,7 @@
       <option name="presentableId" value="Default" />
       <updated>1752201933293</updated>
       <workItem from="1752201934517" duration="3776000" />
-      <workItem from="1752238197823" duration="3149000" />
+      <workItem from="1752238197823" duration="6434000" />
     </task>
     <task id="LOCAL-00001" summary="wp">
       <option name="closed" value="true" />
@@ -274,7 +301,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752240186339</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="wp">
+      <option name="closed" value="true" />
+      <created>1752243640158</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1752243640158</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
