@@ -1,4 +1,6 @@
 # Todo List
+* fix err
+    * Warning: Use the `defaultValue` or `value` props on <select> instead of setting
 
 ## Completed Tasks
 
