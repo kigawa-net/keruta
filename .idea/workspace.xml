@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d0b77ed1-a9a0-4430-943a-8e082f8417dc" name="変更" comment="wp">
-      <change beforePath="$PROJECT_DIR$/keruta-admin" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-admin/app/utils/backendConfig.ts" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/utils/backendConfig.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kigawa-net-k8s" beforeDir="false" afterPath="$PROJECT_DIR$/kigawa-net-k8s" afterDir="false" />
-    </list>
+    <list default="true" id="d0b77ed1-a9a0-4430-943a-8e082f8417dc" name="変更" comment="wp" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -38,7 +34,7 @@
   </component>
   <component name="GOROOT" url="file://$USER_HOME$/go/go1.24.4" />
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/kigawa-net-k8s" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory"><![CDATA[{
@@ -86,6 +82,7 @@
     "project.structure.last.edited": "モジュール",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
+    "ts.external.directory.path": "/Users/ogawaatsuki/project/keruta/keruta-admin/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -138,7 +135,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1752201933293</updated>
-      <workItem from="1752201934517" duration="1936000" />
+      <workItem from="1752201934517" duration="2479000" />
     </task>
     <task id="LOCAL-00001" summary="wp">
       <option name="closed" value="true" />
@@ -188,7 +185,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752204386160</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="wp">
+      <option name="closed" value="true" />
+      <created>1752205129209</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1752205129209</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
