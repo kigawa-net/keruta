@@ -3,6 +3,9 @@
 ## コード構造
 
 * /.github/workflows - GitHub Actions ワークフロー設定
+  * /build.yml - ビルド、テスト、コードスタイルチェックのワークフロー
+  * /docker.yml - Dockerイメージのビルドとプッシュのワークフロー
+  * /deploy.yml - Kubernetesへのデプロイワークフロー
 * /keruta-api - バックエンドAPIサーバー (サブモジュール)
   * /api - APIサーバーのソースコード
     * /src/main - メインソースコード

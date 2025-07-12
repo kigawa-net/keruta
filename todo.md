@@ -9,6 +9,12 @@
 
 ## Completed Tasks
 
+- GitHub Actionsによる継続的インテグレーション/継続的デリバリー（CI/CD）の実装
+    - Change: GitHub Actionsワークフローを作成してCI/CDパイプラインを実装
+    - Details: ビルド・テスト用、Dockerイメージビルド用、Kubernetesデプロイ用の3つのワークフローを作成し、README.mdを更新してCI/CDについて説明を追加
+    - Location: /.github/workflows/build.yml, /.github/workflows/docker.yml, /.github/workflows/deploy.yml, /README.md, /structure.md
+    - Reason: 自動化されたビルド、テスト、デプロイプロセスを実現し、開発効率と品質を向上させるため
+
 - keruta-executorのドキュメントを日本語に翻訳
     - Change: keruta-executorのREADME.mdを日本語に翻訳
     - Details: 英語で書かれていたREADME.mdの内容を日本語に翻訳し、日本語ユーザーが理解しやすいようにした

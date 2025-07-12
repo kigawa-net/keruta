@@ -11,6 +11,7 @@
 - **keruta-api**: バックエンドAPIサーバー
 - **keruta-admin**: 管理パネルフロントエンド
 - **keruta-agent**: タスク実行エージェント
+- **keruta-executor**: タスク実行エンジン
 - **keruta-doc**: プロジェクトドキュメント
 
 ## クイックスタート
@@ -103,3 +104,36 @@ docker compose up -d
 - `ktlint_standard_max-line-length`: 行の長さを制限するルール
 
 これらのルールは将来的に有効化される予定です。新しいコードを書く際は、これらのルールに従うことをお勧めします。
+
+## CI/CD
+
+このプロジェクトではGitHub Actionsを使用して継続的インテグレーション/継続的デリバリー（CI/CD）を実現しています。
+
+### ワークフロー
+
+以下のワークフローが設定されています：
+
+1. **ビルドとテスト** - コードのビルド、テスト、リントチェックを行います
+   - mainブランチへのプッシュとプルリクエストで実行されます
+   - JDK 21を使用してGradleでビルドします
+   - 単体テストを実行します
+   - ktlintでコードスタイルをチェックします
+
+2. **Dockerイメージのビルドとプッシュ** - 各モジュールのDockerイメージを作成します
+   - ビルドとテストが成功した後、mainブランチでのみ実行されます
+   - keruta-apiとkeruta-executorのDockerイメージをビルドします
+   - イメージをHarborレジストリ（harbor.kigawa.net）にプッシュします
+
+3. **Kubernetesへのデプロイ** - アプリケーションをKubernetesクラスタにデプロイします
+   - Dockerイメージのビルドとプッシュが成功した後、mainブランチでのみ実行されます
+   - 最新のイメージタグでデプロイメント設定を更新します
+   - kubectlを使用してKubernetesマニフェストを適用します
+   - デプロイメントのロールアウトステータスを確認します
+
+### 必要なシークレット
+
+GitHub Actionsワークフローを実行するには、以下のシークレットをリポジトリに設定する必要があります：
+
+- `HARBOR_USERNAME`: Harborレジストリのユーザー名
+- `HARBOR_PASSWORD`: Harborレジストリのパスワード
+- `KUBE_CONFIG`: Kubernetesクラスタへのアクセスに必要なkubeconfigファイル
