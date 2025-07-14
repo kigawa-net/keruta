@@ -49,6 +49,10 @@
           * /config - 設定
           * /domain - ドメインモデル
           * /service - サービス
+            * /CoderExecutionService.kt - coderを使用してタスクを実行するサービス
+            * /SshService.kt - SSH経由でコマンドを実行するサービス
+            * /TaskApiService.kt - keruta-apiとやり取りするサービス
+            * /TaskProcessor.kt - タスク処理を行うサービス
       * /resources - リソースファイル
     * /test - テストコード
 * /keruta-doc - プロジェクトドキュメント (https://github.com/kigawa-net/keruta-doc に移行中)

@@ -5,9 +5,20 @@
 * adminにtask削除ボタン実装
 * adminにtask編集ボタン実装
 * adminにtask詳細ボタン実装
-* keruta-executorのcoderコマンドの実装
 
 ## Completed Tasks
+
+- SSHをcoderのAPIを利用して自動で構成する機能の追加
+    - Change: keruta-executorにSSH設定を自動的に構成する機能を追加
+    - Details: SshServiceを更新して、タスクスクリプトの環境変数からSSH設定を抽出し、自動的に構成する機能を実装。README.mdを更新して環境変数によるSSH自動設定について説明を追加
+    - Location: /keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/SshService.kt, /keruta-executor/README.md, /todo.md
+    - Reason: coderのAPIを利用してSSH設定を自動的に構成することで、より柔軟なタスク実行環境を提供するため
+
+- keruta-executorのcoderコマンドの実装とSSH機能の追加
+    - Change: keruta-executorにSSH経由でコマンドを実行する機能を追加
+    - Details: SshServiceを作成してSSH経由でコマンドを実行する機能を実装し、CoderExecutionServiceを更新してSSHを使用するように変更。また、SSH接続の設定プロパティを追加し、ドキュメントを更新
+    - Location: /keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/SshService.kt, /keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/CoderExecutionService.kt, /keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/config/KerutaExecutorProperties.kt, /keruta-executor/src/main/resources/application.properties, /keruta-executor/README.md, /structure.md, /todo.md
+    - Reason: SSH経由でコマンドを実行することで、より柔軟なタスク実行環境を提供するため
 
 - GitHub Actionsによる継続的インテグレーション/継続的デリバリー（CI/CD）の実装
     - Change: GitHub Actionsワークフローを作成してCI/CDパイプラインを実装
