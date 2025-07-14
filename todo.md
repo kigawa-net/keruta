@@ -1,6 +1,5 @@
 # Todo List
 
-* 警告:(132, 63) Unchecked cast of 'Any?' to 'Map<String, String>'.
 
 ## Completed Tasks
 
