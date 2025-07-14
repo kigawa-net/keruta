@@ -1,5 +1,5 @@
 # Todo List
-
+* 警告:(132, 63) Unchecked cast of 'Any?' to 'Map<String, String>'.
 ## Completed Tasks
 
 - adminにtask削除ボタン実装、task編集ボタン実装、task詳細ボタン実装
