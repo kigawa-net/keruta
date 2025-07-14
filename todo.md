@@ -1,7 +1,17 @@
 # Todo List
 
+* 管理パネル
+    * リポジトリ管理実装
+    * k8s管理実装
+    * エージェント管理実装
 
 ## Completed Tasks
+
+- ドキュメント管理実装
+    - Change: keruta-adminモジュールにドキュメント管理機能を実装
+    - Details: ドキュメントの一覧表示、詳細表示、新規作成、編集、削除、検索、タグフィルタリング機能を実装
+    - Location: /keruta-admin/app/routes/documents._index.tsx, /keruta-admin/app/routes/documents.new.tsx, /keruta-admin/app/routes/documents.$id.tsx, /keruta-admin/app/routes/documents.edit.$id.tsx
+    - Reason: ユーザーが管理パネルからドキュメントを管理できるようにするため
 
 - adminにtask削除ボタン実装、task編集ボタン実装、task詳細ボタン実装
     - Change: keruta-adminモジュールにタスク削除、編集、詳細表示機能を追加
@@ -85,24 +95,3 @@
       description field
     - Location: /api/src/main/kotlin/net/kigawa/keruta/api/task/controller/TaskController.kt
     - Reason: To fix a 400 error that occurred when the client included a message field in the request
-
-- 改善されたエラーレスポンス
-    - Change: エラーレスポンスをより丁寧で詳細なものに改善
-    - Details: GlobalExceptionHandlerを作成してアプリケーション全体の例外を処理し、RestAuthenticationEntryPointを更新して認証エラーメッセージを改善
-    - Location: /infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/GlobalExceptionHandler.kt,
-      /infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/RestAuthenticationEntryPoint.kt
-    - Reason: ユーザーがエラーの原因をより理解しやすくし、適切な対応を取れるようにするため
-
-- Removed authentication from the application
-    - Change: Removed OAuth2/Keycloak authentication and made all endpoints publicly accessible
-    - Details: Removed OAuth2 login configuration from SecurityConfig, commented out Keycloak and JWT configuration in
-      application.properties, and updated README.md
-    - Location: /infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/SecurityConfig.kt,
-      /api/src/main/resources/application.properties, /README.md
-    - Reason: Simplified application access by removing authentication requirement
-
-- Fixed OAuth2 client configuration issue
-    - Change: Updated SecurityConfig to properly configure OAuth2 login
-    - Details: Added OAuth2 login configuration to securityFilterChain method and updated imports
-    - Location: /infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/SecurityConfig.kt
-    - Reason: Fixed Spring Security initialization error related to OAuth2 client configuration
