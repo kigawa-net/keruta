@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AIAssistantCustomInstructionsStorage">
+    <option name="instructions">
+      <map>
+        <entry key="AIAssistant.VCS.GenerateCommitMessage">
+          <value>
+            <AIAssistantStoredInstruction>
+              <option name="actionId" value="AIAssistant.VCS.GenerateCommitMessage" />
+              <option name="content" value="日本語一文" />
+            </AIAssistantStoredInstruction>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability.">
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
+    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="Refactor scheduling, update configurations, and align ports&#10;&#10;Introduced a `SchedulingConfig` class for better management of scheduling properties. Updated the `TaskProcessor` to use the new configuration and resolved minor formatting issues in `CoderExecutionService`. Additionally, the Java toolchain was configured to use Java 17, and the default application port was aligned to `8080`.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keruta-executor" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-executor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keruta-executor/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-executor/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keruta-executor/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-executor/build.gradle.kts" afterDir="false" />
@@ -62,7 +76,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/keruta-executor" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="ProjectColorInfo">{
@@ -79,6 +93,13 @@
     "Gradle./var/user/dev/kigawa-net/keruta/keruta-executor [bootRun].executor": "Run",
     "Gradle.keruta-executor のビルド.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "NIXITCH_NIXPKGS_CONFIG": "",
+    "NIXITCH_NIX_CONF_DIR": "",
+    "NIXITCH_NIX_OTHER_STORES": "",
+    "NIXITCH_NIX_PATH": "",
+    "NIXITCH_NIX_PROFILES": "/nix/var/nix/profiles/default /home/kigawa/.nix-profile",
+    "NIXITCH_NIX_REMOTE": "",
+    "NIXITCH_NIX_USER_PROFILE_DIR": "",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
@@ -95,6 +116,7 @@
     "project.structure.last.edited": "モジュール",
     "project.structure.proportion": "0.23147699",
     "project.structure.side.proportion": "0.2623951",
+    "settings.editor.selected.configurable": "ml.llm.AIAssistantPromptsLibrary",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -106,7 +128,7 @@
       <recent name="$PROJECT_DIR$/keruta-executor" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle./var/user/dev/kigawa-net/keruta/keruta-executor [bootRun]">
+  <component name="RunManager" selected="Docker.keruta-executor/Dockerfile">
     <configuration name="/var/user/dev/kigawa-net/keruta/keruta-executor [bootRun]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -254,8 +276,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle./var/user/dev/kigawa-net/keruta/keruta-executor [bootRun]" />
         <item itemvalue="Docker.keruta-executor/Dockerfile" />
+        <item itemvalue="Gradle./var/user/dev/kigawa-net/keruta/keruta-executor [bootRun]" />
       </list>
     </recent_temporary>
   </component>
@@ -275,7 +297,7 @@
       <option name="presentableId" value="Default" />
       <updated>1752257734751</updated>
       <workItem from="1752257735961" duration="6480000" />
-      <workItem from="1752343018670" duration="499000" />
+      <workItem from="1752343018670" duration="3689000" />
     </task>
     <task id="LOCAL-00001" summary="Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability.">
       <option name="closed" value="true" />
@@ -325,7 +347,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752292560306</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Refactor scheduling, update configurations, and align ports&#10;&#10;Introduced a `SchedulingConfig` class for better management of scheduling properties. Updated the `TaskProcessor` to use the new configuration and resolved minor formatting issues in `CoderExecutionService`. Additionally, the Java toolchain was configured to use Java 17, and the default application port was aligned to `8080`.">
+      <option name="closed" value="true" />
+      <created>1752344025287</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1752344025287</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -333,9 +363,14 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability." />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability." />
+    <MESSAGE value="Refactor scheduling, update configurations, and align ports&#10;&#10;Introduced a `SchedulingConfig` class for better management of scheduling properties. Updated the `TaskProcessor` to use the new configuration and resolved minor formatting issues in `CoderExecutionService`. Additionally, the Java toolchain was configured to use Java 17, and the default application port was aligned to `8080`." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor scheduling, update configurations, and align ports&#10;&#10;Introduced a `SchedulingConfig` class for better management of scheduling properties. Updated the `TaskProcessor` to use the new configuration and resolved minor formatting issues in `CoderExecutionService`. Additionally, the Java toolchain was configured to use Java 17, and the default application port was aligned to `8080`." />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
