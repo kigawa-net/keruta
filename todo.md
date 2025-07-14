@@ -1,12 +1,18 @@
 # Todo List
 
-* fix err
-    * Warning: Use the `defaultValue` or `value` props on <select> instead of setting
-* adminにtask削除ボタン実装
-* adminにtask編集ボタン実装
-* adminにtask詳細ボタン実装
-
 ## Completed Tasks
+
+- adminにtask削除ボタン実装、task編集ボタン実装、task詳細ボタン実装
+    - Change: keruta-adminモジュールにタスク削除、編集、詳細表示機能を追加
+    - Details: タスク一覧ページに削除、編集、詳細ボタンの機能を実装し、タスク編集ページ(tasks.edit.$id.tsx)とタスク詳細ページ(tasks.$id.tsx)を作成
+    - Location: /keruta-admin/app/routes/tasks._index.tsx, /keruta-admin/app/routes/tasks.edit.$id.tsx, /keruta-admin/app/routes/tasks.$id.tsx
+    - Reason: ユーザーが管理パネルからタスクを管理できるようにするため
+
+- fix err
+    - Change: selectタグのselected属性をdefaultValueプロパティに変更
+    - Details: React警告「Use the `defaultValue` or `value` props on <select> instead of setting」を修正
+    - Location: /keruta-admin/app/routes/tasks.new.tsx
+    - Reason: Reactのベストプラクティスに従い、非制御コンポーネントでは属性ではなくdefaultValueプロパティを使用するため
 
 - SSHをcoderのAPIを利用して自動で構成する機能の追加
     - Change: keruta-executorにSSH設定を自動的に構成する機能を追加
@@ -90,59 +96,3 @@
     - Details: Added OAuth2 login configuration to securityFilterChain method and updated imports
     - Location: /infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/SecurityConfig.kt
     - Reason: Fixed Spring Security initialization error related to OAuth2 client configuration
-
-- Fixed bootRun task configuration
-    - Change: Updated GitHub workflow and README to specify the api module for bootRun task
-    - Details: Changed `./gradlew bootRun` to `./gradlew :api:bootRun` and disabled bootRun task in infra/core module
-    - Location: /.github/workflows/generate-openapi.yml, /infra/core/build.gradle.kts, /README.md
-    - Reason: The main application class is in the api module, not in the infra/core module
-
-- Replaced sleep with health check in GitHub workflow
-    - Change: Modified GitHub workflow to use /api/v1/health endpoint instead of fixed sleep
-    - Details: Implemented a retry loop with timeout in generate-openapi.yml
-    - Location: /.github/workflows/generate-openapi.yml
-    - Reason: More reliable application startup detection for OpenAPI generation
-
-- Added health check endpoint for s1leep management
-    - Change: Implemented a new health check endpoint at /api/v1/health
-    - Details: Created a new HealthController in the v1 API package
-    - Location: /api/src/main/kotlin/net/kigawa/keruta/api/v1/HealthController.kt
-    - Reason: To provide health status information for s1leep management
-
-- Set up keruta-doc repository migration
-    - Change: Prepared keruta-doc directory for migration to a separate repository
-    - Details: Created structure.md and todo.md files, updated README.md with migration notice
-    - Location: keruta-doc directory and https://github.com/kigawa-net/keruta-doc
-    - Reason: To separate documentation from the main codebase for better organization
-
-- Added GitHub Action for automatic OpenAPI specification generation
-    - Change: Created a workflow that generates OpenAPI specification files on push
-    - Details: Added .github/workflows/generate-openapi.yml that builds the app, extracts OpenAPI specs, and commits
-      them
-    - Location: OpenAPI specs are stored in keruta-doc/common/apiSpec directory
-    - Formats: Both JSON and YAML formats are generated
-
-- Removed API authentication requirement
-    - Change: Removed token-based authentication from all API endpoints
-    - Details: Removed token field from Client struct, removed Authorization headers from all API requests, and updated
-      configuration to not require a token
-    - Reason: Simplified API access by removing authentication requirement
-
-- Improved keruta-agent implementation
-    - Change: Enhanced input handling and API client implementation
-    - Details: Added HTTPClient implementation with HTTP polling for input, updated documentation to reflect changes
-    - Location: /keruta-agent/internal/api/http_client.go, /keruta-agent/README.md
-    - Reason: Improved robustness in Kubernetes environments where standard input might not be available
-
-- Fixed LoggingFilter order registration issue
-    - Problem: Spring Security was not recognizing the @Order annotation on LoggingFilter
-    - Solution: Implemented Ordered interface in LoggingFilter class to explicitly register its order
-    - Details: Added getOrder() method returning -100 (same as @Order annotation value)
-
-- Changed HTTP input polling interval to 5 seconds
-    - Change: Modified the polling interval for HTTP input from 10 seconds to 5 seconds
-    - Details: Updated all sleep durations in client.go, http_client.go, and input.go, and updated comments to reflect
-      the new maximum polling time
-    - Location: /keruta-agent/internal/api/client.go, /keruta-agent/internal/api/http_client.go,
-      /keruta-agent/internal/api/input.go
-    - Reason: To make the agent poll the server for input every 5 seconds as specified in the requirements
