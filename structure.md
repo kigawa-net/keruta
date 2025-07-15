@@ -27,7 +27,16 @@
   * /app - フロントエンドアプリケーション
     * /components - UIコンポーネント
     * /routes - ルーティング設定
+      * /tasks._index.tsx - タスク一覧ページ
+      * /tasks.new.tsx - タスク作成ページ
+      * /tasks.edit.$id.tsx - タスク編集ページ
+      * /tasks.$id.tsx - タスク詳細ページ
+      * /agents._index.tsx - エージェント一覧ページ
+      * /documents._index.tsx - ドキュメント一覧ページ
+      * /repositories._index.tsx - リポジトリ一覧ページ
+      * /kubernetes._index.tsx - Kubernetes設定ページ
     * /utils - ユーティリティ関数
+      * /api.ts - API通信用ユーティリティ
   * /public - 静的ファイル
 * /keruta-agent - タスク実行エージェント (サブモジュール)
   * /cmd - コマンドラインインターフェース
@@ -49,6 +58,10 @@
           * /config - 設定
           * /domain - ドメインモデル
           * /service - サービス
+            * /CoderExecutionService.kt - coderを使用してタスクを実行するサービス
+            * /SshService.kt - SSH経由でコマンドを実行するサービス
+            * /TaskApiService.kt - keruta-apiとやり取りするサービス
+            * /TaskProcessor.kt - タスク処理を行うサービス
       * /resources - リソースファイル
     * /test - テストコード
 * /keruta-doc - プロジェクトドキュメント (https://github.com/kigawa-net/keruta-doc に移行中)

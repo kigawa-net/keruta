@@ -1,18 +1,54 @@
 # Todo List
 
-* fix err
-    * Warning: Use the `defaultValue` or `value` props on <select> instead of setting
-* adminにtask削除ボタン実装
-* adminにtask編集ボタン実装
-* adminにtask詳細ボタン実装
-* keruta-executorのcoderコマンドの実装
+* 管理パネル
+    * リポジトリ管理実装
+    * k8s管理実装
+    * エージェント管理実装
 
 ## Completed Tasks
+
+- ドキュメント管理実装
+    - Change: keruta-adminモジュールにドキュメント管理機能を実装
+    - Details: ドキュメントの一覧表示、詳細表示、新規作成、編集、削除、検索、タグフィルタリング機能を実装
+    - Location: /keruta-admin/app/routes/documents._index.tsx, /keruta-admin/app/routes/documents.new.tsx, /keruta-admin/app/routes/documents.$id.tsx, /keruta-admin/app/routes/documents.edit.$id.tsx
+    - Reason: ユーザーが管理パネルからドキュメントを管理できるようにするため
+
+- adminにtask削除ボタン実装、task編集ボタン実装、task詳細ボタン実装
+    - Change: keruta-adminモジュールにタスク削除、編集、詳細表示機能を追加
+    - Details: タスク一覧ページに削除、編集、詳細ボタンの機能を実装し、タスク編集ページ(
+      tasks.edit.$id.tsx)とタスク詳細ページ(tasks.$id.tsx)を作成
+    - Location: /keruta-admin/app/routes/tasks._index.tsx,
+      /keruta-admin/app/routes/tasks.edit.$id.tsx, /keruta-admin/app/routes/tasks.$id.tsx
+    - Reason: ユーザーが管理パネルからタスクを管理できるようにするため
+
+- fix err
+    - Change: selectタグのselected属性をdefaultValueプロパティに変更
+    - Details: React警告「Use the `defaultValue` or `value` props on <select> instead of setting」を修正
+    - Location: /keruta-admin/app/routes/tasks.new.tsx
+    - Reason: Reactのベストプラクティスに従い、非制御コンポーネントでは属性ではなくdefaultValueプロパティを使用するため
+
+- SSHをcoderのAPIを利用して自動で構成する機能の追加
+    - Change: keruta-executorにSSH設定を自動的に構成する機能を追加
+    - Details: SshServiceを更新して、タスクスクリプトの環境変数からSSH設定を抽出し、自動的に構成する機能を実装。README.mdを更新して環境変数によるSSH自動設定について説明を追加
+    - Location: /keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/SshService.kt,
+      /keruta-executor/README.md, /todo.md
+    - Reason: coderのAPIを利用してSSH設定を自動的に構成することで、より柔軟なタスク実行環境を提供するため
+
+- keruta-executorのcoderコマンドの実装とSSH機能の追加
+    - Change: keruta-executorにSSH経由でコマンドを実行する機能を追加
+    - Details:
+      SshServiceを作成してSSH経由でコマンドを実行する機能を実装し、CoderExecutionServiceを更新してSSHを使用するように変更。また、SSH接続の設定プロパティを追加し、ドキュメントを更新
+    - Location: /keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/SshService.kt,
+      /keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/CoderExecutionService.kt,
+      /keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/config/KerutaExecutorProperties.kt,
+      /keruta-executor/src/main/resources/application.properties, /keruta-executor/README.md, /structure.md, /todo.md
+    - Reason: SSH経由でコマンドを実行することで、より柔軟なタスク実行環境を提供するため
 
 - GitHub Actionsによる継続的インテグレーション/継続的デリバリー（CI/CD）の実装
     - Change: GitHub Actionsワークフローを作成してCI/CDパイプラインを実装
     - Details: ビルド・テスト用、Dockerイメージビルド用、Kubernetesデプロイ用の3つのワークフローを作成し、README.mdを更新してCI/CDについて説明を追加
-    - Location: /.github/workflows/build.yml, /.github/workflows/docker.yml, /.github/workflows/deploy.yml, /README.md, /structure.md
+    - Location: /.github/workflows/build.yml, /.github/workflows/docker.yml, /.github/workflows/deploy.yml, /README.md,
+      /structure.md
     - Reason: 自動化されたビルド、テスト、デプロイプロセスを実現し、開発効率と品質を向上させるため
 
 - keruta-executorのドキュメントを日本語に翻訳
@@ -23,7 +59,8 @@
 
 - keruta-executorにkeruta-apiのタスクをcoderで実行するアプリケーションを実装
     - Change: keruta-executorにKotlinでタスク実行アプリケーションを実装
-    - Details: Spring Bootアプリケーションとして、TaskProcessor、TaskApiService、CoderExecutionServiceを実装し、keruta-apiからタスクを取得して実行する機能を追加
+    - Details: Spring
+      Bootアプリケーションとして、TaskProcessor、TaskApiService、CoderExecutionServiceを実装し、keruta-apiからタスクを取得して実行する機能を追加
     - Location: /keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/
     - Reason: keruta-apiのタスクをcoderで実行するため
 
@@ -58,80 +95,3 @@
       description field
     - Location: /api/src/main/kotlin/net/kigawa/keruta/api/task/controller/TaskController.kt
     - Reason: To fix a 400 error that occurred when the client included a message field in the request
-
-- 改善されたエラーレスポンス
-    - Change: エラーレスポンスをより丁寧で詳細なものに改善
-    - Details: GlobalExceptionHandlerを作成してアプリケーション全体の例外を処理し、RestAuthenticationEntryPointを更新して認証エラーメッセージを改善
-    - Location: /infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/GlobalExceptionHandler.kt,
-      /infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/RestAuthenticationEntryPoint.kt
-    - Reason: ユーザーがエラーの原因をより理解しやすくし、適切な対応を取れるようにするため
-
-- Removed authentication from the application
-    - Change: Removed OAuth2/Keycloak authentication and made all endpoints publicly accessible
-    - Details: Removed OAuth2 login configuration from SecurityConfig, commented out Keycloak and JWT configuration in
-      application.properties, and updated README.md
-    - Location: /infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/SecurityConfig.kt,
-      /api/src/main/resources/application.properties, /README.md
-    - Reason: Simplified application access by removing authentication requirement
-
-- Fixed OAuth2 client configuration issue
-    - Change: Updated SecurityConfig to properly configure OAuth2 login
-    - Details: Added OAuth2 login configuration to securityFilterChain method and updated imports
-    - Location: /infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/SecurityConfig.kt
-    - Reason: Fixed Spring Security initialization error related to OAuth2 client configuration
-
-- Fixed bootRun task configuration
-    - Change: Updated GitHub workflow and README to specify the api module for bootRun task
-    - Details: Changed `./gradlew bootRun` to `./gradlew :api:bootRun` and disabled bootRun task in infra/core module
-    - Location: /.github/workflows/generate-openapi.yml, /infra/core/build.gradle.kts, /README.md
-    - Reason: The main application class is in the api module, not in the infra/core module
-
-- Replaced sleep with health check in GitHub workflow
-    - Change: Modified GitHub workflow to use /api/v1/health endpoint instead of fixed sleep
-    - Details: Implemented a retry loop with timeout in generate-openapi.yml
-    - Location: /.github/workflows/generate-openapi.yml
-    - Reason: More reliable application startup detection for OpenAPI generation
-
-- Added health check endpoint for s1leep management
-    - Change: Implemented a new health check endpoint at /api/v1/health
-    - Details: Created a new HealthController in the v1 API package
-    - Location: /api/src/main/kotlin/net/kigawa/keruta/api/v1/HealthController.kt
-    - Reason: To provide health status information for s1leep management
-
-- Set up keruta-doc repository migration
-    - Change: Prepared keruta-doc directory for migration to a separate repository
-    - Details: Created structure.md and todo.md files, updated README.md with migration notice
-    - Location: keruta-doc directory and https://github.com/kigawa-net/keruta-doc
-    - Reason: To separate documentation from the main codebase for better organization
-
-- Added GitHub Action for automatic OpenAPI specification generation
-    - Change: Created a workflow that generates OpenAPI specification files on push
-    - Details: Added .github/workflows/generate-openapi.yml that builds the app, extracts OpenAPI specs, and commits
-      them
-    - Location: OpenAPI specs are stored in keruta-doc/common/apiSpec directory
-    - Formats: Both JSON and YAML formats are generated
-
-- Removed API authentication requirement
-    - Change: Removed token-based authentication from all API endpoints
-    - Details: Removed token field from Client struct, removed Authorization headers from all API requests, and updated
-      configuration to not require a token
-    - Reason: Simplified API access by removing authentication requirement
-
-- Improved keruta-agent implementation
-    - Change: Enhanced input handling and API client implementation
-    - Details: Added HTTPClient implementation with HTTP polling for input, updated documentation to reflect changes
-    - Location: /keruta-agent/internal/api/http_client.go, /keruta-agent/README.md
-    - Reason: Improved robustness in Kubernetes environments where standard input might not be available
-
-- Fixed LoggingFilter order registration issue
-    - Problem: Spring Security was not recognizing the @Order annotation on LoggingFilter
-    - Solution: Implemented Ordered interface in LoggingFilter class to explicitly register its order
-    - Details: Added getOrder() method returning -100 (same as @Order annotation value)
-
-- Changed HTTP input polling interval to 5 seconds
-    - Change: Modified the polling interval for HTTP input from 10 seconds to 5 seconds
-    - Details: Updated all sleep durations in client.go, http_client.go, and input.go, and updated comments to reflect
-      the new maximum polling time
-    - Location: /keruta-agent/internal/api/client.go, /keruta-agent/internal/api/http_client.go,
-      /keruta-agent/internal/api/input.go
-    - Reason: To make the agent poll the server for input every 5 seconds as specified in the requirements
