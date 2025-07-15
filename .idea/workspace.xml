@@ -18,12 +18,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="Refactor scheduling, update configurations, and align ports&#10;&#10;Introduced a `SchedulingConfig` class for better management of scheduling properties. Updated the `TaskProcessor` to use the new configuration and resolved minor formatting issues in `CoderExecutionService`. Additionally, the Java toolchain was configured to use Java 17, and the default application port was aligned to `8080`.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-executor" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-executor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-executor/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-executor/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-executor/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-executor/build.gradle.kts" afterDir="false" />
-    </list>
+    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="&quot;Add session management routes for list, details, and editing in keruta admin panel&quot;" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -31,6 +26,9 @@
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/keruta-api">
       <ProjectState />
     </projectState>
     <projectState path="$PROJECT_DIR$/keruta-executor">
@@ -43,23 +41,29 @@
         <task path="$PROJECT_DIR$/keruta-executor">
           <activation />
         </task>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$/keruta-api">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="keruta-executor" type="f1a62948:ProjectNode" />
+                <item name="keruta-api" type="f1a62948:ProjectNode" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="keruta-executor" type="f1a62948:ProjectNode" />
+                <item name="keruta-api" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="keruta-executor" type="f1a62948:ProjectNode" />
+                <item name="keruta-api" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="application" type="c8890929:TasksNode$1" />
+                <item name="build" type="c8890929:TasksNode$1" />
               </path>
             </expand>
             <select />
@@ -79,6 +83,13 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -91,7 +102,9 @@
   "keyToString": {
     "Docker.keruta-executor/Dockerfile.executor": "Run",
     "Gradle./var/user/dev/kigawa-net/keruta/keruta-executor [bootRun].executor": "Run",
+    "Gradle.keruta-api のビルド.executor": "Run",
     "Gradle.keruta-executor のビルド.executor": "Run",
+    "JUnit.プロジェクト全体.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "NIXITCH_NIXPKGS_CONFIG": "",
     "NIXITCH_NIX_CONF_DIR": "",
@@ -101,8 +114,11 @@
     "NIXITCH_NIX_REMOTE": "",
     "NIXITCH_NIX_USER_PROFILE_DIR": "",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cidr.known.project.marker": "true",
     "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "main",
     "go.import.settings.migrated": "true",
@@ -116,7 +132,7 @@
     "project.structure.last.edited": "モジュール",
     "project.structure.proportion": "0.23147699",
     "project.structure.side.proportion": "0.2623951",
-    "settings.editor.selected.configurable": "ml.llm.AIAssistantPromptsLibrary",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -128,81 +144,7 @@
       <recent name="$PROJECT_DIR$/keruta-executor" />
     </key>
   </component>
-  <component name="RunManager" selected="Docker.keruta-executor/Dockerfile">
-    <configuration name="/var/user/dev/kigawa-net/keruta/keruta-executor [bootRun]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/keruta-executor" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="bootRun" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="keruta" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="keruta" />
-      <option name="filePath" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
-      <module name="keruta" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="KerutaExecutorApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="keruta-executor.main" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="net.kigawa.keruta.executor.KerutaExecutorApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="Tox" factoryName="Tox">
-      <module name="keruta" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="JUnit.プロジェクト全体">
     <configuration default="true" type="ccruntests" factoryName="Run Study Tests">
       <module name="keruta" />
       <option name="ENV_FILES" value="" />
@@ -226,6 +168,51 @@
       <option name="studyTest" value="" />
       <method v="2" />
     </configuration>
+    <configuration default="true" type="AppleRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" IS_LOCATION_SIMULATION_SUPPORTED="false" IS_LOCATION_SIMULATION_ALLOWED="true" APPLICATION_LANGUAGE="IDELaunchSchemeLanguageUseSystemLanguage" APPLICATION_REGION="" MAKE_ACTIVE="TRUE" SHOULD_DEBUG_EXTENSIONS="false">
+      <embedded_app_extension_list />
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="/var/user/dev/kigawa-net/keruta/keruta-executor [bootRun]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/keruta-executor" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="bootRun" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="プロジェクト全体" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="wholeProject" />
+      </option>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="KerutaExecutorApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="keruta-executor.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="net.kigawa.keruta.executor.KerutaExecutorApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
       <deployment type="dockerfile">
         <settings />
@@ -240,42 +227,9 @@
       </deployment>
       <method v="2" />
     </configuration>
-    <configuration default="true" type="tests" factoryName="Autodetect">
-      <module name="keruta" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="Doctests">
-      <module name="keruta" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.プロジェクト全体" />
         <item itemvalue="Docker.keruta-executor/Dockerfile" />
         <item itemvalue="Gradle./var/user/dev/kigawa-net/keruta/keruta-executor [bootRun]" />
       </list>
@@ -298,6 +252,7 @@
       <updated>1752257734751</updated>
       <workItem from="1752257735961" duration="6480000" />
       <workItem from="1752343018670" duration="3689000" />
+      <workItem from="1752555069302" duration="6172000" />
     </task>
     <task id="LOCAL-00001" summary="Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability.">
       <option name="closed" value="true" />
@@ -355,7 +310,87 @@
       <option name="project" value="LOCAL" />
       <updated>1752344025287</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary=".idea-specific files updated and new Gradle and Docker configurations added for enhanced project build, deployment, and testing settings.">
+      <option name="closed" value="true" />
+      <created>1752547383886</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1752547383886</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Coder実行機能を追加し、環境変数設定を拡張">
+      <option name="closed" value="true" />
+      <created>1752548537253</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1752548537253</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Coder実行機能を追加し、環境変数設定を拡張">
+      <option name="closed" value="true" />
+      <created>1752549335010</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1752549335010</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Coder実行機能を追加し、環境変数設定を拡張">
+      <option name="closed" value="true" />
+      <created>1752550168425</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1752550168425</updated>
+    </task>
+    <task id="LOCAL-00012" summary="DockerfileにCoder CLIのインストールと作業ディレクトリの作成を追加">
+      <option name="closed" value="true" />
+      <created>1752552189003</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1752552189003</updated>
+    </task>
+    <task id="LOCAL-00013" summary="セッション管理機能を追加: API, ドメイン, 永続性層にセッション操作サポートを実装し、タスクにセッション関連フィールドを追加">
+      <option name="closed" value="true" />
+      <created>1752556665627</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1752556665627</updated>
+    </task>
+    <task id="LOCAL-00014" summary="&quot;Add session management routes for list, details, and editing in keruta admin panel&quot;">
+      <option name="closed" value="true" />
+      <created>1752558983012</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1752558983012</updated>
+    </task>
+    <task id="LOCAL-00015" summary="&quot;Add session management routes for list, details, and editing in keruta admin panel&quot;">
+      <option name="closed" value="true" />
+      <created>1752561294601</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1752561294601</updated>
+    </task>
+    <task id="LOCAL-00016" summary="&quot;Add session management routes for list, details, and editing in keruta admin panel&quot;">
+      <option name="closed" value="true" />
+      <created>1752562913706</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1752562913706</updated>
+    </task>
+    <task id="LOCAL-00017" summary="&quot;Add session management routes for list, details, and editing in keruta admin panel&quot;">
+      <option name="closed" value="true" />
+      <created>1752563751184</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1752563751184</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -364,7 +399,12 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability." />
     <MESSAGE value="Refactor scheduling, update configurations, and align ports&#10;&#10;Introduced a `SchedulingConfig` class for better management of scheduling properties. Updated the `TaskProcessor` to use the new configuration and resolved minor formatting issues in `CoderExecutionService`. Additionally, the Java toolchain was configured to use Java 17, and the default application port was aligned to `8080`." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor scheduling, update configurations, and align ports&#10;&#10;Introduced a `SchedulingConfig` class for better management of scheduling properties. Updated the `TaskProcessor` to use the new configuration and resolved minor formatting issues in `CoderExecutionService`. Additionally, the Java toolchain was configured to use Java 17, and the default application port was aligned to `8080`." />
+    <MESSAGE value=".idea-specific files updated and new Gradle and Docker configurations added for enhanced project build, deployment, and testing settings." />
+    <MESSAGE value="Coder実行機能を追加し、環境変数設定を拡張" />
+    <MESSAGE value="DockerfileにCoder CLIのインストールと作業ディレクトリの作成を追加" />
+    <MESSAGE value="セッション管理機能を追加: API, ドメイン, 永続性層にセッション操作サポートを実装し、タスクにセッション関連フィールドを追加" />
+    <MESSAGE value="&quot;Add session management routes for list, details, and editing in keruta admin panel&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;Add session management routes for list, details, and editing in keruta admin panel&quot;" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

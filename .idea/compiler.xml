@@ -5,6 +5,15 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="keruta-api.api" options="-parameters" />
+      <module name="keruta-api.api.main" options="-parameters" />
+      <module name="keruta-api.api.test" options="-parameters" />
+      <module name="keruta-api.infra.app" options="-parameters" />
+      <module name="keruta-api.infra.app.main" options="-parameters" />
+      <module name="keruta-api.infra.app.test" options="-parameters" />
+      <module name="keruta-api.infra.core" options="-parameters" />
+      <module name="keruta-api.infra.core.main" options="-parameters" />
+      <module name="keruta-api.infra.core.test" options="-parameters" />
       <module name="keruta-executor" options="-parameters" />
       <module name="keruta-executor.main" options="-parameters" />
       <module name="keruta-executor.test" options="-parameters" />
