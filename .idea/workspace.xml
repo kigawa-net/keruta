@@ -20,10 +20,6 @@
   <component name="ChangeListManager">
     <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="&quot;Add session management routes for list, details, and editing in keruta admin panel&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-admin" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/sessions._index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/sessions._index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/api/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/api/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -258,7 +254,7 @@
       <updated>1752257734751</updated>
       <workItem from="1752257735961" duration="6480000" />
       <workItem from="1752343018670" duration="3689000" />
-      <workItem from="1752555069302" duration="5493000" />
+      <workItem from="1752555069302" duration="6078000" />
     </task>
     <task id="LOCAL-00001" summary="Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability.">
       <option name="closed" value="true" />
@@ -380,7 +376,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752561294601</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="&quot;Add session management routes for list, details, and editing in keruta admin panel&quot;">
+      <option name="closed" value="true" />
+      <created>1752562913706</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1752562913706</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
