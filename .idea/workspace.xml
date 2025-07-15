@@ -18,296 +18,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="DockerfileにCoder CLIのインストールと作業ディレクトリの作成を追加">
+    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="セッション管理機能を追加: API, ドメイン, 永続性層にセッション操作サポートを実装し、タスクにセッション関連フィールドを追加">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/task/controller/TaskController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/task/controller/TaskController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/task/dto/CreateTaskRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/task/dto/CreateTaskRequest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/task/dto/TaskResponse.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/task/dto/TaskResponse.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/classes/kotlin/main/META-INF/domain.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/classes/kotlin/main/net/kigawa/keruta/core/domain/model/Agent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/classes/kotlin/main/net/kigawa/keruta/core/domain/model/AgentStatus.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/classes/kotlin/main/net/kigawa/keruta/core/domain/model/CreateTaskForm.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/classes/kotlin/main/net/kigawa/keruta/core/domain/model/Document.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/classes/kotlin/main/net/kigawa/keruta/core/domain/model/Job.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/classes/kotlin/main/net/kigawa/keruta/core/domain/model/JobStatus.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/classes/kotlin/main/net/kigawa/keruta/core/domain/model/KubernetesConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/classes/kotlin/main/net/kigawa/keruta/core/domain/model/Repository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/classes/kotlin/main/net/kigawa/keruta/core/domain/model/Script.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/classes/kotlin/main/net/kigawa/keruta/core/domain/model/Task.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/counters.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/file-to-id.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/id-to-file.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/lookups.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/lookups.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/lookups.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/lookups.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/lookups.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/lookups.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/build/kotlin/compileKotlin/classpath-snapshot/shrunk-classpath-snapshot.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/src/main/kotlin/net/kigawa/keruta/core/domain/model/Task.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/domain/src/main/kotlin/net/kigawa/keruta/core/domain/model/Task.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/classes/kotlin/main/META-INF/usecase.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/classes/kotlin/main/net/kigawa/keruta/core/usecase/CoroutineService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/classes/kotlin/main/net/kigawa/keruta/core/usecase/agent/AgentService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/classes/kotlin/main/net/kigawa/keruta/core/usecase/agent/AgentServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/classes/kotlin/main/net/kigawa/keruta/core/usecase/agent/KerutaAgentService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/classes/kotlin/main/net/kigawa/keruta/core/usecase/document/DocumentService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/classes/kotlin/main/net/kigawa/keruta/core/usecase/document/DocumentServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/classes/kotlin/main/net/kigawa/keruta/core/usecase/job/BackgroundJobProcessorConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/classes/kotlin/main/net/kigawa/keruta/core/usecase/kubernetes/KubernetesService$DefaultImpls.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/classes/kotlin/main/net/kigawa/keruta/core/usecase/kubernetes/KubernetesService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/classes/kotlin/main/net/kigawa/keruta/core/usecase/repository/AgentRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/classes/kotlin/main/net/kigawa/keruta/core/usecase/repository/DocumentRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/classes/kotlin/main/net/kigawa/keruta/core/usecase/repository/GitRepositoryRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/classes/kotlin/main/net/kigawa/keruta/core/usecase/repository/GitRepositoryService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/classes/kotlin/main/net/kigawa/keruta/core/usecase/repository/GitRepositoryServiceImpl$Companion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/classes/kotlin/main/net/kigawa/keruta/core/usecase/repository/GitRepositoryServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/classes/kotlin/main/net/kigawa/keruta/core/usecase/repository/JobRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/classes/kotlin/main/net/kigawa/keruta/core/usecase/repository/KubernetesConfigRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/classes/kotlin/main/net/kigawa/keruta/core/usecase/repository/TaskRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/classes/kotlin/main/net/kigawa/keruta/core/usecase/task/TaskService$DefaultImpls.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/classes/kotlin/main/net/kigawa/keruta/core/usecase/task/TaskService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/classes/kotlin/main/net/kigawa/keruta/core/usecase/task/background/BackgroundTaskProcessorConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/counters.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/file-to-id.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/id-to-file.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/lookups.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/repository/TaskRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/repository/TaskRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/task/TaskService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/task/TaskService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/task/TaskServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/task/TaskServiceImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesClientProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesClientProvider.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/client/ClientValidateResult.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/client/ClientValidateResult.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/job/KubernetesJobCreator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/job/KubernetesJobCreator.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/META-INF/persistence.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/config/MongoConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/entity/AgentEntity$Companion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/entity/AgentEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/entity/DocumentEntity$Companion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/entity/DocumentEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/entity/JobEntity$Companion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/entity/JobEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/entity/KubernetesConfigEntity$Companion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/entity/KubernetesConfigEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/entity/RepositoryEntity$Companion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/entity/RepositoryEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/repository/AgentRepositoryImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/repository/DocumentRepositoryImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/repository/GitRepositoryRepositoryImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/repository/JobRepositoryImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/repository/KubernetesConfigRepositoryImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/repository/MongoAgentRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/repository/MongoDocumentRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/repository/MongoJobRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/repository/MongoKubernetesConfigRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/repository/MongoRepositoryRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/repository/MongoTaskRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/classes/kotlin/main/net/kigawa/keruta/infra/persistence/repository/TaskRepositoryImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/inputs/source-to-output.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/inputs/source-to-output.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-attributes.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/class-fq-name-to-source.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/internal-name-to-source.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/proto.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/source-to-classes.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/subtypes.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/supertypes.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/counters.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/file-to-id.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/file-to-id.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/file-to-id.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/id-to-file.tab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.keystream.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/id-to-file.tab.values.at" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/id-to-file.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/lookups.tab_i.len" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/entity/TaskEntity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/entity/TaskEntity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/repository/MongoTaskRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/repository/MongoTaskRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/repository/TaskRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/repository/TaskRepositoryImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/security/build/classes/kotlin/main/net/kigawa/keruta/infra/security/config/GlobalExceptionHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/security/build/classes/kotlin/main/net/kigawa/keruta/infra/security/config/GlobalExceptionHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/security/build/classes/kotlin/main/net/kigawa/keruta/infra/security/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/security/build/classes/kotlin/main/net/kigawa/keruta/infra/security/config/SecurityConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/security/build/classes/kotlin/main/net/kigawa/keruta/infra/security/controller/AuthController.class" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/security/build/classes/kotlin/main/net/kigawa/keruta/infra/security/controller/AuthController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/security/build/classes/kotlin/main/net/kigawa/keruta/infra/security/jwt/JwtTokenProvider$secretKey$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/security/build/classes/kotlin/main/net/kigawa/keruta/infra/security/jwt/JwtTokenProvider$secretKey$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/security/build/classes/kotlin/main/net/kigawa/keruta/infra/security/jwt/JwtTokenProvider.class" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/security/build/classes/kotlin/main/net/kigawa/keruta/infra/security/jwt/JwtTokenProvider.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/GlobalExceptionHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/GlobalExceptionHandler.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/RestAuthenticationEntryPoint.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/RestAuthenticationEntryPoint.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/SecurityConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/config/SecurityConfig.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/controller/AuthController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/controller/AuthController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/jwt/JwtTokenProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/jwt/JwtTokenProvider.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/security/src/test/kotlin/net/kigawa/keruta/infra/security/config/GlobalExceptionHandlerTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/security/src/test/kotlin/net/kigawa/keruta/infra/security/config/GlobalExceptionHandlerTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/todo.md" beforeDir="false" afterPath="$PROJECT_DIR$/todo.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -504,7 +216,7 @@
       <updated>1752257734751</updated>
       <workItem from="1752257735961" duration="6480000" />
       <workItem from="1752343018670" duration="3689000" />
-      <workItem from="1752555069302" duration="1427000" />
+      <workItem from="1752555069302" duration="2530000" />
     </task>
     <task id="LOCAL-00001" summary="Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability.">
       <option name="closed" value="true" />
@@ -602,7 +314,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752552189003</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="セッション管理機能を追加: API, ドメイン, 永続性層にセッション操作サポートを実装し、タスクにセッション関連フィールドを追加">
+      <option name="closed" value="true" />
+      <created>1752556665627</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1752556665627</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -614,7 +334,8 @@
     <MESSAGE value=".idea-specific files updated and new Gradle and Docker configurations added for enhanced project build, deployment, and testing settings." />
     <MESSAGE value="Coder実行機能を追加し、環境変数設定を拡張" />
     <MESSAGE value="DockerfileにCoder CLIのインストールと作業ディレクトリの作成を追加" />
-    <option name="LAST_COMMIT_MESSAGE" value="DockerfileにCoder CLIのインストールと作業ディレクトリの作成を追加" />
+    <MESSAGE value="セッション管理機能を追加: API, ドメイン, 永続性層にセッション操作サポートを実装し、タスクにセッション関連フィールドを追加" />
+    <option name="LAST_COMMIT_MESSAGE" value="セッション管理機能を追加: API, ドメイン, 永続性層にセッション操作サポートを実装し、タスクにセッション関連フィールドを追加" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
