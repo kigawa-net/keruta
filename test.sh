@@ -7,8 +7,7 @@ echo "=== Keruta project test start ==="
 # Move to project root directory
 cd "$(dirname "$0")" || exit 2
 
-# Variable to track test results (not used in fail-fast mode)
-test_failed=0
+# Note: Using fail-fast mode - script exits immediately on any test failure
 
 # Set up test results file
 test_results_file="latest.log"
