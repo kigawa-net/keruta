@@ -18,38 +18,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="「Coder APIインテグレーションを実装: Service/Repositoryのsuspend削除とインフラ層での依存分離」">
-      <change beforePath="$PROJECT_DIR$/.idea/modules/api/keruta-api.api.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/api/keruta-api.api.main.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/api/keruta-api.api.test.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/buildSrc/keruta-api.buildSrc.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/buildSrc/keruta-api.buildSrc.main.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/buildSrc/keruta-api.buildSrc.test.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/core/domain/keruta-api.core.domain.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/core/keruta-api.core.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/core/usecase/keruta-api.core.usecase.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/core/usecase/keruta-api.core.usecase.main.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/app/keruta-api.infra.app.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/app/keruta-api.infra.app.main.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/app/keruta-api.infra.app.test.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/core/keruta-api.infra.core.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/core/keruta-api.infra.core.main.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/keruta-api.infra.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/persistence/keruta-api.infra.persistence.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/persistence/keruta-api.infra.persistence.main.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/persistence/keruta-api.infra.persistence.test.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/security/keruta-api.infra.security.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/security/keruta-api.infra.security.main.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/security/keruta-api.infra.security.test.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/keruta-api.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-admin" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/documents.$id.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/documents.$id.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/documents._index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/documents._index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/documents.edit.$id.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/documents.edit.$id.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/documents.new.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/documents.new.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/sessions.$id.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/sessions.$id.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/sessions.edit.$id.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/sessions.edit.$id.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/sessions.new.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/sessions.new.tsx" afterDir="false" />
+    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment=".idea モジュール定義ファイルを削除しました。">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/git.sh" beforeDir="false" afterPath="$PROJECT_DIR$/git.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,7 +96,7 @@
         <entry key="$PROJECT_DIR$/kigawa-net-k8s/keruta-doc" value="20429dac970679b083d8973b1c571f744a866f16" />
       </map>
     </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/keruta-api" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/keruta-executor" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
@@ -179,6 +150,7 @@
     "project.structure.proportion": "0.23147699",
     "project.structure.side.proportion": "0.2623951",
     "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "/var/user/dev/kigawa-net/keruta/keruta-admin/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -235,7 +207,7 @@
       <recent name="$PROJECT_DIR$/keruta-executor" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.keruta-api [bootJar]">
+  <component name="RunManager" selected="Docker.keruta-executor/Dockerfile">
     <configuration default="true" type="AppleRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" IS_LOCATION_SIMULATION_SUPPORTED="false" IS_LOCATION_SIMULATION_ALLOWED="true" APPLICATION_LANGUAGE="IDELaunchSchemeLanguageUseSystemLanguage" APPLICATION_REGION="" MAKE_ACTIVE="TRUE" SHOULD_DEBUG_EXTENSIONS="false">
       <embedded_app_extension_list />
       <method v="2">
@@ -319,9 +291,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Docker.keruta-executor/Dockerfile" />
         <item itemvalue="Gradle.keruta-api [bootJar]" />
         <item itemvalue="JUnit.プロジェクト全体" />
-        <item itemvalue="Docker.keruta-executor/Dockerfile" />
         <item itemvalue="Gradle./var/user/dev/kigawa-net/keruta/keruta-executor [bootRun]" />
       </list>
     </recent_temporary>
@@ -505,7 +477,23 @@
       <option name="project" value="LOCAL" />
       <updated>1752847850599</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary=".idea モジュール定義ファイルを削除しました。">
+      <option name="closed" value="true" />
+      <created>1752850532332</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1752850532332</updated>
+    </task>
+    <task id="LOCAL-00022" summary=".idea モジュール定義ファイルを削除しました。">
+      <option name="closed" value="true" />
+      <created>1752852853853</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1752852853853</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -522,7 +510,8 @@
     <MESSAGE value="&quot;Coder APIクライアントと関連サービスの追加: ワークスペース管理のCRUD機能を実装&quot;" />
     <MESSAGE value="&quot;セッション詳細APIにワークスペースリンク機能を追加し、Coder REST APIを統合&quot;" />
     <MESSAGE value="「Coder APIインテグレーションを実装: Service/Repositoryのsuspend削除とインフラ層での依存分離」" />
-    <option name="LAST_COMMIT_MESSAGE" value="「Coder APIインテグレーションを実装: Service/Repositoryのsuspend削除とインフラ層での依存分離」" />
+    <MESSAGE value=".idea モジュール定義ファイルを削除しました。" />
+    <option name="LAST_COMMIT_MESSAGE" value=".idea モジュール定義ファイルを削除しました。" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
