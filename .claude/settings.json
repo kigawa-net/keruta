@@ -1,15 +1,24 @@
 {
-  "hooks": {
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "dir=\"$PWD\"; while [ \"$dir\" != \"/\" ]; do [ -x \"$dir/test.sh\" ] && bash \"$dir/test.sh\"; dir=$(dirname \"$dir\"); done\n"
-          }
+    "hooks": {
+        "Stop": [
+            {
+                "matcher": "",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "dir=\"$PWD\"; while [ \"$dir\" != \"/\" ]; do [ -x \"$dir/test.sh\" ] && bash \"$dir/test.sh\"; dir=$(dirname \"$dir\"); done\n"
+                    }
+                ]
+            },
+            {
+                "matcher": "",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "dir=\"$PWD\" file=\"git.sh\"; while [ \"$dir\" != \"/\" ]; do [ -x \"$dir/$file\" ] && bash \"$dir/$file\"; dir=$(dirname \"$dir\"); done\n"
+                    }
+                ]
+            }
         ]
-      }
-    ]
-  }
+    }
 }
