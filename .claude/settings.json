@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "dir=\"$PWD\"; while [ \"$dir\" != \"/\" ]; do [ -x \"$dir/test.sh\" ] && exec \"$dir/test.sh\"; dir=$(dirname \"$dir\"); done\n"
+          }
+        ]
+      }
+    ]
+  }
+}
