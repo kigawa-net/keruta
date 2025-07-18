@@ -18,17 +18,38 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="&quot;セッション詳細APIにワークスペースリンク機能を追加し、Coder REST APIを統合&quot;">
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/KerutaApplication.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/build.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/dev.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/server.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="「Coder APIインテグレーションを実装: Service/Repositoryのsuspend削除とインフラ層での依存分離」">
+      <change beforePath="$PROJECT_DIR$/.idea/modules/api/keruta-api.api.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/api/keruta-api.api.main.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/api/keruta-api.api.test.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/buildSrc/keruta-api.buildSrc.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/buildSrc/keruta-api.buildSrc.main.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/buildSrc/keruta-api.buildSrc.test.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/core/domain/keruta-api.core.domain.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/core/keruta-api.core.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/core/usecase/keruta-api.core.usecase.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/core/usecase/keruta-api.core.usecase.main.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/app/keruta-api.infra.app.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/app/keruta-api.infra.app.main.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/app/keruta-api.infra.app.test.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/core/keruta-api.infra.core.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/core/keruta-api.infra.core.main.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/keruta-api.infra.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/persistence/keruta-api.infra.persistence.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/persistence/keruta-api.infra.persistence.main.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/persistence/keruta-api.infra.persistence.test.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/security/keruta-api.infra.security.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/security/keruta-api.infra.security.main.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/security/keruta-api.infra.security.test.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/keruta-api.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/keruta-admin" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-agent" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kigawa-net-k8s" beforeDir="false" afterPath="$PROJECT_DIR$/kigawa-net-k8s" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/documents.$id.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/documents.$id.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/documents._index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/documents._index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/documents.edit.$id.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/documents.edit.$id.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/documents.new.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/documents.new.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/sessions.$id.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/sessions.$id.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/sessions.edit.$id.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/sessions.edit.$id.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/sessions.new.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/sessions.new.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,6 +111,7 @@
       </list>
     </option>
   </component>
+  <component name="GOROOT" url="file://$USER_HOME$/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.4.linux-amd64" />
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
@@ -121,45 +143,45 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Docker.keruta-executor/Dockerfile.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle./var/user/dev/kigawa-net/keruta/keruta-executor [bootRun].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.keruta-api [bootJar].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.keruta-api のビルド.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.keruta-executor のビルド.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.プロジェクト全体.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;NIXITCH_NIXPKGS_CONFIG&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_CONF_DIR&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_OTHER_STORES&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_PATH&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_PROFILES&quot;: &quot;/nix/var/nix/profiles/default /home/kigawa/.nix-profile&quot;,
-    &quot;NIXITCH_NIX_REMOTE&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_USER_PROFILE_DIR&quot;: &quot;&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/var/user/dev/kigawa-net/keruta/keruta-executor&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;モジュール&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.23147699&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2623951&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Docker.keruta-executor/Dockerfile.executor": "Run",
+    "Gradle./var/user/dev/kigawa-net/keruta/keruta-executor [bootRun].executor": "Run",
+    "Gradle.keruta-api [bootJar].executor": "Run",
+    "Gradle.keruta-api のビルド.executor": "Run",
+    "Gradle.keruta-executor のビルド.executor": "Run",
+    "JUnit.プロジェクト全体.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "NIXITCH_NIXPKGS_CONFIG": "",
+    "NIXITCH_NIX_CONF_DIR": "",
+    "NIXITCH_NIX_OTHER_STORES": "",
+    "NIXITCH_NIX_PATH": "",
+    "NIXITCH_NIX_PROFILES": "/nix/var/nix/profiles/default /home/kigawa/.nix-profile",
+    "NIXITCH_NIX_REMOTE": "",
+    "NIXITCH_NIX_USER_PROFILE_DIR": "",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cidr.known.project.marker": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "/var/user/dev/kigawa-net/keruta/keruta-agent",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "モジュール",
+    "project.structure.proportion": "0.23147699",
+    "project.structure.side.proportion": "0.2623951",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RdControllerToolWindowsLayoutState" isNewUi="true">
     <layout>
       <window_info id="Bookmarks" side_tool="true" />
@@ -475,7 +497,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752802646050</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="「Coder APIインテグレーションを実装: Service/Repositoryのsuspend削除とインフラ層での依存分離」">
+      <option name="closed" value="true" />
+      <created>1752847850599</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1752847850599</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -491,7 +521,8 @@
     <MESSAGE value="&quot;Add session management routes for list, details, and editing in keruta admin panel&quot;" />
     <MESSAGE value="&quot;Coder APIクライアントと関連サービスの追加: ワークスペース管理のCRUD機能を実装&quot;" />
     <MESSAGE value="&quot;セッション詳細APIにワークスペースリンク機能を追加し、Coder REST APIを統合&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;セッション詳細APIにワークスペースリンク機能を追加し、Coder REST APIを統合&quot;" />
+    <MESSAGE value="「Coder APIインテグレーションを実装: Service/Repositoryのsuspend削除とインフラ層での依存分離」" />
+    <option name="LAST_COMMIT_MESSAGE" value="「Coder APIインテグレーションを実装: Service/Repositoryのsuspend削除とインフラ層での依存分離」" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
