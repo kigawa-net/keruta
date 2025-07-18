@@ -20,10 +20,10 @@
 ## Completed Tasks
 
 - Coder統合のビルドエラー修正
-    - Change: CoderApiClientの実装をinfrastructure層に移動し、suspend関数の問題を修正してビルドエラーを解決
-    - Details: CoderApiClientImplをinfra.app.coderパッケージに作成し、Spring Web依存関係を適切に管理。WorkspaceServiceとWorkspaceRepositoryからsuspend修飾子を削除
-    - Location: /keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/coder/, /keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/workspace/WorkspaceService.kt, /keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/repository/WorkspaceRepository.kt
-    - Reason: Clean Architectureの原則に従い、依存関係を適切に分離してビルドエラーを解決するため
+    - Change: CoderApiClientの実装をinfrastructure層に移動し、Jackson依存関係とsuspend関数の問題を修正してビルドエラーを解決
+    - Details: CoderApiClientImplをinfra.app.coderパッケージに作成し、JsonPropertyアノテーション付きのDTOクラスでAPIマッピングを実装。usecase層からJackson依存関係を削除し、Clean Architectureの原則に準拠
+    - Location: /keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/coder/, /keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/coder/CoderModels.kt
+    - Reason: Clean Architectureの原則に従い、外部依存関係をインフラストラクチャ層に分離してビルドエラーを解決するため
 
 - coderのrest apiを利用してsession詳細にworkspaceリンクを記載する機能の実装
     - Change: Coder REST APIを利用してworkspace管理を行い、session詳細にworkspaceへのリンクを表示する機能を実装
