@@ -19,6 +19,12 @@
 
 ## Completed Tasks
 
+- coderのrest apiを利用してsession詳細にworkspaceリンクを記載する機能の実装
+    - Change: Coder REST APIを利用してworkspace管理を行い、session詳細にworkspaceへのリンクを表示する機能を実装
+    - Details: CoderApiClient、CoderService、WorkspaceKubernetesHandlerの実装でCoder APIとの統合を完了。SessionResponseにworkspace情報を追加し、SessionDetailControllerでワークスペースリンクを含む詳細情報を提供
+    - Location: /keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/coder/, /keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/session/controller/SessionDetailController.kt, /keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/session/dto/SessionDetailResponse.kt
+    - Reason: Coder REST APIを活用してworkspace管理を効率化し、sessionからworkspaceへの直接アクセスを可能にするため
+
 - sessionごとにcoderのworkspaceを作成する機能の実装
     - Change: sessionごとにCoder風のworkspaceを作成する機能を実装
     - Details: Workspaceドメインモデル、WorkspaceService、WorkspaceRepository、WorkspaceController、Persistence層を実装し、SessionとWorkspaceの関連付け機能を追加。API endpoints、DTOs、エンティティも作成
