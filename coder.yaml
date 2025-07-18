@@ -1,0 +1,287 @@
+name: keruta-dev
+display_name: "Keruta Development Environment"
+description: "Complete development environment for Keruta project with Java, Go, Node.js, and all required tools"
+icon: "/icon/code.svg"
+tags:
+  - java
+  - go
+  - nodejs
+  - kubernetes
+  - mongodb
+  - development
+
+# Base image with all development tools
+image: kigawa/keruta-dev:latest
+
+# Resource allocation
+cpu: 2
+memory: 4Gi
+disk: 10Gi
+
+# Environment variables
+env:
+  JAVA_HOME: /usr/lib/jvm/java-21-openjdk-amd64
+  GOROOT: /usr/local/go
+  GOPATH: /home/coder/go
+  PATH: /usr/local/go/bin:/usr/lib/jvm/java-21-openjdk-amd64/bin:/home/coder/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+  SPRING_DATA_MONGODB_HOST: mongodb
+  SPRING_DATA_MONGODB_PORT: "27017"
+  SPRING_DATA_MONGODB_DATABASE: keruta
+  SPRING_DATA_MONGODB_USERNAME: admin
+  SPRING_DATA_MONGODB_PASSWORD: password
+
+# Startup script to initialize the development environment
+startup_script: |
+  #!/bin/bash
+  set -e
+  
+  echo "=== Initializing Keruta Development Environment ==="
+  
+  # Create workspace directory
+  mkdir -p /home/coder/workspace
+  cd /home/coder/workspace
+  
+  # Clone the repository if it doesn't exist
+  if [ ! -d "keruta" ]; then
+    echo "Cloning Keruta repository..."
+    git clone https://github.com/kigawa-net/keruta.git
+  fi
+  
+  cd keruta
+  
+  # Make gradlew executable
+  chmod +x gradlew
+  
+  # Set up Git configuration
+  git config --global user.name "Coder User"
+  git config --global user.email "coder@example.com"
+  git config --global init.defaultBranch main
+  
+  # Create useful aliases
+  echo "alias ll='ls -la'" >> ~/.bashrc
+  echo "alias la='ls -la'" >> ~/.bashrc
+  echo "alias k='kubectl'" >> ~/.bashrc
+  echo "alias d='docker'" >> ~/.bashrc
+  echo "alias dc='docker-compose'" >> ~/.bashrc
+  echo "alias g='git'" >> ~/.bashrc
+  
+  # Wait for MongoDB to be ready
+  echo "Waiting for MongoDB to be ready..."
+  sleep 10
+  
+  # Build the project
+  echo "Building the project..."
+  ./gradlew build
+  
+  echo "=== Development Environment Ready ==="
+  echo "Available services:"
+  echo "- Keruta API: http://localhost:8080/api"
+  echo "- Keruta Admin: http://localhost:8080/admin"
+  echo "- MongoDB: mongodb:27017"
+  echo ""
+  echo "Useful commands:"
+  echo "- ./gradlew build               # Build the project"
+  echo "- ./gradlew :api:bootRun        # Start API server"
+  echo "- ./gradlew test                # Run tests"
+  echo "- ./gradlew ktlintFormatAll     # Format code"
+
+# Services (sidecar containers)
+services:
+  # MongoDB database
+  mongodb:
+    image: mongo:latest
+    cpu: 0.5
+    memory: 512Mi
+    env:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: keruta
+    volumes:
+      - path: /data/db
+        size: 2Gi
+
+# Ports to expose
+ports:
+  - name: "code-server"
+    port: 8080
+    scheme: http
+    access: public
+  - name: "keruta-api"
+    port: 8081
+    scheme: http
+    access: public
+  - name: "keruta-admin"
+    port: 3000
+    scheme: http
+    access: public
+  - name: "mongodb"
+    port: 27017
+    scheme: tcp
+    access: private
+
+# IDE configuration
+ide:
+  # VS Code extensions to install
+  extensions:
+    - vscjava.vscode-java-pack
+    - ms-vscode.vscode-typescript-next
+    - golang.go
+    - ms-kubernetes-tools.vscode-kubernetes-tools
+    - mongodb.mongodb-vscode
+    - redhat.vscode-yaml
+    - ms-vscode.vscode-json
+    - bradlc.vscode-tailwindcss
+    - esbenp.prettier-vscode
+    - ms-vscode.vscode-docker
+  
+  # VS Code settings
+  settings:
+    "java.home": "/usr/lib/jvm/java-21-openjdk-amd64"
+    "go.goroot": "/usr/local/go"
+    "go.gopath": "/home/coder/go"
+    "editor.formatOnSave": true
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+    "java.compile.nullAnalysis.mode": "automatic"
+    "java.configuration.runtimes": [
+      {
+        "name": "JavaSE-21",
+        "path": "/usr/lib/jvm/java-21-openjdk-amd64"
+      }
+    ]
+
+# Volume mounts
+volumes:
+  - path: /home/coder/workspace
+    size: 10Gi
+    mount_path: /home/coder/workspace
+  - path: /var/run/docker.sock
+    mount_path: /var/run/docker.sock
+    read_only: false
+
+# Health checks
+health_checks:
+  - name: "mongodb"
+    command: "mongosh --eval 'db.runCommand({ping: 1})'"
+    interval: 30s
+    timeout: 10s
+    retries: 3
+  - name: "java"
+    command: "java -version"
+    interval: 60s
+    timeout: 5s
+    retries: 1
+  - name: "go"
+    command: "go version"
+    interval: 60s
+    timeout: 5s
+    retries: 1
+
+# Metadata for template management
+metadata:
+  version: "1.0.0"
+  author: "Kigawa"
+  created_at: "2025-07-18"
+  updated_at: "2025-07-18"
+  
+  # Template documentation
+  readme: |
+    # Keruta Development Environment
+    
+    This template provides a complete development environment for the Keruta project.
+    
+    ## Included Tools
+    - Java 21 (OpenJDK)
+    - Go 1.21
+    - Node.js 20
+    - Docker & Docker Compose
+    - kubectl
+    - MongoDB Tools
+    - VS Code with extensions
+    
+    ## Getting Started
+    1. The environment will automatically clone the Keruta repository
+    2. MongoDB will be available at mongodb:27017
+    3. Build the project with: ./gradlew build
+    4. Start the API server with: ./gradlew :api:bootRun
+    
+    ## Available Services
+    - Keruta API: http://localhost:8080/api
+    - Keruta Admin: http://localhost:8080/admin
+    - MongoDB: mongodb:27017
+    
+    ## Useful Commands
+    - ./gradlew build               # Build the project
+    - ./gradlew :api:bootRun        # Start API server
+    - ./gradlew test                # Run tests
+    - ./gradlew ktlintFormatAll     # Format code
+    - docker-compose up -d mongodb  # Start MongoDB
+    
+    For more information, see the project README.md
+  
+  # Template variables for customization
+  variables:
+    - name: "java_version"
+      description: "Java version to use"
+      default: "21"
+      type: "string"
+    - name: "go_version"
+      description: "Go version to use"
+      default: "1.21"
+      type: "string"
+    - name: "node_version"
+      description: "Node.js version to use"
+      default: "20"
+      type: "string"
+    - name: "mongodb_version"
+      description: "MongoDB version to use"
+      default: "latest"
+      type: "string"
+    - name: "enable_debug"
+      description: "Enable debug logging"
+      default: false
+      type: "boolean"
+
+# Security settings
+security:
+  # Run as non-root user
+  run_as_user: 1000
+  run_as_group: 1000
+  
+  # Allow Docker socket access (for development)
+  privileged: false
+  allow_privilege_escalation: false
+  
+  # Network policies
+  network_policy:
+    ingress:
+      - from: []
+        ports:
+          - protocol: TCP
+            port: 8080
+          - protocol: TCP
+            port: 8081
+          - protocol: TCP
+            port: 3000
+    egress:
+      - to: []
+
+# Workspace lifecycle hooks
+hooks:
+  # Pre-start hook
+  pre_start: |
+    echo "Preparing Keruta development environment..."
+    
+  # Post-start hook
+  post_start: |
+    echo "Keruta development environment is ready!"
+    echo "Visit http://localhost:8080 to access the code editor"
+    
+  # Pre-stop hook
+  pre_stop: |
+    echo "Stopping Keruta development environment..."
+    
+  # Post-stop hook
+  post_stop: |
+    echo "Keruta development environment stopped"
