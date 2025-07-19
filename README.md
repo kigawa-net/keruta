@@ -52,6 +52,13 @@ docker compose up -d
   - セッションの作成、詳細表示、編集、削除機能
   - セッションステータス管理（ACTIVE, INACTIVE, COMPLETED, ARCHIVED）
   - セッションのタグ付けと検索機能
+  - セッションによる関連タスクのグループ化
+  - **Coderワークスペース状態に基づく自動ステータス同期**
+    - 定期的なワークスペース状態監視（2分間隔）
+    - ワークスペース状態変更に基づくセッション状態自動更新
+    - 手動同期エンドポイント（POST /api/v1/sessions/{id}/sync-status）
+    - Coder APIからの状態取得と同期（POST /api/v1/sessions/{id}/monitor-workspaces）
+  - REST API（GET/POST/PUT/DELETE /api/v1/sessions）
 - **Coder風ワークスペース機能**
   - セッションごとのワークスペース作成
   - ワークスペースのライフサイクル管理（作成、開始、停止、削除）
@@ -59,6 +66,7 @@ docker compose up -d
   - Coder REST APIとの統合によるワークスペース管理
   - セッション詳細でのワークスペースリンク表示
   - ワークスペースの状態監視とビルド情報管理
+  - Kubernetesリソース統合（PVC、Pod、Service、Ingress）
 - 管理パネル（/admin からアクセス可能）
   - タスクの作成、詳細表示、編集、削除機能
   - エージェント、ドキュメント、リポジトリの管理
