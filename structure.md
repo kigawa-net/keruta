@@ -129,7 +129,10 @@
   - SessionEventListener: セッション・ワークスペースライフサイクルイベント処理
   - SessionWorkspaceStatusSyncService: ワークスペース状態に基づくセッション状態同期
   - CoderWorkspaceMonitoringService: Coder APIからの定期的なワークスペース状態監視
-- **Workspace**: セッションごとのCoder風開発環境（ライフサイクル管理、Kubernetesリソース統合）
+- **Workspace**: セッションと1対1関係のCoder風開発環境（ライフサイクル管理、Kubernetesリソース統合）
+  - **1対1関係**: 各セッションに対して1つのワークスペースのみ存在
+  - 自動作成: セッション作成時に自動的にワークスペースが作成される
+  - 自動削除: セッション削除時にワークスペースも自動削除される
   - WorkspaceStatus: PENDING, STARTING, RUNNING, STOPPING, STOPPED, DELETING, DELETED, FAILED, CANCELED
   - WorkspaceBuildInfo: ビルド情報とステータス管理
   - WorkspaceResourceInfo: Kubernetesリソース情報（CPU、メモリ、PVC、Pod、Service、Ingress）

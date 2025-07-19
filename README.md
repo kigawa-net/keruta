@@ -60,7 +60,10 @@ docker compose up -d
     - Coder APIからの状態取得と同期（POST /api/v1/sessions/{id}/monitor-workspaces）
   - REST API（GET/POST/PUT/DELETE /api/v1/sessions）
 - **Coder風ワークスペース機能**
-  - セッションごとのワークスペース作成
+  - **セッションとワークスペースの1対1関係**
+    - 各セッションに対して1つのワークスペースが自動作成
+    - セッション作成時の自動ワークスペース生成
+    - セッション削除時の自動ワークスペースクリーンアップ
   - ワークスペースのライフサイクル管理（作成、開始、停止、削除）
   - ワークスペーステンプレート管理
   - Coder REST APIとの統合によるワークスペース管理
