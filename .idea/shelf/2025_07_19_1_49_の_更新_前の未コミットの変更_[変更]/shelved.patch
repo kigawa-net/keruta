@@ -1,0 +1,848 @@
+Index: .idea/modules/buildSrc/keruta-api.buildSrc.iml
+===================================================================
+diff --git a/.idea/modules/buildSrc/keruta-api.buildSrc.iml b/.idea/modules/buildSrc/keruta-api.buildSrc.iml
+deleted file mode 100644
+--- a/.idea/modules/buildSrc/keruta-api.buildSrc.iml	(revision 0e255efab631a085825b2102e144234fd3826163)
++++ /dev/null	(revision 0e255efab631a085825b2102e144234fd3826163)
+@@ -1,12 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module external.linked.project.id=":buildSrc" external.linked.project.path="$MODULE_DIR$/../../../keruta-api/buildSrc" external.root.project.path="$MODULE_DIR$/../../../keruta-api" external.system.id="GRADLE" external.system.module.group="" external.system.module.version="unspecified" type="CIDR_MODULE" version="4">
+-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_21" inherit-compiler-output="true">
+-    <exclude-output />
+-    <content url="file://$MODULE_DIR$/../../../keruta-api/buildSrc">
+-      <excludeFolder url="file://$MODULE_DIR$/../../../keruta-api/buildSrc/.gradle" />
+-      <excludeFolder url="file://$MODULE_DIR$/../../../keruta-api/buildSrc/build" />
+-    </content>
+-    <orderEntry type="inheritedJdk" />
+-    <orderEntry type="sourceFolder" forTests="false" />
+-  </component>
+-</module>
+\ No newline at end of file
+Index: .idea/modules/core/domain/keruta-api.core.domain.iml
+===================================================================
+diff --git a/.idea/modules/core/domain/keruta-api.core.domain.iml b/.idea/modules/core/domain/keruta-api.core.domain.iml
+deleted file mode 100644
+--- a/.idea/modules/core/domain/keruta-api.core.domain.iml	(revision 0e255efab631a085825b2102e144234fd3826163)
++++ /dev/null	(revision 0e255efab631a085825b2102e144234fd3826163)
+@@ -1,12 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module external.linked.project.id=":core:domain" external.linked.project.path="$MODULE_DIR$/../../../../keruta-api/core/domain" external.root.project.path="$MODULE_DIR$/../../../../keruta-api" external.system.id="GRADLE" external.system.module.group="net.kigawa" external.system.module.version="0.0.1-SNAPSHOT" type="CIDR_MODULE" version="4">
+-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_23" inherit-compiler-output="true">
+-    <exclude-output />
+-    <content url="file://$MODULE_DIR$/../../../../keruta-api/core/domain">
+-      <excludeFolder url="file://$MODULE_DIR$/../../../../keruta-api/core/domain/.gradle" />
+-      <excludeFolder url="file://$MODULE_DIR$/../../../../keruta-api/core/domain/build" />
+-    </content>
+-    <orderEntry type="inheritedJdk" />
+-    <orderEntry type="sourceFolder" forTests="false" />
+-  </component>
+-</module>
+\ No newline at end of file
+Index: .idea/modules/infra/app/keruta-api.infra.app.iml
+===================================================================
+diff --git a/.idea/modules/infra/app/keruta-api.infra.app.iml b/.idea/modules/infra/app/keruta-api.infra.app.iml
+deleted file mode 100644
+--- a/.idea/modules/infra/app/keruta-api.infra.app.iml	(revision 0e255efab631a085825b2102e144234fd3826163)
++++ /dev/null	(revision 0e255efab631a085825b2102e144234fd3826163)
+@@ -1,12 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module external.linked.project.id=":infra:app" external.linked.project.path="$MODULE_DIR$/../../../../keruta-api/infra/app" external.root.project.path="$MODULE_DIR$/../../../../keruta-api" external.system.id="GRADLE" external.system.module.group="net.kigawa" external.system.module.version="0.0.1-SNAPSHOT" type="CIDR_MODULE" version="4">
+-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_23" inherit-compiler-output="true">
+-    <exclude-output />
+-    <content url="file://$MODULE_DIR$/../../../../keruta-api/infra/app">
+-      <excludeFolder url="file://$MODULE_DIR$/../../../../keruta-api/infra/app/.gradle" />
+-      <excludeFolder url="file://$MODULE_DIR$/../../../../keruta-api/infra/app/build" />
+-    </content>
+-    <orderEntry type="inheritedJdk" />
+-    <orderEntry type="sourceFolder" forTests="false" />
+-  </component>
+-</module>
+\ No newline at end of file
+Index: .idea/modules/infra/core/keruta-api.infra.core.iml
+===================================================================
+diff --git a/.idea/modules/infra/core/keruta-api.infra.core.iml b/.idea/modules/infra/core/keruta-api.infra.core.iml
+deleted file mode 100644
+--- a/.idea/modules/infra/core/keruta-api.infra.core.iml	(revision 0e255efab631a085825b2102e144234fd3826163)
++++ /dev/null	(revision 0e255efab631a085825b2102e144234fd3826163)
+@@ -1,12 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module external.linked.project.id=":infra:core" external.linked.project.path="$MODULE_DIR$/../../../../keruta-api/infra/core" external.root.project.path="$MODULE_DIR$/../../../../keruta-api" external.system.id="GRADLE" external.system.module.group="net.kigawa" external.system.module.version="0.0.1-SNAPSHOT" type="CIDR_MODULE" version="4">
+-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_23" inherit-compiler-output="true">
+-    <exclude-output />
+-    <content url="file://$MODULE_DIR$/../../../../keruta-api/infra/core">
+-      <excludeFolder url="file://$MODULE_DIR$/../../../../keruta-api/infra/core/.gradle" />
+-      <excludeFolder url="file://$MODULE_DIR$/../../../../keruta-api/infra/core/build" />
+-    </content>
+-    <orderEntry type="inheritedJdk" />
+-    <orderEntry type="sourceFolder" forTests="false" />
+-  </component>
+-</module>
+\ No newline at end of file
+Index: .idea/modules/core/keruta-api.core.iml
+===================================================================
+diff --git a/.idea/modules/core/keruta-api.core.iml b/.idea/modules/core/keruta-api.core.iml
+deleted file mode 100644
+--- a/.idea/modules/core/keruta-api.core.iml	(revision 0e255efab631a085825b2102e144234fd3826163)
++++ /dev/null	(revision 0e255efab631a085825b2102e144234fd3826163)
+@@ -1,12 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module external.linked.project.id=":core" external.linked.project.path="$MODULE_DIR$/../../../keruta-api/core" external.root.project.path="$MODULE_DIR$/../../../keruta-api" external.system.id="GRADLE" external.system.module.group="net.kigawa" external.system.module.version="0.0.1-SNAPSHOT" type="CIDR_MODULE" version="4">
+-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_23" inherit-compiler-output="true">
+-    <exclude-output />
+-    <content url="file://$MODULE_DIR$/../../../keruta-api/core">
+-      <excludeFolder url="file://$MODULE_DIR$/../../../keruta-api/core/.gradle" />
+-      <excludeFolder url="file://$MODULE_DIR$/../../../keruta-api/core/build" />
+-    </content>
+-    <orderEntry type="inheritedJdk" />
+-    <orderEntry type="sourceFolder" forTests="false" />
+-  </component>
+-</module>
+\ No newline at end of file
+Index: .idea/modules/infra/security/keruta-api.infra.security.iml
+===================================================================
+diff --git a/.idea/modules/infra/security/keruta-api.infra.security.iml b/.idea/modules/infra/security/keruta-api.infra.security.iml
+deleted file mode 100644
+--- a/.idea/modules/infra/security/keruta-api.infra.security.iml	(revision 0e255efab631a085825b2102e144234fd3826163)
++++ /dev/null	(revision 0e255efab631a085825b2102e144234fd3826163)
+@@ -1,12 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module external.linked.project.id=":infra:security" external.linked.project.path="$MODULE_DIR$/../../../../keruta-api/infra/security" external.root.project.path="$MODULE_DIR$/../../../../keruta-api" external.system.id="GRADLE" external.system.module.group="net.kigawa" external.system.module.version="0.0.1-SNAPSHOT" type="CIDR_MODULE" version="4">
+-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_23" inherit-compiler-output="true">
+-    <exclude-output />
+-    <content url="file://$MODULE_DIR$/../../../../keruta-api/infra/security">
+-      <excludeFolder url="file://$MODULE_DIR$/../../../../keruta-api/infra/security/.gradle" />
+-      <excludeFolder url="file://$MODULE_DIR$/../../../../keruta-api/infra/security/build" />
+-    </content>
+-    <orderEntry type="inheritedJdk" />
+-    <orderEntry type="sourceFolder" forTests="false" />
+-  </component>
+-</module>
+\ No newline at end of file
+Index: .idea/modules/keruta-api.iml
+===================================================================
+diff --git a/.idea/modules/keruta-api.iml b/.idea/modules/keruta-api.iml
+deleted file mode 100644
+--- a/.idea/modules/keruta-api.iml	(revision 0e255efab631a085825b2102e144234fd3826163)
++++ /dev/null	(revision 0e255efab631a085825b2102e144234fd3826163)
+@@ -1,12 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module external.linked.project.id="keruta-api" external.linked.project.path="$MODULE_DIR$/../../keruta-api" external.root.project.path="$MODULE_DIR$/../../keruta-api" external.system.id="GRADLE" external.system.module.group="net.kigawa" external.system.module.version="0.0.1-SNAPSHOT" type="CIDR_MODULE" version="4">
+-  <component name="NewModuleRootManager" inherit-compiler-output="true">
+-    <exclude-output />
+-    <content url="file://$MODULE_DIR$/../../keruta-api">
+-      <excludeFolder url="file://$MODULE_DIR$/../../keruta-api/.gradle" />
+-      <excludeFolder url="file://$MODULE_DIR$/../../keruta-api/build" />
+-    </content>
+-    <orderEntry type="inheritedJdk" />
+-    <orderEntry type="sourceFolder" forTests="false" />
+-  </component>
+-</module>
+\ No newline at end of file
+Index: .idea/modules/infra/persistence/keruta-api.infra.persistence.iml
+===================================================================
+diff --git a/.idea/modules/infra/persistence/keruta-api.infra.persistence.iml b/.idea/modules/infra/persistence/keruta-api.infra.persistence.iml
+deleted file mode 100644
+--- a/.idea/modules/infra/persistence/keruta-api.infra.persistence.iml	(revision 0e255efab631a085825b2102e144234fd3826163)
++++ /dev/null	(revision 0e255efab631a085825b2102e144234fd3826163)
+@@ -1,12 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module external.linked.project.id=":infra:persistence" external.linked.project.path="$MODULE_DIR$/../../../../keruta-api/infra/persistence" external.root.project.path="$MODULE_DIR$/../../../../keruta-api" external.system.id="GRADLE" external.system.module.group="net.kigawa" external.system.module.version="0.0.1-SNAPSHOT" type="CIDR_MODULE" version="4">
+-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_23" inherit-compiler-output="true">
+-    <exclude-output />
+-    <content url="file://$MODULE_DIR$/../../../../keruta-api/infra/persistence">
+-      <excludeFolder url="file://$MODULE_DIR$/../../../../keruta-api/infra/persistence/.gradle" />
+-      <excludeFolder url="file://$MODULE_DIR$/../../../../keruta-api/infra/persistence/build" />
+-    </content>
+-    <orderEntry type="inheritedJdk" />
+-    <orderEntry type="sourceFolder" forTests="false" />
+-  </component>
+-</module>
+\ No newline at end of file
+Index: .idea/modules/infra/keruta-api.infra.iml
+===================================================================
+diff --git a/.idea/modules/infra/keruta-api.infra.iml b/.idea/modules/infra/keruta-api.infra.iml
+deleted file mode 100644
+--- a/.idea/modules/infra/keruta-api.infra.iml	(revision 0e255efab631a085825b2102e144234fd3826163)
++++ /dev/null	(revision 0e255efab631a085825b2102e144234fd3826163)
+@@ -1,12 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module external.linked.project.id=":infra" external.linked.project.path="$MODULE_DIR$/../../../keruta-api/infra" external.root.project.path="$MODULE_DIR$/../../../keruta-api" external.system.id="GRADLE" external.system.module.group="net.kigawa" external.system.module.version="0.0.1-SNAPSHOT" type="CIDR_MODULE" version="4">
+-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_23" inherit-compiler-output="true">
+-    <exclude-output />
+-    <content url="file://$MODULE_DIR$/../../../keruta-api/infra">
+-      <excludeFolder url="file://$MODULE_DIR$/../../../keruta-api/infra/.gradle" />
+-      <excludeFolder url="file://$MODULE_DIR$/../../../keruta-api/infra/build" />
+-    </content>
+-    <orderEntry type="inheritedJdk" />
+-    <orderEntry type="sourceFolder" forTests="false" />
+-  </component>
+-</module>
+\ No newline at end of file
+Index: .idea/modules/api/keruta-api.api.iml
+===================================================================
+diff --git a/.idea/modules/api/keruta-api.api.iml b/.idea/modules/api/keruta-api.api.iml
+deleted file mode 100644
+--- a/.idea/modules/api/keruta-api.api.iml	(revision 0e255efab631a085825b2102e144234fd3826163)
++++ /dev/null	(revision 0e255efab631a085825b2102e144234fd3826163)
+@@ -1,12 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module external.linked.project.id=":api" external.linked.project.path="$MODULE_DIR$/../../../keruta-api/api" external.root.project.path="$MODULE_DIR$/../../../keruta-api" external.system.id="GRADLE" external.system.module.group="net.kigawa" external.system.module.version="0.0.1-SNAPSHOT" type="CIDR_MODULE" version="4">
+-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_23" inherit-compiler-output="true">
+-    <exclude-output />
+-    <content url="file://$MODULE_DIR$/../../../keruta-api/api">
+-      <excludeFolder url="file://$MODULE_DIR$/../../../keruta-api/api/.gradle" />
+-      <excludeFolder url="file://$MODULE_DIR$/../../../keruta-api/api/build" />
+-    </content>
+-    <orderEntry type="inheritedJdk" />
+-    <orderEntry type="sourceFolder" forTests="false" />
+-  </component>
+-</module>
+\ No newline at end of file
+Index: .idea/modules/core/usecase/keruta-api.core.usecase.iml
+===================================================================
+diff --git a/.idea/modules/core/usecase/keruta-api.core.usecase.iml b/.idea/modules/core/usecase/keruta-api.core.usecase.iml
+deleted file mode 100644
+--- a/.idea/modules/core/usecase/keruta-api.core.usecase.iml	(revision 0e255efab631a085825b2102e144234fd3826163)
++++ /dev/null	(revision 0e255efab631a085825b2102e144234fd3826163)
+@@ -1,12 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module external.linked.project.id=":core:usecase" external.linked.project.path="$MODULE_DIR$/../../../../keruta-api/core/usecase" external.root.project.path="$MODULE_DIR$/../../../../keruta-api" external.system.id="GRADLE" external.system.module.group="net.kigawa" external.system.module.version="0.0.1-SNAPSHOT" type="CIDR_MODULE" version="4">
+-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_23" inherit-compiler-output="true">
+-    <exclude-output />
+-    <content url="file://$MODULE_DIR$/../../../../keruta-api/core/usecase">
+-      <excludeFolder url="file://$MODULE_DIR$/../../../../keruta-api/core/usecase/.gradle" />
+-      <excludeFolder url="file://$MODULE_DIR$/../../../../keruta-api/core/usecase/build" />
+-    </content>
+-    <orderEntry type="inheritedJdk" />
+-    <orderEntry type="sourceFolder" forTests="false" />
+-  </component>
+-</module>
+\ No newline at end of file
+Index: .idea/modules/buildSrc/keruta-api.buildSrc.test.iml
+===================================================================
+diff --git a/.idea/modules/buildSrc/keruta-api.buildSrc.test.iml b/.idea/modules/buildSrc/keruta-api.buildSrc.test.iml
+deleted file mode 100644
+--- a/.idea/modules/buildSrc/keruta-api.buildSrc.test.iml	(revision 0e255efab631a085825b2102e144234fd3826163)
++++ /dev/null	(revision 0e255efab631a085825b2102e144234fd3826163)
+@@ -1,275 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module external.linked.project.id=":buildSrc:test" external.linked.project.path="$MODULE_DIR$/../../../keruta-api/buildSrc" external.root.project.path="$MODULE_DIR$/../../../keruta-api" external.system.id="GRADLE" external.system.module.group="" external.system.module.type="sourceSet" external.system.module.version="unspecified" type="CIDR_MODULE" version="4">
+-  <component name="FacetManager">
+-    <facet external-system-id="GRADLE" type="kotlin-language" name="Kotlin">
+-      <configuration version="5" platform="JVM 22" allPlatforms="JVM [22]" useProjectSettings="false" pureKotlinSourceFolders="$MODULE_DIR$/../../../keruta-api/buildSrc/src/main/kotlin;/Users/ogawaatsuki/project/keruta/keruta-api/buildSrc/src/test/kotlin">
+-        <additionalVisibleModuleNames>:buildSrc:main</additionalVisibleModuleNames>
+-        <compilerSettings>
+-          <option name="additionalArguments" value="-java-parameters -Xjsr305=strict -Xsam-conversions=class -XXLanguage:+DisableCompatibilityModeForNewInference -XXLanguage:-TypeEnhancementImprovementsInStrictMode" />
+-        </compilerSettings>
+-        <compilerArguments>
+-          <flagArguments>
+-            <flagArg name="allowNoSourceFiles" arg="true" />
+-            <flagArg name="noReflect" arg="true" />
+-            <flagArg name="noStdlib" arg="true" />
+-          </flagArguments>
+-          <stringArguments>
+-            <stringArg name="destination" arg="$MODULE_DIR$/../../../keruta-api/buildSrc/build/classes/kotlin/test" />
+-            <stringArg name="jvmDefault" arg="all" />
+-            <stringArg name="jvmTarget" arg="22" />
+-            <stringArg name="moduleName" arg="buildSrc_test" />
+-            <stringArg name="apiVersion" arg="1.8" />
+-            <stringArg name="languageVersion" arg="1.8" />
+-          </stringArguments>
+-          <arrayArguments>
+-            <arrayArg name="pluginClasspaths">
+-              <args>
+-                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-sam-with-receiver-compiler-plugin-embeddable/2.0.21/dbf124e670154782aff9c249a80de5b1c96af349/kotlin-sam-with-receiver-compiler-plugin-embeddable-2.0.21.jar</arg>
+-                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-assignment-compiler-plugin-embeddable/2.0.21/6ee3e965b8358dfa476b3df5dfd9287236f47dbe/kotlin-assignment-compiler-plugin-embeddable-2.0.21.jar</arg>
+-                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-jvm/2.0.21/939d8b644308f8d97c60317df76ee40299475831/kotlin-scripting-jvm-2.0.21.jar</arg>
+-                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-common/2.0.21/2aeb50e2df2ef94f6b90b7ab2c56d5e18d3687c1/kotlin-scripting-common-2.0.21.jar</arg>
+-                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/2.0.21/618b539767b4899b4660a83006e052b63f1db551/kotlin-stdlib-2.0.21.jar</arg>
+-                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar</arg>
+-                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-script-runtime/2.0.21/c9b044380ad41f89aa89aa896c2d32a8c0b2129d/kotlin-script-runtime-2.0.21.jar</arg>
+-              </args>
+-            </arrayArg>
+-            <arrayArg name="pluginOptions">
+-              <args>
+-                <arg>plugin:org.jetbrains.kotlin.samWithReceiver:annotation=org.gradle.api.HasImplicitReceiver</arg>
+-                <arg>plugin:org.jetbrains.kotlin.assignment:annotation=org.gradle.api.SupportsKotlinAssignmentOverloading</arg>
+-              </args>
+-            </arrayArg>
+-          </arrayArguments>
+-        </compilerArguments>
+-      </configuration>
+-    </facet>
+-  </component>
+-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_21">
+-    <output-test url="file://$MODULE_DIR$/../../../keruta-api/buildSrc/build/classes/java/test" />
+-    <exclude-output />
+-    <content url="file://$MODULE_DIR$/../../../keruta-api/buildSrc/src/test" />
+-    <orderEntry type="jdk" jdkName="21" jdkType="JavaSDK" />
+-    <orderEntry type="sourceFolder" forTests="false" />
+-    <orderEntry type="module" module-name="keruta-api.buildSrc.main" />
+-    <orderEntry type="module-library">
+-      <library name="Gradle: gradle-api-8.13.jar">
+-        <CLASSES>
+-          <root url="jar://$USER_HOME$/.gradle/caches/8.13/generated-gradle-jars/gradle-api-8.13.jar!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="module-library">
+-      <library name="Gradle: groovy-3.0.22.jar">
+-        <CLASSES>
+-          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-8.13-bin/5xuhj0ry160q40clulazy9h7d/gradle-8.13/lib/groovy-3.0.22.jar!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="module-library">
+-      <library name="Gradle: groovy-ant-3.0.22.jar">
+-        <CLASSES>
+-          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-8.13-bin/5xuhj0ry160q40clulazy9h7d/gradle-8.13/lib/groovy-ant-3.0.22.jar!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="module-library">
+-      <library name="Gradle: groovy-astbuilder-3.0.22.jar">
+-        <CLASSES>
+-          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-8.13-bin/5xuhj0ry160q40clulazy9h7d/gradle-8.13/lib/groovy-astbuilder-3.0.22.jar!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="module-library">
+-      <library name="Gradle: groovy-console-3.0.22.jar">
+-        <CLASSES>
+-          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-8.13-bin/5xuhj0ry160q40clulazy9h7d/gradle-8.13/lib/groovy-console-3.0.22.jar!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="module-library">
+-      <library name="Gradle: groovy-datetime-3.0.22.jar">
+-        <CLASSES>
+-          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-8.13-bin/5xuhj0ry160q40clulazy9h7d/gradle-8.13/lib/groovy-datetime-3.0.22.jar!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="module-library">
+-      <library name="Gradle: groovy-dateutil-3.0.22.jar">
+-        <CLASSES>
+-          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-8.13-bin/5xuhj0ry160q40clulazy9h7d/gradle-8.13/lib/groovy-dateutil-3.0.22.jar!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="module-library">
+-      <library name="Gradle: groovy-groovydoc-3.0.22.jar">
+-        <CLASSES>
+-          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-8.13-bin/5xuhj0ry160q40clulazy9h7d/gradle-8.13/lib/groovy-groovydoc-3.0.22.jar!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="module-library">
+-      <library name="Gradle: groovy-json-3.0.22.jar">
+-        <CLASSES>
+-          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-8.13-bin/5xuhj0ry160q40clulazy9h7d/gradle-8.13/lib/groovy-json-3.0.22.jar!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="module-library">
+-      <library name="Gradle: groovy-nio-3.0.22.jar">
+-        <CLASSES>
+-          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-8.13-bin/5xuhj0ry160q40clulazy9h7d/gradle-8.13/lib/groovy-nio-3.0.22.jar!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="module-library">
+-      <library name="Gradle: groovy-sql-3.0.22.jar">
+-        <CLASSES>
+-          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-8.13-bin/5xuhj0ry160q40clulazy9h7d/gradle-8.13/lib/groovy-sql-3.0.22.jar!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="module-library">
+-      <library name="Gradle: groovy-templates-3.0.22.jar">
+-        <CLASSES>
+-          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-8.13-bin/5xuhj0ry160q40clulazy9h7d/gradle-8.13/lib/groovy-templates-3.0.22.jar!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="module-library">
+-      <library name="Gradle: groovy-test-3.0.22.jar">
+-        <CLASSES>
+-          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-8.13-bin/5xuhj0ry160q40clulazy9h7d/gradle-8.13/lib/groovy-test-3.0.22.jar!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="module-library">
+-      <library name="Gradle: groovy-xml-3.0.22.jar">
+-        <CLASSES>
+-          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-8.13-bin/5xuhj0ry160q40clulazy9h7d/gradle-8.13/lib/groovy-xml-3.0.22.jar!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="module-library">
+-      <library name="Gradle: javaparser-core-3.17.0.jar">
+-        <CLASSES>
+-          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-8.13-bin/5xuhj0ry160q40clulazy9h7d/gradle-8.13/lib/javaparser-core-3.17.0.jar!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="module-library">
+-      <library name="Gradle: kotlin-stdlib-2.0.21.jar">
+-        <CLASSES>
+-          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-8.13-bin/5xuhj0ry160q40clulazy9h7d/gradle-8.13/lib/kotlin-stdlib-2.0.21.jar!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="module-library">
+-      <library name="Gradle: kotlin-reflect-2.0.21.jar">
+-        <CLASSES>
+-          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-8.13-bin/5xuhj0ry160q40clulazy9h7d/gradle-8.13/lib/kotlin-reflect-2.0.21.jar!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="module-library">
+-      <library name="Gradle: gradle-installation-beacon-8.13.jar">
+-        <CLASSES>
+-          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-8.13-bin/5xuhj0ry160q40clulazy9h7d/gradle-8.13/lib/gradle-installation-beacon-8.13.jar!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="module-library">
+-      <library name="Gradle: gradle-kotlin-dsl-extensions-8.13.jar">
+-        <CLASSES>
+-          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-8.13-bin/5xuhj0ry160q40clulazy9h7d/gradle-8.13/lib/gradle-kotlin-dsl-extensions-8.13.jar!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="module-library">
+-      <library name="Gradle: gradle-kotlin-dsl-8.13.jar">
+-        <CLASSES>
+-          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-8.13-bin/5xuhj0ry160q40clulazy9h7d/gradle-8.13/lib/gradle-kotlin-dsl-8.13.jar!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="module-library">
+-      <library name="Gradle: gradle-kotlin-dsl-shared-runtime-8.13.jar">
+-        <CLASSES>
+-          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-8.13-bin/5xuhj0ry160q40clulazy9h7d/gradle-8.13/lib/gradle-kotlin-dsl-shared-runtime-8.13.jar!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="module-library">
+-      <library name="Gradle: gradle-kotlin-dsl-tooling-models-8.13.jar">
+-        <CLASSES>
+-          <root url="jar://$USER_HOME$/.gradle/wrapper/dists/gradle-8.13-bin/5xuhj0ry160q40clulazy9h7d/gradle-8.13/lib/gradle-kotlin-dsl-tooling-models-8.13.jar!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="module-library">
+-      <library name="Gradle: gradle-test-kit-8.13.jar">
+-        <CLASSES>
+-          <root url="jar://$USER_HOME$/.gradle/caches/8.13/generated-gradle-jars/gradle-test-kit-8.13.jar!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-reflect:2.0.21" level="project" />
+-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:2.0.21" level="project" />
+-    <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
+-    <orderEntry type="module-library" scope="RUNTIME">
+-      <library>
+-        <CLASSES>
+-          <root url="file://$MODULE_DIR$/../../../keruta-api/buildSrc/build/pluginUnderTestMetadata" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-  </component>
+-  <component name="TestModuleProperties" production-module="keruta-api.buildSrc.main" />
+-</module>
+\ No newline at end of file
+Index: keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/config/KerutaExecutorProperties.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.executor.config\n\nimport org.springframework.boot.context.properties.ConfigurationProperties\nimport org.springframework.boot.context.properties.NestedConfigurationProperty\nimport org.springframework.boot.context.properties.bind.ConstructorBinding\nimport java.time.Duration\n\n/**\n * Configuration properties for the Keruta Executor application.\n */\n@ConfigurationProperties(prefix = \"keruta.executor\")\ndata class KerutaExecutorProperties @ConstructorBinding constructor(\n    /**\n     * The base URL of the keruta-api.\n     */\n    val apiBaseUrl: String,\n\n    /**\n     * The delay between task processing attempts.\n     */\n    val processingDelay: Duration = Duration.ofSeconds(10),\n\n    /**\n     * Configuration for the coder integration.\n     */\n    @NestedConfigurationProperty\n    val coder: CoderProperties,\n\n    /**\n     * Configuration for SSH connection.\n     */\n    @NestedConfigurationProperty\n    val ssh: SshProperties = SshProperties(),\n)\n\n/**\n * Configuration properties for the coder integration.\n */\ndata class CoderProperties(\n    /**\n     * The command to execute coder.\n     */\n    val command: String,\n\n    /**\n     * The working directory for coder.\n     */\n    val workingDir: String = \"/tmp/coder\",\n\n    /**\n     * The timeout for coder execution.\n     */\n    val timeout: Duration = Duration.ofMinutes(30),\n\n    /**\n     * Additional environment variables for coder.\n     */\n    val additionalEnv: Map<String, String> = emptyMap(),\n    )\n\n    /**\n     * Configuration properties for SSH connection.\n     */\n    data class SshProperties(\n        /**\n         * The hostname or IP address of the SSH server.\n         */\n        val host: String = \"localhost\",\n\n        /**\n         * The port of the SSH server.\n         */\n        val port: Int = 22,\n\n        /**\n         * The username for SSH authentication.\n         */\n        val username: String = \"root\",\n\n        /**\n         * The password for SSH authentication.\n         * Note: Using private key authentication is recommended over password authentication.\n         */\n        val password: String? = null,\n\n        /**\n         * The path to the private key file for SSH authentication.\n         */\n        val privateKeyPath: String? = null,\n\n        /**\n         * The passphrase for the private key, if it is encrypted.\n         */\n        val privateKeyPassphrase: String? = null,\n\n        /**\n         * The timeout for SSH connection in milliseconds.\n         */\n        val connectionTimeout: Int = 30000,\n\n        /**\n         * Whether to use strict host key checking.\n         */\n        val strictHostKeyChecking: Boolean = false,\n    )\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/config/KerutaExecutorProperties.kt b/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/config/KerutaExecutorProperties.kt
+--- a/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/config/KerutaExecutorProperties.kt	(revision 6eeb60a16d647853b6ef715d8cf4eb7e2ff461db)
++++ b/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/config/KerutaExecutorProperties.kt	(date 1752857376133)
+@@ -31,6 +31,12 @@
+      */
+     @NestedConfigurationProperty
+     val ssh: SshProperties = SshProperties(),
++
++    /**
++     * Configuration for API connection.
++     */
++    @NestedConfigurationProperty
++    val api: ApiProperties = ApiProperties(),
+ )
+ 
+ /**
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AIAssistantCustomInstructionsStorage\">\n    <option name=\"instructions\">\n      <map>\n        <entry key=\"AIAssistant.VCS.GenerateCommitMessage\">\n          <value>\n            <AIAssistantStoredInstruction>\n              <option name=\"actionId\" value=\"AIAssistant.VCS.GenerateCommitMessage\" />\n              <option name=\"content\" value=\"日本語一文\" />\n            </AIAssistantStoredInstruction>\n          </value>\n        </entry>\n      </map>\n    </option>\n  </component>\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"89b61217-2797-40e7-bf9b-fe65f8c860dc\" name=\"変更\" comment=\"&quot;セッション詳細APIにワークスペースリンク機能を追加し、Coder REST APIを統合&quot;\">\n      <change beforePath=\"$PROJECT_DIR$/keruta-api\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/keruta-api\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/coder/CoderApiClient.kt\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/coder/CoderApiClient.kt\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/repository/WorkspaceRepository.kt\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/repository/WorkspaceRepository.kt\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/workspace/WorkspaceService.kt\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/workspace/WorkspaceService.kt\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/keruta-api/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/repository/WorkspaceRepositoryImpl.kt\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/keruta-api/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/repository/WorkspaceRepositoryImpl.kt\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/kigawa-net-k8s\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/kigawa-net-k8s\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/kigawa-net-k8s/keruta/keruta.yaml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/kigawa-net-k8s/keruta/keruta.yaml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/todo.md\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/todo.md\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"ExternalProjectsData\">\n    <projectState path=\"$PROJECT_DIR$\">\n      <ProjectState />\n    </projectState>\n    <projectState path=\"$PROJECT_DIR$/keruta-api\">\n      <ProjectState />\n    </projectState>\n    <projectState path=\"$PROJECT_DIR$/keruta-executor\">\n      <ProjectState />\n    </projectState>\n  </component>\n  <component name=\"ExternalProjectsManager\">\n    <system id=\"GRADLE\">\n      <state>\n        <task path=\"$PROJECT_DIR$/keruta-executor\">\n          <activation />\n        </task>\n        <task path=\"$PROJECT_DIR$\">\n          <activation />\n        </task>\n        <task path=\"$PROJECT_DIR$/keruta-api\">\n          <activation />\n        </task>\n        <projects_view>\n          <tree_state>\n            <expand>\n              <path>\n                <item name=\"\" type=\"6a2764b6:ExternalProjectsStructure$RootNode\" />\n                <item name=\"keruta-api\" type=\"f1a62948:ProjectNode\" />\n              </path>\n              <path>\n                <item name=\"\" type=\"6a2764b6:ExternalProjectsStructure$RootNode\" />\n                <item name=\"keruta-api\" type=\"f1a62948:ProjectNode\" />\n                <item name=\"Tasks\" type=\"e4a08cd1:TasksNode\" />\n              </path>\n              <path>\n                <item name=\"\" type=\"6a2764b6:ExternalProjectsStructure$RootNode\" />\n                <item name=\"keruta-api\" type=\"f1a62948:ProjectNode\" />\n                <item name=\"Tasks\" type=\"e4a08cd1:TasksNode\" />\n                <item name=\"build\" type=\"c8890929:TasksNode$1\" />\n              </path>\n            </expand>\n            <select />\n          </tree_state>\n        </projects_view>\n      </state>\n    </system>\n  </component>\n  <component name=\"FileTemplateManagerImpl\">\n    <option name=\"RECENT_TEMPLATES\">\n      <list>\n        <option value=\"Kotlin Script\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$/keruta-api\" />\n    <option name=\"ROOT_SYNC\" value=\"DONT_SYNC\" />\n  </component>\n  <component name=\"KubernetesApiPersistence\">{}</component>\n  <component name=\"KubernetesApiProvider\">{\n  &quot;isMigrated&quot;: true\n}</component>\n  <component name=\"ProblemsViewState\">\n    <option name=\"selectedTabId\" value=\"CurrentFile\" />\n  </component>\n  <component name=\"ProjectColorInfo\">{\n  &quot;associatedIndex&quot;: 4\n}</component>\n  <component name=\"ProjectId\" id=\"2zjwLbV3iCKptMQyy7plVIiF6H1\" />\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\"><![CDATA[{\n  \"keyToString\": {\n    \"Docker.keruta-executor/Dockerfile.executor\": \"Run\",\n    \"Gradle./var/user/dev/kigawa-net/keruta/keruta-executor [bootRun].executor\": \"Run\",\n    \"Gradle.keruta-api [bootJar].executor\": \"Run\",\n    \"Gradle.keruta-api のビルド.executor\": \"Run\",\n    \"Gradle.keruta-executor のビルド.executor\": \"Run\",\n    \"JUnit.プロジェクト全体.executor\": \"Run\",\n    \"ModuleVcsDetector.initialDetectionPerformed\": \"true\",\n    \"NIXITCH_NIXPKGS_CONFIG\": \"\",\n    \"NIXITCH_NIX_CONF_DIR\": \"\",\n    \"NIXITCH_NIX_OTHER_STORES\": \"\",\n    \"NIXITCH_NIX_PATH\": \"\",\n    \"NIXITCH_NIX_PROFILES\": \"/nix/var/nix/profiles/default /home/kigawa/.nix-profile\",\n    \"NIXITCH_NIX_REMOTE\": \"\",\n    \"NIXITCH_NIX_USER_PROFILE_DIR\": \"\",\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\n    \"RunOnceActivity.cidr.known.project.marker\": \"true\",\n    \"RunOnceActivity.go.formatter.settings.were.checked\": \"true\",\n    \"RunOnceActivity.go.migrated.go.modules.settings\": \"true\",\n    \"RunOnceActivity.readMode.enableVisualFormatting\": \"true\",\n    \"cidr.known.project.marker\": \"true\",\n    \"dart.analysis.tool.window.visible\": \"false\",\n    \"git-widget-placeholder\": \"main\",\n    \"go.import.settings.migrated\": \"true\",\n    \"junie.onboarding.icon.badge.shown\": \"true\",\n    \"last_opened_file_path\": \"/var/user/dev/kigawa-net/keruta/keruta-executor\",\n    \"node.js.detected.package.eslint\": \"true\",\n    \"node.js.detected.package.tslint\": \"true\",\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\n    \"nodejs_package_manager_path\": \"npm\",\n    \"project.structure.last.edited\": \"モジュール\",\n    \"project.structure.proportion\": \"0.23147699\",\n    \"project.structure.side.proportion\": \"0.2623951\",\n    \"settings.editor.selected.configurable\": \"preferences.pluginManager\",\n    \"vue.rearranger.settings.migration\": \"true\"\n  }\n}]]></component>\n  <component name=\"RecentsManager\">\n    <key name=\"CopyFile.RECENT_KEYS\">\n      <recent name=\"$PROJECT_DIR$/keruta-executor\" />\n    </key>\n    <key name=\"MoveFile.RECENT_KEYS\">\n      <recent name=\"$PROJECT_DIR$/keruta-executor\" />\n    </key>\n  </component>\n  <component name=\"RunManager\" selected=\"Gradle.keruta-api [bootJar]\">\n    <configuration default=\"true\" type=\"AppleRunConfiguration\" factoryName=\"Application\" REDIRECT_INPUT=\"false\" ELEVATE=\"false\" USE_EXTERNAL_CONSOLE=\"false\" EMULATE_TERMINAL=\"false\" PASS_PARENT_ENVS_2=\"true\" IS_LOCATION_SIMULATION_SUPPORTED=\"false\" IS_LOCATION_SIMULATION_ALLOWED=\"true\" APPLICATION_LANGUAGE=\"IDELaunchSchemeLanguageUseSystemLanguage\" APPLICATION_REGION=\"\" MAKE_ACTIVE=\"TRUE\" SHOULD_DEBUG_EXTENSIONS=\"false\">\n      <embedded_app_extension_list />\n      <method v=\"2\">\n        <option name=\"com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <configuration name=\"/var/user/dev/kigawa-net/keruta/keruta-executor [bootRun]\" type=\"GradleRunConfiguration\" factoryName=\"Gradle\" temporary=\"true\">\n      <ExternalSystemSettings>\n        <option name=\"executionName\" />\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$/keruta-executor\" />\n        <option name=\"externalSystemIdString\" value=\"GRADLE\" />\n        <option name=\"scriptParameters\" />\n        <option name=\"taskDescriptions\">\n          <list />\n        </option>\n        <option name=\"taskNames\">\n          <list>\n            <option value=\"bootRun\" />\n          </list>\n        </option>\n        <option name=\"vmOptions\" />\n      </ExternalSystemSettings>\n      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>\n      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>\n      <DebugAllEnabled>false</DebugAllEnabled>\n      <RunAsTest>false</RunAsTest>\n      <method v=\"2\" />\n    </configuration>\n    <configuration name=\"keruta-api [bootJar]\" type=\"GradleRunConfiguration\" factoryName=\"Gradle\" temporary=\"true\">\n      <ExternalSystemSettings>\n        <option name=\"executionName\" />\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$/keruta-api\" />\n        <option name=\"externalSystemIdString\" value=\"GRADLE\" />\n        <option name=\"scriptParameters\" />\n        <option name=\"taskDescriptions\">\n          <list />\n        </option>\n        <option name=\"taskNames\">\n          <list>\n            <option value=\"bootJar\" />\n          </list>\n        </option>\n        <option name=\"vmOptions\" />\n      </ExternalSystemSettings>\n      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>\n      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>\n      <DebugAllEnabled>false</DebugAllEnabled>\n      <RunAsTest>false</RunAsTest>\n      <method v=\"2\" />\n    </configuration>\n    <configuration name=\"プロジェクト全体\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\n      <option name=\"PACKAGE_NAME\" value=\"\" />\n      <option name=\"TEST_OBJECT\" value=\"package\" />\n      <option name=\"TEST_SEARCH_SCOPE\">\n        <value defaultName=\"wholeProject\" />\n      </option>\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <configuration name=\"KerutaExecutorApplication\" type=\"SpringBootApplicationConfigurationType\" factoryName=\"Spring Boot\" nameIsGenerated=\"true\">\n      <module name=\"keruta-executor.main\" />\n      <option name=\"SPRING_BOOT_MAIN_CLASS\" value=\"net.kigawa.keruta.executor.KerutaExecutorApplication\" />\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <configuration default=\"true\" type=\"docker-deploy\" factoryName=\"dockerfile\" temporary=\"true\">\n      <deployment type=\"dockerfile\">\n        <settings />\n      </deployment>\n      <method v=\"2\" />\n    </configuration>\n    <configuration name=\"keruta-executor/Dockerfile\" type=\"docker-deploy\" factoryName=\"dockerfile\" temporary=\"true\" server-name=\"Docker\">\n      <deployment type=\"dockerfile\">\n        <settings>\n          <option name=\"sourceFilePath\" value=\"keruta-executor/Dockerfile\" />\n        </settings>\n      </deployment>\n      <method v=\"2\" />\n    </configuration>\n    <recent_temporary>\n      <list>\n        <item itemvalue=\"Gradle.keruta-api [bootJar]\" />\n        <item itemvalue=\"JUnit.プロジェクト全体\" />\n        <item itemvalue=\"Docker.keruta-executor/Dockerfile\" />\n        <item itemvalue=\"Gradle./var/user/dev/kigawa-net/keruta/keruta-executor [bootRun]\" />\n      </list>\n    </recent_temporary>\n  </component>\n  <component name=\"SharedIndexes\">\n    <attachedChunks>\n      <set>\n        <option value=\"bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-IU-251.26927.53\" />\n      </set>\n    </attachedChunks>\n  </component>\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"デフォルトタスク\">\n      <changelist id=\"89b61217-2797-40e7-bf9b-fe65f8c860dc\" name=\"変更\" comment=\"\" />\n      <created>1752257734751</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1752257734751</updated>\n      <workItem from=\"1752257735961\" duration=\"6480000\" />\n      <workItem from=\"1752343018670\" duration=\"3689000\" />\n      <workItem from=\"1752555069302\" duration=\"6172000\" />\n      <workItem from=\"1752774662135\" duration=\"3762000\" />\n    </task>\n    <task id=\"LOCAL-00001\" summary=\"Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability.\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1752257971700</created>\n      <option name=\"number\" value=\"00001\" />\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1752257971700</updated>\n    </task>\n    <task id=\"LOCAL-00002\" summary=\"Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability.\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1752287965154</created>\n      <option name=\"number\" value=\"00002\" />\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1752287965154</updated>\n    </task>\n    <task id=\"LOCAL-00003\" summary=\"Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability.\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1752288316150</created>\n      <option name=\"number\" value=\"00003\" />\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1752288316150</updated>\n    </task>\n    <task id=\"LOCAL-00004\" summary=\"Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability.\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1752288417122</created>\n      <option name=\"number\" value=\"00004\" />\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1752288417122</updated>\n    </task>\n    <task id=\"LOCAL-00005\" summary=\"Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability.\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1752292543447</created>\n      <option name=\"number\" value=\"00005\" />\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1752292543447</updated>\n    </task>\n    <task id=\"LOCAL-00006\" summary=\"Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability.\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1752292560306</created>\n      <option name=\"number\" value=\"00006\" />\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1752292560306</updated>\n    </task>\n    <task id=\"LOCAL-00007\" summary=\"Refactor scheduling, update configurations, and align ports&#10;&#10;Introduced a `SchedulingConfig` class for better management of scheduling properties. Updated the `TaskProcessor` to use the new configuration and resolved minor formatting issues in `CoderExecutionService`. Additionally, the Java toolchain was configured to use Java 17, and the default application port was aligned to `8080`.\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1752344025287</created>\n      <option name=\"number\" value=\"00007\" />\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1752344025287</updated>\n    </task>\n    <task id=\"LOCAL-00008\" summary=\".idea-specific files updated and new Gradle and Docker configurations added for enhanced project build, deployment, and testing settings.\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1752547383886</created>\n      <option name=\"number\" value=\"00008\" />\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1752547383886</updated>\n    </task>\n    <task id=\"LOCAL-00009\" summary=\"Coder実行機能を追加し、環境変数設定を拡張\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1752548537253</created>\n      <option name=\"number\" value=\"00009\" />\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1752548537253</updated>\n    </task>\n    <task id=\"LOCAL-00010\" summary=\"Coder実行機能を追加し、環境変数設定を拡張\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1752549335010</created>\n      <option name=\"number\" value=\"00010\" />\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1752549335010</updated>\n    </task>\n    <task id=\"LOCAL-00011\" summary=\"Coder実行機能を追加し、環境変数設定を拡張\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1752550168425</created>\n      <option name=\"number\" value=\"00011\" />\n      <option name=\"presentableId\" value=\"LOCAL-00011\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1752550168425</updated>\n    </task>\n    <task id=\"LOCAL-00012\" summary=\"DockerfileにCoder CLIのインストールと作業ディレクトリの作成を追加\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1752552189003</created>\n      <option name=\"number\" value=\"00012\" />\n      <option name=\"presentableId\" value=\"LOCAL-00012\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1752552189003</updated>\n    </task>\n    <task id=\"LOCAL-00013\" summary=\"セッション管理機能を追加: API, ドメイン, 永続性層にセッション操作サポートを実装し、タスクにセッション関連フィールドを追加\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1752556665627</created>\n      <option name=\"number\" value=\"00013\" />\n      <option name=\"presentableId\" value=\"LOCAL-00013\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1752556665627</updated>\n    </task>\n    <task id=\"LOCAL-00014\" summary=\"&quot;Add session management routes for list, details, and editing in keruta admin panel&quot;\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1752558983012</created>\n      <option name=\"number\" value=\"00014\" />\n      <option name=\"presentableId\" value=\"LOCAL-00014\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1752558983012</updated>\n    </task>\n    <task id=\"LOCAL-00015\" summary=\"&quot;Add session management routes for list, details, and editing in keruta admin panel&quot;\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1752561294601</created>\n      <option name=\"number\" value=\"00015\" />\n      <option name=\"presentableId\" value=\"LOCAL-00015\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1752561294601</updated>\n    </task>\n    <task id=\"LOCAL-00016\" summary=\"&quot;Add session management routes for list, details, and editing in keruta admin panel&quot;\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1752562913706</created>\n      <option name=\"number\" value=\"00016\" />\n      <option name=\"presentableId\" value=\"LOCAL-00016\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1752562913706</updated>\n    </task>\n    <task id=\"LOCAL-00017\" summary=\"&quot;Add session management routes for list, details, and editing in keruta admin panel&quot;\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1752563751184</created>\n      <option name=\"number\" value=\"00017\" />\n      <option name=\"presentableId\" value=\"LOCAL-00017\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1752563751184</updated>\n    </task>\n    <task id=\"LOCAL-00018\" summary=\"&quot;Coder APIクライアントと関連サービスの追加: ワークスペース管理のCRUD機能を実装&quot;\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1752775562772</created>\n      <option name=\"number\" value=\"00018\" />\n      <option name=\"presentableId\" value=\"LOCAL-00018\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1752775562772</updated>\n    </task>\n    <task id=\"LOCAL-00019\" summary=\"&quot;セッション詳細APIにワークスペースリンク機能を追加し、Coder REST APIを統合&quot;\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1752802646050</created>\n      <option name=\"number\" value=\"00019\" />\n      <option name=\"presentableId\" value=\"LOCAL-00019\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1752802646050</updated>\n    </task>\n    <option name=\"localTasksCounter\" value=\"20\" />\n    <servers />\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"3\" />\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <MESSAGE value=\"Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability.\" />\n    <MESSAGE value=\"Refactor scheduling, update configurations, and align ports&#10;&#10;Introduced a `SchedulingConfig` class for better management of scheduling properties. Updated the `TaskProcessor` to use the new configuration and resolved minor formatting issues in `CoderExecutionService`. Additionally, the Java toolchain was configured to use Java 17, and the default application port was aligned to `8080`.\" />\n    <MESSAGE value=\".idea-specific files updated and new Gradle and Docker configurations added for enhanced project build, deployment, and testing settings.\" />\n    <MESSAGE value=\"Coder実行機能を追加し、環境変数設定を拡張\" />\n    <MESSAGE value=\"DockerfileにCoder CLIのインストールと作業ディレクトリの作成を追加\" />\n    <MESSAGE value=\"セッション管理機能を追加: API, ドメイン, 永続性層にセッション操作サポートを実装し、タスクにセッション関連フィールドを追加\" />\n    <MESSAGE value=\"&quot;Add session management routes for list, details, and editing in keruta admin panel&quot;\" />\n    <MESSAGE value=\"&quot;Coder APIクライアントと関連サービスの追加: ワークスペース管理のCRUD機能を実装&quot;\" />\n    <MESSAGE value=\"&quot;セッション詳細APIにワークスペースリンク機能を追加し、Coder REST APIを統合&quot;\" />\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"&quot;セッション詳細APIにワークスペースリンク機能を追加し、Coder REST APIを統合&quot;\" />\n  </component>\n  <component name=\"VgoProject\">\n    <settings-migrated>true</settings-migrated>\n  </component>\n  <component name=\"XSLT-Support.FileAssociations.UIState\">\n    <expand />\n    <select />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 0e255efab631a085825b2102e144234fd3826163)
++++ b/.idea/workspace.xml	(date 1752857392159)
+@@ -18,15 +18,24 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="&quot;セッション詳細APIにワークスペースリンク機能を追加し、Coder REST APIを統合&quot;">
++    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="Exclude Windows ARM64 build targets in .goreleaser.yml">
++      <change beforePath="$PROJECT_DIR$/.idea/modules/api/keruta-api.api.iml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/modules/buildSrc/keruta-api.buildSrc.iml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/modules/buildSrc/keruta-api.buildSrc.test.iml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/modules/core/domain/keruta-api.core.domain.iml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/modules/core/keruta-api.core.iml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/modules/core/usecase/keruta-api.core.usecase.iml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/app/keruta-api.infra.app.iml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/core/keruta-api.infra.core.iml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/keruta-api.infra.iml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/persistence/keruta-api.infra.persistence.iml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/modules/infra/security/keruta-api.infra.security.iml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/modules/keruta-api.iml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/keruta-api" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/coder/CoderApiClient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/coder/CoderApiClient.kt" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/repository/WorkspaceRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/repository/WorkspaceRepository.kt" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/workspace/WorkspaceService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/workspace/WorkspaceService.kt" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/repository/WorkspaceRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/repository/WorkspaceRepositoryImpl.kt" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/kigawa-net-k8s" beforeDir="false" afterPath="$PROJECT_DIR$/kigawa-net-k8s" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/kigawa-net-k8s/keruta/keruta.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/kigawa-net-k8s/keruta/keruta.yaml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/todo.md" beforeDir="false" afterPath="$PROJECT_DIR$/todo.md" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/session/SessionServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/session/SessionServiceImpl.kt" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/keruta-executor" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-executor" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/config/KerutaExecutorProperties.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/config/KerutaExecutorProperties.kt" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -61,16 +70,16 @@
+             <expand>
+               <path>
+                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+-                <item name="keruta-api" type="f1a62948:ProjectNode" />
++                <item name="keruta-executor" type="f1a62948:ProjectNode" />
+               </path>
+               <path>
+                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+-                <item name="keruta-api" type="f1a62948:ProjectNode" />
++                <item name="keruta-executor" type="f1a62948:ProjectNode" />
+                 <item name="Tasks" type="e4a08cd1:TasksNode" />
+               </path>
+               <path>
+                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+-                <item name="keruta-api" type="f1a62948:ProjectNode" />
++                <item name="keruta-executor" type="f1a62948:ProjectNode" />
+                 <item name="Tasks" type="e4a08cd1:TasksNode" />
+                 <item name="build" type="c8890929:TasksNode$1" />
+               </path>
+@@ -89,7 +98,7 @@
+     </option>
+   </component>
+   <component name="Git.Settings">
+-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/keruta-api" />
++    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+     <option name="ROOT_SYNC" value="DONT_SYNC" />
+   </component>
+   <component name="KubernetesApiPersistence">{}</component>
+@@ -107,45 +116,47 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "Docker.keruta-executor/Dockerfile.executor": "Run",
+-    "Gradle./var/user/dev/kigawa-net/keruta/keruta-executor [bootRun].executor": "Run",
+-    "Gradle.keruta-api [bootJar].executor": "Run",
+-    "Gradle.keruta-api のビルド.executor": "Run",
+-    "Gradle.keruta-executor のビルド.executor": "Run",
+-    "JUnit.プロジェクト全体.executor": "Run",
+-    "ModuleVcsDetector.initialDetectionPerformed": "true",
+-    "NIXITCH_NIXPKGS_CONFIG": "",
+-    "NIXITCH_NIX_CONF_DIR": "",
+-    "NIXITCH_NIX_OTHER_STORES": "",
+-    "NIXITCH_NIX_PATH": "",
+-    "NIXITCH_NIX_PROFILES": "/nix/var/nix/profiles/default /home/kigawa/.nix-profile",
+-    "NIXITCH_NIX_REMOTE": "",
+-    "NIXITCH_NIX_USER_PROFILE_DIR": "",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "RunOnceActivity.cidr.known.project.marker": "true",
+-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+-    "cidr.known.project.marker": "true",
+-    "dart.analysis.tool.window.visible": "false",
+-    "git-widget-placeholder": "main",
+-    "go.import.settings.migrated": "true",
+-    "junie.onboarding.icon.badge.shown": "true",
+-    "last_opened_file_path": "/var/user/dev/kigawa-net/keruta/keruta-executor",
+-    "node.js.detected.package.eslint": "true",
+-    "node.js.detected.package.tslint": "true",
+-    "node.js.selected.package.eslint": "(autodetect)",
+-    "node.js.selected.package.tslint": "(autodetect)",
+-    "nodejs_package_manager_path": "npm",
+-    "project.structure.last.edited": "モジュール",
+-    "project.structure.proportion": "0.23147699",
+-    "project.structure.side.proportion": "0.2623951",
+-    "settings.editor.selected.configurable": "preferences.pluginManager",
+-    "vue.rearranger.settings.migration": "true"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;Docker.keruta-executor/Dockerfile.executor&quot;: &quot;Run&quot;,
++    &quot;Gradle./var/user/dev/kigawa-net/keruta/keruta-executor [bootRun].executor&quot;: &quot;Run&quot;,
++    &quot;Gradle.keruta-api [bootJar].executor&quot;: &quot;Run&quot;,
++    &quot;Gradle.keruta-api のビルド.executor&quot;: &quot;Run&quot;,
++    &quot;Gradle.keruta-executor [bootJar].executor&quot;: &quot;Run&quot;,
++    &quot;Gradle.keruta-executor のビルド.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.プロジェクト全体.executor&quot;: &quot;Run&quot;,
++    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
++    &quot;NIXITCH_NIXPKGS_CONFIG&quot;: &quot;&quot;,
++    &quot;NIXITCH_NIX_CONF_DIR&quot;: &quot;&quot;,
++    &quot;NIXITCH_NIX_OTHER_STORES&quot;: &quot;&quot;,
++    &quot;NIXITCH_NIX_PATH&quot;: &quot;&quot;,
++    &quot;NIXITCH_NIX_PROFILES&quot;: &quot;/nix/var/nix/profiles/default /home/kigawa/.nix-profile&quot;,
++    &quot;NIXITCH_NIX_REMOTE&quot;: &quot;&quot;,
++    &quot;NIXITCH_NIX_USER_PROFILE_DIR&quot;: &quot;&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
++    &quot;SHELLCHECK.PATH&quot;: &quot;/Users/ogawaatsuki/Library/Application Support/JetBrains/IntelliJIdea2025.1/plugins/Shell Script/shellcheck&quot;,
++    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
++    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
++    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
++    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
++    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
++    &quot;last_opened_file_path&quot;: &quot;/var/user/dev/kigawa-net/keruta/keruta-executor&quot;,
++    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
++    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
++    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
++    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
++    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
++    &quot;project.structure.last.edited&quot;: &quot;モジュール&quot;,
++    &quot;project.structure.proportion&quot;: &quot;0.23147699&quot;,
++    &quot;project.structure.side.proportion&quot;: &quot;0.2623951&quot;,
++    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
++    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+   }
+-}]]></component>
++}</component>
+   <component name="RecentsManager">
+     <key name="CopyFile.RECENT_KEYS">
+       <recent name="$PROJECT_DIR$/keruta-executor" />
+@@ -154,13 +165,7 @@
+       <recent name="$PROJECT_DIR$/keruta-executor" />
+     </key>
+   </component>
+-  <component name="RunManager" selected="Gradle.keruta-api [bootJar]">
+-    <configuration default="true" type="AppleRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" IS_LOCATION_SIMULATION_SUPPORTED="false" IS_LOCATION_SIMULATION_ALLOWED="true" APPLICATION_LANGUAGE="IDELaunchSchemeLanguageUseSystemLanguage" APPLICATION_REGION="" MAKE_ACTIVE="TRUE" SHOULD_DEBUG_EXTENSIONS="false">
+-      <embedded_app_extension_list />
+-      <method v="2">
+-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+-      </method>
+-    </configuration>
++  <component name="RunManager" selected="Gradle.keruta-executor [bootJar]">
+     <configuration name="/var/user/dev/kigawa-net/keruta/keruta-executor [bootRun]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+       <ExternalSystemSettings>
+         <option name="executionName" />
+@@ -185,9 +190,41 @@
+     </configuration>
+     <configuration name="keruta-api [bootJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+       <ExternalSystemSettings>
++        <option name="env">
++          <map>
++            <entry key="DEVELOPER_DIR" value="/Applications/Xcode.app/Contents/Developer" />
++          </map>
++        </option>
+         <option name="executionName" />
+         <option name="externalProjectPath" value="$PROJECT_DIR$/keruta-api" />
+         <option name="externalSystemIdString" value="GRADLE" />
++        <option name="scriptParameters" value="" />
++        <option name="taskDescriptions">
++          <list />
++        </option>
++        <option name="taskNames">
++          <list>
++            <option value="bootJar" />
++          </list>
++        </option>
++        <option name="vmOptions" />
++      </ExternalSystemSettings>
++      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
++      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
++      <DebugAllEnabled>false</DebugAllEnabled>
++      <RunAsTest>false</RunAsTest>
++      <method v="2" />
++    </configuration>
++    <configuration name="keruta-executor [bootJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
++      <ExternalSystemSettings>
++        <option name="env">
++          <map>
++            <entry key="DEVELOPER_DIR" value="/Applications/Xcode.app/Contents/Developer" />
++          </map>
++        </option>
++        <option name="executionName" />
++        <option name="externalProjectPath" value="$PROJECT_DIR$/keruta-executor" />
++        <option name="externalSystemIdString" value="GRADLE" />
+         <option name="scriptParameters" />
+         <option name="taskDescriptions">
+           <list />
+@@ -236,8 +273,22 @@
+       </deployment>
+       <method v="2" />
+     </configuration>
++    <list>
++      <item itemvalue="Docker.server" />
++      <item itemvalue="Docker.keruta-executor/Dockerfile" />
++      <item itemvalue="Gradle.keruta-executor [bootJar]" />
++      <item itemvalue="Gradle./var/user/dev/kigawa-net/keruta/keruta-executor [bootRun]" />
++      <item itemvalue="Gradle.keruta-api [bootJar]" />
++      <item itemvalue="JUnit.プロジェクト全体" />
++      <item itemvalue="npm.build" />
++      <item itemvalue="npm.dev" />
++      <item itemvalue="Shell Script.test" />
++      <item itemvalue="Spring Boot.KerutaApplication" />
++      <item itemvalue="Spring Boot.KerutaExecutorApplication" />
++    </list>
+     <recent_temporary>
+       <list>
++        <item itemvalue="Gradle.keruta-executor [bootJar]" />
+         <item itemvalue="Gradle.keruta-api [bootJar]" />
+         <item itemvalue="JUnit.プロジェクト全体" />
+         <item itemvalue="Docker.keruta-executor/Dockerfile" />
+@@ -263,6 +314,7 @@
+       <workItem from="1752343018670" duration="3689000" />
+       <workItem from="1752555069302" duration="6172000" />
+       <workItem from="1752774662135" duration="3762000" />
++      <workItem from="1752856882592" duration="508000" />
+     </task>
+     <task id="LOCAL-00001" summary="Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability.">
+       <option name="closed" value="true" />
+@@ -416,7 +468,63 @@
+       <option name="project" value="LOCAL" />
+       <updated>1752802646050</updated>
+     </task>
+-    <option name="localTasksCounter" value="20" />
++    <task id="LOCAL-00020" summary="&quot;Add session management support: Implement session handling across API, domain, persistence, and admin UI, with form updates and validation.&quot;">
++      <option name="closed" value="true" />
++      <created>1752812204035</created>
++      <option name="number" value="00020" />
++      <option name="presentableId" value="LOCAL-00020" />
++      <option name="project" value="LOCAL" />
++      <updated>1752812204035</updated>
++    </task>
++    <task id="LOCAL-00021" summary="&quot;Add session management support: Implement session handling across API, domain, persistence, and admin UI, with form updates and validation.&quot;">
++      <option name="closed" value="true" />
++      <created>1752813512352</created>
++      <option name="number" value="00021" />
++      <option name="presentableId" value="LOCAL-00021" />
++      <option name="project" value="LOCAL" />
++      <updated>1752813512352</updated>
++    </task>
++    <task id="LOCAL-00022" summary="&quot;Add session management support: Implement session handling across API, domain, persistence, and admin UI, with form updates and validation.&quot;">
++      <option name="closed" value="true" />
++      <created>1752814734527</created>
++      <option name="number" value="00022" />
++      <option name="presentableId" value="LOCAL-00022" />
++      <option name="project" value="LOCAL" />
++      <updated>1752814734527</updated>
++    </task>
++    <task id="LOCAL-00023" summary="&quot;Add session management support: Implement session handling across API, domain, persistence, and admin UI, with form updates and validation.&quot;">
++      <option name="closed" value="true" />
++      <created>1752816542433</created>
++      <option name="number" value="00023" />
++      <option name="presentableId" value="LOCAL-00023" />
++      <option name="project" value="LOCAL" />
++      <updated>1752816542433</updated>
++    </task>
++    <task id="LOCAL-00024" summary="&quot;Add session management support: Implement session handling across API, domain, persistence, and admin UI, with form updates and validation.&quot;">
++      <option name="closed" value="true" />
++      <created>1752817618471</created>
++      <option name="number" value="00024" />
++      <option name="presentableId" value="LOCAL-00024" />
++      <option name="project" value="LOCAL" />
++      <updated>1752817618471</updated>
++    </task>
++    <task id="LOCAL-00025" summary="Exclude Windows ARM64 build targets in .goreleaser.yml">
++      <option name="closed" value="true" />
++      <created>1752817951648</created>
++      <option name="number" value="00025" />
++      <option name="presentableId" value="LOCAL-00025" />
++      <option name="project" value="LOCAL" />
++      <updated>1752817951648</updated>
++    </task>
++    <task id="LOCAL-00026" summary="Exclude Windows ARM64 build targets in .goreleaser.yml">
++      <option name="closed" value="true" />
++      <created>1752818251939</created>
++      <option name="number" value="00026" />
++      <option name="presentableId" value="LOCAL-00026" />
++      <option name="project" value="LOCAL" />
++      <updated>1752818251939</updated>
++    </task>
++    <option name="localTasksCounter" value="27" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -432,7 +540,9 @@
+     <MESSAGE value="&quot;Add session management routes for list, details, and editing in keruta admin panel&quot;" />
+     <MESSAGE value="&quot;Coder APIクライアントと関連サービスの追加: ワークスペース管理のCRUD機能を実装&quot;" />
+     <MESSAGE value="&quot;セッション詳細APIにワークスペースリンク機能を追加し、Coder REST APIを統合&quot;" />
+-    <option name="LAST_COMMIT_MESSAGE" value="&quot;セッション詳細APIにワークスペースリンク機能を追加し、Coder REST APIを統合&quot;" />
++    <MESSAGE value="&quot;Add session management support: Implement session handling across API, domain, persistence, and admin UI, with form updates and validation.&quot;" />
++    <MESSAGE value="Exclude Windows ARM64 build targets in .goreleaser.yml" />
++    <option name="LAST_COMMIT_MESSAGE" value="Exclude Windows ARM64 build targets in .goreleaser.yml" />
+   </component>
+   <component name="VgoProject">
+     <settings-migrated>true</settings-migrated>
