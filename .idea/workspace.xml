@@ -18,10 +18,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="Exclude Windows ARM64 build targets in .goreleaser.yml">
+    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="&quot;Session workspace作成時にテンプレート選択処理を追加し、テンプレート取得ロジックとDTOを実装。&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/workspace/WorkspaceServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/workspace/WorkspaceServiceImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-executor" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-executor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/SessionMonitoringService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/SessionMonitoringService.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +81,7 @@
         <entry key="$PROJECT_DIR$/kigawa-net-k8s/keruta-doc" value="20429dac970679b083d8973b1c571f744a866f16" />
       </map>
     </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/keruta-agent" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
@@ -280,6 +280,7 @@
       <item itemvalue="Gradle./var/user/dev/kigawa-net/keruta/keruta-executor [bootRun]" />
       <item itemvalue="Gradle.keruta-api [bootJar]" />
       <item itemvalue="JUnit.プロジェクト全体" />
+      <item itemvalue="Shell Script.test" />
       <item itemvalue="Spring Boot.KerutaExecutorApplication" />
     </list>
     <recent_temporary>
@@ -309,7 +310,9 @@
       <workItem from="1752343018670" duration="3689000" />
       <workItem from="1752555069302" duration="6172000" />
       <workItem from="1752774662135" duration="3762000" />
-      <workItem from="1752931250803" duration="3493000" />
+      <workItem from="1752857881010" duration="365000" />
+      <workItem from="1752893601447" duration="65000" />
+      <workItem from="1752893702038" duration="2483000" />
     </task>
     <task id="LOCAL-00001" summary="Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability.">
       <option name="closed" value="true" />
@@ -487,7 +490,31 @@
       <option name="project" value="LOCAL" />
       <updated>1752852853853</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Exclude Windows ARM64 build targets in .goreleaser.yml">
+      <option name="closed" value="true" />
+      <created>1752857906001</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1752857906002</updated>
+    </task>
+    <task id="LOCAL-00024" summary="未コミットの変更を再利用または削除するため、IntelliJ IDEAのシェルフファイルを追加。「keruta-api」関連のモジュール設定ファイルを削除。">
+      <option name="closed" value="true" />
+      <created>1752918461766</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1752918461766</updated>
+    </task>
+    <task id="LOCAL-00025" summary="&quot;Session workspace作成時にテンプレート選択処理を追加し、テンプレート取得ロジックとDTOを実装。&quot;">
+      <option name="closed" value="true" />
+      <created>1752921914670</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1752921914670</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -505,7 +532,10 @@
     <MESSAGE value="&quot;セッション詳細APIにワークスペースリンク機能を追加し、Coder REST APIを統合&quot;" />
     <MESSAGE value="「Coder APIインテグレーションを実装: Service/Repositoryのsuspend削除とインフラ層での依存分離」" />
     <MESSAGE value=".idea モジュール定義ファイルを削除しました。" />
-    <option name="LAST_COMMIT_MESSAGE" value=".idea モジュール定義ファイルを削除しました。" />
+    <MESSAGE value="Exclude Windows ARM64 build targets in .goreleaser.yml" />
+    <MESSAGE value="未コミットの変更を再利用または削除するため、IntelliJ IDEAのシェルフファイルを追加。「keruta-api」関連のモジュール設定ファイルを削除。" />
+    <MESSAGE value="&quot;Session workspace作成時にテンプレート選択処理を追加し、テンプレート取得ロジックとDTOを実装。&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;Session workspace作成時にテンプレート選択処理を追加し、テンプレート取得ロジックとDTOを実装。&quot;" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
