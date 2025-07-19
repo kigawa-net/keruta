@@ -35,6 +35,10 @@
       * /documents._index.tsx - ドキュメント一覧ページ
       * /repositories._index.tsx - リポジトリ一覧ページ
       * /kubernetes._index.tsx - Kubernetes設定ページ
+      * /sessions._index.tsx - セッション一覧ページ
+      * /sessions.new.tsx - セッション作成ページ
+      * /sessions.edit.$id.tsx - セッション編集ページ
+      * /sessions.$id.tsx - セッション詳細ページ
     * /utils - ユーティリティ関数
       * /api.ts - API通信用ユーティリティ
   * /public - 静的ファイル
@@ -118,5 +122,20 @@
 - **Repository**: セットアップスクリプトとストレージ設定を持つGitリポジトリ
 - **Document**: タスクに添付できるコンテキストドキュメント
 - **Session**: 関連するタスクをグループ化するセッション（ステータス、タグ、メタデータを持つ）
-- **Workspace**: セッションごとのCoder風開発環境（ライフサイクル管理、Kubernetesリソース統合）
+  - SessionStatus: ACTIVE, INACTIVE, COMPLETED, ARCHIVED
+  - SessionService: セッションCRUD操作、ステータス更新、タグ管理
+  - SessionController: REST API endpoints (/api/v1/sessions)
+  - SessionRepository: MongoDB永続化
+  - SessionEventListener: セッション・ワークスペースライフサイクルイベント処理
+  - SessionWorkspaceStatusSyncService: ワークスペース状態に基づくセッション状態同期
+  - CoderWorkspaceMonitoringService: Coder APIからの定期的なワークスペース状態監視
+- **Workspace**: セッションと1対1関係のCoder風開発環境（ライフサイクル管理、Kubernetesリソース統合）
+  - **1対1関係**: 各セッションに対して1つのワークスペースのみ存在
+  - 自動作成: セッション作成時に自動的にワークスペースが作成される
+  - 自動削除: セッション削除時にワークスペースも自動削除される
+  - WorkspaceStatus: PENDING, STARTING, RUNNING, STOPPING, STOPPED, DELETING, DELETED, FAILED, CANCELED
+  - WorkspaceBuildInfo: ビルド情報とステータス管理
+  - WorkspaceResourceInfo: Kubernetesリソース情報（CPU、メモリ、PVC、Pod、Service、Ingress）
 - **WorkspaceTemplate**: ワークスペース作成用のテンプレート（パラメータ、設定、バージョン管理）
+  - WorkspaceTemplateParameter: テンプレートパラメータ定義
+  - WorkspaceParameterType: STRING, NUMBER, BOOLEAN, LIST
