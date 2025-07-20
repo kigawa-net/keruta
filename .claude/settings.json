@@ -6,7 +6,7 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "dir=\"$PWD\"; while [ \"$dir\" != \"/\" ]; do [ -x \"$dir/test.sh\" ] && bash \"$dir/test.sh\"; dir=$(dirname \"$dir\"); done\n"
+                        "command": "dir=\"$PWD\"; while [ \"$dir\" != \"/\" ]; do [ -x \"$dir/test.sh\" ] && bash \"$dir/test.sh\" || exit 2; dir=$(dirname \"$dir\"); done\n"
                     }
                 ]
             }
