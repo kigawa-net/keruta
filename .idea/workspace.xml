@@ -18,25 +18,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="`SessionWorkspaceStatusSyncService を open に変更`">
+    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="&quot;データベース初期化処理を追加し、重複するデフォルトテンプレートの修正を実装。WorkspaceTemplateInitializerの処理を検証のみに変更。セッションモニタリングのロギング改善とbuild.gradle.ktsにコルーチン依存を追加。&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/agent/AgentServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/agent/AgentServiceImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/coder/CoderService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/coder/CoderService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/document/DocumentServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/document/DocumentServiceImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/repository/GitRepositoryServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/repository/GitRepositoryServiceImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/session/CoderWorkspaceMonitoringService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/session/CoderWorkspaceMonitoringService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/task/TaskServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/task/TaskServiceImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/agent/KerutaAgentServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/agent/KerutaAgentServiceImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/coder/CoderApiClientImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/coder/CoderApiClientImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesServiceImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/core/src/main/kotlin/net/kigawa/keruta/infra/core/coroutine/CoroutineServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/core/src/main/kotlin/net/kigawa/keruta/infra/core/coroutine/CoroutineServiceImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/service/UserService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/service/UserService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-executor" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-executor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/CoderExecutionService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/CoderExecutionService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/LocalExecutionService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/LocalExecutionService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/SessionMonitoringService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/SessionMonitoringService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/TaskApiService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/TaskApiService.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +79,7 @@
         <entry key="$PROJECT_DIR$/kigawa-net-k8s/keruta-doc" value="20429dac970679b083d8973b1c571f744a866f16" />
       </map>
     </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/keruta-agent" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
@@ -114,47 +97,47 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Docker.keruta-executor/Dockerfile.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle./var/user/dev/kigawa-net/keruta/keruta-executor [bootRun].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.keruta-api [bootJar].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.keruta-api のビルド.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.keruta-executor のビルド.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.プロジェクト全体.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;NIXITCH_NIXPKGS_CONFIG&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_CONF_DIR&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_OTHER_STORES&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_PATH&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_PROFILES&quot;: &quot;/nix/var/nix/profiles/default /home/kigawa/.nix-profile&quot;,
-    &quot;NIXITCH_NIX_REMOTE&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_USER_PROFILE_DIR&quot;: &quot;&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;android.gradle.sync.needed&quot;: &quot;true&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/var/user/dev/kigawa-net/keruta/keruta-agent&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;モジュール&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.23147699&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2623951&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/var/user/dev/kigawa-net/keruta/keruta-admin/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Docker.keruta-executor/Dockerfile.executor": "Run",
+    "Gradle./var/user/dev/kigawa-net/keruta/keruta-executor [bootRun].executor": "Run",
+    "Gradle.keruta-api [bootJar].executor": "Run",
+    "Gradle.keruta-api のビルド.executor": "Run",
+    "Gradle.keruta-executor のビルド.executor": "Run",
+    "JUnit.プロジェクト全体.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "NIXITCH_NIXPKGS_CONFIG": "",
+    "NIXITCH_NIX_CONF_DIR": "",
+    "NIXITCH_NIX_OTHER_STORES": "",
+    "NIXITCH_NIX_PATH": "",
+    "NIXITCH_NIX_PROFILES": "/nix/var/nix/profiles/default /home/kigawa/.nix-profile",
+    "NIXITCH_NIX_REMOTE": "",
+    "NIXITCH_NIX_USER_PROFILE_DIR": "",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "Shell Script.test.executor": "Run",
+    "cidr.known.project.marker": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "/var/user/dev/kigawa-net/keruta/keruta-agent",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "モジュール",
+    "project.structure.proportion": "0.23147699",
+    "project.structure.side.proportion": "0.2623951",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "/var/user/dev/kigawa-net/keruta/keruta-admin/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RdControllerToolWindowsLayoutState" isNewUi="true">
     <layout>
       <window_info id="Bookmarks" side_tool="true" />
@@ -208,7 +191,7 @@
       <recent name="$PROJECT_DIR$/keruta-executor" />
     </key>
   </component>
-  <component name="RunManager" selected="Docker.keruta-executor/Dockerfile">
+  <component name="RunManager" selected="Shell Script.test">
     <configuration default="true" type="AppleRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" IS_LOCATION_SIMULATION_SUPPORTED="false" IS_LOCATION_SIMULATION_ALLOWED="true" APPLICATION_LANGUAGE="IDELaunchSchemeLanguageUseSystemLanguage" APPLICATION_REGION="" MAKE_ACTIVE="TRUE" SHOULD_DEBUG_EXTENSIONS="false">
       <embedded_app_extension_list />
       <method v="2">
@@ -269,6 +252,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="KerutaApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="keruta-api.api.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="net.kigawa.keruta.api.KerutaApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="KerutaExecutorApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="keruta-executor.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="net.kigawa.keruta.executor.KerutaExecutorApplication" />
@@ -296,6 +286,7 @@
       <item itemvalue="Gradle.keruta-api [bootJar]" />
       <item itemvalue="JUnit.プロジェクト全体" />
       <item itemvalue="Shell Script.test" />
+      <item itemvalue="Spring Boot.KerutaApplication" />
       <item itemvalue="Spring Boot.KerutaExecutorApplication" />
     </list>
     <recent_temporary>
@@ -563,7 +554,95 @@
       <option name="project" value="LOCAL" />
       <updated>1752953859946</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="&quot;セッションとワークスペースの1対1関係を実装: 各セッションに対して1つのワークスペースを自動管理 (作成・状態同期・削除) に変更&quot;">
+      <option name="closed" value="true" />
+      <created>1752986274788</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1752986274788</updated>
+    </task>
+    <task id="LOCAL-00031" summary="&quot;セッションとワークスペースの1対1関係を実装: 各セッションに対して1つのワークスペースを自動管理 (作成・状態同期・削除) に変更&quot;">
+      <option name="closed" value="true" />
+      <created>1752986868377</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1752986868377</updated>
+    </task>
+    <task id="LOCAL-00032" summary="&quot;セッション監視ロジックを改善: ワークスペースの確認とステータス更新処理を強化し、1:1モデルのエッジケースを考慮&quot;">
+      <option name="closed" value="true" />
+      <created>1752987930000</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1752987930000</updated>
+    </task>
+    <task id="LOCAL-00033" summary="&quot;セッション監視ロジックを改善: ワークスペースの確認とステータス更新処理を強化し、1:1モデルのエッジケースを考慮&quot;">
+      <option name="closed" value="true" />
+      <created>1752988373581</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1752988373581</updated>
+    </task>
+    <task id="LOCAL-00034" summary="&quot;セッション監視ロジックを改善: ワークスペースの確認とステータス更新処理を強化し、1:1モデルのエッジケースを考慮&quot;">
+      <option name="closed" value="true" />
+      <created>1752993062833</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1752993062833</updated>
+    </task>
+    <task id="LOCAL-00035" summary="&quot;データベース初期化処理を追加し、重複するデフォルトテンプレートの修正を実装。WorkspaceTemplateInitializerの処理を検証のみに変更。セッションモニタリングのロギング改善とbuild.gradle.ktsにコルーチン依存を追加。&quot;">
+      <option name="closed" value="true" />
+      <created>1753003003280</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1753003003280</updated>
+    </task>
+    <task id="LOCAL-00036" summary="&quot;データベース初期化処理を追加し、重複するデフォルトテンプレートの修正を実装。WorkspaceTemplateInitializerの処理を検証のみに変更。セッションモニタリングのロギング改善とbuild.gradle.ktsにコルーチン依存を追加。&quot;">
+      <option name="closed" value="true" />
+      <created>1753010872390</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1753010872390</updated>
+    </task>
+    <task id="LOCAL-00037" summary="&quot;データベース初期化処理を追加し、重複するデフォルトテンプレートの修正を実装。WorkspaceTemplateInitializerの処理を検証のみに変更。セッションモニタリングのロギング改善とbuild.gradle.ktsにコルーチン依存を追加。&quot;">
+      <option name="closed" value="true" />
+      <created>1753012516915</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1753012516915</updated>
+    </task>
+    <task id="LOCAL-00038" summary="&quot;データベース初期化処理を追加し、重複するデフォルトテンプレートの修正を実装。WorkspaceTemplateInitializerの処理を検証のみに変更。セッションモニタリングのロギング改善とbuild.gradle.ktsにコルーチン依存を追加。&quot;">
+      <option name="closed" value="true" />
+      <created>1753023085693</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1753023085693</updated>
+    </task>
+    <task id="LOCAL-00039" summary="&quot;データベース初期化処理を追加し、重複するデフォルトテンプレートの修正を実装。WorkspaceTemplateInitializerの処理を検証のみに変更。セッションモニタリングのロギング改善とbuild.gradle.ktsにコルーチン依存を追加。&quot;">
+      <option name="closed" value="true" />
+      <created>1753028658750</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1753028658750</updated>
+    </task>
+    <task id="LOCAL-00040" summary="&quot;データベース初期化処理を追加し、重複するデフォルトテンプレートの修正を実装。WorkspaceTemplateInitializerの処理を検証のみに変更。セッションモニタリングのロギング改善とbuild.gradle.ktsにコルーチン依存を追加。&quot;">
+      <option name="closed" value="true" />
+      <created>1753028853029</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1753028853029</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -626,7 +705,10 @@
     <MESSAGE value="未コミットの変更を再利用または削除するため、IntelliJ IDEAのシェルフファイルを追加。「keruta-api」関連のモジュール設定ファイルを削除。" />
     <MESSAGE value="&quot;Session workspace作成時にテンプレート選択処理を追加し、テンプレート取得ロジックとDTOを実装。&quot;" />
     <MESSAGE value="`SessionWorkspaceStatusSyncService を open に変更`" />
-    <option name="LAST_COMMIT_MESSAGE" value="`SessionWorkspaceStatusSyncService を open に変更`" />
+    <MESSAGE value="&quot;セッションとワークスペースの1対1関係を実装: 各セッションに対して1つのワークスペースを自動管理 (作成・状態同期・削除) に変更&quot;" />
+    <MESSAGE value="&quot;セッション監視ロジックを改善: ワークスペースの確認とステータス更新処理を強化し、1:1モデルのエッジケースを考慮&quot;" />
+    <MESSAGE value="&quot;データベース初期化処理を追加し、重複するデフォルトテンプレートの修正を実装。WorkspaceTemplateInitializerの処理を検証のみに変更。セッションモニタリングのロギング改善とbuild.gradle.ktsにコルーチン依存を追加。&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;データベース初期化処理を追加し、重複するデフォルトテンプレートの修正を実装。WorkspaceTemplateInitializerの処理を検証のみに変更。セッションモニタリングのロギング改善とbuild.gradle.ktsにコルーチン依存を追加。&quot;" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
