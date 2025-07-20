@@ -18,7 +18,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="&quot;Session workspace作成時にテンプレート選択処理を追加し、テンプレート取得ロジックとDTOを実装。&quot;" />
+    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="`SessionWorkspaceStatusSyncService を open に変更`">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/agent/AgentServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/agent/AgentServiceImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/coder/CoderService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/coder/CoderService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/document/DocumentServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/document/DocumentServiceImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/repository/GitRepositoryServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/repository/GitRepositoryServiceImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/session/CoderWorkspaceMonitoringService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/session/CoderWorkspaceMonitoringService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/task/TaskServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/task/TaskServiceImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/agent/KerutaAgentServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/agent/KerutaAgentServiceImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/coder/CoderApiClientImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/coder/CoderApiClientImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesServiceImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/infra/core/src/main/kotlin/net/kigawa/keruta/infra/core/coroutine/CoroutineServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/core/src/main/kotlin/net/kigawa/keruta/infra/core/coroutine/CoroutineServiceImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/service/UserService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/security/src/main/kotlin/net/kigawa/keruta/infra/security/service/UserService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-executor" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-executor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/CoderExecutionService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/CoderExecutionService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/LocalExecutionService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/LocalExecutionService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/SessionMonitoringService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/SessionMonitoringService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/TaskApiService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/TaskApiService.kt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -310,6 +329,7 @@
       <workItem from="1752893601447" duration="65000" />
       <workItem from="1752893702038" duration="2483000" />
       <workItem from="1752933521116" duration="58000" />
+      <workItem from="1752953718660" duration="1057000" />
     </task>
     <task id="LOCAL-00001" summary="Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability.">
       <option name="closed" value="true" />
@@ -535,15 +555,53 @@
       <option name="project" value="LOCAL" />
       <updated>1752953678294</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="`SessionWorkspaceStatusSyncService を open に変更`">
+      <option name="closed" value="true" />
+      <created>1752953859946</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1752953859946</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="7e4a9fb1-63a8-442b-8d8c-aa30a6920a6d" value="TOOL_WINDOW" />
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
+        <entry key="7e4a9fb1-63a8-442b-8d8c-aa30a6920a6d">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="structure">
+                    <value>
+                      <list>
+                        <option value="dir:/Users/ogawaatsuki/project/keruta/keruta-api/.github" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+            </State>
+          </value>
+        </entry>
         <entry key="MAIN">
           <value>
             <State />
@@ -567,7 +625,8 @@
     <MESSAGE value="Exclude Windows ARM64 build targets in .goreleaser.yml" />
     <MESSAGE value="未コミットの変更を再利用または削除するため、IntelliJ IDEAのシェルフファイルを追加。「keruta-api」関連のモジュール設定ファイルを削除。" />
     <MESSAGE value="&quot;Session workspace作成時にテンプレート選択処理を追加し、テンプレート取得ロジックとDTOを実装。&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;Session workspace作成時にテンプレート選択処理を追加し、テンプレート取得ロジックとDTOを実装。&quot;" />
+    <MESSAGE value="`SessionWorkspaceStatusSyncService を open に変更`" />
+    <option name="LAST_COMMIT_MESSAGE" value="`SessionWorkspaceStatusSyncService を open に変更`" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
