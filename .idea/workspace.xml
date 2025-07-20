@@ -18,9 +18,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="&quot;Session workspace作成時にテンプレート選択処理を追加し、テンプレート取得ロジックとDTOを実装。&quot;">
-      <change beforePath="$PROJECT_DIR$/kigawa-net-k8s" beforeDir="false" afterPath="$PROJECT_DIR$/kigawa-net-k8s" afterDir="false" />
-    </list>
+    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="&quot;セッションとワークスペースの1対1関係を実装: 各セッションに対して1つのワークスペースを自動管理 (作成・状態同期・削除) に変更&quot;" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -79,7 +77,7 @@
         <entry key="$PROJECT_DIR$/kigawa-net-k8s/keruta-doc" value="20429dac970679b083d8973b1c571f744a866f16" />
       </map>
     </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/keruta-agent" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
@@ -521,7 +519,23 @@
       <option name="project" value="LOCAL" />
       <updated>1752933557865</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Coderワークスペース状態監視とセッションステータス同期機能の実装">
+      <option name="closed" value="true" />
+      <created>1752952362035</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1752952362035</updated>
+    </task>
+    <task id="LOCAL-00028" summary="&quot;セッションとワークスペースの1対1関係を実装: 各セッションに対して1つのワークスペースを自動管理 (作成・状態同期・削除) に変更&quot;">
+      <option name="closed" value="true" />
+      <created>1752952720828</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1752952720828</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -532,7 +546,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -553,7 +579,9 @@
     <MESSAGE value="Exclude Windows ARM64 build targets in .goreleaser.yml" />
     <MESSAGE value="未コミットの変更を再利用または削除するため、IntelliJ IDEAのシェルフファイルを追加。「keruta-api」関連のモジュール設定ファイルを削除。" />
     <MESSAGE value="&quot;Session workspace作成時にテンプレート選択処理を追加し、テンプレート取得ロジックとDTOを実装。&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;Session workspace作成時にテンプレート選択処理を追加し、テンプレート取得ロジックとDTOを実装。&quot;" />
+    <MESSAGE value="Coderワークスペース状態監視とセッションステータス同期機能の実装" />
+    <MESSAGE value="&quot;セッションとワークスペースの1対1関係を実装: 各セッションに対して1つのワークスペースを自動管理 (作成・状態同期・削除) に変更&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;セッションとワークスペースの1対1関係を実装: 各セッションに対して1つのワークスペースを自動管理 (作成・状態同期・削除) に変更&quot;" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
