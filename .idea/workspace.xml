@@ -18,9 +18,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="&quot;データベース初期化処理を追加し、重複するデフォルトテンプレートの修正を実装。WorkspaceTemplateInitializerの処理を検証のみに変更。セッションモニタリングのロギング改善とbuild.gradle.ktsにコルーチン依存を追加。&quot;">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kigawa-net-k8s" beforeDir="false" afterPath="$PROJECT_DIR$/kigawa-net-k8s" afterDir="false" />
+    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="wp">
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/structure.md" beforeDir="false" afterPath="$PROJECT_DIR$/structure.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -643,7 +643,15 @@
       <option name="project" value="LOCAL" />
       <updated>1753028853029</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="wp">
+      <option name="closed" value="true" />
+      <created>1753055569009</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1753055569009</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -709,7 +717,9 @@
     <MESSAGE value="&quot;セッションとワークスペースの1対1関係を実装: 各セッションに対して1つのワークスペースを自動管理 (作成・状態同期・削除) に変更&quot;" />
     <MESSAGE value="&quot;セッション監視ロジックを改善: ワークスペースの確認とステータス更新処理を強化し、1:1モデルのエッジケースを考慮&quot;" />
     <MESSAGE value="&quot;データベース初期化処理を追加し、重複するデフォルトテンプレートの修正を実装。WorkspaceTemplateInitializerの処理を検証のみに変更。セッションモニタリングのロギング改善とbuild.gradle.ktsにコルーチン依存を追加。&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;データベース初期化処理を追加し、重複するデフォルトテンプレートの修正を実装。WorkspaceTemplateInitializerの処理を検証のみに変更。セッションモニタリングのロギング改善とbuild.gradle.ktsにコルーチン依存を追加。&quot;" />
+    <MESSAGE value="`Serviceクラスをopen化し、拡張可能に変更`" />
+    <MESSAGE value="wp" />
+    <option name="LAST_COMMIT_MESSAGE" value="wp" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

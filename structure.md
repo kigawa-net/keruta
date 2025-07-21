@@ -104,9 +104,11 @@
 
 ### コアコンポーネント
 1. **Spring Boot APIサーバー** (Kotlin) - メインオーケストレーションサービス
+   - Spring CGLIBプロキシ対応済み（全@Serviceクラスをopen化）
 2. **Kerutaエージェント** (Go) - Kubernetesポッドでのタスク実行ランタイム
 3. **MongoDB** - 主要データストア
 4. **Kubernetes** - コンテナオーケストレーションとジョブ実行
+5. **Coder** - ワークスペース管理システム（REST API統合）
 
 ### マルチモジュール構造
 - `core:domain` - ドメインモデル (Task, Agent, Repository など)
@@ -127,6 +129,7 @@
   - SessionController: REST API endpoints (/api/v1/sessions)
   - SessionRepository: MongoDB永続化
   - SessionEventListener: セッション・ワークスペースライフサイクルイベント処理
+    - ワークスペース名の自動正規化機能（日本語→Coder互換形式）
   - SessionWorkspaceStatusSyncService: ワークスペース状態に基づくセッション状態同期
   - CoderWorkspaceMonitoringService: Coder APIからの定期的なワークスペース状態監視
 - **Workspace**: セッションと1対1関係のCoder風開発環境（ライフサイクル管理、Kubernetesリソース統合）
@@ -139,3 +142,21 @@
 - **WorkspaceTemplate**: ワークスペース作成用のテンプレート（パラメータ、設定、バージョン管理）
   - WorkspaceTemplateParameter: テンプレートパラメータ定義
   - WorkspaceParameterType: STRING, NUMBER, BOOLEAN, LIST
+
+## 最新の技術的改善
+
+### Spring Boot統合強化 (2025-07-20)
+- **CGLIBプロキシ対応**: 全ての`@Service`クラスに`open`修飾子を追加
+- **依存性注入エラー修正**: Kotlinのデフォルト`final`クラス問題を解決
+- **AOP機能サポート**: SpringのAspect Oriented Programming機能が正常動作
+
+### Coder統合改善 (2025-07-20)
+- **ワークスペース名正規化**: 日本語・特殊文字の自動変換機能
+- **バリデーション準拠**: Coderの命名規則（英数字+ハイフン、32文字以下）に対応
+- **国際化対応**: 多言語セッション名でもCoder APIで正常動作
+- **自動フォールバック**: 不正な名前の場合は"workspace"にフォールバック
+
+### コード品質向上
+- **型安全性**: Kotlinの`open`修飾子による適切な継承制御
+- **エラーハンドリング**: Coder API通信エラーの詳細ログ記録
+- **保守性**: ワークスペース名正規化ロジックの独立実装
