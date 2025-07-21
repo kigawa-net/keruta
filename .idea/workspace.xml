@@ -20,10 +20,6 @@
   <component name="ChangeListManager">
     <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="&quot;Coderワークスペース関連のDTOを分割リファクタし、正規化支援機能を実装&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/coder/CoderModels.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/coder/CoderModels.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/coder/dto/CoderWorkspaceBuildDto.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/coder/dto/CoderWorkspaceBuildDto.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/coder/dto/CoderWorkspaceDto.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/coder/dto/CoderWorkspaceDto.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -670,7 +666,15 @@
       <option name="project" value="LOCAL" />
       <updated>1753059432159</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="&quot;Coderワークスペース関連のDTOを分割リファクタし、正規化支援機能を実装&quot;">
+      <option name="closed" value="true" />
+      <created>1753070105470</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1753070105470</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
