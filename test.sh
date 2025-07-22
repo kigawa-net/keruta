@@ -28,6 +28,7 @@ if [ -d "keruta-api" ]; then
         else
             echo "❌ Gradle build failed" >&2
             echo "❌ Gradle build failed" >> "../$test_results_file"
+            echo "💥 Test failed - stopping execution" >&2
             exit 2
         fi
     ) || {
@@ -58,6 +59,7 @@ if [ -d "keruta-api" ]; then
         else
             echo "❌ Kotlin code style check failed" >&2
             echo "❌ Kotlin code style check failed" >> "../$test_results_file"
+            echo "💥 Test failed - stopping execution" >&2
             exit 2
         fi
     ) || {
@@ -85,6 +87,7 @@ if [ -d "keruta-agent" ]; then
         else
             echo "❌ Go test failed" >&2
             echo "❌ Go test failed" >> "../$test_results_file"
+            echo "💥 Test failed - stopping execution" >&2
             exit 2
         fi
     ) || {
@@ -116,6 +119,7 @@ if [ -d "keruta-admin" ]; then
             else
                 echo "❌ React project build failed" >&2
                 echo "❌ React project build failed" >> "../$test_results_file"
+                echo "💥 Test failed - stopping execution" >&2
                 exit 2
             fi
         else
@@ -147,6 +151,7 @@ if [ -d "keruta-executor" ]; then
         else
             echo "❌ Gradle build failed (keruta-executor)" >&2
             echo "❌ Gradle build failed (keruta-executor)" >> "../$test_results_file"
+            echo "💥 Test failed - stopping execution" >&2
             exit 2
         fi
     ) || {

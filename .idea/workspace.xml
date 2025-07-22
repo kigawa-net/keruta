@@ -18,7 +18,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="&quot;データベース初期化処理を追加し、重複するデフォルトテンプレートの修正を実装。WorkspaceTemplateInitializerの処理を検証のみに変更。セッションモニタリングのロギング改善とbuild.gradle.ktsにコルーチン依存を追加。&quot;" />
+    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="`.idea`ファイルを削除: 環境依存のIntelliJ IDEA設定をバージョン管理から除外し、プロジェクトの移植性と整理を改善。">
+      <change afterPath="$PROJECT_DIR$/terraform-templates/coder-workspace/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/terraform-templates/coder-workspace/main.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/2025_07_15_11_34_の_更新_前の未コミットの変更_[変更]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-admin" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/sessions.$id.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/sessions.$id.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/sessions._index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/sessions._index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/sessions.edit.$id.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/sessions.edit.$id.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/sessions.new.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/sessions.new.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-admin/app/types/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/types/index.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -132,7 +143,7 @@
     &quot;project.structure.proportion&quot;: &quot;0.23147699&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2623951&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/var/user/dev/kigawa-net/keruta/keruta-admin/node_modules/typescript/lib&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/ogawaatsuki/project/keruta/keruta-admin/node_modules/typescript/lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -319,15 +330,7 @@
       <workItem from="1752893702038" duration="2483000" />
       <workItem from="1752933521116" duration="58000" />
       <workItem from="1752953718660" duration="1057000" />
-      <workItem from="1753029217049" duration="2002000" />
-    </task>
-    <task id="LOCAL-00001" summary="Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability.">
-      <option name="closed" value="true" />
-      <created>1752257971700</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1752257971700</updated>
+      <workItem from="1753164488422" duration="81000" />
     </task>
     <task id="LOCAL-00002" summary="Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability.">
       <option name="closed" value="true" />
@@ -641,23 +644,87 @@
       <option name="project" value="LOCAL" />
       <updated>1753028853029</updated>
     </task>
-    <task id="LOCAL-00041" summary="&quot;データベース初期化処理を追加し、重複するデフォルトテンプレートの修正を実装。WorkspaceTemplateInitializerの処理を検証のみに変更。セッションモニタリングのロギング改善とbuild.gradle.ktsにコルーチン依存を追加。&quot;">
+    <task id="LOCAL-00041" summary="wp">
       <option name="closed" value="true" />
-      <created>1753029487570</created>
+      <created>1753055569009</created>
       <option name="number" value="00041" />
       <option name="presentableId" value="LOCAL-00041" />
       <option name="project" value="LOCAL" />
-      <updated>1753029487570</updated>
+      <updated>1753055569009</updated>
     </task>
-    <task id="LOCAL-00042" summary="&quot;データベース初期化処理を追加し、重複するデフォルトテンプレートの修正を実装。WorkspaceTemplateInitializerの処理を検証のみに変更。セッションモニタリングのロギング改善とbuild.gradle.ktsにコルーチン依存を追加。&quot;">
+    <task id="LOCAL-00042" summary="Coderワークスペース名の日本語対応と正規化機能を実装">
       <option name="closed" value="true" />
-      <created>1753031233502</created>
+      <created>1753056527364</created>
       <option name="number" value="00042" />
       <option name="presentableId" value="LOCAL-00042" />
       <option name="project" value="LOCAL" />
-      <updated>1753031233502</updated>
+      <updated>1753056527364</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="&quot;Coderワークスペース関連のDTOを分割リファクタし、正規化支援機能を実装&quot;">
+      <option name="closed" value="true" />
+      <created>1753059432159</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1753059432159</updated>
+    </task>
+    <task id="LOCAL-00044" summary="&quot;Coderワークスペース関連のDTOを分割リファクタし、正規化支援機能を実装&quot;">
+      <option name="closed" value="true" />
+      <created>1753070105470</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1753070105470</updated>
+    </task>
+    <task id="LOCAL-00045" summary="&quot;Coderワークスペース関連のDTOを分割リファクタし、正規化支援機能を実装&quot;">
+      <option name="closed" value="true" />
+      <created>1753093647692</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1753093647692</updated>
+    </task>
+    <task id="LOCAL-00046" summary="&quot;Agent管理関連のテンプレートとコントローラを削除し、不要なUIリソースを整理&quot;">
+      <option name="closed" value="true" />
+      <created>1753115573230</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1753115573230</updated>
+    </task>
+    <task id="LOCAL-00047" summary="&quot;Agent管理関連のテンプレートとコントローラを削除し、不要なUIリソースを整理&quot;">
+      <option name="closed" value="true" />
+      <created>1753116748541</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1753116748541</updated>
+    </task>
+    <task id="LOCAL-00048" summary="&quot;Agent管理関連のテンプレートとコントローラを削除し、不要なUIリソースを整理&quot;">
+      <option name="closed" value="true" />
+      <created>1753119150741</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1753119150741</updated>
+    </task>
+    <task id="LOCAL-00049" summary="&quot;Navbarコンポーネントを削除し、rootとLayoutの関連コードを整理して不要なUIリソースを削減&quot;">
+      <option name="closed" value="true" />
+      <created>1753162407648</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1753162407648</updated>
+    </task>
+    <task id="LOCAL-00050" summary="`.idea`ファイルを削除: 環境依存のIntelliJ IDEA設定をバージョン管理から除外し、プロジェクトの移植性と整理を改善。">
+      <option name="closed" value="true" />
+      <created>1753164695481</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1753164695481</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -723,7 +790,14 @@
     <MESSAGE value="&quot;セッションとワークスペースの1対1関係を実装: 各セッションに対して1つのワークスペースを自動管理 (作成・状態同期・削除) に変更&quot;" />
     <MESSAGE value="&quot;セッション監視ロジックを改善: ワークスペースの確認とステータス更新処理を強化し、1:1モデルのエッジケースを考慮&quot;" />
     <MESSAGE value="&quot;データベース初期化処理を追加し、重複するデフォルトテンプレートの修正を実装。WorkspaceTemplateInitializerの処理を検証のみに変更。セッションモニタリングのロギング改善とbuild.gradle.ktsにコルーチン依存を追加。&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;データベース初期化処理を追加し、重複するデフォルトテンプレートの修正を実装。WorkspaceTemplateInitializerの処理を検証のみに変更。セッションモニタリングのロギング改善とbuild.gradle.ktsにコルーチン依存を追加。&quot;" />
+    <MESSAGE value="`Serviceクラスをopen化し、拡張可能に変更`" />
+    <MESSAGE value="wp" />
+    <MESSAGE value="Coderワークスペース名の日本語対応と正規化機能を実装" />
+    <MESSAGE value="&quot;Coderワークスペース関連のDTOを分割リファクタし、正規化支援機能を実装&quot;" />
+    <MESSAGE value="&quot;Agent管理関連のテンプレートとコントローラを削除し、不要なUIリソースを整理&quot;" />
+    <MESSAGE value="&quot;Navbarコンポーネントを削除し、rootとLayoutの関連コードを整理して不要なUIリソースを削減&quot;" />
+    <MESSAGE value="`.idea`ファイルを削除: 環境依存のIntelliJ IDEA設定をバージョン管理から除外し、プロジェクトの移植性と整理を改善。" />
+    <option name="LAST_COMMIT_MESSAGE" value="`.idea`ファイルを削除: 環境依存のIntelliJ IDEA設定をバージョン管理から除外し、プロジェクトの移植性と整理を改善。" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
