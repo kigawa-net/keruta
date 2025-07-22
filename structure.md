@@ -54,20 +54,31 @@
     * /artifacts - 成果物管理
     * /health - ヘルスチェック
   * /scripts - ビルドスクリプトなど
-* /keruta-executor - keruta-apiのタスクをcoderで実行するアプリケーション (サブモジュール)
+* /keruta-executor - keruta-apiのタスクをCoderワークスペースで実行するオーケストレーター (独立モジュール)
   * /src - ソースコード
     * /main - メインソースコード
       * /kotlin - Kotlinソースコード
         * /net/kigawa/keruta/executor - メインパッケージ
-          * /config - 設定
+          * /config - 設定クラス
+            * /KerutaExecutorProperties.kt - アプリケーション設定
+            * /RestTemplateConfig.kt - HTTP通信設定
+            * /SchedulingConfig.kt - スケジューリング設定
+            * /WebClientConfig.kt - Webクライアント設定
           * /domain - ドメインモデル
-          * /service - サービス
-            * /CoderExecutionService.kt - coderを使用してタスクを実行するサービス
-            * /SshService.kt - SSH経由でコマンドを実行するサービス
-            * /TaskApiService.kt - keruta-apiとやり取りするサービス
-            * /TaskProcessor.kt - タスク処理を行うサービス
+            * /model/Task.kt - タスクデータモデル
+            * /model/TaskScript.kt - タスクスクリプトモデル
+          * /service - サービス層
+            * /CoderExecutionService.kt - Coderワークスペースでのタスク実行
+            * /LocalExecutionService.kt - ローカル実行サービス（開発用）
+            * /SessionMonitoringService.kt - セッション状態監視サービス
+            * /TaskApiService.kt - keruta-apiとのHTTP通信サービス
+            * /TaskProcessor.kt - メインタスク処理サービス（定期実行）
       * /resources - リソースファイル
-    * /test - テストコード
+        * /application.properties - アプリケーション設定ファイル
+    * /test - テストコード（現在未実装）
+  * /build.gradle.kts - Gradleビルド設定
+  * /docker-compose.yml - 開発用Docker構成
+  * /Dockerfile - コンテナイメージビルド設定
 * /keruta-doc - プロジェクトドキュメント (https://github.com/kigawa-net/keruta-doc に移行中)
 * /kigawa-net-k8s - Kubernetes関連の設定
   * /keruta - Kerutaのデプロイメントマニフェスト
@@ -105,10 +116,17 @@
 ### コアコンポーネント
 1. **Spring Boot APIサーバー** (Kotlin) - メインオーケストレーションサービス
    - Spring CGLIBプロキシ対応済み（全@Serviceクラスをopen化）
+   - セッション・ワークスペース・タスク管理
 2. **Kerutaエージェント** (Go) - Kubernetesポッドでのタスク実行ランタイム
-3. **MongoDB** - 主要データストア
-4. **Kubernetes** - コンテナオーケストレーションとジョブ実行
-5. **Coder** - ワークスペース管理システム（REST API統合）
+   - Cobra CLIフレームワーク、HTTP通信、ログストリーミング
+3. **Keruta Executor** (Kotlin) - タスク実行オーケストレーター
+   - APIからのタスク取得とCoderワークスペースでの実行
+4. **Remix管理パネル** (TypeScript/React) - Webベース管理インターフェース
+5. **MongoDB** - 主要データストア（タスク、セッション、ワークスペース等）
+6. **Kubernetes** - コンテナオーケストレーションとジョブ実行
+7. **Coder** - ワークスペース管理システム（REST API統合）
+8. **PostgreSQL** - Keycloak認証システム用DB
+9. **Keycloak** - 認証・認可システム
 
 ### マルチモジュール構造
 - `core:domain` - ドメインモデル (Task, Agent, Repository など)
@@ -123,22 +141,25 @@
 - **Agent**: 言語サポートと現在のタスク割り当てを持つ実行ランタイム
 - **Repository**: セットアップスクリプトとストレージ設定を持つGitリポジトリ
 - **Document**: タスクに添付できるコンテキストドキュメント
-- **Session**: 関連するタスクをグループ化するセッション（ステータス、タグ、メタデータを持つ）
+- **Session**: 関連するタスクとワークスペースをグループ化するセッション
   - SessionStatus: ACTIVE, INACTIVE, COMPLETED, ARCHIVED
+  - SessionTemplateConfig: Coderテンプレート設定、パラメータ管理
   - SessionService: セッションCRUD操作、ステータス更新、タグ管理
   - SessionController: REST API endpoints (/api/v1/sessions)
   - SessionRepository: MongoDB永続化
   - SessionEventListener: セッション・ワークスペースライフサイクルイベント処理
     - ワークスペース名の自動正規化機能（日本語→Coder互換形式）
   - SessionWorkspaceStatusSyncService: ワークスペース状態に基づくセッション状態同期
-  - CoderWorkspaceMonitoringService: Coder APIからの定期的なワークスペース状態監視
-- **Workspace**: セッションと1対1関係のCoder風開発環境（ライフサイクル管理、Kubernetesリソース統合）
+  - CoderWorkspaceMonitoringService: Coder APIからの定期的なワークスペース状態監視（2分間隔）
+- **Workspace**: セッションと1対1関係のCoderワークスペース（完全管理型開発環境）
   - **1対1関係**: 各セッションに対して1つのワークスペースのみ存在
-  - 自動作成: セッション作成時に自動的にワークスペースが作成される
-  - 自動削除: セッション削除時にワークスペースも自動削除される
+  - 自動ライフサイクル: セッション作成→ワークスペース作成→自動同期→自動削除
   - WorkspaceStatus: PENDING, STARTING, RUNNING, STOPPING, STOPPED, DELETING, DELETED, FAILED, CANCELED
-  - WorkspaceBuildInfo: ビルド情報とステータス管理
+  - WorkspaceBuildInfo: ビルド情報とステータス管理（ビルドID、ログ、理由）
   - WorkspaceResourceInfo: Kubernetesリソース情報（CPU、メモリ、PVC、Pod、Service、Ingress）
+  - WorkspaceService: ワークスペースのCRUD操作、Coder API通信
+  - WorkspaceOrchestrator: ワークスペースライフサイクル管理
+  - WorkspaceKubernetesHandler: Kubernetesリソースとの統合（TODO: 未実装）
 - **WorkspaceTemplate**: ワークスペース作成用のテンプレート（パラメータ、設定、バージョン管理）
   - WorkspaceTemplateParameter: テンプレートパラメータ定義
   - WorkspaceParameterType: STRING, NUMBER, BOOLEAN, LIST
