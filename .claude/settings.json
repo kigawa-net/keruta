@@ -6,7 +6,7 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "dir=\"$PWD\"; while [ \"$dir\" != \"/\" ]; do [ -x \"$dir/test.sh\" ] && { bash \"$dir/test.sh\"; code=$?; [ \"$code\" -ne 0 ] && echo \"\uD83D\uDCA5 test.sh failed with exit code $code\" >&2 && exit \"$code\"; break; }; dir=$(dirname \"$dir\"); done\n"
+                        "command": "dir=\"$PWD\"; while [ \"$dir\" != \"/\" ]; do if [ -x \"$dir/test.sh\" ]; then bash \"$dir/test.sh\"; exit_code=$?; if [ \"$exit_code\" -ne 0 ]; then echo \"💥 Test failed - stopping execution\" >&2; exit 2; fi; break; fi; dir=$(dirname \"$dir\"); done"
                     }
                 ]
             }
