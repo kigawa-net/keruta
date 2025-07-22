@@ -2,17 +2,17 @@
 
 ## 概要
 
-このAPIサーバーは、タスクのキューを管理するためのRESTfulなインターフェースを提供します。作成されたタスクは必ずキューに登録され、優先順位に基づいて処理されます。
+Kerutaは、Kubernetes-native なタスク実行システムです。タスクのキューを管理するRESTfulなインターフェース、Coder風のワークスペース管理機能、セッションベースの開発環境統合を提供します。タスクは優先順位に基づいて処理され、各セッションに対し1対1でワークスペースが自動作成されます。
 
 ## プロジェクト構成
 
 このプロジェクトは以下のサブモジュールで構成されています：
 
-- **keruta-api**: バックエンドAPIサーバー
-- **keruta-admin**: 管理パネルフロントエンド
-- **keruta-agent**: タスク実行エージェント
-- **keruta-executor**: タスク実行エンジン
-- **keruta-doc**: プロジェクトドキュメント
+- **keruta-api**: バックエンドAPIサーバー（Spring Boot + Kotlin）
+- **keruta-admin**: 管理パネルフロントエンド（Remix + React + TypeScript）
+- **keruta-agent**: タスク実行エージェント（Go）
+- **keruta-executor**: タスク実行オーケストレーター（Spring Boot + Kotlin）
+- **keruta-doc**: プロジェクトドキュメント（独立リポジトリに移行中）
 
 ## クイックスタート
 
@@ -59,18 +59,24 @@ docker compose up -d
     - 手動同期エンドポイント（POST /api/v1/sessions/{id}/sync-status）
     - Coder APIからの状態取得と同期（POST /api/v1/sessions/{id}/monitor-workspaces）
   - REST API（GET/POST/PUT/DELETE /api/v1/sessions）
-- **Coder風ワークスペース機能**
+- **Coderワークスペース機能**
   - **セッションとワークスペースの1対1関係**
-    - 各セッションに対して1つのワークスペースが自動作成
+    - 各セッションに対し1つのワークスペースが自動作成・管理
     - セッション作成時の自動ワークスペース生成
     - セッション削除時の自動ワークスペースクリーンアップ
     - 日本語セッション名のCoder互換ワークスペース名への自動正規化
+    - Coderワークスペース状態に基づく自動ステータス同期（2分間隔監視）
   - ワークスペースのライフサイクル管理（作成、開始、停止、削除）
-  - ワークスペーステンプレート管理
-  - Coder REST APIとの統合によるワークスペース管理
-  - セッション詳細でのワークスペースリンク表示
+  - ワークスペーステンプレート管理とパラメータ設定
+  - Coder REST APIとの統合による完全なワークスペース管理
+  - セッション詳細でのワークスペースリンク表示とリアルタイム状態更新
   - ワークスペースの状態監視とビルド情報管理
   - Kubernetesリソース統合（PVC、Pod、Service、Ingress）
+- **タスク実行オーケストレーション（keruta-executor）**
+  - タスクキューからの自動タスク取得と実行
+  - Coderワークスペース内でのタスク実行
+  - セッション監視とワークスペース状態同期
+  - API経由でのタスクステータス更新
 - 管理パネル（/admin からアクセス可能）
   - タスクの作成、詳細表示、編集、削除機能
   - エージェント、ドキュメント、リポジトリの管理
@@ -92,13 +98,32 @@ docker compose up -d
 
 ## 技術スタック
 
-- Kotlin
-- Spring Boot
-- MongoDB
-- Docker & Docker Compose
-- Kubernetes
-- Coder (ワークスペース管理)
-- Gradle (マルチモジュール構成)
+### バックエンド
+- **Kotlin** - 主要開発言語（Spring Boot API、Executor）
+- **Go 1.24** - エージェント実装（Cobra CLI、logrus）
+- **Spring Boot 3.x** - APIサーバーフレームワーク
+- **MongoDB** - メインデータストア
+- **Gradle 8.13** - ビルドツール（マルチモジュール構成）
+
+### フロントエンド
+- **TypeScript** - 型安全な開発
+- **Remix 2.3** - フルスタックReactフレームワーク
+- **React 18** - UIライブラリ
+- **Bootstrap 5.3** - UIコンポーネント
+
+### インフラストラクチャ
+- **Docker & Docker Compose** - コンテナ化と開発環境
+- **Kubernetes** - 本番環境でのコンテナオーケストレーション
+- **Coder** - ワークスペース管理システム
+- **MongoDB** - ドキュメント指向データベース
+- **PostgreSQL** - Keycloak認証用データベース
+- **Keycloak** - 認証・認可システム（設定済み）
+
+### 開発・運用
+- **GitHub Actions** - CI/CDパイプライン
+- **ktlint** - Kotlinコードフォーマッター
+- **Harbor Registry** - プライベートコンテナレジストリ
+- **TestContainers** - 統合テスト環境
 
 ## 最近の更新
 
