@@ -18,9 +18,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="`MongoDB設定のデフォルト値を追加し、認証無効時の接続処理を修正`">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="&quot;セッション同期機能を追加: Coderワークスペース監視およびセッションステータス同期機能を実装&quot;" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -324,14 +322,7 @@
       <workItem from="1753164488422" duration="81000" />
       <workItem from="1753186562550" duration="1720000" />
       <workItem from="1753196897456" duration="315000" />
-    </task>
-    <task id="LOCAL-00003" summary="Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability.">
-      <option name="closed" value="true" />
-      <created>1752288316150</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1752288316150</updated>
+      <workItem from="1753280235715" duration="567000" />
     </task>
     <task id="LOCAL-00004" summary="Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability.">
       <option name="closed" value="true" />
@@ -717,7 +708,15 @@
       <option name="project" value="LOCAL" />
       <updated>1753187996161</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="&quot;セッション同期機能を追加: Coderワークスペース監視およびセッションステータス同期機能を実装&quot;">
+      <option name="closed" value="true" />
+      <created>1753280770549</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1753280770549</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -769,7 +768,6 @@
       <path value="$PROJECT_DIR$/kigawa-net-k8s/fonsole-doc" />
       <path value="$PROJECT_DIR$/kigawa-net-k8s/keruta-doc" />
     </ignored-roots>
-    <MESSAGE value="Refactor scheduling, update configurations, and align ports&#10;&#10;Introduced a `SchedulingConfig` class for better management of scheduling properties. Updated the `TaskProcessor` to use the new configuration and resolved minor formatting issues in `CoderExecutionService`. Additionally, the Java toolchain was configured to use Java 17, and the default application port was aligned to `8080`." />
     <MESSAGE value=".idea-specific files updated and new Gradle and Docker configurations added for enhanced project build, deployment, and testing settings." />
     <MESSAGE value="Coder実行機能を追加し、環境変数設定を拡張" />
     <MESSAGE value="DockerfileにCoder CLIのインストールと作業ディレクトリの作成を追加" />
@@ -794,7 +792,8 @@
     <MESSAGE value="`.idea`ファイルを削除: 環境依存のIntelliJ IDEA設定をバージョン管理から除外し、プロジェクトの移植性と整理を改善。" />
     <MESSAGE value="&quot;データベース初期化処理を追加し、重複するデフォルトテンプレートの修正を実装。WorkspaceTemplateInitializerの処理を検証のみに変更。セッションモニタリングのロギング改善とbuild.gradle.ktsにコルーチン依存を追加。&quot;" />
     <MESSAGE value="`MongoDB設定のデフォルト値を追加し、認証無効時の接続処理を修正`" />
-    <option name="LAST_COMMIT_MESSAGE" value="`MongoDB設定のデフォルト値を追加し、認証無効時の接続処理を修正`" />
+    <MESSAGE value="&quot;セッション同期機能を追加: Coderワークスペース監視およびセッションステータス同期機能を実装&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;セッション同期機能を追加: Coderワークスペース監視およびセッションステータス同期機能を実装&quot;" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
