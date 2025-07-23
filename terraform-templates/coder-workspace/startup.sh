@@ -140,6 +140,69 @@ chown coder:coder /home/coder/.bashrc
 
 # Create a welcome message
 log "📝 Creating welcome message..."
+if [ "${keruta_agent_enabled}" = "true" ]; then
+cat > /home/coder/WELCOME_CLAUDE_CODE.md << EOF
+# 🤖 Welcome to your Coder Workspace with Claude Code and Keruta Agent!
+
+Your workspace is now equipped with Claude Code CLI tool and Keruta Agent daemon.
+
+## Quick Start
+
+### Claude Code Commands
+- \`claude-code\` or \`cc\` - Start Claude Code
+- \`claude-code --help\` - Show help
+- \`claude-code --version\` - Show version
+
+### Custom Claude Code Aliases
+- \`cc-ask "your question"\` - Ask Claude a quick question
+- \`cc-analyze\` - Analyze current directory structure
+- \`cc-debug "issue description"\` - Get debugging help
+
+### Keruta Agent Commands
+- \`ka-status\` - Check daemon status
+- \`ka-logs\` - View daemon logs (real-time)
+- \`ka-restart\` - Restart daemon
+- \`ka-stop\` - Stop daemon
+- \`ka-start\` - Start daemon
+- \`ka-check\` - Full status check
+- \`ka-config\` - Show configuration
+
+### First Time Setup
+If you haven't configured your Claude API key yet:
+\`\`\`bash
+claude-code auth
+\`\`\`
+
+### Configuration Locations
+- Claude Code config: \`~/.config/claude-code/config.json\`
+- Keruta Agent config: \`~/.config/keruta-agent/config.yaml\`
+- Keruta Agent logs: \`~/.keruta-agent.log\`
+
+## Features Available
+- ✅ Node.js ${node_version}
+- ✅ Claude Code CLI
+- ✅ Keruta Agent Daemon
+- ✅ Git
+- ✅ Docker
+- ✅ Common development tools
+
+## Keruta Agent Status
+The Keruta Agent is running as a systemd daemon and will automatically:
+- Poll for new tasks from the Keruta API
+- Execute received tasks
+- Report task status and logs
+- Handle graceful shutdown
+
+Check the status with: \`ka-status\`
+
+## Need Help?
+- Claude Code: Run \`claude-code --help\` or visit https://www.anthropic.com/claude-code
+- Keruta Agent: Run \`keruta-agent --help\` or check logs with \`ka-logs\`
+- Ask Claude directly: \`cc-ask "How do I use this workspace?"\`
+
+Happy coding! 🚀
+EOF
+else
 cat > /home/coder/WELCOME_CLAUDE_CODE.md << 'EOF'
 # 🤖 Welcome to your Coder Workspace with Claude Code!
 
@@ -181,8 +244,124 @@ claude-code auth
 
 Happy coding! 🚀
 EOF
+fi
 
 chown coder:coder /home/coder/WELCOME_CLAUDE_CODE.md
+
+# Install keruta-agent
+log "🔧 Installing keruta-agent..."
+if [ "${keruta_agent_enabled}" = "true" ] && [ -n "${keruta_agent_url}" ] && [ "${keruta_agent_url}" != "" ]; then
+    # Download keruta-agent binary
+    KERUTA_AGENT_VERSION="${keruta_agent_version:-latest}"
+    KERUTA_AGENT_URL="${keruta_agent_url}/keruta-agent-${KERUTA_AGENT_VERSION}"
+    
+    log "📥 Downloading keruta-agent from: $KERUTA_AGENT_URL"
+    curl -fsSL "$KERUTA_AGENT_URL" -o /tmp/keruta-agent || handle_error "Failed to download keruta-agent"
+    
+    # Install the binary
+    sudo chmod +x /tmp/keruta-agent
+    sudo mv /tmp/keruta-agent /usr/local/bin/keruta-agent
+    
+    # Verify installation
+    if command -v keruta-agent &> /dev/null; then
+        log "✅ keruta-agent installed successfully"
+        keruta_agent_version_output=$(keruta-agent --version 2>/dev/null || echo "version detection failed")
+        log "📋 keruta-agent version: $keruta_agent_version_output"
+    else
+        log "⚠️ keruta-agent installation verification failed"
+    fi
+    
+    # Create keruta-agent configuration
+    log "⚙️ Setting up keruta-agent configuration..."
+    mkdir -p /home/coder/.config/keruta-agent
+    cat > /home/coder/.config/keruta-agent/config.yaml << EOF
+# keruta-agent configuration
+api:
+  url: "${keruta_api_url:-http://keruta-api:8080}"
+  token: "${keruta_api_token:-}"
+  timeout: 30s
+
+agent:
+  workspace_id: "${CODER_WORKSPACE_ID:-}"
+  poll_interval: 10s
+  log_level: info
+  
+daemon:
+  pid_file: "/home/coder/.keruta-agent.pid"
+  log_file: "/home/coder/.keruta-agent.log"
+EOF
+    
+    chown -R coder:coder /home/coder/.config/keruta-agent
+    
+    # Create systemd service for keruta-agent daemon
+    log "🔧 Creating keruta-agent systemd service..."
+    sudo tee /etc/systemd/system/keruta-agent.service > /dev/null << EOF
+[Unit]
+Description=Keruta Agent Daemon
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=coder
+Group=coder
+WorkingDirectory=/home/coder
+Environment=HOME=/home/coder
+Environment=CODER_WORKSPACE_ID=${CODER_WORKSPACE_ID:-}
+Environment=KERUTA_API_URL=${keruta_api_url:-http://keruta-api:8080}
+Environment=KERUTA_API_TOKEN=${keruta_api_token:-}
+ExecStart=/usr/local/bin/keruta-agent daemon --workspace-id=\${CODER_WORKSPACE_ID} --log-file=/home/coder/.keruta-agent.log --pid-file=/home/coder/.keruta-agent.pid
+ExecReload=/bin/kill -HUP \$MAINPID
+KillMode=process
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
+EOF
+    
+    # Enable and start the service
+    sudo systemctl daemon-reload
+    sudo systemctl enable keruta-agent.service
+    sudo systemctl start keruta-agent.service
+    
+    log "✅ keruta-agent daemon configured and started"
+    
+    # Add keruta-agent aliases to bashrc
+    cat >> /home/coder/.bashrc << 'EOF'
+
+# keruta-agent aliases and functions
+alias ka='keruta-agent'
+alias keruta='keruta-agent'
+
+# Quick keruta-agent commands
+alias ka-status='sudo systemctl status keruta-agent'
+alias ka-logs='sudo journalctl -u keruta-agent -f'
+alias ka-restart='sudo systemctl restart keruta-agent'
+alias ka-stop='sudo systemctl stop keruta-agent'
+alias ka-start='sudo systemctl start keruta-agent'
+
+# Function to check keruta-agent daemon status
+ka-check() {
+    echo "=== Keruta Agent Status ==="
+    sudo systemctl is-active keruta-agent
+    echo "=== Last 10 Log Lines ==="
+    sudo journalctl -u keruta-agent -n 10 --no-pager
+}
+
+# Function to show keruta-agent configuration
+ka-config() {
+    echo "=== Keruta Agent Configuration ==="
+    cat /home/coder/.config/keruta-agent/config.yaml 2>/dev/null || echo "Configuration file not found"
+}
+
+EOF
+    
+else
+    log "ℹ️ No keruta-agent URL provided. Skipping keruta-agent installation."
+fi
 
 # Final setup
 log "🏁 Finalizing setup..."
@@ -205,13 +384,29 @@ echo "✅ npm: $npm_installed_version"
 echo "✅ Claude Code: Installed and configured"
 echo "✅ Development tools: Ready"
 echo "✅ Docker: Available"
+if [ "${keruta_agent_enabled}" = "true" ]; then
+    echo "✅ Keruta Agent: Daemon running"
+else
+    echo "ℹ️  Keruta Agent: Disabled"
+fi
 echo ""
 if [ -n "${claude_api_key}" ] && [ "${claude_api_key}" != "" ]; then
-    echo "🔑 API Key: Configured automatically"
+    echo "🔑 Claude API Key: Configured automatically"
 else
-    echo "⚠️  API Key: Run 'claude-code auth' to configure"
+    echo "⚠️  Claude API Key: Run 'claude-code auth' to configure"
+fi
+if [ "${keruta_agent_enabled}" = "true" ]; then
+    echo ""
+    echo "🤖 Keruta Agent Commands:"
+    echo "   ka-status  - Check daemon status"
+    echo "   ka-logs    - View daemon logs"
+    echo "   ka-restart - Restart daemon"
+    echo "   ka-check   - Full status check"
 fi
 echo ""
 echo "🚀 Ready to start coding with Claude Code!"
 echo "   Type 'cc-ask \"Hello Claude!\"' to test your setup"
+if [ "${keruta_agent_enabled}" = "true" ]; then
+    echo "   Type 'ka-status' to check Keruta Agent"
+fi
 echo "════════════════════════════════════════════════════════════════"

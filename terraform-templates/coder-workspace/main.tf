@@ -23,7 +23,7 @@ data "coder_workspace" "me" {
 resource "kubernetes_persistent_volume_claim" "user_pvc" {
   metadata {
     name      = "coder-${lower(local.username)}-shared"
-    namespace = data.coder_provisioner.me.tags["namespace"] != "" ? data.coder_provisioner.me.tags["namespace"] : "default"
+    namespace = try(data.coder_provisioner.me.tags["namespace"], "default")
   }
   wait_until_bound = false
   spec {
@@ -63,8 +63,8 @@ resource "coder_metadata" "pvc_info" {
   }
 
   item {
-    key   = "Mount Path"
-    value = "/home/coder/shared"
+    key       = "Mount Path"
+    value     = "/home/coder/shared"
     sensitive = false
   }
 }
@@ -111,15 +111,52 @@ variable "node_version" {
   default     = "20"
 }
 
+# Keruta Agent configuration parameters
+variable "keruta_agent_enabled" {
+  description = "Enable keruta-agent daemon in the workspace"
+  type        = bool
+  default     = true
+}
+
+variable "keruta_agent_url" {
+  description = "URL to download keruta-agent binary"
+  type        = string
+  default     = "https://releases.keruta.net"
+}
+
+variable "keruta_agent_version" {
+  description = "Version of keruta-agent to install"
+  type        = string
+  default     = "latest"
+}
+
+variable "keruta_api_url" {
+  description = "URL of the Keruta API server"
+  type        = string
+  default     = "http://keruta-api:8080"
+}
+
+variable "keruta_api_token" {
+  description = "API token for Keruta API authentication (optional)"
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
 # Create a Coder agent for the workspace
 resource "coder_agent" "main" {
-  arch           = data.coder_provisioner.me.tags["arch"] != "" ? data.coder_provisioner.me.tags["arch"] : "amd64"
-  os             = "linux"
-  startup_script_timeout = 180
-  startup_script = var.claude_code_enabled ? templatefile("${path.module}/startup.sh", {
-    node_version = var.node_version
-    claude_api_key = var.claude_code_api_key
-  }) : ""
+  arch                   = try(data.coder_provisioner.me.tags["arch"], "amd64")
+  os                     = "linux"
+  startup_script_timeout = 300
+  startup_script = templatefile("${path.module}/startup.sh", {
+    node_version         = var.node_version
+    claude_api_key       = var.claude_code_api_key
+    keruta_agent_enabled = var.keruta_agent_enabled
+    keruta_agent_url     = var.keruta_agent_url
+    keruta_agent_version = var.keruta_agent_version
+    keruta_api_url       = var.keruta_api_url
+    keruta_api_token     = var.keruta_api_token
+  })
 
   # Claude Code application in Coder UI
   dynamic "app" {
@@ -148,15 +185,20 @@ resource "coder_agent" "main" {
     key   = "node_version"
     value = var.node_version
   }
+
+  metadata {
+    key   = "keruta_agent_enabled"
+    value = var.keruta_agent_enabled ? "true" : "false"
+  }
 }
 
 # Kubernetes deployment for the workspace
 resource "kubernetes_deployment" "workspace" {
   count = data.coder_workspace.me.start_count
-  
+
   metadata {
     name      = "coder-${lower(local.username)}"
-    namespace = data.coder_provisioner.me.tags["namespace"] != "" ? data.coder_provisioner.me.tags["namespace"] : "default"
+    namespace = try(data.coder_provisioner.me.tags["namespace"], "default")
     labels = {
       "app.kubernetes.io/name"     = "coder-workspace"
       "app.kubernetes.io/instance" = data.coder_workspace.me.name
@@ -167,7 +209,7 @@ resource "kubernetes_deployment" "workspace" {
 
   spec {
     replicas = 1
-    
+
     selector {
       match_labels = {
         "app.kubernetes.io/name"     = "coder-workspace"
@@ -191,22 +233,44 @@ resource "kubernetes_deployment" "workspace" {
 
         container {
           name              = "workspace"
-          image            = "codercom/enterprise-base:ubuntu"
+          image             = "codercom/enterprise-base:ubuntu"
           image_pull_policy = "Always"
-          
+
           command = ["/bin/bash", "-c", coder_agent.main.init_script]
-          
+
           env {
             name  = "CODER_AGENT_TOKEN"
             value = coder_agent.main.token
           }
-          
+
+          env {
+            name  = "CODER_WORKSPACE_ID"
+            value = data.coder_workspace.me.id
+          }
+
           # Add Claude Code environment variables
           dynamic "env" {
             for_each = var.claude_code_enabled && var.claude_code_api_key != "" ? [1] : []
             content {
               name  = "ANTHROPIC_API_KEY"
               value = var.claude_code_api_key
+            }
+          }
+
+          # Add Keruta Agent environment variables
+          dynamic "env" {
+            for_each = var.keruta_agent_enabled ? [1] : []
+            content {
+              name  = "KERUTA_API_URL"
+              value = var.keruta_api_url
+            }
+          }
+
+          dynamic "env" {
+            for_each = var.keruta_agent_enabled && var.keruta_api_token != "" ? [1] : []
+            content {
+              name  = "KERUTA_API_TOKEN"
+              value = var.keruta_api_token
             }
           }
 
@@ -253,10 +317,10 @@ resource "kubernetes_deployment" "workspace" {
 # Service for workspace (if needed for Claude Code web interface)
 resource "kubernetes_service" "workspace" {
   count = data.coder_workspace.me.start_count
-  
+
   metadata {
     name      = "coder-${lower(local.username)}"
-    namespace = data.coder_provisioner.me.tags["namespace"] != "" ? data.coder_provisioner.me.tags["namespace"] : "default"
+    namespace = try(data.coder_provisioner.me.tags["namespace"], "default")
   }
 
   spec {
