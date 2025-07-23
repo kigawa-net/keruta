@@ -109,16 +109,33 @@ if [ -d "keruta-admin" ]; then
     (
         cd keruta-admin || exit 2
         if [ -f "package.json" ]; then
+            echo "Installing dependencies..."
             npm install --silent 2>&1 | tee -a "../$test_results_file"
             install_result=${PIPESTATUS[0]}
+            
+            echo "Running TypeScript type check..."
+            npm run typecheck 2>&1 | tee -a "../$test_results_file"
+            typecheck_result=${PIPESTATUS[0]}
+            
+            echo "Building React application..."
             npm run build --silent 2>&1 | tee -a "../$test_results_file"
             build_result=${PIPESTATUS[0]}
-            if [ "$install_result" -eq 0 ] && [ "$build_result" -eq 0 ]; then
-                echo "✅ React project build success"
-                echo "✅ React project build success" >> "../$test_results_file"
+            
+            if [ "$install_result" -eq 0 ] && [ "$typecheck_result" -eq 0 ] && [ "$build_result" -eq 0 ]; then
+                echo "✅ keruta-admin test success (install + typecheck + build)"
+                echo "✅ keruta-admin test success (install + typecheck + build)" >> "../$test_results_file"
             else
-                echo "❌ React project build failed" >&2
-                echo "❌ React project build failed" >> "../$test_results_file"
+                echo "❌ keruta-admin test failed" >&2
+                echo "❌ keruta-admin test failed" >> "../$test_results_file"
+                if [ "$install_result" -ne 0 ]; then
+                    echo "  - npm install failed" >&2
+                fi
+                if [ "$typecheck_result" -ne 0 ]; then
+                    echo "  - TypeScript type check failed" >&2
+                fi
+                if [ "$build_result" -ne 0 ]; then
+                    echo "  - Build failed" >&2
+                fi
                 echo "💥 Test failed - stopping execution" >&2
                 exit 2
             fi
