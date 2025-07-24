@@ -5,18 +5,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 * ユーザーには日本語で応答する
 * 大きなファイルは細分化する
 
-## Documents
-
-* 最初にドキュメントを読む
-* 常に`/README.md`を更新
-* 常に`/todo.md`を更新
-* 常に`/structure.md`を更新
-* 常にドキュメントを更新する
-
 ## Programs
 
 * 純粋関数を使う
 * SOLID原則に従う
+* All service classes must be marked `open` for Spring CGLIB proxy creation
+* Use `@Component`, `@Service`, `@Repository` annotations consistently
 
 ## Development Commands
 
@@ -40,23 +34,40 @@ cd keruta-agent && ./scripts/build.sh
 
 ### Testing
 ```bash
-# Run all tests
+# Run all tests (from keruta-api root)
 ./gradlew test
 
 # Run tests with detailed output
 ./gradlew test --continue
 
+# Run specific module tests
+./gradlew :core:domain:test
+./gradlew :api:test
+
+# Run tests for keruta-executor
+cd keruta-executor && ./gradlew test
+
 # Run Go agent tests
 cd keruta-agent && go test ./...
+
+# Run with test containers (requires Docker)
+./gradlew :infra:persistence:test
 ```
 
 ### Code Quality
 ```bash
-# Check code style (all modules)
+# Check code style (all modules in keruta-api)
 ./gradlew ktlintCheckAll
 
-# Format code (all modules)
+# Format code (all modules in keruta-api)
 ./gradlew ktlintFormatAll
+
+# Check/Format specific module
+./gradlew :core:domain:ktlintCheck
+./gradlew :api:ktlintFormat
+
+# Check keruta-executor
+cd keruta-executor && ./gradlew ktlintCheck
 
 # Clean build
 ./gradlew clean
@@ -96,9 +107,9 @@ Keruta is a Kubernetes-native task execution system with three main components:
 - `api` - REST controllers and web layer
 
 #### Executor (keruta-executor)
-- **Coder API Integration** - Handles Coder workspace management
-- **Custom Terraform Templates** - Supports custom Terraform templates for workspaces
-- **Task Processing** - Manages task execution in Coder workspaces
+- **Task Processing** - Standalone Spring Boot application that polls API for tasks
+- **Coder Integration** - Originally intended for Coder workspace management (currently minimal implementation)
+- **Background Scheduling** - Uses `@Scheduled` methods for task polling and execution
 
 ### Key Domain Models
 - **Task**: Executable units with status, priority, and Git repository association
@@ -118,12 +129,12 @@ Keruta is a Kubernetes-native task execution system with three main components:
 4. Agents execute tasks and communicate status via HTTP API calls
 5. Real-time logs are streamed through WebSocket connections
 
-### Coder Workspace Execution (via Keruta Executor)
-1. Workspace-based tasks are managed by Keruta Executor
-2. Executor integrates with Coder API to create/manage workspaces
-3. Supports custom Terraform templates for workspace provisioning
-4. Tasks execute within persistent Coder workspaces
-5. Status and logs are synchronized back to the main API
+### Executor-based Task Processing
+1. Keruta Executor runs as a separate Spring Boot application
+2. Polls keruta-api for pending tasks using `TaskApiService`
+3. Executes tasks through `CoderExecutionService` (currently stubbed)
+4. Updates task status back to the main API via HTTP calls
+5. Runs on configurable schedule (default: based on `processingDelayMillis`)
 
 ## Important Implementation Details
 
@@ -139,17 +150,11 @@ The Go agent communicates with the Spring Boot API using HTTP:
 - `GET /api/v1/tasks/{id}/script` - Script retrieval
 - `POST /api/v1/tasks/{id}/logs/stream` - Log streaming
 
-### Coder Integration (via Keruta Executor)
-Keruta Executor manages Coder workspaces and provides:
-- **Coder API Client** - Direct integration with Coder REST API
-- **Custom Terraform Templates** - Support for custom workspace definitions
-- **Template Management** - Creation, validation, and deployment of templates
-- **Workspace Lifecycle** - Create, start, stop, delete operations
-- **Variable Substitution** - Dynamic template variables using `{{VARIABLE_NAME}}` syntax
-
-#### Supported Template Types
-- **CODER_MANAGED** - Uses existing Coder templates
-- **CUSTOM_TERRAFORM** - Custom Terraform definitions managed by Keruta
+### Task Processing Architecture
+- **BackgroundTaskProcessor** (in keruta-api) - Processes tasks via Kubernetes Jobs
+- **TaskProcessor** (in keruta-executor) - Alternative task processor that polls API and executes tasks
+- Both processors use atomic flags to prevent concurrent execution
+- Task status updates flow back through the main API
 
 ### Security Model
 Currently implements permissive security suitable for internal environments:
@@ -187,10 +192,11 @@ MongoDB connection is configured via environment variables:
 ## Development Environment
 
 ### Local Setup
-1. Start MongoDB: `docker-compose up -d mongodb`
-2. Run application: `./gradlew :api:bootRun`
-3. Access admin interface: http://localhost:8080/admin
-4. Access API docs: http://localhost:8080/swagger-ui.html
+1. Start MongoDB: `docker-compose up -d mongodb` (from keruta-api directory)
+2. Run API server: `./gradlew :api:bootRun` (from keruta-api directory)  
+3. (Optional) Run executor: `cd keruta-executor && ./gradlew bootRun`
+4. Access admin interface: http://localhost:8080/admin
+5. Access API docs: http://localhost:8080/swagger-ui.html
 
 ### Docker Development
 - Full stack: `docker-compose up -d`
@@ -202,7 +208,8 @@ MongoDB connection is configured via environment variables:
 ### Kotlin Style
 - Uses ktlint for code formatting and style checking
 - Configuration in `.editorconfig`
-- Some rules temporarily disabled for migration ease
+- Some rules temporarily disabled for migration ease: wildcard imports, filename matching, max line length
+- All service classes must be marked `open` for Spring CGLIB proxy creation
 - New code should follow full ktlint standards
 
 ### Go Style
@@ -232,6 +239,16 @@ MongoDB connection is configured via environment variables:
 - Health checks on `/api/health` endpoint
 
 ### Docker Images
-- Main application: Built from root `Dockerfile`
+- API Server: Built from `keruta-api/Dockerfile`
+- Executor: Built from `keruta-executor/Dockerfile`  
 - Agent: Built from `keruta-agent/Dockerfile`
 - Uses Harbor registry: `harbor.kigawa.net/library/keruta`
+
+## Project Structure Notes
+
+- **keruta-api**: Multi-module Gradle project with clean architecture (domain, usecase, infra layers)
+- **keruta-executor**: Standalone Spring Boot application for task processing
+- **keruta-agent**: Go CLI application for task execution within containers
+- **keruta-admin**: React/Remix frontend for administration
+- Configuration is environment-based (Spring profiles, environment variables)
+- Tests use TestContainers for integration testing with real databases
