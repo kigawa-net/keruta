@@ -25,8 +25,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # Build the entire project
 ./gradlew build
 
-# Run the Spring Boot application
+# Run the Spring Boot API server
 ./gradlew :api:bootRun
+
+# Run the Keruta Executor (for Coder workspace management)
+cd keruta-executor && ./gradlew bootRun
 
 # Build and run with Docker
 docker-compose up -d
@@ -73,21 +76,29 @@ docker-compose logs -f
 
 ## Architecture Overview
 
-Keruta is a Kubernetes-native task execution system with two main components:
+Keruta is a Kubernetes-native task execution system with three main components:
 
 ### Core Components
-1. **Spring Boot API Server** (Kotlin) - Main orchestration service
-2. **Keruta Agent** (Go) - Task execution runtime in Kubernetes pods
-3. **MongoDB** - Primary data store
-4. **Kubernetes** - Container orchestration and job execution
+1. **Spring Boot API Server** (Kotlin) - Main orchestration service and REST API
+2. **Keruta Executor** (Kotlin/Spring Boot) - Coder workspace management and execution
+3. **Keruta Agent** (Go) - Task execution runtime in Kubernetes pods
+4. **MongoDB** - Primary data store
+5. **Kubernetes** - Container orchestration and job execution
 
 ### Multi-Module Structure
+
+#### API Server (keruta-api)
 - `core:domain` - Domain models (Task, Agent, Repository, etc.)
-- `core:usecase` - Business logic and use cases
+- `core:usecase` - Business logic and use cases (Coder functionality removed)
 - `infra:persistence` - MongoDB repository implementations
 - `infra:security` - Security configuration (currently permissive)
 - `infra:app` - Kubernetes integration and job orchestration
 - `api` - REST controllers and web layer
+
+#### Executor (keruta-executor)
+- **Coder API Integration** - Handles Coder workspace management
+- **Custom Terraform Templates** - Supports custom Terraform templates for workspaces
+- **Task Processing** - Manages task execution in Coder workspaces
 
 ### Key Domain Models
 - **Task**: Executable units with status, priority, and Git repository association
@@ -97,6 +108,7 @@ Keruta is a Kubernetes-native task execution system with two main components:
 
 ## Task Execution Flow
 
+### Traditional Task Execution (Kubernetes Jobs)
 1. Tasks are created via API or admin interface at `/admin`
 2. `BackgroundTaskProcessor` polls for pending tasks
 3. `KubernetesJobCreator` creates Kubernetes Jobs with:
@@ -105,6 +117,13 @@ Keruta is a Kubernetes-native task execution system with two main components:
    - Shared workspace volumes
 4. Agents execute tasks and communicate status via HTTP API calls
 5. Real-time logs are streamed through WebSocket connections
+
+### Coder Workspace Execution (via Keruta Executor)
+1. Workspace-based tasks are managed by Keruta Executor
+2. Executor integrates with Coder API to create/manage workspaces
+3. Supports custom Terraform templates for workspace provisioning
+4. Tasks execute within persistent Coder workspaces
+5. Status and logs are synchronized back to the main API
 
 ## Important Implementation Details
 
@@ -119,6 +138,18 @@ The Go agent communicates with the Spring Boot API using HTTP:
 - `PUT /api/v1/tasks/{id}/status` - Status updates
 - `GET /api/v1/tasks/{id}/script` - Script retrieval
 - `POST /api/v1/tasks/{id}/logs/stream` - Log streaming
+
+### Coder Integration (via Keruta Executor)
+Keruta Executor manages Coder workspaces and provides:
+- **Coder API Client** - Direct integration with Coder REST API
+- **Custom Terraform Templates** - Support for custom workspace definitions
+- **Template Management** - Creation, validation, and deployment of templates
+- **Workspace Lifecycle** - Create, start, stop, delete operations
+- **Variable Substitution** - Dynamic template variables using `{{VARIABLE_NAME}}` syntax
+
+#### Supported Template Types
+- **CODER_MANAGED** - Uses existing Coder templates
+- **CUSTOM_TERRAFORM** - Custom Terraform definitions managed by Keruta
 
 ### Security Model
 Currently implements permissive security suitable for internal environments:
