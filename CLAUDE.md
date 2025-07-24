@@ -108,8 +108,9 @@ Keruta is a Kubernetes-native task execution system with three main components:
 
 #### Executor (keruta-executor)
 - **Task Processing** - Standalone Spring Boot application that polls API for tasks
-- **Coder Integration** - Originally intended for Coder workspace management (currently minimal implementation)
+- **API-only Data Access** - No direct database access, communicates only via REST API
 - **Background Scheduling** - Uses `@Scheduled` methods for task polling and execution
+- **Session Monitoring** - Monitors session states and workspace management via API calls
 
 ### Key Domain Models
 - **Task**: Executable units with status, priority, and Git repository association
@@ -151,8 +152,9 @@ The Go agent communicates with the Spring Boot API using HTTP:
 - `POST /api/v1/tasks/{id}/logs/stream` - Log streaming
 
 ### Task Processing Architecture
-- **BackgroundTaskProcessor** (in keruta-api) - Processes tasks via Kubernetes Jobs
+- **BackgroundTaskProcessor** (in keruta-api) - Processes tasks via Kubernetes Jobs with direct DB access
 - **TaskProcessor** (in keruta-executor) - Alternative task processor that polls API and executes tasks
+- **Executor API Integration** - TaskApiService and SessionMonitoringService communicate via REST API only
 - Both processors use atomic flags to prevent concurrent execution
 - Task status updates flow back through the main API
 
@@ -246,9 +248,9 @@ MongoDB connection is configured via environment variables:
 
 ## Project Structure Notes
 
-- **keruta-api**: Multi-module Gradle project with clean architecture (domain, usecase, infra layers)
-- **keruta-executor**: Standalone Spring Boot application for task processing
+- **keruta-api**: Multi-module Gradle project with clean architecture and direct MongoDB access
+- **keruta-executor**: Standalone Spring Boot application with API-only data access (no direct DB connection)
 - **keruta-agent**: Go CLI application for task execution within containers
 - **keruta-admin**: React/Remix frontend for administration
 - Configuration is environment-based (Spring profiles, environment variables)
-- Tests use TestContainers for integration testing with real databases
+- Tests use TestContainers for integration testing with real databases (API server only)
