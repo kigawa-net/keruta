@@ -18,9 +18,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="&quot;セッション同期機能を追加: Coderワークスペース監視およびセッションステータス同期機能を実装&quot;">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="`.idea`棚上げパッチファイルの追加" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -328,14 +326,6 @@
       <workItem from="1753280235715" duration="567000" />
       <workItem from="1753282850960" duration="971000" />
       <workItem from="1753288023562" duration="1719000" />
-    </task>
-    <task id="LOCAL-00005" summary="Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability.">
-      <option name="closed" value="true" />
-      <created>1752292543447</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1752292543447</updated>
     </task>
     <task id="LOCAL-00006" summary="Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability.">
       <option name="closed" value="true" />
@@ -721,7 +711,15 @@
       <option name="project" value="LOCAL" />
       <updated>1753283672447</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="`.idea`棚上げパッチファイルの追加">
+      <option name="closed" value="true" />
+      <created>1753367601273</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1753367601273</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -773,7 +771,6 @@
       <path value="$PROJECT_DIR$/kigawa-net-k8s/fonsole-doc" />
       <path value="$PROJECT_DIR$/kigawa-net-k8s/keruta-doc" />
     </ignored-roots>
-    <MESSAGE value=".idea-specific files updated and new Gradle and Docker configurations added for enhanced project build, deployment, and testing settings." />
     <MESSAGE value="Coder実行機能を追加し、環境変数設定を拡張" />
     <MESSAGE value="DockerfileにCoder CLIのインストールと作業ディレクトリの作成を追加" />
     <MESSAGE value="セッション管理機能を追加: API, ドメイン, 永続性層にセッション操作サポートを実装し、タスクにセッション関連フィールドを追加" />
@@ -794,11 +791,12 @@
     <MESSAGE value="&quot;Coderワークスペース関連のDTOを分割リファクタし、正規化支援機能を実装&quot;" />
     <MESSAGE value="&quot;Agent管理関連のテンプレートとコントローラを削除し、不要なUIリソースを整理&quot;" />
     <MESSAGE value="&quot;Navbarコンポーネントを削除し、rootとLayoutの関連コードを整理して不要なUIリソースを削減&quot;" />
-    <MESSAGE value="`.idea`ファイルを削除: 環境依存のIntelliJ IDEA設定をバージョン管理から除外し、プロジェクトの移植性と整理を改善。" />
     <MESSAGE value="&quot;データベース初期化処理を追加し、重複するデフォルトテンプレートの修正を実装。WorkspaceTemplateInitializerの処理を検証のみに変更。セッションモニタリングのロギング改善とbuild.gradle.ktsにコルーチン依存を追加。&quot;" />
     <MESSAGE value="`MongoDB設定のデフォルト値を追加し、認証無効時の接続処理を修正`" />
     <MESSAGE value="&quot;セッション同期機能を追加: Coderワークスペース監視およびセッションステータス同期機能を実装&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;セッション同期機能を追加: Coderワークスペース監視およびセッションステータス同期機能を実装&quot;" />
+    <MESSAGE value="`.idea`ファイルを削除: 環境依存のIntelliJ IDEA設定をバージョン管理から除外し、プロジェクトの移植性と整理を改善。" />
+    <MESSAGE value="`.idea`棚上げパッチファイルの追加" />
+    <option name="LAST_COMMIT_MESSAGE" value="`.idea`棚上げパッチファイルの追加" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
