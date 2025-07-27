@@ -94,6 +94,7 @@ Keruta is a Coder workspace management system with three main components:
 2. **Keruta Executor** (Kotlin/Spring Boot) - Coder workspace monitoring and management
 3. **Keruta Agent** (Go) - Task execution runtime for external processes
 4. **MongoDB** - Primary data store
+5. **/todo.md** - todolist
 
 ### Multi-Module Structure
 

@@ -18,8 +18,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="&quot;テンプレート管理機能を追加: 新しいテンプレート型、セッションフォーム対応、テンプレート選択およびパラメータ設定を実装&quot;">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="&quot;Add Git repository management to keruta-agent with session-based initialization and environment handling.&quot;">
+      <change beforePath="$PROJECT_DIR$/CLAUDE.md" beforeDir="false" afterPath="$PROJECT_DIR$/CLAUDE.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-agent" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-agent/internal/commands/daemon.go" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/internal/commands/daemon.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-agent/internal/config/config_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/internal/config/config_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-agent/internal/git/git.go" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/internal/git/git.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +69,7 @@
       </list>
     </option>
   </component>
-  <component name="GOROOT" url="file://$USER_HOME$/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.4.linux-amd64" />
+  <component name="GOROOT" url="file:///opt/homebrew/opt/go/libexec" />
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
@@ -81,6 +85,9 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
+  </component>
+  <component name="GithubDefaultAccount">
+    <option name="defaultAccountId" value="db54c24a-7020-4b5c-ba7f-98198b58291d" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -330,30 +337,7 @@
       <workItem from="1753288023562" duration="1719000" />
       <workItem from="1753354281118" duration="1227000" />
       <workItem from="1753438019163" duration="2171000" />
-    </task>
-    <task id="LOCAL-00006" summary="Remove IntelliJ IDEA project-specific files&#10;&#10;Deleted various `.idea` configuration files and directories from version control. These files are environment-specific and unnecessary for the repository, improving project organization and portability.">
-      <option name="closed" value="true" />
-      <created>1752292560306</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1752292560306</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Refactor scheduling, update configurations, and align ports&#10;&#10;Introduced a `SchedulingConfig` class for better management of scheduling properties. Updated the `TaskProcessor` to use the new configuration and resolved minor formatting issues in `CoderExecutionService`. Additionally, the Java toolchain was configured to use Java 17, and the default application port was aligned to `8080`.">
-      <option name="closed" value="true" />
-      <created>1752344025287</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1752344025287</updated>
-    </task>
-    <task id="LOCAL-00008" summary=".idea-specific files updated and new Gradle and Docker configurations added for enhanced project build, deployment, and testing settings.">
-      <option name="closed" value="true" />
-      <created>1752547383886</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1752547383886</updated>
+      <workItem from="1753539946668" duration="8023000" />
     </task>
     <task id="LOCAL-00009" summary="Coder実行機能を追加し、環境変数設定を拡張">
       <option name="closed" value="true" />
@@ -723,7 +707,31 @@
       <option name="project" value="LOCAL" />
       <updated>1753450756126</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary=".ideaディレクトリと関連するプロジェクト固有のファイルを削除">
+      <option name="closed" value="true" />
+      <created>1753543598929</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1753543598930</updated>
+    </task>
+    <task id="LOCAL-00056" summary="&quot;追加: ワークスペースIDからセッションを取得するAPIエンドポイントと動的なセッションID取得ロジックを実装&quot;">
+      <option name="closed" value="true" />
+      <created>1753545247738</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1753545247738</updated>
+    </task>
+    <task id="LOCAL-00057" summary="&quot;Add Git repository management to keruta-agent with session-based initialization and environment handling.&quot;">
+      <option name="closed" value="true" />
+      <created>1753546014907</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1753546014907</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -775,9 +783,6 @@
       <path value="$PROJECT_DIR$/kigawa-net-k8s/fonsole-doc" />
       <path value="$PROJECT_DIR$/kigawa-net-k8s/keruta-doc" />
     </ignored-roots>
-    <MESSAGE value="Coder実行機能を追加し、環境変数設定を拡張" />
-    <MESSAGE value="DockerfileにCoder CLIのインストールと作業ディレクトリの作成を追加" />
-    <MESSAGE value="セッション管理機能を追加: API, ドメイン, 永続性層にセッション操作サポートを実装し、タスクにセッション関連フィールドを追加" />
     <MESSAGE value="&quot;Add session management routes for list, details, and editing in keruta admin panel&quot;" />
     <MESSAGE value="&quot;Coder APIクライアントと関連サービスの追加: ワークスペース管理のCRUD機能を実装&quot;" />
     <MESSAGE value="&quot;セッション詳細APIにワークスペースリンク機能を追加し、Coder REST APIを統合&quot;" />
@@ -800,7 +805,10 @@
     <MESSAGE value="`MongoDB設定のデフォルト値を追加し、認証無効時の接続処理を修正`" />
     <MESSAGE value="&quot;セッション同期機能を追加: Coderワークスペース監視およびセッションステータス同期機能を実装&quot;" />
     <MESSAGE value="&quot;テンプレート管理機能を追加: 新しいテンプレート型、セッションフォーム対応、テンプレート選択およびパラメータ設定を実装&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;テンプレート管理機能を追加: 新しいテンプレート型、セッションフォーム対応、テンプレート選択およびパラメータ設定を実装&quot;" />
+    <MESSAGE value=".ideaディレクトリと関連するプロジェクト固有のファイルを削除" />
+    <MESSAGE value="&quot;追加: ワークスペースIDからセッションを取得するAPIエンドポイントと動的なセッションID取得ロジックを実装&quot;" />
+    <MESSAGE value="&quot;Add Git repository management to keruta-agent with session-based initialization and environment handling.&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;Add Git repository management to keruta-agent with session-based initialization and environment handling.&quot;" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
