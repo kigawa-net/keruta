@@ -18,12 +18,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="&quot;Add Git repository management to keruta-agent with session-based initialization and environment handling.&quot;">
-      <change beforePath="$PROJECT_DIR$/CLAUDE.md" beforeDir="false" afterPath="$PROJECT_DIR$/CLAUDE.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-agent" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-agent/internal/commands/daemon.go" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/internal/commands/daemon.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-agent/internal/config/config_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/internal/config/config_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-agent/internal/git/git.go" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/internal/git/git.go" afterDir="false" />
+    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="セッション作成フォームをコンポーネント化し、再利用可能なセッション情報、タグ管理、メタデータ管理、およびテンプレート選択UIコンポーネントを導入">
+      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/sessions.new.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/sessions.new.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,7 +79,7 @@
         <entry key="$PROJECT_DIR$/kigawa-net-k8s/keruta-doc" value="20429dac970679b083d8973b1c571f744a866f16" />
       </map>
     </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/keruta-admin" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GithubDefaultAccount">
@@ -104,48 +100,49 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Docker.keruta-executor/Dockerfile.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle./var/user/dev/kigawa-net/keruta/keruta-executor [bootRun].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.keruta-api [bootJar].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.keruta-api のビルド.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.keruta-executor のビルド.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.プロジェクト全体.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;NIXITCH_NIXPKGS_CONFIG&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_CONF_DIR&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_OTHER_STORES&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_PATH&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_PROFILES&quot;: &quot;/nix/var/nix/profiles/default /home/kigawa/.nix-profile&quot;,
-    &quot;NIXITCH_NIX_REMOTE&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_USER_PROFILE_DIR&quot;: &quot;&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;Shell Script.test.executor&quot;: &quot;Run&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/var/user/dev/kigawa-net/keruta/keruta-agent&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;モジュール&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.23147699&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2623951&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/ogawaatsuki/project/keruta/keruta-admin/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Docker.keruta-executor/Dockerfile.executor": "Run",
+    "Gradle./var/user/dev/kigawa-net/keruta/keruta-executor [bootRun].executor": "Run",
+    "Gradle.keruta-api [bootJar].executor": "Run",
+    "Gradle.keruta-api のビルド.executor": "Run",
+    "Gradle.keruta-executor のビルド.executor": "Run",
+    "Gradle.ソースのダウンロード.executor": "Run",
+    "JUnit.プロジェクト全体.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "NIXITCH_NIXPKGS_CONFIG": "",
+    "NIXITCH_NIX_CONF_DIR": "",
+    "NIXITCH_NIX_OTHER_STORES": "",
+    "NIXITCH_NIX_PATH": "",
+    "NIXITCH_NIX_PROFILES": "/nix/var/nix/profiles/default /home/kigawa/.nix-profile",
+    "NIXITCH_NIX_REMOTE": "",
+    "NIXITCH_NIX_USER_PROFILE_DIR": "",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "Shell Script.test.executor": "Run",
+    "cidr.known.project.marker": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "/var/user/dev/kigawa-net/keruta/keruta-agent",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "モジュール",
+    "project.structure.proportion": "0.23147699",
+    "project.structure.side.proportion": "0.2623951",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "ts.external.directory.path": "/var/user/dev/kigawa-net/keruta/keruta-admin/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RdControllerToolWindowsLayoutState" isNewUi="true">
     <layout>
       <window_info id="Bookmarks" side_tool="true" />
@@ -338,30 +335,6 @@
       <workItem from="1753354281118" duration="1227000" />
       <workItem from="1753438019163" duration="2171000" />
       <workItem from="1753539946668" duration="8023000" />
-    </task>
-    <task id="LOCAL-00009" summary="Coder実行機能を追加し、環境変数設定を拡張">
-      <option name="closed" value="true" />
-      <created>1752548537253</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1752548537253</updated>
-    </task>
-    <task id="LOCAL-00010" summary="Coder実行機能を追加し、環境変数設定を拡張">
-      <option name="closed" value="true" />
-      <created>1752549335010</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1752549335010</updated>
-    </task>
-    <task id="LOCAL-00011" summary="Coder実行機能を追加し、環境変数設定を拡張">
-      <option name="closed" value="true" />
-      <created>1752550168425</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1752550168425</updated>
     </task>
     <task id="LOCAL-00012" summary="DockerfileにCoder CLIのインストールと作業ディレクトリの作成を追加">
       <option name="closed" value="true" />
@@ -731,7 +704,31 @@
       <option name="project" value="LOCAL" />
       <updated>1753546014907</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="`.idea`ディレクトリ内の未コミット変更や棚上げファイルを削除">
+      <option name="closed" value="true" />
+      <created>1753624057109</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1753624057110</updated>
+    </task>
+    <task id="LOCAL-00059" summary="&quot;CoderPropertiesにデフォルトURLを追加し、コードのスタイルを修正&quot;">
+      <option name="closed" value="true" />
+      <created>1753625251042</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1753625251042</updated>
+    </task>
+    <task id="LOCAL-00060" summary="セッション作成フォームをコンポーネント化し、再利用可能なセッション情報、タグ管理、メタデータ管理、およびテンプレート選択UIコンポーネントを導入">
+      <option name="closed" value="true" />
+      <created>1753634068857</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1753634068857</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -783,9 +780,6 @@
       <path value="$PROJECT_DIR$/kigawa-net-k8s/fonsole-doc" />
       <path value="$PROJECT_DIR$/kigawa-net-k8s/keruta-doc" />
     </ignored-roots>
-    <MESSAGE value="&quot;Add session management routes for list, details, and editing in keruta admin panel&quot;" />
-    <MESSAGE value="&quot;Coder APIクライアントと関連サービスの追加: ワークスペース管理のCRUD機能を実装&quot;" />
-    <MESSAGE value="&quot;セッション詳細APIにワークスペースリンク機能を追加し、Coder REST APIを統合&quot;" />
     <MESSAGE value="「Coder APIインテグレーションを実装: Service/Repositoryのsuspend削除とインフラ層での依存分離」" />
     <MESSAGE value=".idea モジュール定義ファイルを削除しました。" />
     <MESSAGE value="Exclude Windows ARM64 build targets in .goreleaser.yml" />
@@ -808,7 +802,10 @@
     <MESSAGE value=".ideaディレクトリと関連するプロジェクト固有のファイルを削除" />
     <MESSAGE value="&quot;追加: ワークスペースIDからセッションを取得するAPIエンドポイントと動的なセッションID取得ロジックを実装&quot;" />
     <MESSAGE value="&quot;Add Git repository management to keruta-agent with session-based initialization and environment handling.&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;Add Git repository management to keruta-agent with session-based initialization and environment handling.&quot;" />
+    <MESSAGE value="`.idea`ディレクトリ内の未コミット変更や棚上げファイルを削除" />
+    <MESSAGE value="&quot;CoderPropertiesにデフォルトURLを追加し、コードのスタイルを修正&quot;" />
+    <MESSAGE value="セッション作成フォームをコンポーネント化し、再利用可能なセッション情報、タグ管理、メタデータ管理、およびテンプレート選択UIコンポーネントを導入" />
+    <option name="LAST_COMMIT_MESSAGE" value="セッション作成フォームをコンポーネント化し、再利用可能なセッション情報、タグ管理、メタデータ管理、およびテンプレート選択UIコンポーネントを導入" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
