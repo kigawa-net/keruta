@@ -336,14 +336,6 @@
       <workItem from="1753438019163" duration="2171000" />
       <workItem from="1753539946668" duration="8023000" />
     </task>
-    <task id="LOCAL-00012" summary="DockerfileにCoder CLIのインストールと作業ディレクトリの作成を追加">
-      <option name="closed" value="true" />
-      <created>1752552189003</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1752552189003</updated>
-    </task>
     <task id="LOCAL-00013" summary="セッション管理機能を追加: API, ドメイン, 永続性層にセッション操作サポートを実装し、タスクにセッション関連フィールドを追加">
       <option name="closed" value="true" />
       <created>1752556665627</created>
@@ -728,7 +720,15 @@
       <option name="project" value="LOCAL" />
       <updated>1753634068857</updated>
     </task>
-    <option name="localTasksCounter" value="61" />
+    <task id="LOCAL-00061" summary="セッション作成フォームをコンポーネント化し、再利用可能なセッション情報、タグ管理、メタデータ管理、およびテンプレート選択UIコンポーネントを導入">
+      <option name="closed" value="true" />
+      <created>1753636669663</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1753636669663</updated>
+    </task>
+    <option name="localTasksCounter" value="62" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
