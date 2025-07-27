@@ -2,58 +2,20 @@
 
 ## 未着手
 
-* XHRGET
-  https://keruta-api.kigawa.net/api/v1/tasks
-  [HTTP/3 500  75ms]
-
-* タスク一覧の取得に失敗しました: ApiError: API request failed:
-  r https://keruta.kigawa.net/build/_shared/chunk-3AUWNZR7.js:1
-  d https://keruta.kigawa.net/build/_shared/chunk-3AUWNZR7.js:1
-  l https://keruta.kigawa.net/build/routes/tasks._index-OLMDMDWE.js:1
-  x https://keruta.kigawa.net/build/routes/tasks._index-OLMDMDWE.js:1
-  Xa https://keruta.kigawa.net/build/_shared/chunk-BW2ECPS6.js:9
-  $n https://keruta.kigawa.net/build/_shared/chunk-BW2ECPS6.js:9
-  Z0 https://keruta.kigawa.net/build/_shared/chunk-BW2ECPS6.js:9
-  au https://keruta.kigawa.net/build/_shared/chunk-BW2ECPS6.js:2
-  tu https://keruta.kigawa.net/build/_shared/chunk-BW2ECPS6.js:2
-  tasks._index-OLMDMDWE.js:1:1578
-
-* Session status updated successfully: id=2c75eebb-c9bc-4cdd-bcc0-e6a3c166e9d6 status=ACTIVE
-  2025-07-26 15:55:21.178 ERROR [keruta] [] [] [http-nio-8080-exec-11] [n.k.k.i.s.c.GlobalExceptionHandler:78] - 500 Internal Server Error: No static resource api/v1/tasks. - Path: /api/v1/tasks
-  org.springframework.web.servlet.resource.NoResourceFoundException: No static resource api/v1/tasks.
-  at org.springframework.web.servlet.resource.ResourceHttpRequestHandler.handleRequest(ResourceHttpRequestHandler.java:585)
-  at org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter.handle(HttpRequestHandlerAdapter.java:52)
-  at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
-  at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
-
-* 設定の初期化に失敗しました: 設定の検証に失敗: KERUTA_TASK_ID、KERUTA_SESSION_ID、またはKERUTA_WORKSPACE_ID のいずれかが設定されている必要があります
-  coder@coder-5676ddd1-283c-41fd-b67f-1d8c6961b35e-7fc6b8898b-kt7bv:~$
-
-## 完了済み
-
-### ✅ セッション-ワークスペース統合 (2025-07-20)
-
-- **Coderワークスペース状態に基づくセッションステータス管理の実装完了**
-    - ワークスペース状態変更イベントの監視機能実装
-    - ワークスペースステータスからセッションステータスへの自動マッピング機能実装
-    - SessionEventListenerでのワークスペース状態監視実装
-    - SessionWorkspaceStatusSyncServiceによる定期同期実装
-    - CoderWorkspaceMonitoringServiceによる外部API監視実装
-    - session1つに付きworkspace一つの1:1関係実装
-    - FAILED状態ワークスペースの自動回復機能実装
-
-### ✅ 技術的問題修正 (2025-07-20)
-
-- SpringのCGLIBプロキシ対応（Kotlinクラスのopen化）
-- Logger NullPointerException修正
-- ktlintコードスタイル違反修正
-- デフォルトテンプレート重複問題修正
-- Coder APIユーザー認証問題修正
-- ワークスペース削除・再作成タイミング問題修正
-- **Coderワークスペース名バリデーション対応**
-    - 日本語セッション名をCoder互換の形式に自動正規化
-    - ワークスペース名の英数字・ハイフン制限への対応
-    - SessionEventListenerでのワークスペース名正規化機能実装
+* ドキュメント作成
+* workspaceのIDをsessionIDにする
+* keruta-agentはCODER_WORKSPACE_NAMEを読み取って実行する
+* 2025-07-27 17:33:45.190  INFO [keruta] [] [] [http-nio-8080-exec-13] [n.k.k.c.u.w.WorkspaceServiceImpl:352] - Fetching Coder templates from Coder server
+  2025-07-27 17:33:45.190  INFO [keruta] [] [] [http-nio-8080-exec-13] [n.k.k.c.u.w.WorkspaceOrchestrator:142] - Fetching Coder templates via executor service
+  2025-07-27 17:33:45.190 ERROR [keruta] [] [] [http-nio-8080-exec-13] [n.k.k.c.u.w.WorkspaceOrchestrator:147] - Failed to fetch Coder templates via executor
+  java.lang.NullPointerException: Cannot invoke "net.kigawa.keruta.core.usecase.executor.ExecutorClient.getCoderTemplates()" because "this.executorClient" is null
+  at net.kigawa.keruta.core.usecase.workspace.WorkspaceOrchestrator.getCoderTemplates(WorkspaceOrchestrator.kt:145)
+  at net.kigawa.keruta.core.usecase.workspace.WorkspaceServiceImpl.getCoderTemplates$suspendImpl(WorkspaceServiceImpl.kt:357)
+  at net.kigawa.keruta.core.usecase.workspace.WorkspaceServiceImpl.getCoderTemplates(WorkspaceServiceImpl.kt)
+  at net.kigawa.keruta.api.coder.controller.CoderController.getCoderTemplates$suspendImpl(CoderController.kt:28)
+  at net.kigawa.keruta.api.coder.controller.CoderController.getCoderTemplates(CoderController.kt)
+  at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source)
+  at java.base/java.lang.reflect.Method.invoke(Unknown Source)
 
 ## 継続中のタスク
 
@@ -102,12 +64,6 @@
     * 非同期処理の強化
 
 ## ドキュメント更新状況
-
-### ✅ 更新完了 (2025-07-22)
-
-* README.md - 最新のアーキテクチャと技術スタックに更新
-* structure.md - コードベース構造とコンポーネント情報を最新化
-* todo.md - 開発タスクの優先度と進捗状況を整理
 
 ### ⚠️ 部分更新必要
 

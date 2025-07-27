@@ -19,7 +19,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="セッション作成フォームをコンポーネント化し、再利用可能なセッション情報、タグ管理、メタデータ管理、およびテンプレート選択UIコンポーネントを導入">
-      <change beforePath="$PROJECT_DIR$/keruta-admin/app/routes/sessions.new.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/routes/sessions.new.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/workspace/controller/WorkspaceController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/workspace/controller/WorkspaceController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/workspace/WorkspaceService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/workspace/WorkspaceService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/workspace/WorkspaceServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/workspace/WorkspaceServiceImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/todo.md" beforeDir="false" afterPath="$PROJECT_DIR$/todo.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,7 +83,7 @@
         <entry key="$PROJECT_DIR$/kigawa-net-k8s/keruta-doc" value="20429dac970679b083d8973b1c571f744a866f16" />
       </map>
     </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/keruta-admin" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GithubDefaultAccount">
@@ -335,14 +339,6 @@
       <workItem from="1753354281118" duration="1227000" />
       <workItem from="1753438019163" duration="2171000" />
       <workItem from="1753539946668" duration="8023000" />
-    </task>
-    <task id="LOCAL-00013" summary="セッション管理機能を追加: API, ドメイン, 永続性層にセッション操作サポートを実装し、タスクにセッション関連フィールドを追加">
-      <option name="closed" value="true" />
-      <created>1752556665627</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1752556665627</updated>
     </task>
     <task id="LOCAL-00014" summary="&quot;Add session management routes for list, details, and editing in keruta admin panel&quot;">
       <option name="closed" value="true" />
@@ -728,7 +724,15 @@
       <option name="project" value="LOCAL" />
       <updated>1753636669663</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL-00062" summary="セッション作成フォームをコンポーネント化し、再利用可能なセッション情報、タグ管理、メタデータ管理、およびテンプレート選択UIコンポーネントを導入">
+      <option name="closed" value="true" />
+      <created>1753637077908</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1753637077908</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
