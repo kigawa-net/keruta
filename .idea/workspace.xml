@@ -19,9 +19,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="セッション作成フォームをコンポーネント化し、再利用可能なセッション情報、タグ管理、メタデータ管理、およびテンプレート選択UIコンポーネントを導入">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-admin" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-admin/app/utils/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-admin/app/utils/api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-agent" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-agent/internal/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/internal/config/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-agent/internal/config/config_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/internal/config/config_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keruta-api" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/RootController.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/workspace/controller/WorkspaceController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/workspace/controller/WorkspaceController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/workspace/WorkspaceService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/workspace/WorkspaceService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/api/src/test/kotlin/net/kigawa/keruta/api/KerutaApplicationTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/api/src/test/kotlin/net/kigawa/keruta/api/KerutaApplicationTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/workspace/WorkspaceOrchestrator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/workspace/WorkspaceOrchestrator.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/workspace/WorkspaceServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/workspace/WorkspaceServiceImpl.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/todo.md" beforeDir="false" afterPath="$PROJECT_DIR$/todo.md" afterDir="false" />
     </list>
@@ -104,49 +112,49 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Docker.keruta-executor/Dockerfile.executor": "Run",
-    "Gradle./var/user/dev/kigawa-net/keruta/keruta-executor [bootRun].executor": "Run",
-    "Gradle.keruta-api [bootJar].executor": "Run",
-    "Gradle.keruta-api のビルド.executor": "Run",
-    "Gradle.keruta-executor のビルド.executor": "Run",
-    "Gradle.ソースのダウンロード.executor": "Run",
-    "JUnit.プロジェクト全体.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "NIXITCH_NIXPKGS_CONFIG": "",
-    "NIXITCH_NIX_CONF_DIR": "",
-    "NIXITCH_NIX_OTHER_STORES": "",
-    "NIXITCH_NIX_PATH": "",
-    "NIXITCH_NIX_PROFILES": "/nix/var/nix/profiles/default /home/kigawa/.nix-profile",
-    "NIXITCH_NIX_REMOTE": "",
-    "NIXITCH_NIX_USER_PROFILE_DIR": "",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "Shell Script.test.executor": "Run",
-    "cidr.known.project.marker": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "main",
-    "go.import.settings.migrated": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/var/user/dev/kigawa-net/keruta/keruta-agent",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "モジュール",
-    "project.structure.proportion": "0.23147699",
-    "project.structure.side.proportion": "0.2623951",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
-    "ts.external.directory.path": "/var/user/dev/kigawa-net/keruta/keruta-admin/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Docker.keruta-executor/Dockerfile.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle./var/user/dev/kigawa-net/keruta/keruta-executor [bootRun].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.keruta-api [bootJar].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.keruta-api のビルド.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.keruta-executor のビルド.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.ソースのダウンロード.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.プロジェクト全体.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;NIXITCH_NIXPKGS_CONFIG&quot;: &quot;&quot;,
+    &quot;NIXITCH_NIX_CONF_DIR&quot;: &quot;&quot;,
+    &quot;NIXITCH_NIX_OTHER_STORES&quot;: &quot;&quot;,
+    &quot;NIXITCH_NIX_PATH&quot;: &quot;&quot;,
+    &quot;NIXITCH_NIX_PROFILES&quot;: &quot;/nix/var/nix/profiles/default /home/kigawa/.nix-profile&quot;,
+    &quot;NIXITCH_NIX_REMOTE&quot;: &quot;&quot;,
+    &quot;NIXITCH_NIX_USER_PROFILE_DIR&quot;: &quot;&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;Shell Script.test.executor&quot;: &quot;Run&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/var/user/dev/kigawa-net/keruta/keruta-agent&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;モジュール&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.23147699&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2623951&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/var/user/dev/kigawa-net/keruta/keruta-admin/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RdControllerToolWindowsLayoutState" isNewUi="true">
     <layout>
       <window_info id="Bookmarks" side_tool="true" />
@@ -310,7 +318,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-IU-251.27812.12" />
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.27812.49" />
+        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-IU-251.27812.49" />
       </set>
     </attachedChunks>
   </component>
@@ -339,14 +348,8 @@
       <workItem from="1753354281118" duration="1227000" />
       <workItem from="1753438019163" duration="2171000" />
       <workItem from="1753539946668" duration="8023000" />
-    </task>
-    <task id="LOCAL-00014" summary="&quot;Add session management routes for list, details, and editing in keruta admin panel&quot;">
-      <option name="closed" value="true" />
-      <created>1752558983012</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1752558983012</updated>
+      <workItem from="1753638479026" duration="217000" />
+      <workItem from="1753638724348" duration="711000" />
     </task>
     <task id="LOCAL-00015" summary="&quot;Add session management routes for list, details, and editing in keruta admin panel&quot;">
       <option name="closed" value="true" />
@@ -732,7 +735,15 @@
       <option name="project" value="LOCAL" />
       <updated>1753637077908</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="セッション作成フォームをコンポーネント化し、再利用可能なセッション情報、タグ管理、メタデータ管理、およびテンプレート選択UIコンポーネントを導入">
+      <option name="closed" value="true" />
+      <created>1753637687897</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1753637687897</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

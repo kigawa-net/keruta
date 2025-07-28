@@ -1,21 +1,12 @@
 # Todo List
 
+* 実行したタスクは削除する
+
 ## 未着手
 
 * ドキュメント作成
-* workspaceのIDをsessionIDにする
-* keruta-agentはCODER_WORKSPACE_NAMEを読み取って実行する
-* 2025-07-27 17:33:45.190  INFO [keruta] [] [] [http-nio-8080-exec-13] [n.k.k.c.u.w.WorkspaceServiceImpl:352] - Fetching Coder templates from Coder server
-  2025-07-27 17:33:45.190  INFO [keruta] [] [] [http-nio-8080-exec-13] [n.k.k.c.u.w.WorkspaceOrchestrator:142] - Fetching Coder templates via executor service
-  2025-07-27 17:33:45.190 ERROR [keruta] [] [] [http-nio-8080-exec-13] [n.k.k.c.u.w.WorkspaceOrchestrator:147] - Failed to fetch Coder templates via executor
-  java.lang.NullPointerException: Cannot invoke "net.kigawa.keruta.core.usecase.executor.ExecutorClient.getCoderTemplates()" because "this.executorClient" is null
-  at net.kigawa.keruta.core.usecase.workspace.WorkspaceOrchestrator.getCoderTemplates(WorkspaceOrchestrator.kt:145)
-  at net.kigawa.keruta.core.usecase.workspace.WorkspaceServiceImpl.getCoderTemplates$suspendImpl(WorkspaceServiceImpl.kt:357)
-  at net.kigawa.keruta.core.usecase.workspace.WorkspaceServiceImpl.getCoderTemplates(WorkspaceServiceImpl.kt)
-  at net.kigawa.keruta.api.coder.controller.CoderController.getCoderTemplates$suspendImpl(CoderController.kt:28)
-  at net.kigawa.keruta.api.coder.controller.CoderController.getCoderTemplates(CoderController.kt)
-  at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source)
-  at java.base/java.lang.reflect.Method.invoke(Unknown Source)
+* sessionからメタデータを削除
+* ステータスはユーザーから変更できないようにする
 
 ## 継続中のタスク
 
@@ -26,8 +17,6 @@
     * ログストリーミング機能統合
     * リトライ機能とフェイルオーバー
 * **ワークスペース機能完成**
-    * WorkspaceKubernetesHandlerの実装完了（現在TODO）
-    * 実際Kubernetesリソース（Pod、Service、Ingress）の作成機能
     * ワークスペースとタスク実行の統合フロー
 * **テンプレート管理機能**
     * デフォルトテンプレートの作成と管理
@@ -89,3 +78,6 @@ Kerutaは成熟したKubernetes-nativeタスク実行システムとして発展
 * セッション-ワークスペース1対1関係の実装
 * 定期的な状態監視システムの構築
 * マルチモジュールGradle構成の最適化
+* **WorkspaceKubernetesHandler完全実装** - Kubernetes Podリソース作成・削除機能
+* **ExecutorClientの安定化** - Optional dependency injectionによる堅牢な統合
+* **keruta-agent環境変数対応強化** - CODER_WORKSPACE_NAME読み取り機能追加
