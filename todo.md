@@ -1,12 +1,49 @@
 # Todo List
 
-* 実行したタスクは削除する
+* 実行したタスクはリストから削除する
 
 ## 未着手
 
 * ドキュメント作成
 * sessionからメタデータを削除
 * ステータスはユーザーから変更できないようにする
+* 2025-07-28 02:54:24.597  INFO [keruta] [] [] [http-nio-8080-exec-1] [o.s.w.s.DispatcherServlet:532] - Initializing Servlet 'dispatcherServlet'
+  2025-07-28 02:54:24.598  INFO [keruta] [] [] [http-nio-8080-exec-1] [o.s.w.s.DispatcherServlet:554] - Completed initialization in 1 ms
+  2025-07-28 02:54:24.602  WARN [keruta] [] [] [http-nio-8080-exec-1] [o.s.w.s.h.HandlerMappingIntrospector:454] - Cache miss for REQUEST dispatch to '/api/v1/health' (previous null). Performing MatchableHandlerMapping lookup. This is logged once only at WARN level, and every time at TRACE.
+  2025-07-28 02:54:35.617  INFO [keruta] [] [] [http-nio-8080-exec-5] [n.k.k.a.c.c.CoderController:25] - Fetching Coder templates from Coder server
+  2025-07-28 02:54:35.618  INFO [keruta] [] [] [http-nio-8080-exec-5] [n.k.k.c.u.w.WorkspaceServiceImpl:356] - Fetching Coder templates from Coder server
+  2025-07-28 02:54:35.618  INFO [keruta] [] [] [http-nio-8080-exec-5] [n.k.k.c.u.w.WorkspaceOrchestrator:212] - Fetching Coder templates via executor service
+  2025-07-28 02:54:35.618  WARN [keruta] [] [] [http-nio-8080-exec-5] [n.k.k.c.u.w.WorkspaceOrchestrator:217] - ExecutorClient is not available - returning empty list
+* クロスオリジン要求をブロックしました: 同一生成元ポリシーにより、https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015 にあるリモートリソースの読み込みは拒否されます (理由: CORS 要求が成功しなかった)。ステータスコード: (null)
+* integrity 属性内の “sha512” ハッシュが “https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015” の subresource のコンテンツと一致しません。計算されたハッシュ値は “z4PhNX7vuL3xVChQ1m2AB9Yg5AULVxXcg/SpIdNs6c5H0NE8XYXysP+DGNKHfuwvY7kxvUdBeoGlODJ6+SfaPg==” です。 tasks
+* XHRGET
+  https://keruta-api.kigawa.net/api/v1/tasks
+  [HTTP/3 500  338ms]
+
+* タスク一覧の取得に失敗しました: ApiError: API request failed:
+  a https://keruta.kigawa.net/build/_shared/chunk-Y5F5OAQ6.js:1
+  r https://keruta.kigawa.net/build/_shared/chunk-Y5F5OAQ6.js:1
+  l https://keruta.kigawa.net/build/routes/tasks._index-RW7BZWOE.js:1
+  x https://keruta.kigawa.net/build/routes/tasks._index-RW7BZWOE.js:1
+  Xa https://keruta.kigawa.net/build/_shared/chunk-BW2ECPS6.js:9
+  $n https://keruta.kigawa.net/build/_shared/chunk-BW2ECPS6.js:9
+  Z0 https://keruta.kigawa.net/build/_shared/chunk-BW2ECPS6.js:9
+  au https://keruta.kigawa.net/build/_shared/chunk-BW2ECPS6.js:2
+  tu https://keruta.kigawa.net/build/_shared/chunk-BW2ECPS6.js:2
+  lf https://keruta.kigawa.net/build/_shared/chunk-BW2ECPS6.js:2
+  n https://keruta.kigawa.net/build/_shared/chunk-Q3IECNXJ.js:1
+  sf https://keruta.kigawa.net/build/_shared/chunk-BW2ECPS6.js:2
+  n https://keruta.kigawa.net/build/_shared/chunk-Q3IECNXJ.js:1
+  pm https://keruta.kigawa.net/build/_shared/chunk-BW2ECPS6.js:2
+  n https://keruta.kigawa.net/build/_shared/chunk-Q3IECNXJ.js:1
+  vm https://keruta.kigawa.net/build/_shared/chunk-BW2ECPS6.js:9
+  n https://keruta.kigawa.net/build/_shared/chunk-Q3IECNXJ.js:1
+  Mr https://keruta.kigawa.net/build/_shared/chunk-BW2ECPS6.js:9
+  m https://keruta.kigawa.net/build/_shared/chunk-Q3IECNXJ.js:1
+  <anonymous> https://keruta.kigawa.net/build/_shared/chunk-BW2ECPS6.js:9
+  tasks._index-RW7BZWOE.js:1:1578
+* 各モジュールのアーキテクチャをシンプルにする
+
 
 ## 継続中のタスク
 
@@ -58,26 +95,3 @@
 
 * CLAUDE.md - keruta-executorの最新機能を反映させる必要あり
 * keruta-doc/ - 独立リポジトリに移行中のため、最新情報の同期が必要
-
-## アーキテクチャ分析結果
-
-### 現在の状況
-
-Kerutaは成熟したKubernetes-nativeタスク実行システムとして発展しており、以下の特徴を持つ：
-
-1. **マルチコンポーネント構成**: API Server、Agent、Executor、Admin Panel の4つの主要コンポーネント
-2. **完全統合されたワークスペース管理**: セッションと1対1で管理されるCoderワークスペース
-3. **高度な状態同期**: 2分間隔でのワークスペース状態監視と自動同期
-4. **国際化対応**: 日本語セッション名の自動正規化機能
-5. **堅牢な技術スタック**: Spring Boot + Kotlin、Go、TypeScript + Remix
-
-### 技術的成果
-
-* Spring CGLIBプロキシ対応によるKotlin統合の完成
-* Coderワークスペース名バリデーション対応
-* セッション-ワークスペース1対1関係の実装
-* 定期的な状態監視システムの構築
-* マルチモジュールGradle構成の最適化
-* **WorkspaceKubernetesHandler完全実装** - Kubernetes Podリソース作成・削除機能
-* **ExecutorClientの安定化** - Optional dependency injectionによる堅牢な統合
-* **keruta-agent環境変数対応強化** - CODER_WORKSPACE_NAME読み取り機能追加
