@@ -19,37 +19,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="未コミット変更をシェルフとして保存">
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/2025_07_28_16_01______.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/2025_07_28_16_01_の_更新_前の未コミットの変更_[変更]/shelved.patch" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/integration/controller/WorkspaceTaskController.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/repository/controller/RepositoryController.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/repository/dto/RepositoryDto.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/template/controller/CustomTemplateController.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/template/controller/DefaultTemplateController.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/template/dto/CreateCustomTemplateRequest.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/template/dto/WorkspaceTemplateResponse.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/keruta-api/core/domain/src/main/kotlin/net/kigawa/keruta/core/domain/model/Repository.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/integration/WorkspaceTaskExecutionService.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/repository/RepositoryRepository.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/repository/RepositoryService.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/repository/RepositoryServiceImpl.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/template/CustomTemplateManager.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/template/DefaultTemplateManager.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/keruta-api/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/entity/RepositoryEntity.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/keruta-api/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/repository/MongoRepositoryRepository.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/keruta-api/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/repository/RepositoryRepositoryImpl.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/controller/LogStreamingController.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/LogStreamingService.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keruta-api" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/repository/TaskRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/repository/TaskRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/repository/WorkspaceRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/repository/WorkspaceRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/workspace/WorkspaceTemplateInitializer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/workspace/WorkspaceTemplateInitializer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/repository/TaskRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/repository/TaskRepositoryImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/repository/WorkspaceTemplateRepositoryImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/repository/WorkspaceTemplateRepositoryImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/config/MongoConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/config/MongoConfig.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keruta-doc" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-doc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-executor" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-executor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/SessionMonitoringService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-executor/src/main/kotlin/net/kigawa/keruta/executor/service/SessionMonitoringService.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kigawa-net-k8s" beforeDir="false" afterPath="$PROJECT_DIR$/kigawa-net-k8s" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/todo.md" beforeDir="false" afterPath="$PROJECT_DIR$/todo.md" afterDir="false" />
     </list>
@@ -370,14 +343,6 @@
       <workItem from="1753539946668" duration="8023000" />
       <workItem from="1753638479026" duration="217000" />
       <workItem from="1753638724348" duration="711000" />
-    </task>
-    <task id="LOCAL-00015" summary="&quot;Add session management routes for list, details, and editing in keruta admin panel&quot;">
-      <option name="closed" value="true" />
-      <created>1752561294601</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1752561294601</updated>
     </task>
     <task id="LOCAL-00016" summary="&quot;Add session management routes for list, details, and editing in keruta admin panel&quot;">
       <option name="closed" value="true" />
@@ -763,7 +728,15 @@
       <option name="project" value="LOCAL" />
       <updated>1753637687897</updated>
     </task>
-    <option name="localTasksCounter" value="64" />
+    <task id="LOCAL-00064" summary="未コミット変更をシェルフとして保存">
+      <option name="closed" value="true" />
+      <created>1753689218267</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1753689218267</updated>
+    </task>
+    <option name="localTasksCounter" value="65" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
