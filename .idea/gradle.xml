@@ -34,7 +34,6 @@
             <option value="$PROJECT_DIR$/keruta-api/core/usecase" />
             <option value="$PROJECT_DIR$/keruta-api/infra" />
             <option value="$PROJECT_DIR$/keruta-api/infra/app" />
-            <option value="$PROJECT_DIR$/keruta-api/infra/core" />
             <option value="$PROJECT_DIR$/keruta-api/infra/persistence" />
             <option value="$PROJECT_DIR$/keruta-api/infra/security" />
           </set>

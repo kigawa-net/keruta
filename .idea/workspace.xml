@@ -18,32 +18,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="&quot;metadataフィールドを削除: セッションAPI、および関連ドメイン・DTO・永続層からmetadataを整理&quot;">
+    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="&quot;Kubernetes関連コードを削除&quot;">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keruta-api" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/kubernetes/controller/KubernetesConfigController.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/kubernetes/dto/KubernetesConfigDto.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/session/controller/SessionController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/session/controller/SessionController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/session/dto/CreateSessionRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/session/dto/CreateSessionRequest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/session/dto/UpdateSessionRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/session/dto/UpdateSessionRequest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/workspace/dto/WorkspaceResponse.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/api/src/main/kotlin/net/kigawa/keruta/api/workspace/dto/WorkspaceResponse.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/buildSrc/src/main/kotlin/Dependencies.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/buildSrc/src/main/kotlin/Dependencies.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/src/main/kotlin/net/kigawa/keruta/core/domain/model/KubernetesConfig.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/src/main/kotlin/net/kigawa/keruta/core/domain/model/Workspace.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/domain/src/main/kotlin/net/kigawa/keruta/core/domain/model/Workspace.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/domain/src/main/kotlin/net/kigawa/keruta/core/domain/repository/KubernetesConfigRepository.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/kubernetes/KubernetesClientService.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/kubernetes/KubernetesConfigService.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/kubernetes/KubernetesConfigServiceImpl.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/session/SessionStatusBroadcastService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/session/SessionStatusBroadcastService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/workspace/WorkspaceServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/workspace/WorkspaceServiceImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/app/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/config/KubernetesProperties.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/app/src/main/kotlin/net/kigawa/keruta/infra/app/kubernetes/KubernetesClientServiceImpl.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/entity/WorkspaceEntity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/entity/WorkspaceEntity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/kubernetes/KubernetesConfigEntity.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/kubernetes/KubernetesConfigRepositoryImpl.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/infra/persistence/src/main/kotlin/net/kigawa/keruta/infra/persistence/kubernetes/MongoKubernetesConfigRepository.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/todo.md" beforeDir="false" afterPath="$PROJECT_DIR$/todo.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/api/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/api/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/infra/core/build.gradle.kts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/infra/core/src/main/kotlin/net/kigawa/keruta/infra/core/coroutine/CoroutineServiceImpl.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/settings.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/settings.gradle.kts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -362,14 +345,6 @@
       <workItem from="1753539946668" duration="8023000" />
       <workItem from="1753638479026" duration="217000" />
       <workItem from="1753638724348" duration="711000" />
-    </task>
-    <task id="LOCAL-00021" summary=".idea モジュール定義ファイルを削除しました。">
-      <option name="closed" value="true" />
-      <created>1752850532332</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1752850532332</updated>
     </task>
     <task id="LOCAL-00022" summary=".idea モジュール定義ファイルを削除しました。">
       <option name="closed" value="true" />
@@ -755,7 +730,15 @@
       <option name="project" value="LOCAL" />
       <updated>1753797125565</updated>
     </task>
-    <option name="localTasksCounter" value="70" />
+    <task id="LOCAL-00070" summary="&quot;Kubernetes関連コードを削除&quot;">
+      <option name="closed" value="true" />
+      <created>1753798459921</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1753798459921</updated>
+    </task>
+    <option name="localTasksCounter" value="71" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -807,7 +790,6 @@
       <path value="$PROJECT_DIR$/kigawa-net-k8s/fonsole-doc" />
       <path value="$PROJECT_DIR$/kigawa-net-k8s/keruta-doc" />
     </ignored-roots>
-    <MESSAGE value="`SessionWorkspaceStatusSyncService を open に変更`" />
     <MESSAGE value="&quot;セッションとワークスペースの1対1関係を実装: 各セッションに対して1つのワークスペースを自動管理 (作成・状態同期・削除) に変更&quot;" />
     <MESSAGE value="&quot;セッション監視ロジックを改善: ワークスペースの確認とステータス更新処理を強化し、1:1モデルのエッジケースを考慮&quot;" />
     <MESSAGE value="`Serviceクラスをopen化し、拡張可能に変更`" />
@@ -832,7 +814,8 @@
     <MESSAGE value="ワークスペースログ・モニタリングAPIおよびサービスの追加" />
     <MESSAGE value="Add comprehensive tests for Daemon &amp; Execute command functionalities&#10;&#10;テスト用に`keruta-agent/internal/daemon/daemon_test.go`と`keruta-agent/internal/commands/execute_test.go`を新規追加し、多数のテストケースを実装しました。これにより、DaemonとExecuteコマンドの健全性、エラーハンドリング、ミドルウェア動作の確認が可能となりました。" />
     <MESSAGE value="&quot;metadataフィールドを削除: セッションAPI、および関連ドメイン・DTO・永続層からmetadataを整理&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;metadataフィールドを削除: セッションAPI、および関連ドメイン・DTO・永続層からmetadataを整理&quot;" />
+    <MESSAGE value="&quot;Kubernetes関連コードを削除&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;Kubernetes関連コードを削除&quot;" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

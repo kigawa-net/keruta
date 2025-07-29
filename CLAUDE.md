@@ -103,7 +103,7 @@ Keruta is a Coder workspace management system with three main components:
 - `core:usecase` - Business logic and use cases for session/workspace management
 - `infra:persistence` - MongoDB repository implementations
 - `infra:security` - Security configuration (currently permissive)
-- `infra:app` - Coder integration and workspace orchestration
+- `infra:app` - Coder integration, workspace orchestration, and coroutine management
 - `api` - REST controllers and web layer
 
 #### Executor (keruta-executor)
@@ -113,8 +113,8 @@ Keruta is a Coder workspace management system with three main components:
 - **Workspace Management** - Manages Coder workspace lifecycle via API calls
 
 ### Key Domain Models
-- **Session**: User sessions with associated workspaces and status management
-- **Workspace**: Coder workspaces with templates, URLs, and lifecycle state
+- **Session**: User sessions with associated workspaces and status management (metadata removed, status updates restricted)
+- **Workspace**: Coder workspaces with templates, URLs, and lifecycle state (generic container resource fields)
 - **Document**: Context documents that can be attached to sessions
 - **WorkspaceTemplate**: Coder templates for workspace creation
 
@@ -161,6 +161,7 @@ Currently implements permissive security suitable for internal environments:
 - No authentication required on API endpoints
 - CORS enabled for cross-origin requests
 - CSRF disabled for API endpoints
+- Session status updates are restricted - only system can modify status
 
 ### Database Configuration
 MongoDB connection is configured via environment variables:
@@ -233,9 +234,8 @@ MongoDB connection is configured via environment variables:
 
 ## Deployment
 
-### Kubernetes Deployment
-- Deployment manifests in `kigawa-net-k8s/keruta/`
-- Uses service account `keruta-sa` with appropriate RBAC
+### Container Deployment
+- Docker images built from respective Dockerfiles
 - Configurable via environment variables and secrets
 - Health checks on `/api/health` endpoint
 
@@ -247,9 +247,10 @@ MongoDB connection is configured via environment variables:
 
 ## Project Structure Notes
 
-- **keruta-api**: Multi-module Gradle project with clean architecture and direct MongoDB access
+- **keruta-api**: Multi-module Gradle project with simplified clean architecture and direct MongoDB access
 - **keruta-executor**: Standalone Spring Boot application with API-only data access (no direct DB connection)
 - **keruta-agent**: Go CLI application for task execution within containers
 - **keruta-admin**: React/Remix frontend for administration
 - Configuration is environment-based (Spring profiles, environment variables)
 - Tests use TestContainers for integration testing with real databases (API server only)
+- Module structure simplified: infra:core merged into infra:app, Kubernetes functionality removed
