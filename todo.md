@@ -47,6 +47,10 @@
   at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source)
   at java.base/java.lang.reflect.Method.invoke(Unknown Source)
 * k8s機能削除
+* 2025-07-29 05:53:37.157  INFO [keruta] [] [] [http-nio-8080-exec-7] [n.k.k.a.c.c.CoderController:25] - Fetching Coder templates from Coder server
+  2025-07-29 05:53:37.158  INFO [keruta] [] [] [http-nio-8080-exec-7] [n.k.k.c.u.w.WorkspaceServiceImpl:356] - Fetching Coder templates from Coder server
+  2025-07-29 05:53:37.158  INFO [keruta] [] [] [http-nio-8080-exec-7] [n.k.k.c.u.w.WorkspaceOrchestrator:212] - Fetching Coder templates via executor service
+  2025-07-29 05:53:37.158  WARN [keruta] [] [] [http-nio-8080-exec-7] [n.k.k.c.u.w.WorkspaceOrchestrator:217] - ExecutorClient is not available - returning empty list
 
 ## 継続中のタスク
 
