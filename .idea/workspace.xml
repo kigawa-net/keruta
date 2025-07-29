@@ -18,9 +18,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="&quot;Add real-time session status broadcasting using SSE and enhance session lifecycle event handling with broadcasting updates&quot;">
+    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="ワークスペースログ・モニタリングAPIおよびサービスの追加">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/todo.md" beforeDir="false" afterPath="$PROJECT_DIR$/todo.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-agent" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-agent/internal/api/client_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/internal/api/client_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-agent/internal/config/config_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-agent/internal/config/config_test.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -339,14 +341,6 @@
       <workItem from="1753539946668" duration="8023000" />
       <workItem from="1753638479026" duration="217000" />
       <workItem from="1753638724348" duration="711000" />
-    </task>
-    <task id="LOCAL-00018" summary="&quot;Coder APIクライアントと関連サービスの追加: ワークスペース管理のCRUD機能を実装&quot;">
-      <option name="closed" value="true" />
-      <created>1752775562772</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1752775562772</updated>
     </task>
     <task id="LOCAL-00019" summary="&quot;セッション詳細APIにワークスペースリンク機能を追加し、Coder REST APIを統合&quot;">
       <option name="closed" value="true" />
@@ -732,7 +726,15 @@
       <option name="project" value="LOCAL" />
       <updated>1753768347392</updated>
     </task>
-    <option name="localTasksCounter" value="67" />
+    <task id="LOCAL-00067" summary="ワークスペースログ・モニタリングAPIおよびサービスの追加">
+      <option name="closed" value="true" />
+      <created>1753770009904</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1753770009905</updated>
+    </task>
+    <option name="localTasksCounter" value="68" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -784,7 +786,6 @@
       <path value="$PROJECT_DIR$/kigawa-net-k8s/fonsole-doc" />
       <path value="$PROJECT_DIR$/kigawa-net-k8s/keruta-doc" />
     </ignored-roots>
-    <MESSAGE value="Exclude Windows ARM64 build targets in .goreleaser.yml" />
     <MESSAGE value="未コミットの変更を再利用または削除するため、IntelliJ IDEAのシェルフファイルを追加。「keruta-api」関連のモジュール設定ファイルを削除。" />
     <MESSAGE value="&quot;Session workspace作成時にテンプレート選択処理を追加し、テンプレート取得ロジックとDTOを実装。&quot;" />
     <MESSAGE value="`SessionWorkspaceStatusSyncService を open に変更`" />
@@ -809,7 +810,8 @@
     <MESSAGE value="&quot;Add Git repository management to keruta-agent with session-based initialization and environment handling.&quot;" />
     <MESSAGE value="未コミット変更をシェルフとして保存" />
     <MESSAGE value="&quot;Add real-time session status broadcasting using SSE and enhance session lifecycle event handling with broadcasting updates&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;Add real-time session status broadcasting using SSE and enhance session lifecycle event handling with broadcasting updates&quot;" />
+    <MESSAGE value="ワークスペースログ・モニタリングAPIおよびサービスの追加" />
+    <option name="LAST_COMMIT_MESSAGE" value="ワークスペースログ・モニタリングAPIおよびサービスの追加" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
