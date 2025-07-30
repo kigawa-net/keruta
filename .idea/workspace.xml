@@ -18,9 +18,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="&quot;infra: Remove unused Kubernetes-related code and consolidate coroutine services&quot;">
+    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="WorkspaceTaskExecutionServiceのNullPointerException修正とWorkspaceOrchestratorの警告ログ改善">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CLAUDE.md" beforeDir="false" afterPath="$PROJECT_DIR$/CLAUDE.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/integration/WorkspaceTaskExecutionService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/integration/WorkspaceTaskExecutionService.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/todo.md" beforeDir="false" afterPath="$PROJECT_DIR$/todo.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -102,49 +103,49 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Docker.keruta-executor/Dockerfile.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle./var/user/dev/kigawa-net/keruta/keruta-executor [bootRun].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.keruta-api [bootJar].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.keruta-api のビルド.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.keruta-executor のビルド.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ソースのダウンロード.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.プロジェクト全体.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;NIXITCH_NIXPKGS_CONFIG&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_CONF_DIR&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_OTHER_STORES&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_PATH&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_PROFILES&quot;: &quot;/nix/var/nix/profiles/default /home/kigawa/.nix-profile&quot;,
-    &quot;NIXITCH_NIX_REMOTE&quot;: &quot;&quot;,
-    &quot;NIXITCH_NIX_USER_PROFILE_DIR&quot;: &quot;&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;Shell Script.test.executor&quot;: &quot;Run&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/var/user/dev/kigawa-net/keruta/keruta-agent&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;モジュール&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.23147699&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2623951&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/var/user/dev/kigawa-net/keruta/keruta-admin/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Docker.keruta-executor/Dockerfile.executor": "Run",
+    "Gradle./var/user/dev/kigawa-net/keruta/keruta-executor [bootRun].executor": "Run",
+    "Gradle.keruta-api [bootJar].executor": "Run",
+    "Gradle.keruta-api のビルド.executor": "Run",
+    "Gradle.keruta-executor のビルド.executor": "Run",
+    "Gradle.ソースのダウンロード.executor": "Run",
+    "JUnit.プロジェクト全体.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "NIXITCH_NIXPKGS_CONFIG": "",
+    "NIXITCH_NIX_CONF_DIR": "",
+    "NIXITCH_NIX_OTHER_STORES": "",
+    "NIXITCH_NIX_PATH": "",
+    "NIXITCH_NIX_PROFILES": "/nix/var/nix/profiles/default /home/kigawa/.nix-profile",
+    "NIXITCH_NIX_REMOTE": "",
+    "NIXITCH_NIX_USER_PROFILE_DIR": "",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "Shell Script.test.executor": "Run",
+    "cidr.known.project.marker": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "/var/user/dev/kigawa-net/keruta/keruta-agent",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "モジュール",
+    "project.structure.proportion": "0.23147699",
+    "project.structure.side.proportion": "0.2623951",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "ts.external.directory.path": "/Users/ogawaatsuki/project/keruta/keruta-admin/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RdControllerToolWindowsLayoutState" isNewUi="true">
     <layout>
       <window_info id="Bookmarks" side_tool="true" />
@@ -340,22 +341,6 @@
       <workItem from="1753539946668" duration="8023000" />
       <workItem from="1753638479026" duration="217000" />
       <workItem from="1753638724348" duration="711000" />
-    </task>
-    <task id="LOCAL-00025" summary="&quot;Session workspace作成時にテンプレート選択処理を追加し、テンプレート取得ロジックとDTOを実装。&quot;">
-      <option name="closed" value="true" />
-      <created>1752921914670</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1752921914670</updated>
-    </task>
-    <task id="LOCAL-00026" summary="&quot;Session workspace作成時にテンプレート選択処理を追加し、テンプレート取得ロジックとDTOを実装。&quot;">
-      <option name="closed" value="true" />
-      <created>1752933557865</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1752933557865</updated>
     </task>
     <task id="LOCAL-00027" summary="&quot;Session workspace作成時にテンプレート選択処理を追加し、テンプレート取得ロジックとDTOを実装。&quot;">
       <option name="closed" value="true" />
@@ -733,7 +718,23 @@
       <option name="project" value="LOCAL" />
       <updated>1753831671551</updated>
     </task>
-    <option name="localTasksCounter" value="74" />
+    <task id="LOCAL-00074" summary="&quot;infra: Remove unused Kubernetes-related code and consolidate coroutine services&quot;">
+      <option name="closed" value="true" />
+      <created>1753835604293</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1753835604293</updated>
+    </task>
+    <task id="LOCAL-00075" summary="WorkspaceTaskExecutionServiceのNullPointerException修正とWorkspaceOrchestratorの警告ログ改善">
+      <option name="closed" value="true" />
+      <created>1753835945119</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1753835945119</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -785,7 +786,6 @@
       <path value="$PROJECT_DIR$/kigawa-net-k8s/fonsole-doc" />
       <path value="$PROJECT_DIR$/kigawa-net-k8s/keruta-doc" />
     </ignored-roots>
-    <MESSAGE value="&quot;セッション監視ロジックを改善: ワークスペースの確認とステータス更新処理を強化し、1:1モデルのエッジケースを考慮&quot;" />
     <MESSAGE value="`Serviceクラスをopen化し、拡張可能に変更`" />
     <MESSAGE value="wp" />
     <MESSAGE value="Coderワークスペース名の日本語対応と正規化機能を実装" />
@@ -810,7 +810,8 @@
     <MESSAGE value="&quot;metadataフィールドを削除: セッションAPI、および関連ドメイン・DTO・永続層からmetadataを整理&quot;" />
     <MESSAGE value="&quot;Kubernetes関連コードを削除&quot;" />
     <MESSAGE value="&quot;infra: Remove unused Kubernetes-related code and consolidate coroutine services&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;infra: Remove unused Kubernetes-related code and consolidate coroutine services&quot;" />
+    <MESSAGE value="WorkspaceTaskExecutionServiceのNullPointerException修正とWorkspaceOrchestratorの警告ログ改善" />
+    <option name="LAST_COMMIT_MESSAGE" value="WorkspaceTaskExecutionServiceのNullPointerException修正とWorkspaceOrchestratorの警告ログ改善" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

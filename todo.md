@@ -13,8 +13,9 @@
 
 ## ✅ 追加完了済み（2025-07-30）
 
-* ✅ WorkspaceTaskExecutionServiceのNullPointerException修正 - private → protectedに変更してSpringプロキシアクセス問題を解決
+* ✅ WorkspaceTaskExecutionServiceのNullPointerException修正（第1回）- private → protectedに変更してSpringプロキシアクセス問題を解決
 * ✅ WorkspaceOrchestratorのExecutorClient警告改善 - ログレベルをWARN → DEBUGに変更し、より明確なメッセージに更新
+* ✅ WorkspaceTaskExecutionServiceのNullPointerException修正（第2回）- constructor injectionから@Autowiredに変更してCGLIBプロキシ問題を完全解決
 
 ## 未着手
 なし
