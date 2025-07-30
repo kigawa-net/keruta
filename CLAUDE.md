@@ -14,6 +14,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Development Commands
 
+### Quick Start
+```bash
+# Start MongoDB and run API server (most common development setup)
+cd keruta-api && docker-compose up -d mongodb && ./gradlew :api:bootRun
+
+# Full development environment with all services
+docker-compose up -d
+
+# Stop all services
+docker-compose down
+```
+
 ### Building and Running
 ```bash
 # Build the API project
@@ -25,23 +37,27 @@ cd keruta-api && ./gradlew :api:bootRun
 # Run the Keruta Executor (for Coder workspace management)
 cd keruta-executor && ./gradlew bootRun
 
-# Build and run with Docker
-docker-compose up -d
-
 # Build just the Go agent (for task execution)
 cd keruta-agent && ./scripts/build.sh
+
+# Clean and rebuild everything
+cd keruta-api && ./gradlew clean build
 ```
 
 ### Testing
 ```bash
-# Run all tests (from keruta-api root)
+# Run all tests (most common)
 cd keruta-api && ./gradlew test
 
-# Run tests with detailed output
+# Run tests with detailed output and continue on failure
 cd keruta-api && ./gradlew test --continue
 
 # Run specific module tests
 cd keruta-api && ./gradlew :core:domain:test
+cd keruta-api && ./gradlew :core:usecase:test
+cd keruta-api && ./gradlew :infra:persistence:test
+cd keruta-api && ./gradlew :infra:security:test
+cd keruta-api && ./gradlew :infra:app:test
 cd keruta-api && ./gradlew :api:test
 
 # Run tests for keruta-executor
@@ -50,12 +66,15 @@ cd keruta-executor && ./gradlew test
 # Run Go agent tests
 cd keruta-agent && go test ./...
 
-# Run with test containers (requires Docker)
+# Run integration tests with TestContainers (requires Docker)
 cd keruta-api && ./gradlew :infra:persistence:test
 ```
 
 ### Code Quality
 ```bash
+# Format and check all code (run before committing)
+cd keruta-api && ./gradlew ktlintFormatAll && ./gradlew ktlintCheckAll
+
 # Check code style (all modules in keruta-api)
 cd keruta-api && ./gradlew ktlintCheckAll
 
@@ -67,22 +86,23 @@ cd keruta-api && ./gradlew :core:domain:ktlintCheck
 cd keruta-api && ./gradlew :api:ktlintFormat
 
 # Check keruta-executor
-cd keruta-executor && ./gradlew ktlintCheck
-
-# Clean build
-cd keruta-api && ./gradlew clean
+cd keruta-executor && ./gradlew ktlintCheck && ./gradlew ktlintFormat
 ```
 
 ### Database and Services
 ```bash
-# Start MongoDB only
-docker-compose up -d mongodb
+# Start MongoDB only (most common for development)
+cd keruta-api && docker-compose up -d mongodb
 
-# Stop all services
-docker-compose down
+# Start MongoDB with logs
+cd keruta-api && docker-compose up mongodb
 
 # View application logs
-docker-compose logs -f
+docker-compose logs -f keruta-api
+docker-compose logs -f keruta-executor
+
+# Reset database (stops and removes containers with data)
+docker-compose down -v && docker-compose up -d mongodb
 ```
 
 ## Architecture Overview
@@ -140,6 +160,7 @@ Keruta is a Coder workspace management system with three main components:
 - Supports custom Terraform templates for workspace creation
 - Manages workspace lifecycle (create, start, stop, delete)
 - Template selection based on session requirements
+- Japanese session name normalization for Coder compatibility
 
 ### Executor Communication
 The Keruta Executor communicates with the Spring Boot API using HTTP:
@@ -147,8 +168,15 @@ The Keruta Executor communicates with the Spring Boot API using HTTP:
 - `GET /api/v1/sessions?status=ACTIVE` - Get active sessions
 - `GET /api/v1/workspaces?sessionId={id}` - Get session workspaces
 - `POST /api/v1/workspaces` - Create new workspace
-- `PUT /api/v1/sessions/{id}/status` - Update session status
+- `PUT /api/v1/sessions/{id}/status` - Update session status (system only)
 - `POST /api/v1/workspaces/{id}/start` - Start workspace
+
+### Recent Architecture Changes
+- **Module Simplification**: infra:core merged into infra:app for reduced complexity
+- **Kubernetes Removal**: All Kubernetes-specific code removed, generic container resource fields used
+- **Status Security**: Session status updates restricted to system only (user updates return 403)
+- **Metadata Cleanup**: Session metadata field removed from all layers
+- **Logger Fix**: WorkspaceTaskExecutionService logger moved to companion object for thread safety
 
 ### Session and Workspace Architecture
 - **1:1 Session-Workspace Relationship** - Each session has exactly one associated workspace
@@ -176,7 +204,7 @@ MongoDB connection is configured via environment variables:
 ### Session Management
 - `GET /api/v1/sessions` - List all sessions
 - `POST /api/v1/sessions` - Create new session
-- `PUT /api/v1/sessions/{id}/status` - Update session status
+- `PUT /api/v1/sessions/{id}/status` - Update session status (restricted - returns 403 for user requests)
 - `GET /api/v1/sessions/{id}` - Get session details
 
 ### Workspace Management
@@ -247,10 +275,35 @@ MongoDB connection is configured via environment variables:
 
 ## Project Structure Notes
 
-- **keruta-api**: Multi-module Gradle project with simplified clean architecture and direct MongoDB access
+- **keruta-api**: Multi-module Gradle project (5 modules) with simplified clean architecture and direct MongoDB access
+  - `core:domain` - Domain models and entities
+  - `core:usecase` - Business logic and use cases
+  - `infra:persistence` - MongoDB repository implementations
+  - `infra:security` - Security configuration
+  - `infra:app` - Coder integration and coroutine management (consolidated from infra:core)
+  - `api` - REST controllers and web layer
 - **keruta-executor**: Standalone Spring Boot application with API-only data access (no direct DB connection)
 - **keruta-agent**: Go CLI application for task execution within containers
 - **keruta-admin**: React/Remix frontend for administration
 - Configuration is environment-based (Spring profiles, environment variables)
 - Tests use TestContainers for integration testing with real databases (API server only)
-- Module structure simplified: infra:core merged into infra:app, Kubernetes functionality removed
+- Recent simplifications: infra:core merged into infra:app, Kubernetes functionality removed, Session metadata removed
+
+## Common Issues and Solutions
+
+### Build Issues
+- **Gradle build cache issues**: Run `cd keruta-api && ./gradlew clean build`
+- **ktlint failures**: Run `cd keruta-api && ./gradlew ktlintFormatAll` before building
+- **TestContainer failures**: Ensure Docker is running and accessible
+
+### Runtime Issues
+- **NullPointerException in scheduled tasks**: Check logger initialization in companion objects
+- **MongoDB connection issues**: Verify MongoDB is running and environment variables are set
+- **Spring CGLIB proxy issues**: Ensure service classes are marked `open`
+
+### Development Workflow
+1. Start MongoDB: `cd keruta-api && docker-compose up -d mongodb`
+2. Format code: `cd keruta-api && ./gradlew ktlintFormatAll`
+3. Run tests: `cd keruta-api && ./gradlew test`
+4. Start API: `cd keruta-api && ./gradlew :api:bootRun`
+5. Access admin: http://localhost:8080/admin

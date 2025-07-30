@@ -12,8 +12,15 @@
 * ✅ ドキュメント作成 - CLAUDE.mdを最新の変更内容で更新
 
 ## 未着手
-
-なし（現在の高優先度タスクは全て完了）
+* 2025-07-29 23:32:14.802 ERROR [keruta] [] [] [DefaultDispatcher-worker-2] [n.k.k.c.u.i.WorkspaceTaskExecutionService:358] - Error retrying failed tasks
+  java.lang.NullPointerException: Cannot invoke "net.kigawa.keruta.core.usecase.repository.TaskRepository.findByStatus(net.kigawa.keruta.core.domain.model.TaskStatus, kotlin.coroutines.Continuation)" because the return value of "net.kigawa.keruta.core.usecase.integration.WorkspaceTaskExecutionService.access$getTaskRepository$p(net.kigawa.keruta.core.usecase.integration.WorkspaceTaskExecutionService)" is null
+  at net.kigawa.keruta.core.usecase.integration.WorkspaceTaskExecutionService$retryFailedTasks$1.invokeSuspend(WorkspaceTaskExecutionService.kt:339)
+  at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+  at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+* 2025-07-30 00:32:43.170  INFO [keruta] [] [] [http-nio-8080-exec-3] [n.k.k.a.c.c.CoderController:25] - Fetching Coder templates from Coder server
+  2025-07-30 00:32:43.171  INFO [keruta] [] [] [http-nio-8080-exec-3] [n.k.k.c.u.w.WorkspaceServiceImpl:356] - Fetching Coder templates from Coder server
+  2025-07-30 00:32:43.172  INFO [keruta] [] [] [http-nio-8080-exec-3] [n.k.k.c.u.w.WorkspaceOrchestrator:212] - Fetching Coder templates via executor service
+  2025-07-30 00:32:43.172  WARN [keruta] [] [] [http-nio-8080-exec-3] [n.k.k.c.u.w.WorkspaceOrchestrator:217] - ExecutorClient is not available - returning empty list
 
 ## 継続中のタスク
 
