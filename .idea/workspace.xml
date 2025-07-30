@@ -18,11 +18,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="WorkspaceTaskExecutionServiceのNullPointerException修正とWorkspaceOrchestratorの警告ログ改善">
+    <list default="true" id="89b61217-2797-40e7-bf9b-fe65f8c860dc" name="変更" comment="&quot;WorkspaceTaskExecutionServiceの初期化エラー修正: @PostConstruct追加とガード条件導入でSpring依存解決&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keruta-api" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keruta-api/.github/workflows/test.yml" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/.github/workflows/test.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/integration/WorkspaceTaskExecutionService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-api/core/usecase/src/main/kotlin/net/kigawa/keruta/core/usecase/integration/WorkspaceTaskExecutionService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-executor" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-executor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keruta-executor/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/keruta-executor/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,7 +83,7 @@
         <entry key="$PROJECT_DIR$/kigawa-net-k8s/keruta-doc" value="20429dac970679b083d8973b1c571f744a866f16" />
       </map>
     </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/keruta-api" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/kigawa-net-k8s" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GithubDefaultAccount">
@@ -341,14 +342,6 @@
       <workItem from="1753539946668" duration="8023000" />
       <workItem from="1753638479026" duration="217000" />
       <workItem from="1753638724348" duration="711000" />
-    </task>
-    <task id="LOCAL-00028" summary="&quot;Session workspace作成時にテンプレート選択処理を追加し、テンプレート取得ロジックとDTOを実装。&quot;">
-      <option name="closed" value="true" />
-      <created>1752953678294</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1752953678294</updated>
     </task>
     <task id="LOCAL-00029" summary="`SessionWorkspaceStatusSyncService を open に変更`">
       <option name="closed" value="true" />
@@ -734,7 +727,15 @@
       <option name="project" value="LOCAL" />
       <updated>1753850793355</updated>
     </task>
-    <option name="localTasksCounter" value="77" />
+    <task id="LOCAL-00077" summary="&quot;WorkspaceTaskExecutionServiceの初期化エラー修正: @PostConstruct追加とガード条件導入でSpring依存解決&quot;">
+      <option name="closed" value="true" />
+      <created>1753861587538</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1753861587538</updated>
+    </task>
+    <option name="localTasksCounter" value="78" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -786,7 +787,6 @@
       <path value="$PROJECT_DIR$/kigawa-net-k8s/fonsole-doc" />
       <path value="$PROJECT_DIR$/kigawa-net-k8s/keruta-doc" />
     </ignored-roots>
-    <MESSAGE value="`Serviceクラスをopen化し、拡張可能に変更`" />
     <MESSAGE value="wp" />
     <MESSAGE value="Coderワークスペース名の日本語対応と正規化機能を実装" />
     <MESSAGE value="&quot;Coderワークスペース関連のDTOを分割リファクタし、正規化支援機能を実装&quot;" />
@@ -811,7 +811,8 @@
     <MESSAGE value="&quot;Kubernetes関連コードを削除&quot;" />
     <MESSAGE value="&quot;infra: Remove unused Kubernetes-related code and consolidate coroutine services&quot;" />
     <MESSAGE value="WorkspaceTaskExecutionServiceのNullPointerException修正とWorkspaceOrchestratorの警告ログ改善" />
-    <option name="LAST_COMMIT_MESSAGE" value="WorkspaceTaskExecutionServiceのNullPointerException修正とWorkspaceOrchestratorの警告ログ改善" />
+    <MESSAGE value="&quot;WorkspaceTaskExecutionServiceの初期化エラー修正: @PostConstruct追加とガード条件導入でSpring依存解決&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;WorkspaceTaskExecutionServiceの初期化エラー修正: @PostConstruct追加とガード条件導入でSpring依存解決&quot;" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
