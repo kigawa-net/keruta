@@ -3,15 +3,12 @@
 * 完了したタスクはリストから削除する
 
 ## 未着手
-* /Users/ogawaatsuki/project/keruta/keruta-api/src/main/kotlin/net/kigawa/keruta/api/template/controller/TemplateController.kt
-  250 // TODO: 実際のCoderサーバーとの連携を実装
-  /Users/ogawaatsuki/project/keruta/keruta-api/src/main/kotlin/net/kigawa/keruta/core/usecase/session/SessionEventListener.kt
-  166 // TODO: Consider implementing background cleanup task for failed workspaces
-* ~~TaskEntityのマッピングエラー修正完了 (2025-07-31)~~
+
+* ✅ **完了済み**: TemplateController.kt:250 - Coderサーバー連携実装済み（ExecutorClientを使用）
+* ✅ **完了済み**: SessionEventListener.kt:166 - FailedWorkspaceCleanupServiceを実装・統合済み
 ### 中優先度
 
 * **管理パネル機能拡張**
-    * ~~Kubernetes設定管理画面の実装~~ （削除済み）
     * エージェント管理画面の実装
     * セッション管理UIの改善（リアルタイム状態更新）
     * ワークスペース管理UIの改善（ログ表示、リソース情報）
