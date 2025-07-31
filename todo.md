@@ -7,6 +7,7 @@
   250 // TODO: 実際のCoderサーバーとの連携を実装
   /Users/ogawaatsuki/project/keruta/keruta-api/src/main/kotlin/net/kigawa/keruta/core/usecase/session/SessionEventListener.kt
   166 // TODO: Consider implementing background cleanup task for failed workspaces
+* ~~TaskEntityのマッピングエラー修正完了 (2025-07-31)~~
 ### 中優先度
 
 * **管理パネル機能拡張**
