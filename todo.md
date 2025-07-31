@@ -4,8 +4,6 @@
 
 ## 未着手
 
-* ✅ **完了済み**: TemplateController.kt:250 - Coderサーバー連携実装済み（ExecutorClientを使用）
-* ✅ **完了済み**: SessionEventListener.kt:166 - FailedWorkspaceCleanupServiceを実装・統合済み
 ### 中優先度
 
 * **管理パネル機能拡張**
