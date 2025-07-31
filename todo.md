@@ -3,23 +3,6 @@
 * 完了したタスクはリストから削除する
 
 ## 未着手
-
-```log
- null). Performing MatchableHandlerMapping lookup. This is logged once only at WARN level, and every time at TRACE.
-2025-07-31 14:01:53.613  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:285] - Service not yet initialized, skipping pending tasks processing
-2025-07-31 14:02:53.614  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:285] - Service not yet initialized, skipping pending tasks processing
-2025-07-31 14:03:53.615  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:285] - Service not yet initialized, skipping pending tasks processing
-2025-07-31 14:04:53.615  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:285] - Service not yet initialized, skipping pending tasks processing
-2025-07-31 14:05:53.613  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:317] - Service not yet initialized, skipping running tasks monitoring
-2025-07-31 14:05:53.616  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:285] - Service not yet initialized, skipping pending tasks processing
-2025-07-31 14:06:53.617  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:285] - Service not yet initialized, skipping pending tasks processing
-2025-07-31 14:07:53.617  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:285] - Service not yet initialized, skipping pending tasks processing
-2025-07-31 14:08:51.080  INFO [keruta] [] [] [http-nio-8080-exec-16] [n.k.k.a.c.c.CoderController:25] - Fetching Coder templates from Coder server
-2025-07-31 14:08:51.081  INFO [keruta] [] [] [http-nio-8080-exec-16] [n.k.k.c.u.w.WorkspaceServiceImpl:356] - Fetching Coder templates from Coder server
-2025-07-31 14:08:51.081  INFO [keruta] [] [] [http-nio-8080-exec-16] [n.k.k.c.u.w.WorkspaceOrchestrator:212] - Fetching Coder templates via executor service
-2025-07-31 14:08:51.081 ERROR [keruta] [] [] [http-nio-8080-exec-16] [n.k.k.c.u.w.WorkspaceOrchestrator:217] - ExecutorClient is not configured - returning empty template list (this is normal if keruta-executor is not running)
-2025-07-31 14:08:53.618  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:285] - Service not yet initialized, skipping pending tasks processing
-```
 * /Users/ogawaatsuki/project/keruta/keruta-api/src/main/kotlin/net/kigawa/keruta/api/template/controller/TemplateController.kt
   250 // TODO: 実際のCoderサーバーとの連携を実装
   /Users/ogawaatsuki/project/keruta/keruta-api/src/main/kotlin/net/kigawa/keruta/core/usecase/session/SessionEventListener.kt
