@@ -1,43 +1,10 @@
 # Todo List
 
-* 実行したタスクはリストから削除する
-
-## ✅ 完了済み（2025-07-30）
-
-* ✅ NullPointerException修正 - WorkspaceTaskExecutionServiceのlogger初期化をcompanion objectに移動
-* ✅ sessionからメタデータを削除 - Session関連のすべてのクラスからmetadataフィールドを削除
-* ✅ sessionのステータスはユーザーから変更できないようにする - API経由での直接変更を403で拒否
-* ✅ k8s機能削除 - Kubernetes関連のコード、依存関係を全て削除し、汎用的なリソース名に変更
-* ✅ 各モジュールのアーキテクチャをシンプルにする - infra:coreをinfra:appに統合、重複設定の統合
-* ✅ ドキュメント作成 - CLAUDE.mdを最新の変更内容で更新
-
-## ✅ 追加完了済み（2025-07-30）
-
-* ✅ WorkspaceTaskExecutionServiceのNullPointerException修正（第1回）- private → protectedに変更してSpringプロキシアクセス問題を解決
-* ✅ WorkspaceOrchestratorのExecutorClient警告改善 - ログレベルをWARN → DEBUGに変更し、より明確なメッセージに更新
-* ✅ WorkspaceTaskExecutionServiceのNullPointerException修正（第2回）- constructor injectionから@Autowiredに変更してCGLIBプロキシ問題を完全解決
-* ✅ WorkspaceTaskExecutionServiceのlateinit property初期化エラー修正（第3回）- @PostConstructとガード条件を追加してSpringコンテキスト初期化タイミング問題を解決
+* 完了したタスクはリストから削除する
 
 ## 未着手
 
-```log
-2025-07-31 12:41:48.326  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:282] - Dependencies not yet initialized, skipping pending tasks processing
-2025-07-31 12:42:48.326  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:282] - Dependencies not yet initialized, skipping pending tasks processing
-2025-07-31 12:43:48.327  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:282] - Dependencies not yet initialized, skipping pending tasks processing
-2025-07-31 12:44:48.327  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:282] - Dependencies not yet initialized, skipping pending tasks processing
-2025-07-31 12:45:47.850  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:314] - Dependencies not yet initialized, skipping running tasks monitoring
-2025-07-31 12:45:48.327  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:282] - Dependencies not yet initialized, skipping pending tasks processing
-2025-07-31 12:46:48.327  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:282] - Dependencies not yet initialized, skipping pending tasks processing
-2025-07-31 12:47:48.328  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:282] - Dependencies not yet initialized, skipping pending tasks processing
-2025-07-31 12:48:48.328  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:282] - Dependencies not yet initialized, skipping pending tasks processing
-2025-07-31 12:49:48.328  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:282] - Dependencies not yet initialized, skipping pending tasks processing
-2025-07-31 12:50:47.821  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:359] - Dependencies not yet initialized, skipping failed tasks retry
-2025-07-31 12:50:47.850  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:314] - Dependencies not yet initialized, skipping running tasks monitoring
-2025-07-31 12:50:48.328  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:282] - Dependencies not yet initialized, skipping pending tasks processing
-2025-07-31 12:51:48.328  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:282] - Dependencies not yet initialized, skipping pending tasks processing
-```
-
-## 継続中のタスク
+* keruta-apiのGradleサブモジュールを一つにまとめる
 
 ### 中優先度
 
@@ -75,6 +42,7 @@
 ## アーキテクチャ改善履歴
 
 ### 2025-07-30
+
 - モジュール構成の簡素化：6モジュール → 5モジュール（infra:core統合）
 - Kubernetes機能の完全削除
 - セキュリティ強化（ステータス変更制限）
