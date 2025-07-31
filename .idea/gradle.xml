@@ -12,30 +12,10 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
-        <compositeConfiguration>
-          <compositeBuild compositeDefinitionSource="SCRIPT">
-            <builds>
-              <build path="$PROJECT_DIR$/keruta-api/buildSrc" name="buildSrc">
-                <projects>
-                  <project path="$PROJECT_DIR$/keruta-api/buildSrc" />
-                </projects>
-              </build>
-            </builds>
-          </compositeBuild>
-        </compositeConfiguration>
         <option name="externalProjectPath" value="$PROJECT_DIR$/keruta-api" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/keruta-api" />
-            <option value="$PROJECT_DIR$/keruta-api/api" />
-            <option value="$PROJECT_DIR$/keruta-api/buildSrc" />
-            <option value="$PROJECT_DIR$/keruta-api/core" />
-            <option value="$PROJECT_DIR$/keruta-api/core/domain" />
-            <option value="$PROJECT_DIR$/keruta-api/core/usecase" />
-            <option value="$PROJECT_DIR$/keruta-api/infra" />
-            <option value="$PROJECT_DIR$/keruta-api/infra/app" />
-            <option value="$PROJECT_DIR$/keruta-api/infra/persistence" />
-            <option value="$PROJECT_DIR$/keruta-api/infra/security" />
           </set>
         </option>
       </GradleProjectSettings>

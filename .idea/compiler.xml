@@ -2,13 +2,41 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.6">
+      <module name="keruta-api.api" target="21" />
+      <module name="keruta-api.api.main" target="21" />
+      <module name="keruta-api.api.test" target="21" />
+      <module name="keruta-api.buildSrc" target="21" />
+      <module name="keruta-api.buildSrc.main" target="21" />
+      <module name="keruta-api.buildSrc.test" target="21" />
+      <module name="keruta-api.core" target="21" />
+      <module name="keruta-api.core.domain" target="21" />
+      <module name="keruta-api.core.domain.main" target="21" />
+      <module name="keruta-api.core.domain.test" target="21" />
+      <module name="keruta-api.core.main" target="21" />
+      <module name="keruta-api.core.test" target="21" />
+      <module name="keruta-api.core.usecase" target="21" />
+      <module name="keruta-api.core.usecase.main" target="21" />
+      <module name="keruta-api.core.usecase.test" target="21" />
+      <module name="keruta-api.infra" target="21" />
+      <module name="keruta-api.infra.app" target="21" />
+      <module name="keruta-api.infra.app.main" target="21" />
+      <module name="keruta-api.infra.app.test" target="21" />
       <module name="keruta-api.infra.core" target="21" />
       <module name="keruta-api.infra.core.main" target="21" />
       <module name="keruta-api.infra.core.test" target="21" />
+      <module name="keruta-api.infra.main" target="21" />
+      <module name="keruta-api.infra.persistence" target="21" />
+      <module name="keruta-api.infra.persistence.main" target="21" />
+      <module name="keruta-api.infra.persistence.test" target="21" />
+      <module name="keruta-api.infra.security" target="21" />
+      <module name="keruta-api.infra.security.main" target="21" />
+      <module name="keruta-api.infra.security.test" target="21" />
+      <module name="keruta-api.infra.test" target="21" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="keruta-api" options="-parameters" />
       <module name="keruta-api.api" options="-parameters" />
       <module name="keruta-api.api.main" options="-parameters" />
       <module name="keruta-api.api.test" options="-parameters" />
@@ -18,6 +46,8 @@
       <module name="keruta-api.infra.core" options="-parameters" />
       <module name="keruta-api.infra.core.main" options="-parameters" />
       <module name="keruta-api.infra.core.test" options="-parameters" />
+      <module name="keruta-api.main" options="-parameters" />
+      <module name="keruta-api.test" options="-parameters" />
       <module name="keruta-executor" options="-parameters" />
       <module name="keruta-executor.main" options="-parameters" />
       <module name="keruta-executor.test" options="-parameters" />

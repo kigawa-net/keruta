@@ -6,3 +6,4 @@
 /.output.txt
 /hs_err_pid*.log
 /replay_pid*.log
+/.idea/workspace.xml
