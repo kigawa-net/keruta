@@ -19,7 +19,23 @@
 * ✅ WorkspaceTaskExecutionServiceのlateinit property初期化エラー修正（第3回）- @PostConstructとガード条件を追加してSpringコンテキスト初期化タイミング問題を解決
 
 ## 未着手
-なし
+
+```log
+2025-07-31 12:41:48.326  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:282] - Dependencies not yet initialized, skipping pending tasks processing
+2025-07-31 12:42:48.326  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:282] - Dependencies not yet initialized, skipping pending tasks processing
+2025-07-31 12:43:48.327  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:282] - Dependencies not yet initialized, skipping pending tasks processing
+2025-07-31 12:44:48.327  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:282] - Dependencies not yet initialized, skipping pending tasks processing
+2025-07-31 12:45:47.850  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:314] - Dependencies not yet initialized, skipping running tasks monitoring
+2025-07-31 12:45:48.327  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:282] - Dependencies not yet initialized, skipping pending tasks processing
+2025-07-31 12:46:48.327  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:282] - Dependencies not yet initialized, skipping pending tasks processing
+2025-07-31 12:47:48.328  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:282] - Dependencies not yet initialized, skipping pending tasks processing
+2025-07-31 12:48:48.328  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:282] - Dependencies not yet initialized, skipping pending tasks processing
+2025-07-31 12:49:48.328  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:282] - Dependencies not yet initialized, skipping pending tasks processing
+2025-07-31 12:50:47.821  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:359] - Dependencies not yet initialized, skipping failed tasks retry
+2025-07-31 12:50:47.850  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:314] - Dependencies not yet initialized, skipping running tasks monitoring
+2025-07-31 12:50:48.328  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:282] - Dependencies not yet initialized, skipping pending tasks processing
+2025-07-31 12:51:48.328  WARN [keruta] [] [] [scheduling-1] [n.k.k.c.u.i.WorkspaceTaskExecutionService:282] - Dependencies not yet initialized, skipping pending tasks processing
+```
 
 ## 継続中のタスク
 
