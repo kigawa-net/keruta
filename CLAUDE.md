@@ -161,6 +161,8 @@ Keruta is a Coder workspace management system with three main components:
 - Manages workspace lifecycle (create, start, stop, delete)
 - Template selection based on session requirements
 - Japanese session name normalization for Coder compatibility
+- **Automatic Token Management**: Coder session tokens automatically refresh every 24 hours
+- **Kubernetes Secret Integration**: Tokens managed via K8s secrets for production deployment
 
 ### Executor Communication
 The Keruta Executor communicates with the Spring Boot API using HTTP:
@@ -177,6 +179,8 @@ The Keruta Executor communicates with the Spring Boot API using HTTP:
 - **Status Security**: Session status updates restricted to system only (user updates return 403)
 - **Metadata Cleanup**: Session metadata field removed from all layers
 - **Logger Fix**: WorkspaceTaskExecutionService logger moved to companion object for thread safety
+- **Coder Token Auto-Refresh**: CoderTemplateService now automatically refreshes session tokens every 24 hours
+- **K8s Secret Integration**: Coder tokens managed via Kubernetes secrets in production deployments
 
 ### Session and Workspace Architecture
 - **1:1 Session-Workspace Relationship** - Each session has exactly one associated workspace
@@ -198,6 +202,24 @@ MongoDB connection is configured via environment variables:
 - `SPRING_DATA_MONGODB_DATABASE` (default: keruta)
 - `SPRING_DATA_MONGODB_USERNAME` (default: admin)
 - `SPRING_DATA_MONGODB_PASSWORD` (default: password)
+
+### Coder Configuration (Executor)
+Coder integration is configured via environment variables:
+- `KERUTA_EXECUTOR_CODER_BASE_URL` - Coder server URL
+- `KERUTA_EXECUTOR_CODER_TOKEN` - Coder session token (managed via K8s secrets in production)
+- `KERUTA_EXECUTOR_CODER_ENABLE_CLI_FALLBACK` - Enable CLI fallback for token refresh (default: false)
+
+**Token Management**: The CoderTemplateService automatically refreshes session tokens every 24 hours using existing tokens. It supports two refresh methods:
+
+1. **API-based refresh** (default): Uses `/api/v2/users/me/tokens` endpoint to create new tokens
+2. **CLI fallback** (optional): Falls back to `coder login` command if API refresh fails
+
+**Token Refresh Methods**:
+- **Short-term sessions**: Automatically refreshed every 24 hours (default duration)
+- **Long-term API tokens**: Can be regenerated using `coder tokens regen <TOKEN_ID>`
+- **Manual refresh**: `coder logout && coder login <URL>` for immediate re-authentication
+
+In Kubernetes deployments, tokens are stored in secrets and mounted as environment variables.
 
 ## Key API Endpoints
 
@@ -300,6 +322,7 @@ MongoDB connection is configured via environment variables:
 - **NullPointerException in scheduled tasks**: Check logger initialization in companion objects
 - **MongoDB connection issues**: Verify MongoDB is running and environment variables are set
 - **Spring CGLIB proxy issues**: Ensure service classes are marked `open`
+- **Coder authentication errors**: Check KERUTA_EXECUTOR_CODER_TOKEN environment variable or K8s secret configuration
 
 ### Development Workflow
 1. Start MongoDB: `cd keruta-api && docker-compose up -d mongodb`
