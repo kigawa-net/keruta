@@ -181,6 +181,8 @@ The Keruta Executor communicates with the Spring Boot API using HTTP:
 - **Logger Fix**: WorkspaceTaskExecutionService logger moved to companion object for thread safety
 - **Coder Token Auto-Refresh**: CoderTemplateService now automatically refreshes session tokens every 24 hours
 - **K8s Secret Integration**: Coder tokens managed via Kubernetes secrets in production deployments
+- **Database-Free Workspace Management**: Workspaces no longer stored in database, managed directly via Coder API
+- **Multi-Endpoint Coder Support**: Automatic fallback across multiple Coder API endpoint formats for compatibility
 
 ### Session and Workspace Architecture
 - **1:1 Session-Workspace Relationship** - Each session has exactly one associated workspace
@@ -208,6 +210,7 @@ Coder integration is configured via environment variables:
 - `KERUTA_EXECUTOR_CODER_BASE_URL` - Coder server URL
 - `KERUTA_EXECUTOR_CODER_TOKEN` - Coder session token (managed via K8s secrets in production)
 - `KERUTA_EXECUTOR_CODER_ENABLE_CLI_FALLBACK` - Enable CLI fallback for token refresh (default: false)
+- `KERUTA_EXECUTOR_API_BASE_URL` - keruta-api base URL (default: http://localhost:8080)
 
 **Token Management**: The CoderTemplateService automatically refreshes session tokens every 24 hours using existing tokens. It supports two refresh methods:
 
@@ -229,12 +232,14 @@ In Kubernetes deployments, tokens are stored in secrets and mounted as environme
 - `PUT /api/v1/sessions/{id}/status` - Update session status (restricted - returns 403 for user requests)
 - `GET /api/v1/sessions/{id}` - Get session details
 
-### Workspace Management
-- `GET /api/v1/workspaces` - List all workspaces
-- `POST /api/v1/workspaces` - Create new workspace
-- `POST /api/v1/workspaces/{id}/start` - Start workspace
-- `POST /api/v1/workspaces/{id}/stop` - Stop workspace
-- `GET /api/v1/workspaces/templates` - List available templates
+### Workspace Management (via Executor)
+- `GET /api/v1/workspaces` - List all workspaces (proxied to executor)
+- `POST /api/v1/workspaces` - Create new workspace (proxied to executor)
+- `POST /api/v1/workspaces/{id}/start` - Start workspace (proxied to executor)
+- `POST /api/v1/workspaces/{id}/stop` - Stop workspace (proxied to executor)
+- `GET /api/v1/workspaces/templates` - List available templates (proxied to executor)
+- `POST /api/v1/sessions/{id}/sync-status` - Sync session status with workspace state
+- `GET /api/v1/sessions/{id}/workspaces` - Get workspaces for specific session
 
 ### Document Management
 - `GET /api/v1/documents` - List all documents
@@ -323,6 +328,8 @@ In Kubernetes deployments, tokens are stored in secrets and mounted as environme
 - **MongoDB connection issues**: Verify MongoDB is running and environment variables are set
 - **Spring CGLIB proxy issues**: Ensure service classes are marked `open`
 - **Coder authentication errors**: Check KERUTA_EXECUTOR_CODER_TOKEN environment variable or K8s secret configuration
+- **Coder API endpoint errors**: Check logs for 404/405 errors - system automatically tries multiple endpoint formats
+- **JSON parsing errors**: Ensure nullable fields in DTOs for Coder API responses (version, createdAt, updatedAt)
 
 ### Development Workflow
 1. Start MongoDB: `cd keruta-api && docker-compose up -d mongodb`
@@ -330,3 +337,20 @@ In Kubernetes deployments, tokens are stored in secrets and mounted as environme
 3. Run tests: `cd keruta-api && ./gradlew test`
 4. Start API: `cd keruta-api && ./gradlew :api:bootRun`
 5. Access admin: http://localhost:8080/admin
+
+### Coder API Integration Details
+Coder workspace creation uses multiple endpoint formats for compatibility:
+1. **Primary**: `/api/v2/users/me/workspaces` (official Coder API v2)
+2. **Fallback 1**: `/api/v2/organizations/default/members/me/workspaces` (organization-based)
+3. **Fallback 2**: `/api/v2/workspaces` (legacy format)
+
+Template selection algorithm:
+1. Match session tags with template names/descriptions
+2. Prefer templates containing "keruta" in the name
+3. Use first available template as fallback
+
+## important-instruction-reminders
+Do what has been asked; nothing more, nothing less.
+NEVER create files unless they're absolutely necessary for achieving your goal.
+ALWAYS prefer editing an existing file to creating a new one.
+NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.
