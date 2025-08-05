@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/keruta-agent/keruta-agent.iml" filepath="$PROJECT_DIR$/keruta-agent/keruta-agent.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/keruta-api.main.iml" filepath="$PROJECT_DIR$/.idea/modules/keruta-api.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/keruta-api.test.iml" filepath="$PROJECT_DIR$/.idea/modules/keruta-api.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/keruta-coder-template/keruta-coder-template.iml" filepath="$PROJECT_DIR$/keruta-coder-template/keruta-coder-template.iml" />
     </modules>
   </component>
 </project>
