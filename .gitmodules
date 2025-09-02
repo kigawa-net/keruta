@@ -18,4 +18,4 @@
 	url = https://github.com/kigawa-net/keruta-executor.git
 [submodule "keruta-coder-template"]
 	path = keruta-coder-template
-	url = git@github.com:kigawa-net/keruta-coder-template.git
+	url = https://github.com/kigawa-net/keruta-coder-template.git
