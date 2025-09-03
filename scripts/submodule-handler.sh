@@ -28,6 +28,130 @@ error() {
     echo "[ERROR $(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "$LOG_FILE" >&2
 }
 
+# Enhanced logging function for git commit failures
+log_git_commit_failure() {
+    local submodule_path="$1"
+    local commit_message="$2"
+    local error_output="$3"
+    local task_id="${KERUTA_TASK_ID:-unknown}"
+    local session_id="${KERUTA_SESSION_ID:-unknown}"
+    
+    error "Git commit failed in submodule: $submodule_path"
+    error "Commit message was: $commit_message"
+    error "Git error output: $error_output"
+    
+    # Create detailed failure log in JSON format for easier parsing
+    local failure_log_file="${PROJECT_ROOT}/logs/git-commit-failures.json"
+    local timestamp=$(date -u +"%Y-%m-%dT%H:%M:%S.%3NZ")
+    
+    # Ensure the failure log file exists
+    if [[ ! -f "$failure_log_file" ]]; then
+        echo "[]" > "$failure_log_file"
+    fi
+    
+    # Create failure entry
+    local failure_entry=$(cat <<EOF
+{
+  "timestamp": "$timestamp",
+  "taskId": "$task_id",
+  "sessionId": "$session_id",
+  "submodulePath": "$submodule_path",
+  "commitMessage": "$commit_message",
+  "errorOutput": "$error_output",
+  "workingDirectory": "$(pwd)",
+  "gitStatus": "$(git status --porcelain 2>/dev/null || echo 'Unable to get git status')",
+  "gitLog": "$(git log --oneline -5 2>/dev/null || echo 'Unable to get git log')",
+  "gitRemote": "$(git remote -v 2>/dev/null || echo 'Unable to get git remote')",
+  "environment": {
+    "user": "${USER:-unknown}",
+    "hostname": "${HOSTNAME:-unknown}",
+    "pwd": "$(pwd)"
+  }
+}
+EOF
+    )
+    
+    # Add entry to the failure log (using jq if available, otherwise simple append)
+    if command -v jq >/dev/null 2>&1; then
+        local temp_file=$(mktemp)
+        jq ". += [$failure_entry]" "$failure_log_file" > "$temp_file" && mv "$temp_file" "$failure_log_file"
+    else
+        # Fallback: simple append to file
+        {
+            echo "{"
+            echo "  \"timestamp\": \"$timestamp\","
+            echo "  \"taskId\": \"$task_id\","
+            echo "  \"sessionId\": \"$session_id\","
+            echo "  \"submodulePath\": \"$submodule_path\","
+            echo "  \"commitMessage\": \"$commit_message\","
+            echo "  \"errorOutput\": \"$error_output\","
+            echo "  \"workingDirectory\": \"$(pwd)\","
+            echo "  \"gitStatus\": \"$(git status --porcelain 2>/dev/null | sed 's/"/\\"/g' || echo 'Unable to get git status')\","
+            echo "  \"gitLog\": \"$(git log --oneline -5 2>/dev/null | sed 's/"/\\"/g' || echo 'Unable to get git log')\","
+            echo "  \"gitRemote\": \"$(git remote -v 2>/dev/null | sed 's/"/\\"/g' || echo 'Unable to get git remote')\","
+            echo "  \"environment\": {"
+            echo "    \"user\": \"${USER:-unknown}\","
+            echo "    \"hostname\": \"${HOSTNAME:-unknown}\","
+            echo "    \"pwd\": \"$(pwd)\""
+            echo "  }"
+            echo "},"
+        } >> "${failure_log_file}.tmp"
+        
+        # Append to main file (crude but works without jq)
+        if [[ -s "$failure_log_file" ]]; then
+            head -n -1 "$failure_log_file" > "${failure_log_file}.new"
+            if [[ -s "${failure_log_file}.new" ]]; then
+                echo "," >> "${failure_log_file}.new"
+            fi
+            cat "${failure_log_file}.tmp" >> "${failure_log_file}.new"
+            echo "]" >> "${failure_log_file}.new"
+            mv "${failure_log_file}.new" "$failure_log_file"
+        fi
+        rm -f "${failure_log_file}.tmp"
+    fi
+    
+    # Also send to task logging system if available
+    if [[ -n "${KERUTA_API_URL:-}" ]] && [[ -n "${KERUTA_SESSION_ID:-}" ]] && [[ -n "${KERUTA_TASK_ID:-}" ]]; then
+        log_to_task_system "ERROR" "Git commit failed in $submodule_path" "$error_output"
+    fi
+}
+
+# Function to send logs to the task logging system
+log_to_task_system() {
+    local level="$1"
+    local message="$2"
+    local details="$3"
+    
+    if [[ -z "${KERUTA_API_URL:-}" ]] || [[ -z "${KERUTA_TASK_ID:-}" ]]; then
+        debug "Task logging system not configured, skipping API log"
+        return 0
+    fi
+    
+    local log_payload=$(cat <<EOF
+{
+  "level": "$level",
+  "source": "git-handler",
+  "message": "$message",
+  "metadata": {
+    "details": "$details",
+    "submodule": "${1:-unknown}",
+    "timestamp": "$(date -u +"%Y-%m-%dT%H:%M:%S.%3NZ")"
+  }
+}
+EOF
+    )
+    
+    # Send to task logs API
+    if command -v curl >/dev/null 2>&1; then
+        curl -s -X POST \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${KERUTA_API_TOKEN:-}" \
+            -d "$log_payload" \
+            "${KERUTA_API_URL}/tasks/${KERUTA_TASK_ID}/logs" \
+            >/dev/null 2>&1 || debug "Failed to send log to task system"
+    fi
+}
+
 # Function to check if directory is a git repository
 is_git_repo() {
     local dir="$1"
@@ -89,8 +213,12 @@ process_submodule() {
     
     # Commit changes
     debug "Committing changes in $submodule_path"
-    if ! git commit -m "$commit_message"; then
-        error "Failed to commit changes in $submodule_path"
+    local commit_output
+    commit_output=$(git commit -m "$commit_message" 2>&1)
+    local commit_exit_code=$?
+    
+    if [[ $commit_exit_code -ne 0 ]]; then
+        log_git_commit_failure "$submodule_path" "$commit_message" "$commit_output"
         return 1
     fi
     
@@ -132,7 +260,11 @@ update_main_repository() {
     if [[ "$has_changes" == "true" ]] && has_uncommitted_changes "$PROJECT_ROOT"; then
         local commit_message="Update submodule references: ${updated_submodules[*]}"
         
-        if git commit -m "$commit_message"; then
+        local main_commit_output
+        main_commit_output=$(git commit -m "$commit_message" 2>&1)
+        local main_commit_exit_code=$?
+        
+        if [[ $main_commit_exit_code -eq 0 ]]; then
             log "Committed main repository submodule reference updates"
             
             # Push main repository changes if auto-push is enabled
@@ -150,7 +282,7 @@ update_main_repository() {
                 log "Auto-push disabled, skipping main repository push"
             fi
         else
-            error "Failed to commit main repository submodule reference updates"
+            log_git_commit_failure "main-repository" "$commit_message" "$main_commit_output"
             return 1
         fi
     else
