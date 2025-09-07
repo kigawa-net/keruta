@@ -2,7 +2,6 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.6">
-      <module name="keruta-api" target="21" />
       <module name="keruta-api.api" target="21" />
       <module name="keruta-api.api.main" target="21" />
       <module name="keruta-api.api.test" target="21" />
@@ -35,7 +34,6 @@
       <module name="keruta-api.infra.test" target="21" />
       <module name="keruta-api.main" target="21" />
       <module name="keruta-api.test" target="21" />
-      <module name="net.kigawa.keruta-api.main" target="21" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
