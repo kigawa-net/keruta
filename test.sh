@@ -4,6 +4,16 @@
 
 echo "=== Keruta project test start ==="
 
+# Set JAVA_HOME for Java 21
+# Check if Java 21 is installed, install if needed
+if [ ! -d "/usr/lib/jvm/java-21-openjdk-amd64" ]; then
+    echo "Installing OpenJDK 21..."
+    sudo apt update -qq && sudo apt install -y openjdk-21-jdk
+fi
+
+export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+echo "JAVA_HOME set to: $JAVA_HOME"
+
 # Move to project root directory
 cd "$(dirname "$0")" || exit 2
 
@@ -77,9 +87,22 @@ echo "" >> "$test_results_file"
 # 3. Go project test (keruta-agent)
 echo "3. Go project (keruta-agent) test..."
 echo "3. Go project (keruta-agent) test..." >> "$test_results_file"
+
+# Check if Go is installed, install if needed
+if ! command -v go &> /dev/null; then
+    echo "Installing Go..."
+    sudo apt update -qq && sudo apt install -y golang-go
+fi
+
 if [ -d "keruta-agent" ]; then
     (
         cd keruta-agent || exit 2
+        # Initialize go.mod if it doesn't exist
+        if [ ! -f "go.mod" ]; then
+            echo "Initializing Go module..."
+            go mod init keruta-agent
+            go mod tidy
+        fi
         go test ./... 2>&1 | tee -a "../$test_results_file"
         if [ "${PIPESTATUS[0]}" -eq 0 ]; then
             echo "✅ Go test success"
