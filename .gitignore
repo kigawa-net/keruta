@@ -8,3 +8,4 @@
 /replay_pid*.log
 /.idea/workspace.xml
 /.claude/settings.local.json
+/temp
