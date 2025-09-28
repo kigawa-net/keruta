@@ -17,13 +17,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Quick Start
 ```bash
 # Start MongoDB and run API server (most common development setup)
-cd keruta-api && docker-compose up -d mongodb && ./gradlew :api:bootRun
+cd keruta-api && docker-compose up -d mongodb && ./gradlew bootRun
 
 # Full development environment with all services
-docker-compose up -d
+cd keruta-api && docker-compose up -d
 
 # Stop all services
-docker-compose down
+cd keruta-api && docker-compose down
 ```
 
 ### Building and Running
@@ -32,7 +32,7 @@ docker-compose down
 cd keruta-api && ./gradlew build
 
 # Run the Spring Boot API server
-cd keruta-api && ./gradlew :api:bootRun
+cd keruta-api && ./gradlew bootRun
 
 # Run the Keruta Executor (for Coder workspace management)
 cd keruta-executor && ./gradlew bootRun
@@ -52,13 +52,8 @@ cd keruta-api && ./gradlew test
 # Run tests with detailed output and continue on failure
 cd keruta-api && ./gradlew test --continue
 
-# Run specific module tests
-cd keruta-api && ./gradlew :core:domain:test
-cd keruta-api && ./gradlew :core:usecase:test
-cd keruta-api && ./gradlew :infra:persistence:test
-cd keruta-api && ./gradlew :infra:security:test
-cd keruta-api && ./gradlew :infra:app:test
-cd keruta-api && ./gradlew :api:test
+# Run specific module tests (Note: This is a single-module project)
+cd keruta-api && ./gradlew test
 
 # Run tests for keruta-executor
 cd keruta-executor && ./gradlew test
@@ -67,7 +62,7 @@ cd keruta-executor && ./gradlew test
 cd keruta-agent && go test ./...
 
 # Run integration tests with TestContainers (requires Docker)
-cd keruta-api && ./gradlew :infra:persistence:test
+cd keruta-api && ./gradlew test
 ```
 
 ### Code Quality
@@ -81,9 +76,9 @@ cd keruta-api && ./gradlew ktlintCheckAll
 # Format code (all modules in keruta-api)
 cd keruta-api && ./gradlew ktlintFormatAll
 
-# Check/Format specific module
-cd keruta-api && ./gradlew :core:domain:ktlintCheck
-cd keruta-api && ./gradlew :api:ktlintFormat
+# Check/Format main project
+cd keruta-api && ./gradlew ktlintCheck
+cd keruta-api && ./gradlew ktlintFormat
 
 # Check keruta-executor
 cd keruta-executor && ./gradlew ktlintCheck && ./gradlew ktlintFormat
@@ -119,12 +114,14 @@ Keruta is a Coder workspace management system with three main components:
 ### Multi-Module Structure
 
 #### API Server (keruta-api)
-- `core:domain` - Domain models (Session, Workspace, Document, etc.)
-- `core:usecase` - Business logic and use cases for session/workspace management
-- `infra:persistence` - MongoDB repository implementations
-- `infra:security` - Security configuration (currently permissive)
-- `infra:app` - Coder integration, workspace orchestration, and coroutine management
-- `api` - REST controllers and web layer
+- **Package Structure** (single Gradle project with logical package separation):
+  - `net.kigawa.keruta.core.domain` - Domain models (Session, Workspace, Document, etc.)
+  - `net.kigawa.keruta.core.usecase` - Business logic and use cases for session/workspace management
+  - `net.kigawa.keruta.infra.persistence` - MongoDB repository implementations
+  - `net.kigawa.keruta.infra.security` - Security configuration (currently permissive)
+  - `net.kigawa.keruta.infra.app` - Coder integration, workspace orchestration, and coroutine management
+  - `net.kigawa.keruta.api` - REST controllers and web layer
+  - `generated-api` - OpenAPI generated code subproject
 
 #### Executor (keruta-executor)
 - **Session Monitoring** - Standalone Spring Boot application that monitors session states
@@ -250,7 +247,7 @@ In Kubernetes deployments, tokens are stored in secrets and mounted as environme
 
 ### Local Setup
 1. Start MongoDB: `cd keruta-api && docker-compose up -d mongodb`
-2. Run API server: `cd keruta-api && ./gradlew :api:bootRun`  
+2. Run API server: `cd keruta-api && ./gradlew bootRun`  
 3. (Optional) Run executor: `cd keruta-executor && ./gradlew bootRun`
 4. Access admin interface: http://localhost:8080/admin
 5. Access API docs: http://localhost:8080/swagger-ui.html
@@ -302,13 +299,10 @@ In Kubernetes deployments, tokens are stored in secrets and mounted as environme
 
 ## Project Structure Notes
 
-- **keruta-api**: Multi-module Gradle project (5 modules) with simplified clean architecture and direct MongoDB access
-  - `core:domain` - Domain models and entities
-  - `core:usecase` - Business logic and use cases
-  - `infra:persistence` - MongoDB repository implementations
-  - `infra:security` - Security configuration
-  - `infra:app` - Coder integration and coroutine management (consolidated from infra:core)
-  - `api` - REST controllers and web layer
+- **keruta-api**: Single-module Gradle project with clean architecture package structure and direct MongoDB access
+  - Main project with logical package separation
+  - `generated-api` - OpenAPI generated code subproject
+  - Package structure follows layered architecture pattern
 - **keruta-executor**: Standalone Spring Boot application with API-only data access (no direct DB connection)
 - **keruta-agent**: Go CLI application for task execution within containers
 - **keruta-admin**: React/Remix frontend for administration
@@ -330,12 +324,14 @@ In Kubernetes deployments, tokens are stored in secrets and mounted as environme
 - **Coder authentication errors**: Check KERUTA_EXECUTOR_CODER_TOKEN environment variable or K8s secret configuration
 - **Coder API endpoint errors**: Check logs for 404/405 errors - system automatically tries multiple endpoint formats
 - **JSON parsing errors**: Ensure nullable fields in DTOs for Coder API responses (version, createdAt, updatedAt)
+- **CORS errors**: When allowCredentials is true, allowedOrigins cannot contain "*" - set allowCredentials(false) in CorsConfig.kt
+- **Java version issues**: Use JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 for Java 21
 
 ### Development Workflow
 1. Start MongoDB: `cd keruta-api && docker-compose up -d mongodb`
 2. Format code: `cd keruta-api && ./gradlew ktlintFormatAll`
 3. Run tests: `cd keruta-api && ./gradlew test`
-4. Start API: `cd keruta-api && ./gradlew :api:bootRun`
+4. Start API: `cd keruta-api && ./gradlew bootRun`
 5. Access admin: http://localhost:8080/admin
 
 ### Coder API Integration Details
