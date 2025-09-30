@@ -134,9 +134,8 @@ Keruta is a Coder workspace management system with three main components:
 
 ### Key Domain Models
 - **Session**: User sessions with associated workspaces and status management (metadata removed, status updates restricted)
-- **Workspace**: Coder workspaces with templates, URLs, and lifecycle state (generic container resource fields)
+- **Workspace**: Coder workspaces with URLs and lifecycle state (generic container resource fields)
 - **Document**: Context documents that can be attached to sessions
-- **WorkspaceTemplate**: Coder templates for workspace creation
 
 ## Session and Workspace Management Flow
 
@@ -157,9 +156,7 @@ Keruta is a Coder workspace management system with three main components:
 
 ### Coder Integration
 - Integrates with Coder API for workspace management
-- Supports custom Terraform templates for workspace creation
 - Manages workspace lifecycle (create, start, stop, delete)
-- Template selection based on session requirements
 - Japanese session name normalization for Coder compatibility
 - **Automatic Token Management**: Coder session tokens automatically refresh every 24 hours
 - **Kubernetes Secret Integration**: Tokens managed via K8s secrets for production deployment
@@ -179,7 +176,7 @@ The Keruta Executor communicates with the Spring Boot API using HTTP:
 - **Status Security**: Session status updates restricted to system only (user updates return 403)
 - **Metadata Cleanup**: Session metadata field removed from all layers
 - **Logger Fix**: WorkspaceTaskExecutionService logger moved to companion object for thread safety
-- **Coder Token Auto-Refresh**: CoderTemplateService now automatically refreshes session tokens every 24 hours
+- **Coder Token Auto-Refresh**: Coder session tokens automatically refresh every 24 hours
 - **K8s Secret Integration**: Coder tokens managed via Kubernetes secrets in production deployments
 - **Database-Free Workspace Management**: Workspaces no longer stored in database, managed directly via Coder API
 - **Multi-Endpoint Coder Support**: Automatic fallback across multiple Coder API endpoint formats for compatibility
@@ -188,7 +185,7 @@ The Keruta Executor communicates with the Spring Boot API using HTTP:
 - **1:1 Session-Workspace Relationship** - Each session has exactly one associated workspace
 - **Automatic Workspace Creation** - Workspaces are created automatically when sessions are created
 - **Status Synchronization** - Session status updates trigger workspace state changes
-- **Template-based Creation** - Uses Coder templates for consistent workspace environments
+- **Workspace Management** - Manages workspace lifecycle via Coder API
 
 ### Security Model
 Currently implements permissive security suitable for internal environments:
@@ -212,7 +209,7 @@ Coder integration is configured via environment variables:
 - `KERUTA_EXECUTOR_CODER_ENABLE_CLI_FALLBACK` - Enable CLI fallback for token refresh (default: false)
 - `KERUTA_EXECUTOR_API_BASE_URL` - keruta-api base URL (default: http://localhost:8080)
 
-**Token Management**: The CoderTemplateService automatically refreshes session tokens every 24 hours using existing tokens. It supports two refresh methods:
+**Token Management**: Coder session tokens automatically refresh every 24 hours using existing tokens. It supports two refresh methods:
 
 1. **API-based refresh** (default): Uses `/api/v2/users/me/tokens` endpoint to create new tokens
 2. **CLI fallback** (optional): Falls back to `coder login` command if API refresh fails
@@ -237,7 +234,6 @@ In Kubernetes deployments, tokens are stored in secrets and mounted as environme
 - `POST /api/v1/workspaces` - Create new workspace (proxied to executor)
 - `POST /api/v1/workspaces/{id}/start` - Start workspace (proxied to executor)
 - `POST /api/v1/workspaces/{id}/stop` - Stop workspace (proxied to executor)
-- `GET /api/v1/workspaces/templates` - List available templates (proxied to executor)
 - `POST /api/v1/sessions/{id}/sync-status` - Sync session status with workspace state
 - `GET /api/v1/sessions/{id}/workspaces` - Get workspaces for specific session
 
@@ -344,10 +340,6 @@ Coder workspace creation uses multiple endpoint formats for compatibility:
 2. **Fallback 1**: `/api/v2/organizations/default/members/me/workspaces` (organization-based)
 3. **Fallback 2**: `/api/v2/workspaces` (legacy format)
 
-Template selection algorithm:
-1. Match session tags with template names/descriptions
-2. Prefer templates containing "keruta" in the name
-3. Use first available template as fallback
 
 ## important-instruction-reminders
 Do what has been asked; nothing more, nothing less.
