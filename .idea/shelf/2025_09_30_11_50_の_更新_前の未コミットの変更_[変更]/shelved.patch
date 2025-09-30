@@ -1,0 +1,18 @@
+Index: keruta-executor/build.gradle.kts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\n    kotlin(\"jvm\") version \"1.9.25\"\n    kotlin(\"plugin.spring\") version \"1.9.25\"\n    id(\"org.springframework.boot\") version \"3.2.0\"\n    id(\"io.spring.dependency-management\") version \"1.1.4\"\n    id(\"org.jlleitschuh.gradle.ktlint\") version \"12.1.0\"\n}\n\ngroup = \"net.kigawa.keruta\"\nversion = \"0.0.1-SNAPSHOT\"\n\nrepositories {\n    mavenCentral()\n}\n\ndependencies {\n    // Kotlin\n    implementation(\"org.jetbrains.kotlin:kotlin-reflect\")\n    implementation(\"org.jetbrains.kotlin:kotlin-stdlib-jdk8\")\n    implementation(\"org.jetbrains.kotlinx:kotlinx-coroutines-core\")\n    implementation(\"org.jetbrains.kotlinx:kotlinx-coroutines-reactor\")\n    implementation(\"com.fasterxml.jackson.module:jackson-module-kotlin\")\n\n    // Spring Boot\n    implementation(\"org.springframework.boot:spring-boot-starter-web\")\n    implementation(\"org.springframework.boot:spring-boot-starter-actuator\")\n    implementation(\"org.springframework.boot:spring-boot-starter-validation\")\n    implementation(\"org.springframework.boot:spring-boot-starter-webflux\")\n\n    // Kafka\n    implementation(\"org.springframework.kafka:spring-kafka\")\n    implementation(\"org.apache.kafka:kafka-clients:3.6.0\")\n\n    // Logging\n    implementation(\"io.github.microutils:kotlin-logging-jvm:3.0.5\")\n\n    // Testing\n    testImplementation(\"org.springframework.boot:spring-boot-starter-test\")\n    testImplementation(\"org.jetbrains.kotlinx:kotlinx-coroutines-test\")\n    testImplementation(\"io.mockk:mockk:1.13.5\")\n    testImplementation(\"org.springframework.kafka:spring-kafka-test\")\n}\n\ntasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {\n    kotlinOptions {\n        freeCompilerArgs = listOf(\"-Xjsr305=strict\")\n        jvmTarget = \"21\"\n    }\n}\n\n// Configure Gradle to automatically download the required JDK\nplugins.withType<JavaPlugin> {\n    java {\n        toolchain {\n            languageVersion.set(JavaLanguageVersion.of(21))\n        }\n    }\n}\n\n// Configure toolchain repositories to download Java 21 automatically\nrepositories {\n    mavenCentral()\n}\n\n// Enable auto-provisioning of JDKs with the Foojay Toolchains Plugin\n\ntasks.withType<Test> {\n    useJUnitPlatform()\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/keruta-executor/build.gradle.kts b/keruta-executor/build.gradle.kts
+--- a/keruta-executor/build.gradle.kts	(revision 111b5092a335bfadc7a5433089eb4abcd0bd5115)
++++ b/keruta-executor/build.gradle.kts	(date 1759200160590)
+@@ -26,6 +26,7 @@
+     implementation("org.springframework.boot:spring-boot-starter-actuator")
+     implementation("org.springframework.boot:spring-boot-starter-validation")
+     implementation("org.springframework.boot:spring-boot-starter-webflux")
++    implementation("org.springframework.boot:spring-boot-starter-websocket")
+ 
+     // Kafka
+     implementation("org.springframework.kafka:spring-kafka")
