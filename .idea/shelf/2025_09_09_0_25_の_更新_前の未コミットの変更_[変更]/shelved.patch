@@ -1,0 +1,18 @@
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"ProjectModuleManager\">\n    <modules>\n      <module fileurl=\"file://$PROJECT_DIR$/keruta-admin/keruta-admin.iml\" filepath=\"$PROJECT_DIR$/keruta-admin/keruta-admin.iml\" />\n      <module fileurl=\"file://$PROJECT_DIR$/keruta-agent/keruta-agent.iml\" filepath=\"$PROJECT_DIR$/keruta-agent/keruta-agent.iml\" />\n      <module fileurl=\"file://$PROJECT_DIR$/.idea/modules/keruta-api.main.iml\" filepath=\"$PROJECT_DIR$/.idea/modules/keruta-api.main.iml\" />\n      <module fileurl=\"file://$PROJECT_DIR$/.idea/modules/keruta-api.test.iml\" filepath=\"$PROJECT_DIR$/.idea/modules/keruta-api.test.iml\" />\n      <module fileurl=\"file://$PROJECT_DIR$/keruta-coder-template/keruta-coder-template.iml\" filepath=\"$PROJECT_DIR$/keruta-coder-template/keruta-coder-template.iml\" />\n    </modules>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+--- a/.idea/modules.xml	(revision 0b34ea41e61318c0f36cfd8047a33761c4bb370b)
++++ b/.idea/modules.xml	(date 1757377460561)
+@@ -2,6 +2,7 @@
+ <project version="4">
+   <component name="ProjectModuleManager">
+     <modules>
++      <module fileurl="file://$PROJECT_DIR$/keruta.iml" filepath="$PROJECT_DIR$/keruta.iml" />
+       <module fileurl="file://$PROJECT_DIR$/keruta-admin/keruta-admin.iml" filepath="$PROJECT_DIR$/keruta-admin/keruta-admin.iml" />
+       <module fileurl="file://$PROJECT_DIR$/keruta-agent/keruta-agent.iml" filepath="$PROJECT_DIR$/keruta-agent/keruta-agent.iml" />
+       <module fileurl="file://$PROJECT_DIR$/.idea/modules/keruta-api.main.iml" filepath="$PROJECT_DIR$/.idea/modules/keruta-api.main.iml" />
