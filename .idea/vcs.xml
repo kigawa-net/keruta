@@ -3,12 +3,12 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/keruta-admin" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/keruta-admin/keruta-doc" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/keruta-agent" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/keruta-api" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/keruta-coder-template" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/keruta-doc" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/keruta-executor" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/kigawa-net-k8s" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/kigawa-net-k8s/fonsole-doc" vcs="Git" />
   </component>
 </project>
