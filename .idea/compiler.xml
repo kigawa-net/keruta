@@ -37,6 +37,7 @@
       <module name="keruta-api.infra.test" target="21" />
       <module name="keruta-api.main" target="21" />
       <module name="keruta-api.test" target="21" />
+      <module name="keruta-executor.test" target="21" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -58,6 +59,7 @@
       <module name="keruta-executor.test" options="-parameters" />
       <module name="net.kigawa.keruta-api.main" options="-parameters" />
       <module name="net.kigawa.keruta-api.test" options="-parameters" />
+      <module name="net.kigawa.keruta.keruta-executor.test" options="-parameters" />
     </option>
   </component>
 </project>
