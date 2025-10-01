@@ -56,6 +56,7 @@
       <module name="keruta-executor.test" options="-parameters" />
       <module name="net.kigawa.keruta-api.main" options="-parameters" />
       <module name="net.kigawa.keruta-api.test" options="-parameters" />
+      <module name="net.kigawa.keruta.keruta-executor.test" options="-parameters" />
     </option>
   </component>
 </project>

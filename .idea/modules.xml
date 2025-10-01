@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/keruta-api.main.iml" filepath="$PROJECT_DIR$/.idea/modules/keruta-api.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/keruta-api.test.iml" filepath="$PROJECT_DIR$/.idea/modules/keruta-api.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/keruta-coder-template/keruta-coder-template.iml" filepath="$PROJECT_DIR$/keruta-coder-template/keruta-coder-template.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/action/keruta-executor.action.main.iml" filepath="$PROJECT_DIR$/.idea/modules/action/keruta-executor.action.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/keruta-executor.test.iml" filepath="$PROJECT_DIR$/.idea/modules/keruta-executor.test.iml" />
     </modules>
   </component>

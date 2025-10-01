@@ -21,11 +21,26 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT">
+            <builds>
+              <build path="$PROJECT_DIR$/keruta-executor/buildSrc" name="buildSrc">
+                <projects>
+                  <project path="$PROJECT_DIR$/keruta-executor/buildSrc" />
+                </projects>
+              </build>
+            </builds>
+          </compositeBuild>
+        </compositeConfiguration>
         <option name="externalProjectPath" value="$PROJECT_DIR$/keruta-executor" />
         <option name="gradleJvm" value="jbr-21" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/keruta-executor" />
+            <option value="$PROJECT_DIR$/keruta-executor/action" />
+            <option value="$PROJECT_DIR$/keruta-executor/buildSrc" />
+            <option value="$PROJECT_DIR$/keruta-executor/infrastructure" />
+            <option value="$PROJECT_DIR$/keruta-executor/model" />
           </set>
         </option>
       </GradleProjectSettings>
