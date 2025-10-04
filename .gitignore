@@ -10,3 +10,4 @@
 /.claude/settings.local.json
 /temp
 /keruta-executor/buildSrc/.kotlin/
+/keruta-sdk/buildSrc/.kotlin/
