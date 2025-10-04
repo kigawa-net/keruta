@@ -13,4 +13,5 @@ fun kotlinPluginId(pluginName: String, version: String = kotlinVersion) =
 fun kotlinId(id: String) = "org.jetbrains.kotlin:$id:$kotlinVersion"
 dependencies {
     implementation(kotlinPluginId("jvm"))
+    implementation(kotlinPluginId("plugin.serialization"))
 }

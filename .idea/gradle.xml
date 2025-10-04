@@ -63,8 +63,14 @@
             <option value="$PROJECT_DIR$/keruta-sdk" />
             <option value="$PROJECT_DIR$/keruta-sdk/buildSrc" />
             <option value="$PROJECT_DIR$/keruta-sdk/client" />
+            <option value="$PROJECT_DIR$/keruta-sdk/client/infrastructure" />
+            <option value="$PROJECT_DIR$/keruta-sdk/client/model" />
             <option value="$PROJECT_DIR$/keruta-sdk/common" />
+            <option value="$PROJECT_DIR$/keruta-sdk/common/infrastructure" />
+            <option value="$PROJECT_DIR$/keruta-sdk/common/model" />
             <option value="$PROJECT_DIR$/keruta-sdk/server" />
+            <option value="$PROJECT_DIR$/keruta-sdk/server/infrastructure" />
+            <option value="$PROJECT_DIR$/keruta-sdk/server/model" />
           </set>
         </option>
       </GradleProjectSettings>
