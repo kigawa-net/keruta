@@ -16,27 +16,7 @@ Kerutaは、Kubernetes-native なタスク実行システムです。タスク�
 
 ## クイックスタート
 
-### 方法1: Gradleで実行
-
-```bash
-# keruta-apiディレクトリに移動
-cd keruta-api
-
-# MongoDBの起動
-docker compose up -d mongodb
-
-# アプリケーションの実行
-./gradlew :api:bootRun
-```
-
-### 方法2: Dockerで実行
-
-```bash
-# アプリケーションとMongoDBの起動
-docker compose up -d
-```
-
-アプリケーションは http://localhost:8080 で起動します。
+ローカルでの実行は非推奨
 
 ## 主な機能
 
