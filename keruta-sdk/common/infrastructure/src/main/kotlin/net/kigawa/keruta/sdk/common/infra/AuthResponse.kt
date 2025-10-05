@@ -1,9 +1,9 @@
-package net.kigawa.keruta.sdk.common
+package net.kigawa.keruta.sdk.common.infra
 
 import kotlinx.serialization.Serializable
-import java.util.*
 
 @Serializable
 data class AuthResponse(
     val id: String,
+    val isSuccess: Boolean,
 )
