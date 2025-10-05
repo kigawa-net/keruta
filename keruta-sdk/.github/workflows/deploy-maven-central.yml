@@ -1,0 +1,72 @@
+name: Deploy to Maven Central
+
+on:
+  pull_request:
+    types: [ closed ]
+    branches: [ main ]
+
+jobs:
+  deploy:
+    if: >-
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.base.ref == 'main' &&
+      startsWith(github.event.pull_request.head.ref, 'release/')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v2
+
+      - name: Determine version from source branch
+        id: version
+        run: |
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          echo "Source branch: $BRANCH_NAME"
+
+          # Set version based on branch name
+          if [[ "$BRANCH_NAME" =~ ^release/v([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
+            VERSION="${BASH_REMATCH[1]}"
+            echo "Release branch detected, version: $VERSION"
+          fi
+
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Final version: $VERSION"
+
+      - name: Debug environment variables
+        run: |
+          echo "MAVEN_USERNAME is set: ${{ secrets.MAVEN_USERNAME != '' }}"
+          echo "MAVEN_PASSWORD is set: ${{ secrets.MAVEN_PASSWORD != '' }}"
+          echo "Checking environment variables..."
+          env | grep -E "ORG_GRADLE_PROJECT_|GITHUB_|MAVEN|JAVA|GRADLE" | sort
+
+      - name: Publish package
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: |
+            -PmavenCentralUsername=${{ secrets.MAVEN_USERNAME }}
+            -PmavenCentralPassword=${{ secrets.MAVEN_PASSWORD }}
+            -PsigningInMemoryKeyId=${{ secrets.MAVEN_GPG_KEY_ID }}
+            -PsigningInMemoryPassword=${{ secrets.MAVEN_GPG_PASSPHRASE }}
+            allTests publishAndReleaseToMavenCentral
+        env:
+          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+          # Ensure Gradle picks up the source branch for versioning
+          GITHUB_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+
+      # Auto-merge step removed because the PR is already closed/merged

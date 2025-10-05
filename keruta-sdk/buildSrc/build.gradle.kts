@@ -3,6 +3,9 @@ plugins {
 }
 
 repositories {
+    // Need the Gradle Plugin Portal for plugin marker artifacts like
+    // io.github.gradle-nexus.publish-plugin.gradle.plugin
+    gradlePluginPortal()
     mavenCentral()
 }
 val kotlinVersion = "2.2.0"
@@ -14,4 +17,5 @@ fun kotlinId(id: String) = "org.jetbrains.kotlin:$id:$kotlinVersion"
 dependencies {
     implementation(kotlinPluginId("jvm"))
     implementation(kotlinPluginId("plugin.serialization"))
+    implementation(pluginId("io.github.gradle-nexus.publish-plugin","2.0.0"))
 }
