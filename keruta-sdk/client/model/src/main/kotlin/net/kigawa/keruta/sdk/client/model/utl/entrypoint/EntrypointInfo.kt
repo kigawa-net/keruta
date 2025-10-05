@@ -1,4 +1,4 @@
-package net.kigawa.keruta.sdk.client.model.entrypoint
+package net.kigawa.keruta.sdk.client.model.utl.entrypoint
 
 class EntrypointInfo<in A, out R>(
     val name: String,

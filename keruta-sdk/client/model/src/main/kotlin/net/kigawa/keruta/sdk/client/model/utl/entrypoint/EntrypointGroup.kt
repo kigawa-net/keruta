@@ -1,8 +1,8 @@
-package net.kigawa.keruta.sdk.client.model.entrypoint
+package net.kigawa.keruta.sdk.client.model.utl.entrypoint
 
 abstract class EntrypointGroup<A, R> {
 
-    val info = NormalEntrypointGroupInfo<A, R>()
+    val info: NormalEntrypointGroupInfo<A, R> = NormalEntrypointGroupInfo()
 
     fun <G: EntrypointGroup<A, R>> group(group: G): G {
         return group.also { info.subComponents.add(it.info) }

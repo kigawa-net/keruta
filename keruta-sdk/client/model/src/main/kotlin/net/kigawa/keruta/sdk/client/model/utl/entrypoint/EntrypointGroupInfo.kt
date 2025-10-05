@@ -1,4 +1,4 @@
-package net.kigawa.keruta.sdk.client.model.entrypoint
+package net.kigawa.keruta.sdk.client.model.utl.entrypoint
 
 interface EntrypointGroupInfo<in IA, out IR, in OA, out OR>: SubEntryComponent<IA, IR> {
     val subComponents: List<SubEntryComponent<IA, IR>>

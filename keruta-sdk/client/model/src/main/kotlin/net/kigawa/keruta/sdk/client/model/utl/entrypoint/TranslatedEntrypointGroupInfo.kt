@@ -1,4 +1,4 @@
-package net.kigawa.keruta.sdk.client.model.entrypoint
+package net.kigawa.keruta.sdk.client.model.utl.entrypoint
 
 class TranslatedEntrypointGroupInfo<IA, IR, OA, OR>(
     val block: ((OA) -> OR).(IA) -> IR,
