@@ -8,3 +8,6 @@
 /replay_pid*.log
 /.idea/workspace.xml
 /.claude/settings.local.json
+/temp
+/keruta-executor/buildSrc/.kotlin/
+/keruta-sdk/buildSrc/.kotlin/

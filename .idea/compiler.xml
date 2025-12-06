@@ -17,6 +17,9 @@
       <module name="keruta-api.core.usecase" target="21" />
       <module name="keruta-api.core.usecase.main" target="21" />
       <module name="keruta-api.core.usecase.test" target="21" />
+      <module name="keruta-api.generated-api" target="21" />
+      <module name="keruta-api.generated-api.main" target="21" />
+      <module name="keruta-api.generated-api.test" target="21" />
       <module name="keruta-api.infra" target="21" />
       <module name="keruta-api.infra.app" target="21" />
       <module name="keruta-api.infra.app.main" target="21" />
@@ -55,6 +58,7 @@
       <module name="keruta-executor.test" options="-parameters" />
       <module name="net.kigawa.keruta-api.main" options="-parameters" />
       <module name="net.kigawa.keruta-api.test" options="-parameters" />
+      <module name="net.kigawa.keruta.keruta-executor.test" options="-parameters" />
     </option>
   </component>
 </project>

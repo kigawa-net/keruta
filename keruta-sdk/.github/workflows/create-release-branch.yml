@@ -1,0 +1,121 @@
+name: Create release branch from develop
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: 'Version bump type (major/feature/fix)'
+        required: true
+        type: choice
+        options:
+          - major
+          - feature
+          - fix
+        default: feature
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  create-release-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Validate inputs
+        id: validate
+        run: |
+          BUMP='${{ github.event.inputs.bump }}'
+          echo "Input bump: $BUMP"
+
+          case "$BUMP" in
+            major|feature|fix) ;;
+            *) echo "bump must be one of: major, feature, fix" >&2; exit 1 ;;
+          esac
+
+          echo "bump=$BUMP" >> $GITHUB_OUTPUT
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch all branches and tags
+        run: |
+          git fetch origin --tags
+          git branch -a
+          git tag -l | sort -V | tail -n 20
+
+      - name: Determine next version
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+          BUMP='${{ steps.validate.outputs.bump }}'
+
+          # Find latest semver tag (prefers vX.Y.Z, falls back to X.Y.Z)
+          LATEST_TAG=$(git tag -l 'v[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n1)
+          if [[ -z "$LATEST_TAG" ]]; then
+            LATEST_TAG=$(git tag -l '[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n1)
+          fi
+
+          if [[ -z "$LATEST_TAG" ]]; then
+            BASE_VERSION="0.0.0"
+            echo "No existing tags found. Starting from $BASE_VERSION"
+          else
+            BASE_VERSION="$LATEST_TAG"
+          fi
+
+          # Strip leading 'v' if present
+          BASE_VERSION=${BASE_VERSION#v}
+          echo "Latest version: $BASE_VERSION"
+
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$BASE_VERSION"
+
+          case "$BUMP" in
+            major)
+              MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0 ;;
+            feature)
+              MINOR=$((MINOR + 1)); PATCH=0 ;;
+            fix)
+              PATCH=$((PATCH + 1)) ;;
+          esac
+
+          NEXT_VERSION="${MAJOR}.${MINOR}.${PATCH}"
+          echo "Calculated next version: $NEXT_VERSION (bump=$BUMP)"
+
+          echo "version=$NEXT_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Ensure develop exists on remote
+        run: |
+          if ! git ls-remote --exit-code --heads origin develop; then
+            echo "Remote branch 'develop' does not exist." >&2
+            exit 1
+          fi
+
+      - name: Create release branch from develop
+        id: create_branch
+        run: |
+          VERSION='${{ steps.version.outputs.version }}'
+          RELEASE_BRANCH="release/v$VERSION"
+
+          # Check if release branch already exists remotely
+          if git ls-remote --exit-code --heads origin "$RELEASE_BRANCH"; then
+            echo "Branch $RELEASE_BRANCH already exists on remote. Skipping creation." >&2
+            exit 1
+          fi
+
+          # Create branch from origin/develop and push
+          git checkout -B "$RELEASE_BRANCH" origin/develop
+          git push -u origin "$RELEASE_BRANCH"
+
+          echo "branch_name=$RELEASE_BRANCH" >> $GITHUB_OUTPUT
+
+      - name: Summary
+        run: |
+          echo "Created branch: ${{ steps.create_branch.outputs.branch_name }} from origin/develop (version=${{ steps.version.outputs.version }}, bump=${{ steps.validate.outputs.bump }})" >> $GITHUB_STEP_SUMMARY
