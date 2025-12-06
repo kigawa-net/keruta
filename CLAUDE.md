@@ -247,7 +247,7 @@ In Kubernetes deployments, tokens are stored in secrets and mounted as environme
 
 ### Local Setup
 1. Start MongoDB: `cd keruta-api && docker-compose up -d mongodb`
-2. Run API server: `cd keruta-api && ./gradlew bootRun`  
+2. Run API server: `cd keruta-api && ./gradlew bootRun`
 3. (Optional) Run executor: `cd keruta-executor && ./gradlew bootRun`
 4. Access admin interface: http://localhost:8080/admin
 5. Access API docs: http://localhost:8080/swagger-ui.html
@@ -293,7 +293,7 @@ In Kubernetes deployments, tokens are stored in secrets and mounted as environme
 
 ### Docker Images
 - API Server: Built from `keruta-api/Dockerfile`
-- Executor: Built from `keruta-executor/Dockerfile`  
+- Executor: Built from `keruta-executor/Dockerfile`
 - Agent: Built from `keruta-agent/Dockerfile`
 - Uses Harbor registry: `harbor.kigawa.net/library/keruta`
 
