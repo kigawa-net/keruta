@@ -1,5 +1,3 @@
-import gradle.kotlin.dsl.accessors._9c04ceaef20eeb51aed3ad37a03c872b.publishing
-import gradle.kotlin.dsl.accessors._9c04ceaef20eeb51aed3ad37a03c872b.signing
 
 plugins {
     id("io.github.gradle-nexus.publish-plugin")
