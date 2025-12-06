@@ -3,9 +3,18 @@ plugins {
 }
 
 
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
+}
 kotlin {
-    jvm {}
-    js {
-        browser {}
+    compilerOptions {
+        freeCompilerArgs = listOf("-Xcontext-parameters")
     }
+    jvm {}
+    sourceSets["commonMain"].dependencies {
+    }
+    sourceSets["commonTest"].dependencies {
+    }
+    sourceSets["jvmMain"].dependencies {}
 }

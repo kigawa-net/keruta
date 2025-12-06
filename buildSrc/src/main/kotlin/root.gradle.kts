@@ -1,12 +1,10 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
-    kotlin("multiplatform")
-}
-repositories {
-    mavenCentral()
-    gradlePluginPortal()
+    id("common")
 }
 allprojects {
-    group = "net.kigawa.kinfra"
+    group = "net.kigawa.keruta"
     version = System.getenv("VERSION") ?: "dev"
     apply(plugin = "common")
 }

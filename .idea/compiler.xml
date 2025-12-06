@@ -97,8 +97,6 @@
       <module name="keruta.keruta-task-server.model" target="21" />
       <module name="keruta.keruta-task-server.server" target="21" />
       <module name="keruta.keruta-task-server.test" target="21" />
-      <module name="keruta.kodel" target="21" />
-      <module name="keruta.kodel.api" target="21" />
       <module name="keruta.kodel.api.main" target="21" />
       <module name="keruta.kodel.api.test" target="21" />
       <module name="keruta.kodel.core" target="21" />

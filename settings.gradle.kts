@@ -12,7 +12,7 @@ plugins {
 
 rootProject.name = "keruta"
 
-//include("kodel:api")
+include("kodel:api")
 //include("kodel:core")
 //include("keruta-task-client-protocol:model")
 //include("keruta-task-client-protocol:client")
