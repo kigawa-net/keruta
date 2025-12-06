@@ -1,5 +1,7 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
-    id("kinfra-root")
+    id("root")
 }
 dependencies {
 }

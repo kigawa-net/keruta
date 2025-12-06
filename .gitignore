@@ -11,3 +11,4 @@
 /temp
 /keruta-executor/buildSrc/.kotlin/
 /keruta-sdk/buildSrc/.kotlin/
+/.kotlin/

@@ -1,6 +1,15 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
 }
 
-dependencies {
-    testImplementation(kotlin("test"))
+
+kotlin {
+    jvm {}
+    sourceSets["commonMain"].dependencies {
+    }
+    sourceSets["commonTest"].dependencies {
+        implementation(kotlin("test"))
+    }
+    sourceSets["jvmMain"].dependencies {}
 }

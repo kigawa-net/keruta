@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     `kotlin-dsl`
 }
@@ -6,15 +8,16 @@ repositories {
     mavenCentral()
     gradlePluginPortal()
 }
-val kotlinVersion = "2.2.0"
+
+val kotlinVersion = "2.2.21"
 fun pluginId(pluginName: String, version: String) = "$pluginName:$pluginName.gradle.plugin:$version"
 fun kotlinPluginId(pluginName: String, version: String = kotlinVersion) =
     pluginId("org.jetbrains.kotlin.$pluginName", version)
 
 fun kotlinId(id: String) = "org.jetbrains.kotlin:$id:$kotlinVersion"
 dependencies {
-    implementation(kotlinPluginId("jvm"))
-    implementation(kotlinPluginId("plugin.serialization", version = "2.2.0"))
+    implementation(kotlinPluginId("multiplatform"))
+    implementation(kotlinPluginId("plugin.serialization"))
     implementation(pluginId("com.github.johnrengelman.shadow", "8.1.1"))
     implementation(pluginId("org.jlleitschuh.gradle.ktlint", "12.1.1"))
 }

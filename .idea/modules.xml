@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/keruta-admin/keruta-admin.iml" filepath="$PROJECT_DIR$/keruta-admin/keruta-admin.iml" />
-      <module fileurl="file://$PROJECT_DIR$/keruta-agent/keruta-agent.iml" filepath="$PROJECT_DIR$/keruta-agent/keruta-agent.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/keruta-api.main.iml" filepath="$PROJECT_DIR$/.idea/modules/keruta-api.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/keruta-api.test.iml" filepath="$PROJECT_DIR$/.idea/modules/keruta-api.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/keruta-coder-template/keruta-coder-template.iml" filepath="$PROJECT_DIR$/keruta-coder-template/keruta-coder-template.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/action/keruta-executor.action.main.iml" filepath="$PROJECT_DIR$/.idea/modules/action/keruta-executor.action.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/client/model/keruta-sdk.client.model.main.iml" filepath="$PROJECT_DIR$/.idea/modules/client/model/keruta-sdk.client.model.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/model/keruta-sdk.common.model.main.iml" filepath="$PROJECT_DIR$/.idea/modules/common/model/keruta-sdk.common.model.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kodel/core/keruta.kodel.core.commonMain.iml" filepath="$PROJECT_DIR$/.idea/modules/kodel/core/keruta.kodel.core.commonMain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kodel/core/keruta.kodel.core.commonTest.iml" filepath="$PROJECT_DIR$/.idea/modules/kodel/core/keruta.kodel.core.commonTest.iml" />
     </modules>
   </component>
 </project>
