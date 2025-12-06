@@ -1,7 +1,7 @@
-plugins{
-    id("common")
-}
-
-dependencies {
-    implementation(project(":kodel:api"))
-}
+//plugins {
+//    id("common")
+//}
+//
+//dependencies {
+////    implementation(project(":kodel:api"))
+//}

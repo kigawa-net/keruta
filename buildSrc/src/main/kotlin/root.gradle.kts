@@ -1,6 +1,9 @@
 plugins {
-    application
-    id("com.github.johnrengelman.shadow")
+    kotlin("multiplatform")
+}
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
 }
 allprojects {
     group = "net.kigawa.kinfra"
@@ -8,6 +11,3 @@ allprojects {
     apply(plugin = "common")
 }
 
-application {
-    mainClass = "net.kigawa.kinfra.AppKt"
-}

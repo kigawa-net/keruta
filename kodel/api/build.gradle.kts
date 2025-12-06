@@ -1,6 +1,4 @@
 plugins {
+    kotlin("multiplatform")
 }
 
-dependencies {
-    testImplementation(kotlin("test"))
-}
