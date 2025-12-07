@@ -7,8 +7,9 @@ import net.kigawa.keruta.ktcp.model.message.*
 
 
 
-class TaskUpdateResponseEntrypoint : Entrypoint<TaskUpdateResponseMessage, KtcpMessage> {
-    override val info = EntrypointInfo("task_update_response", emptyList(), "タスク更新応答処理")
+interface TaskUpdateResponseEntrypoint : Entrypoint<TaskUpdateResponseMessage, KtcpMessage> {
+    override val info: EntrypointInfo
+        get() = EntrypointInfo("task_update_response", emptyList(), "タスク更新応答処理")
 
     override fun access(input: TaskUpdateResponseMessage): KtcpMessage {
         // 応答処理

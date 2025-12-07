@@ -8,8 +8,9 @@ import net.kigawa.keruta.ktcp.model.message.*
 
 
 
-class TaskListEntrypoint : Entrypoint<TaskListMessage, KtcpMessage> {
-    override val info = EntrypointInfo("task_list", emptyList(), "タスク一覧取得要求処理")
+interface TaskListEntrypoint : Entrypoint<TaskListMessage, KtcpMessage> {
+    override val info: EntrypointInfo
+        get() = EntrypointInfo("task_list", emptyList(), "タスク一覧取得要求処理")
 
     override fun access(input: TaskListMessage): KtcpMessage {
         // タスク一覧取得処理（モックデータ）

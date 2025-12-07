@@ -7,8 +7,9 @@ import net.kigawa.keruta.ktcp.model.message.*
 
 
 
-class TaskExecuteEntrypoint : Entrypoint<TaskExecuteMessage, KtcpMessage> {
-    override val info = EntrypointInfo("task_execute", emptyList(), "タスク実行要求処理")
+interface TaskExecuteEntrypoint : Entrypoint<TaskExecuteMessage, KtcpMessage> {
+    override val info: EntrypointInfo
+        get() = EntrypointInfo("task_execute", emptyList(), "タスク実行要求処理")
 
     override fun access(input: TaskExecuteMessage): KtcpMessage {
         // タスク実行処理の実装

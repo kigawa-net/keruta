@@ -1,6 +1,6 @@
 package net.kigawa.keruta.ktcp.model
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ErrorMsg
+import net.kigawa.keruta.ktcp.model.message.ErrorMsg
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 

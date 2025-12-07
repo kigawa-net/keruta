@@ -7,8 +7,9 @@ import net.kigawa.keruta.ktcp.model.message.*
 
 
 
-class TaskDeleteEntrypoint : Entrypoint<TaskDeleteMessage, KtcpMessage> {
-    override val info = EntrypointInfo("task_delete", emptyList(), "タスク削除要求処理")
+interface TaskDeleteEntrypoint : Entrypoint<TaskDeleteMessage, KtcpMessage> {
+    override val info: EntrypointInfo
+        get() = EntrypointInfo("task_delete", emptyList(), "タスク削除要求処理")
 
     override fun access(input: TaskDeleteMessage): KtcpMessage {
         // タスク削除処理

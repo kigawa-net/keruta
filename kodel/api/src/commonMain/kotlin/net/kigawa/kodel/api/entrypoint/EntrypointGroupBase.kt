@@ -26,7 +26,7 @@ abstract class EntrypointGroupBase<I, O>: Entrypoint<I, O> {
      */
     fun <J, P, T: Entrypoint<J, P>> add(
         endpoint: T,
-        translator: ((J) -> P?).(I) -> O?,
+        translator: ((J?) -> P?).(I) -> O?,
     ): T {
         return endpoint.also { subEntrypoints += TranslateEntrypoint(endpoint, translator) }
     }

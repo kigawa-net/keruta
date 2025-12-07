@@ -5,9 +5,10 @@ import net.kigawa.keruta.ktcp.model.message.KtcpMessage
 import net.kigawa.kodel.api.entrypoint.Entrypoint
 import net.kigawa.kodel.api.entrypoint.EntrypointInfo
 
-// エントリーポイントクラス定義
-class AuthenticateEntrypoint : Entrypoint<AuthenticateMessage, KtcpMessage> {
-    override val info = EntrypointInfo("authenticate", emptyList(), "認証メッセージ処理")
+// エントリーポイントインターフェース定義
+interface AuthenticateEntrypoint : Entrypoint<AuthenticateMessage, KtcpMessage> {
+    override val info: EntrypointInfo
+        get() = EntrypointInfo("authenticate", emptyList(), "認証メッセージ処理")
 
     override fun access(input: AuthenticateMessage): KtcpMessage {
         // 認証処理の実装（モデルではモック）

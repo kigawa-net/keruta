@@ -7,8 +7,9 @@ import net.kigawa.keruta.ktcp.model.message.*
 
 
 
-class TaskCompletedEntrypoint : Entrypoint<TaskCompletedMessage, KtcpMessage> {
-    override val info = EntrypointInfo("task_completed", emptyList(), "タスク完了通知処理")
+interface TaskCompletedEntrypoint : Entrypoint<TaskCompletedMessage, KtcpMessage> {
+    override val info: EntrypointInfo
+        get() = EntrypointInfo("task_completed", emptyList(), "タスク完了通知処理")
 
     override fun access(input: TaskCompletedMessage): KtcpMessage {
         // 完了処理

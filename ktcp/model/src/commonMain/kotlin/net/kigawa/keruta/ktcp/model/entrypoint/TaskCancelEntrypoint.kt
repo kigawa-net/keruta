@@ -7,8 +7,9 @@ import net.kigawa.keruta.ktcp.model.message.*
 
 
 
-class TaskCancelEntrypoint : Entrypoint<TaskCancelMessage, KtcpMessage> {
-    override val info = EntrypointInfo("task_cancel", emptyList(), "タスクキャンセル要求処理")
+interface TaskCancelEntrypoint : Entrypoint<TaskCancelMessage, KtcpMessage> {
+    override val info: EntrypointInfo
+        get() = EntrypointInfo("task_cancel", emptyList(), "タスクキャンセル要求処理")
 
     override fun access(input: TaskCancelMessage): KtcpMessage {
         // キャンセル処理

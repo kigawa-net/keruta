@@ -9,8 +9,9 @@ import net.kigawa.keruta.ktcp.model.message.*
 
 
 
-class TaskErrorEntrypoint : Entrypoint<TaskErrorMessage, KtcpMessage> {
-    override val info = EntrypointInfo("task_error", emptyList(), "タスクエラー処理")
+interface TaskErrorEntrypoint : Entrypoint<TaskErrorMessage, KtcpMessage> {
+    override val info: EntrypointInfo
+        get() = EntrypointInfo("task_error", emptyList(), "タスクエラー処理")
 
     override fun access(input: TaskErrorMessage): KtcpMessage {
         // エラー処理

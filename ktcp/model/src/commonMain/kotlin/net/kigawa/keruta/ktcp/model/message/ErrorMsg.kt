@@ -4,7 +4,7 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 // エラーメッセージ
-data class ErrorMessage @OptIn(ExperimentalTime::class) constructor(
+data class ErrorMsg @OptIn(ExperimentalTime::class) constructor(
     val code: String,
     val message: String,
     val retryable: Boolean,

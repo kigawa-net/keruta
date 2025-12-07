@@ -8,8 +8,9 @@ import net.kigawa.keruta.ktcp.model.message.*
 
 
 
-class TaskCreateResponseEntrypoint : Entrypoint<TaskCreateResponseMessage, KtcpMessage> {
-    override val info = EntrypointInfo("task_create_response", emptyList(), "タスク作成応答処理")
+interface TaskCreateResponseEntrypoint : Entrypoint<TaskCreateResponseMessage, KtcpMessage> {
+    override val info: EntrypointInfo
+        get() = EntrypointInfo("task_create_response", emptyList(), "タスク作成応答処理")
 
     override fun access(input: TaskCreateResponseMessage): KtcpMessage {
         // 応答処理
