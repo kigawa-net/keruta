@@ -1,11 +1,13 @@
 package net.kigawa.keruta.ktcp.model
 
 import net.kigawa.keruta.ktcp.model.entrypoint.*
+import net.kigawa.keruta.ktcp.model.message.ErrorMessage
 import net.kigawa.keruta.ktcp.model.message.KtcpMessage
 import net.kigawa.kodel.api.entrypoint.EntrypointGroupBase
 import net.kigawa.kodel.api.entrypoint.EntrypointInfo
 import net.kigawa.kodel.api.log.getLogger
 import net.kigawa.kodel.api.log.traceignore.error
+import java.lang.Error
 
 class KtcpEntrypoint: EntrypointGroupBase<KtcpMessage, KtcpMessage>() {
     val logger = getLogger()
@@ -38,7 +40,12 @@ class KtcpEntrypoint: EntrypointGroupBase<KtcpMessage, KtcpMessage>() {
         input: KtcpMessage,
     ): KtcpMessage? {
         logger.error("not found entrypoint: $input")
-        return null
+        return ErrorMessage(
+            code = "ENTRYPOINT_NOT_FOUND",
+            message = "No entrypoint found for message type: ${input.type}",
+            retryable = false,
+            timestamp = input.timestamp
+        )
     }
 
 
