@@ -7,5 +7,5 @@ data class ErrorMessage(
     val retryable: Boolean,
     override val timestamp: String
 ) : KtcpMessage{
-    override val type: KtcpMessageType = KtcpMessageType.ERROR
+    override fun getType(): KtcpMessageType = KtcpMessageType.ERROR
 }

@@ -7,7 +7,6 @@ import net.kigawa.kodel.api.entrypoint.EntrypointGroupBase
 import net.kigawa.kodel.api.entrypoint.EntrypointInfo
 import net.kigawa.kodel.api.log.getLogger
 import net.kigawa.kodel.api.log.traceignore.error
-import java.lang.Error
 
 class KtcpEntrypoint: EntrypointGroupBase<KtcpMessage, KtcpMessage>() {
     val logger = getLogger()
@@ -38,11 +37,11 @@ class KtcpEntrypoint: EntrypointGroupBase<KtcpMessage, KtcpMessage>() {
 
     override fun onSubEntrypointNotFound(
         input: KtcpMessage,
-    ): KtcpMessage? {
+    ): KtcpMessage {
         logger.error("not found entrypoint: $input")
         return ErrorMessage(
             code = "ENTRYPOINT_NOT_FOUND",
-            message = "No entrypoint found for message type: ${input.type}",
+            message = "No entrypoint found for message type: ${input.getType()}",
             retryable = false,
             timestamp = input.timestamp
         )
