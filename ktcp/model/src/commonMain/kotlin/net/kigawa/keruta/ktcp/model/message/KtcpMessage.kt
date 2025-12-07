@@ -1,7 +1,9 @@
  package net.kigawa.keruta.ktcp.model.message
 
-// KTCP メッセージの基底インターフェース
+ import kotlin.time.Instant
+
+ // KTCP メッセージの基底インターフェース
 interface KtcpMessage {
     fun getType(): KtcpMessageType
-    val timestamp: String
+    val timestamp: Instant
 }
