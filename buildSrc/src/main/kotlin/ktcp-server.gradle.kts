@@ -3,7 +3,7 @@ plugins {
 }
 kotlin {
     sourceSets["commonMain"].dependencies {
-        api(project(":kodel:api"))
+        api(project(":ktcp:model"))
     }
     sourceSets["commonTest"].dependencies {
     }

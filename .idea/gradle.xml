@@ -25,6 +25,7 @@
             <option value="$PROJECT_DIR$/kodel/core" />
             <option value="$PROJECT_DIR$/ktcp" />
             <option value="$PROJECT_DIR$/ktcp/model" />
+            <option value="$PROJECT_DIR$/ktcp/server" />
           </set>
         </option>
       </GradleProjectSettings>
