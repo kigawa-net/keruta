@@ -1,5 +1,6 @@
 package net.kigawa.keruta.ktcp.server.authenticate
 
+import net.kigawa.keruta.ktcp.model.EmptyKtcpRes
 import net.kigawa.keruta.ktcp.model.KtcpRes
 import net.kigawa.keruta.ktcp.model.authenticate.AuthenticateEntrypoint
 import net.kigawa.keruta.ktcp.model.authenticate.AuthenticateMsg
@@ -13,15 +14,16 @@ class ServerAuthenticateEntrypoint: AuthenticateEntrypoint {
     override fun access(
         input: AuthenticateMsg,
     ): KtcpRes? {
-        return when (val msg = input.tryToAuthenticate()) {
-            null -> null
+        return when (val res = input.token.tryVerify()){
             is Res.Err -> KtcpErrRes(
-                code = msg.err.code,
-                message = msg.err.message ?: "Unknown error",
+                code = res.err.code,
+                message = res.err.message ?: "Unknown error",
                 retryable = false,
             )
-
-            is Res.Ok -> null
+            is Res.Ok -> {
+                EmptyKtcpRes
+            }
         }
     }
+
 }

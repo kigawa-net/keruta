@@ -1,6 +1,7 @@
 package net.kigawa.keruta.ktcp.model
 
 import net.kigawa.keruta.ktcp.model.authenticate.AuthenticateEntrypoint
+import net.kigawa.keruta.ktcp.model.err.ErrCode
 import net.kigawa.keruta.ktcp.model.err.KtcpErrRes
 import net.kigawa.kodel.api.entrypoint.EntrypointGroupBase
 import net.kigawa.kodel.api.entrypoint.EntrypointInfo
@@ -26,7 +27,7 @@ class KtcpEntrypoints(
     ): KtcpRes {
         logger.error("not found entrypoint: $input")
         return KtcpErrRes(
-            code = "ENTRYPOINT_NOT_FOUND",
+            code = ErrCode.ENTRYPOINT_NOT_FOUND,
             message = "No entrypoint found for message type: $input",
             retryable = false,
             timestamp = input.timestamp

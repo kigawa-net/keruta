@@ -1,6 +1,6 @@
 package net.kigawa.keruta.ktcp.model.err
 
-class ValidateErr(
+open class KtcpErr(
     val code: ErrCode
 ): Exception() {
 }
