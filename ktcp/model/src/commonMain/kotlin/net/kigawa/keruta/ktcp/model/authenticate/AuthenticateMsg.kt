@@ -1,6 +1,8 @@
 package net.kigawa.keruta.ktcp.model.authenticate
 
 /**
- * Sealed class for authentication messages.
+ * Marker interface for authentication messages.
  */
-sealed class AuthenticateMsg
+interface AuthenticateMsg {
+    fun tryToAuthenticate(): AuthenticateMsg? = null
+}
