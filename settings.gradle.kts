@@ -14,8 +14,8 @@ rootProject.name = "keruta"
 
 include("kodel:api")
 include("kodel:core")
-//include("keruta-task-client-protocol:model")
-//include("keruta-task-client-protocol:client")
-//include("keruta-task-client-protocol:server")
+include("ktcp:model")
+//include("ktcp:client")
+include("ktcp:server")
 //include("keruta-task-server:model")
 //include("keruta-task-server:server")
