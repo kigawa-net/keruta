@@ -7,8 +7,9 @@ package net.kigawa.kodel.api.entrypoint
  * @param I 入力の型
  * @param O 出力の型
  */
-abstract class EntrypointGroupBase<I, O> : Entrypoint<I, O> {
+abstract class EntrypointGroupBase<I, O>: Entrypoint<I, O> {
     private var subEntrypoints = mutableListOf<Entrypoint<I, O>>()
+
     /** サブエントリーポイントのリスト */
     val entrypoints: List<Entrypoint<I, O>>
         get() = subEntrypoints
@@ -23,10 +24,21 @@ abstract class EntrypointGroupBase<I, O> : Entrypoint<I, O> {
      * @param translator トランスレーター関数
      * @return 追加されたエントリーポイント
      */
-    fun <J, P, T : Entrypoint<J, P>> add(
+    fun <J, P, T: Entrypoint<J, P>> add(
         endpoint: T,
-        translator: ((J) -> P).(I) -> O,
+        translator: ((J) -> P?).(I) -> O?,
     ): T {
         return endpoint.also { subEntrypoints += TranslateEntrypoint(endpoint, translator) }
     }
+
+    override fun access(
+        input: I,
+    ): O? {
+        entrypoints.forEach { entrypoint ->
+            entrypoint.access(input)?.let { return it }
+        }
+        return onSubEntrypointNotFound(input)
+    }
+
+    abstract fun onSubEntrypointNotFound(input: I): O?
 }
