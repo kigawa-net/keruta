@@ -9,6 +9,7 @@ import net.kigawa.kodel.api.log.getLogger
 import net.kigawa.kodel.api.log.traceignore.error
 import kotlin.time.ExperimentalTime
 
+@Suppress("unused")
 class KtcpEntrypoints(
     authenticateEntrypoint: AuthenticateEntrypoint,
 ): EntrypointGroupBase<KtcpUnknownMsg, KtcpRes>() {

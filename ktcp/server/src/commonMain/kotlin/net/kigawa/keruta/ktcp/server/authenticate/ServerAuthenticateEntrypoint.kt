@@ -6,10 +6,13 @@ import net.kigawa.keruta.ktcp.model.authenticate.AuthenticateEntrypoint
 import net.kigawa.keruta.ktcp.model.authenticate.AuthenticateMsg
 
 import net.kigawa.keruta.ktcp.model.err.KtcpErrRes
+import net.kigawa.keruta.ktcp.server.Connection
 import net.kigawa.kodel.api.err.Res
 import kotlin.time.ExperimentalTime
 
-class ServerAuthenticateEntrypoint: AuthenticateEntrypoint {
+class ServerAuthenticateEntrypoint(
+    val connection: Connection
+): AuthenticateEntrypoint {
     @OptIn(ExperimentalTime::class)
     override fun access(
         input: AuthenticateMsg,
@@ -21,6 +24,7 @@ class ServerAuthenticateEntrypoint: AuthenticateEntrypoint {
                 retryable = false,
             )
             is Res.Ok -> {
+                connection.authenticated()
                 EmptyKtcpRes
             }
         }
