@@ -9,10 +9,10 @@ class EntrypointTest {
     fun `should create entrypoint with input and output types`() {
         // Given
         val entrypoint =
-            object : Entrypoint<String, Int> {
+            object : Entrypoint<String, Int, Unit> {
                 override val info = EntrypointInfo("test", emptyList(), "Test entrypoint")
 
-                override fun access(input: String): Int = input.length
+                override fun access(input: String, ctx: Unit): Int = input.length
             }
 
         // When & Then
@@ -24,14 +24,14 @@ class EntrypointTest {
     fun `should access entrypoint with input`() {
         // Given
         val entrypoint =
-            object : Entrypoint<String, Int> {
+            object : Entrypoint<String, Int, Unit> {
                 override val info = EntrypointInfo("lengthcalc", emptyList(), "Calculates string length")
 
-                override fun access(input: String): Int = input.length
+                override fun access(input: String, ctx: Unit): Int = input.length
             }
 
         // When
-        val result = entrypoint.access("hello")
+        val result = entrypoint.access("hello", Unit)
 
         // Then
         assertEquals(5, result)
@@ -41,10 +41,10 @@ class EntrypointTest {
     fun `should have entrypoint info`() {
         // Given
         val entrypoint =
-            object : Entrypoint<Unit, Unit> {
+            object : Entrypoint<Unit, Unit, Unit> {
                 override val info = EntrypointInfo("simple", listOf("alias1"), "A simple entrypoint")
 
-                override fun access(input: Unit) {}
+                override fun access(input: Unit, ctx: Unit): Unit {}
             }
 
         // When

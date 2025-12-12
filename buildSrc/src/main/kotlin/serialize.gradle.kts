@@ -1,10 +1,10 @@
 plugins {
     id("common")
-    id("serialize")
+    kotlin("plugin.serialization")
 }
 kotlin {
     sourceSets["commonMain"].dependencies {
-        api(project(":kodel:api"))
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
     }
     sourceSets["commonTest"].dependencies {
     }

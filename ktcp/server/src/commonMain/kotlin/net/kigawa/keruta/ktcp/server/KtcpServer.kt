@@ -7,11 +7,11 @@ class KtcpServer(
 
 ) {
 
-    fun getKtcpEntrypoints (connection: Connection)  = KtcpEntrypoints(
-        ServerAuthenticateEntrypoint(connection)
+    val ktcpEntrypoints = KtcpEntrypoints(
+        ServerAuthenticateEntrypoint()
     )
 
-    fun startConnection(): Connection {
-        return Connection(this)
+    fun startConnection(): ServerConnection {
+        return ServerConnection(this)
     }
 }
