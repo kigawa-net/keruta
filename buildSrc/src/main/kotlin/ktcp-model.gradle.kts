@@ -1,5 +1,6 @@
 plugins {
     id("common")
+    id("serialize")
 }
 kotlin {
     sourceSets["commonMain"].dependencies {

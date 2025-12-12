@@ -1,3 +1,3 @@
 plugins {
-    id("ktcp-server")
+    id("ktcp-client")
 }

@@ -1,4 +1,6 @@
 package net.kigawa.keruta.ktcp.client
 
-class ClientCtx {
+class ClientCtx(
+    val msgSender: MsgSender,
+) {
 }

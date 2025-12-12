@@ -12,10 +12,10 @@ package net.kigawa.kodel.api.entrypoint
  * @param entrypoint 委譲先エントリーポイント
  * @param translator トランスレーター関数
  */
-class TranslateEntrypoint<in I, out O, in J, out P, T: Entrypoint<J, P>>(
+class TranslateEntrypoint<in I, out O, in J, out P, T: Entrypoint<J, P, C>, C>(
     val entrypoint: T,
     private val translator: ((J?) -> P?).(I) -> O?,
-): Entrypoint<I, O> {
+): Entrypoint<I, O, C> {
     override val info: EntrypointInfo
         get() = entrypoint.info
 
@@ -25,11 +25,11 @@ class TranslateEntrypoint<in I, out O, in J, out P, T: Entrypoint<J, P>>(
      * @param input 入力
      * @return 翻訳された出力
      */
-    override fun access(input: I): O? {
+    override fun access(input: I, ctx: C): O? {
         return object: (J?) -> P? {
             override fun invoke(p1: J?): P? {
                 if (p1 == null) return null
-                return entrypoint.access(p1)
+                return entrypoint.access(p1, ctx)
             }
         }.translator(input)
     }

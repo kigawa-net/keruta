@@ -10,9 +10,9 @@ import net.kigawa.kodel.api.log.traceignore.error
 import kotlin.time.ExperimentalTime
 
 @Suppress("unused")
-class KtcpEntrypoints(
-    authenticateEntrypoint: AuthenticateEntrypoint,
-): EntrypointGroupBase<KtcpUnknownMsg, KtcpRes>() {
+class KtcpEntrypoints<C>(
+    authenticateEntrypoint: AuthenticateEntrypoint<C>,
+): EntrypointGroupBase<KtcpUnknownMsg, KtcpRes, C>() {
     val logger = getLogger()
     override val info: EntrypointInfo = EntrypointInfo(
         "Keruta Task Client Protocol",

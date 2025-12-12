@@ -5,9 +5,9 @@ import net.kigawa.kodel.api.entrypoint.Entrypoint
 import net.kigawa.kodel.api.entrypoint.EntrypointInfo
 
 // エントリーポイントインターフェース定義
-interface AuthenticateEntrypoint: Entrypoint<AuthenticateMsg, KtcpRes> {
+interface AuthenticateEntrypoint<C>: Entrypoint<AuthenticateMsg, KtcpRes, C> {
     override val info: EntrypointInfo
         get() = EntrypointInfo("authenticate", emptyList(), "認証メッセージ処理")
 
-    override fun access(input: AuthenticateMsg): KtcpRes?
+    override fun access(input: AuthenticateMsg, ctx: C): KtcpRes?
 }

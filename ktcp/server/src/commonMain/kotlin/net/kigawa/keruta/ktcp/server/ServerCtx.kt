@@ -1,4 +1,5 @@
 package net.kigawa.keruta.ktcp.server
 
-class ServerCtx {
-}
+class ServerCtx (
+    val connection: ServerConnection
+)
