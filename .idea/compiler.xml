@@ -38,21 +38,6 @@
       <module name="keruta-api.infra.test" target="21" />
       <module name="keruta-api.main" target="21" />
       <module name="keruta-api.test" target="21" />
-      <module name="keruta-executor" target="21" />
-      <module name="keruta-executor.action" target="21" />
-      <module name="keruta-executor.action.main" target="21" />
-      <module name="keruta-executor.action.test" target="21" />
-      <module name="keruta-executor.buildSrc" target="21" />
-      <module name="keruta-executor.buildSrc.main" target="21" />
-      <module name="keruta-executor.buildSrc.test" target="21" />
-      <module name="keruta-executor.infrastructure" target="21" />
-      <module name="keruta-executor.infrastructure.main" target="21" />
-      <module name="keruta-executor.infrastructure.test" target="21" />
-      <module name="keruta-executor.main" target="21" />
-      <module name="keruta-executor.model" target="21" />
-      <module name="keruta-executor.model.main" target="21" />
-      <module name="keruta-executor.model.test" target="21" />
-      <module name="keruta-executor.test" target="21" />
       <module name="keruta-sdk" target="21" />
       <module name="keruta-sdk.buildSrc" target="21" />
       <module name="keruta-sdk.buildSrc.main" target="21" />
