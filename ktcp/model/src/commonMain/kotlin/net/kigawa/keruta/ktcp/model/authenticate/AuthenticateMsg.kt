@@ -1,8 +1,12 @@
 package net.kigawa.keruta.ktcp.model.authenticate
 
+import kotlinx.serialization.Serializable
+
 /**
  * Marker interface for authentication messages.
  */
-interface AuthenticateMsg {
-    fun tryToAuthenticate(): AuthenticateMsg? = null
+@Serializable
+data class AuthenticateMsg(
+    val token: AuthenticateToken
+) {
 }

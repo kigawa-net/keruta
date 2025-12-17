@@ -12,3 +12,4 @@
 /keruta-executor/buildSrc/.kotlin/
 /keruta-sdk/buildSrc/.kotlin/
 /.kotlin/
+/buildSrc/.kotlin/errors/errors-*.log

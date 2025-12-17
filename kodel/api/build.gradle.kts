@@ -1,10 +1,15 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
+    kotlin("multiplatform")
+}
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
 }
 
-
 kotlin {
+    compilerOptions {
+        freeCompilerArgs = listOf("-Xcontext-parameters")
+    }
     jvm {}
     sourceSets["commonMain"].dependencies {
     }

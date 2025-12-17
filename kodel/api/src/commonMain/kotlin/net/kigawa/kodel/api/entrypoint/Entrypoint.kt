@@ -7,7 +7,7 @@ package net.kigawa.kodel.api.entrypoint
  * @param I 入力の型
  * @param O 出力の型
  */
-interface Entrypoint<in I, out O> {
+interface Entrypoint<in I, out O,C> {
     /** エントリーポイントの情報 */
     val info: EntrypointInfo
 
@@ -17,5 +17,5 @@ interface Entrypoint<in I, out O> {
      * @param input 入力
      * @return 出力
      */
-    fun access(input: I): O?
+    fun access(input: I,ctx: C): O?
 }
