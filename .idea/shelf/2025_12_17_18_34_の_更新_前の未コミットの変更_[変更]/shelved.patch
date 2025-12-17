@@ -1,0 +1,208 @@
+Index: .idea/shelf/2025_12_07_1_03_の_チェックアウト_前の未コミットの変更_[変更]1/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/2025_12_07_1_03_の_チェックアウト_前の未コミットの変更_[変更]1/shelved.patch b/.idea/shelf/2025_12_07_1_03_の_チェックアウト_前の未コミットの変更_[変更]1/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/2025_12_07_1_03_の_チェックアウト_前の未コミットの変更_[変更]1/shelved.patch	(revision aed5a40214152c789950f90e1d025c58a70c0923)
++++ /dev/null	(revision aed5a40214152c789950f90e1d025c58a70c0923)
+@@ -1,21 +0,0 @@
+-Index: .idea/modules.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"ProjectModuleManager\">\n    <modules>\n      <module fileurl=\"file://$PROJECT_DIR$/keruta-admin/keruta-admin.iml\" filepath=\"$PROJECT_DIR$/keruta-admin/keruta-admin.iml\" />\n      <module fileurl=\"file://$PROJECT_DIR$/keruta-agent/keruta-agent.iml\" filepath=\"$PROJECT_DIR$/keruta-agent/keruta-agent.iml\" />\n      <module fileurl=\"file://$PROJECT_DIR$/.idea/modules/keruta-api.main.iml\" filepath=\"$PROJECT_DIR$/.idea/modules/keruta-api.main.iml\" />\n      <module fileurl=\"file://$PROJECT_DIR$/.idea/modules/keruta-api.test.iml\" filepath=\"$PROJECT_DIR$/.idea/modules/keruta-api.test.iml\" />\n      <module fileurl=\"file://$PROJECT_DIR$/keruta-coder-template/keruta-coder-template.iml\" filepath=\"$PROJECT_DIR$/keruta-coder-template/keruta-coder-template.iml\" />\n      <module fileurl=\"file://$PROJECT_DIR$/.idea/modules/action/keruta-executor.action.main.iml\" filepath=\"$PROJECT_DIR$/.idea/modules/action/keruta-executor.action.main.iml\" />\n      <module fileurl=\"file://$PROJECT_DIR$/.idea/modules/client/model/keruta-sdk.client.model.main.iml\" filepath=\"$PROJECT_DIR$/.idea/modules/client/model/keruta-sdk.client.model.main.iml\" />\n      <module fileurl=\"file://$PROJECT_DIR$/.idea/modules/common/model/keruta-sdk.common.model.main.iml\" filepath=\"$PROJECT_DIR$/.idea/modules/common/model/keruta-sdk.common.model.main.iml\" />\n    </modules>\n  </component>\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/modules.xml b/.idea/modules.xml
+---- a/.idea/modules.xml	(revision ea55b89242e8bc4eb92a2cb439e6961d2c4a7a65)
+-+++ b/.idea/modules.xml	(date 1765036959097)
+-@@ -7,9 +7,6 @@
+-       <module fileurl="file://$PROJECT_DIR$/.idea/modules/keruta-api.main.iml" filepath="$PROJECT_DIR$/.idea/modules/keruta-api.main.iml" />
+-       <module fileurl="file://$PROJECT_DIR$/.idea/modules/keruta-api.test.iml" filepath="$PROJECT_DIR$/.idea/modules/keruta-api.test.iml" />
+-       <module fileurl="file://$PROJECT_DIR$/keruta-coder-template/keruta-coder-template.iml" filepath="$PROJECT_DIR$/keruta-coder-template/keruta-coder-template.iml" />
+--      <module fileurl="file://$PROJECT_DIR$/.idea/modules/action/keruta-executor.action.main.iml" filepath="$PROJECT_DIR$/.idea/modules/action/keruta-executor.action.main.iml" />
+--      <module fileurl="file://$PROJECT_DIR$/.idea/modules/client/model/keruta-sdk.client.model.main.iml" filepath="$PROJECT_DIR$/.idea/modules/client/model/keruta-sdk.client.model.main.iml" />
+--      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/model/keruta-sdk.common.model.main.iml" filepath="$PROJECT_DIR$/.idea/modules/common/model/keruta-sdk.common.model.main.iml" />
+-     </modules>
+-   </component>
+- </project>
+-\ No newline at end of file
+Index: .idea/shelf/2025_12_07_1_03______1.xml
+===================================================================
+diff --git a/.idea/shelf/2025_12_07_1_03______1.xml b/.idea/shelf/2025_12_07_1_03______1.xml
+deleted file mode 100644
+--- a/.idea/shelf/2025_12_07_1_03______1.xml	(revision aed5a40214152c789950f90e1d025c58a70c0923)
++++ /dev/null	(revision aed5a40214152c789950f90e1d025c58a70c0923)
+@@ -1,4 +0,0 @@
+-<changelist name="2025_12_07_1_03_の_チェックアウト_前の未コミットの変更_[変更]1" date="1765037039638" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/2025_12_07_1_03_の_チェックアウト_前の未コミットの変更_[変更]1/shelved.patch" />
+-  <option name="DESCRIPTION" value="2025/12/07 1:03 の チェックアウト 前の未コミットの変更 [変更]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/artifacts/keruta_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"keruta-jvm-dev\">\n    <output-path>$PROJECT_DIR$/build/libs</output-path>\n    <root id=\"archive\" name=\"keruta-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/keruta_jvm_dev.xml b/.idea/artifacts/keruta_jvm_dev.xml
+--- a/.idea/artifacts/keruta_jvm_dev.xml	(revision aed5a40214152c789950f90e1d025c58a70c0923)
++++ b/.idea/artifacts/keruta_jvm_dev.xml	(date 1765964071709)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="keruta-jvm-dev">
+     <output-path>$PROJECT_DIR$/build/libs</output-path>
+-    <root id="archive" name="keruta-jvm-dev.jar">
+-      <element id="module-output" name="keruta.jvmMain" />
+-    </root>
++    <root id="archive" name="keruta-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-jvm-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_jvm_dev.xml b/.idea/artifacts/ktcp_jvm_dev.xml
+--- a/.idea/artifacts/ktcp_jvm_dev.xml	(revision aed5a40214152c789950f90e1d025c58a70c0923)
++++ b/.idea/artifacts/ktcp_jvm_dev.xml	(date 1765964071741)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-jvm-dev">
+     <output-path>$PROJECT_DIR$/ktcp/build/libs</output-path>
+-    <root id="archive" name="ktcp-jvm-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.jvmMain" />
+-    </root>
++    <root id="archive" name="ktcp-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/model_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"model-jvm-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/model/build/libs</output-path>\n    <root id=\"archive\" name=\"model-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.model.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/model_jvm_dev.xml b/.idea/artifacts/model_jvm_dev.xml
+--- a/.idea/artifacts/model_jvm_dev.xml	(revision aed5a40214152c789950f90e1d025c58a70c0923)
++++ b/.idea/artifacts/model_jvm_dev.xml	(date 1765964071742)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="model-jvm-dev">
+     <output-path>$PROJECT_DIR$/ktcp/model/build/libs</output-path>
+-    <root id="archive" name="model-jvm-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.model.jvmMain" />
+-    </root>
++    <root id="archive" name="model-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/server_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"server-jvm-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/server/build/libs</output-path>\n    <root id=\"archive\" name=\"server-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.server.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/server_jvm_dev.xml b/.idea/artifacts/server_jvm_dev.xml
+--- a/.idea/artifacts/server_jvm_dev.xml	(revision aed5a40214152c789950f90e1d025c58a70c0923)
++++ b/.idea/artifacts/server_jvm_dev.xml	(date 1765964071757)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="server-jvm-dev">
+     <output-path>$PROJECT_DIR$/ktcp/server/build/libs</output-path>
+-    <root id="archive" name="server-jvm-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.server.jvmMain" />
+-    </root>
++    <root id="archive" name="server-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/kodel_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"kodel-jvm-dev\">\n    <output-path>$PROJECT_DIR$/kodel/build/libs</output-path>\n    <root id=\"archive\" name=\"kodel-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.kodel.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/kodel_jvm_dev.xml b/.idea/artifacts/kodel_jvm_dev.xml
+--- a/.idea/artifacts/kodel_jvm_dev.xml	(revision aed5a40214152c789950f90e1d025c58a70c0923)
++++ b/.idea/artifacts/kodel_jvm_dev.xml	(date 1765964071724)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="kodel-jvm-dev">
+     <output-path>$PROJECT_DIR$/kodel/build/libs</output-path>
+-    <root id="archive" name="kodel-jvm-dev.jar">
+-      <element id="module-output" name="keruta.kodel.jvmMain" />
+-    </root>
++    <root id="archive" name="kodel-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/core_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"core-jvm-dev\">\n    <output-path>$PROJECT_DIR$/kodel/core/build/libs</output-path>\n    <root id=\"archive\" name=\"core-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.kodel.core.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/core_jvm_dev.xml b/.idea/artifacts/core_jvm_dev.xml
+--- a/.idea/artifacts/core_jvm_dev.xml	(revision aed5a40214152c789950f90e1d025c58a70c0923)
++++ b/.idea/artifacts/core_jvm_dev.xml	(date 1765964071654)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="core-jvm-dev">
+     <output-path>$PROJECT_DIR$/kodel/core/build/libs</output-path>
+-    <root id="archive" name="core-jvm-dev.jar">
+-      <element id="module-output" name="keruta.kodel.core.jvmMain" />
+-    </root>
++    <root id="archive" name="core-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/api_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"api-jvm-dev\">\n    <output-path>$PROJECT_DIR$/kodel/api/build/libs</output-path>\n    <root id=\"archive\" name=\"api-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.kodel.api.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/api_jvm_dev.xml b/.idea/artifacts/api_jvm_dev.xml
+--- a/.idea/artifacts/api_jvm_dev.xml	(revision aed5a40214152c789950f90e1d025c58a70c0923)
++++ b/.idea/artifacts/api_jvm_dev.xml	(date 1765964071597)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="api-jvm-dev">
+     <output-path>$PROJECT_DIR$/kodel/api/build/libs</output-path>
+-    <root id="archive" name="api-jvm-dev.jar">
+-      <element id="module-output" name="keruta.kodel.api.jvmMain" />
+-    </root>
++    <root id="archive" name="api-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"VcsDirectoryMappings\">\n    <mapping directory=\"\" vcs=\"Git\" />\n    <mapping directory=\"$PROJECT_DIR$/keruta-api\" vcs=\"Git\" />\n    <mapping directory=\"$PROJECT_DIR$/keruta-doc\" vcs=\"Git\" />\n    <mapping directory=\"$PROJECT_DIR$/keruta-executor\" vcs=\"Git\" />\n    <mapping directory=\"$PROJECT_DIR$/kigawa-net-k8s\" vcs=\"Git\" />\n    <mapping directory=\"$PROJECT_DIR$/kigawa-net-k8s/fonsole-doc\" vcs=\"Git\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+--- a/.idea/vcs.xml	(revision aed5a40214152c789950f90e1d025c58a70c0923)
++++ b/.idea/vcs.xml	(date 1765964071861)
+@@ -2,7 +2,10 @@
+ <project version="4">
+   <component name="VcsDirectoryMappings">
+     <mapping directory="" vcs="Git" />
++    <mapping directory="$PROJECT_DIR$/keruta-admin" vcs="Git" />
++    <mapping directory="$PROJECT_DIR$/keruta-agent" vcs="Git" />
+     <mapping directory="$PROJECT_DIR$/keruta-api" vcs="Git" />
++    <mapping directory="$PROJECT_DIR$/keruta-coder-template" vcs="Git" />
+     <mapping directory="$PROJECT_DIR$/keruta-doc" vcs="Git" />
+     <mapping directory="$PROJECT_DIR$/keruta-executor" vcs="Git" />
+     <mapping directory="$PROJECT_DIR$/kigawa-net-k8s" vcs="Git" />
