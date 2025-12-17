@@ -2,7 +2,14 @@ plugins {
     kotlin("multiplatform")
 }
 
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
+}
 kotlin {
+    compilerOptions {
+        freeCompilerArgs = listOf("-Xcontext-parameters")
+    }
     jvm {}
     sourceSets["commonMain"].dependencies {
         implementation(project(":kodel:api"))

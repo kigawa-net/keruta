@@ -1,5 +1,5 @@
 plugins {
-    id("common")
+    id("kmp")
     kotlin("plugin.serialization")
 }
 kotlin {

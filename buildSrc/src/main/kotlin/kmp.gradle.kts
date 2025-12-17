@@ -2,7 +2,6 @@ plugins {
     kotlin("multiplatform")
 }
 
-
 repositories {
     mavenCentral()
     gradlePluginPortal()
