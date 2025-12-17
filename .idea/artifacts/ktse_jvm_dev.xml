@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ktse-jvm-dev">
+    <output-path>$PROJECT_DIR$/ktse/build/libs</output-path>
+    <root id="archive" name="ktse-jvm-dev.jar">
+      <element id="module-output" name="keruta.ktse.jvmMain" />
+    </root>
+  </artifact>
+</component>

@@ -1,8 +1,15 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     `kotlin-dsl`
+    id("org.jetbrains.kotlin.jvm") version "2.2.21"
 }
+
+kotlin {
+    compilerOptions {
+        languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
+    }
+}
+
+
 
 repositories {
     mavenCentral()
@@ -17,7 +24,9 @@ fun kotlinPluginId(pluginName: String, version: String = kotlinVersion) =
 fun kotlinId(id: String) = "org.jetbrains.kotlin:$id:$kotlinVersion"
 dependencies {
     implementation(kotlinPluginId("multiplatform"))
+    implementation(kotlinPluginId("jvm"))
     implementation(kotlinPluginId("plugin.serialization"))
-    implementation(pluginId("com.github.johnrengelman.shadow", "8.1.1"))
+    implementation(pluginId("com.gradleup.shadow", "9.3.0"))
     implementation(pluginId("org.jlleitschuh.gradle.ktlint", "12.1.1"))
+
 }

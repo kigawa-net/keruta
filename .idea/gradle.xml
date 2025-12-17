@@ -27,6 +27,7 @@
             <option value="$PROJECT_DIR$/ktcp/client" />
             <option value="$PROJECT_DIR$/ktcp/model" />
             <option value="$PROJECT_DIR$/ktcp/server" />
+            <option value="$PROJECT_DIR$/ktse" />
           </set>
         </option>
       </GradleProjectSettings>
