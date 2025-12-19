@@ -1,6 +1,6 @@
 plugins {
     id("jvm")
-    id("ktor-server")
+    id("ktor-server-websocket")
 }
 kotlin {
 }
