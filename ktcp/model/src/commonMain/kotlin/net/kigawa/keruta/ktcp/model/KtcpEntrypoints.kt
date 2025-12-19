@@ -15,7 +15,7 @@ class KtcpEntrypoints<C>(
 ): EntrypointGroupBase<KtcpUnknownMsg, KtcpRes, C>() {
     val logger = getLogger()
     override val info: EntrypointInfo = EntrypointInfo(
-        "Keruta Task Client Protocol",
+        "ktcp",
         listOf(),
         ""
     )
