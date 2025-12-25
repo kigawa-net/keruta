@@ -13,6 +13,7 @@ plugins {
 rootProject.name = "keruta"
 
 include("kodel:api")
+include("kodel:coroutine")
 include("kodel:core")
 include("ktcp:model")
 include("ktcp:client")

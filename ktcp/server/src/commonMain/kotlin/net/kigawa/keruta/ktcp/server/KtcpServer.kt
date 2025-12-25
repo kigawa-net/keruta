@@ -11,7 +11,9 @@ class KtcpServer(
         ServerAuthenticateEntrypoint()
     )
 
-    fun startConnection(): ServerConnection {
-        return ServerConnection(this)
+    suspend fun startConnection(block: suspend (ServerConnection) -> Unit) {
+        ServerConnection(this).also {
+            block(it)
+        }
     }
 }

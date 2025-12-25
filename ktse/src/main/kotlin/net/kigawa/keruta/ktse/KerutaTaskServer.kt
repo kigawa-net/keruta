@@ -3,11 +3,19 @@ package net.kigawa.keruta.ktse
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
+import io.ktor.websocket.*
+import kotlinx.coroutines.channels.consumeEach
 import net.kigawa.keruta.ktcp.server.KtcpServer
+import net.kigawa.keruta.ktcp.server.ServerConnection
+import net.kigawa.keruta.ktse.reader.FrameDecodeErr
+import net.kigawa.kodel.api.err.Res
+import net.kigawa.kodel.api.log.getLogger
+import net.kigawa.kodel.api.log.traceignore.error
 import kotlin.time.Duration.Companion.seconds
 
 object KerutaTaskServer {
-    val serverEntrypoints = KtcpServer()
+    val ktcpServer = KtcpServer()
+    val logger = getLogger()
     fun Application.module() {
         install(WebSockets) {
             pingPeriod = 15.seconds
@@ -16,9 +24,23 @@ object KerutaTaskServer {
             masking = false
         }
         routing {
-            webSocket("/ws/ktcp") {
+            websocketModule()
+        }
+    }
 
+    fun Routing.websocketModule() = webSocket("/ws/ktcp") {
+        ktcpServer.startConnection { con ->
+            incoming.consumeEach { frame ->
+                receive(frame,con)
             }
         }
+    }
+
+    fun receive(frame: Frame, con: ServerConnection) = when (val msg = FrameReader.readToMsg(frame)) {
+        is Res.Err<WebsocketUnknownMsg, FrameDecodeErr> -> {
+            logger.error("Failed to decode frame", msg.err)
+            con.recordErr()
+        }
+        is Res.Ok<WebsocketUnknownMsg, FrameDecodeErr> -> Unit
     }
 }

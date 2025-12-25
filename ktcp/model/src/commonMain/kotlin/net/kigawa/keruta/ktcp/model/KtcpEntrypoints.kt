@@ -19,7 +19,7 @@ class KtcpEntrypoints<C>(
         listOf(),
         ""
     )
-    val authenticateEntrypoint = add(authenticateEntrypoint, { input -> this(input.tryToAuthenticate()) })
+    val authenticateEntrypoint = add(authenticateEntrypoint, { input -> this(input.tryToAuthenticateMsg()) })
 
 
     @OptIn(ExperimentalTime::class)
@@ -30,8 +30,7 @@ class KtcpEntrypoints<C>(
         return KtcpErrRes(
             code = ErrCode.ENTRYPOINT_NOT_FOUND,
             message = "No entrypoint found for message type: $input",
-            retryable = false,
-            timestamp = input.timestamp
+            retryable = false
         )
     }
 
