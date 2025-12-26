@@ -5,8 +5,9 @@ import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.channels.consumeEach
+import net.kigawa.keruta.ktcp.model.msg.UnknownArg
 import net.kigawa.keruta.ktcp.server.KtcpServer
-import net.kigawa.keruta.ktcp.server.ServerConnection
+import net.kigawa.keruta.ktcp.server.KtcpSession
 import net.kigawa.keruta.ktse.reader.FrameDecodeErr
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.getLogger
@@ -29,18 +30,21 @@ object KerutaTaskServer {
     }
 
     fun Routing.websocketModule() = webSocket("/ws/ktcp") {
-        ktcpServer.startConnection { con ->
+        KtcpSession.startSession(WebsocketConnection(this@webSocket)) { con ->
             incoming.consumeEach { frame ->
-                receive(frame,con)
+                receive(frame, con)
             }
         }
     }
 
-    fun receive(frame: Frame, con: ServerConnection) = when (val msg = FrameReader.readToMsg(frame)) {
-        is Res.Err<WebsocketUnknownMsg, FrameDecodeErr> -> {
+    fun receive(frame: Frame, con: KtcpSession) = when (
+        val msg = FrameReader.readToMsg(frame)
+    ) {
+        is Res.Err<UnknownArg, FrameDecodeErr> -> {
             logger.error("Failed to decode frame", msg.err)
             con.recordErr()
         }
-        is Res.Ok<WebsocketUnknownMsg, FrameDecodeErr> -> Unit
+
+        is Res.Ok<UnknownArg, FrameDecodeErr> -> Unit
     }
 }

@@ -7,18 +7,18 @@ package net.kigawa.kodel.api.err
  * @param T 成功時の値の型
  * @param E エラーの型
  */
-sealed interface Res<T, in E : Throwable> {
+sealed interface Res<out T, out E : Throwable> {
     /**
      * 成功を表すクラス。
      *
      * @param value 成功時の値
      */
-    class Ok<T, E : Throwable>(val value: T) : Res<T, E>
+    class Ok<out T,out E : Throwable>(val value: T) : Res<T, E>
 
     /**
      * エラーを表すクラス。
      *
      * @param err エラー
      */
-    class Err<T, E : Throwable>(val err: E) : Res<T, E>
+    class Err<out T,out E : Throwable>(val err: E) : Res<T, E>
 }

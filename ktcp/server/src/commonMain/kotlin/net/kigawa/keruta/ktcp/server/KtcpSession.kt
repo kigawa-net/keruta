@@ -4,16 +4,14 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import net.kigawa.keruta.ktcp.model.MsgSender
 import net.kigawa.kodel.coroutine.CounterInDuration
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
-class ServerConnection private constructor(
-    val server: KtcpServer,
-    val msgSender: MsgSender
+class KtcpSession private constructor(
+    val connection: KtcpConnection,
 ) {
     private val counterInDuration = CounterInDuration(30.minutes, 3)
     private val lastAccess = MutableStateFlow(Clock.System.now())
@@ -22,19 +20,23 @@ class ServerConnection private constructor(
     private val isClosed = MutableStateFlow(false)
 
     companion object {
-        suspend fun create(server: KtcpServer) = ServerConnection(server).also {
-            coroutineScope {
-                launch {
-                    while (!it.isClosed.value) {
-                        val current = Clock.System.now()
-                        val last = it.lastAccess.value
-                        val limit = last + it.timeout
-                        if (limit <= current) {
-                            it.close()
+        suspend fun startSession(connection: KtcpConnection, block: suspend (KtcpSession) -> Unit) {
+            KtcpSession(connection).also {
+                coroutineScope {
+                    launch {
+                        while (!it.isClosed.value) {
+                            val current = Clock.System.now()
+                            val last = it.lastAccess.value
+                            val limit = last + it.timeout
+                            if (limit <= current) {
+
+                                it.close()
+                            }
+                            delay(limit - current)
                         }
-                        delay(limit - current)
                     }
                 }
+                block(it)
             }
         }
     }

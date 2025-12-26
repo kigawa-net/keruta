@@ -1,5 +1,8 @@
 package net.kigawa.keruta.ktcp.server
 
-class ServerCtx (
-    val connection: ServerConnection
-)
+class ServerCtx(
+    val session: KtcpSession,
+    val serializer: MsgSerializer,
+) {
+    val connection by session::connection
+}
