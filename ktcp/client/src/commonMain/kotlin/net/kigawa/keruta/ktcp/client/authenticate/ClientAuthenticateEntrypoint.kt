@@ -6,7 +6,7 @@ import net.kigawa.keruta.ktcp.model.authenticate.AuthenticateEntrypoint
 import net.kigawa.kodel.api.err.Res
 
 class ClientAuthenticateEntrypoint: AuthenticateEntrypoint<ClientCtx> {
-    override fun access(
+    override suspend fun access(
         input: AuthenticateArg, ctx: ClientCtx,
     ): Res<Unit, Nothing> {
         ctx.msgSender.sendMsg(input)

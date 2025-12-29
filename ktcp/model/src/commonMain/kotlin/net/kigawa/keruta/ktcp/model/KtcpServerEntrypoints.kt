@@ -21,7 +21,7 @@ class KtcpServerEntrypoints<C>(
         listOf(),
         ""
     )
-    val authenticateEntrypoint = add(authenticateEntrypoint, { input -> this(input.tryToAuthenticate()) })
+    val authenticateEntrypoint = add(authenticateEntrypoint) { input -> this(input.tryToAuthenticate()) }
 
 
     @OptIn(ExperimentalTime::class)
