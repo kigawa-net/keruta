@@ -5,10 +5,30 @@ on:
     branches:
       - main
       - develop
+    paths:
+      - .github/workflows/ci.yml
+      - buildSrc/**
+      - gradle/**
+      - kodel/**
+      - ktcp/**
+      - ktse/**
+      - build.gradle.kts
+      - gradle.properties
+      - settings.gradle.kts
   pull_request:
     branches:
       - main
       - develop
+    paths:
+      - .github/workflows/ci.yml
+      - buildSrc/**
+      - gradle/**
+      - kodel/**
+      - ktcp/**
+      - ktse/**
+      - build.gradle.kts
+      - gradle.properties
+      - settings.gradle.kts
 
 jobs:
   ktcp:
