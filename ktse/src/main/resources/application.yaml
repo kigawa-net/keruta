@@ -1,0 +1,6 @@
+ktor:
+    application:
+        modules:
+            - net.kigawa.keruta.ktse.KerutaTaskServer.module
+    deployment:
+        port: 8080

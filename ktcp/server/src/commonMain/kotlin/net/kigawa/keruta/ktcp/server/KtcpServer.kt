@@ -1,17 +1,15 @@
 package net.kigawa.keruta.ktcp.server
 
-import net.kigawa.keruta.ktcp.model.KtcpEntrypoints
-import net.kigawa.keruta.ktcp.server.authenticate.ServerAuthenticateEntrypoint
+import net.kigawa.keruta.ktcp.model.KtcpClientEntrypoints
+import net.kigawa.keruta.ktcp.model.KtcpServerEntrypoints
+import net.kigawa.keruta.ktcp.server.authenticate.ReceiveAuthenticateEntrypoint
 
-class KtcpServer(
+class KtcpServer {
 
-) {
-
-    val ktcpEntrypoints = KtcpEntrypoints(
-        ServerAuthenticateEntrypoint()
+    val ktcpServerEntrypoints = KtcpServerEntrypoints(
+        ReceiveAuthenticateEntrypoint()
     )
-
-    fun startConnection(): ServerConnection {
-        return ServerConnection(this)
-    }
+    val clientEntrypoints = KtcpClientEntrypoints(
+        SendGenericErrEntrypoint()
+    )
 }
