@@ -6,9 +6,11 @@ import io.ktor.server.websocket.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.channels.consumeEach
 import net.kigawa.keruta.ktcp.model.msg.UnknownArg
+import net.kigawa.keruta.ktcp.model.serialize.JsonMsgSerializer
 import net.kigawa.keruta.ktcp.server.KtcpServer
 import net.kigawa.keruta.ktcp.server.KtcpSession
-import net.kigawa.keruta.ktse.reader.FrameDecodeErr
+import net.kigawa.keruta.ktcp.server.ServerCtx
+import net.kigawa.keruta.ktse.reader.DecodeFrameErr
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.getLogger
 import net.kigawa.kodel.api.log.traceignore.error
@@ -30,21 +32,22 @@ object KerutaTaskServer {
     }
 
     fun Routing.websocketModule() = webSocket("/ws/ktcp") {
-        KtcpSession.startSession(WebsocketConnection(this@webSocket)) { con ->
+        KtcpSession.startSession(WebsocketConnection(this@webSocket)) { session ->
+            val jsonSerializer = JsonMsgSerializer()
             incoming.consumeEach { frame ->
-                receive(frame, con)
+                receive(frame, ServerCtx(session,jsonSerializer))
             }
         }
     }
 
-    fun receive(frame: Frame, con: KtcpSession) = when (
-        val msg = FrameReader.readToMsg(frame)
+    suspend fun receive(frame: Frame, ctx: ServerCtx) = when (
+        val msg = WebsocketUnknownArg.fromFrame(frame,ctx)
     ) {
-        is Res.Err<UnknownArg, FrameDecodeErr> -> {
+        is Res.Err<*, *> -> {
             logger.error("Failed to decode frame", msg.err)
-            con.recordErr()
+                ctx.session.recordErr()
         }
 
-        is Res.Ok<UnknownArg, FrameDecodeErr> -> Unit
+        is Res.Ok<*, *> -> TODO()
     }
 }

@@ -1,5 +1,9 @@
 package net.kigawa.keruta.ktcp.model.err
 
 enum class ErrCode {
-    ENTRYPOINT_NOT_FOUND
+    ENTRYPOINT_NOT_FOUND,
+    ILLEGAL_FORMAT_DESERIALIZE,
+    INVALID_TYPE_DESERIALIZE,
+    INVALID_TYPE_DECODE_FRAME,
+    DESERIALIZE_DECODE_FRAME
 }

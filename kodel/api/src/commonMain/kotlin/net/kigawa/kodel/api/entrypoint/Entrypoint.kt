@@ -17,5 +17,5 @@ interface Entrypoint<in I, out O,C> {
      * @param input 入力
      * @return 出力
      */
-    fun access(input: I,ctx: C): O?
+    suspend fun access(input: I,ctx: C): O?
 }

@@ -4,7 +4,7 @@ import io.ktor.server.websocket.*
 import io.ktor.websocket.*
 import kotlinx.serialization.Serializable
 import net.kigawa.keruta.ktcp.server.KtcpConnection
-import net.kigawa.keruta.ktcp.server.MsgSerializer
+import net.kigawa.keruta.ktcp.model.serialize.MsgSerializer
 
 class WebsocketConnection(
     val session: DefaultWebSocketServerSession,

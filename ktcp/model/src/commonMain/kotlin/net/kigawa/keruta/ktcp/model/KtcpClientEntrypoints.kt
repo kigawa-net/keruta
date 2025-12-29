@@ -12,14 +12,14 @@ import kotlin.time.ExperimentalTime
 @Suppress("unused")
 class KtcpClientEntrypoints<C>(
     genericErrEntrypoint: GenericErrEntrypoint<C>,
-): EntrypointGroupBase<UnknownArg, Res<Unit, Nothing>, C>() {
+): EntrypointGroupBase<UnknownArg, Res<Unit, EntrypointNotFoundErr>, C>() {
     val logger = getLogger()
     override val info: EntrypointInfo = EntrypointInfo(
         "ktcp-client",
         listOf(),
         ""
     )
-    val genericError = add(genericErrEntrypoint, { this(it.tryToGenericError()) })
+    val genericError = add(genericErrEntrypoint) { this(it.tryToGenericError()) }
 
 
     @OptIn(ExperimentalTime::class)

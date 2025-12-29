@@ -6,7 +6,7 @@ import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.kodel.api.err.Res
 
 class ReceiveAuthenticateEntrypoint: AuthenticateEntrypoint<ServerCtx> {
-    override fun access(
+    override suspend fun access(
         input: AuthenticateArg, ctx: ServerCtx,
     ): Res<Unit, Nothing>? {
         // TODO: トークンの検証ロジックを実装
