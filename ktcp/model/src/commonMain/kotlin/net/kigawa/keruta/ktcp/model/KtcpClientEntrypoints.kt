@@ -19,7 +19,7 @@ class KtcpClientEntrypoints<C>(
         listOf(),
         ""
     )
-    val genericError = add(genericErrEntrypoint) { this(it.tryToGenericError()) }
+    val genericError = add(genericErrEntrypoint) { input -> input.tryToGenericError()?.let { this(it) } }
 
 
     @OptIn(ExperimentalTime::class)

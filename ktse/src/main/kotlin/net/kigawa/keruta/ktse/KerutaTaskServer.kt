@@ -1,6 +1,7 @@
 package net.kigawa.keruta.ktse
 
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import io.ktor.websocket.*
@@ -9,23 +10,22 @@ import net.kigawa.keruta.ktcp.model.serialize.JsonMsgSerializer
 import net.kigawa.keruta.ktcp.server.KtcpServer
 import net.kigawa.keruta.ktcp.server.KtcpSession
 import net.kigawa.keruta.ktcp.server.ServerCtx
+import net.kigawa.keruta.ktse.module.JwtModule
+import net.kigawa.keruta.ktse.module.WebsocketModule
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.getLogger
 import net.kigawa.kodel.api.log.traceignore.error
-import kotlin.time.Duration.Companion.seconds
 
 object KerutaTaskServer {
     val ktcpServer = KtcpServer()
     val logger = getLogger()
     fun Application.module() {
-        install(WebSockets) {
-            pingPeriod = 15.seconds
-            timeout = 15.seconds
-            maxFrameSize = Long.MAX_VALUE
-            masking = false
-        }
+        WebsocketModule.module(this@module)
+        JwtModule.module(this@module)
         routing {
-            websocketModule()
+            authenticate("keycloak") {
+                websocketModule()
+            }
         }
     }
 

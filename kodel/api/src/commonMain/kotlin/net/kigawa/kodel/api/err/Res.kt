@@ -8,6 +8,7 @@ package net.kigawa.kodel.api.err
  * @param E エラーの型
  */
 sealed interface Res<out T, out E: Throwable> {
+
     /**
      * 成功を表すクラス。
      *
@@ -28,3 +29,23 @@ sealed interface Res<out T, out E: Throwable> {
         fun <U, F: Throwable> mapErr(block: (E) -> F): Err<U, F> = Err(block(err))
     }
 }
+
+inline fun <T, E: Throwable, U> Res<T, E>.onOk(block: (T) -> U): Res<U, E> = when (val res = this) {
+    is Res.Err<T, E> -> Res.Err(res.err)
+    is Res.Ok<T, E> -> Res.Ok(block(res.value))
+}
+
+fun <T, E: Throwable> Res<Res<T, E>, E>.flat(): Res<T, E> = when (val res = this) {
+    is Res.Err<Res<T, E>, E> -> res.convertType()
+    is Res.Ok<Res<T, E>, E> -> res.value
+}
+
+fun <T, E: Throwable> Res<Res<T, E>?, E>.flatNullable(): Res<T, E>? = when (val res = this) {
+    is Res.Err<Res<T, E>?, E> -> res.convertType()
+    is Res.Ok<Res<T, E>?, E> -> res.value
+}
+
+fun <T, E: Throwable, U> Res<T, E>.flatOk(block: (T) -> Res<U, E>): Res<U, E> = onOk(block).flat()
+
+inline fun <T, E: Throwable, U> Res<T, E>.flatNullableOk(block: (T) -> Res<U, E>?): Res<U, E>? =
+    onOk(block).flatNullable()
