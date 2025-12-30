@@ -55,7 +55,7 @@ jobs:
           env | grep -E "ORG_GRADLE_PROJECT_|GITHUB_|MAVEN|JAVA|GRADLE" | sort
 
       - name: Publish package
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         with:
           arguments: |
             -PmavenCentralUsername=${{ secrets.MAVEN_USERNAME }}
