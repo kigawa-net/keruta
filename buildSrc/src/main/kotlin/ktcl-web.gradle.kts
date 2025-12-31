@@ -6,9 +6,9 @@ plugins {
     id("com.google.devtools.ksp")
 }
 kotlin {
-    js {
-        binaries.executable()
-    }
+    js(IR) {
+        browser()
+    }.binaries.executable()
     sourceSets {
         commonMain {
             dependencies {
@@ -24,7 +24,7 @@ dependencies {
 }
 
 project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
-    if(name != "kspCommonMainKotlinMetadata") {
+    if (name != "kspCommonMainKotlinMetadata") {
         dependsOn("kspCommonMainKotlinMetadata")
     }
 }
