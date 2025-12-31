@@ -1,12 +1,13 @@
+@file:Suppress("unused")
+
 package net.kigawa.kodel.api.log
 
-import java.util.logging.Logger
 import kotlin.reflect.KClass
 
-fun <T: Any> KClass<T>.getLogger(): Logger {
+fun <T: Any> KClass<T>.getKogger(): Kogger {
     return LoggerFactory.get(this)
 }
 
-fun <T: Any> T.getLogger(): Kogger {
+fun <T: Any> T.getKogger(): Kogger {
     return LoggerFactory.get(this::class)
 }

@@ -1,6 +1,7 @@
-package net.kigawa.kodel.api.log.config.formatter
+package net.kigawa.kodel.api.log.config.handler
 
 import net.kigawa.kodel.api.log.LogRow
+import net.kigawa.kodel.api.log.config.formatter.LoggerFormatter
 import java.util.logging.Formatter
 import java.util.logging.LogRecord
 

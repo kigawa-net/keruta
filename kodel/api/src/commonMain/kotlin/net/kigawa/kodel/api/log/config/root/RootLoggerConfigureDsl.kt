@@ -6,6 +6,6 @@ import kotlin.reflect.KClass
 class RootLoggerConfigureDsl: LoggerConfigureDsl() {
 
     fun classConfig(clazz: KClass<*>, block: LoggerConfigureDsl.() -> Unit) {
-        child(clazz.qualifiedName!!, block)
+        child(clazz.simpleName!!, block)
     }
 }

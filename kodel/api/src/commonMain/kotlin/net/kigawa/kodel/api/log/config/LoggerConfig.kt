@@ -2,7 +2,11 @@ package net.kigawa.kodel.api.log.config
 
 import net.kigawa.kodel.api.log.Kogger
 import net.kigawa.kodel.api.log.LogLevel
+import net.kigawa.kodel.api.log.config.handler.HandlerConfig
+import net.kigawa.kodel.api.log.logLevel
+import net.kigawa.kodel.api.log.removeAllHandlers
 import kotlin.reflect.KProperty0
+
 
 data class LoggerConfig(
     val level: LogLevel? = null,
@@ -16,13 +20,13 @@ data class LoggerConfig(
 
     private fun configureLevel(loggerField: KProperty0<Kogger>) {
         if (level == null) return
-        loggerField.get().level = level.primary
+        loggerField.get().logLevel = level
     }
 
     fun configureHandlers(loggerField: KProperty0<Kogger>) {
         if (handlerConfigs.isEmpty()) return
         loggerField.get().apply {
-            handlers.forEach { removeHandler(it) }
+            removeAllHandlers()
             handlerConfigs.forEach { config ->
                 config.configureHandler(this)
             }
