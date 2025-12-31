@@ -7,8 +7,8 @@ plugins {
 }
 kotlin {
     js(IR) {
-        browser()
-    }.binaries.executable()
+        binaries.executable()
+    }
     sourceSets {
         commonMain {
             dependencies {
