@@ -23,8 +23,10 @@ object JwtModule {
                     acceptLeeway(3)
                 }
                 validate { credential ->
+                    val audClaim = credential.payload.audience
                     val clientId = credential.payload.getClaim("azp").asString()
-                    if (clientId != null) {
+
+                    if (audClaim.contains(audience) && clientId != null) {
                         JWTPrincipal(credential.payload)
                     } else {
                         null
