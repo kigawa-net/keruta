@@ -9,9 +9,9 @@ import java.util.concurrent.TimeUnit
 object JwtModule {
 
     fun module(application: Application) = application.apply {
-        val issuer = environment.config.property("jwt.issuer").getString()
-        val audience = environment.config.property("jwt.audience").getString()
-        val myRealm = environment.config.property("jwt.realm").getString()
+        val issuer = environment.config.property("ktor.security.jwt.issuer").getString()
+        val audience = environment.config.property("ktor.security.jwt.audience").getString()
+        val myRealm = environment.config.property("ktor.security.jwt.realm").getString()
         val jwkProvider = JwkProviderBuilder(issuer)
             .cached(10, 24, TimeUnit.HOURS)
             .rateLimited(10, 1, TimeUnit.MINUTES)
