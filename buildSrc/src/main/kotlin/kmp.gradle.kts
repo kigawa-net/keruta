@@ -11,6 +11,9 @@ kotlin {
         freeCompilerArgs = listOf("-Xcontext-parameters")
     }
     jvm {}
+    js {
+        browser {}
+    }
     sourceSets["commonMain"].dependencies {
     }
     sourceSets["commonTest"].dependencies {
