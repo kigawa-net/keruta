@@ -20,7 +20,7 @@ fun KotlinJsTest.browserTest() {
     enabled = firefox || chrome
     useKarma {
         if (firefox) useFirefoxHeadless()
-        if (chrome) useChromeHeadless()
+        if (chrome) useChromeHeadlessNoSandbox()
     }
 }
 kotlin {

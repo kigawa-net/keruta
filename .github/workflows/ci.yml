@@ -32,23 +32,18 @@ on:
 
 jobs:
   ktcp:
-    name: KTCP - Build & Test
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build with GitHub Actions cache
+        run: |
+          docker buildx build \
+            --cache-from type=gha \
+            --cache-to type=gha,mode=max \
+            -f Dockerfile_test .
 
-      - name: Set up JDK 21
-        uses: actions/setup-java@v5
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-          cache: 'gradle'
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      - name: Run tests
-        run: ./gradlew :allTests --no-daemon
-
+      - run: docker compose -f compose.test.yml up test --exit-code-from test
+      - run: docker compose -f compose.test.yml logs
+        if: always()
