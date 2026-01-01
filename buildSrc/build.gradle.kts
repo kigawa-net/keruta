@@ -22,5 +22,6 @@ dependencies {
     implementation(kotlinPluginId("plugin.serialization"))
     implementation(pluginId("com.gradleup.shadow", "9.3.0"))
     implementation(pluginId("org.jlleitschuh.gradle.ktlint", "12.1.1"))
+    implementation(pluginId("com.google.devtools.ksp", "2.2.20-2.0.4"))
 
 }

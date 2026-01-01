@@ -15,6 +15,7 @@
             </builds>
           </compositeBuild>
         </compositeConfiguration>
+        <option name="distributionType" value="WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
@@ -24,6 +25,7 @@
             <option value="$PROJECT_DIR$/kodel/api" />
             <option value="$PROJECT_DIR$/kodel/core" />
             <option value="$PROJECT_DIR$/kodel/coroutine" />
+            <option value="$PROJECT_DIR$/ktcl-web" />
             <option value="$PROJECT_DIR$/ktcp" />
             <option value="$PROJECT_DIR$/ktcp/client" />
             <option value="$PROJECT_DIR$/ktcp/model" />

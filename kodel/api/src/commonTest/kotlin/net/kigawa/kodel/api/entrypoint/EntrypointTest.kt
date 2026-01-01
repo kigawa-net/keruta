@@ -1,6 +1,6 @@
 package net.kigawa.kodel.api.entrypoint
 
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -22,7 +22,7 @@ class EntrypointTest {
     }
 
     @Test
-    fun `should access entrypoint with input`() {
+    fun `should access entrypoint with input`() = runTest {
         // Given
         val entrypoint =
             object: Entrypoint<String, Int, Unit> {
@@ -32,9 +32,8 @@ class EntrypointTest {
             }
 
         // When
-        val result = runBlocking {
-            entrypoint.access("hello", Unit)
-        }
+        val result = entrypoint.access("hello", Unit)
+
         // Then
         assertEquals(5, result)
     }

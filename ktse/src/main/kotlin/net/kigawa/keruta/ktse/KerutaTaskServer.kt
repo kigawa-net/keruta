@@ -13,12 +13,12 @@ import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktse.module.JwtModule
 import net.kigawa.keruta.ktse.module.WebsocketModule
 import net.kigawa.kodel.api.err.Res
-import net.kigawa.kodel.api.log.getLogger
+import net.kigawa.kodel.api.log.getKogger
 import net.kigawa.kodel.api.log.traceignore.error
 
 object KerutaTaskServer {
     val ktcpServer = KtcpServer()
-    val logger = getLogger()
+    val logger = getKogger()
     fun Application.module() {
         WebsocketModule.module(this@module)
         JwtModule.module(this@module)

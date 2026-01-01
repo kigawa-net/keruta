@@ -1,16 +1,13 @@
 package net.kigawa.kodel.api.log.config.formatter
 
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.format
+import kotlinx.datetime.format.char
 import net.kigawa.kodel.api.log.LogRow
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import kotlin.time.ExperimentalTime
-import kotlin.time.toJavaInstant
 
 object DefaultFormatter: LoggerFormatter {
     const val MAX_PACKAGE_SECTION_LENGTH = 40
 
-    @OptIn(ExperimentalTime::class)
     override fun format(row: LogRow): String {
         return row.run {
             val lvStr = level.name.padEnd(8)
@@ -18,13 +15,23 @@ object DefaultFormatter: LoggerFormatter {
             val method = sourceMethodName
                 .take(15)
                 .padEnd(15)
-            val datetime = instant.toJavaInstant()
-                .let { LocalDateTime.ofInstant(it, ZoneId.systemDefault()) }
-                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+
+            val datetime = localDatetime.format(LocalDateTime.Format {
+                year()
+                char('-')
+                monthNumber()
+                char('-')
+                day()
+                char(' ')
+                hour()
+                char(':')
+                minute()
+                char(':')
+                second()
+            })
             "${lvStr}[${className}#${method}]$datetime: ${message}\n"
         }
     }
-
 
 
     private fun formatClassName(className: String): String {

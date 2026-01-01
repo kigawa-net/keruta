@@ -1,0 +1,45 @@
+services:
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile_test
+    command: ./gradlew allTests
+    volumes:
+      - ./:/app
+      - app-gradle:/app/.gradle
+      - app-build:/app/build
+      - buildSrc-gradle:/app/buildSrc/.gradle
+      - buildSrc-build:/app/buildSrc/build
+      - kodel-build:/app/kodel/build
+      - kodel-api-build:/app/kodel/api/build
+      - kodel-core-build:/app/kodel/core/build
+      - kodel-coroutine-build:/app/kodel/coroutine/build
+      - ktcl-web-build:/app/ktcl-web/build
+      - ktcp-build:/app/ktcp/build
+      - ktcp-client-build:/app/ktcp/client/build
+      - ktcp-model-build:/app/ktcp/model/build
+      - ktcp-server-build:/app/ktcp/server/build
+      - ktse-build:/app/ktse/build
+      - gradle-cache:/root/.gradle
+    working_dir: /app
+    environment:
+       - GRADLE_OPTS=-Dorg.gradle.daemon=false
+       - CHROME_BIN=/opt/google/chrome/chrome
+       - FIREFOX_BIN=/usr/bin/firefox
+
+volumes:
+  gradle-cache:
+  app-gradle:
+  app-build:
+  buildSrc-gradle:
+  buildSrc-build:
+  kodel-build:
+  kodel-api-build:
+  kodel-core-build:
+  kodel-coroutine-build:
+  ktcl-web-build:
+  ktcp-build:
+  ktcp-client-build:
+  ktcp-model-build:
+  ktcp-server-build:
+  ktse-build:

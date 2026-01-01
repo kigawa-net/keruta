@@ -1,17 +1,17 @@
 package net.kigawa.kodel.api.log.traceignore
 
-import java.util.logging.Logger
+import net.kigawa.kodel.api.log.Kogger
 
 
-fun Logger.debug(msg: String) {
+fun Kogger.debug(msg: String) {
     this.fine(msg)
 }
 
-fun Logger.warn(msg: String) {
+fun Kogger.warn(msg: String) {
     this.warning(msg)
 }
 
-fun Logger.error(msg: String, e: Throwable? = null) {
+fun Kogger.error(msg: String, e: Throwable? = null) {
     this.severe(msg)
     e?.printStackTrace()
 }

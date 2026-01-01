@@ -1,24 +1,16 @@
 package net.kigawa.kodel.api.log
 
-import java.util.logging.Logger
-
 /**
  * ロガーインターフェース
  */
-typealias Kogger = Logger
-
-@Deprecated("use traceignore")
-fun Logger.debug(msg: String) {
-    this.fine(msg)
+@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
+expect class Kogger {
+    fun fine(msg: String)
+    fun warning(msg: String)
+    fun severe(msg: String)
 }
 
-@Deprecated("use traceignore")
-fun Logger.warn(msg: String) {
-    this.warning(msg)
-}
 
-@Deprecated("use traceignore")
-fun Logger.error(msg: String, e: Throwable? = null) {
-    this.severe(msg)
-    e?.printStackTrace()
-}
+expect var Kogger.logLevel: LogLevel
+expect fun Kogger.removeAllHandlers()
+
