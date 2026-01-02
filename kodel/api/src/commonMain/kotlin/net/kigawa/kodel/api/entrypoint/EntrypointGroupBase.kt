@@ -17,7 +17,7 @@ abstract class EntrypointGroupBase<I, O, C>: UnnamedEntrypointGroupBase<I, O, C>
     abstract fun onSubEntrypointNotFound(input: I): O?
     override fun flat(): List<FlattedEntrypoint<I, O, C>> {
         return entrypoints.flatMap { it.flat() }
-            .map { FlattedEntrypoint(it.path + listOf(info), it.entrypoint) } +
+            .map { FlattedEntrypoint(listOf(info) + it.path, it.entrypoint) } +
             FlattedEntrypoint(listOf(info), this)
     }
 }

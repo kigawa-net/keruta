@@ -25,13 +25,9 @@ class LoginPage(
                 }
                 body {
                     h1 { +"Login" }
-                    p { +"Choose your login method:" }
                     div {
-                        a(href = webEntrypoints.auth.callback.strPath) { +"Login with Keycloak" }
+                        a(href = webEntrypoints.auth.keycloak.strPath) { +"Login with Keycloak" }
                     }
-                    br()
-                    p { +"Or use basic login (for testing):" }
-
                     a(href = webEntrypoints.top.strPath) { +"Back to Home" }
                 }
             }

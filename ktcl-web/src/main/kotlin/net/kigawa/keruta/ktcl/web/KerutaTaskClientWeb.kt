@@ -12,7 +12,6 @@ import net.kigawa.kodel.api.log.LoggerFactory
 import net.kigawa.kodel.api.log.getKogger
 import net.kigawa.kodel.api.log.handler.StdHandler
 import net.kigawa.kodel.api.log.traceignore.debug
-import java.util.logging.Logger
 
 
 class KerutaTaskClientWeb(val application: Application) {
@@ -46,7 +45,12 @@ class KerutaTaskClientWeb(val application: Application) {
                     level = LogLevel.DEBUG
                 }
                 child("net.kigawa") {
-                    level = LogLevel.DEBUG
+                    child("keruta.ktcl.web") {
+                        level = LogLevel.DEBUG
+                    }
+                    child("kodel") {
+//                        level = LogLevel.DEBUG
+                    }
                 }
             }
         }
