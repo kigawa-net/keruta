@@ -9,7 +9,7 @@ import net.kigawa.keruta.ktcl.web.WebRoute
 import net.kigawa.kodel.api.entrypoint.EntrypointInfo
 
 class CallbackRoute: WebRoute {
-    override val info: EntrypointInfo?
+    override val info: EntrypointInfo
         get() = EntrypointInfo("callback", listOf(), "")
 
     override fun Route.route() {

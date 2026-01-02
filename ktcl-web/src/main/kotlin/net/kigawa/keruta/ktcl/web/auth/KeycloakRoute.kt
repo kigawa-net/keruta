@@ -19,7 +19,7 @@ class KeycloakRoute(
                 "$scheme://$serverHost${if (serverPort == 80 || serverPort == 443) "" else ":$serverPort"}"
             }
             val redirectUri = "${baseUrl}/auth/callback"
-            val authorizeUrl = "${config.issuer}/realms/${config.realm}/protocol/openid-connect/auth?client_id=${config.clientId}&redirect_uri=$redirectUri&response_type=code&scope=openid"
+            val authorizeUrl = "${config.issuer}/protocol/openid-connect/auth?client_id=${config.clientId}&redirect_uri=$redirectUri&response_type=code&scope=openid"
             call.respondRedirect(authorizeUrl)
         }
     }
