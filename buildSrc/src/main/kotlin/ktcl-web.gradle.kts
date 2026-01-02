@@ -1,6 +1,7 @@
 plugins {
     id("jvm")
     id("ktor-server")
+    id("serialize-jvm")
 }
 kotlin {
 }

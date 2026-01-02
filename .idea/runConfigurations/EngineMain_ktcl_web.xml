@@ -1,5 +1,8 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="EngineMain ktcl-web" type="KtorApplicationConfigurationType" factoryName="Ktor">
+    <option name="envFilePaths">
+      <option value="$PROJECT_DIR$/.env.local" />
+    </option>
     <option name="MAIN_CLASS_NAME" value="io.ktor.server.netty.EngineMain" />
     <module name="keruta.ktcl-web.main" />
     <option name="alternativeJrePath" />

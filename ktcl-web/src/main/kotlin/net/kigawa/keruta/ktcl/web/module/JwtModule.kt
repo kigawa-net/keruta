@@ -6,22 +6,21 @@ import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import java.util.concurrent.TimeUnit
 
+import net.kigawa.keruta.ktcl.web.Config
+
 object JwtModule {
 
-    fun module(application: Application) = application.apply {
-        val issuer = environment.config.property("ktor.security.jwt.issuer").getString()
-        val audience = environment.config.property("ktor.security.jwt.audience").getString()
-        val myRealm = environment.config.property("ktor.security.jwt.realm").getString()
-        val jwkProvider = JwkProviderBuilder(issuer)
+    fun module(application: Application, config: Config) = application.apply {
+        val jwkProvider = JwkProviderBuilder(config.issuer)
             .cached(10, 24, TimeUnit.HOURS)
             .rateLimited(10, 1, TimeUnit.MINUTES)
             .build()
         install(Authentication) {
             jwt("auth-jwt") {
-                realm = myRealm
+                realm = config.realm
                 verifier(jwkProvider)
                 validate { credential ->
-                    if (credential.payload.audience.contains(audience)) {
+                    if (credential.payload.audience.contains(config.audience)) {
                         JWTPrincipal(credential.payload)
                     } else null
                 }
