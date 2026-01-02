@@ -20,6 +20,7 @@ services:
       - ktcp-model-build:/app/ktcp/model/build
       - ktcp-server-build:/app/ktcp/server/build
       - ktse-build:/app/ktse/build
+      - kotlin-js-store:/app/kotlin-js-store
       - gradle-cache:/root/.gradle
     working_dir: /app
     environment:
@@ -43,3 +44,4 @@ volumes:
   ktcp-model-build:
   ktcp-server-build:
   ktse-build:
+  kotlin-js-store:
