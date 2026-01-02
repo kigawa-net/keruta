@@ -2,7 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/keruta-api" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/keruta-coder-template" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/keruta-executor" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/kigawa-net-k8s" vcs="Git" />

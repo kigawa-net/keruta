@@ -1,0 +1,1 @@
+ktcl-webプロジェクトのKerutaTaskClientWeb.ktファイルにトップページを作成しました。ルーティングにGET "/"エンドポイントを追加し、"Welcome to Keruta Task Client Web"というテキストレスポンスを返すようにしました。JWT認証のブロックはそのまま残しています。

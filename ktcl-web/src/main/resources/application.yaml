@@ -1,0 +1,12 @@
+ktor:
+  application:
+    modules:
+      - net.kigawa.keruta.ktcl.web.KerutaTaskClientWeb.module
+  deployment:
+    port: 8081
+  security:
+    jwt:
+      realm: develop
+      issuer: https://user.kigawa.net/realms/develop
+      audience: backend-b
+      jwkUrl: https://user.kigawa.net/realms/develop/protocol/openid-connect/certs

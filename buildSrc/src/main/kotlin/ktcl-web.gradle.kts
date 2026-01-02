@@ -1,30 +1,19 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
-
 plugins {
-    id("kmp")
-    // KSP support needed for Lens generation
-    id("com.google.devtools.ksp")
+    id("jvm")
+    id("ktor-server")
 }
 kotlin {
-    js(IR) {
-        binaries.executable()
-    }
-    sourceSets {
-        commonMain {
-            dependencies {
-                api(project(":ktcp:client"))
-                implementation("dev.fritz2:core:${Version.FRITZ2}")
-            }
-        }
-    }
 }
-// KSP support for Lens generation
 dependencies {
-    add("kspCommonMainMetadata", "dev.fritz2:lenses-annotation-processor:${Version.FRITZ2}")
+    api(project(":ktcp:client"))
+    // Testing
+    testImplementation("io.ktor:ktor-server-test-host")
+    testImplementation("io.ktor:ktor-client-websockets")
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.3")
+    testImplementation("io.mockk:mockk:1.13.8")
+}
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
-project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
-    if (name != "kspCommonMainKotlinMetadata") {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
-}
