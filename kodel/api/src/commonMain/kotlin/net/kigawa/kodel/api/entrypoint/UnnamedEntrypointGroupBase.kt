@@ -26,12 +26,12 @@ abstract class UnnamedEntrypointGroupBase<I, O, C>: EntrypointNode<I, O, C> {
      */
     fun <J, P, T: EntrypointNode<J, P, C>> add(
         endpoint: T,
-        translator: suspend (suspend (J?) -> P?).(I) -> O?,
+        translator: ((J?) -> P?).(I) -> O?,
     ): T {
         return endpoint.also { subEntrypoints += TranslateEntrypoint(endpoint, translator) }
     }
 
-    override suspend fun access(
+    override fun access(
         input: I, ctx: C,
     ): O? {
         entrypoints.forEach { entrypoint ->

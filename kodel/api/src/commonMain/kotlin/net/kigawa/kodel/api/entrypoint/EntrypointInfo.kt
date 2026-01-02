@@ -7,7 +7,7 @@ package net.kigawa.kodel.api.entrypoint
  * @param aliases エントリーポイントのエイリアス
  * @param description エントリーポイントの説明
  */
-class EntrypointInfo(
+data class EntrypointInfo(
     val name: EntrypointName,
     val aliases: List<EntrypointName>,
     val description: String,

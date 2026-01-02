@@ -2,6 +2,7 @@
 
 package net.kigawa.kodel.api.log
 
+import net.kigawa.kodel.api.log.handler.LoggerHandler
 import java.util.logging.Logger
 
 actual typealias Kogger = Logger
@@ -14,4 +15,8 @@ actual var Kogger.logLevel: LogLevel
 
 actual fun Kogger.removeAllHandlers() {
     handlers.forEach { removeHandler(it) }
+}
+
+actual fun Kogger.addHandler(handler: LoggerHandler) {
+    handler.configureJvmStreamHandler(this)
 }

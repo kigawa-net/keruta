@@ -9,7 +9,7 @@ class TopPage: WebRoute {
     override val info: EntrypointInfo?
         get() = null
 
-    override fun Routing.route() {
+    override fun Route.route() {
         get("/") {
             call.respondHtml {
                 head {

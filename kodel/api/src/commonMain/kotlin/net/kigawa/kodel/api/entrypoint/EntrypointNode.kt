@@ -8,6 +8,6 @@ interface EntrypointNode<in I, out O, C> {
      * @param input 入力
      * @return 出力
      */
-    suspend fun access(input: I, ctx: C): O?
+    fun access(input: I, ctx: C): O?
     fun flat(): List<FlattedEntrypoint<I, O, C>>
 }

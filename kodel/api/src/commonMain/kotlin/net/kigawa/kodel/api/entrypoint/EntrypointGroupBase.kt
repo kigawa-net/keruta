@@ -8,7 +8,7 @@ package net.kigawa.kodel.api.entrypoint
  * @param O 出力の型
  */
 abstract class EntrypointGroupBase<I, O, C>: UnnamedEntrypointGroupBase<I, O, C>(), Entrypoint<I, O, C> {
-    override suspend fun access(
+    override fun access(
         input: I, ctx: C,
     ): O? {
         return super.access(input, ctx) ?: onSubEntrypointNotFound(input)

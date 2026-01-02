@@ -3,16 +3,22 @@ package net.kigawa.keruta.ktcl.web.login
 import io.ktor.server.html.*
 import io.ktor.server.routing.*
 import kotlinx.html.*
+import net.kigawa.keruta.ktcl.web.WebEntrypoints
 import net.kigawa.keruta.ktcl.web.WebRoute
 import net.kigawa.kodel.api.entrypoint.EntrypointInfo
+import net.kigawa.kodel.api.log.getKogger
 
-class LoginPage: WebRoute {
+class LoginPage(
+    val webEntrypoints: WebEntrypoints,
+): WebRoute {
+    val logger = getKogger()
 
     override val info: EntrypointInfo
         get() = EntrypointInfo("login", listOf(), "")
 
-    override fun Routing.route() {
-        get("/login") {
+    override fun Route.route() {
+        get {
+            logger.info("Routing: /login")
             call.respondHtml {
                 head {
                     title { +"Login" }
@@ -21,22 +27,12 @@ class LoginPage: WebRoute {
                     h1 { +"Login" }
                     p { +"Choose your login method:" }
                     div {
-                        a(href = "/auth/keycloak") { +"Login with Keycloak" }
+                        a(href = webEntrypoints.auth.callback.strPath) { +"Login with Keycloak" }
                     }
                     br()
                     p { +"Or use basic login (for testing):" }
-                    form(action = "/login", method = FormMethod.post) {
-                        div {
-                            label { +"Username: " }
-                            textInput(name = "username")
-                        }
-                        div {
-                            label { +"Password: " }
-                            passwordInput(name = "password")
-                        }
-                        submitInput { value = "Login" }
-                    }
-                    a(href = "/") { +"Back to Home" }
+
+                    a(href = webEntrypoints.top.strPath) { +"Back to Home" }
                 }
             }
         }
