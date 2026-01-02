@@ -24,12 +24,11 @@ class TranslateEntrypoint<in I, out O, in J, out P, T: EntrypointNode<J, P, C>, 
      * @return 翻訳された出力
      */
     override fun access(input: I, ctx: C): O? {
-        return object: (J?) -> P? {
-            override fun invoke(p1: J?): P? {
-                if (p1 == null) return null
-                return entrypoint.access(p1, ctx)
-            }
-        }.translator(input)
+        val f: (J?) -> P? = {
+            if (it == null) null
+            else entrypoint.access(it, ctx)
+        }
+        return f.translator(input)
     }
 
     override fun flat(): List<FlattedEntrypoint<I, O, C>> {

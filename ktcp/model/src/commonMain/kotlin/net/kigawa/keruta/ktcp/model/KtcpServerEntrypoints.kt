@@ -7,7 +7,7 @@ import net.kigawa.kodel.api.entrypoint.EntrypointGroupBase
 import net.kigawa.kodel.api.entrypoint.EntrypointInfo
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.err.flatNullableOk
-import net.kigawa.kodel.api.log.getKogger
+import net.kigawa.kodel.api.log.LoggerFactory
 import net.kigawa.kodel.api.log.traceignore.error
 import kotlin.time.ExperimentalTime
 
@@ -15,7 +15,7 @@ import kotlin.time.ExperimentalTime
 class KtcpServerEntrypoints<C>(
     authenticateEntrypoint: AuthenticateEntrypoint<C>,
 ): EntrypointGroupBase<UnknownArg, Res<Unit, KtcpErr>, C>() {
-    val logger = getKogger()
+    val logger = LoggerFactory.get("net.kigawa.keruta.ktcp.model.KtcpServerEntrypoints")
     override val info: EntrypointInfo = EntrypointInfo(
         "ktcp-server",
         listOf(),

@@ -13,7 +13,7 @@ class EntrypointTest {
             object: Entrypoint<String, Int, Unit> {
                 override val info = EntrypointInfo("test", emptyList(), "Test entrypoint")
 
-                override suspend fun access(input: String, ctx: Unit): Int = input.length
+                override fun access(input: String, ctx: Unit): Int = input.length
             }
 
         // When & Then
@@ -28,7 +28,7 @@ class EntrypointTest {
             object: Entrypoint<String, Int, Unit> {
                 override val info = EntrypointInfo("lengthcalc", emptyList(), "Calculates string length")
 
-                override suspend fun access(input: String, ctx: Unit): Int = input.length
+                override fun access(input: String, ctx: Unit): Int = input.length
             }
 
         // When
@@ -45,7 +45,7 @@ class EntrypointTest {
             object: Entrypoint<Unit, Unit, Unit> {
                 override val info = EntrypointInfo("simple", listOf("alias1"), "A simple entrypoint")
 
-                override suspend fun access(input: Unit, ctx: Unit): Unit {}
+                override fun access(input: Unit, ctx: Unit) {}
             }
 
         // When
