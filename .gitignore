@@ -13,3 +13,4 @@
 /keruta-sdk/buildSrc/.kotlin/
 /.kotlin/
 /buildSrc/.kotlin/
+/.env.local

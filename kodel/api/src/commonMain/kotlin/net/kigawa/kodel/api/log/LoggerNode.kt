@@ -6,8 +6,22 @@ import net.kigawa.kodel.api.log.config.LoggerConfigureDsl
 class LoggerNode(
     val parent: LoggerNode?,
     val section: String,
+    config: LoggerConfig?,
 ) {
-    val kogger by lazy { NativeLoggerAdaptor.getKogger(name) }
+    private var koggerInternal: Kogger? = null
+    val kogger: Kogger
+        get() {
+            koggerInternal?.let { return it }
+            return NativeLoggerAdaptor.getKogger(name).also {
+                koggerInternal = it
+                configureConfig()
+            }
+        }
+    private var config: LoggerConfig? = config
+        set(value) {
+            field = value
+            children.values.forEach { it.config = value }
+        }
     private val children = mutableMapOf<String, LoggerNode>()
     val name: String
         get() {
@@ -15,13 +29,18 @@ class LoggerNode(
             return "${parent.name}.$section"
         }
 
-    fun getChild(section: String) = children.getOrPut(section) { LoggerNode(this, section) }
+    fun getChild(section: String) = children.getOrPut(section) { LoggerNode(this, section, config) }
     fun configureDsl(configDsl: LoggerConfigureDsl) {
-        configureConfig(configDsl.asLoggerConfig())
+        config = configDsl.asLoggerConfig()
+        configureConfig()
         configDsl.children.forEach { (key, value) ->
             getChild(key).configureDsl(value)
         }
     }
 
-    fun configureConfig(config: LoggerConfig) = config.configureLogger(::kogger)
+    fun configureConfig() {
+        val k = koggerInternal ?: return
+        val c = config ?: return
+        c.configureLogger(k)
+    }
 }

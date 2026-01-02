@@ -12,12 +12,10 @@ package net.kigawa.kodel.api.entrypoint
  * @param entrypoint 委譲先エントリーポイント
  * @param translator トランスレーター関数
  */
-class TranslateEntrypoint<in I, out O, in J, out P, T: Entrypoint<J, P, C>, C>(
+class TranslateEntrypoint<in I, out O, in J, out P, T: EntrypointNode<J, P, C>, C>(
     val entrypoint: T,
-    private val translator: suspend (suspend (J?) -> P?).(I) -> O?,
-): Entrypoint<I, O, C> {
-    override val info: EntrypointInfo
-        get() = entrypoint.info
+    private val translator: ((J?) -> P?).(I) -> O?,
+): EntrypointNode<I, O, C> {
 
     /**
      * エントリーポイントにアクセスし、出力を翻訳する。
@@ -25,12 +23,16 @@ class TranslateEntrypoint<in I, out O, in J, out P, T: Entrypoint<J, P, C>, C>(
      * @param input 入力
      * @return 翻訳された出力
      */
-    override suspend fun access(input: I, ctx: C): O? {
-        return object: suspend (J?) -> P? {
-            override suspend fun invoke(p1: J?): P? {
-                if (p1 == null) return null
-                return entrypoint.access(p1, ctx)
-            }
-        }.translator(input)
+    override fun access(input: I, ctx: C): O? {
+        val f: (J?) -> P? = {
+            if (it == null) null
+            else entrypoint.access(it, ctx)
+        }
+        return f.translator(input)
+    }
+
+    override fun flat(): List<FlattedEntrypoint<I, O, C>> {
+        return entrypoint.flat()
+            .map { FlattedEntrypoint(it.path, TranslateEntrypoint(it.entrypoint, translator)) }
     }
 }

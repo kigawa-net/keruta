@@ -1,5 +1,7 @@
 package net.kigawa.kodel.api.log
 
+import net.kigawa.kodel.api.log.handler.LoggerHandler
+
 /**
  * ロガーインターフェース
  */
@@ -14,3 +16,4 @@ expect class Kogger {
 expect var Kogger.logLevel: LogLevel
 expect fun Kogger.removeAllHandlers()
 
+expect fun Kogger.addHandler(handler: LoggerHandler)

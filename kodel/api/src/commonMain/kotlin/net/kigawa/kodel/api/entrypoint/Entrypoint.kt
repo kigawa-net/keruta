@@ -7,15 +7,11 @@ package net.kigawa.kodel.api.entrypoint
  * @param I 入力の型
  * @param O 出力の型
  */
-interface Entrypoint<in I, out O,C> {
+interface Entrypoint<in I, out O, C>: EntrypointNode<I, O, C> {
+
     /** エントリーポイントの情報 */
     val info: EntrypointInfo
-
-    /**
-     * エントリーポイントにアクセスする。
-     *
-     * @param input 入力
-     * @return 出力
-     */
-    suspend fun access(input: I,ctx: C): O?
+    override fun flat(): List<FlattedEntrypoint<I, O, C>> {
+        return listOf(FlattedEntrypoint(listOf(info), this))
+    }
 }
