@@ -16,4 +16,8 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation")
     implementation("io.ktor:ktor-serialization-kotlinx-json")
     implementation("io.ktor:ktor-server-html-builder")
+    implementation("io.ktor:ktor-server-sessions")
+    implementation("io.ktor:ktor-client-core:${Version.KTOR}")
+    implementation("io.ktor:ktor-client-cio:${Version.KTOR}")
+    implementation("io.ktor:ktor-client-content-negotiation:${Version.KTOR}")
 }
