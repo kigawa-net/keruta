@@ -14,3 +14,5 @@
 /.kotlin/
 /buildSrc/.kotlin/
 /.env.local
+/ktcl-web/.env.local
+/ktse/.env.local

@@ -3,6 +3,7 @@ package net.kigawa.keruta.ktcl.web
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.routing.*
 import net.kigawa.keruta.ktcl.web.module.JwtModule
 import net.kigawa.keruta.ktcl.web.module.WebsocketModule
@@ -22,6 +23,22 @@ class KerutaTaskClientWeb(val application: Application) {
     fun module() = application.apply {
         WebsocketModule.module(application)
         JwtModule.module(application, config)
+        install(CORS) {
+            allowMethod(io.ktor.http.HttpMethod.Options)
+            allowMethod(io.ktor.http.HttpMethod.Get)
+            allowMethod(io.ktor.http.HttpMethod.Post)
+            allowMethod(io.ktor.http.HttpMethod.Put)
+            allowMethod(io.ktor.http.HttpMethod.Delete)
+            allowHeader(io.ktor.http.HttpHeaders.Authorization)
+            allowHeader(io.ktor.http.HttpHeaders.ContentType)
+            allowHeader(io.ktor.http.HttpHeaders.Upgrade)
+            allowHeader(io.ktor.http.HttpHeaders.Connection)
+            allowHeader("Sec-WebSocket-Key")
+            allowHeader("Sec-WebSocket-Version")
+            allowHeader("Sec-WebSocket-Protocol")
+            allowCredentials = true
+            anyHost() // 開発用 - 本番では特定のホストを指定
+        }
         install(ContentNegotiation) {
             json()
         }
@@ -55,6 +72,7 @@ class KerutaTaskClientWeb(val application: Application) {
             }
         }
 
+        @Suppress("unused")
         fun Application.module() {
             KerutaTaskClientWeb(this).module()
         }
