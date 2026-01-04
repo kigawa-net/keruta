@@ -12,6 +12,7 @@ on:
       - kodel/**
       - ktcp/**
       - ktse/**
+      - ktcl-web/**
       - build.gradle.kts
       - gradle.properties
       - settings.gradle.kts
@@ -26,6 +27,7 @@ on:
       - kodel/**
       - ktcp/**
       - ktse/**
+      - ktcl-web/**
       - build.gradle.kts
       - gradle.properties
       - settings.gradle.kts

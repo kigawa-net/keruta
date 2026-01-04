@@ -1,12 +1,14 @@
 plugins {
     id("jvm")
     id("ktor-server")
+    id("ktor-server-websocket")
     id("serialize-jvm")
 }
 kotlin {
 }
 dependencies {
     api(project(":ktcp:client"))
+    implementation("io.ktor:ktor-server-cors:${Version.KTOR}")
     // Testing
     testImplementation("io.ktor:ktor-server-test-host")
     testImplementation("io.ktor:ktor-client-websockets")
