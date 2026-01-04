@@ -16,3 +16,4 @@
 /.env.local
 /ktcl-web/.env.local
 /ktse/.env.local
+/node_modules/
