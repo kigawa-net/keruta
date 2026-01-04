@@ -7,12 +7,14 @@ import net.kigawa.keruta.ktcl.web.kodel.WebEntrypointBase
 import net.kigawa.kodel.api.entrypoint.EntrypointGroupBase
 import net.kigawa.kodel.api.entrypoint.EntrypointInfo
 
+@Suppress("unused")
 class AuthEntrypoints(
     config: Config,
     val parent: WebEntrypointBase,
 ): EntrypointGroupBase<Route, Unit, Unit>(), WebEntrypointBase {
     val keycloak = add(WebEntrypoint(this, KeycloakRoute(config))) { this(it) }
-    val callback = add(WebEntrypoint(this, CallbackRoute())) { this(it) }
+    val callback = add(WebEntrypoint(this, CallbackRoute(config))) { this(it) }
+    val refresh = add(WebEntrypoint(this, RefreshRoute(config))) { this(it) }
     override fun onSubEntrypointNotFound(input: Route) {
         throw IllegalStateException("Not found")
     }

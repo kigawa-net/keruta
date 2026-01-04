@@ -5,6 +5,8 @@ import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.routing.*
+import io.ktor.server.sessions.*
+import kotlinx.serialization.Serializable
 import net.kigawa.keruta.ktcl.web.module.JwtModule
 import net.kigawa.keruta.ktcl.web.module.WebsocketModule
 import net.kigawa.keruta.ktcp.client.KtcpClient
@@ -14,7 +16,14 @@ import net.kigawa.kodel.api.log.getKogger
 import net.kigawa.kodel.api.log.handler.StdHandler
 import net.kigawa.kodel.api.log.traceignore.debug
 
+@Serializable
+data class UserSession(
+    val accessToken: String,
+    val refreshToken: String,
+    val expiresAt: Long,
+)
 
+@Suppress("unused")
 class KerutaTaskClientWeb(val application: Application) {
     val ktcpClient = KtcpClient()
     val logger = getKogger()
@@ -23,6 +32,9 @@ class KerutaTaskClientWeb(val application: Application) {
     fun module() = application.apply {
         WebsocketModule.module(application)
         JwtModule.module(application, config)
+        install(Sessions) {
+            cookie<UserSession>("USER_SESSION", SessionStorageMemory())
+        }
         install(CORS) {
             allowMethod(io.ktor.http.HttpMethod.Options)
             allowMethod(io.ktor.http.HttpMethod.Get)

@@ -3,6 +3,8 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import WebSocketDemo from './pages/WebSocketDemo'
+import AuthButton from './components/AuthButton'
+import PrivateRoute from './components/PrivateRoute'
 import './App.css'
 
 function App() {
@@ -23,13 +25,18 @@ function App() {
             <Link to="/websocket">WebSocket Demo</Link>
           </li>
         </ul>
+        <AuthButton />
       </nav>
 
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/websocket" element={<WebSocketDemo />} />
+        <Route path="/websocket" element={
+          <PrivateRoute>
+            <WebSocketDemo />
+          </PrivateRoute>
+        } />
       </Routes>
     </div>
   )

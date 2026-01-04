@@ -7,6 +7,9 @@
 
 nav {
   margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 nav ul {
@@ -33,6 +36,55 @@ nav a {
 nav a:hover {
   background-color: #646cff;
   color: white;
+}
+
+.auth-section {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.login-btn, .logout-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.login-btn {
+  background-color: #646cff;
+  color: white;
+}
+
+.login-btn:hover {
+  background-color: #535bf2;
+}
+
+.logout-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.logout-btn:hover {
+  background-color: #c82333;
+}
+
+.private-route {
+  padding: 2rem;
+  text-align: center;
+}
+
+.private-route h2 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.private-route p {
+  color: #666;
+  margin-bottom: 2rem;
 }
 
 .logo {
