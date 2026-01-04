@@ -1,4 +1,4 @@
-import About from '../../src/pages/About'
+import About from '../pages/About'
 
 export default function AboutRoute() {
   return <About />

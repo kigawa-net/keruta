@@ -1,7 +1,7 @@
 import {useState} from 'react';
-import WebSocketStatus from '../../app/components/WebSocketStatus';
-import WebSocketMessageInput from '../../app/components/WebSocketMessageInput';
-import WebSocketMessageList from '../../app/components/WebSocketMessageList';
+import WebSocketStatus from '../components/WebSocketStatus';
+import WebSocketMessageInput from '../components/WebSocketMessageInput';
+import WebSocketMessageList from '../components/WebSocketMessageList';
 
 const WebSocketDemo = () => {
     const [message, setMessage] = useState('');
