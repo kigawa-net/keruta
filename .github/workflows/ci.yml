@@ -57,6 +57,6 @@ jobs:
             --cache-to type=gha,mode=max \
             -f Dockerfile_test .
 
-      - run: docker compose -f compose.test.yml up test --exit-code-from test
+      - run: docker compose -f compose.test.yml up test --exit-code-from test --attach-dependencies
       - run: docker compose -f compose.test.yml logs
         if: always()
