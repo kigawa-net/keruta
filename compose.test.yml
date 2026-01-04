@@ -18,7 +18,13 @@ services:
         target: /src
   ktcl-front-test:
     image: node
-    command: npm run build
+    command:
+      - bash
+      - -c
+      - |
+        set -ue
+        npm install
+        npm run build
     working_dir: /app/ktcl-front
     volumes:
       - type: bind

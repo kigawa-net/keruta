@@ -1,5 +1,5 @@
 import {createContext, useContext} from "react";
-import {useWebSocket} from "../hooks/useWebSocket.ts";
+import {useWebSocket} from "../hooks/useWebSocket";
 
 
 const Context = createContext<WebsocketState | undefined>(undefined);
