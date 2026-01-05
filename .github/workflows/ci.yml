@@ -36,7 +36,18 @@ jobs:
   ktcp:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
+      - run: |
+          mkdir -p ./cache/app
+          mkdir -p ./cache/.gradle
+      - name: Cache something
+        uses: actions/cache@v4
+        with:
+          path: ./cache
+          key: ${{ runner.os }}-test-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-test-
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build with GitHub Actions cache
@@ -46,6 +57,6 @@ jobs:
             --cache-to type=gha,mode=max \
             -f Dockerfile_test .
 
-      - run: docker compose -f compose.test.yml up test --exit-code-from test
+      - run: docker compose -f compose.test.yml up test --exit-code-from test --attach-dependencies
       - run: docker compose -f compose.test.yml logs
         if: always()

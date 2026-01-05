@@ -1,11 +1,9 @@
-import PrivateRoute from "../components/PrivateRoute.tsx";
-import {Outlet} from "react-router-dom";
-
+import PrivateRoute from "../components/PrivateRoute";
+import {Outlet} from "react-router";
+// noinspection JSUnusedGlobalSymbols
 export default function PrivateLayout(
     {}: {},
 ) {
-
-
     return (
         <PrivateRoute>
             <Outlet/>
