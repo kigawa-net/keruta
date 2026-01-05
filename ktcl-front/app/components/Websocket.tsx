@@ -1,4 +1,4 @@
-import {createContext, useContext, useEffect, useMemo, useState} from "react";
+import {createContext, ReactNode, useContext, useEffect, useMemo, useState} from "react";
 
 
 const Context = createContext<WebsocketState>({state: "unloaded"});
@@ -10,21 +10,32 @@ export function WebsocketProvider(
         onMsg,
         onErr,
         onClose,
+        children,
         ...props
     }: {
         wsUrl: URL,
         onOpen: () => void,
         onMsg: (msg: MessageEvent) => void,
         onErr: () => void,
-        onClose: () => void
+        onClose: () => void,
+        children: ReactNode
     }) {
-    const [ws, setWs] = useState<WebSocket>()
+    const [ws, setWs] = useState<WebSocket | undefined>()
 
     useEffect(() => {
-        setWs(prevState => prevState ?? new WebSocket(wsUrl))
+        setWs(prevState => {
+            if (prevState != undefined) return prevState
+            const websocket = new WebSocket(wsUrl)
+            websocket.onopen = onOpen;
+            websocket.onmessage = onMsg;
+            websocket.onerror = onErr;
+            websocket.onclose = onClose;
+            return websocket
+        })
     }, []);
 
     useEffect(() => {
+        if (ws == undefined) return
         ws.onopen = onOpen;
         ws.onmessage = onMsg;
         ws.onerror = onErr;
@@ -41,6 +52,7 @@ export function WebsocketProvider(
         value={wsState}
         {...props}
     >
+        {children}
     </Context.Provider>;
 }
 
