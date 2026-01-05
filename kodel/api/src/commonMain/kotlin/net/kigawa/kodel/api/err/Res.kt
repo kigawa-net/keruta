@@ -7,6 +7,7 @@ package net.kigawa.kodel.api.err
  * @param T 成功時の値の型
  * @param E エラーの型
  */
+@Suppress("unused")
 sealed interface Res<out T, out E: Throwable> {
 
     /**
@@ -45,7 +46,19 @@ fun <T, E: Throwable> Res<Res<T, E>?, E>.flatNullable(): Res<T, E>? = when (val 
     is Res.Ok<Res<T, E>?, E> -> res.value
 }
 
+@Suppress("unused")
 fun <T, E: Throwable, U> Res<T, E>.flatOk(block: (T) -> Res<U, E>): Res<U, E> = onOk(block).flat()
 
 inline fun <T, E: Throwable, U> Res<T, E>.flatNullableOk(block: (T) -> Res<U, E>?): Res<U, E>? =
     onOk(block).flatNullable()
+
+@Suppress("unused")
+inline fun <reified T, reified E: Throwable, R> Res<T, E>.whenOkErr(onOk: (T) -> R, onErr: (E) -> R): R = when (this) {
+    is Res.Ok<T, E> -> onOk(value)
+    is Res.Err<T, E> -> onErr(err)
+}
+
+inline fun <reified T, reified E: Throwable, R> Res<T, E>.whenErrOk(onErr: (E) -> R, onOk: (T) -> R): R = when (this) {
+    is Res.Ok<T, E> -> onOk(value)
+    is Res.Err<T, E> -> onErr(err)
+}

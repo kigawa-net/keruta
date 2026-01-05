@@ -10,7 +10,7 @@ class SendGenericErrEntrypoint: GenericErrEntrypoint<ServerCtx> {
         input: GenericErrArg, ctx: ServerCtx,
     ): EntrypointDeferred<Res<Unit, Nothing>> {
         return EntrypointDeferred {
-            ctx.connection.send(ctx.serializer, input)
+            ctx.connection.send(ctx.serializer, input.msg)
             Res.Ok(Unit)
         }
     }

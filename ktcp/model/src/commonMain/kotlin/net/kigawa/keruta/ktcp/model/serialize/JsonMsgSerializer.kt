@@ -5,6 +5,9 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
+import net.kigawa.keruta.ktcp.model.err.types.DeserializeErr
+import net.kigawa.keruta.ktcp.model.err.types.IllegalFormatDeserializeErr
+import net.kigawa.keruta.ktcp.model.err.types.InvalidTypeDeserializeErr
 import net.kigawa.kodel.api.err.Res
 
 class JsonMsgSerializer: MsgSerializer {

@@ -4,6 +4,7 @@ import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.serializer
+import net.kigawa.keruta.ktcp.model.err.types.DeserializeErr
 import net.kigawa.kodel.api.err.Res
 
 interface MsgSerializer {
