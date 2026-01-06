@@ -13,7 +13,7 @@ dependencies {
     testImplementation("io.ktor:ktor-server-test-host")
     testImplementation("io.ktor:ktor-client-websockets")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.14.1")
+    testImplementation("org.junit.jupiter:junit-jupiter:6.0.1")
     testImplementation("io.mockk:mockk:1.14.7")
 }
 tasks.withType<Test> {
