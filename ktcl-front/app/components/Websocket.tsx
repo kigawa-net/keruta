@@ -1,4 +1,5 @@
 import {createContext, ReactNode, useContext, useEffect, useMemo, useState} from "react";
+import useWsSender from "../hooks/useWsSender";
 
 
 const Context = createContext<WebsocketState>({state: "unloaded"});
@@ -48,6 +49,7 @@ export function WebsocketProvider(
             websocket: ws
         }
     }, [ws])
+    useWsSender(wsState)
     return <Context.Provider
         value={wsState}
         {...props}
