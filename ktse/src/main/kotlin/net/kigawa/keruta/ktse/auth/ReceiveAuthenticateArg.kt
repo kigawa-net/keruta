@@ -1,17 +1,21 @@
-package net.kigawa.keruta.ktse
+package net.kigawa.keruta.ktse.auth
 
 import io.ktor.websocket.*
 import net.kigawa.keruta.ktcp.model.authenticate.AuthenticateArg
 import net.kigawa.keruta.ktcp.model.authenticate.AuthenticateMsg
-import net.kigawa.keruta.ktcp.model.serialize.DeserializeErr
-import net.kigawa.keruta.ktcp.model.serialize.deserialize
+import net.kigawa.keruta.ktcp.model.err.types.DecodeFrameErr
+import net.kigawa.keruta.ktcp.model.err.types.DeserializeDecodeFrameErr
+import net.kigawa.keruta.ktcp.model.err.types.DeserializeErr
+import net.kigawa.keruta.ktcp.model.err.types.InvalidTypeDecodeFrameErr
+import net.kigawa.keruta.ktcp.model.serialize.*
 import net.kigawa.keruta.ktcp.server.ServerCtx
-import net.kigawa.keruta.ktcp.model.serialize.DecodeFrameErr
-import net.kigawa.keruta.ktcp.model.serialize.DeserializeDecodeFrameErr
-import net.kigawa.keruta.ktcp.model.serialize.InvalidTypeDecodeFrameErr
 import net.kigawa.kodel.api.err.Res
 
-class ReceiveAuthenticateArg(value: AuthenticateMsg, frame: Frame.Text, ctx: ServerCtx): AuthenticateArg {
+class ReceiveAuthenticateArg(
+    override val authenticateMsg: AuthenticateMsg,
+): AuthenticateArg {
+
+
     companion object {
         fun fromFrame(frame: Frame, ctx: ServerCtx): Res<ReceiveAuthenticateArg, DecodeFrameErr> {
             if (frame !is Frame.Text) return Res.Err(InvalidTypeDecodeFrameErr())
@@ -21,7 +25,7 @@ class ReceiveAuthenticateArg(value: AuthenticateMsg, frame: Frame.Text, ctx: Ser
                 is Res.Err<*, DeserializeErr> -> msg.mapErr { DeserializeDecodeFrameErr(it) }
                 is Res.Ok<AuthenticateMsg, *> -> Res.Ok(
                     ReceiveAuthenticateArg(
-                        msg.value, frame, ctx
+                        msg.value
                     )
                 )
             }

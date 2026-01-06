@@ -1,16 +1,17 @@
 package net.kigawa.keruta.ktse
 
 import io.ktor.websocket.*
-import net.kigawa.keruta.ktcp.model.err.GenericErrArg
+import net.kigawa.keruta.ktcp.model.err.types.DecodeFrameErr
+import net.kigawa.keruta.ktcp.model.err.types.DeserializeDecodeFrameErr
+import net.kigawa.keruta.ktcp.model.err.types.DeserializeErr
+import net.kigawa.keruta.ktcp.model.err.types.InvalidTypeDecodeFrameErr
 import net.kigawa.keruta.ktcp.model.msg.KtcpUnknownMsg
 import net.kigawa.keruta.ktcp.model.msg.MsgType
 import net.kigawa.keruta.ktcp.model.msg.UnknownArg
-import net.kigawa.keruta.ktcp.model.serialize.DeserializeErr
 import net.kigawa.keruta.ktcp.model.serialize.deserialize
 import net.kigawa.keruta.ktcp.server.ServerCtx
-import net.kigawa.keruta.ktcp.model.serialize.DecodeFrameErr
-import net.kigawa.keruta.ktcp.model.serialize.DeserializeDecodeFrameErr
-import net.kigawa.keruta.ktcp.model.serialize.InvalidTypeDecodeFrameErr
+import net.kigawa.keruta.ktse.auth.ReceiveAuthenticateArg
+import net.kigawa.keruta.ktse.err.ReceiveGenericErrArg
 import net.kigawa.kodel.api.err.Res
 
 class ReceiveUnknownArg(
@@ -18,9 +19,9 @@ class ReceiveUnknownArg(
     val frame: Frame.Text,
     val ctx: ServerCtx,
 ): UnknownArg {
-    override fun tryToGenericError(): GenericErrArg? {
+    override fun tryToGenericError(): Res<ReceiveGenericErrArg, DecodeFrameErr>? {
         if (msg.type != MsgType.GENERIC_ERROR) return null
-        return ReceiveGenericErrArg()
+        return ReceiveGenericErrArg.fromFrame(frame, ctx)
     }
 
     override fun tryToAuthenticate(): Res<ReceiveAuthenticateArg, DecodeFrameErr>? {

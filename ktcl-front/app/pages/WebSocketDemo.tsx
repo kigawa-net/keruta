@@ -2,11 +2,12 @@ import {useState} from 'react';
 import WebSocketStatus from '../components/WebSocketStatus';
 import WebSocketMessageInput from '../components/WebSocketMessageInput';
 import WebSocketMessageList from '../components/WebSocketMessageList';
+import {useKerutaTaskState} from "../components/KerutaTask";
 
 const WebSocketDemo = () => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState<string[]>([]);
-
+    const kerutaState = useKerutaTaskState()
     const handleSendMessage = () => {
         if (message.trim()) {
             setMessages(prev => [...prev, `Sent: ${message}`]);
@@ -23,7 +24,7 @@ const WebSocketDemo = () => {
             <h2>WebSocket Demo</h2>
 
             <WebSocketStatus
-                isConnected={false}
+                isConnected={kerutaState.state == "connected"}
                 connectionError={"connectionError"}
                 lastMessage={"lastMessage"}
             />
