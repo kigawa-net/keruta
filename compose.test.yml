@@ -12,6 +12,7 @@ services:
         if [ ! -d /src/cache/.gradle ]; then mkdir -p /src/cache/.gradle; fi
         rsync -avz --delete /src/ /src/cache/app \
           --exclude=.git \
+          --exclude=.idea \
           --exclude=cache \
           --exclude=kotlin-js-store \
           --exclude=ktcl-front/node_modules \
