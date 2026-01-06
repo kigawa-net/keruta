@@ -7,7 +7,9 @@ export default [
         route("about", "./routes/about.tsx"),
         route("contact", "./routes/contact.tsx"),
         layout("./layout/PrivateLayout.tsx", [
-            route("websocket", "./routes/websocket.tsx"),
+            layout("./layout/WebsocketLayout.tsx",[
+                route("websocket", "./routes/websocket.tsx"),
+            ]),
         ])
     ])
 ] satisfies RouteConfig;

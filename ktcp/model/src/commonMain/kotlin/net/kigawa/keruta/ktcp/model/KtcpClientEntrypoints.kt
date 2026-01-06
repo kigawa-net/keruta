@@ -1,11 +1,14 @@
 package net.kigawa.keruta.ktcp.model
 
+import net.kigawa.keruta.ktcp.model.err.GenericErrArg
 import net.kigawa.keruta.ktcp.model.err.GenericErrEntrypoint
+import net.kigawa.keruta.ktcp.model.err.types.EntrypointNotFoundErr
 import net.kigawa.keruta.ktcp.model.msg.UnknownArg
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.entrypoint.EntrypointGroupBase
 import net.kigawa.kodel.api.entrypoint.EntrypointInfo
 import net.kigawa.kodel.api.err.Res
+import net.kigawa.kodel.api.err.whenErrOk
 import net.kigawa.kodel.api.log.LoggerFactory
 import net.kigawa.kodel.api.log.traceignore.error
 import kotlin.time.ExperimentalTime
@@ -20,7 +23,15 @@ class KtcpClientEntrypoints<C>(
         listOf(),
         ""
     )
-    val genericError = add(genericErrEntrypoint) { input -> input.tryToGenericError()?.let { this(it) } }
+    val genericError = add<GenericErrArg, EntrypointDeferred<in Res<Unit, Nothing>>, GenericErrEntrypoint<C>>(
+        genericErrEntrypoint
+    ) { input ->
+        input.tryToGenericError()?.whenErrOk(
+            { EntrypointDeferred { Res.Err(it) } }
+        ) {
+            this(it)
+        }
+    }
 
 
     @OptIn(ExperimentalTime::class)
