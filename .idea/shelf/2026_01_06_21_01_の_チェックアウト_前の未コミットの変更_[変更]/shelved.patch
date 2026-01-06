@@ -1,0 +1,43 @@
+Index: .github/workflows/ci.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>name: CI\n\non:\n  push:\n    branches:\n      - main\n      - develop\n    paths:\n      - .github/workflows/ci.yml\n      - buildSrc/**\n      - gradle/**\n      - kodel/**\n      - ktcp/**\n      - ktse/**\n      - ktcl-web/**\n      - build.gradle.kts\n      - gradle.properties\n      - settings.gradle.kts\n  pull_request:\n    branches:\n      - main\n      - develop\n    paths:\n      - .github/workflows/ci.yml\n      - buildSrc/**\n      - gradle/**\n      - kodel/**\n      - ktcp/**\n      - ktse/**\n      - ktcl-web/**\n      - build.gradle.kts\n      - gradle.properties\n      - settings.gradle.kts\n\njobs:\n  ktcp:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - run: |\n          mkdir -p ./cache/app\n          mkdir -p ./cache/.gradle\n      - name: Cache something\n        uses: actions/cache@v4\n        with:\n          path: ./cache\n          key: ${{ runner.os }}-test-${{ github.sha }}\n          restore-keys: |\n            ${{ runner.os }}-test-\n\n      - name: Set up Docker Buildx\n        uses: docker/setup-buildx-action@v3\n      - name: Build with GitHub Actions cache\n        run: |\n          docker buildx build \\\n            --cache-from type=gha \\\n            --cache-to type=gha,mode=max \\\n            -f Dockerfile_test .\n\n      - run: docker compose -f compose.test.yml up test --exit-code-from test --attach-dependencies\n      - run: docker compose -f compose.test.yml logs\n        if: always()\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+--- a/.github/workflows/ci.yml	(revision aef52c6d82e82da244e385a6264983bdcc3368e8)
++++ b/.github/workflows/ci.yml	(date 1767700899613)
+@@ -5,32 +5,10 @@
+     branches:
+       - main
+       - develop
+-    paths:
+-      - .github/workflows/ci.yml
+-      - buildSrc/**
+-      - gradle/**
+-      - kodel/**
+-      - ktcp/**
+-      - ktse/**
+-      - ktcl-web/**
+-      - build.gradle.kts
+-      - gradle.properties
+-      - settings.gradle.kts
+   pull_request:
+     branches:
+       - main
+       - develop
+-    paths:
+-      - .github/workflows/ci.yml
+-      - buildSrc/**
+-      - gradle/**
+-      - kodel/**
+-      - ktcp/**
+-      - ktse/**
+-      - ktcl-web/**
+-      - build.gradle.kts
+-      - gradle.properties
+-      - settings.gradle.kts
+ 
+ jobs:
+   ktcp:
