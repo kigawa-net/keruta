@@ -1,6 +1,6 @@
 package net.kigawa.keruta.ktcp.model
 
-import net.kigawa.keruta.ktcp.model.authenticate.AuthenticateEntrypoint
+import net.kigawa.keruta.ktcp.model.auth.AuthenticateEntrypoint
 import net.kigawa.keruta.ktcp.model.err.types.EntrypointNotFoundErr
 import net.kigawa.keruta.ktcp.model.err.types.KtcpErr
 import net.kigawa.keruta.ktcp.model.msg.UnknownArg

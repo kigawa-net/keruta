@@ -1,4 +1,4 @@
-package net.kigawa.keruta.ktcp.model.authenticate
+package net.kigawa.keruta.ktcp.model.auth
 
 import net.kigawa.keruta.ktcp.model.err.types.VerifyErr
 import net.kigawa.kodel.api.entrypoint.Entrypoint

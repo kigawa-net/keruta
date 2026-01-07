@@ -1,4 +1,4 @@
-package net.kigawa.keruta.ktcp.model.authenticate
+package net.kigawa.keruta.ktcp.model.auth
 
 import kotlinx.serialization.Serializable
 import net.kigawa.keruta.ktcp.model.msg.KtcpMsg

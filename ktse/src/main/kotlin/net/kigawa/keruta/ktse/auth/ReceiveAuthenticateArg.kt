@@ -1,8 +1,8 @@
 package net.kigawa.keruta.ktse.auth
 
 import io.ktor.websocket.*
-import net.kigawa.keruta.ktcp.model.authenticate.AuthenticateArg
-import net.kigawa.keruta.ktcp.model.authenticate.AuthenticateMsg
+import net.kigawa.keruta.ktcp.model.auth.AuthenticateArg
+import net.kigawa.keruta.ktcp.model.auth.AuthenticateMsg
 import net.kigawa.keruta.ktcp.model.err.types.DecodeFrameErr
 import net.kigawa.keruta.ktcp.model.err.types.DeserializeDecodeFrameErr
 import net.kigawa.keruta.ktcp.model.err.types.DeserializeErr

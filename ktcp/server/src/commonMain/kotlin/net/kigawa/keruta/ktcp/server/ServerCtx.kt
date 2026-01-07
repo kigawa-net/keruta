@@ -1,6 +1,6 @@
 package net.kigawa.keruta.ktcp.server
 
-import net.kigawa.keruta.ktcp.model.authenticate.AuthenticateMsg
+import net.kigawa.keruta.ktcp.model.auth.AuthenticateMsg
 import net.kigawa.keruta.ktcp.model.serialize.MsgSerializer
 import net.kigawa.keruta.ktcp.server.authenticate.JwtVerifier
 import net.kigawa.keruta.ktcp.server.authenticate.Verified

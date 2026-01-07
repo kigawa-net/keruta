@@ -1,8 +1,8 @@
 package net.kigawa.keruta.ktcp.client.authenticate
 
 import net.kigawa.keruta.ktcp.client.ClientCtx
-import net.kigawa.keruta.ktcp.model.authenticate.AuthenticateArg
-import net.kigawa.keruta.ktcp.model.authenticate.AuthenticateEntrypoint
+import net.kigawa.keruta.ktcp.model.auth.AuthenticateArg
+import net.kigawa.keruta.ktcp.model.auth.AuthenticateEntrypoint
 import net.kigawa.kodel.api.err.Res
 
 class ClientAuthenticateEntrypoint: AuthenticateEntrypoint<ClientCtx> {

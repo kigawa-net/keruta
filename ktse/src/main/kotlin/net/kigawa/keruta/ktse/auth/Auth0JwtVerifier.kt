@@ -4,7 +4,7 @@ import com.auth0.jwk.JwkProvider
 import com.auth0.jwk.JwkProviderBuilder
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import net.kigawa.keruta.ktcp.model.authenticate.AuthenticateToken
+import net.kigawa.keruta.ktcp.model.auth.AuthenticateToken
 import net.kigawa.keruta.ktcp.model.err.types.VerifyErr
 import net.kigawa.keruta.ktcp.model.err.types.VerifyFailErr
 import net.kigawa.keruta.ktcp.model.err.types.VerifyUnsupportedKeyErr
