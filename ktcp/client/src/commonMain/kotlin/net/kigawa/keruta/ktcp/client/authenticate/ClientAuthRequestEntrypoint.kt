@@ -1,13 +1,13 @@
 package net.kigawa.keruta.ktcp.client.authenticate
 
 import net.kigawa.keruta.ktcp.client.ClientCtx
-import net.kigawa.keruta.ktcp.model.auth.AuthenticateArg
-import net.kigawa.keruta.ktcp.model.auth.AuthenticateEntrypoint
+import net.kigawa.keruta.ktcp.model.auth.request.AuthRequestArg
+import net.kigawa.keruta.ktcp.model.auth.request.AuthRequestEntrypoint
 import net.kigawa.kodel.api.err.Res
 
-class ClientAuthenticateEntrypoint: AuthenticateEntrypoint<ClientCtx> {
+class ClientAuthRequestEntrypoint: AuthRequestEntrypoint<ClientCtx> {
     override fun access(
-        input: AuthenticateArg, ctx: ClientCtx,
+        input: AuthRequestArg, ctx: ClientCtx,
     ): Res<Unit, Nothing> {
         ctx.msgSender.sendMsg(input)
         return Res.Ok(Unit)

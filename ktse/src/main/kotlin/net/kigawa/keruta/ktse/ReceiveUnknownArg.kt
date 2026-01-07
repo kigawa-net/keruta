@@ -10,7 +10,7 @@ import net.kigawa.keruta.ktcp.model.msg.MsgType
 import net.kigawa.keruta.ktcp.model.msg.UnknownArg
 import net.kigawa.keruta.ktcp.model.serialize.deserialize
 import net.kigawa.keruta.ktcp.server.ServerCtx
-import net.kigawa.keruta.ktse.auth.ReceiveAuthenticateArg
+import net.kigawa.keruta.ktse.auth.ReceiveAuthRequestArg
 import net.kigawa.keruta.ktse.err.ReceiveGenericErrArg
 import net.kigawa.kodel.api.err.Res
 
@@ -24,9 +24,9 @@ class ReceiveUnknownArg(
         return ReceiveGenericErrArg.fromFrame(frame, ctx)
     }
 
-    override fun tryToAuthenticate(): Res<ReceiveAuthenticateArg, DecodeFrameErr>? {
+    override fun tryToAuthenticate(): Res<ReceiveAuthRequestArg, DecodeFrameErr>? {
         if (msg.type != MsgType.AUTHENTICATE) return null
-        return ReceiveAuthenticateArg.fromFrame(frame, ctx)
+        return ReceiveAuthRequestArg.fromFrame(frame, ctx)
     }
 
     companion object {
