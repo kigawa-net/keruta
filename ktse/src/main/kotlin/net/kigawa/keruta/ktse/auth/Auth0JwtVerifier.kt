@@ -8,8 +8,8 @@ import net.kigawa.keruta.ktcp.model.auth.AuthToken
 import net.kigawa.keruta.ktcp.model.err.types.VerifyErr
 import net.kigawa.keruta.ktcp.model.err.types.VerifyFailErr
 import net.kigawa.keruta.ktcp.model.err.types.VerifyUnsupportedKeyErr
-import net.kigawa.keruta.ktcp.server.authenticate.JwtVerifier
-import net.kigawa.keruta.ktcp.server.authenticate.Verified
+import net.kigawa.keruta.ktcp.server.auth.JwtVerifier
+import net.kigawa.keruta.ktcp.server.auth.Verified
 import net.kigawa.keruta.ktse.Config
 import net.kigawa.kodel.api.err.Res
 import java.security.interfaces.RSAPublicKey

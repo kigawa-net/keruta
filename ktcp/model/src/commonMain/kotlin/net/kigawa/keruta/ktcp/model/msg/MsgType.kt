@@ -7,7 +7,8 @@ enum class MsgType(
     val str: String,
 ) {
     GENERIC_ERROR("generic_error"),
-    AUTHENTICATE("authenticate");
+    AUTH_REQUEST("authenticate"),
+    AUTH_SUCCESS("auth_success");
 
     companion object {
         fun fromString(decodeString: String): MsgType {

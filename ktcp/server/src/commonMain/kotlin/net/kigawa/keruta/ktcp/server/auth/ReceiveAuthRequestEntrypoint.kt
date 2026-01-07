@@ -1,4 +1,4 @@
-package net.kigawa.keruta.ktcp.server.authenticate
+package net.kigawa.keruta.ktcp.server.auth
 
 import net.kigawa.keruta.ktcp.model.auth.request.AuthRequestArg
 import net.kigawa.keruta.ktcp.model.auth.request.AuthRequestEntrypoint
