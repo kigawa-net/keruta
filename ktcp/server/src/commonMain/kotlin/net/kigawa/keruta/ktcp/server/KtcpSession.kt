@@ -4,7 +4,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import net.kigawa.keruta.ktcp.server.authenticate.Verified
+import net.kigawa.keruta.ktcp.server.auth.Verified
 import net.kigawa.kodel.coroutine.CounterInDuration
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.minutes

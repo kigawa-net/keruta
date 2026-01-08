@@ -1,6 +1,6 @@
 package net.kigawa.keruta.ktcp.model
 
-import net.kigawa.keruta.ktcp.model.err.GenericErrArg
+import net.kigawa.keruta.ktcp.model.auth.sccess.AuthSuccessEntrypoint
 import net.kigawa.keruta.ktcp.model.err.GenericErrEntrypoint
 import net.kigawa.keruta.ktcp.model.err.types.EntrypointNotFoundErr
 import net.kigawa.keruta.ktcp.model.msg.UnknownArg
@@ -16,6 +16,7 @@ import kotlin.time.ExperimentalTime
 @Suppress("unused")
 class KtcpClientEntrypoints<C>(
     genericErrEntrypoint: GenericErrEntrypoint<C>,
+    authSuccessEntrypoint: AuthSuccessEntrypoint<C>,
 ): EntrypointGroupBase<UnknownArg, EntrypointDeferred<in Res<Unit, Nothing>>, C>() {
     val logger = LoggerFactory.get("net.kigawa.keruta.ktcp.model.KtcpClientEntrypoints")
     override val info: EntrypointInfo = EntrypointInfo(
@@ -23,10 +24,17 @@ class KtcpClientEntrypoints<C>(
         listOf(),
         ""
     )
-    val genericError = add<GenericErrArg, EntrypointDeferred<in Res<Unit, Nothing>>, GenericErrEntrypoint<C>>(
+    val genericError = add(
         genericErrEntrypoint
     ) { input ->
         input.tryToGenericError()?.whenErrOk(
+            { EntrypointDeferred { Res.Err(it) } }
+        ) {
+            this(it)
+        }
+    }
+    val authSuccess = add(authSuccessEntrypoint){ input->
+        input.tryToAuthSuccess()?.whenErrOk(
             { EntrypointDeferred { Res.Err(it) } }
         ) {
             this(it)
