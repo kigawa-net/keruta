@@ -12,7 +12,7 @@ import kotlin.time.Instant
 data class GenericErrMsg(
     val type: MsgType = MsgType.GENERIC_ERROR,
     val timestamp: Instant = Clock.System.now(),
-    val errorCode: ServerErrCode,
+    val errorCode: String,
     val errorMessage: String,
     val failedAt: Instant = Clock.System.now(),
 ) {

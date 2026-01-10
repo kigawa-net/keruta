@@ -1,9 +1,11 @@
 package net.kigawa.keruta.ktcp.model.err
 
-open class KtcpErr(
+abstract class KtcpErr(
     message: String?,
     cause: Exception?,
 ): Exception(
     message,
     cause
-)
+) {
+    abstract val code: String
+}

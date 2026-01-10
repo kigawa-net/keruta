@@ -5,9 +5,10 @@ import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.channels.consumeEach
-import net.kigawa.keruta.ktcp.model.err.server.types.EntrypointNotFoundErr
-import net.kigawa.keruta.ktcp.model.err.server.types.KtcpServerErr
-import net.kigawa.keruta.ktcp.model.err.server.types.ResponseErr
+import net.kigawa.keruta.ktcp.model.err.EntrypointNotFoundErr
+import net.kigawa.keruta.ktcp.model.err.KtcpErr
+import net.kigawa.keruta.ktcp.server.err.KtcpServerErr
+import net.kigawa.keruta.ktcp.server.err.ResponseErr
 import net.kigawa.keruta.ktcp.model.serialize.JsonMsgSerializer
 import net.kigawa.keruta.ktcp.server.KtcpServer
 import net.kigawa.keruta.ktcp.server.ServerCtx
@@ -52,7 +53,7 @@ class WebsocketModule(application: Application) {
                         frame, ServerCtx(session, jsonSerializer, jwtVerifier, ktcpServer)
                     )
                 ) {
-                    is Res.Err<*, KtcpServerErr> -> {
+                    is Res.Err<*, KtcpErr> -> {
                         logger.error("Failed to receive message", res.err)
                         ktcpServer.clientEntrypoints.genericError.access(
                             SendGenericErrArg(res.err),
@@ -67,10 +68,10 @@ class WebsocketModule(application: Application) {
         }
     }
 
-    suspend fun receive(frame: Frame, ctx: ServerCtx): Res<Unit, KtcpServerErr> = when (
+    suspend fun receive(frame: Frame, ctx: ServerCtx): Res<Unit, KtcpErr> = when (
         val res = ReceiveUnknownArg.fromFrame(frame, ctx)
     ) {
-        is Res.Err<*, KtcpServerErr> -> {
+        is Res.Err<*, KtcpErr> -> {
             logger.error("Failed to decode frame", res.err)
             ctx.session.recordErr()
             res.convertType()

@@ -3,9 +3,10 @@ package net.kigawa.keruta.ktcp.server.auth
 import net.kigawa.keruta.ktcp.model.auth.request.AuthRequestArg
 import net.kigawa.keruta.ktcp.model.auth.request.AuthRequestEntrypoint
 import net.kigawa.keruta.ktcp.model.auth.sccess.AuthSuccessMsg
-import net.kigawa.keruta.ktcp.model.err.server.types.KtcpServerErr
-import net.kigawa.keruta.ktcp.model.err.server.types.UnexpectedErr
-import net.kigawa.keruta.ktcp.model.err.server.types.VerifyErr
+import net.kigawa.keruta.ktcp.model.err.KtcpErr
+import net.kigawa.keruta.ktcp.server.err.KtcpServerErr
+import net.kigawa.keruta.ktcp.server.err.UnexpectedErr
+import net.kigawa.keruta.ktcp.server.err.VerifyErr
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktcp.server.auth.success.AuthAccessSendArg
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
@@ -13,11 +14,11 @@ import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.LoggerFactory
 import net.kigawa.kodel.api.log.traceignore.debug
 
-class ReceiveAuthRequestEntrypoint: AuthRequestEntrypoint<ServerCtx, KtcpServerErr> {
+class ReceiveAuthRequestEntrypoint: AuthRequestEntrypoint<ServerCtx> {
     val logger = LoggerFactory.get("net.kigawa.keruta.ktcp.server.authenticate.ReceiveAuthenticateEntrypoint")
     override fun access(
         input: AuthRequestArg, ctx: ServerCtx,
-    ): EntrypointDeferred<Res<Unit, KtcpServerErr>> {
+    ): EntrypointDeferred<Res<Unit, KtcpErr>> {
         logger.debug("accessing authenticate request")
         return EntrypointDeferred {
             when (val res = ctx.verify(input.authRequestMsg)) {

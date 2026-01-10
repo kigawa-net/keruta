@@ -4,7 +4,7 @@ import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestMsg
 import net.kigawa.keruta.ktcp.model.serialize.MsgSerializer
 import net.kigawa.keruta.ktcp.server.auth.JwtVerifier
 import net.kigawa.keruta.ktcp.server.auth.Verified
-import net.kigawa.keruta.ktcp.model.err.server.types.VerifyErr
+import net.kigawa.keruta.ktcp.server.err.VerifyErr
 import net.kigawa.keruta.ktcp.server.session.KtcpSession
 import net.kigawa.kodel.api.err.Res
 
