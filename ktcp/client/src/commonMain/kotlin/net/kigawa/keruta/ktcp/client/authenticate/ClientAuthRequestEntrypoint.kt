@@ -3,13 +3,15 @@ package net.kigawa.keruta.ktcp.client.authenticate
 import net.kigawa.keruta.ktcp.client.ClientCtx
 import net.kigawa.keruta.ktcp.model.auth.request.AuthRequestArg
 import net.kigawa.keruta.ktcp.model.auth.request.AuthRequestEntrypoint
+import net.kigawa.keruta.ktcp.model.err.client.KtcpClientErr
+import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.err.Res
 
-class ClientAuthRequestEntrypoint: AuthRequestEntrypoint<ClientCtx> {
+class ClientAuthRequestEntrypoint: AuthRequestEntrypoint<ClientCtx, KtcpClientErr> {
     override fun access(
         input: AuthRequestArg, ctx: ClientCtx,
-    ): Res<Unit, Nothing> {
+    ): EntrypointDeferred<Res<Unit, KtcpClientErr>> = EntrypointDeferred {
         ctx.msgSender.sendMsg(input)
-        return Res.Ok(Unit)
+        Res.Ok(Unit)
     }
 }

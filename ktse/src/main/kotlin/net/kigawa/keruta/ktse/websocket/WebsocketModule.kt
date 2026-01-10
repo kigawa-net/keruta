@@ -7,6 +7,7 @@ import io.ktor.websocket.*
 import kotlinx.coroutines.channels.consumeEach
 import net.kigawa.keruta.ktcp.model.err.server.types.EntrypointNotFoundErr
 import net.kigawa.keruta.ktcp.model.err.server.types.KtcpServerErr
+import net.kigawa.keruta.ktcp.model.err.server.types.ResponseErr
 import net.kigawa.keruta.ktcp.model.serialize.JsonMsgSerializer
 import net.kigawa.keruta.ktcp.server.KtcpServer
 import net.kigawa.keruta.ktcp.server.ServerCtx
@@ -17,6 +18,7 @@ import net.kigawa.keruta.ktse.WebsocketConnection
 import net.kigawa.keruta.ktse.auth.Auth0JwtVerifier
 import net.kigawa.keruta.ktse.err.SendGenericErrArg
 import net.kigawa.kodel.api.err.Res
+import net.kigawa.kodel.api.err.convertErr
 import net.kigawa.kodel.api.log.getKogger
 import net.kigawa.kodel.api.log.traceignore.debug
 import net.kigawa.kodel.api.log.traceignore.error
@@ -75,7 +77,8 @@ class WebsocketModule(application: Application) {
         }
 
         is Res.Ok<ReceiveUnknownArg, *> -> {
-            ktcpServer.ktcpServerEntrypoints.access(res.value, ctx)?.execute() ?: Res.Err(
+            ktcpServer.ktcpServerEntrypoints.access(res.value, ctx)?.execute()
+                ?.convertErr { ResponseErr("", it) } ?: Res.Err(
                 EntrypointNotFoundErr("entrypoint not found:", null)
             )
         }
