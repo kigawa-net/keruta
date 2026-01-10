@@ -4,11 +4,10 @@ import net.kigawa.keruta.ktcp.model.auth.request.AuthRequestArg
 import net.kigawa.keruta.ktcp.model.auth.request.AuthRequestEntrypoint
 import net.kigawa.keruta.ktcp.model.auth.sccess.AuthSuccessMsg
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.server.err.KtcpServerErr
-import net.kigawa.keruta.ktcp.server.err.UnexpectedErr
-import net.kigawa.keruta.ktcp.server.err.VerifyErr
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktcp.server.auth.success.AuthAccessSendArg
+import net.kigawa.keruta.ktcp.server.err.UnexpectedErr
+import net.kigawa.keruta.ktcp.server.err.VerifyErr
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.LoggerFactory

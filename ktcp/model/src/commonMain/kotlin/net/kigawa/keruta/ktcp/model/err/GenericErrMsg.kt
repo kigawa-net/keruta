@@ -1,7 +1,6 @@
 package net.kigawa.keruta.ktcp.model.err
 
 import kotlinx.serialization.Serializable
-import net.kigawa.keruta.ktcp.model.err.server.ServerErrCode
 import net.kigawa.keruta.ktcp.model.msg.MsgType
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
