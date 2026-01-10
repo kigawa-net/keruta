@@ -5,7 +5,7 @@ import net.kigawa.keruta.ktcp.model.auth.sccess.ClientAuthSuccessArg
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.model.msg.KtcpUnknownMsg
 import net.kigawa.keruta.ktcp.model.msg.ServerMsgType
-import net.kigawa.keruta.ktcp.model.msg.UnknownArg
+import net.kigawa.keruta.ktcp.model.msg.ServerUnknownArg
 import net.kigawa.keruta.ktcp.model.serialize.deserialize
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktcp.server.err.DecodeFrameErr
@@ -20,7 +20,7 @@ class ReceiveUnknownArg(
     val msg: KtcpUnknownMsg,
     val frame: Frame.Text,
     val ctx: ServerCtx,
-): UnknownArg {
+): ServerUnknownArg {
     override fun tryToGenericError(): Res<ReceiveGenericErrArg, DecodeFrameErr>? {
         if (msg.type != ServerMsgType.GENERIC_ERROR) return null
         return ReceiveGenericErrArg.fromFrame(frame, ctx)

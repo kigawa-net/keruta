@@ -3,7 +3,7 @@ package net.kigawa.keruta.ktcp.server.session
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import net.kigawa.keruta.ktcp.server.KtcpConnection
+import net.kigawa.keruta.ktcp.model.KtcpConnection
 import net.kigawa.keruta.ktcp.server.auth.Verified
 import net.kigawa.kodel.coroutine.CounterInDuration
 import kotlin.time.Clock
