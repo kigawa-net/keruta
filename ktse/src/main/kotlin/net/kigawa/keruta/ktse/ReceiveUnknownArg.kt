@@ -4,7 +4,7 @@ import io.ktor.websocket.*
 import net.kigawa.keruta.ktcp.model.auth.sccess.ClientAuthSuccessArg
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.model.msg.KtcpUnknownMsg
-import net.kigawa.keruta.ktcp.model.msg.MsgType
+import net.kigawa.keruta.ktcp.model.msg.ServerMsgType
 import net.kigawa.keruta.ktcp.model.msg.UnknownArg
 import net.kigawa.keruta.ktcp.model.serialize.deserialize
 import net.kigawa.keruta.ktcp.server.ServerCtx
@@ -22,17 +22,17 @@ class ReceiveUnknownArg(
     val ctx: ServerCtx,
 ): UnknownArg {
     override fun tryToGenericError(): Res<ReceiveGenericErrArg, DecodeFrameErr>? {
-        if (msg.type != MsgType.GENERIC_ERROR) return null
+        if (msg.type != ServerMsgType.GENERIC_ERROR) return null
         return ReceiveGenericErrArg.fromFrame(frame, ctx)
     }
 
     override fun tryToAuthenticate(): Res<ReceiveAuthRequestArg, DecodeFrameErr>? {
-        if (msg.type != MsgType.AUTH_REQUEST) return null
+        if (msg.type != ServerMsgType.AUTH_REQUEST) return null
         return ReceiveAuthRequestArg.fromFrame(frame, ctx)
     }
 
     override fun tryToAuthSuccess(): Res<ClientAuthSuccessArg, DecodeFrameErr>? {
-        if (msg.type != MsgType.AUTH_SUCCESS) return null
+        if (msg.type != ServerMsgType.AUTH_SUCCESS) return null
         return AuthSuccessSendArg.fromFrame(frame, ctx)
     }
 

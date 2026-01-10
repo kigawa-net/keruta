@@ -1,7 +1,7 @@
 package net.kigawa.keruta.ktse.auth
 
 import io.ktor.websocket.*
-import net.kigawa.keruta.ktcp.model.auth.request.AuthRequestArg
+import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestArg
 import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestMsg
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.model.serialize.deserialize
@@ -13,7 +13,7 @@ import net.kigawa.kodel.api.err.Res
 
 class ReceiveAuthRequestArg(
     override val authRequestMsg: ServerAuthRequestMsg,
-): AuthRequestArg {
+): ServerAuthRequestArg {
 
     companion object {
         fun fromFrame(frame: Frame, ctx: ServerCtx): Res<ReceiveAuthRequestArg, DecodeFrameErr> {

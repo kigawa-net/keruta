@@ -1,6 +1,6 @@
 package net.kigawa.keruta.ktcp.model
 
-import net.kigawa.keruta.ktcp.model.auth.request.AuthRequestEntrypoint
+import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestEntrypoint
 import net.kigawa.keruta.ktcp.model.err.EntrypointNotFoundErr
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.model.msg.UnknownArg
@@ -15,7 +15,7 @@ import kotlin.time.ExperimentalTime
 
 @Suppress("unused")
 class KtcpServerEntrypoints<C>(
-    authRequestEntrypoint: AuthRequestEntrypoint<C>,
+    authRequestEntrypoint: ServerAuthRequestEntrypoint<C>,
 ): EntrypointGroupBase<UnknownArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C>() {
     val logger = LoggerFactory.get("net.kigawa.keruta.ktcp.model.KtcpServerEntrypoints")
     override val info: EntrypointInfo = EntrypointInfo(
