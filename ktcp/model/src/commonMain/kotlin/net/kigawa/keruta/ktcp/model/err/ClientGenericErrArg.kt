@@ -1,5 +1,5 @@
 package net.kigawa.keruta.ktcp.model.err
 
-interface GenericErrArg {
+interface ClientGenericErrArg {
     val msg: GenericErrMsg
 }
