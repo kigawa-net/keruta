@@ -1,21 +1,23 @@
 package net.kigawa.keruta.ktcp.model
 
 import net.kigawa.keruta.ktcp.model.auth.request.AuthRequestEntrypoint
-import net.kigawa.keruta.ktcp.model.err.types.EntrypointNotFoundErr
-import net.kigawa.keruta.ktcp.model.err.types.KtcpErr
+import net.kigawa.keruta.ktcp.model.err.KtcpErr
+import net.kigawa.keruta.ktcp.model.err.server.types.EntrypointNotFoundErr
+import net.kigawa.keruta.ktcp.model.err.server.types.KtcpServerErr
 import net.kigawa.keruta.ktcp.model.msg.UnknownArg
+import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.entrypoint.EntrypointGroupBase
 import net.kigawa.kodel.api.entrypoint.EntrypointInfo
 import net.kigawa.kodel.api.err.Res
-import net.kigawa.kodel.api.err.flatNullableOk
+import net.kigawa.kodel.api.err.whenErrOk
 import net.kigawa.kodel.api.log.LoggerFactory
 import net.kigawa.kodel.api.log.traceignore.error
 import kotlin.time.ExperimentalTime
 
 @Suppress("unused")
 class KtcpServerEntrypoints<C>(
-    authRequestEntrypoint: AuthRequestEntrypoint<C>,
-): EntrypointGroupBase<UnknownArg, Res<Unit, KtcpErr>, C>() {
+    authRequestEntrypoint: AuthRequestEntrypoint<C, KtcpErr>,
+): EntrypointGroupBase<UnknownArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C>() {
     val logger = LoggerFactory.get("net.kigawa.keruta.ktcp.model.KtcpServerEntrypoints")
     override val info: EntrypointInfo = EntrypointInfo(
         "ktcp-server",
@@ -23,21 +25,24 @@ class KtcpServerEntrypoints<C>(
         ""
     )
     val authenticateEntrypoint = add(authRequestEntrypoint) { input ->
-        input.tryToAuthenticate()?.flatNullableOk { this(it) }
+        input.tryToAuthenticate()?.whenErrOk(
+            { EntrypointDeferred { Res.Err(it) } }
+        ) {
+            this(it)
+        }
     }
 
 
     @OptIn(ExperimentalTime::class)
     override fun onSubEntrypointNotFound(
         input: UnknownArg,
-    ): Res<Unit, EntrypointNotFoundErr> {
+    ): EntrypointDeferred<Res<Unit, KtcpServerErr>> = EntrypointDeferred {
         logger.error("not found entrypoint: $input")
-        return Res.Err(
+        Res.Err(
             EntrypointNotFoundErr(
-                message = "No entrypoint found for message type: $input",
+                "No entrypoint found for message type: $input",
+                null,
             )
         )
     }
-
-
 }

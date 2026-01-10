@@ -1,5 +1,5 @@
 package net.kigawa.keruta.ktcp.model.auth.request
 
 interface AuthRequestArg {
-    val authRequestMsg: AuthRequestMsg
+    val authRequestMsg: ServerAuthRequestMsg
 }

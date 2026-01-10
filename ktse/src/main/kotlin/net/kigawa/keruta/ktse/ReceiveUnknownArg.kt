@@ -1,11 +1,11 @@
 package net.kigawa.keruta.ktse
 
 import io.ktor.websocket.*
-import net.kigawa.keruta.ktcp.model.auth.sccess.AuthSuccessArg
-import net.kigawa.keruta.ktcp.model.err.types.DecodeFrameErr
-import net.kigawa.keruta.ktcp.model.err.types.DeserializeDecodeFrameErr
-import net.kigawa.keruta.ktcp.model.err.types.DeserializeErr
-import net.kigawa.keruta.ktcp.model.err.types.InvalidTypeDecodeFrameErr
+import net.kigawa.keruta.ktcp.model.auth.sccess.ClientAuthSuccessArg
+import net.kigawa.keruta.ktcp.model.err.server.types.DecodeFrameErr
+import net.kigawa.keruta.ktcp.model.err.server.types.DeserializeDecodeFrameErr
+import net.kigawa.keruta.ktcp.model.err.server.types.DeserializeErr
+import net.kigawa.keruta.ktcp.model.err.server.types.InvalidTypeDecodeFrameErr
 import net.kigawa.keruta.ktcp.model.msg.KtcpUnknownMsg
 import net.kigawa.keruta.ktcp.model.msg.MsgType
 import net.kigawa.keruta.ktcp.model.msg.UnknownArg
@@ -31,18 +31,18 @@ class ReceiveUnknownArg(
         return ReceiveAuthRequestArg.fromFrame(frame, ctx)
     }
 
-    override fun tryToAuthSuccess(): Res<AuthSuccessArg, DecodeFrameErr>? {
+    override fun tryToAuthSuccess(): Res<ClientAuthSuccessArg, DecodeFrameErr>? {
         if (msg.type != MsgType.AUTH_SUCCESS) return null
         return AuthSuccessSendArg.fromFrame(frame, ctx)
     }
 
     companion object {
         fun fromFrame(frame: Frame, ctx: ServerCtx): Res<ReceiveUnknownArg, DecodeFrameErr> {
-            if (frame !is Frame.Text) return Res.Err(InvalidTypeDecodeFrameErr())
+            if (frame !is Frame.Text) return Res.Err(InvalidTypeDecodeFrameErr("", null))
             return when (
                 val msg = ctx.serializer.deserialize<KtcpUnknownMsg>(frame.readText())
             ) {
-                is Res.Err<*, DeserializeErr> -> msg.mapErr { DeserializeDecodeFrameErr(it) }
+                is Res.Err<*, DeserializeErr> -> msg.mapErr { DeserializeDecodeFrameErr("", it) }
                 is Res.Ok<KtcpUnknownMsg, *> -> Res.Ok(
                     ReceiveUnknownArg(
                         msg.value, frame, ctx

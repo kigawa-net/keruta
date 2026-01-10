@@ -31,9 +31,13 @@ sealed interface Res<out T, out E: Throwable> {
     }
 }
 
-inline fun <T, E: Throwable, U> Res<T, E>.onOk(block: (T) -> U): Res<U, E> = when (val res = this) {
+inline fun <T, E: Throwable, U> Res<T, E>.convertOk(block: (T) -> U): Res<U, E> = when (val res = this) {
     is Res.Err<T, E> -> Res.Err(res.err)
     is Res.Ok<T, E> -> Res.Ok(block(res.value))
+}
+inline fun <T, E: Throwable, F: Throwable> Res<T, E>.convertErr(block: (E) -> F): Res<T, F> = when (val res = this) {
+    is Res.Err<T, E> -> Res.Err(block(res.err))
+    is Res.Ok<T, E> -> Res.Ok(res.value)
 }
 
 fun <T, E: Throwable> Res<Res<T, E>, E>.flat(): Res<T, E> = when (val res = this) {
@@ -47,10 +51,11 @@ fun <T, E: Throwable> Res<Res<T, E>?, E>.flatNullable(): Res<T, E>? = when (val 
 }
 
 @Suppress("unused")
-fun <T, E: Throwable, U> Res<T, E>.flatOk(block: (T) -> Res<U, E>): Res<U, E> = onOk(block).flat()
+fun <T, E: Throwable, U> Res<T, E>.flatOk(block: (T) -> Res<U, E>): Res<U, E> = convertOk(block).flat()
 
+@Suppress("unused")
 inline fun <T, E: Throwable, U> Res<T, E>.flatNullableOk(block: (T) -> Res<U, E>?): Res<U, E>? =
-    onOk(block).flatNullable()
+    convertOk(block).flatNullable()
 
 @Suppress("unused")
 inline fun <reified T, reified E: Throwable, R> Res<T, E>.whenOkErr(onOk: (T) -> R, onErr: (E) -> R): R = when (this) {

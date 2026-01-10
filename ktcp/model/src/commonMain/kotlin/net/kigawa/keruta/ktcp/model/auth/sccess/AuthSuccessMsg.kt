@@ -12,6 +12,6 @@ data class AuthSuccessMsg(
     override val type: MsgType = MsgType.AUTH_SUCCESS,
 ): KtcpMsg {
     init {
-        require(type == MsgType.AUTH_REQUEST)
+        require(type == MsgType.AUTH_SUCCESS)
     }
 }

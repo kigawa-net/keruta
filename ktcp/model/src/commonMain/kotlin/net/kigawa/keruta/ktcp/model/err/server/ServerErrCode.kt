@@ -1,11 +1,13 @@
-package net.kigawa.keruta.ktcp.model.err
+package net.kigawa.keruta.ktcp.model.err.server
 
-enum class ErrCode {
+enum class ServerErrCode {
     ENTRYPOINT_NOT_FOUND,
     ILLEGAL_FORMAT_DESERIALIZE,
     INVALID_TYPE_DESERIALIZE,
     INVALID_TYPE_DECODE_FRAME,
     DESERIALIZE_DECODE_FRAME,
     VERIFY_UNSUPPORTED_KEY,
-    VERIFY_FAIL
+    VERIFY_FAIL,
+    UNEXPECTED,
+    RESPONSE_ERR
 }
