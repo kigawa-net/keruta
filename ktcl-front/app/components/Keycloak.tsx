@@ -1,4 +1,12 @@
-import {createContext, type Dispatch, type ReactNode, type SetStateAction, useContext, useEffect, useState} from "react";
+import {
+    createContext,
+    type Dispatch,
+    type ReactNode,
+    type SetStateAction,
+    useContext,
+    useEffect,
+    useState
+} from "react";
 import Keycloak from "keycloak-js";
 import {keycloak} from "../keycloak";
 
@@ -69,6 +77,10 @@ function updateKeycloakState(
         keycloak,
         logout() {
             return keycloak.logout()
+        },
+        async getToken(): Promise<string> {
+            await keycloak.updateToken(60)
+            return keycloak.token
         }
     }
     return {
@@ -90,8 +102,13 @@ export type KeycloakState = {
     state: "unauthenticated",
     keycloak: Keycloak,
     login(): void
-} | {
+} | AuthenticatedKcState
+
+export interface AuthenticatedKcState {
     state: "authenticated",
     keycloak: Keycloak,
+
     logout(): void
+
+    getToken(): Promise<string>
 }

@@ -1,6 +1,7 @@
-import {createContext, Dispatch, type ReactNode, SetStateAction, useCallback, useContext, useState} from "react";
-import {Config} from "../Config";
-import {WebsocketProvider} from "./Websocket";
+import {createContext, Dispatch, type ReactNode, SetStateAction, useContext, useEffect, useState} from "react";
+import {useWebsocketState, WebsocketState} from "./Websocket";
+import WsSender from "./WsSender";
+import {ReceiveMsg} from "../msg/msg";
 
 
 const Context = createContext<KerutaTaskState>({state: "unloaded"});
@@ -13,43 +14,51 @@ export function KerutaTaskProvider(
         children: ReactNode
     }) {
     const [KerutaTaskState, setKerutaTaskState] = useState<KerutaTaskState>({state: "unloaded"});
-    const close = useCallback(() => onClose(setKerutaTaskState), []);
-    const open = useCallback(() => onOpen(setKerutaTaskState), []);
-    const err = useCallback(() => onErr(setKerutaTaskState), []);
-    const msg = useCallback(
-        (msg: MessageEvent) => onMsg(msg, setKerutaTaskState), []
-    );
-
+    const wsState = useWebsocketState()
+    useLoad(wsState, KerutaTaskState, setKerutaTaskState)
+    useEffect(() => {
+        if (wsState.state == "unloaded") return
+        if (KerutaTaskState.state != "connected") return
+        wsState.setOnMsg(() => ((event: MessageEvent) => {
+            console.log(event)
+            if (event == undefined) return
+            const message = JSON.parse(event.data) as ReceiveMsg
+            onMsg(message, KerutaTaskState, setKerutaTaskState)
+        }))
+    }, [
+        wsState.state, KerutaTaskState
+    ]);
     return <Context.Provider
         value={KerutaTaskState}
         {...props}
     >
-        <WebsocketProvider
-            onClose={close}
-            onOpen={open}
-            onErr={err}
-            onMsg={msg}
-            wsUrl={Config.websocketUrl}
-        >
-            {children}
-        </WebsocketProvider>
+        <WsSender/>
+        {children}
     </Context.Provider>;
 }
 
-function onMsg(msg: MessageEvent, set: Dispatch<SetStateAction<KerutaTaskState>>) {
-    console.log(msg)
-}
 
-function onErr(set: Dispatch<SetStateAction<KerutaTaskState>>) {
-    set({state: "disconnected"})
-}
-
-function onOpen(set: Dispatch<SetStateAction<KerutaTaskState>>) {
-    set({state: "connected"})
-}
-
-function onClose(set: Dispatch<SetStateAction<KerutaTaskState>>) {
-    set({state: "disconnected"})
+function useLoad(
+    wsState: WebsocketState,
+    kerutaState: KerutaTaskState,
+    setKerutaTaskState: Dispatch<SetStateAction<KerutaTaskState>>
+) {
+    useEffect(() => {
+        if (wsState.state == "open") {
+            if (kerutaState.state == "connected") return
+            setKerutaTaskState({
+                state: "connected",
+                auth: {state: "unauthenticated"},
+            })
+        } else if (wsState.state == "closed") {
+            setKerutaTaskState({state: "disconnected"})
+        } else {
+            setKerutaTaskState({state: "unloaded"})
+        }
+    }, [
+        wsState.state,
+        kerutaState.state
+    ]);
 }
 
 export function useKerutaTaskState() {
@@ -58,8 +67,28 @@ export function useKerutaTaskState() {
 
 export type KerutaTaskState = {
     state: "unloaded"
-} | {
-    state: "connected"
-} | {
+} | ConnectedKerutaTaskState | {
     state: "disconnected"
+}
+
+export interface ConnectedKerutaTaskState {
+    state: "connected",
+    auth: AuthState
+}
+
+export type AuthState = {
+    state: "unauthenticated"
+} | {
+    state: "authenticated"
+}
+
+function onMsg(
+    msg: ReceiveMsg, kerutaState: ConnectedKerutaTaskState,
+    setKerutaTaskState: Dispatch<SetStateAction<KerutaTaskState>>
+) {
+    switch (msg.type) {
+        case "auth_success": {
+            setKerutaTaskState({...kerutaState, auth: {state: "authenticated"}})
+        }
+    }
 }

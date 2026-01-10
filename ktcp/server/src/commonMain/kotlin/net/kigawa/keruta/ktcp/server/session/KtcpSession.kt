@@ -1,9 +1,9 @@
-package net.kigawa.keruta.ktcp.server
+package net.kigawa.keruta.ktcp.server.session
 
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import net.kigawa.keruta.ktcp.server.KtcpConnection
 import net.kigawa.keruta.ktcp.server.auth.Verified
 import net.kigawa.kodel.coroutine.CounterInDuration
 import kotlin.time.Clock
@@ -25,27 +25,29 @@ class KtcpSession private constructor(
         suspend fun startSession(connection: KtcpConnection, block: suspend (KtcpSession) -> Unit) {
             KtcpSession(connection).also {
                 coroutineScope {
-                    launch {
-                        while (!it.isClosed.value) {
-                            val current = Clock.System.now()
-                            val last = it.lastAccess.value
-                            val limit = last + it.timeout
-                            if (limit <= current) {
-
-                                it.close()
-                            }
-                            delay(limit - current)
-                        }
-                    }
+//                    launch {
+//                        while (!it.isClosed.value) {
+//                            val current = Clock.System.now()
+//                            val last = it.lastAccess.value
+//                            val limit = last + it.timeout
+//                            if (limit <= current) {
+//
+//                                it.close()
+//                            }
+//                            delay(limit - current)
+//                        }
+//                    }
+                    launch { block(it) }
                 }
-                block(it)
             }
         }
     }
 
-    fun authenticated(value: Verified) {
+    fun authenticate(value: Verified) {
         verified.value = value
     }
+
+    fun authenticated() = verified.value?.let { AuthenticatedSession(this, it) }
 
     fun updateTimeout() {
         lastAccess.value = Clock.System.now()

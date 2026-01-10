@@ -1,5 +1,5 @@
 package net.kigawa.keruta.ktcp.model.auth.sccess
 
-interface AuthSuccessArg {
+interface ClientAuthSuccessArg {
     val authSuccessMsg: AuthSuccessMsg
 }

@@ -1,8 +1,9 @@
 package net.kigawa.keruta.ktcp.model
 
 import net.kigawa.keruta.ktcp.model.auth.sccess.AuthSuccessEntrypoint
-import net.kigawa.keruta.ktcp.model.err.GenericErrEntrypoint
-import net.kigawa.keruta.ktcp.model.err.types.EntrypointNotFoundErr
+import net.kigawa.keruta.ktcp.model.err.ClientGenericErrEntrypoint
+import net.kigawa.keruta.ktcp.model.err.server.types.EntrypointNotFoundErr
+import net.kigawa.keruta.ktcp.model.err.server.types.KtcpServerErr
 import net.kigawa.keruta.ktcp.model.msg.UnknownArg
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.entrypoint.EntrypointGroupBase
@@ -15,9 +16,9 @@ import kotlin.time.ExperimentalTime
 
 @Suppress("unused")
 class KtcpClientEntrypoints<C>(
-    genericErrEntrypoint: GenericErrEntrypoint<C>,
+    genericErrEntrypoint: ClientGenericErrEntrypoint<C>,
     authSuccessEntrypoint: AuthSuccessEntrypoint<C>,
-): EntrypointGroupBase<UnknownArg, EntrypointDeferred<in Res<Unit, Nothing>>, C>() {
+): EntrypointGroupBase<UnknownArg, EntrypointDeferred< Res<Unit, KtcpServerErr>>, C>() {
     val logger = LoggerFactory.get("net.kigawa.keruta.ktcp.model.KtcpClientEntrypoints")
     override val info: EntrypointInfo = EntrypointInfo(
         "ktcp-client",
@@ -45,12 +46,13 @@ class KtcpClientEntrypoints<C>(
     @OptIn(ExperimentalTime::class)
     override fun onSubEntrypointNotFound(
         input: UnknownArg,
-    ): EntrypointDeferred<in Res<Unit, Nothing>> {
+    ): EntrypointDeferred< Res<Unit, KtcpServerErr>> {
         logger.error("not found entrypoint: $input")
         return EntrypointDeferred {
             Res.Err(
                 EntrypointNotFoundErr(
-                    message = "No entrypoint found for message type: $input",
+                     "No entrypoint found for message type: $input",
+                     null
                 )
             )
         }

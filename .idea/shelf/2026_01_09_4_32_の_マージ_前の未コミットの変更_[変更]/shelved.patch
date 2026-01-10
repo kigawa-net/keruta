@@ -1,0 +1,177 @@
+Index: ktcl-front/app/components/KerutaTask.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import {createContext, Dispatch, type ReactNode, SetStateAction, useCallback, useContext, useState} from \"react\";\nimport {Config} from \"../Config\";\nimport {WebsocketProvider} from \"./Websocket\";\n\n\nconst Context = createContext<KerutaTaskState>({state: \"unloaded\"});\n\nexport function KerutaTaskProvider(\n    {\n        children,\n        ...props\n    }: {\n        children: ReactNode\n    }) {\n    const [KerutaTaskState, setKerutaTaskState] = useState<KerutaTaskState>({state: \"unloaded\"});\n    const close = useCallback(() => onClose(setKerutaTaskState), []);\n    const open = useCallback(() => onOpen(setKerutaTaskState), []);\n    const err = useCallback(() => onErr(setKerutaTaskState), []);\n    const msg = useCallback(\n        (msg: MessageEvent) => onMsg(msg, setKerutaTaskState), []\n    );\n\n    return <Context.Provider\n        value={KerutaTaskState}\n        {...props}\n    >\n        <WebsocketProvider\n            onClose={close}\n            onOpen={open}\n            onErr={err}\n            onMsg={msg}\n            wsUrl={Config.websocketUrl}\n        >\n            {children}\n        </WebsocketProvider>\n    </Context.Provider>;\n}\n\nfunction onMsg(msg: MessageEvent, set: Dispatch<SetStateAction<KerutaTaskState>>) {\n    console.log(msg)\n}\n\nfunction onErr(set: Dispatch<SetStateAction<KerutaTaskState>>) {\n    set({state: \"disconnected\"})\n}\n\nfunction onOpen(set: Dispatch<SetStateAction<KerutaTaskState>>) {\n    set({state: \"connected\"})\n}\n\nfunction onClose(set: Dispatch<SetStateAction<KerutaTaskState>>) {\n    set({state: \"disconnected\"})\n}\n\nexport function useKerutaTaskState() {\n    return useContext(Context);\n}\n\nexport type KerutaTaskState = {\n    state: \"unloaded\"\n} | {\n    state: \"connected\"\n} | {\n    state: \"disconnected\"\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front/app/components/KerutaTask.tsx b/ktcl-front/app/components/KerutaTask.tsx
+--- a/ktcl-front/app/components/KerutaTask.tsx	(revision 478b2aa9d28365dd82666a4743bbd15de8e64fcd)
++++ b/ktcl-front/app/components/KerutaTask.tsx	(date 1767900718146)
+@@ -45,7 +45,10 @@
+ }
+ 
+ function onOpen(set: Dispatch<SetStateAction<KerutaTaskState>>) {
+-    set({state: "connected"})
++    set({
++        state: "connected",
++        auth: {state: "authenticated"},
++    })
+ }
+ 
+ function onClose(set: Dispatch<SetStateAction<KerutaTaskState>>) {
+@@ -59,7 +62,13 @@
+ export type KerutaTaskState = {
+     state: "unloaded"
+ } | {
+-    state: "connected"
++    state: "connected",
++    auth: AuthState
+ } | {
+     state: "disconnected"
+ }
++export type AuthState = {
++    state: "unauthenticated"
++} | {
++    state: "authenticated"
++}
+Index: ktcl-front/app/components/Websocket.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import {createContext, ReactNode, useContext, useEffect, useMemo, useState} from \"react\";\nimport useWsSender from \"../hooks/useWsSender\";\n\n\nconst Context = createContext<WebsocketState>({state: \"unloaded\"});\n\nexport function WebsocketProvider(\n    {\n        wsUrl,\n        onOpen,\n        onMsg,\n        onErr,\n        onClose,\n        children,\n        ...props\n    }: {\n        wsUrl: URL,\n        onOpen: () => void,\n        onMsg: (msg: MessageEvent) => void,\n        onErr: () => void,\n        onClose: () => void,\n        children: ReactNode\n    }) {\n    const [ws, setWs] = useState<WebSocket | undefined>()\n\n    useEffect(() => {\n        setWs(prevState => {\n            if (prevState != undefined) return prevState\n            const websocket = new WebSocket(wsUrl)\n            websocket.onopen = onOpen;\n            websocket.onmessage = onMsg;\n            websocket.onerror = onErr;\n            websocket.onclose = onClose;\n            return websocket\n        })\n    }, []);\n\n    useEffect(() => {\n        if (ws == undefined) return\n        ws.onopen = onOpen;\n        ws.onmessage = onMsg;\n        ws.onerror = onErr;\n        ws.onclose = onClose;\n    }, [ws, onOpen, onMsg, onErr, onClose]);\n    const wsState = useMemo<WebsocketState>(() => {\n        if (ws == undefined) return {state: \"unloaded\"}\n        return {\n            state: \"loaded\",\n            websocket: ws\n        }\n    }, [ws])\n    useWsSender(wsState)\n    return <Context.Provider\n        value={wsState}\n        {...props}\n    >\n        {children}\n    </Context.Provider>;\n}\n\nexport function useWebsocketState() {\n    return useContext(Context);\n}\n\nexport type WebsocketState = {\n    state: \"unloaded\"\n} | {\n    state: \"loaded\",\n    websocket: WebSocket\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front/app/components/Websocket.tsx b/ktcl-front/app/components/Websocket.tsx
+--- a/ktcl-front/app/components/Websocket.tsx	(revision 478b2aa9d28365dd82666a4743bbd15de8e64fcd)
++++ b/ktcl-front/app/components/Websocket.tsx	(date 1767900718147)
+@@ -1,5 +1,4 @@
+-import {createContext, ReactNode, useContext, useEffect, useMemo, useState} from "react";
+-import useWsSender from "../hooks/useWsSender";
++import {createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState} from "react";
+ 
+ 
+ const Context = createContext<WebsocketState>({state: "unloaded"});
+@@ -21,35 +20,33 @@
+         onClose: () => void,
+         children: ReactNode
+     }) {
+-    const [ws, setWs] = useState<WebSocket | undefined>()
++    const [wsState, setWsState] = useState<WebsocketState>({
++        state: "unloaded",
++    })
+ 
+     useEffect(() => {
+-        setWs(prevState => {
+-            if (prevState != undefined) return prevState
++        setWsState(prevState => {
++            if (prevState.state != "unloaded") return prevState
+             const websocket = new WebSocket(wsUrl)
+             websocket.onopen = onOpen;
+             websocket.onmessage = onMsg;
+             websocket.onerror = onErr;
+             websocket.onclose = onClose;
+-            return websocket
+-        })
+-    }, []);
+-
+-    useEffect(() => {
+-        if (ws == undefined) return
+-        ws.onopen = onOpen;
+-        ws.onmessage = onMsg;
+-        ws.onerror = onErr;
+-        ws.onclose = onClose;
+-    }, [ws, onOpen, onMsg, onErr, onClose]);
+-    const wsState = useMemo<WebsocketState>(() => {
+-        if (ws == undefined) return {state: "unloaded"}
+-        return {
+-            state: "loaded",
+-            websocket: ws
+-        }
+-    }, [ws])
+-    useWsSender(wsState)
++            return {
++                state: "loaded",
++                websocket: websocket,
++                setWs: setWsState
++            }
++        })
++    }, []);
++
++    useEffect(() => {
++        if (wsState.state != "loaded") return
++        wsState.websocket.onopen = onOpen;
++        wsState.websocket.onmessage = onMsg;
++        wsState.websocket.onerror = onErr;
++        wsState.websocket.onclose = onClose;
++    }, [wsState, onOpen, onMsg, onErr, onClose]);
+     return <Context.Provider
+         value={wsState}
+         {...props}
+@@ -63,8 +60,10 @@
+ }
+ 
+ export type WebsocketState = {
+-    state: "unloaded"
+-} | {
++    state: "unloaded",
++} | WebsocketLoadedState
++export interface WebsocketLoadedState {
+     state: "loaded",
+-    websocket: WebSocket
++    websocket: WebSocket,
++    setWs: Dispatch<SetStateAction<WebsocketState>>,
+ }
+Index: ktcl-front/app/hooks/useWsSender.ts
+===================================================================
+diff --git a/ktcl-front/app/hooks/useWsSender.ts b/ktcl-front/app/hooks/useWsSender.ts
+deleted file mode 100644
+--- a/ktcl-front/app/hooks/useWsSender.ts	(revision 478b2aa9d28365dd82666a4743bbd15de8e64fcd)
++++ /dev/null	(revision 478b2aa9d28365dd82666a4743bbd15de8e64fcd)
+@@ -1,9 +0,0 @@
+-import {WebsocketState} from "../components/Websocket";
+-import {useEffect} from "react";
+-
+-export default function useWsSender(wsState: WebsocketState) {
+-    useEffect(() => {
+-        if (wsState.state != "loaded") return
+-
+-    }, [wsState.state]);
+-}
+Index: ktcl-front/app/components/WsSender.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front/app/components/WsSender.tsx b/ktcl-front/app/components/WsSender.tsx
+new file mode 100644
+--- /dev/null	(date 1767900718147)
++++ b/ktcl-front/app/components/WsSender.tsx	(date 1767900718147)
+@@ -0,0 +1,27 @@
++import {useWebsocketState, WebsocketLoadedState, WebsocketState} from "./Websocket";
++import {useEffect} from "react";
++import {useKerutaTaskState} from "./KerutaTask";
++
++export default function WsSender(
++    {}: {},
++) {
++    const wsState = useWebsocketState()
++    const kerutaState = useKerutaTaskState()
++
++    useEffect(() => {
++        if (wsState.state != "loaded") return
++        if (kerutaState.state != "connected") return
++        if (kerutaState.auth.state == "unauthenticated") {
++            sendAuth(wsState)
++        }
++    }, [wsState.state]);
++    return (
++        <div>
++        </div>
++    )
++}
++
++
++function sendAuth(wsState: WebsocketLoadedState) {
++    wsState.websocket.send(JSON.stringify({type: "auth", token: "test"}))
++}

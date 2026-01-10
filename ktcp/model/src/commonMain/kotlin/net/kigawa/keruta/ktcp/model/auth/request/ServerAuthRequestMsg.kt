@@ -9,7 +9,7 @@ import net.kigawa.keruta.ktcp.model.msg.MsgType
  * Marker interface for authentication messages.
  */
 @Serializable
-data class AuthRequestMsg(
+data class ServerAuthRequestMsg(
     val token: AuthToken, override val type: MsgType = MsgType.AUTH_REQUEST,
 ): KtcpMsg {
     init {

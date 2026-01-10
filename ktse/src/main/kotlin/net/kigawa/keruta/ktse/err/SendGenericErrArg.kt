@@ -2,10 +2,10 @@ package net.kigawa.keruta.ktse.err
 
 import net.kigawa.keruta.ktcp.model.err.GenericErrArg
 import net.kigawa.keruta.ktcp.model.err.GenericErrMsg
-import net.kigawa.keruta.ktcp.model.err.types.KtcpErr
+import net.kigawa.keruta.ktcp.model.err.server.types.KtcpServerErr
 
 class SendGenericErrArg(
-    val err: KtcpErr,
+    val err: KtcpServerErr,
 ): GenericErrArg {
     override val msg: GenericErrMsg
         get() = GenericErrMsg(
