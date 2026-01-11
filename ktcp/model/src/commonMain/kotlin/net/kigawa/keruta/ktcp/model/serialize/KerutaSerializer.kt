@@ -8,16 +8,16 @@ import kotlinx.serialization.serializer
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.kodel.api.err.Res
 
-interface MsgSerializer {
+interface KerutaSerializer {
     val serializersModule: SerializersModule
     fun <T> serialize(serializer: SerializationStrategy<T>, value: T): String
     fun <T> deserialize(deserializer: DeserializationStrategy<T>, str: String): Res<T, KtcpErr>
 }
 
-inline fun <reified T> MsgSerializer.deserialize(str: String): Res<T, KtcpErr> = deserialize(
+inline fun <reified T> KerutaSerializer.deserialize(str: String): Res<T, KtcpErr> = deserialize(
     serializersModule.serializer(), str
 )
 
-inline fun <reified T> MsgSerializer.serialize(msg: @Serializable T): String = serialize(
+inline fun <reified T> KerutaSerializer.serialize(msg: @Serializable T): String = serialize(
     serializersModule.serializer(), msg
 )

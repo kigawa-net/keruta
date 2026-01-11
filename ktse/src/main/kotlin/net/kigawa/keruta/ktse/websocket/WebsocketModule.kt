@@ -7,7 +7,7 @@ import io.ktor.websocket.*
 import kotlinx.coroutines.channels.consumeEach
 import net.kigawa.keruta.ktcp.model.err.EntrypointNotFoundErr
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.serialize.JsonMsgSerializer
+import net.kigawa.keruta.ktcp.model.serialize.JsonKerutaSerializer
 import net.kigawa.keruta.ktcp.server.KtcpServer
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktcp.server.err.ResponseErr
@@ -29,10 +29,10 @@ import kotlin.time.Duration.Companion.seconds
 class WebsocketModule(application: Application) {
     val ktseConfig = KtseConfig(application.environment)
     val jwtVerifier = Auth0JwtVerifier(ktseConfig)
-    val jsonSerializer = JsonMsgSerializer()
+    val serializer = JsonKerutaSerializer()
     val logger = getKogger()
     val ktcpServer = KtcpServer()
-    val persister = ZkPersister(ktseConfig)
+    val persister = ZkPersister(ktseConfig, serializer)
 
     init {
         application.install(WebSockets.Plugin) {
@@ -55,14 +55,14 @@ class WebsocketModule(application: Application) {
                 session.updateTimeout()
                 when (
                     val res = receive(
-                        frame, ServerCtx(session, jsonSerializer, jwtVerifier, ktcpServer)
+                        frame, ServerCtx(session, serializer, jwtVerifier, ktcpServer)
                     )
                 ) {
                     is Res.Err<*, KtcpErr> -> {
                         logger.error("Failed to receive message", res.err)
                         ktcpServer.clientEntrypoints.genericError.access(
                             SendGenericErrArg(res.err),
-                            ServerCtx(session, jsonSerializer, jwtVerifier, ktcpServer)
+                            ServerCtx(session, serializer, jwtVerifier, ktcpServer)
                         )
                     }
 

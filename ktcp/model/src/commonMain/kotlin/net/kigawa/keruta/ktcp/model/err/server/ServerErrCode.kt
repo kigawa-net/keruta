@@ -7,5 +7,6 @@ enum class ServerErrCode {
     VERIFY_FAIL,
     UNEXPECTED,
     RESPONSE_ERR,
-    UNAUTHENTICATED
+    UNAUTHENTICATED,
+    BACKEND
 }

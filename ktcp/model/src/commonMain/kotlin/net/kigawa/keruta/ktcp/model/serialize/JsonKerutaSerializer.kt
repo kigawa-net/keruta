@@ -10,7 +10,7 @@ import net.kigawa.keruta.ktcp.model.err.InvalidTypeDeserializeErr
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.kodel.api.err.Res
 
-class JsonMsgSerializer: MsgSerializer {
+class JsonKerutaSerializer: KerutaSerializer {
     val json = Json { encodeDefaults = true }
     override val serializersModule: SerializersModule
         get() = json.serializersModule
