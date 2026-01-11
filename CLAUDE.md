@@ -9,332 +9,291 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 * 純粋関数を使う
 * SOLID原則に従う
-* All service classes must be marked `open` for Spring CGLIB proxy creation
-* Use `@Component`, `@Service`, `@Repository` annotations consistently
+* Kotlin Multiplatform対応（JVM、JS両対応）
 
 ## Development Commands
 
 ### Quick Start
 ```bash
-# Start MongoDB and run API server (most common development setup)
-cd keruta-api && docker-compose up -d mongodb && ./gradlew bootRun
+# Build all modules
+./gradlew build
 
-# Full development environment with all services
-cd keruta-api && docker-compose up -d
+# Run Keruta Task Server (KTSE)
+./gradlew :ktse:run
 
-# Stop all services
-cd keruta-api && docker-compose down
+# Run Keruta Task Client Web (KTCL-Web)
+./gradlew :ktcl-web:run
+
+# Clean and rebuild everything
+./gradlew clean build
 ```
 
 ### Building and Running
 ```bash
-# Build the API project
-cd keruta-api && ./gradlew build
+# Build all modules
+./gradlew build
 
-# Run the Spring Boot API server
-cd keruta-api && ./gradlew bootRun
+# Build specific module
+./gradlew :ktse:build
+./gradlew :ktcp:server:build
+./gradlew :kodel:api:build
 
-# Run the Keruta Executor (for Coder workspace management)
-cd keruta-executor && ./gradlew bootRun
+# Run Keruta Task Server
+./gradlew :ktse:run
 
-# Build just the Go agent (for task execution)
-cd keruta-agent && ./scripts/build.sh
-
-# Clean and rebuild everything
-cd keruta-api && ./gradlew clean build
+# Run Keruta Task Client Web
+./gradlew :ktcl-web:run
 ```
 
 ### Testing
 ```bash
-# Run all tests (most common)
-cd keruta-api && ./gradlew test
+# Run all tests
+./gradlew test
 
-# Run tests with detailed output and continue on failure
-cd keruta-api && ./gradlew test --continue
+# Run tests for specific module
+./gradlew :ktcp:server:test
+./gradlew :ktse:test
 
-# Run specific module tests (Note: This is a single-module project)
-cd keruta-api && ./gradlew test
-
-# Run tests for keruta-executor
-cd keruta-executor && ./gradlew test
-
-# Run Go agent tests
-cd keruta-agent && go test ./...
-
-# Run integration tests with TestContainers (requires Docker)
-cd keruta-api && ./gradlew test
+# Run tests with detailed output
+./gradlew test --continue
 ```
 
 ### Code Quality
 ```bash
 # Format and check all code (run before committing)
-cd keruta-api && ./gradlew ktlintFormatAll && ./gradlew ktlintCheckAll
+./gradlew ktlintFormat && ./gradlew ktlintCheck
 
-# Check code style (all modules in keruta-api)
-cd keruta-api && ./gradlew ktlintCheckAll
+# Check code style
+./gradlew ktlintCheck
 
-# Format code (all modules in keruta-api)
-cd keruta-api && ./gradlew ktlintFormatAll
-
-# Check/Format main project
-cd keruta-api && ./gradlew ktlintCheck
-cd keruta-api && ./gradlew ktlintFormat
-
-# Check keruta-executor
-cd keruta-executor && ./gradlew ktlintCheck && ./gradlew ktlintFormat
-```
-
-### Database and Services
-```bash
-# Start MongoDB only (most common for development)
-cd keruta-api && docker-compose up -d mongodb
-
-# Start MongoDB with logs
-cd keruta-api && docker-compose up mongodb
-
-# View application logs
-docker-compose logs -f keruta-api
-docker-compose logs -f keruta-executor
-
-# Reset database (stops and removes containers with data)
-docker-compose down -v && docker-compose up -d mongodb
+# Format code
+./gradlew ktlintFormat
 ```
 
 ## Architecture Overview
 
-Keruta is a Coder workspace management system with three main components:
+Kerutaは、タスク実行とWebSocket通信を中心としたKotlin Multiplatformプロジェクトです。
 
 ### Core Components
-1. **Spring Boot API Server** (Kotlin) - Main API service for session and workspace management
-2. **Keruta Executor** (Kotlin/Spring Boot) - Coder workspace monitoring and management
-3. **Keruta Agent** (Go) - Task execution runtime for external processes
-4. **MongoDB** - Primary data store
-5. **/todo.md** - todolist
+1. **KTCP (Keruta TCP Protocol)** - WebSocketベースの通信プロトコル
+2. **KTSE (Keruta Task Server)** - Ktorベースのタスクサーバー（ZooKeeper統合）
+3. **KTCL-Web (Keruta Task Client Web)** - Ktorベースのクライアントウェブアプリケーション
+4. **Kodel** - 共通ライブラリ（API、コア、コルーチン）
+5. **Keruta SDK** - クライアントSDK
+6. **/todo.md** - todolist
 
 ### Multi-Module Structure
 
-#### API Server (keruta-api)
-- **Package Structure** (single Gradle project with logical package separation):
-  - `net.kigawa.keruta.core.domain` - Domain models (Session, Workspace, Document, etc.)
-  - `net.kigawa.keruta.core.usecase` - Business logic and use cases for session/workspace management
-  - `net.kigawa.keruta.infra.persistence` - MongoDB repository implementations
-  - `net.kigawa.keruta.infra.security` - Security configuration (currently permissive)
-  - `net.kigawa.keruta.infra.app` - Coder integration, workspace orchestration, and coroutine management
-  - `net.kigawa.keruta.api` - REST controllers and web layer
-  - `generated-api` - OpenAPI generated code subproject
+#### KTCP (Keruta TCP Protocol)
+WebSocketベースの通信プロトコル実装。Kotlin Multiplatform対応（commonMain、jsMain、jvmMain）。
 
-#### Executor (keruta-executor)
-- **Session Monitoring** - Standalone Spring Boot application that monitors session states
-- **API-only Data Access** - No direct database access, communicates only via REST API
-- **Background Scheduling** - Uses `@Scheduled` methods for session and workspace monitoring
-- **Workspace Management** - Manages Coder workspace lifecycle via API calls
+- **ktcp:model** - メッセージモデル、シリアライザ
+  - `net.kigawa.keruta.ktcp.model` - KtcpMsg、KtcpConnection
+  - `net.kigawa.keruta.ktcp.model.serialize` - KerutaSerializer（JSON）
+  - `net.kigawa.keruta.ktcp.model.task` - ServerTaskCreateMsg、ServerTaskCreateArg
+
+- **ktcp:client** - クライアント実装
+  - `net.kigawa.keruta.ktcp.client` - KtcpClient、ClientCtx、ClientConnection
+  - `net.kigawa.keruta.ktcp.client.task` - SendTaskCreateEntrypoint
+
+- **ktcp:server** - サーバー実装
+  - `net.kigawa.keruta.ktcp.server` - KtcpServer、ServerCtx、KtcpSession
+  - `net.kigawa.keruta.ktcp.server.persist` - PersisterSession、AuthenticatedPersisterSession、TaskToCreate
+  - `net.kigawa.keruta.ktcp.server.task` - ReceiveTaskCreateEntrypoint
+  - **注意**: 認証機能（ServerAuthenticateEntrypoint）は未実装（スタブ実装）
+
+#### KTSE (Keruta Task Server)
+KtorベースのWebSocketサーバー。ZooKeeperと統合し、タスクの永続化を実現。
+
+- **パッケージ構成**:
+  - `net.kigawa.keruta.ktse` - KerutaTaskServer（メインアプリケーション）
+  - `net.kigawa.keruta.ktse.websocket` - WebSocketModule、WebsocketConnection
+  - `net.kigawa.keruta.ktse.zookeeper` - ZooKeeper統合
+    - `ZkPersister` - タスク永続化
+    - `ZkPersisterSession` - 永続化セッション
+    - `ZkAuthenticatedPersisterSession` - 認証済み永続化セッション
+    - `ServerWatcher` - ZooKeeper接続監視
+  - `net.kigawa.keruta.ktse.task` - ReceiveTaskCreateArg
+  - `net.kigawa.keruta.ktse.err` - BackendErr（エラーハンドリング）
+
+- **主な機能**:
+  - WebSocket通信（Ktor WebSockets）
+  - ZooKeeperによるタスク永続化
+  - セッション管理（PersisterSession抽象化）
+  - エラーハンドリング（BackendErr）
+
+#### KTCL-Web (Keruta Task Client Web)
+KtorベースのWebクライアントアプリケーション。JWT認証とWebSocket通信をサポート。
+
+- **パッケージ構成**:
+  - `net.kigawa.keruta.ktcl.web` - KerutaTaskClientWeb（メインアプリケーション）
+  - `net.kigawa.keruta.ktcl.web.module` - JwtModule、WebsocketModule
+
+- **主な機能**:
+  - JWT認証
+  - CORS対応
+  - WebSocket通信
+  - セッション管理（UserSession）
+  - KtcpClientとの統合
+
+#### Kodel (共通ライブラリ)
+プロジェクト共通のユーティリティライブラリ。
+
+- **kodel:api** - エントリーポイント、エラー処理（Res型）、ログ
+  - `net.kigawa.kodel.api.entrypoint` - EntrypointDeferred
+  - `net.kigawa.kodel.api.err` - Res（Result型）
+  - `net.kigawa.kodel.api.log` - Kogger（ロガー）、LoggerFactory
+
+- **kodel:core** - コア機能
+
+- **kodel:coroutine** - コルーチンユーティリティ
+
+#### Keruta SDK
+クライアントSDKプロジェクト（別Gradleプロジェクト）。
 
 ### Key Domain Models
-- **Session**: User sessions with associated workspaces and status management (metadata removed, status updates restricted)
-- **Workspace**: Coder workspaces with URLs and lifecycle state (generic container resource fields)
-- **Document**: Context documents that can be attached to sessions
 
-## Session and Workspace Management Flow
+- **KtcpMsg**: KTCP通信メッセージの基底インターフェース
+- **ServerTaskCreateMsg**: タスク作成メッセージ（タスク名を含む）
+- **TaskToCreate**: 永続化するタスクデータ
+- **PersisterSession**: タスク永続化セッションの抽象化
+- **AuthenticatedPersisterSession**: 認証済みセッション（タスク作成機能を提供）
+- **KtcpConnection**: WebSocket接続の抽象化
 
-### Session Creation and Workspace Lifecycle
-1. Sessions are created via API or admin interface at `/admin`
-2. Workspaces are automatically created when sessions are created (1:1 relationship)
-3. Session status transitions: PENDING → ACTIVE → (COMPLETED/TERMINATED)
-4. Workspace status transitions: PENDING → STARTING → RUNNING → STOPPED
+## Task Creation Flow
 
-### Executor-based Workspace Monitoring
-1. Keruta Executor runs as a separate Spring Boot application
-2. `SessionMonitoringService` polls keruta-api for session states every 30-60 seconds
-3. Monitors PENDING sessions and ensures workspaces are created
-4. Monitors ACTIVE sessions and ensures workspaces are running
-5. Manages workspace start/stop lifecycle via Coder API calls
+### クライアントからサーバーへのタスク作成フロー
+1. クライアントが`SendTaskCreateEntrypoint`を使ってタスク作成メッセージを送信
+2. サーバーが`ReceiveTaskCreateEntrypoint`でメッセージを受信
+3. セッション認証チェック（未認証の場合はUnauthenticatedErr）
+4. `TaskToCreate.from()`でメッセージをタスクデータに変換
+5. `AuthenticatedPersisterSession.createTask()`を呼び出し
+6. `ZkAuthenticatedPersisterSession`がZooKeeperにタスクを永続化
+7. `ZkPersister.createTask()`がZooKeeperノードを作成
 
 ## Important Implementation Details
 
-### Coder Integration
-- Integrates with Coder API for workspace management
-- Manages workspace lifecycle (create, start, stop, delete)
-- Japanese session name normalization for Coder compatibility
-- **Automatic Token Management**: Coder session tokens automatically refresh every 24 hours
-- **Kubernetes Secret Integration**: Tokens managed via K8s secrets for production deployment
+### ZooKeeper統合
+- タスクの永続化にApache ZooKeeperを使用
+- `ZkPersister`がZooKeeperクライアントを管理
+- `ServerWatcher`で接続状態を監視
+- タスクは`KerutaSerializer`でシリアライズされてZooKeeperに保存
 
-### Executor Communication
-The Keruta Executor communicates with the Spring Boot API using HTTP:
-- `GET /api/v1/sessions?status=PENDING` - Get pending sessions
-- `GET /api/v1/sessions?status=ACTIVE` - Get active sessions
-- `GET /api/v1/workspaces?sessionId={id}` - Get session workspaces
-- `POST /api/v1/workspaces` - Create new workspace
-- `PUT /api/v1/sessions/{id}/status` - Update session status (system only)
-- `POST /api/v1/workspaces/{id}/start` - Start workspace
+### シリアライゼーション
+- `KerutaSerializer`インターフェースで抽象化
+- `JsonKerutaSerializer`でJSON形式のシリアライゼーション実装
+- `kotlinx.serialization`を使用
+- `MsgSerializer`から`KerutaSerializer`にリネーム
+
+### エラーハンドリング
+- `BackendErr`クラスでバックエンドエラーを表現
+- `KtcpServerErr`を継承し、`ServerErrCode.BACKEND`を使用
+- `Res<T, E>`型でResult型パターンを実装（`Res.Ok`、`Res.Err`）
 
 ### Recent Architecture Changes
-- **Module Simplification**: infra:core merged into infra:app for reduced complexity
-- **Kubernetes Removal**: All Kubernetes-specific code removed, generic container resource fields used
-- **Status Security**: Session status updates restricted to system only (user updates return 403)
-- **Metadata Cleanup**: Session metadata field removed from all layers
-- **Logger Fix**: WorkspaceTaskExecutionService logger moved to companion object for thread safety
-- **Coder Token Auto-Refresh**: Coder session tokens automatically refresh every 24 hours
-- **K8s Secret Integration**: Coder tokens managed via Kubernetes secrets in production deployments
-- **Database-Free Workspace Management**: Workspaces no longer stored in database, managed directly via Coder API
-- **Multi-Endpoint Coder Support**: Automatic fallback across multiple Coder API endpoint formats for compatibility
+- **ZooKeeper統合**: タスク永続化機能を追加
+- **PersisterSession抽象化**: セッション永続化の抽象化レイヤーを導入
+- **BackendErr追加**: バックエンドエラーハンドリングクラスを追加
+- **KerutaSerializerリネーム**: MsgSerializerからKerutaSerializerに名称変更
+- **KtcpConnection追加**: 接続インターフェースを追加
+- **タスク作成メッセージ**: ServerTaskCreateMsg、ServerTaskCreateArgを追加
+- **タスク作成エントリーポイント**: ServerTaskCreateEntrypoint、ReceiveTaskCreateEntrypointを実装
 
-### Session and Workspace Architecture
-- **1:1 Session-Workspace Relationship** - Each session has exactly one associated workspace
-- **Automatic Workspace Creation** - Workspaces are created automatically when sessions are created
-- **Status Synchronization** - Session status updates trigger workspace state changes
-- **Workspace Management** - Manages workspace lifecycle via Coder API
+### セキュリティモデル
+**注意**: 現在、認証機能は未実装です。
 
-### Security Model
-Currently implements permissive security suitable for internal environments:
-- No authentication required on API endpoints
-- CORS enabled for cross-origin requests
-- CSRF disabled for API endpoints
-- Session status updates are restricted - only system can modify status
+- **KTCP Server**: ServerAuthenticateEntrypointが未実装（スタブ実装）
+- **KTCL-Web**: JWT認証機能を実装済み
+- **開発環境**: CORS設定は開発用（anyHost()使用）
+- **本番環境**: 認証機能実装後に本番使用を推奨
 
-### Database Configuration
-MongoDB connection is configured via environment variables:
-- `SPRING_DATA_MONGODB_HOST` (default: localhost)
-- `SPRING_DATA_MONGODB_PORT` (default: 27017)
-- `SPRING_DATA_MONGODB_DATABASE` (default: keruta)
-- `SPRING_DATA_MONGODB_USERNAME` (default: admin)
-- `SPRING_DATA_MONGODB_PASSWORD` (default: password)
+### ZooKeeper設定（KTSE）
+ZooKeeper接続は環境変数で設定：
+- `KTSE_ZK_HOST` - ZooKeeperホスト（デフォルト: localhost:2181）
 
-### Coder Configuration (Executor)
-Coder integration is configured via environment variables:
-- `KERUTA_EXECUTOR_CODER_BASE_URL` - Coder server URL
-- `KERUTA_EXECUTOR_CODER_TOKEN` - Coder session token (managed via K8s secrets in production)
-- `KERUTA_EXECUTOR_CODER_ENABLE_CLI_FALLBACK` - Enable CLI fallback for token refresh (default: false)
-- `KERUTA_EXECUTOR_API_BASE_URL` - keruta-api base URL (default: http://localhost:8080)
-
-**Token Management**: Coder session tokens automatically refresh every 24 hours using existing tokens. It supports two refresh methods:
-
-1. **API-based refresh** (default): Uses `/api/v2/users/me/tokens` endpoint to create new tokens
-2. **CLI fallback** (optional): Falls back to `coder login` command if API refresh fails
-
-**Token Refresh Methods**:
-- **Short-term sessions**: Automatically refreshed every 24 hours (default duration)
-- **Long-term API tokens**: Can be regenerated using `coder tokens regen <TOKEN_ID>`
-- **Manual refresh**: `coder logout && coder login <URL>` for immediate re-authentication
-
-In Kubernetes deployments, tokens are stored in secrets and mounted as environment variables.
-
-## Key API Endpoints
-
-### Session Management
-- `GET /api/v1/sessions` - List all sessions
-- `POST /api/v1/sessions` - Create new session
-- `PUT /api/v1/sessions/{id}/status` - Update session status (restricted - returns 403 for user requests)
-- `GET /api/v1/sessions/{id}` - Get session details
-
-### Workspace Management (via Executor)
-- `GET /api/v1/workspaces` - List all workspaces (proxied to executor)
-- `POST /api/v1/workspaces` - Create new workspace (proxied to executor)
-- `POST /api/v1/workspaces/{id}/start` - Start workspace (proxied to executor)
-- `POST /api/v1/workspaces/{id}/stop` - Stop workspace (proxied to executor)
-- `POST /api/v1/sessions/{id}/sync-status` - Sync session status with workspace state
-- `GET /api/v1/sessions/{id}/workspaces` - Get workspaces for specific session
-
-### Document Management
-- `GET /api/v1/documents` - List all documents
-- `POST /api/v1/documents` - Create new document
-- `GET /api/v1/documents/{id}` - Get document details
+### JWT設定（KTCL-Web）
+JWT認証は環境変数で設定：
+- JWT関連の設定は`Config.load()`で読み込み
 
 ## Development Environment
 
-### Local Setup
-1. Start MongoDB: `cd keruta-api && docker-compose up -d mongodb`
-2. Run API server: `cd keruta-api && ./gradlew bootRun`
-3. (Optional) Run executor: `cd keruta-executor && ./gradlew bootRun`
-4. Access admin interface: http://localhost:8080/admin
-5. Access API docs: http://localhost:8080/swagger-ui.html
+### Local Setup (KTSE)
+```bash
+# ZooKeeperを起動（Docker使用の場合）
+docker run -d --name zookeeper -p 2181:2181 zookeeper
 
-### Docker Development
-- Full stack: `docker-compose up -d`
-- Services: MongoDB (27017), Keycloak (8180), PostgreSQL (5432)
-- Application: http://localhost:8080
+# KTSEを起動
+./gradlew :ktse:run
+```
+
+### Local Setup (KTCL-Web)
+```bash
+# KTCL-Webを起動
+./gradlew :ktcl-web:run
+```
 
 ## Code Style and Quality
 
 ### Kotlin Style
-- Uses ktlint for code formatting and style checking
-- Configuration in `.editorconfig`
-- Some rules temporarily disabled for migration ease: wildcard imports, filename matching, max line length
-- All service classes must be marked `open` for Spring CGLIB proxy creation
-- New code should follow full ktlint standards
+- ktlintでコードフォーマットとスタイルチェック
+- `.editorconfig`に設定
+- Kotlin Multiplatform対応（commonMain、jsMain、jvmMain）
 
-### Go Style
-- Standard Go formatting with `gofmt`
-- Uses testify for testing
-- Cobra for CLI structure
-
-## Testing Strategy
-
-### Kotlin Tests
-- JUnit 5 framework
-- TestContainers for integration testing with MongoDB
-- Mockito for mocking dependencies
-- Tests located in `src/test/kotlin` in each module
-
-### Go Tests
-- Built-in Go testing framework
-- Testify for assertions
-- Tests in `*_test.go` files
+### Testing Strategy
+- JUnit 5フレームワーク
+- Kotlin testフレームワーク
+- テストは各モジュールの`src/test/kotlin`に配置
 
 ## Deployment
 
 ### Container Deployment
-- Docker images built from respective Dockerfiles
-- Configurable via environment variables and secrets
-- Health checks on `/api/health` endpoint
-
-### Docker Images
-- API Server: Built from `keruta-api/Dockerfile`
-- Executor: Built from `keruta-executor/Dockerfile`
-- Agent: Built from `keruta-agent/Dockerfile`
-- Uses Harbor registry: `harbor.kigawa.net/library/keruta`
+- Dockerイメージはそれぞれのモジュールから構築可能
+- 環境変数で設定可能
+- Harbor registry: `harbor.kigawa.net/library/keruta`
 
 ## Project Structure Notes
 
-- **keruta-api**: Single-module Gradle project with clean architecture package structure and direct MongoDB access
-  - Main project with logical package separation
-  - `generated-api` - OpenAPI generated code subproject
-  - Package structure follows layered architecture pattern
-- **keruta-executor**: Standalone Spring Boot application with API-only data access (no direct DB connection)
-- **keruta-agent**: Go CLI application for task execution within containers
-- **keruta-admin**: React/Remix frontend for administration
-- Configuration is environment-based (Spring profiles, environment variables)
-- Tests use TestContainers for integration testing with real databases (API server only)
-- Recent simplifications: infra:core merged into infra:app, Kubernetes functionality removed, Session metadata removed
+- **Kotlin Multiplatform**: JVMとJSの両方に対応
+- **Gradleマルチモジュール**: 機能ごとにモジュール分割
+- **共通ライブラリ（Kodel）**: プロジェクト共通のユーティリティ
+- **プロトコル定義（KTCP）**: 通信プロトコルを独立したモジュールとして定義
+- **サーバー（KTSE）**: Ktorベース、ZooKeeper統合
+- **クライアント（KTCL-Web）**: Ktorベース、JWT認証
+
+## Gradle Module Structure
+
+```
+keruta/
+├── kodel/                  # 共通ライブラリ
+│   ├── api/               # エントリーポイント、エラー処理、ログ
+│   ├── core/              # コア機能
+│   └── coroutine/         # コルーチンユーティリティ
+├── ktcp/                  # Keruta TCPプロトコル
+│   ├── model/             # メッセージモデル、シリアライザ
+│   ├── client/            # クライアント実装
+│   └── server/            # サーバー実装（認証未実装）
+├── ktse/                  # Keruta Task Server (Ktor + ZooKeeper)
+├── ktcl-web/              # Keruta Task Client Web (Ktor + JWT)
+└── keruta-sdk/            # クライアントSDK（別Gradleプロジェクト）
+```
 
 ## Common Issues and Solutions
 
 ### Build Issues
-- **Gradle build cache issues**: Run `cd keruta-api && ./gradlew clean build`
-- **ktlint failures**: Run `cd keruta-api && ./gradlew ktlintFormatAll` before building
-- **TestContainer failures**: Ensure Docker is running and accessible
+- **Gradle build cache issues**: `./gradlew clean build`を実行
+- **ktlint failures**: `./gradlew ktlintFormat`を実行してからビルド
 
 ### Runtime Issues
-- **NullPointerException in scheduled tasks**: Check logger initialization in companion objects
-- **MongoDB connection issues**: Verify MongoDB is running and environment variables are set
-- **Spring CGLIB proxy issues**: Ensure service classes are marked `open`
-- **Coder authentication errors**: Check KERUTA_EXECUTOR_CODER_TOKEN environment variable or K8s secret configuration
-- **Coder API endpoint errors**: Check logs for 404/405 errors - system automatically tries multiple endpoint formats
-- **JSON parsing errors**: Ensure nullable fields in DTOs for Coder API responses (version, createdAt, updatedAt)
-- **CORS errors**: When allowCredentials is true, allowedOrigins cannot contain "*" - set allowCredentials(false) in CorsConfig.kt
-- **Java version issues**: Use JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64 for Java 21
+- **ZooKeeper connection issues**: ZooKeeperが起動していることを確認
+- **WebSocket connection failures**: CORSとWebSocket設定を確認
+- **Authentication errors (KTCP)**: 認証機能が未実装のため、本番環境では使用しないこと
+- **JWT token issues (KTCL-Web)**: JWT設定を環境変数で確認
 
 ### Development Workflow
-1. Start MongoDB: `cd keruta-api && docker-compose up -d mongodb`
-2. Format code: `cd keruta-api && ./gradlew ktlintFormatAll`
-3. Run tests: `cd keruta-api && ./gradlew test`
-4. Start API: `cd keruta-api && ./gradlew bootRun`
-5. Access admin: http://localhost:8080/admin
-
-### Coder API Integration Details
-Coder workspace creation uses multiple endpoint formats for compatibility:
-1. **Primary**: `/api/v2/users/me/workspaces` (official Coder API v2)
-2. **Fallback 1**: `/api/v2/organizations/default/members/me/workspaces` (organization-based)
-3. **Fallback 2**: `/api/v2/workspaces` (legacy format)
+1. コードフォーマット: `./gradlew ktlintFormat`
+2. テスト実行: `./gradlew test`
+3. ビルド: `./gradlew build`
+4. サーバー起動: `./gradlew :ktse:run`
 
 
 ## important-instruction-reminders
