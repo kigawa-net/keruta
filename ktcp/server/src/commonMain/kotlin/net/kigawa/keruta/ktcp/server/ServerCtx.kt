@@ -12,11 +12,12 @@ class ServerCtx(
     val session: KtcpSession,
     val serializer: MsgSerializer,
     val jwtVerifier: JwtVerifier,
-    val server: KtcpServer
+    val server: KtcpServer,
 ) {
-    fun verify(authRequestMsg: ServerAuthRequestMsg): Res<Verified, VerifyErr > {
+    fun verify(authRequestMsg: ServerAuthRequestMsg): Res<Verified, VerifyErr> {
         return jwtVerifier.verify(authRequestMsg.token)
     }
 
     val connection by session::connection
+    val persisterSession by session::persisterSession
 }

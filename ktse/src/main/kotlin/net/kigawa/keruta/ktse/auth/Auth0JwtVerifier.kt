@@ -10,7 +10,7 @@ import net.kigawa.keruta.ktcp.server.err.VerifyFailErr
 import net.kigawa.keruta.ktcp.server.err.VerifyUnsupportedKeyErr
 import net.kigawa.keruta.ktcp.server.auth.JwtVerifier
 import net.kigawa.keruta.ktcp.server.auth.Verified
-import net.kigawa.keruta.ktse.Config
+import net.kigawa.keruta.ktse.KtseConfig
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.getKogger
 import net.kigawa.kodel.api.log.traceignore.debug
@@ -18,11 +18,11 @@ import java.net.URL
 import java.security.interfaces.RSAPublicKey
 
 class Auth0JwtVerifier(
-    val config: Config,
+    val ktseConfig: KtseConfig,
 ): JwtVerifier {
     val jwkProvider: JwkProvider = JwkProviderBuilder(
         URL(
-            config.issuer + "/protocol/openid-connect/certs"
+            ktseConfig.issuer + "/protocol/openid-connect/certs"
         )
     ).build()
     val logger = getKogger()
@@ -37,8 +37,8 @@ class Auth0JwtVerifier(
             else -> return Res.Err(VerifyUnsupportedKeyErr(pub.toString(), null))
         }
         val verifier = JWT.require(alg)
-            .withIssuer(config.issuer)
-            .withAudience(config.audience)
+            .withIssuer(ktseConfig.issuer)
+            .withAudience(ktseConfig.audience)
             .build()
         return try {
             val verified = verifier.verify(token)

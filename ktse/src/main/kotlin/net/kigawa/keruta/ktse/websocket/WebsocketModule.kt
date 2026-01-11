@@ -12,11 +12,13 @@ import net.kigawa.keruta.ktcp.server.KtcpServer
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktcp.server.err.ResponseErr
 import net.kigawa.keruta.ktcp.server.session.KtcpSession
-import net.kigawa.keruta.ktse.Config
+import net.kigawa.keruta.ktse.KtseConfig
 import net.kigawa.keruta.ktse.ReceiveUnknownArg
 import net.kigawa.keruta.ktse.WebsocketConnection
 import net.kigawa.keruta.ktse.auth.Auth0JwtVerifier
 import net.kigawa.keruta.ktse.err.SendGenericErrArg
+import net.kigawa.keruta.ktse.zookeeper.ZkPersister
+import net.kigawa.keruta.ktse.zookeeper.ZkPersisterSession
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.err.convertErr
 import net.kigawa.kodel.api.log.getKogger
@@ -25,11 +27,12 @@ import net.kigawa.kodel.api.log.traceignore.error
 import kotlin.time.Duration.Companion.seconds
 
 class WebsocketModule(application: Application) {
-    val config = Config(application.environment)
-    val jwtVerifier = Auth0JwtVerifier(config)
+    val ktseConfig = KtseConfig(application.environment)
+    val jwtVerifier = Auth0JwtVerifier(ktseConfig)
     val jsonSerializer = JsonMsgSerializer()
     val logger = getKogger()
     val ktcpServer = KtcpServer()
+    val persister = ZkPersister(ktseConfig)
 
     init {
         application.install(WebSockets.Plugin) {
@@ -42,7 +45,10 @@ class WebsocketModule(application: Application) {
 
     fun websocketModule(routing: Route) = routing.webSocket("/ws/ktcp") {
         logger.debug("WebSocket connection established")
-        KtcpSession.startSession(WebsocketConnection(this@webSocket)) { session ->
+        KtcpSession.startSession(
+            WebsocketConnection(this@webSocket),
+            ZkPersisterSession(persister)
+        ) { session ->
             logger.debug("WebSocket session started")
             incoming.consumeEach { frame ->
                 logger.debug("received frame: $frame")
