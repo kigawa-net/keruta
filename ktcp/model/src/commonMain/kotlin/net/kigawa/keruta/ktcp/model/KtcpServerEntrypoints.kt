@@ -1,10 +1,10 @@
 package net.kigawa.keruta.ktcp.model
 
-import net.kigawa.keruta.ktcp.model.auth.request.AuthRequestEntrypoint
+import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestEntrypoint
+import net.kigawa.keruta.ktcp.model.err.EntrypointNotFoundErr
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.err.server.types.EntrypointNotFoundErr
-import net.kigawa.keruta.ktcp.model.err.server.types.KtcpServerErr
-import net.kigawa.keruta.ktcp.model.msg.UnknownArg
+import net.kigawa.keruta.ktcp.model.msg.ServerUnknownArg
+import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateEntrypoint
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.entrypoint.EntrypointGroupBase
 import net.kigawa.kodel.api.entrypoint.EntrypointInfo
@@ -16,8 +16,9 @@ import kotlin.time.ExperimentalTime
 
 @Suppress("unused")
 class KtcpServerEntrypoints<C>(
-    authRequestEntrypoint: AuthRequestEntrypoint<C, KtcpErr>,
-): EntrypointGroupBase<UnknownArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C>() {
+    authRequestEntrypoint: ServerAuthRequestEntrypoint<C>,
+    taskCreateEntrypoint: ServerTaskCreateEntrypoint<C>,
+): EntrypointGroupBase<ServerUnknownArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C>() {
     val logger = LoggerFactory.get("net.kigawa.keruta.ktcp.model.KtcpServerEntrypoints")
     override val info: EntrypointInfo = EntrypointInfo(
         "ktcp-server",
@@ -31,12 +32,18 @@ class KtcpServerEntrypoints<C>(
             this(it)
         }
     }
-
+    val taskCreateEntrypoint = add(taskCreateEntrypoint) { input ->
+        input.tryToTaskCreate()?.whenErrOk(
+            { EntrypointDeferred { Res.Err(it) } }
+        ) {
+            this(it)
+        }
+    }
 
     @OptIn(ExperimentalTime::class)
     override fun onSubEntrypointNotFound(
-        input: UnknownArg,
-    ): EntrypointDeferred<Res<Unit, KtcpServerErr>> = EntrypointDeferred {
+        input: ServerUnknownArg,
+    ): EntrypointDeferred<Res<Unit, KtcpErr>> = EntrypointDeferred {
         logger.error("not found entrypoint: $input")
         Res.Err(
             EntrypointNotFoundErr(

@@ -1,7 +1,0 @@
-package net.kigawa.keruta.ktcp.model.err.server.types
-
-import net.kigawa.keruta.ktcp.model.err.server.ServerErrCode
-
-sealed class DeserializeErr(
-    code: ServerErrCode, message: String?, cause: IllegalArgumentException?,
-): KtcpServerErr(code, message, cause)

@@ -5,18 +5,20 @@ import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.channels.consumeEach
-import net.kigawa.keruta.ktcp.model.err.server.types.EntrypointNotFoundErr
-import net.kigawa.keruta.ktcp.model.err.server.types.KtcpServerErr
-import net.kigawa.keruta.ktcp.model.err.server.types.ResponseErr
-import net.kigawa.keruta.ktcp.model.serialize.JsonMsgSerializer
+import net.kigawa.keruta.ktcp.model.err.EntrypointNotFoundErr
+import net.kigawa.keruta.ktcp.model.err.KtcpErr
+import net.kigawa.keruta.ktcp.model.serialize.JsonKerutaSerializer
 import net.kigawa.keruta.ktcp.server.KtcpServer
 import net.kigawa.keruta.ktcp.server.ServerCtx
+import net.kigawa.keruta.ktcp.server.err.ResponseErr
 import net.kigawa.keruta.ktcp.server.session.KtcpSession
-import net.kigawa.keruta.ktse.Config
+import net.kigawa.keruta.ktse.KtseConfig
 import net.kigawa.keruta.ktse.ReceiveUnknownArg
 import net.kigawa.keruta.ktse.WebsocketConnection
 import net.kigawa.keruta.ktse.auth.Auth0JwtVerifier
 import net.kigawa.keruta.ktse.err.SendGenericErrArg
+import net.kigawa.keruta.ktse.zookeeper.ZkPersister
+import net.kigawa.keruta.ktse.zookeeper.ZkPersisterSession
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.err.convertErr
 import net.kigawa.kodel.api.log.getKogger
@@ -25,11 +27,12 @@ import net.kigawa.kodel.api.log.traceignore.error
 import kotlin.time.Duration.Companion.seconds
 
 class WebsocketModule(application: Application) {
-    val config = Config(application.environment)
-    val jwtVerifier = Auth0JwtVerifier(config)
-    val jsonSerializer = JsonMsgSerializer()
+    val ktseConfig = KtseConfig(application.environment)
+    val jwtVerifier = Auth0JwtVerifier(ktseConfig)
+    val serializer = JsonKerutaSerializer()
     val logger = getKogger()
     val ktcpServer = KtcpServer()
+    val persister = ZkPersister(ktseConfig, serializer)
 
     init {
         application.install(WebSockets.Plugin) {
@@ -42,21 +45,24 @@ class WebsocketModule(application: Application) {
 
     fun websocketModule(routing: Route) = routing.webSocket("/ws/ktcp") {
         logger.debug("WebSocket connection established")
-        KtcpSession.startSession(WebsocketConnection(this@webSocket)) { session ->
+        KtcpSession.startSession(
+            WebsocketConnection(this@webSocket),
+            ZkPersisterSession(persister)
+        ) { session ->
             logger.debug("WebSocket session started")
             incoming.consumeEach { frame ->
                 logger.debug("received frame: $frame")
                 session.updateTimeout()
                 when (
                     val res = receive(
-                        frame, ServerCtx(session, jsonSerializer, jwtVerifier, ktcpServer)
+                        frame, ServerCtx(session, serializer, jwtVerifier, ktcpServer)
                     )
                 ) {
-                    is Res.Err<*, KtcpServerErr> -> {
+                    is Res.Err<*, KtcpErr> -> {
                         logger.error("Failed to receive message", res.err)
                         ktcpServer.clientEntrypoints.genericError.access(
                             SendGenericErrArg(res.err),
-                            ServerCtx(session, jsonSerializer, jwtVerifier, ktcpServer)
+                            ServerCtx(session, serializer, jwtVerifier, ktcpServer)
                         )
                     }
 
@@ -67,10 +73,10 @@ class WebsocketModule(application: Application) {
         }
     }
 
-    suspend fun receive(frame: Frame, ctx: ServerCtx): Res<Unit, KtcpServerErr> = when (
+    suspend fun receive(frame: Frame, ctx: ServerCtx): Res<Unit, KtcpErr> = when (
         val res = ReceiveUnknownArg.fromFrame(frame, ctx)
     ) {
-        is Res.Err<*, KtcpServerErr> -> {
+        is Res.Err<*, KtcpErr> -> {
             logger.error("Failed to decode frame", res.err)
             ctx.session.recordErr()
             res.convertType()

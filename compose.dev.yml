@@ -1,0 +1,35 @@
+services:
+  zk-dev1:
+    image: zookeeper
+    restart: no
+    hostname: zk-dev1
+    networks: [zknet]
+    ports:
+      - "2181:2181"
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=zk-dev1:2888:3888;2181 server.2=zk-dev2:2888:3888;2181 server.3=zk-dev3:2888:3888;2181
+
+  zk-dev2:
+    image: zookeeper
+    restart: no
+    hostname: zk-dev2
+    networks: [zknet]
+    ports:
+      - "2182:2181"
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zk-dev1:2888:3888;2181 server.2=zk-dev2:2888:3888;2181 server.3=zk-dev3:2888:3888;2181
+
+  zk-dev3:
+    image: zookeeper
+    restart: no
+    hostname: zk-dev3
+    networks: [zknet]
+    ports:
+      - "2183:2181"
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zk-dev1:2888:3888;2181 server.2=zk-dev2:2888:3888;2181 server.3=zk-dev3:2888:3888;2181
+networks:
+  zknet:

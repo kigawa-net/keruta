@@ -8,5 +8,5 @@ import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 @Serializable
 @JsonIgnoreUnknownKeys
 data class KtcpUnknownMsg(
-    val type: MsgType,
+    val type: ServerMsgType,
 )
