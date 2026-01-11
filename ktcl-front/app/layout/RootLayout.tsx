@@ -18,17 +18,18 @@ export default function Layout() {
     return (
         <KeycloakProvider>
             <UserProfileProvider>
-                <div className="flex h-screen bg-gray-100">
+                <div className="flex h-screen bg-white">
                     {/* サイドバー */}
-                    <aside className={`${isSidebarOpen ? 'w-64' : 'w-0'} bg-gray-900 text-white transition-all duration-300 overflow-hidden`}>
+                    <aside className={`${isSidebarOpen ? 'w-64' : 'w-0'} transition-all duration-300 overflow-hidden`} style={{backgroundColor: '#f8f9fa'}}>
                         <div className="p-4">
-                            <h1 className="text-2xl font-bold mb-8">KTCL</h1>
+                            <h1 className="text-2xl font-bold mb-8" style={{color: '#0a58ca'}}>Keruta</h1>
                             <nav>
                                 <ul className="space-y-2">
                                     <li>
                                         <Link
                                             to="/"
-                                            className="block px-4 py-2 rounded hover:bg-gray-700 transition-colors"
+                                            className="sidebar-link block px-4 py-2 rounded transition-colors"
+                                            style={{color: '#0a58ca'}}
                                         >
                                             Home
                                         </Link>
@@ -36,7 +37,8 @@ export default function Layout() {
                                     <li>
                                         <Link
                                             to="/about"
-                                            className="block px-4 py-2 rounded hover:bg-gray-700 transition-colors"
+                                            className="sidebar-link block px-4 py-2 rounded transition-colors"
+                                            style={{color: '#0a58ca'}}
                                         >
                                             About
                                         </Link>
@@ -44,7 +46,8 @@ export default function Layout() {
                                     <li>
                                         <Link
                                             to="/contact"
-                                            className="block px-4 py-2 rounded hover:bg-gray-700 transition-colors"
+                                            className="sidebar-link block px-4 py-2 rounded transition-colors"
+                                            style={{color: '#0a58ca'}}
                                         >
                                             Contact
                                         </Link>
@@ -52,7 +55,8 @@ export default function Layout() {
                                     <li>
                                         <Link
                                             to="/websocket"
-                                            className="block px-4 py-2 rounded hover:bg-gray-700 transition-colors"
+                                            className="sidebar-link block px-4 py-2 rounded transition-colors"
+                                            style={{color: '#0a58ca'}}
                                         >
                                             WebSocket Demo
                                         </Link>
@@ -65,7 +69,7 @@ export default function Layout() {
                     {/* メインコンテンツ */}
                     <div className="flex-1 flex flex-col overflow-hidden">
                         {/* トップバー */}
-                        <header className="bg-white shadow-sm border-b border-gray-200">
+                        <header className="bg-white shadow-sm border-b" style={{borderColor: '#dee2e6'}}>
                             <div className="flex items-center justify-between px-4 py-3">
                                 <button
                                     onClick={() => setIsSidebarOpen(!isSidebarOpen)}
