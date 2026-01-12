@@ -1,5 +1,5 @@
 import Keycloak from 'keycloak-js'
-import { Config } from './Config'
+import Config from "./Config";
 
 // Keycloak設定
 export const keycloakConfig: Keycloak.KeycloakConfig = {

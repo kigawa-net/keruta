@@ -6,9 +6,9 @@ import {KeycloakProvider} from "../components/Keycloak";
 import {UserProfileProvider} from "../components/UserProfile";
 import WsStatus from "../components/WsStatus";
 import {WebsocketProvider} from "../components/Websocket";
-import {Config} from "../Config";
 import {KerutaTaskProvider} from "../components/KerutaTask";
 import Sidebar from "../components/Sidebar";
+import Config from "../Config";
 
 
 // noinspection JSUnusedGlobalSymbols
