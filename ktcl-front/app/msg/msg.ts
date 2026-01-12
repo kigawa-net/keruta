@@ -6,6 +6,7 @@ export const ReceiveMsgTypes = {
 export type ReceiveMsgType = typeof ReceiveMsgTypes[keyof typeof ReceiveMsgTypes]
 export const SendMsgTypes = {
     auth_request: "auth_request",
+    task_create: "task_create"
 } as const
 export type SendMsgType = typeof SendMsgTypes[keyof typeof SendMsgTypes]
 export type ReceiveMsg = AuthSuccessMsg

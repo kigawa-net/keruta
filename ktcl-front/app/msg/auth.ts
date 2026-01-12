@@ -1,8 +1,8 @@
-import {ReceiveMsgTypes} from "./msg";
+import {ReceiveMsgTypes, SendMsgTypes} from "./msg";
 
 export interface AuthRequestMsg {
     token: string,
-    type: typeof ReceiveMsgTypes.auth_request
+    type: typeof SendMsgTypes.auth_request
 }
 
 export interface AuthSuccessMsg {

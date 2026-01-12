@@ -3,13 +3,11 @@ import {index, layout, route, RouteConfig} from "@react-router/dev/routes";
 // noinspection JSUnusedGlobalSymbols
 export default [
     layout("./layout/RootLayout.tsx", [
-        index("./routes/index.tsx"),
         route("about", "./routes/about.tsx"),
-        route("contact", "./routes/contact.tsx"),
         layout("./layout/PrivateLayout.tsx", [
-            layout("./layout/WebsocketLayout.tsx",[
-                route("websocket", "./routes/websocket.tsx"),
-            ]),
-        ])
+            index("./routes/index.tsx"),
+            route("task", "./routes/task.tsx"),
+            route("task/create", "./routes/task.create.tsx"),
+        ]),
     ])
 ] satisfies RouteConfig;

@@ -1,11 +1,11 @@
 import PrivateRoute from '../components/PrivateRoute'
-import WebSocketDemo from "../pages/WebSocketDemo";
+import TaskCreatePage from "../pages/TaskCreatePage";
 
 // noinspection JSUnusedGlobalSymbols
-export default function WebSocketRoute() {
+export default function TaskCreateRoute() {
     return (
         <PrivateRoute>
-            <WebSocketDemo/>
+            <TaskCreatePage/>
         </PrivateRoute>
     )
 }
