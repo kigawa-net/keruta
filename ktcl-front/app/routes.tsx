@@ -7,6 +7,7 @@ export default [
         layout("./layout/PrivateLayout.tsx", [
             index("./routes/index.tsx"),
             route("task", "./routes/task.tsx"),
+            route("task/create", "./routes/task.create.tsx"),
         ]),
     ])
 ] satisfies RouteConfig;

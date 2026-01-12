@@ -46,16 +46,12 @@ const TaskPage = () => {
         task.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    const handleCreateTask = () => {
-        console.log('新規タスク作成');
-    };
-
     return (
         <div className="flex h-full gap-6">
             {/* タスク一覧 */}
             <div className="flex-1 flex flex-col">
                 <div className="mb-6">
-                    <TaskHeader onCreateTask={handleCreateTask} />
+                    <TaskHeader />
                     <TaskSearchBar
                         searchQuery={searchQuery}
                         onSearchChange={setSearchQuery}

@@ -4,6 +4,13 @@ services:
     restart: no
     hostname: zk-dev1
     networks: [zknet]
+    volumes:
+      - type: volume
+        source: zk1-data
+        target: /data
+      - type: volume
+        source: zk1-datalog
+        target: /datalog
     ports:
       - "2181:2181"
     environment:
@@ -15,6 +22,13 @@ services:
     restart: no
     hostname: zk-dev2
     networks: [zknet]
+    volumes:
+      - type: volume
+        source: zk2-data
+        target: /data
+      - type: volume
+        source: zk2-datalog
+        target: /datalog
     ports:
       - "2182:2181"
     environment:
@@ -26,6 +40,13 @@ services:
     restart: no
     hostname: zk-dev3
     networks: [zknet]
+    volumes:
+      - type: volume
+        source: zk3-data
+        target: /data
+      - type: volume
+        source: zk3-datalog
+        target: /datalog
     ports:
       - "2183:2181"
     environment:
@@ -33,3 +54,11 @@ services:
       ZOO_SERVERS: server.1=zk-dev1:2888:3888;2181 server.2=zk-dev2:2888:3888;2181 server.3=zk-dev3:2888:3888;2181
 networks:
   zknet:
+
+volumes:
+  zk1-data:
+  zk1-datalog:
+  zk2-data:
+  zk2-datalog:
+  zk3-data:
+  zk3-datalog:
