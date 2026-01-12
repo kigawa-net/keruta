@@ -21,10 +21,10 @@ class ReceiveAuthRequestEntrypoint: ServerAuthRequestEntrypoint<ServerCtx> {
         logger.debug("accessing authenticate request")
         return EntrypointDeferred {
             when (val res = ctx.verify(input.authRequestMsg)) {
-                is Res.Err<Verified, VerifyErr> -> res.convertType<Unit>()
+                is Res.Err<VerifiedToken, VerifyErr> -> res.convertType<Unit>()
                     .also { logger.debug("failed to verify authenticate message") }
 
-                is Res.Ok<Verified, *> -> {
+                is Res.Ok<VerifiedToken, *> -> {
                     ctx.session.authenticate(res.value)
                     logger.debug("verified authenticate message")
                     ctx.server.clientEntrypoints.authSuccess.access(

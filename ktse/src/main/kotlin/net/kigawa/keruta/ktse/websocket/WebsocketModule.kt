@@ -28,7 +28,8 @@ import kotlin.time.Duration.Companion.seconds
 
 class WebsocketModule(application: Application) {
     val ktseConfig = KtseConfig(application.environment)
-    val jwtVerifier = Auth0JwtVerifier(ktseConfig)
+    val jwtVerifier = Auth0JwtVerifier(
+    )
     val serializer = JsonKerutaSerializer()
     val logger = getKogger()
     val ktcpServer = KtcpServer()
