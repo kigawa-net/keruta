@@ -4,6 +4,10 @@ import AuthButton from "../components/AuthButton";
 import {useEffect, useState} from "react";
 import {KeycloakProvider} from "../components/Keycloak";
 import {UserProfileProvider} from "../components/UserProfile";
+import WsStatus from "../components/WsStatus";
+import {WebsocketProvider} from "../components/Websocket";
+import {Config} from "../Config";
+import {KerutaTaskProvider} from "../components/KerutaTask";
 
 
 // noinspection JSUnusedGlobalSymbols
@@ -18,9 +22,14 @@ export default function Layout() {
     return (
         <KeycloakProvider>
             <UserProfileProvider>
+                <WebsocketProvider
+                    wsUrl={Config.websocketUrl}
+                >
+                    <KerutaTaskProvider>
                 <div className="flex h-screen bg-white">
                     {/* サイドバー */}
-                    <aside className={`${isSidebarOpen ? 'w-64' : 'w-0'} transition-all duration-300 overflow-hidden`} style={{backgroundColor: '#f8f9fa'}}>
+                    <aside className={`${isSidebarOpen ? 'w-64' : 'w-0'} transition-all duration-300 overflow-hidden`}
+                           style={{backgroundColor: '#f8f9fa'}}>
                         <div className="p-4">
                             <h1 className="text-2xl font-bold mb-8" style={{color: '#0a58ca'}}>Keruta</h1>
                             <nav>
@@ -45,20 +54,20 @@ export default function Layout() {
                                     </li>
                                     <li>
                                         <Link
-                                            to="/contact"
-                                            className="sidebar-link block px-4 py-2 rounded transition-colors"
-                                            style={{color: '#0a58ca'}}
-                                        >
-                                            Contact
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link
                                             to="/websocket"
                                             className="sidebar-link block px-4 py-2 rounded transition-colors"
                                             style={{color: '#0a58ca'}}
                                         >
                                             WebSocket Demo
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            to="/task"
+                                            className="sidebar-link block px-4 py-2 rounded transition-colors"
+                                            style={{color: '#0a58ca'}}
+                                        >
+                                            タスク管理
                                         </Link>
                                     </li>
                                 </ul>
@@ -90,7 +99,10 @@ export default function Layout() {
                                         />
                                     </svg>
                                 </button>
-                                <AuthButton/>
+                                <div className={"flex gap-4"}>
+                                    <WsStatus/>
+                                    <AuthButton/>
+                                </div>
                             </div>
                         </header>
 
@@ -100,6 +112,8 @@ export default function Layout() {
                         </main>
                     </div>
                 </div>
+                    </KerutaTaskProvider>
+                </WebsocketProvider>
             </UserProfileProvider>
         </KeycloakProvider>
     );
