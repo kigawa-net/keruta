@@ -1,5 +1,5 @@
 import {Outlet} from "react-router";
-import {Link, useLocation} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import AuthButton from "../components/AuthButton";
 import {useEffect, useState} from "react";
 import {KeycloakProvider} from "../components/Keycloak";
@@ -8,6 +8,7 @@ import WsStatus from "../components/WsStatus";
 import {WebsocketProvider} from "../components/Websocket";
 import {Config} from "../Config";
 import {KerutaTaskProvider} from "../components/KerutaTask";
+import Sidebar from "../components/Sidebar";
 
 
 // noinspection JSUnusedGlobalSymbols
@@ -28,52 +29,7 @@ export default function Layout() {
                     <KerutaTaskProvider>
                 <div className="flex h-screen bg-white">
                     {/* サイドバー */}
-                    <aside className={`${isSidebarOpen ? 'w-64' : 'w-0'} transition-all duration-300 overflow-hidden`}
-                           style={{backgroundColor: '#f8f9fa'}}>
-                        <div className="p-4">
-                            <h1 className="text-2xl font-bold mb-8" style={{color: '#0a58ca'}}>Keruta</h1>
-                            <nav>
-                                <ul className="space-y-2">
-                                    <li>
-                                        <Link
-                                            to="/"
-                                            className="sidebar-link block px-4 py-2 rounded transition-colors"
-                                            style={{color: '#0a58ca'}}
-                                        >
-                                            Home
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link
-                                            to="/about"
-                                            className="sidebar-link block px-4 py-2 rounded transition-colors"
-                                            style={{color: '#0a58ca'}}
-                                        >
-                                            About
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link
-                                            to="/websocket"
-                                            className="sidebar-link block px-4 py-2 rounded transition-colors"
-                                            style={{color: '#0a58ca'}}
-                                        >
-                                            WebSocket Demo
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link
-                                            to="/task"
-                                            className="sidebar-link block px-4 py-2 rounded transition-colors"
-                                            style={{color: '#0a58ca'}}
-                                        >
-                                            タスク管理
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </aside>
+                    <Sidebar isOpen={isSidebarOpen} />
 
                     {/* メインコンテンツ */}
                     <div className="flex-1 flex flex-col overflow-hidden">
