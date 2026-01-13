@@ -14,7 +14,7 @@ export namespace Auth {
             Buffer.from(encodedKey, "base64").toString(),
             "RS256",
             {
-                extractable: true
+                extractable: true,
             }
         )
     }
