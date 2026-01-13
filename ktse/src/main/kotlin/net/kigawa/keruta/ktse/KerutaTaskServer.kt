@@ -5,11 +5,10 @@ import io.ktor.server.routing.*
 import net.kigawa.keruta.ktse.websocket.WebsocketModule
 import net.kigawa.kodel.api.log.LogLevel
 import net.kigawa.kodel.api.log.LoggerFactory
-import net.kigawa.kodel.api.log.getKogger
 import net.kigawa.kodel.api.log.handler.StdHandler
 
+@Suppress("unused")
 object KerutaTaskServer {
-    val logger = getKogger()
 
     init {
         LoggerFactory.configure {

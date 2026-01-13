@@ -11,4 +11,5 @@ export default [
         ]),
     ]),
     route(".well-known/jwks.json", "./routes/jwks.ts"),
+    route("api/token", "./routes/token.ts"),
 ] satisfies RouteConfig;

@@ -1,10 +1,10 @@
 package net.kigawa.keruta.ktcp.server.session
 
-import net.kigawa.keruta.ktcp.server.auth.VerifiedToken
+import net.kigawa.keruta.ktcp.server.auth.Verified
 
 class AuthenticatedSession(
     val session: KtcpSession,
-    val verifiedToken: VerifiedToken,
+    val verified: Verified,
 ){
     val persisterSession = session.persisterSession.verify(this)
 }

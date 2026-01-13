@@ -3,7 +3,6 @@ import {KerutaTaskState, useKerutaTaskState} from "./KerutaTask";
 import {KeycloakState, useKeycloakState} from "./Keycloak";
 import {AuthRequestMsg} from "../msg/auth";
 import {useEffect} from "react";
-import ServerConfig from "../ServerConfig.server";
 
 export default function WsSender(
     {}: {},
@@ -33,14 +32,20 @@ function useAuth(
             && kerutaState.auth.state == "unauthenticated"
         )) return;
         const f = () => {
-            Promise.all([kc.getToken(), ServerConfig.getJwt()]).then(([userToken, serverToken]) => {
-                const msg: AuthRequestMsg = {
-                    type: "auth_request",
-                    userToken,
-                    serverToken
-                }
-                wsState.websocket.send(JSON.stringify(msg))
-            })
+            Promise.all([
+                kc.getToken().then(value =>
+                    fetch("/api/token", {method: "POST", body: JSON.stringify({token: value})})
+                ).then(value => value.json()),
+                kc.getToken(),
+            ]).then(([tokenRes, userToken]) => {
+                    const token: { token: string } = tokenRes
+                    const msg: AuthRequestMsg = {
+                        type: "auth_request",
+                        userToken,
+                        serverToken: token.token
+                    }
+                    wsState.websocket.send(JSON.stringify(msg))
+                })
         }
         const t = setInterval(() => {
             f()

@@ -7,7 +7,6 @@ import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktcp.server.auth.success.AuthAccessSendArg
 import net.kigawa.keruta.ktcp.server.err.UnexpectedErr
-import net.kigawa.keruta.ktcp.server.err.VerifyErr
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.LoggerFactory
@@ -21,10 +20,10 @@ class ReceiveAuthRequestEntrypoint: ServerAuthRequestEntrypoint<ServerCtx> {
         logger.debug("accessing authenticate request")
         return EntrypointDeferred {
             when (val res = ctx.verify(input.authRequestMsg)) {
-                is Res.Err<VerifiedToken, VerifyErr> -> res.convertType<Unit>()
+                is Res.Err -> res.convertType<Unit>()
                     .also { logger.debug("failed to verify authenticate message") }
 
-                is Res.Ok<VerifiedToken, *> -> {
+                is Res.Ok -> {
                     ctx.session.authenticate(res.value)
                     logger.debug("verified authenticate message")
                     ctx.server.clientEntrypoints.authSuccess.access(
