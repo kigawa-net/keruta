@@ -31,14 +31,21 @@ function useAuth(
             && kerutaState.state == "connected"
             && kerutaState.auth.state == "unauthenticated"
         )) return;
-        const f = ()=>{
-            kc.getToken().then(value => {
-                const msg: AuthRequestMsg = {
-                    type: "auth_request",
-                    token: value,
-                }
-                wsState.websocket.send(JSON.stringify(msg))
-            })
+        const f = () => {
+            Promise.all([
+                kc.getToken().then(value =>
+                    fetch("/api/token", {method: "POST", body: JSON.stringify({token: value})})
+                ).then(value => value.json()),
+                kc.getToken(),
+            ]).then(([tokenRes, userToken]) => {
+                    const token: { token: string } = tokenRes
+                    const msg: AuthRequestMsg = {
+                        type: "auth_request",
+                        userToken,
+                        serverToken: token.token
+                    }
+                    wsState.websocket.send(JSON.stringify(msg))
+                })
         }
         const t = setInterval(() => {
             f()

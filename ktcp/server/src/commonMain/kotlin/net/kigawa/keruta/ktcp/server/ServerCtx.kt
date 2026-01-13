@@ -15,7 +15,20 @@ class ServerCtx(
     val server: KtcpServer,
 ) {
     fun verify(authRequestMsg: ServerAuthRequestMsg): Res<Verified, VerifyErr> {
-        return jwtVerifier.verify(authRequestMsg.token)
+        val user = when (val user = jwtVerifier.verifyUserToken(
+            authRequestMsg.userToken
+        )) {
+            is Res.Err -> return user.convertType()
+            is Res.Ok -> user.value
+        }
+        val server =when(val server = jwtVerifier.verifyServerToken(
+            token = authRequestMsg.serverToken,
+            subject = user.sub
+        )) {
+            is Res.Err -> return server.convertType()
+            is Res.Ok -> server.value
+        }
+        return Res.Ok(Verified(user, server))
     }
 
     val connection by session::connection

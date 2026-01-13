@@ -1,5 +1,6 @@
 package net.kigawa.keruta.ktcp.server.auth
 
-interface Verified {
-    val sub: String
-}
+data class Verified(
+    val user: VerifiedToken,
+    val server: VerifiedToken,
+)

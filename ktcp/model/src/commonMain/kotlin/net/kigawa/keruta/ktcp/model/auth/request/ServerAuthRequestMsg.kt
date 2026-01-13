@@ -10,7 +10,9 @@ import net.kigawa.keruta.ktcp.model.msg.ServerMsgType
  */
 @Serializable
 data class ServerAuthRequestMsg(
-    val token: AuthToken, override val type: ServerMsgType = ServerMsgType.AUTH_REQUEST,
+    val userToken: AuthToken,
+    override val type: ServerMsgType = ServerMsgType.AUTH_REQUEST,
+    val serverToken: String,
 ): KtcpMsg {
     init {
         require(type == ServerMsgType.AUTH_REQUEST)

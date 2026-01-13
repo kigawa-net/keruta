@@ -13,7 +13,7 @@ class ZkAuthenticatedPersisterSession(
     val persister: ZkPersister,
     authenticatedSession: AuthenticatedSession,
 ): AuthenticatedPersisterSession {
-    val id = Id("auth", authenticatedSession.verified.sub)
+    val id = Id("auth", authenticatedSession.verified.user.sub)
     override suspend fun createTask(
         task: TaskToCreate,
     ): Res<Unit, KtcpErr> {

@@ -1,11 +1,11 @@
 package net.kigawa.keruta.ktse.auth
 
 import com.auth0.jwt.interfaces.DecodedJWT
-import net.kigawa.keruta.ktcp.server.auth.Verified
+import net.kigawa.keruta.ktcp.server.auth.VerifiedToken
 
-class Auth0Verified(
+class Auth0VerifiedToken(
     val verified: DecodedJWT,
-): Verified {
+): VerifiedToken {
     override val sub: String
         get() = verified.subject
 }
