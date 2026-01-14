@@ -4,7 +4,6 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import net.kigawa.keruta.ktcp.model.KtcpConnection
-import net.kigawa.keruta.ktcp.server.auth.Verified
 import net.kigawa.keruta.ktcp.server.persist.PersisterSession
 import net.kigawa.kodel.coroutine.CounterInDuration
 import kotlin.time.Clock
@@ -20,7 +19,7 @@ class KtcpSession private constructor(
     private val lastAccess = MutableStateFlow(Clock.System.now())
     private val timeout = 1.minutes
     private val isClosed = MutableStateFlow(false)
-    private val verified = MutableStateFlow<Verified?>(null)
+    private val authenticatedSession = MutableStateFlow<AuthenticatedSession?>(null)
 
 
     companion object {
@@ -47,11 +46,11 @@ class KtcpSession private constructor(
         }
     }
 
-    fun authenticate(value: Verified) {
-        verified.value = value
+    fun authenticate(value: AuthenticatedSession) {
+        authenticatedSession.value = value
     }
 
-    fun authenticated() = verified.value?.let { AuthenticatedSession(this, it) }
+    fun authenticated() = authenticatedSession.value
 
     fun updateTimeout() {
         lastAccess.value = Clock.System.now()

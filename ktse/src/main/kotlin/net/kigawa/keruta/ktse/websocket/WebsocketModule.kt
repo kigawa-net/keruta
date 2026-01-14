@@ -18,8 +18,8 @@ import net.kigawa.keruta.ktse.WebsocketConnection
 import net.kigawa.keruta.ktse.auth.Auth0JwtVerifier
 import net.kigawa.keruta.ktse.db.DbPersister
 import net.kigawa.keruta.ktse.err.SendGenericErrArg
+import net.kigawa.keruta.ktse.persist.KtsePersisterSession
 import net.kigawa.keruta.ktse.zookeeper.ZkPersister
-import net.kigawa.keruta.ktse.zookeeper.ZkPersisterSession
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.err.convertErr
 import net.kigawa.kodel.api.log.getKogger
@@ -29,7 +29,7 @@ import kotlin.time.Duration.Companion.seconds
 
 class WebsocketModule(application: Application) {
     val ktseConfig = KtseConfig(application.environment)
-    val jwtVerifier = Auth0JwtVerifier(ktseConfig.verifyConfig)
+    val jwtVerifier = Auth0JwtVerifier()
     val serializer = JsonKerutaSerializer()
     val logger = getKogger()
     val ktcpServer = KtcpServer()
@@ -49,7 +49,7 @@ class WebsocketModule(application: Application) {
         logger.debug("WebSocket connection established")
         KtcpSession.startSession(
             WebsocketConnection(this@webSocket),
-            ZkPersisterSession(zkPersister)
+            KtsePersisterSession(dbPersister, jwtVerifier)
         ) { session ->
             logger.debug("WebSocket session started")
             incoming.consumeEach { frame ->
@@ -57,14 +57,14 @@ class WebsocketModule(application: Application) {
                 session.updateTimeout()
                 when (
                     val res = receive(
-                        frame, ServerCtx(session, serializer, jwtVerifier, ktcpServer)
+                        frame, ServerCtx(session, serializer, ktcpServer)
                     )
                 ) {
                     is Res.Err<*, KtcpErr> -> {
                         logger.error("Failed to receive message", res.err)
                         ktcpServer.clientEntrypoints.genericError.access(
                             SendGenericErrArg(res.err),
-                            ServerCtx(session, serializer, jwtVerifier, ktcpServer)
+                            ServerCtx(session, serializer, ktcpServer)
                         )
                     }
 
@@ -81,7 +81,7 @@ class WebsocketModule(application: Application) {
         is Res.Err<*, KtcpErr> -> {
             logger.error("Failed to decode frame", res.err)
             ctx.session.recordErr()
-            res.convertType()
+            res.x()
         }
 
         is Res.Ok<ReceiveUnknownArg, *> -> {

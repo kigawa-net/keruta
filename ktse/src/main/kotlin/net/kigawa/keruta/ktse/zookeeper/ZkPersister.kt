@@ -38,7 +38,7 @@ class ZkPersister(
     suspend fun createIfNotExists(
         path: ZkPath, data: String, acls: List<ACL>,
     ): Res<Unit, KtcpErr> = when (val res = exists(path)) {
-        is Res.Err -> res.convertType()
+        is Res.Err -> res.x()
         is Res.Ok -> create(path, data, acls)
     }
 
@@ -56,7 +56,7 @@ class ZkPersister(
                 path, "", listOf(ACL(ZooDefs.Perms.ALL, id))
             )
         ) {
-            is Res.Err -> res.convertType()
+            is Res.Err -> res.x()
             is Res.Ok -> Res.Ok(ZkUser(userId, id, path, this))
         }
     }
