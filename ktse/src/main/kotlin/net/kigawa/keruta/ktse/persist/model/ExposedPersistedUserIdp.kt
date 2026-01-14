@@ -6,6 +6,7 @@ import net.kigawa.keruta.ktse.persist.db.table.UserIdpTable
 import org.jetbrains.exposed.sql.ResultRow
 
 class ExposedPersistedUserIdp(row: ResultRow): PersistedUserIdp {
+    override val userId: Long = row[UserIdpTable.userId]
     override val subject: String = row[UserIdpTable.subject]
     val issuer: String = row[UserIdpTable.issuer]
     val audience: String = row[UserIdpTable.audience]

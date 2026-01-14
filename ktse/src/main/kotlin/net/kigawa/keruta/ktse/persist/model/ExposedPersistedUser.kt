@@ -2,10 +2,11 @@ package net.kigawa.keruta.ktse.persist.model
 
 import net.kigawa.keruta.ktcp.server.persist.PersistedUser
 import net.kigawa.keruta.ktcp.server.persist.PersistedUserIdp
+import net.kigawa.keruta.ktse.persist.db.table.UserTable
+import org.jetbrains.exposed.sql.ResultRow
 
-class ExposedPersistedUser: PersistedUser {
-    override val currentIdp: PersistedUserIdp
-        get() = TODO("Not yet implemented")
-    override val id: Long
-        get() = TODO("Not yet implemented")
+class ExposedPersistedUser(
+    row: ResultRow, override val currentIdp: PersistedUserIdp,
+): PersistedUser {
+    override val id: Long = row[UserTable.id]
 }

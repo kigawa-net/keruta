@@ -7,7 +7,10 @@ import net.kigawa.keruta.ktcp.server.persist.PersistedProvider
 import net.kigawa.keruta.ktcp.server.persist.PersistedUser
 import net.kigawa.keruta.ktcp.server.persist.PersistedUserIdp
 import net.kigawa.keruta.ktse.err.MultipleRecordErr
+import net.kigawa.keruta.ktse.err.NoSingleRecordErr
 import net.kigawa.keruta.ktse.persist.db.table.UserIdpTable
+import net.kigawa.keruta.ktse.persist.db.table.UserTable
+import net.kigawa.keruta.ktse.persist.model.ExposedPersistedUser
 import net.kigawa.keruta.ktse.persist.model.ExposedPersistedUserIdp
 import net.kigawa.kodel.api.err.Res
 import org.jetbrains.exposed.sql.Transaction
@@ -24,8 +27,16 @@ class DbPersisterDSL(val transaction: Transaction) {
         return@run Res.Err(MultipleRecordErr("", null))
     }
 
-    fun getUser(value: VerifiedToken): Res<PersistedUser, KtcpErr> {
-        TODO("Not yet implemented")
+    fun getUser(
+        userIdp: PersistedUserIdp,
+    ): Res<PersistedUser, KtcpErr> = transaction.run {
+        val res = UserTable.selectAll().where {
+            UserTable.id eq userIdp.userId
+        }
+        res.singleOrNull()?.let {
+            return@run Res.Ok(ExposedPersistedUser(it, userIdp))
+        }
+        return@run Res.Err(NoSingleRecordErr("", null))
     }
 
     fun createUserAndIdp(idp: IdpConfig, verifiedToken: VerifiedToken): Res<PersistedUser, KtcpErr> {
