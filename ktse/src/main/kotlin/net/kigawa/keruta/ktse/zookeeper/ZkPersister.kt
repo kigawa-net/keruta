@@ -57,7 +57,7 @@ class ZkPersister(
             )
         ) {
             is Res.Err -> res.convertType()
-            is Res.Ok -> Res.Ok(ZkUser(userId, id, path))
+            is Res.Ok -> Res.Ok(ZkUser(userId, id, path, this))
         }
     }
 }

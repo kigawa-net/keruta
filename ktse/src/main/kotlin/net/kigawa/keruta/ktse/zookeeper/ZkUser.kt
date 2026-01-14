@@ -20,5 +20,6 @@ class ZkUser(
             queuePath, "", listOf(ACL(ZooDefs.Perms.ALL, id))
         )
         if (res is Res.Err) return res
+        return Res.Ok(Unit)
     }
 }

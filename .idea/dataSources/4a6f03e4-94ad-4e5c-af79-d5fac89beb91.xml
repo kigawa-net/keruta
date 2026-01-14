@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="@localhost">
+  <database-model serializer="dbm" dbms="TIDB" family-id="TIDB" format-version="4.54">
+    <root id="1">
+      <Dbms>TIDB</Dbms>
+      <DefaultAuthPlugin>mysql_native_password</DefaultAuthPlugin>
+      <DefaultCasing>mixed/mixed</DefaultCasing>
+      <DefaultEngine>InnoDB</DefaultEngine>
+      <DefaultTmpEngine>InnoDB</DefaultTmpEngine>
+      <Grants>|root||root||ALTER|G
+|root||root||ALTER ROUTINE|G
+|root||root||CONFIG|G
+|root||root||CREATE|G
+|root||root||CREATE ROLE|G
+|root||root||CREATE ROUTINE|G
+|root||root||CREATE TABLESPACE|G
+|root||root||CREATE TEMPORARY TABLES|G
+|root||root||CREATE USER|G
+|root||root||CREATE VIEW|G
+|root||root||DELETE|G
+|root||root||DROP|G
+|root||root||DROP ROLE|G
+|root||root||EVENT|G
+|root||root||EXECUTE|G
+|root||root||FILE|G
+|root||root||INDEX|G
+|root||root||INSERT|G
+|root||root||LOCK TABLES|G
+|root||root||PROCESS|G
+|root||root||REFERENCES|G
+|root||root||RELOAD|G
+|root||root||REPLICATION CLIENT|G
+|root||root||REPLICATION SLAVE|G
+|root||root||SELECT|G
+|root||root||SHOW DATABASES|G
+|root||root||SHOW VIEW|G
+|root||root||SHUTDOWN|G
+|root||root||SUPER|G
+|root||root||TRIGGER|G
+|root||root||UPDATE|G
+|root||root||grant option|G</Grants>
+      <ServerVersion>7.5.1</ServerVersion>
+    </root>
+    <collation id="2" parent="1" name="ascii_bin">
+      <Charset>ascii</Charset>
+      <DefaultForCharset>1</DefaultForCharset>
+    </collation>
+    <collation id="3" parent="1" name="binary">
+      <Charset>binary</Charset>
+      <DefaultForCharset>1</DefaultForCharset>
+    </collation>
+    <collation id="4" parent="1" name="gbk_bin">
+      <Charset>gbk</Charset>
+    </collation>
+    <collation id="5" parent="1" name="gbk_chinese_ci">
+      <Charset>gbk</Charset>
+      <DefaultForCharset>1</DefaultForCharset>
+    </collation>
+    <collation id="6" parent="1" name="latin1_bin">
+      <Charset>latin1</Charset>
+      <DefaultForCharset>1</DefaultForCharset>
+    </collation>
+    <collation id="7" parent="1" name="utf8_bin">
+      <Charset>utf8</Charset>
+      <DefaultForCharset>1</DefaultForCharset>
+    </collation>
+    <collation id="8" parent="1" name="utf8_general_ci">
+      <Charset>utf8</Charset>
+    </collation>
+    <collation id="9" parent="1" name="utf8_unicode_ci">
+      <Charset>utf8</Charset>
+    </collation>
+    <collation id="10" parent="1" name="utf8mb4_0900_ai_ci">
+      <Charset>utf8mb4</Charset>
+    </collation>
+    <collation id="11" parent="1" name="utf8mb4_0900_bin">
+      <Charset>utf8mb4</Charset>
+    </collation>
+    <collation id="12" parent="1" name="utf8mb4_bin">
+      <Charset>utf8mb4</Charset>
+      <DefaultForCharset>1</DefaultForCharset>
+    </collation>
+    <collation id="13" parent="1" name="utf8mb4_general_ci">
+      <Charset>utf8mb4</Charset>
+    </collation>
+    <collation id="14" parent="1" name="utf8mb4_unicode_ci">
+      <Charset>utf8mb4</Charset>
+    </collation>
+    <schema id="15" parent="1" name="INFORMATION_SCHEMA">
+      <CollationName>utf8mb4_bin</CollationName>
+    </schema>
+    <schema id="16" parent="1" name="METRICS_SCHEMA">
+      <CollationName>utf8mb4_bin</CollationName>
+    </schema>
+    <schema id="17" parent="1" name="PERFORMANCE_SCHEMA">
+      <CollationName>utf8mb4_bin</CollationName>
+    </schema>
+    <schema id="18" parent="1" name="mysql">
+      <CollationName>utf8mb4_bin</CollationName>
+    </schema>
+    <schema id="19" parent="1" name="test">
+      <CollationName>utf8mb4_bin</CollationName>
+    </schema>
+    <schema id="20" parent="1" name="keruta">
+      <AutoIntrospectionLevel>3</AutoIntrospectionLevel>
+      <LastIntrospectionLevel>3</LastIntrospectionLevel>
+      <LastIntrospectionLocalTimestamp>2026-01-14.05:13:40</LastIntrospectionLocalTimestamp>
+      <CollationName>utf8mb4_bin</CollationName>
+    </schema>
+    <user id="21" parent="1" name="root"/>
+  </database-model>
+</dataSource>
