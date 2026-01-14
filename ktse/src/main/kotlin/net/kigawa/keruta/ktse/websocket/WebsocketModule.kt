@@ -33,7 +33,7 @@ class WebsocketModule(application: Application) {
     val serializer = JsonKerutaSerializer()
     val logger = getKogger()
     val ktcpServer = KtcpServer()
-    val zkPersister = ZkPersister(ktseConfig, serializer)
+    val zkPersister = ZkPersister(ktseConfig)
     val dbPersister = DbPersister(ktseConfig)
 
     init {

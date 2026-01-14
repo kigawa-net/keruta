@@ -21,7 +21,7 @@ class ServerCtx(
             is Res.Err -> return res.x()
             is Res.Ok -> res.value
         }
-        return Res.Ok(AuthenticatedSession(session, persisterSession))
+        return Res.Ok(AuthenticatedSession(persisterSession))
     }
 
     val connection by session::connection

@@ -1,7 +1,6 @@
 package net.kigawa.keruta.ktse.zookeeper
 
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.serialize.KerutaSerializer
 import net.kigawa.keruta.ktse.KtseConfig
 import net.kigawa.keruta.ktse.err.BackendErr
 import net.kigawa.kodel.api.err.Res
@@ -13,7 +12,6 @@ import org.apache.zookeeper.data.ACL
 
 class ZkPersister(
     ktseConfig: KtseConfig,
-    val serializer: KerutaSerializer,
 ) {
     private val watcher = ServerWatcher()
     private val zkConfig = ZKClientConfig()
