@@ -49,7 +49,7 @@ class WebsocketModule(application: Application) {
         logger.debug("WebSocket connection established")
         KtcpSession.startSession(
             WebsocketConnection(this@webSocket),
-            KtsePersisterSession(dbPersister, jwtVerifier)
+            KtsePersisterSession(dbPersister, jwtVerifier, ktseConfig)
         ) { session ->
             logger.debug("WebSocket session started")
             incoming.consumeEach { frame ->

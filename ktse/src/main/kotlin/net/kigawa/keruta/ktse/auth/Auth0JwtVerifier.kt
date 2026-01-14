@@ -75,6 +75,7 @@ class Auth0JwtVerifier: JwtVerifier {
         val res = client.get("$issuer/.well-known/openid-configuration")
         if (!res.status.isSuccess()) return Res.Err(VerifyFailErr("getJwksUrl", null))
         return try {
+            @Suppress("DEPRECATION")
             Res.Ok(URL(res.body<OidcConf>().jwksUrl))
         } catch (e: Exception) {
             Res.Err(VerifyFailErr("getJwksUrl", e))

@@ -12,7 +12,7 @@ class ServerCtx(
     val serializer: KerutaSerializer,
     val server: KtcpServer,
 ) {
-    fun verify(authRequestMsg: ServerAuthRequestMsg): Res<AuthenticatedSession, KtcpErr> {
+    suspend fun verify(authRequestMsg: ServerAuthRequestMsg): Res<AuthenticatedSession, KtcpErr> {
         val persisterSession = when (
             val res = persisterSession.verify(
                 authRequestMsg

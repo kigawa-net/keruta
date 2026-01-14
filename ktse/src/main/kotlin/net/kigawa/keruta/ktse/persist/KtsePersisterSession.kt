@@ -15,7 +15,7 @@ class KtsePersisterSession(
     ktseConfig: KtseConfig,
 ): PersisterSession {
     val userVerifier = UserVerifier(jwtVerifier, dbPersister, ktseConfig)
-    val providerVerifier = ProviderVerifier()
+    val providerVerifier = ProviderVerifier(jwtVerifier, dbPersister, ktseConfig)
 
     override suspend fun verify(
         authRequestMsg: ServerAuthRequestMsg,
@@ -27,7 +27,10 @@ class KtsePersisterSession(
             is Res.Ok -> res.value
         }
         val provider = when (
-            val res = providerVerifier.verifyStrToken(authRequestMsg.serverToken)
+            val res = providerVerifier.verifyStrToken(
+                authRequestMsg.serverToken,
+                user
+            )
         ) {
             is Res.Err -> return res.x()
             is Res.Ok -> res.value
