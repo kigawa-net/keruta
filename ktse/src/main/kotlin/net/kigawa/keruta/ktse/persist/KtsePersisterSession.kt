@@ -6,11 +6,11 @@ import net.kigawa.keruta.ktcp.server.auth.JwtVerifier
 import net.kigawa.keruta.ktcp.server.persist.AuthenticatedPersisterSession
 import net.kigawa.keruta.ktcp.server.persist.PersisterSession
 import net.kigawa.keruta.ktse.KtseConfig
-import net.kigawa.keruta.ktse.db.DbPersister
+import net.kigawa.keruta.ktse.persist.db.DbPersister
 import net.kigawa.kodel.api.err.Res
 
 class KtsePersisterSession(
-    dbPersister: DbPersister,
+    val dbPersister: DbPersister,
     jwtVerifier: JwtVerifier,
     ktseConfig: KtseConfig,
 ): PersisterSession {
@@ -35,6 +35,6 @@ class KtsePersisterSession(
             is Res.Err -> return res.x()
             is Res.Ok -> res.value
         }
-        return Res.Ok(KtseAuthenticatedPersisterSession(user, provider))
+        return Res.Ok(KtseAuthenticatedPersisterSession(user, provider, dbPersister))
     }
 }

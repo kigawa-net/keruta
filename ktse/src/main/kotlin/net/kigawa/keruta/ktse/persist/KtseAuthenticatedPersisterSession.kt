@@ -5,7 +5,7 @@ import net.kigawa.keruta.ktcp.server.persist.AuthenticatedPersisterSession
 import net.kigawa.keruta.ktcp.server.persist.PersistedProvider
 import net.kigawa.keruta.ktcp.server.persist.PersistedUser
 import net.kigawa.keruta.ktcp.server.persist.TaskToCreate
-import net.kigawa.keruta.ktse.db.DbPersister
+import net.kigawa.keruta.ktse.persist.db.DbPersister
 import net.kigawa.kodel.api.err.Res
 
 class KtseAuthenticatedPersisterSession(
@@ -14,7 +14,7 @@ class KtseAuthenticatedPersisterSession(
     override suspend fun createTask(
         task: TaskToCreate,
     ): Res<Unit, KtcpErr> {
-        dbPersister.transaction {
+        dbPersister.execTransaction {
 
         }
         TODO()

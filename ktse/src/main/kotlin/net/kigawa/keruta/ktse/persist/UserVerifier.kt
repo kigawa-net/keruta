@@ -7,7 +7,7 @@ import net.kigawa.keruta.ktcp.server.auth.UnverifiedToken
 import net.kigawa.keruta.ktcp.server.persist.PersistedUser
 import net.kigawa.keruta.ktcp.server.persist.PersistedUserIdp
 import net.kigawa.keruta.ktse.KtseConfig
-import net.kigawa.keruta.ktse.db.DbPersister
+import net.kigawa.keruta.ktse.persist.db.DbPersister
 import net.kigawa.keruta.ktse.err.UnknownIssuerErr
 import net.kigawa.kodel.api.err.Res
 
@@ -24,7 +24,7 @@ class UserVerifier(
     }
 
     suspend fun verifyToken(unverifiedToken: UnverifiedToken): Res<PersistedUser, KtcpErr> = when (
-        val res = dbPersister.transaction {
+        val res = dbPersister.execTransaction {
             getUserIdpOrNull(
                 unverifiedToken.subject, unverifiedToken.issuer
             )
@@ -44,7 +44,7 @@ class UserVerifier(
             )
         ) {
             is Res.Err -> res.x()
-            is Res.Ok -> dbPersister.transaction {
+            is Res.Ok -> dbPersister.execTransaction {
                 createUserAndIdp(idp,res.value)
             }
         }
@@ -56,6 +56,6 @@ class UserVerifier(
         val res = unverifiedToken.verify(userIdp.asUserIdp())
     ) {
         is Res.Err -> res.x()
-        is Res.Ok -> dbPersister.transaction { getUser(res.value) }
+        is Res.Ok -> dbPersister.execTransaction { getUser(res.value) }
     }
 }

@@ -1,4 +1,4 @@
-package net.kigawa.keruta.ktse.db.table
+package net.kigawa.keruta.ktse.persist.db.table
 
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.datetime

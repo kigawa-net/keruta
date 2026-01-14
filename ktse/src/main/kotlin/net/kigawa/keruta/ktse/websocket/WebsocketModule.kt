@@ -16,7 +16,7 @@ import net.kigawa.keruta.ktse.KtseConfig
 import net.kigawa.keruta.ktse.ReceiveUnknownArg
 import net.kigawa.keruta.ktse.WebsocketConnection
 import net.kigawa.keruta.ktse.auth.Auth0JwtVerifier
-import net.kigawa.keruta.ktse.db.DbPersister
+import net.kigawa.keruta.ktse.persist.db.DbPersister
 import net.kigawa.keruta.ktse.err.SendGenericErrArg
 import net.kigawa.keruta.ktse.persist.KtsePersisterSession
 import net.kigawa.keruta.ktse.zookeeper.ZkPersister

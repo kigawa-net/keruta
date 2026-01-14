@@ -1,4 +1,4 @@
-package net.kigawa.keruta.ktse.db
+package net.kigawa.keruta.ktse.persist.db
 
 import net.kigawa.kodel.api.log.getKogger
 import net.kigawa.kodel.api.log.traceignore.debug

@@ -9,5 +9,6 @@ enum class ServerErrCode {
     RESPONSE_ERR,
     UNAUTHENTICATED,
     BACKEND,
-    UNKNOWN_ISSUER
+    UNKNOWN_ISSUER,
+    MULTIPLE_RECORD
 }
