@@ -1,4 +1,50 @@
 services:
+  pd:
+    image: pingcap/pd:latest
+    hostname: pd
+    ports:
+      - "2379:2379"
+      - "2380:2380"
+    volumes:
+      - ./dev/pd.toml:/pd.toml:ro
+      - pd-data:/data
+    command:
+      - --name=pd
+      - --client-urls=http://0.0.0.0:2379
+      - --peer-urls=http://0.0.0.0:2380
+      - --advertise-client-urls=http://pd:2379
+      - --advertise-peer-urls=http://pd:2380
+      - --initial-cluster=pd=http://pd:2380
+    networks:
+      - tidbnet
+
+  tikv:
+    image: pingcap/tikv:latest
+    hostname: tikv
+    depends_on:
+      - pd
+    command:
+      - --pd=pd:2379
+      - --addr=0.0.0.0:20160
+      - --advertise-addr=tikv:20160
+      - --status-addr=0.0.0.0:20180
+      - --advertise-status-addr=tikv:20180
+    networks:
+      - tidbnet
+
+  tidb:
+    image: pingcap/tidb:latest
+    depends_on:
+      - pd
+      - tikv
+    command:
+      - --store=tikv
+      - --path=pd:2379
+    ports:
+      - "4000:4000"
+    networks:
+      - tidbnet
+
   zk-dev1:
     image: zookeeper
     restart: no
@@ -54,8 +100,10 @@ services:
       ZOO_SERVERS: server.1=zk-dev1:2888:3888;2181 server.2=zk-dev2:2888:3888;2181 server.3=zk-dev3:2888:3888;2181
 networks:
   zknet:
+  tidbnet:
 
 volumes:
+  pd-data:
   zk1-data:
   zk1-datalog:
   zk2-data:

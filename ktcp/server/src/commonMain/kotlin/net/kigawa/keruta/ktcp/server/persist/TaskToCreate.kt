@@ -6,12 +6,13 @@ import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateArg
 @Serializable
 data class TaskToCreate(
     val name: String,
-
-    ) {
+    val queueId: String,
+) {
     companion object {
         fun from(input: ServerTaskCreateArg): TaskToCreate {
             return TaskToCreate(
-                input.taskCreateMsg.name
+                input.taskCreateMsg.name,
+                input.taskCreateMsg.queueId
             )
         }
     }

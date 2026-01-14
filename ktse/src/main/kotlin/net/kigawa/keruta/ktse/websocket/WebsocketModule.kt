@@ -16,6 +16,7 @@ import net.kigawa.keruta.ktse.KtseConfig
 import net.kigawa.keruta.ktse.ReceiveUnknownArg
 import net.kigawa.keruta.ktse.WebsocketConnection
 import net.kigawa.keruta.ktse.auth.Auth0JwtVerifier
+import net.kigawa.keruta.ktse.db.DbPersister
 import net.kigawa.keruta.ktse.err.SendGenericErrArg
 import net.kigawa.keruta.ktse.zookeeper.ZkPersister
 import net.kigawa.keruta.ktse.zookeeper.ZkPersisterSession
@@ -32,7 +33,8 @@ class WebsocketModule(application: Application) {
     val serializer = JsonKerutaSerializer()
     val logger = getKogger()
     val ktcpServer = KtcpServer()
-    val persister = ZkPersister(ktseConfig, serializer)
+    val zkPersister = ZkPersister(ktseConfig, serializer)
+    val dbPersister = DbPersister(ktseConfig)
 
     init {
         application.install(WebSockets.Plugin) {
@@ -47,7 +49,7 @@ class WebsocketModule(application: Application) {
         logger.debug("WebSocket connection established")
         KtcpSession.startSession(
             WebsocketConnection(this@webSocket),
-            ZkPersisterSession(persister)
+            ZkPersisterSession(zkPersister)
         ) { session ->
             logger.debug("WebSocket session started")
             incoming.consumeEach { frame ->
