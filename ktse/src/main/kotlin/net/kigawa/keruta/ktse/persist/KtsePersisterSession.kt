@@ -35,6 +35,6 @@ class KtsePersisterSession(
             is Res.Err -> return res.x()
             is Res.Ok -> res.value
         }
-        TODO("Not yet implemented")
+        return Res.Ok(KtseAuthenticatedPersisterSession(user, provider))
     }
 }
