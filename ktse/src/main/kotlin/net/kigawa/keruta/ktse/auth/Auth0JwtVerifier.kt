@@ -14,20 +14,20 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import net.kigawa.keruta.ktcp.model.auth.AuthToken
+import net.kigawa.keruta.ktcp.server.auth.IdpConfig
 import net.kigawa.keruta.ktcp.server.auth.JwtVerifier
 import net.kigawa.keruta.ktcp.server.auth.UnverifiedToken
 import net.kigawa.keruta.ktcp.server.auth.VerifiedToken
-import net.kigawa.keruta.ktcp.server.auth.IdpConfig
 import net.kigawa.keruta.ktcp.server.err.VerifyErr
 import net.kigawa.keruta.ktcp.server.err.VerifyFailErr
 import net.kigawa.keruta.ktcp.server.err.VerifyUnsupportedKeyErr
-import net.kigawa.kodel.api.cache.LruCache
 import net.kigawa.kodel.api.err.Res
+import net.kigawa.kodel.coroutine.cache.ConcurrentLruCache
 import java.net.URL
 import java.security.interfaces.RSAPublicKey
 
 class Auth0JwtVerifier: JwtVerifier {
-    val providers = LruCache<String, JwkProvider>(8)
+    val providers = ConcurrentLruCache<String, JwkProvider>(8)
     val client = HttpClient(CIO) {
         install(ContentNegotiation) {
             json()
@@ -54,8 +54,10 @@ class Auth0JwtVerifier: JwtVerifier {
             is Res.Err -> return res.x()
             is Res.Ok -> res.value
         }
-        val provider = providers.getOrPut(idpConfig.issuer) {
-            JwkProviderBuilder(jwksUrl).build()
+        val provider = providers.use {
+            getOrPut(idpConfig.issuer) {
+                JwkProviderBuilder(jwksUrl).build()
+            }
         }
         val key = provider.get(rawToken.keyId)
         val alg = when (val alg = alg(key)) {
