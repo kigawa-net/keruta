@@ -2,6 +2,7 @@ package net.kigawa.keruta.ktse.persist.db
 
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.server.auth.IdpConfig
+import net.kigawa.keruta.ktcp.server.auth.ProviderIdpConfig
 import net.kigawa.keruta.ktcp.server.auth.VerifiedToken
 import net.kigawa.keruta.ktcp.server.persist.PersistedProvider
 import net.kigawa.keruta.ktcp.server.persist.PersistedUser
@@ -65,8 +66,14 @@ class DbPersisterDSL(val transaction: Transaction) {
         return@run Res.Err(MultipleRecordErr("", null))
     }
 
-    fun createProvider(idp: IdpConfig, value: VerifiedToken): Res<PersistedProvider, KtcpErr> {
-        TODO("Not yet implemented")
+    fun createProvider(idp: ProviderIdpConfig, user: PersistedUser): Res<PersistedProvider, KtcpErr> {
+        val provider = ProviderTable.insert {
+            it[ProviderTable.issuer] = idp.issuer
+            it[ProviderTable.audience] = idp.audience
+            it[ProviderTable.userId] = user.id
+            it[ProviderTable.name] = idp.name
+        }.resultedValues?.singleOrNull() ?: return Res.Err(NoSingleRecordErr("", null))
+        return Res.Ok(ExposedPersistedProvider(provider))
     }
 
 }

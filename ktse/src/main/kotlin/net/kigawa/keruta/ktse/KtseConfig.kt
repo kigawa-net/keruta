@@ -2,6 +2,7 @@ package net.kigawa.keruta.ktse
 
 import io.ktor.server.application.*
 import net.kigawa.keruta.ktcp.server.auth.IdpConfig
+import net.kigawa.keruta.ktcp.server.auth.ProviderIdpConfig
 
 class KtseConfig(environment: ApplicationEnvironment) {
 
@@ -13,9 +14,10 @@ class KtseConfig(environment: ApplicationEnvironment) {
         )
     }
     val defaultProvider = environment.config.configList("ktor.security.defaultProvider").map {
-        IdpConfig(
+        ProviderIdpConfig(
             it.property("issuer").getString(),
-            it.property("audience").getString()
+            it.property("audience").getString(),
+            it.property("name").getString(),
         )
     }
 

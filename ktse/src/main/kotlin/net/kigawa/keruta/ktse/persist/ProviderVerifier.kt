@@ -6,8 +6,8 @@ import net.kigawa.keruta.ktcp.server.auth.UnverifiedToken
 import net.kigawa.keruta.ktcp.server.persist.PersistedProvider
 import net.kigawa.keruta.ktcp.server.persist.PersistedUser
 import net.kigawa.keruta.ktse.KtseConfig
-import net.kigawa.keruta.ktse.persist.db.DbPersister
 import net.kigawa.keruta.ktse.err.UnknownIssuerErr
+import net.kigawa.keruta.ktse.persist.db.DbPersister
 import net.kigawa.kodel.api.err.Res
 
 class ProviderVerifier(
@@ -49,7 +49,7 @@ class ProviderVerifier(
         ) {
             is Res.Err -> res.x()
             is Res.Ok -> dbPersister.execTransaction {
-                createProvider(idp, res.value)
+                createProvider(idp, user)
             }
         }
     }

@@ -11,6 +11,7 @@ ktor:
     defaultProvider:
       - issuer: http://127.0.0.1:5173
         audience: keruta
+        name: web
 zk:
   host: localhost:2181,localhost:2182,localhost:2183
 db:
