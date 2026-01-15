@@ -14,9 +14,9 @@ dependencies {
 
     // Flyway and Database
     // https://mvnrepository.com/artifact/org.flywaydb/flyway-core
-    implementation("org.flywaydb:flyway-core:10.20.1")
+    implementation("org.flywaydb:flyway-core:10.22.0")
     // https://mvnrepository.com/artifact/org.flywaydb/flyway-mysql
-    implementation("org.flywaydb:flyway-mysql:10.20.1")
+    implementation("org.flywaydb:flyway-mysql:10.22.0")
     // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
     implementation("com.mysql:mysql-connector-j:9.5.0")
     implementation("org.jetbrains.exposed:exposed-core:0.47.0")
