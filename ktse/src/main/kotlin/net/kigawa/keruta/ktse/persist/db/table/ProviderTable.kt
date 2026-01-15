@@ -5,8 +5,8 @@ import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 
 object ProviderTable: Table("provider") {
 
-    val id = integer("id").autoIncrement()
-    val userId = integer("user_id").references(UserTable.id)
+    val id = long("id").autoIncrement()
+    val userId = long("user_id").references(UserTable.id)
     val name = varchar("name", 50)
     val issuer = varchar("issuer", 50)
     val audience = varchar("audience", 50)
