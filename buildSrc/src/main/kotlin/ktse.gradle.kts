@@ -24,7 +24,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-jdbc:0.47.0")
 
     // コルーチンを使う場合
-    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:0.47.0")
+    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:0.61.0")
 // Source: https://mvnrepository.com/artifact/org.jetbrains.exposed/exposed-json
     implementation("org.jetbrains.exposed:exposed-json:0.61.0")
 
