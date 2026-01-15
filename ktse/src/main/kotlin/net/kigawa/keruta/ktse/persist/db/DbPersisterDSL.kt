@@ -15,6 +15,7 @@ import net.kigawa.keruta.ktse.persist.model.ExposedPersistedUserIdp
 import net.kigawa.kodel.api.err.Res
 import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 
 class DbPersisterDSL(val transaction: Transaction) {
@@ -39,8 +40,18 @@ class DbPersisterDSL(val transaction: Transaction) {
         return@run Res.Err(NoSingleRecordErr("", null))
     }
 
-    fun createUserAndIdp(idp: IdpConfig, verifiedToken: VerifiedToken): Res<PersistedUser, KtcpErr> {
-        TODO("Not yet implemented")
+    fun createUserAndIdp(
+        idp: IdpConfig, verifiedToken: VerifiedToken,
+    ): Res<PersistedUser, KtcpErr> = transaction.run {
+        val user = UserTable.insert {}.resultedValues
+            ?.singleOrNull() ?: return@run Res.Err(NoSingleRecordErr("", null))
+        val idp = UserIdpTable.insert {
+            it[UserIdpTable.userId] = user[UserTable.id]
+            it[UserIdpTable.subject] = verifiedToken.subject
+            it[UserIdpTable.issuer] = idp.issuer
+            it[UserIdpTable.audience] = idp.audience
+        }.resultedValues?.singleOrNull() ?: return@run Res.Err(NoSingleRecordErr("", null))
+        Res.Ok(ExposedPersistedUser(user, ExposedPersistedUserIdp(idp)))
     }
 
     fun getProviderOrNull(issuer: String, id: Long): Res<PersistedProvider, KtcpErr>? {
