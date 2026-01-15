@@ -16,7 +16,10 @@ class DbPersister(
         }
     }
 
-    private val db: Database = Database.connect(ktseConfig.dbConfig.jdbcUrl, driver = "com.mysql.cj.jdbc.Driver")
+    private val db: Database = Database.connect(
+        ktseConfig.dbConfig.jdbcUrl, driver = "com.mysql.cj.jdbc.Driver",
+        user = ktseConfig.dbConfig.username, password = ktseConfig.dbConfig.password
+    )
 
     init {
         FlywayMigrator().migrate(
