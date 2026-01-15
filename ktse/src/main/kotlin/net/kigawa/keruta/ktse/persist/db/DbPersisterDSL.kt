@@ -8,8 +8,10 @@ import net.kigawa.keruta.ktcp.server.persist.PersistedUser
 import net.kigawa.keruta.ktcp.server.persist.PersistedUserIdp
 import net.kigawa.keruta.ktse.err.MultipleRecordErr
 import net.kigawa.keruta.ktse.err.NoSingleRecordErr
+import net.kigawa.keruta.ktse.persist.db.table.ProviderTable
 import net.kigawa.keruta.ktse.persist.db.table.UserIdpTable
 import net.kigawa.keruta.ktse.persist.db.table.UserTable
+import net.kigawa.keruta.ktse.persist.model.ExposedPersistedProvider
 import net.kigawa.keruta.ktse.persist.model.ExposedPersistedUser
 import net.kigawa.keruta.ktse.persist.model.ExposedPersistedUserIdp
 import net.kigawa.kodel.api.err.Res
@@ -54,8 +56,13 @@ class DbPersisterDSL(val transaction: Transaction) {
         Res.Ok(ExposedPersistedUser(user, ExposedPersistedUserIdp(idp)))
     }
 
-    fun getProviderOrNull(issuer: String, id: Long): Res<PersistedProvider, KtcpErr>? {
-        TODO("Not yet implemented")
+    fun getProviderOrNull(issuer: String, id: Long): Res<PersistedProvider, KtcpErr>? = transaction.run {
+        val res = ProviderTable.selectAll().where {
+            ProviderTable.issuer eq issuer and (ProviderTable.userId eq id)
+        }
+        if (res.empty()) return@run null
+        res.singleOrNull()?.let { return@run Res.Ok(ExposedPersistedProvider(it)) }
+        return@run Res.Err(MultipleRecordErr("", null))
     }
 
     fun createProvider(idp: IdpConfig, value: VerifiedToken): Res<PersistedProvider, KtcpErr> {
