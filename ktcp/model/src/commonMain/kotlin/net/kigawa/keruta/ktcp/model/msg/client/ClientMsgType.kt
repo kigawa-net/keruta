@@ -1,4 +1,4 @@
-package net.kigawa.keruta.ktcp.model.msg
+package net.kigawa.keruta.ktcp.model.msg.client
 
 import kotlinx.serialization.Serializable
 
@@ -7,7 +7,7 @@ enum class ClientMsgType(
     val str: String,
 ) {
     GENERIC_ERROR("generic_error"),
-    PROVIDER_LIST("provider_request"),
+    PROVIDER_LIST("provider_list"),
     ;
 
     companion object {

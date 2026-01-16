@@ -1,4 +1,4 @@
-package net.kigawa.keruta.ktcp.model.msg
+package net.kigawa.keruta.ktcp.model.msg.server
 
 import kotlinx.serialization.Serializable
 

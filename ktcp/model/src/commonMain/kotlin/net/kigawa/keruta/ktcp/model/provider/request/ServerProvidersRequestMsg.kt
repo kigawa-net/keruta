@@ -1,8 +1,8 @@
 package net.kigawa.keruta.ktcp.model.provider.request
 
 import kotlinx.serialization.Serializable
-import net.kigawa.keruta.ktcp.model.msg.ServerMsg
-import net.kigawa.keruta.ktcp.model.msg.ServerMsgType
+import net.kigawa.keruta.ktcp.model.msg.server.ServerMsg
+import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
 
 @Serializable
 data class ServerProvidersRequestMsg(

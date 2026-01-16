@@ -4,9 +4,9 @@ import io.ktor.websocket.*
 import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestMsg
 import net.kigawa.keruta.ktcp.model.err.GenericErrMsg
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.msg.ServerMsgType
-import net.kigawa.keruta.ktcp.model.msg.ServerUnknownArg
-import net.kigawa.keruta.ktcp.model.msg.ServerUnknownMsg
+import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
+import net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownArg
+import net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownMsg
 import net.kigawa.keruta.ktcp.model.provider.request.ServerProvidersRequestArg
 import net.kigawa.keruta.ktcp.model.provider.request.ServerProvidersRequestMsg
 import net.kigawa.keruta.ktcp.model.serialize.deserialize

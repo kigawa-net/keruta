@@ -4,7 +4,7 @@ import net.kigawa.keruta.ktcp.model.auth.sccess.ClientAuthSuccessEntrypoint
 import net.kigawa.keruta.ktcp.model.err.ClientGenericErrEntrypoint
 import net.kigawa.keruta.ktcp.model.err.EntrypointNotFoundErr
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.msg.ClientUnknownArg
+import net.kigawa.keruta.ktcp.model.msg.client.ClientUnknownArg
 import net.kigawa.keruta.ktcp.model.provider.list.ClientProviderListEntrypoint
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.entrypoint.EntrypointGroupBase

@@ -1,4 +1,4 @@
-package net.kigawa.keruta.ktcp.model.msg
+package net.kigawa.keruta.ktcp.model.msg.client
 
 import net.kigawa.keruta.ktcp.model.auth.sccess.ClientAuthSuccessArg
 import net.kigawa.keruta.ktcp.model.err.ClientGenericErrArg

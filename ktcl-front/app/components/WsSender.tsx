@@ -1,7 +1,7 @@
 import {useWebsocketState, WebsocketState} from "./Websocket";
 import {KerutaTaskState, useKerutaTaskState} from "./KerutaTask";
 import {KeycloakState, useKeycloakState} from "./Keycloak";
-import {AuthRequestMsg} from "../msg/auth";
+import {ServerAuthRequestMsg} from "../msg/auth";
 import {useEffect} from "react";
 
 export default function WsSender(
@@ -39,7 +39,7 @@ function useAuth(
                 kc.getToken(),
             ]).then(([tokenRes, userToken]) => {
                     const token: { token: string } = tokenRes
-                    const msg: AuthRequestMsg = {
+                    const msg: ServerAuthRequestMsg = {
                         type: "auth_request",
                         userToken,
                         serverToken: token.token

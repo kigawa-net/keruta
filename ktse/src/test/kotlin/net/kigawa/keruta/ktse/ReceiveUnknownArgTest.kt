@@ -1,7 +1,7 @@
 package net.kigawa.keruta.ktse
 
-import net.kigawa.keruta.ktcp.model.msg.ServerUnknownMsg
-import net.kigawa.keruta.ktcp.model.msg.ServerMsgType
+import net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownMsg
+import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
 import kotlin.test.Test
 import kotlin.test.assertTrue
 

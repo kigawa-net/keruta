@@ -2,8 +2,8 @@ package net.kigawa.keruta.ktcp.model.auth.request
 
 import kotlinx.serialization.Serializable
 import net.kigawa.keruta.ktcp.model.auth.AuthToken
-import net.kigawa.keruta.ktcp.model.msg.ServerMsg
-import net.kigawa.keruta.ktcp.model.msg.ServerMsgType
+import net.kigawa.keruta.ktcp.model.msg.server.ServerMsg
+import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
 
 /**
  * Marker interface for authentication messages.
