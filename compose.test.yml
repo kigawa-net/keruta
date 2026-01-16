@@ -13,6 +13,12 @@ services:
         rsync -avz --delete /src/ /src/cache/app \
           --exclude=.git \
           --exclude=.idea \
+          --exclude=.claude \
+          --exclude=.github \
+          --exclude=.junie \
+          --exclude=.keruta \
+          --exclude=.kotlin \
+          --exclude=.serena \
           --exclude=cache \
           --exclude=kotlin-js-store \
           --exclude=ktcl-front/node_modules \

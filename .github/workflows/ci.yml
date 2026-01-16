@@ -28,13 +28,13 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      - name: Build with GitHub Actions cache
-        run: |
-          docker buildx build \
-            --cache-from type=gha \
-            --cache-to type=gha,mode=max \
-            -f Dockerfile_test .
-
       - run: docker compose -f compose.test.yml up test --exit-code-from test --attach-dependencies
-      - run: docker compose -f compose.test.yml logs
+        env:
+          DOCKER_BUILDKIT: 1
+          COMPOSE_DOCKER_CLI_BUILD: 1
+      - run: docker compose -f compose.test.yml logs test
+        if: always()
+      - run: docker compose -f compose.test.yml logs ktcl-front-test
+        if: always()
+      - run: docker compose -f compose.test.yml logs all-tests
         if: always()
