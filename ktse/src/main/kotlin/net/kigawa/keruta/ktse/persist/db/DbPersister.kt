@@ -1,5 +1,7 @@
 package net.kigawa.keruta.ktse.persist.db
 
+import com.zaxxer.hikari.HikariConfig
+import com.zaxxer.hikari.HikariDataSource
 import net.kigawa.keruta.ktse.KtseConfig
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -16,10 +18,14 @@ class DbPersister(
         }
     }
 
-    private val db: Database = Database.connect(
-        ktseConfig.dbConfig.jdbcUrl, driver = "com.mysql.cj.jdbc.Driver",
-        user = ktseConfig.dbConfig.username, password = ktseConfig.dbConfig.password
-    )
+    private val config = HikariConfig().apply {
+        jdbcUrl = ktseConfig.dbConfig.jdbcUrl + "?useInformationSchema=false"
+        driverClassName = "com.mysql.cj.jdbc.Driver"
+        username = ktseConfig.dbConfig.username
+        password = ktseConfig.dbConfig.password
+        maximumPoolSize = 10
+    }
+    private val db: Database = Database.connect(HikariDataSource(config))
 
     init {
         FlywayMigrator().migrate(

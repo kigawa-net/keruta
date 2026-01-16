@@ -19,3 +19,5 @@
 /node_modules/
 /cache/
 /temp.key
+/.idea/dataSources/*.corrupted.*.reason.txt
+/.idea/dataSources/*.corrupted.*.xml

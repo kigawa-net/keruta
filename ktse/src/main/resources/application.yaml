@@ -9,7 +9,7 @@ ktor:
       - issuer: https://user.kigawa.net/realms/develop
         audience: keruta
     defaultProvider:
-      - issuer: http://127.0.0.1:5173
+      - issuer: http://127.0.0.1:5173/
         audience: keruta
         name: web
 zk:

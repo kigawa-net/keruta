@@ -40,11 +40,12 @@ class ProviderVerifier(
         unverifiedToken: UnverifiedToken,
         user: PersistedUser,
     ): Res<PersistedProvider, KtcpErr> {
-        val idp = ktcpConfig.defaultProvider.firstOrNull { it.issuer == unverifiedToken.issuer }
+        val idp = ktcpConfig.defaultProvider
+            .firstOrNull { it.issuer == unverifiedToken.issuer }
         if (idp == null) return Res.Err(UnknownIssuerErr("", null))
         return when (
             val res = unverifiedToken.verify(
-                idp.asIdp(user.currentIdp.subject)
+                idp.asIdp(user.currentIdp.subject), false
             )
         ) {
             is Res.Err -> res.x()
@@ -58,7 +59,7 @@ class ProviderVerifier(
         unverifiedToken: UnverifiedToken, provider: PersistedProvider, user: PersistedUser,
     ): Res<PersistedProvider, KtcpErr> = when (
         val res = unverifiedToken.verify(
-            provider.asUserIdp(user.currentIdp.subject)
+            provider.asUserIdp(user.currentIdp.subject), false
         )
     ) {
         is Res.Err -> res.x()

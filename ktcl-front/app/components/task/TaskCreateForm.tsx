@@ -4,7 +4,6 @@ import {useEffect, useState} from "react";
 import {TaskCreateMsg} from "../../msg/task";
 import {useWebsocketState} from "../Websocket";
 import FormErrMsg from "../form/FormErrMsg";
-import {useNavigate} from "react-router-dom";
 
 
 export function TaskCreateForm() {
@@ -12,7 +11,7 @@ export function TaskCreateForm() {
     const ws = useWebsocketState()
     const [name, setName] = useState<TextInputValue>({value: ""})
     const [err, setErr] = useState<string>()
-    const navigate = useNavigate()
+
     useEffect(() => {
         if (formState != "submitting") return
         if (ws.state != "open") {
@@ -27,7 +26,8 @@ export function TaskCreateForm() {
         }
         const msg: TaskCreateMsg = {
             type: "task_create",
-            name: name.value
+            name: name.value,
+            queueId: "todo" // todo
         }
         ws.websocket.send(JSON.stringify(msg))
 

@@ -4,9 +4,9 @@ import com.auth0.jwt.interfaces.DecodedJWT
 import net.kigawa.keruta.ktcp.model.auth.AuthToken
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.server.auth.Idp
+import net.kigawa.keruta.ktcp.server.auth.IdpConfig
 import net.kigawa.keruta.ktcp.server.auth.UnverifiedToken
 import net.kigawa.keruta.ktcp.server.auth.VerifiedToken
-import net.kigawa.keruta.ktcp.server.auth.IdpConfig
 import net.kigawa.kodel.api.err.Res
 
 class Auth0UnverifiedToken(
@@ -16,9 +16,11 @@ class Auth0UnverifiedToken(
 ): UnverifiedToken {
     override suspend fun verify(
         idp: Idp,
+        oidc: Boolean,
     ): Res<VerifiedToken, KtcpErr> = verifier.verify(
         strToken, decode, idp.subject,
-        IdpConfig(idp.issuer, idp.audience)
+        IdpConfig(idp.issuer, idp.audience),
+        oidc
     )
 
     override val subject: String

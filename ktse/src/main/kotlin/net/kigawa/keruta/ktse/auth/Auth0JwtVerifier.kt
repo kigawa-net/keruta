@@ -11,6 +11,7 @@ import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import net.kigawa.keruta.ktcp.model.auth.AuthToken
@@ -25,6 +26,7 @@ import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.coroutine.cache.ConcurrentLruCache
 import java.net.URL
 import java.security.interfaces.RSAPublicKey
+
 
 class Auth0JwtVerifier: JwtVerifier {
     val providers = ConcurrentLruCache<String, JwkProvider>(8)
@@ -49,14 +51,21 @@ class Auth0JwtVerifier: JwtVerifier {
         rawToken: DecodedJWT,
         subject: String,
         idpConfig: IdpConfig,
+        oidc: Boolean,
     ): Res<VerifiedToken, VerifyErr> {
-        val jwksUrl = when (val res = getJwksUrl(idpConfig.issuer)) {
-            is Res.Err -> return res.x()
-            is Res.Ok -> res.value
-        }
-        val provider = providers.use {
+        val provider = if (oidc) {
+            val jwksUrl = when (val res = getJwksUrl(idpConfig.issuer)) {
+                is Res.Err -> return res.x()
+                is Res.Ok -> res.value
+            }
+            providers.use {
+                getOrPut(idpConfig.issuer) {
+                    JwkProviderBuilder(jwksUrl).build()
+                }
+            }
+        } else providers.use {
             getOrPut(idpConfig.issuer) {
-                JwkProviderBuilder(jwksUrl).build()
+                JwkProviderBuilder(idpConfig.issuer).build()
             }
         }
         val key = provider.get(rawToken.keyId)
@@ -69,18 +78,18 @@ class Auth0JwtVerifier: JwtVerifier {
             val verified = verifier.verify(token)
             Res.Ok(Auth0VerifiedToken(verified))
         } catch (e: Exception) {
-            Res.Err(VerifyFailErr("", e))
+            Res.Err(VerifyFailErr("token: ${rawToken.str}", e))
         }
     }
 
     suspend fun getJwksUrl(issuer: String): Res<URL, VerifyErr> {
         val res = client.get("$issuer/.well-known/openid-configuration")
-        if (!res.status.isSuccess()) return Res.Err(VerifyFailErr("getJwksUrl", null))
+        if (!res.status.isSuccess()) return Res.Err(VerifyFailErr("res: $res", null))
         return try {
             @Suppress("DEPRECATION")
-            Res.Ok(URL(res.body<OidcConf>().jwksUrl))
+            Res.Ok(URL(res.body<OidcConf>().jwksUri))
         } catch (e: Exception) {
-            Res.Err(VerifyFailErr("getJwksUrl", e))
+            Res.Err(VerifyFailErr("body: ${res.bodyAsText()}", e))
         }
     }
 
