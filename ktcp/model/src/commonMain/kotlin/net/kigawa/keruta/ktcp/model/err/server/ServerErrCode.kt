@@ -8,5 +8,8 @@ enum class ServerErrCode {
     UNEXPECTED,
     RESPONSE_ERR,
     UNAUTHENTICATED,
-    BACKEND
+    BACKEND,
+    UNKNOWN_ISSUER,
+    MULTIPLE_RECORD,
+    NO_SINGLE_RECORD
 }

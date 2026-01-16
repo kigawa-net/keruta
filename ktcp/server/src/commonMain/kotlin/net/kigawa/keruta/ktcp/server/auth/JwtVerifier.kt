@@ -5,6 +5,5 @@ import net.kigawa.keruta.ktcp.server.err.VerifyErr
 import net.kigawa.kodel.api.err.Res
 
 interface JwtVerifier {
-    fun verifyUserToken(token: AuthToken): Res<VerifiedToken, VerifyErr>
-    fun verifyServerToken(token: String, subject: String): Res<VerifiedToken, VerifyErr>
+    fun decodeUnverified(userToken: AuthToken): Res<UnverifiedToken, VerifyErr>
 }

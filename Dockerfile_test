@@ -22,3 +22,4 @@ RUN apt update && \
     dpkg -i google-chrome-stable_current_amd64.deb || apt-get -f install -y && \
     rm -f google-chrome-stable_current_amd64.deb && \
     rm -rf /var/lib/apt/lists/*
+

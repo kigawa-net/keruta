@@ -1,6 +1,8 @@
 plugins {
     id("jvm")
     id("ktor-server-websocket")
+
+    kotlin("plugin.serialization")
 }
 kotlin {
 }
@@ -16,13 +18,16 @@ dependencies {
     // https://mvnrepository.com/artifact/org.flywaydb/flyway-core
     implementation("org.flywaydb:flyway-core:10.22.0")
     // https://mvnrepository.com/artifact/org.flywaydb/flyway-mysql
-    implementation("org.flywaydb:flyway-mysql:10.22.0")
-    // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
+    implementation("org.flywaydb:flyway-mysql:10.20.1")
+// Source: https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
     implementation("com.mysql:mysql-connector-j:9.5.0")
-    implementation("org.jetbrains.exposed:exposed-core:0.47.0")
-    implementation("org.jetbrains.exposed:exposed-dao:0.61.0")
+// Source: https://mvnrepository.com/artifact/org.jetbrains.exposed/exposed-core
+    implementation("org.jetbrains.exposed:exposed-core:0.61.0")
+    implementation("org.jetbrains.exposed:exposed-dao:0.47.0")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.47.0")
 
+    // Connection Pool
+    implementation("com.zaxxer:HikariCP:5.1.0")
     // コルーチンを使う場合
     implementation("org.jetbrains.exposed:exposed-kotlin-datetime:0.61.0")
 // Source: https://mvnrepository.com/artifact/org.jetbrains.exposed/exposed-json

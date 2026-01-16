@@ -6,6 +6,6 @@ import net.kigawa.keruta.ktcp.server.auth.VerifiedToken
 class Auth0VerifiedToken(
     val verified: DecodedJWT,
 ): VerifiedToken {
-    override val sub: String
+    override val subject: String
         get() = verified.subject
 }

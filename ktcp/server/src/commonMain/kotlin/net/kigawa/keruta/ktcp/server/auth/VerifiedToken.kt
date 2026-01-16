@@ -1,5 +1,5 @@
 package net.kigawa.keruta.ktcp.server.auth
 
 interface VerifiedToken {
-    val sub: String
+    val subject: String
 }

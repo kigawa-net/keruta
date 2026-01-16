@@ -16,7 +16,7 @@ sealed interface Res<out T, out E: Throwable> {
      * @param value 成功時の値
      */
     class Ok<out T, out E: Throwable>(val value: T): Res<T, E> {
-        fun <F: Throwable> convertType(): Ok<T, F> = Ok(value)
+        fun <F: Throwable> x(): Ok<T, F> = Ok(value)
         fun <F> mapValue(block: (T) -> F): Ok<F, E> = Ok(block(value))
     }
 
@@ -26,7 +26,7 @@ sealed interface Res<out T, out E: Throwable> {
      * @param err エラー
      */
     class Err<out T, out E: Throwable>(val err: E): Res<T, E> {
-        fun <U> convertType(): Err<U, E> = Err(err)
+        fun <U> x(): Err<U, E> = Err(err)
         fun <U, F: Throwable> mapErr(block: (E) -> F): Err<U, F> = Err(block(err))
     }
 }
@@ -41,12 +41,12 @@ inline fun <T, E: Throwable, F: Throwable> Res<T, E>.convertErr(block: (E) -> F)
 }
 
 fun <T, E: Throwable> Res<Res<T, E>, E>.flat(): Res<T, E> = when (val res = this) {
-    is Res.Err<Res<T, E>, E> -> res.convertType()
+    is Res.Err<Res<T, E>, E> -> res.x()
     is Res.Ok<Res<T, E>, E> -> res.value
 }
 
 fun <T, E: Throwable> Res<Res<T, E>?, E>.flatNullable(): Res<T, E>? = when (val res = this) {
-    is Res.Err<Res<T, E>?, E> -> res.convertType()
+    is Res.Err<Res<T, E>?, E> -> res.x()
     is Res.Ok<Res<T, E>?, E> -> res.value
 }
 
