@@ -7,6 +7,6 @@ import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 @OptIn(ExperimentalSerializationApi::class)
 @Serializable
 @JsonIgnoreUnknownKeys
-data class KtcpUnknownMsg(
-    val type: ServerMsgType,
+data class ClientUnknownMsg(
+    val type: ClientMsgType,
 )

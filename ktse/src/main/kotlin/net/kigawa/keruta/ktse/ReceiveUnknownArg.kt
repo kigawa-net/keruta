@@ -4,7 +4,7 @@ import io.ktor.websocket.*
 import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestMsg
 import net.kigawa.keruta.ktcp.model.err.GenericErrMsg
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.msg.KtcpUnknownMsg
+import net.kigawa.keruta.ktcp.model.msg.ServerUnknownMsg
 import net.kigawa.keruta.ktcp.model.msg.ServerMsgType
 import net.kigawa.keruta.ktcp.model.msg.ServerUnknownArg
 import net.kigawa.keruta.ktcp.model.serialize.deserialize
@@ -20,7 +20,7 @@ import net.kigawa.keruta.ktse.task.ReceiveTaskCreateArg
 import net.kigawa.kodel.api.err.Res
 
 class ReceiveUnknownArg(
-    val msg: KtcpUnknownMsg,
+    val msg: ServerUnknownMsg,
     val ctx: ServerCtx,
     val text: String,
 ): ServerUnknownArg {
@@ -55,10 +55,10 @@ class ReceiveUnknownArg(
             if (frame !is Frame.Text) return Res.Err(InvalidTypeDecodeFrameErr("", null))
             val text = frame.readText()
             return when (
-                val msg = ctx.serializer.deserialize<KtcpUnknownMsg>(text)
+                val msg = ctx.serializer.deserialize<ServerUnknownMsg>(text)
             ) {
                 is Res.Err<*, KtcpErr> -> msg.mapErr { DeserializeDecodeFrameErr("", it) }
-                is Res.Ok<KtcpUnknownMsg, *> -> Res.Ok(
+                is Res.Ok<ServerUnknownMsg, *> -> Res.Ok(
                     ReceiveUnknownArg(
                         msg.value, ctx, text
                     )

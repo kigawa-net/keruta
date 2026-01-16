@@ -2,7 +2,7 @@ package net.kigawa.keruta.ktcp.model.msg
 
 import kotlinx.serialization.Serializable
 
-@Serializable(MsgTypeSerializer::class)
+@Serializable(ServerMsgTypeSerializer::class)
 enum class ServerMsgType(
     val str: String,
 ) {

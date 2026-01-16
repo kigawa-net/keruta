@@ -2,7 +2,7 @@ package net.kigawa.keruta.ktcp.model.auth.request
 
 import kotlinx.serialization.Serializable
 import net.kigawa.keruta.ktcp.model.auth.AuthToken
-import net.kigawa.keruta.ktcp.model.msg.KtcpMsg
+import net.kigawa.keruta.ktcp.model.msg.ServerMsg
 import net.kigawa.keruta.ktcp.model.msg.ServerMsgType
 
 /**
@@ -13,7 +13,7 @@ data class ServerAuthRequestMsg(
     val userToken: AuthToken,
     override val type: ServerMsgType = ServerMsgType.AUTH_REQUEST,
     val serverToken: String,
-): KtcpMsg {
+): ServerMsg {
     init {
         require(type == ServerMsgType.AUTH_REQUEST)
     }
