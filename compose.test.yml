@@ -22,10 +22,15 @@ services:
           --exclude=.junie \
           --exclude=.kotlin \
           --exclude=.serena \
+          --exclude=.coder-templates \
           --exclude=cache \
+          --exclude=keruta-coder-template \
+          --exclude=kigawa-net-k8s \
           --exclude=kotlin-js-store \
           --exclude=ktcl-front/node_modules \
+          --exclude=ktcl-front/build \
           --exclude=kodel/api/build \
+          --exclude=kodel/core/build \
           --exclude=kodel/coroutine/build \
           --exclude=ktse/build \
           --exclude=ktcp/model/build \
