@@ -23,5 +23,3 @@ RUN apt update && \
     rm -f google-chrome-stable_current_amd64.deb && \
     rm -rf /var/lib/apt/lists/*
 
-RUN --mount=type=cache,target=/root/.gradle \
-    ./gradlew --no-daemon dependencies
