@@ -26,6 +26,8 @@ services:
           --exclude=kotlin-js-store \
           --exclude=ktcl-front/node_modules \
           --exclude=kodel/api/build \
+          --exclude=kodel/coroutine/build \
+          --exclude=ktse/build \
           --exclude=ktcp/model/build \
           --exclude=ktcp/server/build
     volumes:
