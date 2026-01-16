@@ -1,13 +1,17 @@
 services:
   rsync:
-    image: ubuntu
+    build:
+      context: .
+      dockerfile: Dockerfile_rsync
+      cache_from:
+        - type=gha
+      cache_to:
+        - type=gha,mode=max
     command:
       - bash
       - -c
       - |
         set -ue
-        apt update
-        apt install -y rsync
         if [ ! -d /src/cache/app ]; then mkdir -p /src/cache/app; fi
         if [ ! -d /src/cache/.gradle ]; then mkdir -p /src/cache/.gradle; fi
         rsync -avz --delete /src/ /src/cache/app \
@@ -16,12 +20,12 @@ services:
           --exclude=.claude \
           --exclude=.github \
           --exclude=.junie \
-          --exclude=.keruta \
           --exclude=.kotlin \
           --exclude=.serena \
           --exclude=cache \
           --exclude=kotlin-js-store \
           --exclude=ktcl-front/node_modules \
+          --exclude=kodel/api/build \
           --exclude=ktcp/model/build \
           --exclude=ktcp/server/build
     volumes:
@@ -45,11 +49,14 @@ services:
       - type: bind
         source: ./cache/app/ktcl-front
         target: /app/ktcl-front
+      - type: bind
+        source: ./cache/npm
+        target: /root/.npm
 
   all-tests:
     build:
       context: .
-      dockerfile: Dockerfile_test
+      dockerfile: Dockerfile_testc
     command: ./gradlew allTests
     depends_on:
       rsync:
