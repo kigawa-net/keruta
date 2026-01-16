@@ -9,7 +9,7 @@ import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.LoggerFactory
 import net.kigawa.kodel.api.log.traceignore.debug
 
-class AuthSuccessSendEntrypoint: ClientAuthSuccessEntrypoint<ServerCtx> {
+class SendAuthSuccessEntrypoint: ClientAuthSuccessEntrypoint<ServerCtx> {
     val logger = LoggerFactory.get("net.kigawa.keruta.ktcp.server.auth.success.AuthSuccessSendEntrypoint")
     override fun access(
         input: ClientAuthSuccessArg, ctx: ServerCtx,

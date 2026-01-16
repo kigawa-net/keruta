@@ -5,7 +5,7 @@ import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestEntrypoint
 import net.kigawa.keruta.ktcp.model.auth.sccess.ClientAuthSuccessMsg
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.server.ServerCtx
-import net.kigawa.keruta.ktcp.server.auth.success.AuthAccessSendArg
+import net.kigawa.keruta.ktcp.server.auth.success.SendAuthAccessArg
 import net.kigawa.keruta.ktcp.server.err.UnexpectedErr
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.err.Res
@@ -27,7 +27,7 @@ class ReceiveAuthRequestEntrypoint: ServerAuthRequestEntrypoint<ServerCtx> {
                     ctx.session.authenticate(res.value)
                     logger.debug("verified authenticate message")
                     ctx.server.clientEntrypoints.authSuccess.access(
-                        AuthAccessSendArg(ClientAuthSuccessMsg()), ctx
+                        SendAuthAccessArg(ClientAuthSuccessMsg()), ctx
                     )?.execute() ?: Res.Err(UnexpectedErr("", null))
                 }
             }
