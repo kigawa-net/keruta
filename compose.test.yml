@@ -56,7 +56,7 @@ services:
   all-tests:
     build:
       context: .
-      dockerfile: Dockerfile_testc
+      dockerfile: Dockerfile_test
     command: ./gradlew allTests
     depends_on:
       rsync:
