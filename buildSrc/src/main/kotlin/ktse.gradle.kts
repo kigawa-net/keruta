@@ -16,7 +16,7 @@ dependencies {
 
     // Flyway and Database
     // https://mvnrepository.com/artifact/org.flywaydb/flyway-core
-    implementation("org.flywaydb:flyway-core:10.20.1")
+    implementation("org.flywaydb:flyway-core:10.22.0")
     // https://mvnrepository.com/artifact/org.flywaydb/flyway-mysql
     implementation("org.flywaydb:flyway-mysql:10.20.1")
 // Source: https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
@@ -29,7 +29,7 @@ dependencies {
     // Connection Pool
     implementation("com.zaxxer:HikariCP:5.1.0")
     // コルーチンを使う場合
-    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:0.47.0")
+    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:0.61.0")
 // Source: https://mvnrepository.com/artifact/org.jetbrains.exposed/exposed-json
     implementation("org.jetbrains.exposed:exposed-json:0.61.0")
 
