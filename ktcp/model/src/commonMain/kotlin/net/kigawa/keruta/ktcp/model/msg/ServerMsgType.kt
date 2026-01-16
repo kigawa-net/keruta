@@ -9,7 +9,9 @@ enum class ServerMsgType(
     GENERIC_ERROR("generic_error"),
     AUTH_REQUEST("auth_request"),
     AUTH_SUCCESS("auth_success"),
-    TASK_CREATE("task_create");
+    TASK_CREATE("task_create"),
+    PROVIDERS_REQUEST("providers_request"),
+    ;
 
     companion object {
         fun fromString(decodeString: String): ServerMsgType {

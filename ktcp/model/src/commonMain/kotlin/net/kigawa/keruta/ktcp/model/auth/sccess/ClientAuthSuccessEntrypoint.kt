@@ -7,7 +7,7 @@ import net.kigawa.kodel.api.entrypoint.EntrypointInfo
 import net.kigawa.kodel.api.err.Res
 
 // エントリーポイントインターフェース定義
-interface AuthSuccessEntrypoint<C>: Entrypoint<ClientAuthSuccessArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C> {
+interface ClientAuthSuccessEntrypoint<C>: Entrypoint<ClientAuthSuccessArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C> {
     override val info: EntrypointInfo
         get() = EntrypointInfo("authenticate", emptyList(), "認証メッセージ処理")
 }

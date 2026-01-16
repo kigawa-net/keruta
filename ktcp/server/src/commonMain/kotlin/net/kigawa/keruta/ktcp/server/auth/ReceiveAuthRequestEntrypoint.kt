@@ -2,7 +2,7 @@ package net.kigawa.keruta.ktcp.server.auth
 
 import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestArg
 import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestEntrypoint
-import net.kigawa.keruta.ktcp.model.auth.sccess.AuthSuccessMsg
+import net.kigawa.keruta.ktcp.model.auth.sccess.ClientAuthSuccessMsg
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktcp.server.auth.success.AuthAccessSendArg
@@ -27,7 +27,7 @@ class ReceiveAuthRequestEntrypoint: ServerAuthRequestEntrypoint<ServerCtx> {
                     ctx.session.authenticate(res.value)
                     logger.debug("verified authenticate message")
                     ctx.server.clientEntrypoints.authSuccess.access(
-                        AuthAccessSendArg(AuthSuccessMsg()), ctx
+                        AuthAccessSendArg(ClientAuthSuccessMsg()), ctx
                     )?.execute() ?: Res.Err(UnexpectedErr("", null))
                 }
             }

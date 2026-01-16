@@ -6,7 +6,9 @@ import kotlinx.serialization.Serializable
 enum class ClientMsgType(
     val str: String,
 ) {
-    GENERIC_ERROR("generic_error");
+    GENERIC_ERROR("generic_error"),
+    PROVIDER_LIST("provider_request"),
+    ;
 
     companion object {
         fun fromString(decodeString: String): ClientMsgType {
