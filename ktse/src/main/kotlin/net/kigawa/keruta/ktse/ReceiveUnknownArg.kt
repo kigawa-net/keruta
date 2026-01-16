@@ -4,9 +4,11 @@ import io.ktor.websocket.*
 import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestMsg
 import net.kigawa.keruta.ktcp.model.err.GenericErrMsg
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.msg.ServerUnknownMsg
 import net.kigawa.keruta.ktcp.model.msg.ServerMsgType
 import net.kigawa.keruta.ktcp.model.msg.ServerUnknownArg
+import net.kigawa.keruta.ktcp.model.msg.ServerUnknownMsg
+import net.kigawa.keruta.ktcp.model.provider.request.ServerProvidersRequestArg
+import net.kigawa.keruta.ktcp.model.provider.request.ServerProvidersRequestMsg
 import net.kigawa.keruta.ktcp.model.serialize.deserialize
 import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateArg
 import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateMsg
@@ -16,6 +18,7 @@ import net.kigawa.keruta.ktcp.server.err.DeserializeDecodeFrameErr
 import net.kigawa.keruta.ktcp.server.err.InvalidTypeDecodeFrameErr
 import net.kigawa.keruta.ktse.auth.ReceiveAuthRequestArg
 import net.kigawa.keruta.ktse.err.ReceiveGenericErrArg
+import net.kigawa.keruta.ktse.provider.ReceiveProvidersRequestArg
 import net.kigawa.keruta.ktse.task.ReceiveTaskCreateArg
 import net.kigawa.kodel.api.err.Res
 
@@ -37,6 +40,13 @@ class ReceiveUnknownArg(
     override fun tryToTaskCreate(): Res<ServerTaskCreateArg, KtcpErr>? {
         if (msg.type != ServerMsgType.TASK_CREATE) return null
         return translate<ServerTaskCreateMsg, ReceiveTaskCreateArg> { ReceiveTaskCreateArg(it) }
+    }
+
+    override fun tryToProvidersRequest(): Res<ServerProvidersRequestArg, KtcpErr>? {
+        if (msg.type != ServerMsgType.PROVIDERS_REQUEST) return null
+        return translate<ServerProvidersRequestMsg, ServerProvidersRequestArg> {
+            ReceiveProvidersRequestArg(it)
+        }
     }
 
     inline fun <reified T, R> translate(initialize: ReceiveUnknownArg.(T) -> R): Res<R, DecodeFrameErr> {
