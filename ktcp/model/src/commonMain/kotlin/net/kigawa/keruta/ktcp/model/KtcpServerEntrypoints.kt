@@ -4,6 +4,7 @@ import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestEntrypoint
 import net.kigawa.keruta.ktcp.model.err.EntrypointNotFoundErr
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.model.msg.ServerUnknownArg
+import net.kigawa.keruta.ktcp.model.provider.request.ServerProvidersRequestEntrypoint
 import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateEntrypoint
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.entrypoint.EntrypointGroupBase
@@ -14,10 +15,10 @@ import net.kigawa.kodel.api.log.LoggerFactory
 import net.kigawa.kodel.api.log.traceignore.error
 import kotlin.time.ExperimentalTime
 
-@Suppress("unused")
 class KtcpServerEntrypoints<C>(
     authRequestEntrypoint: ServerAuthRequestEntrypoint<C>,
     taskCreateEntrypoint: ServerTaskCreateEntrypoint<C>,
+    providersRequestEntrypoint: ServerProvidersRequestEntrypoint<C>,
 ): EntrypointGroupBase<ServerUnknownArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C>() {
     val logger = LoggerFactory.get("net.kigawa.keruta.ktcp.model.KtcpServerEntrypoints")
     override val info: EntrypointInfo = EntrypointInfo(
@@ -25,15 +26,25 @@ class KtcpServerEntrypoints<C>(
         listOf(),
         ""
     )
-    val authenticateEntrypoint = add(authRequestEntrypoint) { input ->
+    @Suppress("unused")
+    val authRequestEntrypoint = add(authRequestEntrypoint) { input ->
         input.tryToAuthenticate()?.whenErrOk(
             { EntrypointDeferred { Res.Err(it) } }
         ) {
             this(it)
         }
     }
+    @Suppress("unused")
     val taskCreateEntrypoint = add(taskCreateEntrypoint) { input ->
         input.tryToTaskCreate()?.whenErrOk(
+            { EntrypointDeferred { Res.Err(it) } }
+        ) {
+            this(it)
+        }
+    }
+    @Suppress("unused")
+    val providersRequestEntrypoint = add(providersRequestEntrypoint) { input ->
+        input.tryToProvidersRequest()?.whenErrOk(
             { EntrypointDeferred { Res.Err(it) } }
         ) {
             this(it)

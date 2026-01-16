@@ -1,4 +1,4 @@
-package net.kigawa.keruta.ktcp.client.authenticate
+package net.kigawa.keruta.ktcp.client.auth
 
 import net.kigawa.keruta.ktcp.client.ClientCtx
 import net.kigawa.keruta.ktcp.client.err.KtcpClientErr
