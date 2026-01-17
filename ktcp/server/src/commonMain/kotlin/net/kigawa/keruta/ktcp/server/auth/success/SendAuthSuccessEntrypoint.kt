@@ -1,6 +1,6 @@
 package net.kigawa.keruta.ktcp.server.auth.success
 
-import net.kigawa.keruta.ktcp.model.auth.sccess.AuthSuccessEntrypoint
+import net.kigawa.keruta.ktcp.model.auth.sccess.ClientAuthSuccessEntrypoint
 import net.kigawa.keruta.ktcp.model.auth.sccess.ClientAuthSuccessArg
 import net.kigawa.keruta.ktcp.model.serialize.serialize
 import net.kigawa.keruta.ktcp.server.ServerCtx
@@ -9,7 +9,7 @@ import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.LoggerFactory
 import net.kigawa.kodel.api.log.traceignore.debug
 
-class AuthSuccessSendEntrypoint: AuthSuccessEntrypoint<ServerCtx> {
+class SendAuthSuccessEntrypoint: ClientAuthSuccessEntrypoint<ServerCtx> {
     val logger = LoggerFactory.get("net.kigawa.keruta.ktcp.server.auth.success.AuthSuccessSendEntrypoint")
     override fun access(
         input: ClientAuthSuccessArg, ctx: ServerCtx,

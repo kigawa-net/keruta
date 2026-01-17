@@ -9,14 +9,15 @@ import net.kigawa.keruta.ktse.persist.db.DbPersister
 import net.kigawa.kodel.api.err.Res
 
 class KtseAuthenticatedPersisterSession(
-    val user: PersistedUser, val provider: PersistedProvider,val dbPersister: DbPersister
+    val user: PersistedUser, val provider: PersistedProvider, val dbPersister: DbPersister,
 ): AuthenticatedPersisterSession {
     override suspend fun createTask(
         task: TaskToCreate,
     ): Res<Unit, KtcpErr> {
-        dbPersister.execTransaction {
-
-        }
         TODO()
+    }
+
+    override suspend fun getProviders(): Res<List<PersistedProvider>, KtcpErr> = dbPersister.execTransaction {
+        it.getProviders(user)
     }
 }

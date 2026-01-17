@@ -7,6 +7,8 @@ import net.kigawa.keruta.ktcp.server.auth.Idp
 import net.kigawa.keruta.ktcp.server.auth.IdpConfig
 import net.kigawa.keruta.ktcp.server.auth.UnverifiedToken
 import net.kigawa.keruta.ktcp.server.auth.VerifiedToken
+import net.kigawa.kodel.api.dump.Dumper
+import net.kigawa.kodel.api.dump.withStr
 import net.kigawa.kodel.api.err.Res
 
 class Auth0UnverifiedToken(
@@ -27,4 +29,13 @@ class Auth0UnverifiedToken(
         get() = decode.subject
     override val issuer: String
         get() = decode.issuer
+
+
+    val dump
+        get() = Dumper.dump(
+            this::class,
+            ::decode withStr { it.str },
+        )
+
+    override fun toString(): String = dump.str()
 }

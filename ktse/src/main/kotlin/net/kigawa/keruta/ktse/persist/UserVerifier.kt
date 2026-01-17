@@ -25,7 +25,7 @@ class UserVerifier(
 
     suspend fun verifyToken(unverifiedToken: UnverifiedToken): Res<PersistedUser, KtcpErr> = when (
         val res = dbPersister.execTransaction {
-            getUserIdpOrNull(
+            it.user.getUserIdpOrNull(
                 unverifiedToken.subject, unverifiedToken.issuer
             )
         }
@@ -45,7 +45,7 @@ class UserVerifier(
         ) {
             is Res.Err -> res.x()
             is Res.Ok -> dbPersister.execTransaction {
-                createUserAndIdp(idp, res.value)
+                it.user.createUserAndIdp(idp, res.value)
             }
         }
     }
@@ -56,6 +56,6 @@ class UserVerifier(
         val res = unverifiedToken.verify(userIdp.asUserIdp(), true)
     ) {
         is Res.Err -> res.x()
-        is Res.Ok -> dbPersister.execTransaction { getUser(userIdp) }
+        is Res.Ok -> dbPersister.execTransaction { it.user.getUser(userIdp) }
     }
 }
