@@ -24,7 +24,7 @@ dependencies {
 // Source: https://mvnrepository.com/artifact/org.jetbrains.exposed/exposed-core
     implementation("org.jetbrains.exposed:exposed-core:0.61.0")
     implementation("org.jetbrains.exposed:exposed-dao:0.61.0")
-    implementation("org.jetbrains.exposed:exposed-jdbc:0.47.0")
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.61.0")
 
     // Connection Pool
     implementation("com.zaxxer:HikariCP:7.0.2")
