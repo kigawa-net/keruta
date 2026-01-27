@@ -8,6 +8,7 @@ enum class ClientMsgType(
 ) {
     GENERIC_ERROR("generic_error"),
     PROVIDER_LIST("provider_list"),
+    QUEUE_CREATED("queue_created"),
     ;
 
     companion object {
