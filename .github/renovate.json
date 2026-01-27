@@ -6,5 +6,11 @@
     ],
     "rebaseWhen": "behind-base-branch",
     "prConcurrentLimit": 0,
-    "prHourlyLimit": 0
+    "prHourlyLimit": 0,
+    "packageRules": [
+        {
+            "matchUpdateTypes": ["patch", "minor"],
+            "automerge": true
+        }
+    ]
 }
