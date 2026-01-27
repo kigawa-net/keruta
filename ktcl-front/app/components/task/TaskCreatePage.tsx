@@ -1,4 +1,4 @@
-import { TaskCreateForm } from "./task/TaskCreateForm";
+import { TaskCreateForm } from "./TaskCreateForm";
 
 export default function TaskCreatePage() {
   return (

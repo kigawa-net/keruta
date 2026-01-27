@@ -23,11 +23,11 @@ export default function Sidebar({isOpen}: SidebarProps) {
                         </li>
                         <li>
                             <Link
-                                to="/about"
+                                to="/queue/create"
                                 className="sidebar-link block px-4 py-2 rounded transition-colors"
                                 style={{color: '#0a58ca'}}
                             >
-                                About
+                                Create Queue
                             </Link>
                         </li>
                         <li>

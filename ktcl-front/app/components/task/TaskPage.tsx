@@ -1,10 +1,10 @@
 import {useState} from 'react';
-import {Task} from '../types/task';
-import TaskHeader from './task/TaskHeader';
-import TaskSearchBar from './task/TaskSearchBar';
-import TaskTable from './task/TaskTable';
-import TaskPagination from './task/TaskPagination';
-import TaskDetailPanel from './task/TaskDetailPanel';
+import {Task} from '../../types/task';
+import TaskHeader from './TaskHeader';
+import TaskSearchBar from './TaskSearchBar';
+import TaskTable from './TaskTable';
+import TaskPagination from './TaskPagination';
+import TaskDetailPanel from './TaskDetailPanel';
 
 const TaskPage = () => {
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
