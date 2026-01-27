@@ -15,17 +15,14 @@ export function WebsocketProvider(
     const [wsState, setWsState] = useState<WebsocketState>({
         state: "unloaded",
     })
-    const [onMsg, setOnMsg] = useState<((event: MessageEvent) => void)>((e) => {
-        console.log("websocket message handler not set")
-    })
-    const {open, close, err} = useHandlers(setWsState, setOnMsg)
+
+    const {open, close, err} = useHandlers(setWsState)
     useEffect(() => {
         if (wsState.state != "unloaded") return
         const websocket = new WebSocket(wsUrl)
         const newState: WebsocketState = {
             state: "loaded",
             websocket: websocket,
-            setOnMsg
         }
         setWsState(newState)
     }, [wsState.state]);
@@ -33,16 +30,14 @@ export function WebsocketProvider(
     useEffect(() => {
         if (wsState.state == "unloaded") return
         wsState.websocket.addEventListener("open", open);
-        wsState.websocket.addEventListener("message", onMsg);
         wsState.websocket.addEventListener("error", err);
         wsState.websocket.addEventListener("close", close);
         return () => {
             wsState.websocket.removeEventListener("open", open);
-            wsState.websocket.removeEventListener("message", onMsg);
             wsState.websocket.removeEventListener("error", err);
             wsState.websocket.removeEventListener("close", close);
         }
-    }, [wsState, open, onMsg, err, close]);
+    }, [wsState, open, err, close]);
 
     return <Context.Provider
         value={wsState}
@@ -61,11 +56,9 @@ export type WebsocketState = {
 } | {
     state: "loaded",
     websocket: WebSocket,
-    setOnMsg: Dispatch<SetStateAction<(event: MessageEvent) => void>>,
 } | WebsocketOpenState | {
     state: "closed",
     websocket: WebSocket,
-    setOnMsg: Dispatch<SetStateAction<(event: MessageEvent) => void>>,
     open(): void,
 }
 
@@ -73,12 +66,10 @@ export interface WebsocketOpenState {
     state: "open",
     websocket: WebSocket,
     close: () => void,
-    setOnMsg: Dispatch<SetStateAction<(event: MessageEvent) => void>>,
 }
 
 function useHandlers(
     setWsState: Dispatch<SetStateAction<WebsocketState>>,
-    setOnMsg: Dispatch<SetStateAction<() => void>>,
 ) {
     const err = useCallback(() => {
         console.log("websocket error")
@@ -99,7 +90,6 @@ function useHandlers(
                 close() {
                     prevState.websocket.close()
                 },
-                setOnMsg
             }
         })
     }, [])
@@ -117,7 +107,6 @@ function useHandlers(
                         }
                     })
                 },
-                setOnMsg
             }
         })
     }, []);

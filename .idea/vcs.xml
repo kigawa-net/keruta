@@ -4,5 +4,6 @@
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/keruta-coder-template" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/kigawa-net-k8s" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/kigawa-net-k8s/fonsole-doc" vcs="Git" />
   </component>
 </project>

@@ -1,20 +1,15 @@
 import {useWebsocketState, WebsocketState} from "./Websocket";
-import {KerutaTaskState, useKerutaTaskState} from "./KerutaTask";
-import {KeycloakState, useKeycloakState} from "./Keycloak";
-import {ServerAuthRequestMsg} from "../msg/auth";
+import {KerutaTaskState, useKerutaTaskState} from "../KerutaTask";
+import {KeycloakState, useKeycloakState} from "../Keycloak";
+import {ServerAuthRequestMsg} from "../../msg/auth";
 import {useEffect} from "react";
 
 export default function WsSender(
     {}: {},
 ) {
-    console.log("rendering ws sender")
     const wsState = useWebsocketState()
-    console.log(wsState)
     const kc = useKeycloakState()
-    console.log(kc)
     const kerutaState = useKerutaTaskState()
-    console.log(kerutaState)
-    console.log(kerutaState.state == "connected" ? kerutaState.auth : undefined)
     useAuth(wsState, kc, kerutaState)
     useRetry(wsState)
     return undefined

@@ -1,5 +1,5 @@
 import PrivateRoute from '../components/PrivateRoute'
-import TaskCreatePage from "../pages/TaskCreatePage";
+import TaskCreatePage from "../components/TaskCreatePage";
 
 // noinspection JSUnusedGlobalSymbols
 export default function TaskCreateRoute() {
