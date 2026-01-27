@@ -47,7 +47,7 @@ export function WebsocketProvider(
     </Context.Provider>;
 }
 
-export function useWebsocketState() {
+export function useWsState() {
     return useContext(Context);
 }
 

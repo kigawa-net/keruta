@@ -11,5 +11,5 @@ export interface ClientProviderListMsg {
         issuer: string
         audience: string
     }[]
-    type: typeof ReceiveMsgTypes.auth_success
+    type: typeof ReceiveMsgTypes.provider_list
 }

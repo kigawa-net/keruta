@@ -1,5 +1,5 @@
 import {createContext, Dispatch, type ReactNode, SetStateAction, useContext, useEffect, useState} from "react";
-import {useWebsocketState, WebsocketState} from "./websocket/Websocket";
+import {useWsState, WebsocketState} from "./websocket/Websocket";
 import WsSender from "./websocket/WsSender";
 import {ReceiveMsg} from "../msg/msg";
 import useWsReceive from "./websocket/useWsReceive";
@@ -15,7 +15,7 @@ export function KerutaTaskProvider(
         children: ReactNode
     }) {
     const [KerutaTaskState, setKerutaTaskState] = useState<KerutaTaskState>({state: "unloaded"});
-    const wsState = useWebsocketState()
+    const wsState = useWsState()
     useLoad(wsState, KerutaTaskState, setKerutaTaskState)
     useWsReceive(wsState, (msg) => {
         if (KerutaTaskState.state != "connected") return

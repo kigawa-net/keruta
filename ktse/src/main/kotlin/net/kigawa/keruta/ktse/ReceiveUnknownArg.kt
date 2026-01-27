@@ -21,6 +21,8 @@ import net.kigawa.keruta.ktse.err.ReceiveGenericErrArg
 import net.kigawa.keruta.ktse.provider.ReceiveProvidersRequestArg
 import net.kigawa.keruta.ktse.task.ReceiveTaskCreateArg
 import net.kigawa.kodel.api.err.Res
+import net.kigawa.kodel.api.log.getKogger
+import net.kigawa.kodel.api.log.traceignore.debug
 
 class ReceiveUnknownArg(
     val msg: ServerUnknownMsg,
@@ -61,9 +63,11 @@ class ReceiveUnknownArg(
     }
 
     companion object {
+        val logger = getKogger()
         fun fromFrame(frame: Frame, ctx: ServerCtx): Res<ReceiveUnknownArg, DecodeFrameErr> {
             if (frame !is Frame.Text) return Res.Err(InvalidTypeDecodeFrameErr("", null))
             val text = frame.readText()
+            logger.debug("frameText: $text")
             return when (
                 val msg = ctx.serializer.deserialize<ServerUnknownMsg>(text)
             ) {

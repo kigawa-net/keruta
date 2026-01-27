@@ -1,4 +1,4 @@
-import {useWebsocketState, WebsocketState} from "./Websocket";
+import {useWsState, WebsocketState} from "./Websocket";
 import {KerutaTaskState, useKerutaTaskState} from "../KerutaTask";
 import {KeycloakState, useKeycloakState} from "../Keycloak";
 import {ServerAuthRequestMsg} from "../../msg/auth";
@@ -7,7 +7,7 @@ import {useEffect} from "react";
 export default function WsSender(
     {}: {},
 ) {
-    const wsState = useWebsocketState()
+    const wsState = useWsState()
     const kc = useKeycloakState()
     const kerutaState = useKerutaTaskState()
     useAuth(wsState, kc, kerutaState)

@@ -53,7 +53,7 @@ class WebsocketModule(application: Application) {
         ) { session ->
             logger.debug("WebSocket session started")
             incoming.consumeEach { frame ->
-                logger.debug("received frame: $frame")
+                logger.debug("received frame: $frame, $frame")
                 session.updateTimeout()
                 when (
                     val res = receive(
