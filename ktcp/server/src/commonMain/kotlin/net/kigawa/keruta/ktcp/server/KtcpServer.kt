@@ -10,15 +10,18 @@ import net.kigawa.keruta.ktcp.server.queue.*
 import net.kigawa.keruta.ktcp.server.task.ReceiveTaskCreateEntrypoint
 import net.kigawa.keruta.ktcp.server.task.ReceiveTaskListEntrypoint
 import net.kigawa.keruta.ktcp.server.task.ReceiveTaskShowEntrypoint
+import net.kigawa.keruta.ktcp.server.task.ReceiveTaskUpdateEntrypoint
 import net.kigawa.keruta.ktcp.server.task.SendTaskCreatedEntrypoint
 import net.kigawa.keruta.ktcp.server.task.SendTaskListedEntrypoint
 import net.kigawa.keruta.ktcp.server.task.SendTaskShowedEntrypoint
+import net.kigawa.keruta.ktcp.server.task.SendTaskUpdatedEntrypoint
 
 class KtcpServer {
 
     val ktcpServerEntrypoints = KtcpServerEntrypoints(
         ReceiveAuthRequestEntrypoint(),
         ReceiveTaskCreateEntrypoint(),
+        ReceiveTaskUpdateEntrypoint(),
         ReceiveProviderListEntrypoint(),
         ReceiveQueueCreateEntrypoint(),
         ReceiveQueueListEntrypoint(),
@@ -34,6 +37,7 @@ class KtcpServer {
         SendQueueListedEntrypoint(),
         SendQueueShowedEntrypoint(),
         SendTaskCreatedEntrypoint(),
+        SendTaskUpdatedEntrypoint(),
         SendTaskListedEntrypoint(),
         SendTaskShowedEntrypoint(),
     )

@@ -22,7 +22,7 @@ class ExposedAuthedTaskPersisterSession(
             is Res.Err -> return@execTransaction res.x()
             is Res.Ok -> res.value
         }
-        it.task.create(user, queue)
+        it.task.create(user, queue,task)
     }
 
     override fun getTasks(input: ServerTaskListMsg): Res<List<PersistedTask>, KtcpErr> = dbPersister.execTransaction {
@@ -45,5 +45,12 @@ class ExposedAuthedTaskPersisterSession(
             is Res.Ok -> res.value
         }
         it.task.findByUserQueueAndId(user, queue, input.id)
+    }
+
+    override fun updateTaskStatus(
+        taskId: Long,
+        status: String,
+    ): Res<PersistedTask, KtcpErr> = dbPersister.execTransaction {
+        it.task.updateStatus(user, taskId, status)
     }
 }

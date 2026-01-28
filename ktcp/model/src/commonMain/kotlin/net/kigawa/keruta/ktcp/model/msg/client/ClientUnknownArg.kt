@@ -10,6 +10,7 @@ import net.kigawa.keruta.ktcp.model.queue.showed.ClientQueueShowedMsg
 import net.kigawa.keruta.ktcp.model.task.created.ClientTaskCreatedMsg
 import net.kigawa.keruta.ktcp.model.task.listed.ClientTaskListedMsg
 import net.kigawa.keruta.ktcp.model.task.showed.ClientTaskShowedMsg
+import net.kigawa.keruta.ktcp.model.task.updated.ClientTaskUpdatedMsg
 import net.kigawa.kodel.api.err.Res
 
 interface ClientUnknownArg {
@@ -22,5 +23,6 @@ interface ClientUnknownArg {
     fun tryToTaskCreated(): Res<ClientTaskCreatedMsg, KtcpErr>?
     fun tryToTaskShowed(): Res<ClientTaskShowedMsg, KtcpErr>?
     fun tryToTaskListed(): Res<ClientTaskListedMsg, KtcpErr>?
+    fun tryToTaskUpdated(): Res<ClientTaskUpdatedMsg, KtcpErr>?
 
 }

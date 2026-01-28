@@ -12,6 +12,7 @@ import net.kigawa.keruta.ktcp.model.queue.showed.ClientQueueShowedEntrypoint
 import net.kigawa.keruta.ktcp.model.task.created.ClientTaskCreatedEntrypoint
 import net.kigawa.keruta.ktcp.model.task.listed.ClientTaskListedEntrypoint
 import net.kigawa.keruta.ktcp.model.task.showed.ClientTaskShowedEntrypoint
+import net.kigawa.keruta.ktcp.model.task.updated.ClientTaskUpdatedEntrypoint
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.entrypoint.EntrypointGroupBase
 import net.kigawa.kodel.api.entrypoint.EntrypointInfo
@@ -30,6 +31,7 @@ class KtcpClientEntrypoints<C>(
     queueListedEntrypoint: ClientQueueListedEntrypoint<C>,
     queueShowedEntrypoint: ClientQueueShowedEntrypoint<C>,
     taskCreatedEntrypoint: ClientTaskCreatedEntrypoint<C>,
+    taskUpdatedEntrypoint: ClientTaskUpdatedEntrypoint<C>,
     taskListedEntrypoint: ClientTaskListedEntrypoint<C>,
     taskShowedEntrypoint: ClientTaskShowedEntrypoint<C>,
 ): EntrypointGroupBase<ClientUnknownArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C>() {
@@ -85,6 +87,13 @@ class KtcpClientEntrypoints<C>(
     }
     val taskCreated = add(taskCreatedEntrypoint) { input ->
         input.tryToTaskCreated()?.whenErrOk(
+            { EntrypointDeferred { Res.Err(it) } }
+        ) {
+            this(it)
+        }
+    }
+    val taskUpdated = add(taskUpdatedEntrypoint) { input ->
+        input.tryToTaskUpdated()?.whenErrOk(
             { EntrypointDeferred { Res.Err(it) } }
         ) {
             this(it)

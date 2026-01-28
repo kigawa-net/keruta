@@ -12,6 +12,7 @@ enum class ClientMsgType(
     QUEUE_LISTED("queue_listed"),
     QUEUE_SHOWED("queue_showed"),
     TASK_CREATED("task_created"),
+    TASK_UPDATED("task_updated"),
     TASK_LISTED("task_listed"),
     TASK_SHOWED("task_showed"),
     ;

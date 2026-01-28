@@ -8,5 +8,8 @@ object TaskTable: Table("task") {
     val userId = long("user_id").references(UserTable.id)
     val queueId = long("queue_id").references(QueueTable.id)
     val createdAt = datetime("created_at")
+    val title = varchar("title", 255)
+    val description = text("description")
+    val status = varchar("status", 20).default("pending")
     override val primaryKey = PrimaryKey(id)
 }
