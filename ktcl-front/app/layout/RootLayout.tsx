@@ -7,7 +7,7 @@ import {UserProfileProvider} from "../components/UserProfile";
 import WsStatus from "../components/websocket/WsStatus";
 import {WebsocketProvider} from "../components/websocket/Websocket";
 import {KerutaTaskProvider} from "../components/KerutaTask";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/sidebar/Sidebar";
 import Config from "../Config";
 
 

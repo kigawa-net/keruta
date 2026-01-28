@@ -6,7 +6,7 @@ import org.jetbrains.exposed.sql.ResultRow
 
 class ExposedPersistedQueue(queue: ResultRow): PersistedQueue {
     override val id: Long = queue[QueueTable.id]
-    val name: String = queue[QueueTable.name]
+    override val name: String = queue[QueueTable.name]
     val setting: String = queue[QueueTable.setting]
     val providerId: Long = queue[QueueTable.providerId]
 }

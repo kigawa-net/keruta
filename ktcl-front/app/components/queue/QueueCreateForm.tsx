@@ -51,7 +51,7 @@ export function QueueCreateForm() {
                 onChange={setName}
             />
             <FormProviderInput
-                label={"プロバイダー"} id={"provider"} placeholder={"プロバイダー"} value={provider}
+                label={"プロバイダー"} id={"provider"} value={provider}
                 onChange={setProvider}
             />
             <div className="flex gap-4">

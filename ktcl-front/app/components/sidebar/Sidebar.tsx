@@ -1,4 +1,5 @@
 import {Link} from "react-router-dom";
+import SidebarQueueButtons from "./SidebarQueueButtons";
 
 interface SidebarProps {
     isOpen: boolean;
@@ -14,15 +15,6 @@ export default function Sidebar({isOpen}: SidebarProps) {
                     <ul className="space-y-2">
                         <li>
                             <Link
-                                to="/"
-                                className="sidebar-link block px-4 py-2 rounded transition-colors"
-                                style={{color: '#0a58ca'}}
-                            >
-                                Home
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
                                 to="/queue/create"
                                 className="sidebar-link block px-4 py-2 rounded transition-colors"
                                 style={{color: '#0a58ca'}}
@@ -30,15 +22,7 @@ export default function Sidebar({isOpen}: SidebarProps) {
                                 Create Queue
                             </Link>
                         </li>
-                        <li>
-                            <Link
-                                to="/task"
-                                className="sidebar-link block px-4 py-2 rounded transition-colors"
-                                style={{color: '#0a58ca'}}
-                            >
-                                タスク管理
-                            </Link>
-                        </li>
+                        <SidebarQueueButtons/>
                         <li>
                             <Link
                                 to="/provider"

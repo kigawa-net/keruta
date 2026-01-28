@@ -15,13 +15,13 @@ import net.kigawa.kodel.api.err.Res
 class KtseAuthenticatedPersisterSession(
     val user: PersistedUser, val provider: PersistedProvider, val dbPersister: DbPersister,
 ): AuthenticatedPersisterSession {
-    override suspend fun createTask(
+    override fun createTask(
         task: TaskToCreate,
     ): Res<Unit, KtcpErr> {
         TODO()
     }
 
-    override suspend fun getProviders(): Res<List<PersistedProvider>, KtcpErr> = dbPersister.execTransaction {
+    override fun getProviders(): Res<List<PersistedProvider>, KtcpErr> = dbPersister.execTransaction {
         it.provider.getAll(user)
     }
 
@@ -36,11 +36,17 @@ class KtseAuthenticatedPersisterSession(
             null -> return@execTransaction Res.Err(NoSingleRecordErr("", null))
         }
         val queue = when (
-            val res = it.queue.createQueue(QueueToCreate(msg), provider)
+            val res = it.queue.createQueue(
+                QueueToCreate(msg), provider, user
+            )
         ) {
             is Res.Err -> return@execTransaction res.x()
             is Res.Ok -> res.value
         }
         Res.Ok(queue)
+    }
+
+    override fun getQueues(): Res<List<PersistedQueue>, KtcpErr> = dbPersister.execTransaction {
+        it.queue.getAll(user)
     }
 }
