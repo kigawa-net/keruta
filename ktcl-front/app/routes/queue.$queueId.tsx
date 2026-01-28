@@ -69,13 +69,16 @@ export default function Route({loaderData}: ComponentProps) {
         loadQueueList()
     }, [wsState.state, kerutaState.state === "connected" && kerutaState.auth.state, loaderData.queueId])
 
+    const currentQueue = queues.find(q => q.id === Number(loaderData.queueId))
+    const queueDisplayName = currentQueue?.name || `Queue ${loaderData.queueId}`
+
     return (
         <PrivateRoute>
             <div className="h-full p-8">
                 <div className="max-w-6xl mx-auto">
                     <div className="mb-8">
                         <h1 className="text-3xl font-bold text-gray-900">
-                            タスク一覧 - Queue {loaderData.queueId}
+                            タスク一覧 - {queueDisplayName}
                         </h1>
                         <p className="mt-2 text-gray-600">このキューに含まれるタスクの一覧を表示します</p>
                     </div>
