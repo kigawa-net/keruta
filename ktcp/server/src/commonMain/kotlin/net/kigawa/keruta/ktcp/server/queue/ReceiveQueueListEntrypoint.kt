@@ -18,7 +18,7 @@ class ReceiveQueueListEntrypoint: ServerQueueListEntrypoint<ServerCtx> {
             val session = ctx.session.authenticated()
                 ?: return@EntrypointDeferred Res.Err(UnauthenticatedErr("", null))
             val queues = when (
-                val res = session.persisterSession.getQueues()
+                val res = session.persisterSession.queue.getQueues()
             ) {
                 is Res.Ok -> res.value
                 is Res.Err -> return@EntrypointDeferred res.x()

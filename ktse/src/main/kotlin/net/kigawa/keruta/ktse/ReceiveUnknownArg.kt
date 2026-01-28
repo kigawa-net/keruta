@@ -13,8 +13,9 @@ import net.kigawa.keruta.ktcp.model.queue.create.ServerQueueCreateMsg
 import net.kigawa.keruta.ktcp.model.queue.list.ServerQueueListMsg
 import net.kigawa.keruta.ktcp.model.queue.show.ServerQueueShowMsg
 import net.kigawa.keruta.ktcp.model.serialize.deserialize
-import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateArg
-import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateMsg
+import net.kigawa.keruta.ktcp.model.task.create.ServerTaskCreateMsg
+import net.kigawa.keruta.ktcp.model.task.list.ServerTaskListMsg
+import net.kigawa.keruta.ktcp.model.task.show.ServerTaskShowMsg
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktcp.server.err.DecodeFrameErr
 import net.kigawa.keruta.ktcp.server.err.DeserializeDecodeFrameErr
@@ -22,7 +23,6 @@ import net.kigawa.keruta.ktcp.server.err.InvalidTypeDecodeFrameErr
 import net.kigawa.keruta.ktse.auth.ReceiveAuthRequestArg
 import net.kigawa.keruta.ktse.err.ReceiveGenericErrArg
 import net.kigawa.keruta.ktse.provider.ReceiveProviderListArg
-import net.kigawa.keruta.ktse.task.ReceiveTaskCreateArg
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.getKogger
 import net.kigawa.kodel.api.log.traceignore.debug
@@ -42,9 +42,9 @@ class ReceiveUnknownArg(
         return translate<ServerAuthRequestMsg, ReceiveAuthRequestArg> { ReceiveAuthRequestArg(it) }
     }
 
-    override fun tryToTaskCreate(): Res<ServerTaskCreateArg, KtcpErr>? {
+    override fun tryToTaskCreate(): Res<ServerTaskCreateMsg, KtcpErr>? {
         if (msg.type != ServerMsgType.TASK_CREATE) return null
-        return translate<ServerTaskCreateMsg, ReceiveTaskCreateArg> { ReceiveTaskCreateArg(it) }
+        return translate()
     }
 
     override fun tryToProvidersRequest(): Res<ServerProviderListArg, KtcpErr>? {
@@ -67,6 +67,15 @@ class ReceiveUnknownArg(
     override fun tryToQueueShow(): Res<ServerQueueShowMsg, KtcpErr>? {
         if (msg.type != ServerMsgType.QUEUE_SHOW) return null
         return translate()
+    }
+
+    override fun tryToTaskList(): Res<ServerTaskListMsg, KtcpErr>? {
+        if (msg.type != ServerMsgType.TASK_LIST) return null
+        return translate()
+    }
+
+    override fun tryToTaskShow(): Res<ServerTaskShowMsg, KtcpErr>? {
+        TODO("Not yet implemented")
     }
 
     inline fun <reified T> translate(): Res<T, DecodeFrameErr> {

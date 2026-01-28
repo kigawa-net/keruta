@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
 import net.kigawa.keruta.ktcp.model.err.IllegalFormatDeserializeErr
 import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
-import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateMsg
+import net.kigawa.keruta.ktcp.model.task.create.ServerTaskCreateMsg
 import net.kigawa.kodel.api.err.Res
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -20,7 +20,7 @@ class JsonKerutaSerializerTest {
         val msg = ServerTaskCreateMsg(
             type = ServerMsgType.TASK_CREATE,
             name = "test-task",
-            queueId = "queue-123"
+            queueId = 1
         )
 
         // Act
@@ -46,7 +46,7 @@ class JsonKerutaSerializerTest {
                 val msg = result.value
                 assertEquals(ServerMsgType.TASK_CREATE, msg.type)
                 assertEquals("test-task", msg.name)
-                assertEquals("queue-123", msg.queueId)
+                assertEquals(1, msg.queueId)
             }
 
             is Res.Err -> kotlin.test.fail("Expected Ok but got Err: ${result.err}")
@@ -104,7 +104,7 @@ class JsonKerutaSerializerTest {
         val original = ServerTaskCreateMsg(
             type = ServerMsgType.TASK_CREATE,
             name = "round-trip-task",
-            queueId = "queue-456"
+            queueId = 1
         )
 
         // Act
@@ -130,7 +130,7 @@ class JsonKerutaSerializerTest {
         val msg = ServerTaskCreateMsg(
             type = ServerMsgType.TASK_CREATE,
             name = "inline-test",
-            queueId = "queue-789"
+            queueId = 1
         )
 
         // Act
