@@ -1,5 +1,6 @@
 package net.kigawa.keruta.ktcp.model.msg
 
+import net.kigawa.keruta.ktcp.model.msg.client.ClientMsgType
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -17,7 +18,7 @@ class ClientMsgTypeTest {
     @Test
     fun testFromStringProviderList() {
         // Arrange & Act
-        val type = ClientMsgType.fromString("provider_request")
+        val type = ClientMsgType.fromString("provider_list")
 
         // Assert
         assertEquals(ClientMsgType.PROVIDER_LIST, type)
@@ -43,7 +44,7 @@ class ClientMsgTypeTest {
     fun testClientMsgTypeStringValues() {
         // Assert
         assertEquals("generic_error", ClientMsgType.GENERIC_ERROR.str)
-        assertEquals("provider_request", ClientMsgType.PROVIDER_LIST.str)
+        assertEquals("provider_list", ClientMsgType.PROVIDER_LIST.str)
     }
 
     @Test

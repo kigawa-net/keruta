@@ -1,5 +1,6 @@
 package net.kigawa.keruta.ktcp.model.msg
 
+import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
