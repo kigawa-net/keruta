@@ -1,7 +1,7 @@
 import {ClientAuthSuccessMsg} from "./auth";
 import {ClientProviderListMsg} from "./provider";
 import {ClientQueueCreatedMsg, ClientQueueListedMsg} from "./queue";
-import {ClientTaskCreatedMsg, ClientTaskListedMsg, ClientTaskShowedMsg} from "./task";
+import {ClientTaskCreatedMsg, ClientTaskListedMsg, ClientTaskShowedMsg, ClientTaskUpdatedMsg} from "./task";
 
 export const ReceiveMsgTypes = {
     auth_success: "auth_success",
@@ -10,11 +10,12 @@ export const ReceiveMsgTypes = {
     queue_listed: "queue_listed",
     task_showed: "task_showed",
     task_listed: "task_listed",
-    task_created: "task_created"
+    task_created: "task_created",
+    task_updated: "task_updated"
 } as const
 export type ReceiveMsgType = typeof ReceiveMsgTypes[keyof typeof ReceiveMsgTypes]
 export type ReceiveMsg = ClientAuthSuccessMsg | ClientProviderListMsg | ClientQueueCreatedMsg |
-    ClientQueueListedMsg | ClientTaskShowedMsg | ClientTaskListedMsg | ClientTaskCreatedMsg
+    ClientQueueListedMsg | ClientTaskShowedMsg | ClientTaskListedMsg | ClientTaskCreatedMsg | ClientTaskUpdatedMsg
 
 export const SendMsgTypes = {
     auth_request: "auth_request",
@@ -23,6 +24,7 @@ export const SendMsgTypes = {
     queue_create: "queue_create",
     queue_list: "queue_list",
     task_show: "task_show",
-    task_list: "task_list"
+    task_list: "task_list",
+    task_update: "task_update"
 } as const
 export type SendMsgType = typeof SendMsgTypes[keyof typeof SendMsgTypes]

@@ -41,6 +41,9 @@ export default function Route({loaderData}: ComponentProps) {
             setTasks(msg.tasks)
         } else if (msg.type === "task_created") {
             loadTaskList()
+        } else if (msg.type === "task_updated") {
+            // タスクが更新されたら一覧を再読み込み
+            loadTaskList()
         }
     }, [])
 
