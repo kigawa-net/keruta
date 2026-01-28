@@ -11,13 +11,14 @@ services:
         if [ ! -d /src/cache/app ]; then mkdir -p /src/cache/app; fi
         if [ ! -d /src/cache/.gradle ]; then mkdir -p /src/cache/.gradle; fi
         rsync -avz --delete /src/ /src/cache/app \
-          --exclude=.git \
-          --exclude=.idea \
-          --exclude=cache \
-          --exclude=kotlin-js-store \
-          --exclude=ktcl-front/node_modules \
-          --exclude=ktcp/model/build \
-          --exclude=ktcp/server/build
+          --exclude=/.git \
+          --exclude=/.idea \
+          --exclude=/cache \
+          --exclude=/build \
+          --exclude=/kotlin-js-store \
+          --exclude=/ktcl-front/node_modules \
+          --exclude=/*/build \
+          --exclude=/*/*/build
     volumes:
       - type: bind
         source: .
