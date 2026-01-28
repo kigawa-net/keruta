@@ -67,7 +67,10 @@ export default function Route({loaderData}: ComponentProps) {
     useEffect(() => {
         loadTaskList()
         loadQueueList()
-    }, [wsState.state, kerutaState.state === "connected" && kerutaState.auth.state])
+    }, [wsState.state, kerutaState.state === "connected" && kerutaState.auth.state, loaderData.queueId])
+
+    const currentQueue = queues.find(q => q.id === Number(loaderData.queueId))
+    const queueDisplayName = currentQueue?.name || `Queue ${loaderData.queueId}`
 
     return (
         <PrivateRoute>
@@ -75,12 +78,12 @@ export default function Route({loaderData}: ComponentProps) {
                 <div className="max-w-6xl mx-auto">
                     <div className="mb-8">
                         <h1 className="text-3xl font-bold text-gray-900">
-                            タスク一覧 - Queue {loaderData.queueId}
+                            タスク一覧 - {queueDisplayName}
                         </h1>
                         <p className="mt-2 text-gray-600">このキューに含まれるタスクの一覧を表示します</p>
                     </div>
 
-                    <QueueTaskCreateForm queueId={loaderData.queueId} onTaskCreated={loadTaskList} />
+                    <QueueTaskCreateForm queueId={loaderData.queueId} onTaskCreated={loadTaskList}/>
 
                     <QueueTaskList
                         tasks={tasks}
