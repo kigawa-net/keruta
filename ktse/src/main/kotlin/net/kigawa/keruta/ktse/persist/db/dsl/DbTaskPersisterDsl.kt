@@ -73,7 +73,6 @@ class DbTaskPersisterDsl(val transaction: Transaction) {
                 (TaskTable.userId eq user.id) and (TaskTable.id eq taskId)
             }) {
                 it[queueId] = targetQueueId
-                it[status] = "moved"
             }
 
             TaskTable.selectAll()

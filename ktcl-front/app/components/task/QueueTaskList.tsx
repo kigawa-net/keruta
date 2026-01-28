@@ -17,7 +17,7 @@ export function QueueTaskList({tasks, queues, currentQueueId}: QueueTaskListProp
 
     const filteredTasks = showCompleted
         ? tasks
-        : tasks.filter(task => task.status !== "completed");
+        : tasks.filter(task => task.status == "pending");
 
     const handleCompleteTask = (taskId: number) => {
         if (wsState.state !== "open") return;
