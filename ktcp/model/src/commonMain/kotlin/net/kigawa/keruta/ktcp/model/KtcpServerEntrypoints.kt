@@ -3,7 +3,7 @@ package net.kigawa.keruta.ktcp.model
 import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestEntrypoint
 import net.kigawa.keruta.ktcp.model.err.EntrypointNotFoundErr
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.msg.ServerUnknownArg
+import net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownArg
 import net.kigawa.keruta.ktcp.model.provider.request.ServerProvidersRequestEntrypoint
 import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateEntrypoint
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred

@@ -103,22 +103,30 @@ WebSocketベースの通信プロトコル実装。Kotlin Multiplatform対応（
   - **注意**: 認証機能（ServerAuthenticateEntrypoint）は未実装（スタブ実装）
 
 #### KTSE (Keruta Task Server)
-KtorベースのWebSocketサーバー。ZooKeeperと統合し、タスクの永続化を実現。
+KtorベースのWebSocketサーバー。データベースでタスクを永続化。
 
 - **パッケージ構成**:
   - `net.kigawa.keruta.ktse` - KerutaTaskServer（メインアプリケーション）
   - `net.kigawa.keruta.ktse.websocket` - WebSocketModule、WebsocketConnection
-  - `net.kigawa.keruta.ktse.zookeeper` - ZooKeeper統合
-    - `ZkPersister` - タスク永続化
-    - `ZkPersisterSession` - 永続化セッション
-    - `ZkAuthenticatedPersisterSession` - 認証済み永続化セッション
+  - `net.kigawa.keruta.ktse.database` - データベース永続化
+    - `DbPersister` - データベースアクセス抽象化
+    - `DbPersisterSession` - データベース永続化セッション
+    - `DbAuthenticatedPersisterSession` - 認証済みデータベースセッション
+    - `DbPersisterDSL` - 型安全なクエリビルダー
+  - `net.kigawa.keruta.ktse.zookeeper` - ZooKeeper統合（**現在ほぼ未使用**）
+    - `ZkPersister` - ZooKeeperクライアント初期化のみ
     - `ServerWatcher` - ZooKeeper接続監視
+  - `net.kigawa.keruta.ktse.auth` - 認証検証
+    - `UserVerifier` - ユーザートークン検証
+    - `ProviderVerifier` - プロバイダートークン検証
+    - `Auth0JwtVerifier` - JWT検証とJWKキャッシング
   - `net.kigawa.keruta.ktse.task` - ReceiveTaskCreateArg
   - `net.kigawa.keruta.ktse.err` - BackendErr（エラーハンドリング）
 
 - **主な機能**:
   - WebSocket通信（Ktor WebSockets）
-  - ZooKeeperによるタスク永続化
+  - データベースによるタスク永続化（Exposed ORM、Flyway migrations）
+  - 二重トークン認証（ユーザー + プロバイダー）
   - セッション管理（PersisterSession抽象化）
   - エラーハンドリング（BackendErr）
 
@@ -151,149 +159,111 @@ KtorベースのWebクライアントアプリケーション。JWT認証とWebS
 #### Keruta SDK
 クライアントSDKプロジェクト（別Gradleプロジェクト）。
 
+### 詳細ドキュメント
+
+より詳細な情報は、以下のドキュメントを参照してください：
+
+- **[Architecture Documentation](doc/architecture.md)** - アーキテクチャパターン、メッセージフロー、エラーハンドリング
+- **[Authentication Documentation](doc/authentication.md)** - 二重トークン認証、JWT検証、セキュリティ設定
+- **[Database Documentation](doc/database.md)** - データベーススキーマ、永続化アーキテクチャ、マイグレーション
+- **[Development Documentation](doc/development.md)** - 開発環境セットアップ、トラブルシューティング、デバッグ
+
 ### Key Domain Models
 
 - **KtcpMsg**: KTCP通信メッセージの基底インターフェース
 - **ServerTaskCreateMsg**: タスク作成メッセージ（タスク名を含む）
-- **TaskToCreate**: 永続化するタスクデータ
 - **PersisterSession**: タスク永続化セッションの抽象化
-- **AuthenticatedPersisterSession**: 認証済みセッション（タスク作成機能を提供）
-- **KtcpConnection**: WebSocket接続の抽象化
+- **AuthenticatedPersisterSession**: 認証済みセッション（タスク作成、プロバイダー取得）
+- **Res<T, E>**: Result型パターン（例外を使わないエラーハンドリング）
 
 ## Task Creation Flow
 
-### クライアントからサーバーへのタスク作成フロー
 1. クライアントが`SendTaskCreateEntrypoint`を使ってタスク作成メッセージを送信
 2. サーバーが`ReceiveTaskCreateEntrypoint`でメッセージを受信
 3. セッション認証チェック（未認証の場合はUnauthenticatedErr）
-4. `TaskToCreate.from()`でメッセージをタスクデータに変換
-5. `AuthenticatedPersisterSession.createTask()`を呼び出し
-6. `ZkAuthenticatedPersisterSession`がZooKeeperにタスクを永続化
-7. `ZkPersister.createTask()`がZooKeeperノードを作成
+4. `AuthenticatedPersisterSession.createTask()`を呼び出し
+5. データベースにタスクを永続化（**注意**: 実装未完了）
+
+詳細なメッセージフローとルーティングは[Architecture Documentation](doc/architecture.md)を参照。
 
 ## Important Implementation Details
 
-### ZooKeeper統合
-- タスクの永続化にApache ZooKeeperを使用
-- `ZkPersister`がZooKeeperクライアントを管理
-- `ServerWatcher`で接続状態を監視
-- タスクは`KerutaSerializer`でシリアライズされてZooKeeperに保存
+### 認証システム
+- **二重トークン検証**: ユーザートークン + プロバイダートークン
+- **JWT検証**: Auth0JwtVerifier、JWKキャッシング、OIDC Discovery
+- **セッション管理**: MutableStateFlowでステート管理
+
+詳細は[Authentication Documentation](doc/authentication.md)を参照。
+
+### データベース
+- **三層永続化抽象化**: PersisterSession → AuthenticatedPersisterSession → DbAuthenticatedPersisterSession
+- **主要テーブル**: provider、user、user_idp、queue、queue_user、task
+- **技術スタック**: Exposed ORM、Flyway、HikariCP、MySQL
+- **環境変数**: `DB_JDBC_URL`, `DB_USERNAME`, `DB_PASSWORD`
+
+詳細は[Database Documentation](doc/database.md)を参照。
 
 ### シリアライゼーション
-- `KerutaSerializer`インターフェースで抽象化
-- `JsonKerutaSerializer`でJSON形式のシリアライゼーション実装
-- `kotlinx.serialization`を使用
-- `MsgSerializer`から`KerutaSerializer`にリネーム
+- `KerutaSerializer`インターフェース（抽象化）
+- `JsonKerutaSerializer`実装（kotlinx.serialization使用）
 
 ### エラーハンドリング
-- `BackendErr`クラスでバックエンドエラーを表現
-- `KtcpServerErr`を継承し、`ServerErrCode.BACKEND`を使用
-- `Res<T, E>`型でResult型パターンを実装（`Res.Ok`、`Res.Err`）
+- `Res<T, E>`型でResult型パターンを実装
+- `KtcpErr`を基底とした階層的エラー型
+- 詳細は[Architecture Documentation](doc/architecture.md)を参照
 
-### Recent Architecture Changes
-- **ZooKeeper統合**: タスク永続化機能を追加
-- **PersisterSession抽象化**: セッション永続化の抽象化レイヤーを導入
-- **BackendErr追加**: バックエンドエラーハンドリングクラスを追加
-- **KerutaSerializerリネーム**: MsgSerializerからKerutaSerializerに名称変更
-- **KtcpConnection追加**: 接続インターフェースを追加
-- **タスク作成メッセージ**: ServerTaskCreateMsg、ServerTaskCreateArgを追加
-- **タスク作成エントリーポイント**: ServerTaskCreateEntrypoint、ReceiveTaskCreateEntrypointを実装
+### ZooKeeper統合
+- 現在ほぼ未使用（プレースホルダー実装）
+- タスク永続化はデータベースで実行
+- 環境変数: `KTSE_ZK_HOST`
 
-### セキュリティモデル
-**注意**: 現在、認証機能は未実装です。
-
-- **KTCP Server**: ServerAuthenticateEntrypointが未実装（スタブ実装）
-- **KTCL-Web**: JWT認証機能を実装済み
-- **開発環境**: CORS設定は開発用（anyHost()使用）
-- **本番環境**: 認証機能実装後に本番使用を推奨
-
-### ZooKeeper設定（KTSE）
-ZooKeeper接続は環境変数で設定：
-- `KTSE_ZK_HOST` - ZooKeeperホスト（デフォルト: localhost:2181）
-
-### JWT設定（KTCL-Web）
-JWT認証は環境変数で設定：
-- JWT関連の設定は`Config.load()`で読み込み
+### 未実装機能（TODO）
+1. キュー作成エントリーポイント
+2. タスク作成の永続化
+3. セッションタイムアウトロジック
+4. ZooKeeper活用
 
 ## Development Environment
 
-### Local Setup (KTSE)
+### Quick Setup
 ```bash
-# ZooKeeperを起動（Docker使用の場合）
-docker run -d --name zookeeper -p 2181:2181 zookeeper
+# データベース起動（Docker）
+docker-compose -f compose.test.yml up -d mysql
 
-# KTSEを起動
+# 環境変数設定
+export DB_JDBC_URL="jdbc:mysql://localhost:3306/keruta"
+export DB_USERNAME="keruta"
+export DB_PASSWORD="keruta"
+
+# サーバー起動
 ./gradlew :ktse:run
 ```
 
-### Local Setup (KTCL-Web)
-```bash
-# KTCL-Webを起動
-./gradlew :ktcl-web:run
-```
+詳細なセットアップ手順、トラブルシューティング、デバッグ方法は[Development Documentation](doc/development.md)を参照。
 
 ## Code Style and Quality
 
-### Kotlin Style
-- ktlintでコードフォーマットとスタイルチェック
-- `.editorconfig`に設定
-- Kotlin Multiplatform対応（commonMain、jsMain、jvmMain）
+- **Kotlin Style**: ktlint（`.editorconfig`設定）
+- **SOLID原則**: 純粋関数を優先
+- **Testing**: JUnit 5 + Kotlin test
+- **Development Workflow**: ktlintFormat → test → build
 
-### Testing Strategy
-- JUnit 5フレームワーク
-- Kotlin testフレームワーク
-- テストは各モジュールの`src/test/kotlin`に配置
-
-## Deployment
-
-### Container Deployment
-- Dockerイメージはそれぞれのモジュールから構築可能
-- 環境変数で設定可能
-- Harbor registry: `harbor.kigawa.net/library/keruta`
-
-## Project Structure Notes
-
-- **Kotlin Multiplatform**: JVMとJSの両方に対応
-- **Gradleマルチモジュール**: 機能ごとにモジュール分割
-- **共通ライブラリ（Kodel）**: プロジェクト共通のユーティリティ
-- **プロトコル定義（KTCP）**: 通信プロトコルを独立したモジュールとして定義
-- **サーバー（KTSE）**: Ktorベース、ZooKeeper統合
-- **クライアント（KTCL-Web）**: Ktorベース、JWT認証
-
-## Gradle Module Structure
+## Project Structure
 
 ```
 keruta/
-├── kodel/                  # 共通ライブラリ
-│   ├── api/               # エントリーポイント、エラー処理、ログ
-│   ├── core/              # コア機能
-│   └── coroutine/         # コルーチンユーティリティ
-├── ktcp/                  # Keruta TCPプロトコル
-│   ├── model/             # メッセージモデル、シリアライザ
-│   ├── client/            # クライアント実装
-│   └── server/            # サーバー実装（認証未実装）
-├── ktse/                  # Keruta Task Server (Ktor + ZooKeeper)
-├── ktcl-web/              # Keruta Task Client Web (Ktor + JWT)
-└── keruta-sdk/            # クライアントSDK（別Gradleプロジェクト）
+├── kodel/                  # 共通ライブラリ（API、コア、コルーチン）
+├── ktcp/                  # Keruta TCPプロトコル（model、client、server）
+├── ktse/                  # Keruta Task Server（Ktor + Database）
+├── ktcl-web/              # Keruta Task Client Web（Ktor + JWT）
+└── doc/                   # 詳細ドキュメント
 ```
 
-## Common Issues and Solutions
+## Deployment
 
-### Build Issues
-- **Gradle build cache issues**: `./gradlew clean build`を実行
-- **ktlint failures**: `./gradlew ktlintFormat`を実行してからビルド
-
-### Runtime Issues
-- **ZooKeeper connection issues**: ZooKeeperが起動していることを確認
-- **WebSocket connection failures**: CORSとWebSocket設定を確認
-- **Authentication errors (KTCP)**: 認証機能が未実装のため、本番環境では使用しないこと
-- **JWT token issues (KTCL-Web)**: JWT設定を環境変数で確認
-
-### Development Workflow
-1. コードフォーマット: `./gradlew ktlintFormat`
-2. テスト実行: `./gradlew test`
-3. ビルド: `./gradlew build`
-4. サーバー起動: `./gradlew :ktse:run`
+- Dockerイメージ構築可能
+- 環境変数で設定
+- Harbor registry: `harbor.kigawa.net/library/keruta`
 
 
 ## important-instruction-reminders

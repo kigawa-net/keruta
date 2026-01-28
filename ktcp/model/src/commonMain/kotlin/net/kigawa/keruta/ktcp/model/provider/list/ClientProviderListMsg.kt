@@ -1,8 +1,8 @@
 package net.kigawa.keruta.ktcp.model.provider.list
 
 import kotlinx.serialization.Serializable
-import net.kigawa.keruta.ktcp.model.msg.ClientMsg
-import net.kigawa.keruta.ktcp.model.msg.ClientMsgType
+import net.kigawa.keruta.ktcp.model.msg.client.ClientMsg
+import net.kigawa.keruta.ktcp.model.msg.client.ClientMsgType
 
 @Serializable
 data class ClientProviderListMsg(

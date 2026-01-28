@@ -1,7 +1,8 @@
 import {createContext, Dispatch, type ReactNode, SetStateAction, useContext, useEffect, useState} from "react";
-import {useWebsocketState, WebsocketState} from "./Websocket";
-import WsSender from "./WsSender";
+import {useWsState, WebsocketState} from "./websocket/Websocket";
+import WsSender from "./websocket/WsSender";
 import {ReceiveMsg} from "../msg/msg";
+import useWsReceive from "./websocket/useWsReceive";
 
 
 const Context = createContext<KerutaTaskState>({state: "unloaded"});
@@ -14,20 +15,12 @@ export function KerutaTaskProvider(
         children: ReactNode
     }) {
     const [KerutaTaskState, setKerutaTaskState] = useState<KerutaTaskState>({state: "unloaded"});
-    const wsState = useWebsocketState()
+    const wsState = useWsState()
     useLoad(wsState, KerutaTaskState, setKerutaTaskState)
-    useEffect(() => {
-        if (wsState.state == "unloaded") return
+    useWsReceive(wsState, (msg) => {
         if (KerutaTaskState.state != "connected") return
-        wsState.setOnMsg(() => ((event: MessageEvent) => {
-            console.log(event)
-            if (event == undefined) return
-            const message = JSON.parse(event.data) as ReceiveMsg
-            onMsg(message, KerutaTaskState, setKerutaTaskState)
-        }))
-    }, [
-        wsState.state, KerutaTaskState
-    ]);
+        onMsg(msg, KerutaTaskState, setKerutaTaskState)
+    }, [KerutaTaskState])
     return <Context.Provider
         value={KerutaTaskState}
         {...props}
