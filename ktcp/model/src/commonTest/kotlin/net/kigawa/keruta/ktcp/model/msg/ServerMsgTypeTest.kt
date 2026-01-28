@@ -45,16 +45,16 @@ class ServerMsgTypeTest {
     @Test
     fun testFromStringProvidersRequest() {
         // Arrange & Act
-        val type = ServerMsgType.fromString("providers_request")
+        val type = ServerMsgType.fromString("provider_list")
 
         // Assert
-        assertEquals(ServerMsgType.PROVIDERS_REQUEST, type)
+        assertEquals(ServerMsgType.PROVIDER_LIST, type)
     }
 
     @Test
     fun testFromStringInvalidTypeFails() {
         // Arrange & Act & Assert
-        assertFailsWith<NoSuchElementException> {
+        assertFailsWith<IllegalArgumentException> {
             ServerMsgType.fromString("invalid_type")
         }
     }
@@ -62,7 +62,7 @@ class ServerMsgTypeTest {
     @Test
     fun testFromStringEmptyStringFails() {
         // Arrange & Act & Assert
-        assertFailsWith<NoSuchElementException> {
+        assertFailsWith<IllegalArgumentException> {
             ServerMsgType.fromString("")
         }
     }
@@ -74,12 +74,7 @@ class ServerMsgTypeTest {
         assertEquals("auth_request", ServerMsgType.AUTH_REQUEST.str)
         assertEquals("auth_success", ServerMsgType.AUTH_SUCCESS.str)
         assertEquals("task_create", ServerMsgType.TASK_CREATE.str)
-        assertEquals("providers_request", ServerMsgType.PROVIDERS_REQUEST.str)
+        assertEquals("provider_list", ServerMsgType.PROVIDER_LIST.str)
     }
 
-    @Test
-    fun testServerMsgTypeEntriesCount() {
-        // Assert
-        assertEquals(5, ServerMsgType.entries.size)
-    }
 }

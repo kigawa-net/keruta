@@ -5,7 +5,9 @@ import net.kigawa.keruta.ktcp.model.err.ClientGenericErrEntrypoint
 import net.kigawa.keruta.ktcp.model.err.EntrypointNotFoundErr
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.model.msg.client.ClientUnknownArg
-import net.kigawa.keruta.ktcp.model.provider.list.ClientProviderListEntrypoint
+import net.kigawa.keruta.ktcp.model.provider.listed.ClientProviderListedEntrypoint
+import net.kigawa.keruta.ktcp.model.queue.created.ClientQueueCreatedEntrypoint
+import net.kigawa.keruta.ktcp.model.queue.listed.ClientQueueListedEntrypoint
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.entrypoint.EntrypointGroupBase
 import net.kigawa.kodel.api.entrypoint.EntrypointInfo
@@ -19,8 +21,10 @@ import kotlin.time.ExperimentalTime
 class KtcpClientEntrypoints<C>(
     genericErrEntrypoint: ClientGenericErrEntrypoint<C>,
     authSuccessEntrypoint: ClientAuthSuccessEntrypoint<C>,
-    providerListEntrypoint: ClientProviderListEntrypoint<C>,
-): EntrypointGroupBase<ClientUnknownArg, EntrypointDeferred< Res<Unit, KtcpErr>>, C>() {
+    providerListEntrypoint: ClientProviderListedEntrypoint<C>,
+    queueCreatedEntrypoint: ClientQueueCreatedEntrypoint<C>,
+    queueListedEntrypoint: ClientQueueListedEntrypoint<C>,
+): EntrypointGroupBase<ClientUnknownArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C>() {
     val logger = LoggerFactory.get("net.kigawa.keruta.ktcp.model.KtcpClientEntrypoints")
     override val info: EntrypointInfo = EntrypointInfo(
         "ktcp-client",
@@ -36,26 +40,39 @@ class KtcpClientEntrypoints<C>(
             this(it)
         }
     }
-    val authSuccess = add(authSuccessEntrypoint){ input->
+    val authSuccess = add(authSuccessEntrypoint) { input ->
         input.tryToAuthSuccess()?.whenErrOk(
             { EntrypointDeferred { Res.Err(it) } }
         ) {
             this(it)
         }
     }
-    val providerList = add(providerListEntrypoint){ input->
+    val providerList = add(providerListEntrypoint) { input ->
         input.tryToProviderList()?.whenErrOk(
             { EntrypointDeferred { Res.Err(it) } }
         ) {
             this(it)
         }
     }
-
+    val queueCreated = add(queueCreatedEntrypoint) { input ->
+        input.tryToQueueCreated()?.whenErrOk(
+            { EntrypointDeferred { Res.Err(it) } }
+        ) {
+            this(it)
+        }
+    }
+    val queueListed = add(queueListedEntrypoint) { input ->
+        input.tryToQueueListed()?.whenErrOk(
+            { EntrypointDeferred { Res.Err(it) } }
+        ) {
+            this(it)
+        }
+    }
 
     @OptIn(ExperimentalTime::class)
     override fun onSubEntrypointNotFound(
         input: ClientUnknownArg,
-    ): EntrypointDeferred< Res<Unit, KtcpErr>> {
+    ): EntrypointDeferred<Res<Unit, KtcpErr>> {
         logger.error("not found entrypoint: $input")
         return EntrypointDeferred {
             Res.Err(

@@ -7,7 +7,9 @@ enum class ClientMsgType(
     val str: String,
 ) {
     GENERIC_ERROR("generic_error"),
-    PROVIDER_LIST("provider_list"),
+    PROVIDER_LISTED("provider_listed"),
+    QUEUE_CREATED("queue_created"),
+    QUEUE_LISTED("queue_listed"),
     ;
 
     companion object {

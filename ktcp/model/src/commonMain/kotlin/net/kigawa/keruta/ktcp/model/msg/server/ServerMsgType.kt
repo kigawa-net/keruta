@@ -10,12 +10,15 @@ enum class ServerMsgType(
     AUTH_REQUEST("auth_request"),
     AUTH_SUCCESS("auth_success"),
     TASK_CREATE("task_create"),
-    PROVIDERS_REQUEST("providers_request"),
+    PROVIDER_LIST("provider_list"),
+    QUEUE_CREATE("queue_create"),
+    QUEUE_LIST("queue_list"),
     ;
 
     companion object {
         fun fromString(decodeString: String): ServerMsgType {
-            return entries.single { it.str == decodeString }
+            return entries.singleOrNull { it.str == decodeString }
+                ?: throw IllegalArgumentException("unknown msg type $decodeString")
         }
     }
 }

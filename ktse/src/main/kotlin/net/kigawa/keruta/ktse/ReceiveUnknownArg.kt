@@ -7,8 +7,10 @@ import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
 import net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownArg
 import net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownMsg
-import net.kigawa.keruta.ktcp.model.provider.request.ServerProvidersRequestArg
-import net.kigawa.keruta.ktcp.model.provider.request.ServerProvidersRequestMsg
+import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListArg
+import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListMsg
+import net.kigawa.keruta.ktcp.model.queue.create.ServerQueueCreateMsg
+import net.kigawa.keruta.ktcp.model.queue.list.ServerQueueListMsg
 import net.kigawa.keruta.ktcp.model.serialize.deserialize
 import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateArg
 import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateMsg
@@ -18,7 +20,7 @@ import net.kigawa.keruta.ktcp.server.err.DeserializeDecodeFrameErr
 import net.kigawa.keruta.ktcp.server.err.InvalidTypeDecodeFrameErr
 import net.kigawa.keruta.ktse.auth.ReceiveAuthRequestArg
 import net.kigawa.keruta.ktse.err.ReceiveGenericErrArg
-import net.kigawa.keruta.ktse.provider.ReceiveProvidersRequestArg
+import net.kigawa.keruta.ktse.provider.ReceiveProviderListArg
 import net.kigawa.keruta.ktse.task.ReceiveTaskCreateArg
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.getKogger
@@ -44,11 +46,25 @@ class ReceiveUnknownArg(
         return translate<ServerTaskCreateMsg, ReceiveTaskCreateArg> { ReceiveTaskCreateArg(it) }
     }
 
-    override fun tryToProvidersRequest(): Res<ServerProvidersRequestArg, KtcpErr>? {
-        if (msg.type != ServerMsgType.PROVIDERS_REQUEST) return null
-        return translate<ServerProvidersRequestMsg, ServerProvidersRequestArg> {
-            ReceiveProvidersRequestArg(it)
+    override fun tryToProvidersRequest(): Res<ServerProviderListArg, KtcpErr>? {
+        if (msg.type != ServerMsgType.PROVIDER_LIST) return null
+        return translate<ServerProviderListMsg, ServerProviderListArg> {
+            ReceiveProviderListArg(it)
         }
+    }
+
+    override fun tryToQueueCreate(): Res<ServerQueueCreateMsg, KtcpErr>? {
+        if (msg.type != ServerMsgType.QUEUE_CREATE) return null
+        return translate()
+    }
+
+    override fun tryToQueueList(): Res<ServerQueueListMsg, KtcpErr>? {
+        if (msg.type != ServerMsgType.QUEUE_LIST) return null
+        return translate()
+    }
+
+    inline fun <reified T> translate(): Res<T, DecodeFrameErr> {
+        return translate<T, T> { it }
     }
 
     inline fun <reified T, R> translate(initialize: ReceiveUnknownArg.(T) -> R): Res<R, DecodeFrameErr> {

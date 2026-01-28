@@ -1,6 +1,6 @@
 import FormErrMsg from "./FormErrMsg";
 
-export interface TextInputValue {
+export interface InputValue {
     value: string,
     error?: string
 }
@@ -16,13 +16,13 @@ export default function FormTextInput(
         label: string,
         id: string,
         placeholder: string,
-        value: TextInputValue,
-        onChange: (value: TextInputValue) => void,
+        value: InputValue,
+        onChange: (value: InputValue) => void,
     },
 ) {
     return (
         <div>
-            <label htmlFor="taskName" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-2">
                 {label}
             </label>
             <input

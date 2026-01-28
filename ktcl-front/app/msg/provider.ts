@@ -1,7 +1,7 @@
 import {ReceiveMsgTypes, SendMsgTypes} from "./msg";
 
-export interface ServerProvidersRequestMsg {
-    type: typeof SendMsgTypes.providers_request
+export interface ServerProviderListMsg {
+    type: typeof SendMsgTypes.provider_list
 }
 
 export interface ClientProviderListMsg {
@@ -11,5 +11,5 @@ export interface ClientProviderListMsg {
         issuer: string
         audience: string
     }[]
-    type: typeof ReceiveMsgTypes.provider_list
+    type: typeof ReceiveMsgTypes.provider_listed
 }
