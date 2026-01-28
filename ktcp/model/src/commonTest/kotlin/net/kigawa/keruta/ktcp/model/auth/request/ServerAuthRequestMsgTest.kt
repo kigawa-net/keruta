@@ -1,6 +1,6 @@
 package net.kigawa.keruta.ktcp.model.auth.request
 
-import net.kigawa.keruta.ktcp.model.msg.ServerMsgType
+import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith

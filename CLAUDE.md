@@ -103,22 +103,30 @@ WebSocketベースの通信プロトコル実装。Kotlin Multiplatform対応（
   - **注意**: 認証機能（ServerAuthenticateEntrypoint）は未実装（スタブ実装）
 
 #### KTSE (Keruta Task Server)
-KtorベースのWebSocketサーバー。ZooKeeperと統合し、タスクの永続化を実現。
+KtorベースのWebSocketサーバー。データベースでタスクを永続化。
 
 - **パッケージ構成**:
   - `net.kigawa.keruta.ktse` - KerutaTaskServer（メインアプリケーション）
   - `net.kigawa.keruta.ktse.websocket` - WebSocketModule、WebsocketConnection
-  - `net.kigawa.keruta.ktse.zookeeper` - ZooKeeper統合
-    - `ZkPersister` - タスク永続化
-    - `ZkPersisterSession` - 永続化セッション
-    - `ZkAuthenticatedPersisterSession` - 認証済み永続化セッション
+  - `net.kigawa.keruta.ktse.database` - データベース永続化
+    - `DbPersister` - データベースアクセス抽象化
+    - `DbPersisterSession` - データベース永続化セッション
+    - `DbAuthenticatedPersisterSession` - 認証済みデータベースセッション
+    - `DbPersisterDSL` - 型安全なクエリビルダー
+  - `net.kigawa.keruta.ktse.zookeeper` - ZooKeeper統合（**現在ほぼ未使用**）
+    - `ZkPersister` - ZooKeeperクライアント初期化のみ
     - `ServerWatcher` - ZooKeeper接続監視
+  - `net.kigawa.keruta.ktse.auth` - 認証検証
+    - `UserVerifier` - ユーザートークン検証
+    - `ProviderVerifier` - プロバイダートークン検証
+    - `Auth0JwtVerifier` - JWT検証とJWKキャッシング
   - `net.kigawa.keruta.ktse.task` - ReceiveTaskCreateArg
   - `net.kigawa.keruta.ktse.err` - BackendErr（エラーハンドリング）
 
 - **主な機能**:
   - WebSocket通信（Ktor WebSockets）
-  - ZooKeeperによるタスク永続化
+  - データベースによるタスク永続化（Exposed ORM、Flyway migrations）
+  - 二重トークン認証（ユーザー + プロバイダー）
   - セッション管理（PersisterSession抽象化）
   - エラーハンドリング（BackendErr）
 
@@ -151,33 +159,78 @@ KtorベースのWebクライアントアプリケーション。JWT認証とWebS
 #### Keruta SDK
 クライアントSDKプロジェクト（別Gradleプロジェクト）。
 
+### 詳細ドキュメント
+
+より詳細な情報は、以下のドキュメントを参照してください：
+
+- **[Architecture Documentation](doc/architecture.md)** - アーキテクチャパターン、メッセージフロー、エラーハンドリング
+- **[Authentication Documentation](doc/authentication.md)** - 二重トークン認証、JWT検証、セキュリティ設定
+- **[Database Documentation](doc/database.md)** - データベーススキーマ、永続化アーキテクチャ、マイグレーション
+- **[Development Documentation](doc/development.md)** - 開発環境セットアップ、トラブルシューティング、デバッグ
+
 ### Key Domain Models
 
 - **KtcpMsg**: KTCP通信メッセージの基底インターフェース
 - **ServerTaskCreateMsg**: タスク作成メッセージ（タスク名を含む）
-- **TaskToCreate**: 永続化するタスクデータ
 - **PersisterSession**: タスク永続化セッションの抽象化
-- **AuthenticatedPersisterSession**: 認証済みセッション（タスク作成機能を提供）
-- **KtcpConnection**: WebSocket接続の抽象化
+- **AuthenticatedPersisterSession**: 認証済みセッション（タスク作成、プロバイダー取得）
+- **Res<T, E>**: Result型パターン（例外を使わないエラーハンドリング）
 
 ## Task Creation Flow
 
-### クライアントからサーバーへのタスク作成フロー
 1. クライアントが`SendTaskCreateEntrypoint`を使ってタスク作成メッセージを送信
 2. サーバーが`ReceiveTaskCreateEntrypoint`でメッセージを受信
 3. セッション認証チェック（未認証の場合はUnauthenticatedErr）
-4. `TaskToCreate.from()`でメッセージをタスクデータに変換
-5. `AuthenticatedPersisterSession.createTask()`を呼び出し
-6. `ZkAuthenticatedPersisterSession`がZooKeeperにタスクを永続化
-7. `ZkPersister.createTask()`がZooKeeperノードを作成
+4. `AuthenticatedPersisterSession.createTask()`を呼び出し
+5. データベースにタスクを永続化（**注意**: 実装未完了）
+
+詳細なメッセージフローとルーティングは[Architecture Documentation](doc/architecture.md)を参照。
 
 ## Important Implementation Details
 
-### ZooKeeper統合
-- タスクの永続化にApache ZooKeeperを使用
-- `ZkPersister`がZooKeeperクライアントを管理
-- `ServerWatcher`で接続状態を監視
-- タスクは`KerutaSerializer`でシリアライズされてZooKeeperに保存
+### データベース永続化
+
+**三層アーキテクチャ:**
+
+```
+PersisterSession (インターフェース)
+  └── verify(authRequestMsg): Res<AuthenticatedPersisterSession>
+
+AuthenticatedPersisterSession (インターフェース)
+  └── createTask(task): Res<Unit>
+  └── getProviders(): Res<List<PersistedProvider>>
+
+DbPersisterSession (KTSE実装)
+  └── DbAuthenticatedPersisterSession (KTSE認証済み実装)
+      ├── タスク作成（**TODO: 未実装**）
+      └── プロバイダー取得（データベースから取得）
+```
+
+**データベーススキーマ:**
+- `provider` - 外部認証プロバイダー（issuer、audience、name）
+- `user` - システムユーザー（最小限の情報）
+- `user_idp` - ユーザー-IdP関係（subject、issuer紐付け）
+- `queue` - タスクキュー（プロバイダー参照）
+- `queue_user` - 多対多のキューメンバーシップ
+- `task` - タスク（ユーザー/キュー参照）
+
+**データベースアクセス:**
+- `DbPersister.execTransaction()` - Exposed transactionラッパー
+- `DbPersisterDSL` - 型安全なクエリビルダー
+- Flyway migrations（V001-V006スクリプト）
+- HikariCP接続プール（最大10接続）
+- MySQL対応
+
+**環境変数:**
+- `DB_JDBC_URL` - JDBC接続URL
+- `DB_USERNAME` - データベースユーザー名
+- `DB_PASSWORD` - データベースパスワード
+
+### ZooKeeper統合（現在ほぼ未使用）
+- `ZkPersister`が初期化されるが、実際のタスク永続化には使用されていない
+- `ServerWatcher`でZooKeeper接続状態を監視
+- 将来的な分散タスク永続化のためのプレースホルダー実装
+- タスクの永続化は現在データベースで実行
 
 ### シリアライゼーション
 - `KerutaSerializer`インターフェースで抽象化
@@ -190,22 +243,65 @@ KtorベースのWebクライアントアプリケーション。JWT認証とWebS
 - `KtcpServerErr`を継承し、`ServerErrCode.BACKEND`を使用
 - `Res<T, E>`型でResult型パターンを実装（`Res.Ok`、`Res.Err`）
 
-### Recent Architecture Changes
-- **ZooKeeper統合**: タスク永続化機能を追加
-- **PersisterSession抽象化**: セッション永続化の抽象化レイヤーを導入
-- **BackendErr追加**: バックエンドエラーハンドリングクラスを追加
-- **KerutaSerializerリネーム**: MsgSerializerからKerutaSerializerに名称変更
-- **KtcpConnection追加**: 接続インターフェースを追加
-- **タスク作成メッセージ**: ServerTaskCreateMsg、ServerTaskCreateArgを追加
-- **タスク作成エントリーポイント**: ServerTaskCreateEntrypoint、ReceiveTaskCreateEntrypointを実装
+### エラーハンドリング階層
 
-### セキュリティモデル
-**注意**: 現在、認証機能は未実装です。
+```
+Throwable
+  └── KtcpErr (プロトコルエラーの基底)
+      ├── KtcpServerErr (ServerErrCodeで拡張)
+      │   ├── UnauthenticatedErr - 未認証エラー
+      │   ├── VerifyErr - 検証エラー
+      │   │   ├── VerifyFailErr - 検証失敗
+      │   │   └── VerifyUnsupportedKeyErr - 未サポートキー
+      │   ├── DeserializeErr - デシリアライズエラー
+      │   └── ResponseErr - レスポンスエラー
+      │
+      └── モデルレベルエラー（ktcp:model）
+          ├── EntrypointNotFoundErr - エントリーポイント未発見
+          ├── IllegalFormatDeserializeErr - 不正フォーマット
+          └── InvalidTypeDeserializeErr - 無効な型
 
-- **KTCP Server**: ServerAuthenticateEntrypointが未実装（スタブ実装）
-- **KTCL-Web**: JWT認証機能を実装済み
+バックエンド固有エラー（KTSE）:
+  └── BackendErr - ZooKeeper例外ラッパー
+  └── データベースエラー: NoSingleRecordErr, MultipleRecordErr
+```
+
+### 未実装機能（TODO）
+
+以下の機能は実装が未完了です：
+
+1. **キュー作成**: `ReceiveQueueCreateEntrypoint`（未実装）
+2. **タスク作成の永続化**: `DbAuthenticatedPersisterSession.createTask()`（未実装）
+3. **セッションタイムアウトロジック**: `KtcpSession.startSession()`でコメントアウト
+4. **ZooKeeper活用**: 初期化済みだが、タスク永続化には未使用
+
+### 認証フロー（二重トークン検証）
+
+**KTSE（サーバー）での認証:**
+
+1. **ユーザートークン検証:**
+   - ユーザーのIdP（例: Auth0）が発行したJWTを受信
+   - `Auth0JwtVerifier`でトークンをデコード・検証
+   - JWK（JSON Web Key）をキャッシュ（LRUキャッシュ、最大8発行者）
+   - OIDC Discovery経由でjwks_urlを自動取得
+   - サブジェクト（subject）を抽出し、ユーザーを特定
+   - `UserVerifier`: 初回認証時にユーザー作成、以降は既存ユーザーを再利用
+
+2. **プロバイダートークン検証:**
+   - プロバイダーのIdPが発行したJWTを検証
+   - ユーザーの権限スコープに対してプロバイダートークンを検証
+   - `ProviderVerifier`: プロバイダー情報をデータベースから取得・照合
+
+3. **セッション確立:**
+   - 両トークンが検証されると、`AuthenticatedPersisterSession`を作成
+   - セッション状態を`MutableStateFlow`に保存
+   - `KtcpSession`でセッションライフサイクルを管理
+
+**セキュリティ設定:**
+- **RSA256アルゴリズム**: JWT署名検証に使用
+- **タイムアウト**: 1分間タイムアウト、30分間で3エラーまで許容
 - **開発環境**: CORS設定は開発用（anyHost()使用）
-- **本番環境**: 認証機能実装後に本番使用を推奨
+- **本番環境**: 本番用CORS設定への変更を推奨
 
 ### ZooKeeper設定（KTSE）
 ZooKeeper接続は環境変数で設定：

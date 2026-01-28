@@ -3,7 +3,7 @@ package net.kigawa.keruta.ktcp.model.serialize
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
 import net.kigawa.keruta.ktcp.model.err.IllegalFormatDeserializeErr
-import net.kigawa.keruta.ktcp.model.msg.ServerMsgType
+import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
 import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateMsg
 import net.kigawa.kodel.api.err.Res
 import kotlin.test.Test
@@ -48,6 +48,7 @@ class JsonKerutaSerializerTest {
                 assertEquals("test-task", msg.name)
                 assertEquals("queue-123", msg.queueId)
             }
+
             is Res.Err -> kotlin.test.fail("Expected Ok but got Err: ${result.err}")
         }
     }
@@ -118,6 +119,7 @@ class JsonKerutaSerializerTest {
                 assertEquals(original.name, deserialized.name)
                 assertEquals(original.queueId, deserialized.queueId)
             }
+
             is Res.Err -> kotlin.test.fail("Expected Ok but got Err: ${result.err}")
         }
     }
