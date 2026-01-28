@@ -1,4 +1,4 @@
-package net.kigawa.keruta.ktcp.model.provider.list
+package net.kigawa.keruta.ktcp.model.provider.listed
 
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.kodel.api.entrypoint.Entrypoint

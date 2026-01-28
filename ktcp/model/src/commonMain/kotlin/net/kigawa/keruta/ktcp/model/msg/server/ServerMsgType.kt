@@ -12,6 +12,7 @@ enum class ServerMsgType(
     TASK_CREATE("task_create"),
     PROVIDER_LIST("provider_list"),
     QUEUE_CREATE("queue_create"),
+    QUEUE_LIST("queue_list"),
     ;
 
     companion object {

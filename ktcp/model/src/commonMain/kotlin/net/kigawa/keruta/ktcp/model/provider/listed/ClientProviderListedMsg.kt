@@ -1,4 +1,4 @@
-package net.kigawa.keruta.ktcp.model.provider.list
+package net.kigawa.keruta.ktcp.model.provider.listed
 
 import kotlinx.serialization.Serializable
 import net.kigawa.keruta.ktcp.model.msg.client.ClientMsg

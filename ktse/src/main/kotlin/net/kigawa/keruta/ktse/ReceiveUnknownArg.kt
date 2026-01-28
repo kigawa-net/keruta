@@ -7,8 +7,8 @@ import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
 import net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownArg
 import net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownMsg
-import net.kigawa.keruta.ktcp.model.provider.request.ServerProviderListArg
-import net.kigawa.keruta.ktcp.model.provider.request.ServerProviderListMsg
+import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListArg
+import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListMsg
 import net.kigawa.keruta.ktcp.model.serialize.deserialize
 import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateArg
 import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateMsg

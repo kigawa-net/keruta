@@ -1,7 +1,7 @@
 package net.kigawa.keruta.ktcp.server.provider
 
-import net.kigawa.keruta.ktcp.model.provider.list.ClientProviderListedArg
-import net.kigawa.keruta.ktcp.model.provider.list.ClientProviderListedEntrypoint
+import net.kigawa.keruta.ktcp.model.provider.listed.ClientProviderListedArg
+import net.kigawa.keruta.ktcp.model.provider.listed.ClientProviderListedEntrypoint
 import net.kigawa.keruta.ktcp.model.serialize.serialize
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
