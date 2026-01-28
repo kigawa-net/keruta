@@ -67,7 +67,7 @@ export default function Route({loaderData}: ComponentProps) {
     useEffect(() => {
         loadTaskList()
         loadQueueList()
-    }, [wsState.state, kerutaState.state === "connected" && kerutaState.auth.state])
+    }, [wsState.state, kerutaState.state === "connected" && kerutaState.auth.state, loaderData.queueId])
 
     return (
         <PrivateRoute>
@@ -80,7 +80,7 @@ export default function Route({loaderData}: ComponentProps) {
                         <p className="mt-2 text-gray-600">このキューに含まれるタスクの一覧を表示します</p>
                     </div>
 
-                    <QueueTaskCreateForm queueId={loaderData.queueId} onTaskCreated={loadTaskList} />
+                    <QueueTaskCreateForm queueId={loaderData.queueId} onTaskCreated={loadTaskList}/>
 
                     <QueueTaskList
                         tasks={tasks}
