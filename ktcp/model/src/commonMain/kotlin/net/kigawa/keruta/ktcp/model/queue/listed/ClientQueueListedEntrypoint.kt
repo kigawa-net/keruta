@@ -8,7 +8,7 @@ import net.kigawa.kodel.api.entrypoint.EntrypointInfo
 import net.kigawa.kodel.api.err.Res
 
 interface ClientQueueListedEntrypoint<C>:
-    Entrypoint<ClientQueueListedArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C> {
+    Entrypoint<ClientQueueListedMsg, EntrypointDeferred<Res<Unit, KtcpErr>>, C> {
     override val info: EntrypointInfo
         get() = EntrypointInfo(
             ClientMsgType.QUEUE_LISTED.str, emptyList(), ""
