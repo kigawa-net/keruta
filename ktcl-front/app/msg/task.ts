@@ -22,7 +22,8 @@ export interface ClientTaskListedMsg {
     tasks: {
         id: number,
         title: string,
-        description: string
+        description: string,
+        status: string
     }[];
     type: typeof ReceiveMsgTypes.task_listed
 }
@@ -36,4 +37,16 @@ export interface ClientTaskShowedMsg {
     title: string
     description: string
     type: typeof ReceiveMsgTypes.task_showed
+}
+
+export interface ServerTaskUpdateMsg {
+    type: typeof SendMsgTypes.task_update
+    taskId: number
+    status: string
+}
+
+export interface ClientTaskUpdatedMsg {
+    id: number
+    status: string
+    type: typeof ReceiveMsgTypes.task_updated
 }
