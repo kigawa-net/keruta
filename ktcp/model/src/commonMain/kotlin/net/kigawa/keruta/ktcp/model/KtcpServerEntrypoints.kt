@@ -8,7 +8,9 @@ import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListEntrypoint
 import net.kigawa.keruta.ktcp.model.queue.create.ServerQueueCreateEntrypoint
 import net.kigawa.keruta.ktcp.model.queue.list.ServerQueueListEntrypoint
 import net.kigawa.keruta.ktcp.model.queue.show.ServerQueueShowEntrypoint
-import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateEntrypoint
+import net.kigawa.keruta.ktcp.model.task.create.ServerTaskCreateEntrypoint
+import net.kigawa.keruta.ktcp.model.task.list.ServerTaskListEntrypoint
+import net.kigawa.keruta.ktcp.model.task.show.ServerTaskShowEntrypoint
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.entrypoint.EntrypointGroupBase
 import net.kigawa.kodel.api.entrypoint.EntrypointInfo
@@ -25,6 +27,8 @@ class KtcpServerEntrypoints<C>(
     queueCreateEntrypoint: ServerQueueCreateEntrypoint<C>,
     queueListEntrypoint: ServerQueueListEntrypoint<C>,
     queueShowEntrypoint: ServerQueueShowEntrypoint<C>,
+    taskListEntrypoint: ServerTaskListEntrypoint<C>,
+    taskShowEntrypoint: ServerTaskShowEntrypoint<C>,
 ): EntrypointGroupBase<ServerUnknownArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C>() {
     val logger = LoggerFactory.get("net.kigawa.keruta.ktcp.model.KtcpServerEntrypoints")
     override val info: EntrypointInfo = EntrypointInfo(
@@ -75,6 +79,20 @@ class KtcpServerEntrypoints<C>(
     }
     val queueShow = add(queueShowEntrypoint) { input ->
         input.tryToQueueShow()?.whenErrOk(
+            { EntrypointDeferred { Res.Err(it) } }
+        ) {
+            this(it)
+        }
+    }
+    val taskList = add(taskListEntrypoint) { input ->
+        input.tryToTaskList()?.whenErrOk(
+            { EntrypointDeferred { Res.Err(it) } }
+        ) {
+            this(it)
+        }
+    }
+    val taskShow = add(taskShowEntrypoint) { input ->
+        input.tryToTaskShow()?.whenErrOk(
             { EntrypointDeferred { Res.Err(it) } }
         ) {
             this(it)

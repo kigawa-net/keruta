@@ -9,6 +9,9 @@ import net.kigawa.keruta.ktcp.model.provider.listed.ClientProviderListedEntrypoi
 import net.kigawa.keruta.ktcp.model.queue.created.ClientQueueCreatedEntrypoint
 import net.kigawa.keruta.ktcp.model.queue.listed.ClientQueueListedEntrypoint
 import net.kigawa.keruta.ktcp.model.queue.showed.ClientQueueShowedEntrypoint
+import net.kigawa.keruta.ktcp.model.task.created.ClientTaskCreatedEntrypoint
+import net.kigawa.keruta.ktcp.model.task.listed.ClientTaskListedEntrypoint
+import net.kigawa.keruta.ktcp.model.task.showed.ClientTaskShowedEntrypoint
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.entrypoint.EntrypointGroupBase
 import net.kigawa.kodel.api.entrypoint.EntrypointInfo
@@ -26,6 +29,9 @@ class KtcpClientEntrypoints<C>(
     queueCreatedEntrypoint: ClientQueueCreatedEntrypoint<C>,
     queueListedEntrypoint: ClientQueueListedEntrypoint<C>,
     queueShowedEntrypoint: ClientQueueShowedEntrypoint<C>,
+    taskCreatedEntrypoint: ClientTaskCreatedEntrypoint<C>,
+    taskListedEntrypoint: ClientTaskListedEntrypoint<C>,
+    taskShowedEntrypoint: ClientTaskShowedEntrypoint<C>,
 ): EntrypointGroupBase<ClientUnknownArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C>() {
     val logger = LoggerFactory.get("net.kigawa.keruta.ktcp.model.KtcpClientEntrypoints")
     override val info: EntrypointInfo = EntrypointInfo(
@@ -72,6 +78,27 @@ class KtcpClientEntrypoints<C>(
     }
     val queueShowed = add(queueShowedEntrypoint) { input ->
         input.tryToQueueShowed()?.whenErrOk(
+            { EntrypointDeferred { Res.Err(it) } }
+        ) {
+            this(it)
+        }
+    }
+    val taskCreated = add(taskCreatedEntrypoint) { input ->
+        input.tryToTaskCreated()?.whenErrOk(
+            { EntrypointDeferred { Res.Err(it) } }
+        ) {
+            this(it)
+        }
+    }
+    val taskShowed = add(taskShowedEntrypoint) { input ->
+        input.tryToTaskShowed()?.whenErrOk(
+            { EntrypointDeferred { Res.Err(it) } }
+        ) {
+            this(it)
+        }
+    }
+    val taskListed = add(taskListedEntrypoint) { input ->
+        input.tryToTaskListed()?.whenErrOk(
             { EntrypointDeferred { Res.Err(it) } }
         ) {
             this(it)

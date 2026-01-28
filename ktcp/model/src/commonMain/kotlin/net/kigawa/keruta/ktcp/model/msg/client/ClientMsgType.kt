@@ -11,6 +11,9 @@ enum class ClientMsgType(
     QUEUE_CREATED("queue_created"),
     QUEUE_LISTED("queue_listed"),
     QUEUE_SHOWED("queue_showed"),
+    TASK_CREATED("task_created"),
+    TASK_LISTED("task_listed"),
+    TASK_SHOWED("task_showed"),
     ;
 
     companion object {

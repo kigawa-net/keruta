@@ -8,6 +8,11 @@ import net.kigawa.keruta.ktcp.server.provider.ReceiveProviderListEntrypoint
 import net.kigawa.keruta.ktcp.server.provider.SendProviderListedEntrypoint
 import net.kigawa.keruta.ktcp.server.queue.*
 import net.kigawa.keruta.ktcp.server.task.ReceiveTaskCreateEntrypoint
+import net.kigawa.keruta.ktcp.server.task.ReceiveTaskListEntrypoint
+import net.kigawa.keruta.ktcp.server.task.ReceiveTaskShowEntrypoint
+import net.kigawa.keruta.ktcp.server.task.SendTaskCreatedEntrypoint
+import net.kigawa.keruta.ktcp.server.task.SendTaskListedEntrypoint
+import net.kigawa.keruta.ktcp.server.task.SendTaskShowedEntrypoint
 
 class KtcpServer {
 
@@ -17,7 +22,9 @@ class KtcpServer {
         ReceiveProviderListEntrypoint(),
         ReceiveQueueCreateEntrypoint(),
         ReceiveQueueListEntrypoint(),
-        ReceiveQueueShowEntrypoint()
+        ReceiveQueueShowEntrypoint(),
+        ReceiveTaskListEntrypoint(),
+        ReceiveTaskShowEntrypoint(),
     )
     val clientEntrypoints = KtcpClientEntrypoints(
         SendGenericErrEntrypoint(),
@@ -26,5 +33,8 @@ class KtcpServer {
         SendQueueCreatedEntrypoint(),
         SendQueueListedEntrypoint(),
         SendQueueShowedEntrypoint(),
+        SendTaskCreatedEntrypoint(),
+        SendTaskListedEntrypoint(),
+        SendTaskShowedEntrypoint(),
     )
 }

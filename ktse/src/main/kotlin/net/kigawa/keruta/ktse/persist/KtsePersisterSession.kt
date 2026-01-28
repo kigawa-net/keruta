@@ -35,6 +35,6 @@ class KtsePersisterSession(
             is Res.Err -> return res.x()
             is Res.Ok -> res.value
         }
-        return Res.Ok(KtseAuthenticatedPersisterSession(user, provider, dbPersister))
+        return Res.Ok(ExposedAuthedPersisterSession(user, provider, dbPersister))
     }
 }

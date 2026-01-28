@@ -7,6 +7,9 @@ import net.kigawa.keruta.ktcp.model.provider.listed.ClientProviderListedArg
 import net.kigawa.keruta.ktcp.model.queue.created.ClientQueueCreatedMsg
 import net.kigawa.keruta.ktcp.model.queue.listed.ClientQueueListedMsg
 import net.kigawa.keruta.ktcp.model.queue.showed.ClientQueueShowedMsg
+import net.kigawa.keruta.ktcp.model.task.created.ClientTaskCreatedMsg
+import net.kigawa.keruta.ktcp.model.task.listed.ClientTaskListedMsg
+import net.kigawa.keruta.ktcp.model.task.showed.ClientTaskShowedMsg
 import net.kigawa.kodel.api.err.Res
 
 interface ClientUnknownArg {
@@ -16,5 +19,8 @@ interface ClientUnknownArg {
     fun tryToQueueCreated(): Res<ClientQueueCreatedMsg, KtcpErr>?
     fun tryToQueueListed(): Res<ClientQueueListedMsg, KtcpErr>?
     fun tryToQueueShowed(): Res<ClientQueueShowedMsg, KtcpErr>?
+    fun tryToTaskCreated(): Res<ClientTaskCreatedMsg, KtcpErr>?
+    fun tryToTaskShowed(): Res<ClientTaskShowedMsg, KtcpErr>?
+    fun tryToTaskListed(): Res<ClientTaskListedMsg, KtcpErr>?
 
 }
