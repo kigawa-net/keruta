@@ -6,7 +6,8 @@ import net.kigawa.keruta.ktcp.server.task.TaskToCreate
 import net.kigawa.kodel.api.err.Res
 
 interface AuthenticatedPersisterSession {
-    suspend fun createTask(task: TaskToCreate): Res<Unit, KtcpErr>
-    suspend fun getProviders(): Res<List<PersistedProvider>, KtcpErr>
+    fun createTask(task: TaskToCreate): Res<Unit, KtcpErr>
+    fun getProviders(): Res<List<PersistedProvider>, KtcpErr>
     fun createQueue(msg: ServerQueueCreateMsg): Res<PersistedQueue, KtcpErr>
+    fun getQueues(): Res<List<PersistedQueue>, KtcpErr>
 }
