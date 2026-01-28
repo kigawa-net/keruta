@@ -20,6 +20,7 @@ class JsonKerutaSerializerTest {
         val msg = ServerTaskCreateMsg(
             type = ServerMsgType.TASK_CREATE,
             title = "test-task",
+            description = "test description",
             queueId = 123
         )
 
@@ -27,7 +28,8 @@ class JsonKerutaSerializerTest {
         val json = serializer.serialize(ServerTaskCreateMsg.serializer(), msg)
 
         // Assert
-        assertTrue(json.contains("\"name\":\"test-task\""))
+        assertTrue(json.contains("\"title\":\"test-task\""))
+        assertTrue(json.contains("\"description\":\"test description\""))
         assertTrue(json.contains("\"queueId\":123"))
         assertTrue(json.contains("\"type\":\"task_create\""))
     }
@@ -35,7 +37,7 @@ class JsonKerutaSerializerTest {
     @Test
     fun testDeserializeServerTaskCreateMsg() {
         // Arrange
-        val json = """{"type":"task_create","name":"test-task","queueId":123}"""
+        val json = """{"type":"task_create","title":"test-task","description":"test description","queueId":123}"""
 
         // Act
         val result = serializer.deserialize(ServerTaskCreateMsg.serializer(), json)
@@ -70,8 +72,8 @@ class JsonKerutaSerializerTest {
 
     @Test
     fun testDeserializeMissingRequiredField() {
-        // Arrange - JSONに必須フィールド（name）が欠けている
-        val jsonWithMissingField = """{"type":"task_create","queueId":123}"""
+        // Arrange - JSONに必須フィールド（title）が欠けている
+        val jsonWithMissingField = """{"type":"task_create","description":"test","queueId":123}"""
 
         // Act
         val result = serializer.deserialize(ServerTaskCreateMsg.serializer(), jsonWithMissingField)
@@ -104,6 +106,7 @@ class JsonKerutaSerializerTest {
         val original = ServerTaskCreateMsg(
             type = ServerMsgType.TASK_CREATE,
             title = "round-trip-task",
+            description = "round trip description",
             queueId = 456L
         )
 
@@ -130,6 +133,7 @@ class JsonKerutaSerializerTest {
         val msg = ServerTaskCreateMsg(
             type = ServerMsgType.TASK_CREATE,
             title = "inline-test",
+            description = "inline test description",
             queueId = 789L
         )
 
@@ -137,13 +141,14 @@ class JsonKerutaSerializerTest {
         val json = serializer.serialize(msg)
 
         // Assert
-        assertTrue(json.contains("\"name\":\"inline-test\""))
+        assertTrue(json.contains("\"title\":\"inline-test\""))
+        assertTrue(json.contains("\"description\":\"inline test description\""))
     }
 
     @Test
     fun testInlineDeserializeExtension() {
         // Arrange
-        val json = """{"type":"task_create","name":"inline-test","queueId":789}"""
+        val json = """{"type":"task_create","title":"inline-test","description":"inline test description","queueId":789}"""
 
         // Act
         val result: Res<ServerTaskCreateMsg, *> = serializer.deserialize(json)

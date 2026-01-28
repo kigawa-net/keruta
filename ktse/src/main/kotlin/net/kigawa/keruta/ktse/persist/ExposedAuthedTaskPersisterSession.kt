@@ -46,4 +46,11 @@ class ExposedAuthedTaskPersisterSession(
         }
         it.task.findByUserQueueAndId(user, queue, input.id)
     }
+
+    override fun updateTaskStatus(
+        taskId: Long,
+        status: String,
+    ): Res<PersistedTask, KtcpErr> = dbPersister.execTransaction {
+        it.task.updateStatus(user, taskId, status)
+    }
 }

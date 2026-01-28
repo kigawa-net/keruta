@@ -13,6 +13,7 @@ import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.update
 
 class DbTaskPersisterDsl(val transaction: Transaction) {
 
@@ -39,6 +40,18 @@ class DbTaskPersisterDsl(val transaction: Transaction) {
         transaction.run {
             TaskTable.selectAll().where {
                 TaskTable.userId eq user.id and (TaskTable.queueId eq queue.id) and (TaskTable.id eq id)
+            }.singleOrNull()
+                ?.let { Res.Ok(ExposedPersistedTask(it)) }
+                ?: Res.Err(NoSingleRecordErr("", null))
+        }
+
+    fun updateStatus(user: PersistedUser, taskId: Long, status: String): Res<PersistedTask, KtcpErr> =
+        transaction.run {
+            TaskTable.update({ TaskTable.userId eq user.id and (TaskTable.id eq taskId) }) {
+                it[TaskTable.status] = status
+            }
+            TaskTable.selectAll().where {
+                TaskTable.userId eq user.id and (TaskTable.id eq taskId)
             }.singleOrNull()
                 ?.let { Res.Ok(ExposedPersistedTask(it)) }
                 ?: Res.Err(NoSingleRecordErr("", null))

@@ -16,6 +16,7 @@ import net.kigawa.keruta.ktcp.model.serialize.deserialize
 import net.kigawa.keruta.ktcp.model.task.create.ServerTaskCreateMsg
 import net.kigawa.keruta.ktcp.model.task.list.ServerTaskListMsg
 import net.kigawa.keruta.ktcp.model.task.show.ServerTaskShowMsg
+import net.kigawa.keruta.ktcp.model.task.update.ServerTaskUpdateMsg
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktcp.server.err.DecodeFrameErr
 import net.kigawa.keruta.ktcp.server.err.DeserializeDecodeFrameErr
@@ -75,7 +76,13 @@ class ReceiveUnknownArg(
     }
 
     override fun tryToTaskShow(): Res<ServerTaskShowMsg, KtcpErr>? {
-        TODO("Not yet implemented")
+        if (msg.type != ServerMsgType.TASK_SHOW) return null
+        return translate()
+    }
+
+    override fun tryToTaskUpdate(): Res<ServerTaskUpdateMsg, KtcpErr>? {
+        if (msg.type != ServerMsgType.TASK_UPDATE) return null
+        return translate()
     }
 
     inline fun <reified T> translate(): Res<T, DecodeFrameErr> {

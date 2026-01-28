@@ -10,6 +10,7 @@ import net.kigawa.keruta.ktcp.model.queue.show.ServerQueueShowMsg
 import net.kigawa.keruta.ktcp.model.task.create.ServerTaskCreateMsg
 import net.kigawa.keruta.ktcp.model.task.list.ServerTaskListMsg
 import net.kigawa.keruta.ktcp.model.task.show.ServerTaskShowMsg
+import net.kigawa.keruta.ktcp.model.task.update.ServerTaskUpdateMsg
 import net.kigawa.kodel.api.err.Res
 
 interface ServerUnknownArg {
@@ -22,4 +23,5 @@ interface ServerUnknownArg {
     fun tryToQueueShow(): Res<ServerQueueShowMsg, KtcpErr>?
     fun tryToTaskList(): Res<ServerTaskListMsg, KtcpErr>?
     fun tryToTaskShow(): Res<ServerTaskShowMsg, KtcpErr>?
+    fun tryToTaskUpdate(): Res<ServerTaskUpdateMsg, KtcpErr>?
 }
