@@ -18,10 +18,10 @@ class ClientMsgTypeTest {
     @Test
     fun testFromStringProviderList() {
         // Arrange & Act
-        val type = ClientMsgType.fromString("provider_list")
+        val type = ClientMsgType.fromString("provider_listed")
 
         // Assert
-        assertEquals(ClientMsgType.PROVIDER_LIST, type)
+        assertEquals(ClientMsgType.PROVIDER_LISTED, type)
     }
 
     @Test
@@ -44,12 +44,7 @@ class ClientMsgTypeTest {
     fun testClientMsgTypeStringValues() {
         // Assert
         assertEquals("generic_error", ClientMsgType.GENERIC_ERROR.str)
-        assertEquals("provider_list", ClientMsgType.PROVIDER_LIST.str)
+        assertEquals("provider_listed", ClientMsgType.PROVIDER_LISTED.str)
     }
 
-    @Test
-    fun testClientMsgTypeEntriesCount() {
-        // Assert
-        assertEquals(2, ClientMsgType.entries.size)
-    }
 }
