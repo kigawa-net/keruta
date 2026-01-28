@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: keruta-task-template
+  namespace: default
+spec:
+  ttlSecondsAfterFinished: 3600  # 1時間後に自動削除
+  backoffLimit: 0  # リトライなし
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: task-executor
+        image: harbor.kigawa.net/library/keruta-executor:latest
+        env:
+        - name: TASK_ID
+          value: ""
+        - name: TASK_TITLE
+          value: ""
+        - name: TASK_DESCRIPTION
+          value: ""
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"

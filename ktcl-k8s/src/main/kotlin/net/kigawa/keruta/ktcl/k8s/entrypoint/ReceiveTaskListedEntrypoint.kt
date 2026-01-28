@@ -1,0 +1,33 @@
+package net.kigawa.keruta.ktcl.k8s.entrypoint
+
+import kotlinx.coroutines.launch
+import net.kigawa.keruta.ktcl.k8s.task.TaskExecutor
+import net.kigawa.keruta.ktcp.client.ClientCtx
+import net.kigawa.keruta.ktcp.model.err.KtcpErr
+import net.kigawa.keruta.ktcp.model.task.listed.ClientTaskListedEntrypoint
+import net.kigawa.keruta.ktcp.model.task.listed.ClientTaskListedMsg
+import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
+import net.kigawa.kodel.api.err.Res
+import net.kigawa.kodel.api.log.LoggerFactory
+
+class ReceiveTaskListedEntrypoint(
+    private val taskExecutor: TaskExecutor,
+) : ClientTaskListedEntrypoint<ClientCtx> {
+    private val logger = LoggerFactory.get("ReceiveTaskListedEntrypoint")
+
+    override fun access(
+        input: ClientTaskListedMsg,
+        ctx: ClientCtx,
+    ): EntrypointDeferred<Res<Unit, KtcpErr>> = EntrypointDeferred {
+        logger.info { "Received ${input.tasks.size} tasks" }
+
+        // statusが"pending"のタスクを順次実行
+        input.tasks
+            .filter { it.status == "pending" }
+            .forEach { task ->
+                taskExecutor.executeTask(task.id, task.title, task.description, ctx)
+            }
+
+        Res.Ok(Unit)
+    }
+}
