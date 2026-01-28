@@ -25,7 +25,7 @@ class ReceiveTaskListEntrypoint: ServerTaskListEntrypoint<ServerCtx> {
             }
             ctx.server.clientEntrypoints.taskListed.access(
                 ClientTaskListedMsg(
-                    tasks = tasks.map { ClientTaskListedMsg.Task(it.name) }
+                    tasks = tasks.map { ClientTaskListedMsg.Task(it.name, it.id) }
                 ), ctx
             )?.execute() ?: Res.Err(ResponseErr("", null))
         }

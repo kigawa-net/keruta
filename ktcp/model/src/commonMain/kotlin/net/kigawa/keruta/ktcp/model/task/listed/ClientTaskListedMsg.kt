@@ -14,5 +14,5 @@ data class ClientTaskListedMsg(
     }
 
     @Serializable
-    data class Task(val name: String)
+    data class Task(val name: String, val id: Long)
 }
