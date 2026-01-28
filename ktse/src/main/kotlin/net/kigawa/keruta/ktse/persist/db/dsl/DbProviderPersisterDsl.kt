@@ -9,30 +9,38 @@ import net.kigawa.keruta.ktse.err.NoSingleRecordErr
 import net.kigawa.keruta.ktse.persist.db.table.ProviderTable
 import net.kigawa.keruta.ktse.persist.model.ExposedPersistedProvider
 import net.kigawa.kodel.api.err.Res
-import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 
-class DbPersisterDSL(val transaction: Transaction) {
-    val user = DbUserPersisterDsl(transaction)
+class DbProviderPersisterDsl(
+    val transaction: org.jetbrains.exposed.sql.Transaction,
+) {
 
-    fun getProviders(user: PersistedUser): Res<List<PersistedProvider>, KtcpErr> = Res.Ok(
+    fun getAll(user: PersistedUser): Res<List<PersistedProvider>, KtcpErr> = Res.Ok(
         ProviderTable.selectAll()
             .where { ProviderTable.userId eq user.id }
             .map { ExposedPersistedProvider(it) }
     )
 
-    fun getProviderOrNull(issuer: String, id: Long): Res<PersistedProvider, KtcpErr>? = transaction.run {
+    fun findByIssuerAndUser(issuer: String, user: PersistedUser): Res<PersistedProvider, KtcpErr>? = transaction.run {
         val res = ProviderTable.selectAll().where {
-            ProviderTable.issuer eq issuer and (ProviderTable.userId eq id)
+            ProviderTable.issuer eq issuer and (ProviderTable.userId eq user.id)
+        }
+        if (res.empty()) return@run null
+        res.singleOrNull()?.let { return@run Res.Ok(ExposedPersistedProvider(it)) }
+        return@run Res.Err(MultipleRecordErr("", null))
+    }
+    fun findByUserAndId(user: PersistedUser, id: Long): Res<PersistedProvider, KtcpErr>? = transaction.run {
+        val res = ProviderTable.selectAll().where {
+            ProviderTable.userId eq user.id and (ProviderTable.id eq id)
         }
         if (res.empty()) return@run null
         res.singleOrNull()?.let { return@run Res.Ok(ExposedPersistedProvider(it)) }
         return@run Res.Err(MultipleRecordErr("", null))
     }
 
-    fun createProvider(idp: ProviderIdpConfig, user: PersistedUser): Res<PersistedProvider, KtcpErr> {
+    fun createProvider(idp: ProviderIdpConfig, user: PersistedUser): Res<PersistedProvider, KtcpErr> = transaction.run {
         val provider = ProviderTable.insert {
             it[ProviderTable.issuer] = idp.issuer
             it[ProviderTable.audience] = idp.audience

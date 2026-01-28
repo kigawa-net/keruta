@@ -26,8 +26,8 @@ class ProviderVerifier(
         unverifiedToken: UnverifiedToken, user: PersistedUser,
     ): Res<PersistedProvider, KtcpErr> = when (
         val res = dbPersister.execTransaction {
-            it.getProviderOrNull(
-                unverifiedToken.issuer, user.id
+            it.provider.findByIssuerAndUser(
+                unverifiedToken.issuer, user
             )
         }
     ) {
@@ -50,7 +50,7 @@ class ProviderVerifier(
         ) {
             is Res.Err -> res.x()
             is Res.Ok -> dbPersister.execTransaction {
-                it.createProvider(idp, user)
+                it.provider.createProvider(idp, user)
             }
         }
     }

@@ -12,7 +12,7 @@ class ExposedPersistedProvider(row: ResultRow): PersistedProvider {
     val issuer: String = row[ProviderTable.issuer]
     val audience = row[ProviderTable.audience]
     val name: String = row[ProviderTable.name]
-    val id: Long = row[ProviderTable.id]
+    override val id: Long = row[ProviderTable.id]
     override fun asUserIdp(subject: String): Idp = Idp(audience, subject, issuer)
     override fun asProviderListProvider(): ClientProviderListedMsg.Provider = ClientProviderListedMsg.Provider(
         name, id, issuer, audience

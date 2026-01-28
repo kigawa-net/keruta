@@ -3,7 +3,10 @@ package net.kigawa.keruta.ktcp.server.queue
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.model.queue.create.ServerQueueCreateEntrypoint
 import net.kigawa.keruta.ktcp.model.queue.create.ServerQueueCreateMsg
+import net.kigawa.keruta.ktcp.model.queue.created.ClientQueueCreatedMsg
 import net.kigawa.keruta.ktcp.server.ServerCtx
+import net.kigawa.keruta.ktcp.server.err.ResponseErr
+import net.kigawa.keruta.ktcp.server.err.UnauthenticatedErr
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.err.Res
 
@@ -12,7 +15,16 @@ class ReceiveQueueCreateEntrypoint: ServerQueueCreateEntrypoint<ServerCtx> {
         input: ServerQueueCreateMsg, ctx: ServerCtx,
     ): EntrypointDeferred<Res<Unit, KtcpErr>> {
         return EntrypointDeferred {
-            TODO()
+            val session = ctx.session.authenticated()
+                ?: return@EntrypointDeferred Res.Err(UnauthenticatedErr("", null))
+            when (
+                val res = session.persisterSession.createQueue(input)
+            ) {
+                is Res.Err -> return@EntrypointDeferred res.x()
+                is Res.Ok -> res.value
+            }
+            ctx.server.clientEntrypoints.queueCreated.access(ClientQueueCreatedMsg(), ctx)?.execute()
+                ?: Res.Err(ResponseErr("", null))
         }
     }
 

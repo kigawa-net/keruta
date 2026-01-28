@@ -5,7 +5,7 @@ import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateArg
 import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateEntrypoint
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktcp.server.err.UnauthenticatedErr
-import net.kigawa.keruta.ktcp.server.persist.TaskToCreate
+import net.kigawa.keruta.ktcp.server.task.TaskToCreate
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.err.Res
 
