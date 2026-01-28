@@ -20,7 +20,7 @@ class JsonKerutaSerializerTest {
         val msg = ServerTaskCreateMsg(
             type = ServerMsgType.TASK_CREATE,
             name = "test-task",
-            queueId = 1
+            queueId = 123
         )
 
         // Act
@@ -28,14 +28,14 @@ class JsonKerutaSerializerTest {
 
         // Assert
         assertTrue(json.contains("\"name\":\"test-task\""))
-        assertTrue(json.contains("\"queueId\":\"queue-123\""))
+        assertTrue(json.contains("\"queueId\":123"))
         assertTrue(json.contains("\"type\":\"task_create\""))
     }
 
     @Test
     fun testDeserializeServerTaskCreateMsg() {
         // Arrange
-        val json = """{"type":"task_create","name":"test-task","queueId":"queue-123"}"""
+        val json = """{"type":"task_create","name":"test-task","queueId":123}"""
 
         // Act
         val result = serializer.deserialize(ServerTaskCreateMsg.serializer(), json)
@@ -46,7 +46,7 @@ class JsonKerutaSerializerTest {
                 val msg = result.value
                 assertEquals(ServerMsgType.TASK_CREATE, msg.type)
                 assertEquals("test-task", msg.name)
-                assertEquals(1, msg.queueId)
+                assertEquals(123L, msg.queueId)
             }
 
             is Res.Err -> kotlin.test.fail("Expected Ok but got Err: ${result.err}")
@@ -71,7 +71,7 @@ class JsonKerutaSerializerTest {
     @Test
     fun testDeserializeMissingRequiredField() {
         // Arrange - JSONに必須フィールド（name）が欠けている
-        val jsonWithMissingField = """{"type":"task_create","queueId":"queue-123"}"""
+        val jsonWithMissingField = """{"type":"task_create","queueId":123}"""
 
         // Act
         val result = serializer.deserialize(ServerTaskCreateMsg.serializer(), jsonWithMissingField)
@@ -104,7 +104,7 @@ class JsonKerutaSerializerTest {
         val original = ServerTaskCreateMsg(
             type = ServerMsgType.TASK_CREATE,
             name = "round-trip-task",
-            queueId = 1
+            queueId = 456L
         )
 
         // Act
@@ -130,7 +130,7 @@ class JsonKerutaSerializerTest {
         val msg = ServerTaskCreateMsg(
             type = ServerMsgType.TASK_CREATE,
             name = "inline-test",
-            queueId = 1
+            queueId = 789L
         )
 
         // Act
@@ -143,14 +143,17 @@ class JsonKerutaSerializerTest {
     @Test
     fun testInlineDeserializeExtension() {
         // Arrange
-        val json = """{"type":"task_create","name":"inline-test","queueId":"queue-789"}"""
+        val json = """{"type":"task_create","name":"inline-test","queueId":789}"""
 
         // Act
         val result: Res<ServerTaskCreateMsg, *> = serializer.deserialize(json)
 
         // Assert
         when (result) {
-            is Res.Ok -> assertEquals("inline-test", result.value.name)
+            is Res.Ok -> {
+                assertEquals("inline-test", result.value.name)
+                assertEquals(789L, result.value.queueId)
+            }
             is Res.Err -> kotlin.test.fail("Expected Ok but got Err: ${result.err}")
         }
     }
