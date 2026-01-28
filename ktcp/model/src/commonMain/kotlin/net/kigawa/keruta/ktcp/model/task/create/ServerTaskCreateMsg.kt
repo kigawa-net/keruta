@@ -8,7 +8,8 @@ import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
 @Serializable
 data class ServerTaskCreateMsg(
     override val type: ServerMsgType = ServerMsgType.TASK_CREATE,
-    val name: String,
+    val title: String,
+    val description: String,
     val queueId: Long,
 ): ServerMsg {
     init {

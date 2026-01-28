@@ -12,13 +12,13 @@ class ServerTaskCreateMsgTest {
         // Arrange & Act
         val msg = ServerTaskCreateMsg(
             type = ServerMsgType.TASK_CREATE,
-            name = "test-task",
+            title = "test-task",
             queueId = 1
         )
 
         // Assert
         assertEquals(ServerMsgType.TASK_CREATE, msg.type)
-        assertEquals("test-task", msg.name)
+        assertEquals("test-task", msg.title)
         assertEquals(1, msg.queueId)
     }
 
@@ -26,7 +26,7 @@ class ServerTaskCreateMsgTest {
     fun testCreateServerTaskCreateMsgWithDefaultType() {
         // Arrange & Act
         val msg = ServerTaskCreateMsg(
-            name = "test-task",
+            title = "test-task",
             queueId = 1
         )
 
@@ -40,7 +40,7 @@ class ServerTaskCreateMsgTest {
         assertFailsWith<IllegalArgumentException> {
             ServerTaskCreateMsg(
                 type = ServerMsgType.AUTH_REQUEST,
-                name = "test-task",
+                title = "test-task",
                 queueId = 1
             )
         }
@@ -52,7 +52,7 @@ class ServerTaskCreateMsgTest {
         assertFailsWith<IllegalArgumentException> {
             ServerTaskCreateMsg(
                 type = ServerMsgType.GENERIC_ERROR,
-                name = "test-task",
+                title = "test-task",
                 queueId = 1
             )
         }

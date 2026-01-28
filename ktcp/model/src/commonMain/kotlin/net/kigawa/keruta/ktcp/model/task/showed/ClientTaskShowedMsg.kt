@@ -7,7 +7,7 @@ import net.kigawa.keruta.ktcp.model.msg.client.ClientMsgType
 @Serializable
 data class ClientTaskShowedMsg(
     override val type: ClientMsgType = ClientMsgType.TASK_SHOWED,
-    val name: String, val id: Long,
+    val title: String, val id: Long, val description: String,
 ): ClientMsg {
     init {
         require(type == ClientMsgType.TASK_SHOWED) { "type must be TASK_SHOWED" }

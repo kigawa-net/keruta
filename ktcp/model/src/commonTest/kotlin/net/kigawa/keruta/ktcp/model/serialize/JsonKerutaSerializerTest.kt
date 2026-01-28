@@ -19,7 +19,7 @@ class JsonKerutaSerializerTest {
         // Arrange
         val msg = ServerTaskCreateMsg(
             type = ServerMsgType.TASK_CREATE,
-            name = "test-task",
+            title = "test-task",
             queueId = 123
         )
 
@@ -45,7 +45,7 @@ class JsonKerutaSerializerTest {
             is Res.Ok -> {
                 val msg = result.value
                 assertEquals(ServerMsgType.TASK_CREATE, msg.type)
-                assertEquals("test-task", msg.name)
+                assertEquals("test-task", msg.title)
                 assertEquals(123L, msg.queueId)
             }
 
@@ -103,7 +103,7 @@ class JsonKerutaSerializerTest {
         // Arrange
         val original = ServerTaskCreateMsg(
             type = ServerMsgType.TASK_CREATE,
-            name = "round-trip-task",
+            title = "round-trip-task",
             queueId = 456L
         )
 
@@ -116,7 +116,7 @@ class JsonKerutaSerializerTest {
             is Res.Ok -> {
                 val deserialized = result.value
                 assertEquals(original.type, deserialized.type)
-                assertEquals(original.name, deserialized.name)
+                assertEquals(original.title, deserialized.title)
                 assertEquals(original.queueId, deserialized.queueId)
             }
 
@@ -129,7 +129,7 @@ class JsonKerutaSerializerTest {
         // Arrange
         val msg = ServerTaskCreateMsg(
             type = ServerMsgType.TASK_CREATE,
-            name = "inline-test",
+            title = "inline-test",
             queueId = 789L
         )
 
@@ -151,7 +151,7 @@ class JsonKerutaSerializerTest {
         // Assert
         when (result) {
             is Res.Ok -> {
-                assertEquals("inline-test", result.value.name)
+                assertEquals("inline-test", result.value.title)
                 assertEquals(789L, result.value.queueId)
             }
             is Res.Err -> kotlin.test.fail("Expected Ok but got Err: ${result.err}")

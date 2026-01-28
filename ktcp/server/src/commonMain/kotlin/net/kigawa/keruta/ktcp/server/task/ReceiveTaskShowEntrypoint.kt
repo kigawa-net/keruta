@@ -25,8 +25,9 @@ class ReceiveTaskShowEntrypoint: ServerTaskShowEntrypoint<ServerCtx> {
             }
             ctx.server.clientEntrypoints.taskShowed.access(
                 ClientTaskShowedMsg(
-                    name = task.name,
+                    title = task.title,
                     id = task.id,
+                    description = task.description
                 ), ctx
             )?.execute() ?: Res.Err(ResponseErr("", null))
         }
