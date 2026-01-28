@@ -11,4 +11,5 @@ interface AuthedTaskPersisterSession {
     fun getTasks(input: ServerTaskListMsg): Res<List<PersistedTask>, KtcpErr>
     fun getTask(input: ServerTaskShowMsg): Res<PersistedTask, KtcpErr>
     fun updateTaskStatus(taskId: Long, status: String): Res<PersistedTask, KtcpErr>
+    fun moveTask(taskId: Long, targetQueueId: Long): Res<PersistedTask, KtcpErr>
 }

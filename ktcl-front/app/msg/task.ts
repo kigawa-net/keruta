@@ -50,3 +50,15 @@ export interface ClientTaskUpdatedMsg {
     status: string
     type: typeof ReceiveMsgTypes.task_updated
 }
+
+export interface ServerTaskMoveMsg {
+    type: typeof SendMsgTypes.task_move
+    taskId: number
+    targetQueueId: number
+}
+
+export interface ClientTaskMovedMsg {
+    taskId: number
+    queueId: number
+    type: typeof ReceiveMsgTypes.task_moved
+}

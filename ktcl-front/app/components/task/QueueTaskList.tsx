@@ -1,4 +1,4 @@
-import {ServerTaskUpdateMsg} from "../../msg/task";
+import {ServerTaskMoveMsg, ServerTaskUpdateMsg} from "../../msg/task";
 import {useWsState} from "../websocket/Websocket";
 import {useState} from "react";
 import {Task} from "./types";
@@ -7,9 +7,11 @@ import {TaskListTable} from "./TaskListTable";
 
 interface QueueTaskListProps {
     tasks: Task[];
+    queues: { id: number; name: string }[];
+    currentQueueId: number;
 }
 
-export function QueueTaskList({tasks}: QueueTaskListProps) {
+export function QueueTaskList({tasks, queues, currentQueueId}: QueueTaskListProps) {
     const wsState = useWsState();
     const [showCompleted, setShowCompleted] = useState(false);
 
@@ -28,6 +30,17 @@ export function QueueTaskList({tasks}: QueueTaskListProps) {
         wsState.websocket.send(JSON.stringify(msg));
     };
 
+    const handleMoveTask = (taskId: number, targetQueueId: number) => {
+        if (wsState.state !== "open") return;
+
+        const msg: ServerTaskMoveMsg = {
+            type: "task_move",
+            taskId: taskId,
+            targetQueueId: targetQueueId
+        };
+        wsState.websocket.send(JSON.stringify(msg));
+    };
+
     return (
         <div className="bg-white rounded-lg shadow overflow-hidden">
             <TaskListHeader
@@ -36,8 +49,11 @@ export function QueueTaskList({tasks}: QueueTaskListProps) {
             />
             <TaskListTable
                 tasks={filteredTasks}
+                queues={queues}
+                currentQueueId={currentQueueId}
                 showCompleted={showCompleted}
                 onCompleteTask={handleCompleteTask}
+                onMoveTask={handleMoveTask}
             />
         </div>
     );

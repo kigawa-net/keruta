@@ -5,6 +5,7 @@ import {useWsState} from "../components/websocket/Websocket";
 import {useKerutaTaskState} from "../components/KerutaTask";
 import useWsReceive from "../components/websocket/useWsReceive";
 import {ClientTaskListedMsg, ServerTaskListMsg} from "../msg/task";
+import {ClientQueueListedMsg, ServerQueueListMsg} from "../msg/queue";
 import {QueueTaskCreateForm} from "../components/task/QueueTaskCreateForm";
 import {QueueTaskList} from "../components/task/QueueTaskList";
 import LoaderArgs = Route.LoaderArgs;
@@ -17,12 +18,14 @@ export async function loader({params}: LoaderArgs) {
 }
 
 type Task = ClientTaskListedMsg["tasks"][0]
+type Queue = ClientQueueListedMsg["queues"][0]
 
 // noinspection JSUnusedGlobalSymbols
 export default function Route({loaderData}: ComponentProps) {
     const wsState = useWsState()
     const kerutaState = useKerutaTaskState()
     const [tasks, setTasks] = useState<Task[]>([])
+    const [queues, setQueues] = useState<Queue[]>([])
 
     const loadTaskList = () => {
         if (wsState.state !== "open") return
@@ -36,19 +39,34 @@ export default function Route({loaderData}: ComponentProps) {
         wsState.websocket.send(JSON.stringify(msg))
     }
 
+    const loadQueueList = () => {
+        if (wsState.state !== "open") return
+        if (kerutaState.state !== "connected") return
+        if (kerutaState.auth.state !== "authenticated") return
+
+        const msg: ServerQueueListMsg = {
+            type: "queue_list"
+        }
+        wsState.websocket.send(JSON.stringify(msg))
+    }
+
     useWsReceive(wsState, msg => {
         if (msg.type === "task_listed") {
             setTasks(msg.tasks)
+        } else if (msg.type === "queue_listed") {
+            setQueues(msg.queues)
         } else if (msg.type === "task_created") {
             loadTaskList()
         } else if (msg.type === "task_updated") {
-            // タスクが更新されたら一覧を再読み込み
+            loadTaskList()
+        } else if (msg.type === "task_moved") {
             loadTaskList()
         }
     }, [])
 
     useEffect(() => {
         loadTaskList()
+        loadQueueList()
     }, [wsState.state, kerutaState.state === "connected" && kerutaState.auth.state])
 
     return (
@@ -64,7 +82,11 @@ export default function Route({loaderData}: ComponentProps) {
 
                     <QueueTaskCreateForm queueId={loaderData.queueId} onTaskCreated={loadTaskList} />
 
-                    <QueueTaskList tasks={tasks} />
+                    <QueueTaskList
+                        tasks={tasks}
+                        queues={queues}
+                        currentQueueId={loaderData.queueId}
+                    />
                 </div>
             </div>
         </PrivateRoute>

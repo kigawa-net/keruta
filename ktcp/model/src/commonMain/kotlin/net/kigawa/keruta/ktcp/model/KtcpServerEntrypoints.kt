@@ -10,6 +10,7 @@ import net.kigawa.keruta.ktcp.model.queue.list.ServerQueueListEntrypoint
 import net.kigawa.keruta.ktcp.model.queue.show.ServerQueueShowEntrypoint
 import net.kigawa.keruta.ktcp.model.task.create.ServerTaskCreateEntrypoint
 import net.kigawa.keruta.ktcp.model.task.list.ServerTaskListEntrypoint
+import net.kigawa.keruta.ktcp.model.task.move.ServerTaskMoveEntrypoint
 import net.kigawa.keruta.ktcp.model.task.show.ServerTaskShowEntrypoint
 import net.kigawa.keruta.ktcp.model.task.update.ServerTaskUpdateEntrypoint
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
@@ -25,6 +26,7 @@ class KtcpServerEntrypoints<C>(
     authRequestEntrypoint: ServerAuthRequestEntrypoint<C>,
     taskCreateEntrypoint: ServerTaskCreateEntrypoint<C>,
     taskUpdateEntrypoint: ServerTaskUpdateEntrypoint<C>,
+    taskMoveEntrypoint: ServerTaskMoveEntrypoint<C>,
     providersRequestEntrypoint: ServerProviderListEntrypoint<C>,
     queueCreateEntrypoint: ServerQueueCreateEntrypoint<C>,
     queueListEntrypoint: ServerQueueListEntrypoint<C>,
@@ -60,6 +62,15 @@ class KtcpServerEntrypoints<C>(
     @Suppress("unused")
     val taskUpdateEntrypoint = add(taskUpdateEntrypoint) { input ->
         input.tryToTaskUpdate()?.whenErrOk(
+            { EntrypointDeferred { Res.Err(it) } }
+        ) {
+            this(it)
+        }
+    }
+
+    @Suppress("unused")
+    val taskMoveEntrypoint = add(taskMoveEntrypoint) { input ->
+        input.tryToTaskMove()?.whenErrOk(
             { EntrypointDeferred { Res.Err(it) } }
         ) {
             this(it)

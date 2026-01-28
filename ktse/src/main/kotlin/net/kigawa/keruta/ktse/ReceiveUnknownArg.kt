@@ -15,6 +15,7 @@ import net.kigawa.keruta.ktcp.model.queue.show.ServerQueueShowMsg
 import net.kigawa.keruta.ktcp.model.serialize.deserialize
 import net.kigawa.keruta.ktcp.model.task.create.ServerTaskCreateMsg
 import net.kigawa.keruta.ktcp.model.task.list.ServerTaskListMsg
+import net.kigawa.keruta.ktcp.model.task.move.ServerTaskMoveMsg
 import net.kigawa.keruta.ktcp.model.task.show.ServerTaskShowMsg
 import net.kigawa.keruta.ktcp.model.task.update.ServerTaskUpdateMsg
 import net.kigawa.keruta.ktcp.server.ServerCtx
@@ -82,6 +83,11 @@ class ReceiveUnknownArg(
 
     override fun tryToTaskUpdate(): Res<ServerTaskUpdateMsg, KtcpErr>? {
         if (msg.type != ServerMsgType.TASK_UPDATE) return null
+        return translate()
+    }
+
+    override fun tryToTaskMove(): Res<ServerTaskMoveMsg, KtcpErr>? {
+        if (msg.type != ServerMsgType.TASK_MOVE) return null
         return translate()
     }
 
