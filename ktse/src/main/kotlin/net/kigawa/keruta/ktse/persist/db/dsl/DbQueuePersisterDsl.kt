@@ -11,6 +11,7 @@ import net.kigawa.keruta.ktse.persist.db.table.QueueUserTable
 import net.kigawa.keruta.ktse.persist.model.ExposedPersistedQueue
 import net.kigawa.kodel.api.err.Res
 import org.jetbrains.exposed.sql.JoinType
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 
@@ -40,6 +41,16 @@ class DbQueuePersisterDsl(
         ).selectAll().where { QueueUserTable.userId eq user.id }
             .map { ExposedPersistedQueue(it) }
             .let { Res.Ok(it) }
+    }
+
+    fun findByUserAndId(user: PersistedUser, id: Long): Res<PersistedQueue, KtcpErr> = transaction.run {
+        QueueTable.join(
+            QueueUserTable, joinType = JoinType.INNER,
+        ).selectAll().where {
+            QueueUserTable.userId eq user.id and (QueueUserTable.queueId eq id)
+        }.singleOrNull()
+            ?.let { Res.Ok(ExposedPersistedQueue(it)) }
+            ?: Res.Err(NoSingleRecordErr("", null))
     }
 
 }

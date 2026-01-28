@@ -11,6 +11,7 @@ import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListArg
 import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListMsg
 import net.kigawa.keruta.ktcp.model.queue.create.ServerQueueCreateMsg
 import net.kigawa.keruta.ktcp.model.queue.list.ServerQueueListMsg
+import net.kigawa.keruta.ktcp.model.queue.show.ServerQueueShowMsg
 import net.kigawa.keruta.ktcp.model.serialize.deserialize
 import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateArg
 import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateMsg
@@ -60,6 +61,11 @@ class ReceiveUnknownArg(
 
     override fun tryToQueueList(): Res<ServerQueueListMsg, KtcpErr>? {
         if (msg.type != ServerMsgType.QUEUE_LIST) return null
+        return translate()
+    }
+
+    override fun tryToQueueShow(): Res<ServerQueueShowMsg, KtcpErr>? {
+        if (msg.type != ServerMsgType.QUEUE_SHOW) return null
         return translate()
     }
 

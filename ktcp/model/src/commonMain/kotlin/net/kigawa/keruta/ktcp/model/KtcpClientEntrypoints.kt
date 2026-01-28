@@ -8,6 +8,7 @@ import net.kigawa.keruta.ktcp.model.msg.client.ClientUnknownArg
 import net.kigawa.keruta.ktcp.model.provider.listed.ClientProviderListedEntrypoint
 import net.kigawa.keruta.ktcp.model.queue.created.ClientQueueCreatedEntrypoint
 import net.kigawa.keruta.ktcp.model.queue.listed.ClientQueueListedEntrypoint
+import net.kigawa.keruta.ktcp.model.queue.showed.ClientQueueShowedEntrypoint
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.entrypoint.EntrypointGroupBase
 import net.kigawa.kodel.api.entrypoint.EntrypointInfo
@@ -24,6 +25,7 @@ class KtcpClientEntrypoints<C>(
     providerListEntrypoint: ClientProviderListedEntrypoint<C>,
     queueCreatedEntrypoint: ClientQueueCreatedEntrypoint<C>,
     queueListedEntrypoint: ClientQueueListedEntrypoint<C>,
+    queueShowedEntrypoint: ClientQueueShowedEntrypoint<C>,
 ): EntrypointGroupBase<ClientUnknownArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C>() {
     val logger = LoggerFactory.get("net.kigawa.keruta.ktcp.model.KtcpClientEntrypoints")
     override val info: EntrypointInfo = EntrypointInfo(
@@ -63,6 +65,13 @@ class KtcpClientEntrypoints<C>(
     }
     val queueListed = add(queueListedEntrypoint) { input ->
         input.tryToQueueListed()?.whenErrOk(
+            { EntrypointDeferred { Res.Err(it) } }
+        ) {
+            this(it)
+        }
+    }
+    val queueShowed = add(queueShowedEntrypoint) { input ->
+        input.tryToQueueShowed()?.whenErrOk(
             { EntrypointDeferred { Res.Err(it) } }
         ) {
             this(it)
