@@ -5,6 +5,8 @@ import net.kigawa.keruta.ktcp.model.err.EntrypointNotFoundErr
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownArg
 import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListEntrypoint
+import net.kigawa.keruta.ktcp.model.queue.create.ServerQueueCreateEntrypoint
+import net.kigawa.keruta.ktcp.model.queue.list.ServerQueueListEntrypoint
 import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateEntrypoint
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.entrypoint.EntrypointGroupBase
@@ -19,6 +21,8 @@ class KtcpServerEntrypoints<C>(
     authRequestEntrypoint: ServerAuthRequestEntrypoint<C>,
     taskCreateEntrypoint: ServerTaskCreateEntrypoint<C>,
     providersRequestEntrypoint: ServerProviderListEntrypoint<C>,
+    queueCreateEntrypoint: ServerQueueCreateEntrypoint<C>,
+    queueListEntrypoint: ServerQueueListEntrypoint<C>,
 ): EntrypointGroupBase<ServerUnknownArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C>() {
     val logger = LoggerFactory.get("net.kigawa.keruta.ktcp.model.KtcpServerEntrypoints")
     override val info: EntrypointInfo = EntrypointInfo(
@@ -26,6 +30,7 @@ class KtcpServerEntrypoints<C>(
         listOf(),
         ""
     )
+
     @Suppress("unused")
     val authRequestEntrypoint = add(authRequestEntrypoint) { input ->
         input.tryToAuthenticate()?.whenErrOk(
@@ -34,6 +39,7 @@ class KtcpServerEntrypoints<C>(
             this(it)
         }
     }
+
     @Suppress("unused")
     val taskCreateEntrypoint = add(taskCreateEntrypoint) { input ->
         input.tryToTaskCreate()?.whenErrOk(
@@ -42,9 +48,24 @@ class KtcpServerEntrypoints<C>(
             this(it)
         }
     }
+
     @Suppress("unused")
     val providersRequestEntrypoint = add(providersRequestEntrypoint) { input ->
         input.tryToProvidersRequest()?.whenErrOk(
+            { EntrypointDeferred { Res.Err(it) } }
+        ) {
+            this(it)
+        }
+    }
+    val queueCreate = add(queueCreateEntrypoint) { input ->
+        input.tryToQueueCreate()?.whenErrOk(
+            { EntrypointDeferred { Res.Err(it) } }
+        ) {
+            this(it)
+        }
+    }
+    val queueList = add(queueListEntrypoint) { input ->
+        input.tryToQueueList()?.whenErrOk(
             { EntrypointDeferred { Res.Err(it) } }
         ) {
             this(it)

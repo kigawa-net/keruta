@@ -17,7 +17,8 @@ enum class ServerMsgType(
 
     companion object {
         fun fromString(decodeString: String): ServerMsgType {
-            return entries.single { it.str == decodeString }
+            return entries.singleOrNull { it.str == decodeString }
+                ?: throw IllegalArgumentException("unknown msg type $decodeString")
         }
     }
 }
