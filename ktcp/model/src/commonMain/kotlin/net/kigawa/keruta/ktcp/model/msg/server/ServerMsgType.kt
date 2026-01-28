@@ -11,6 +11,7 @@ enum class ServerMsgType(
     AUTH_SUCCESS("auth_success"),
     TASK_CREATE("task_create"),
     TASK_UPDATE("task_update"),
+    TASK_MOVE("task_move"),
     PROVIDER_LIST("provider_list"),
     QUEUE_CREATE("queue_create"),
     QUEUE_LIST("queue_list"),

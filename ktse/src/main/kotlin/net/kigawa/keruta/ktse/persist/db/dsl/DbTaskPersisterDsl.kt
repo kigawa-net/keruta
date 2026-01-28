@@ -6,14 +6,12 @@ import net.kigawa.keruta.ktcp.server.persist.PersistedQueue
 import net.kigawa.keruta.ktcp.server.persist.PersistedTask
 import net.kigawa.keruta.ktcp.server.persist.PersistedUser
 import net.kigawa.keruta.ktse.err.NoSingleRecordErr
+import net.kigawa.keruta.ktse.persist.db.table.QueueTable
+import net.kigawa.keruta.ktse.persist.db.table.QueueUserTable
 import net.kigawa.keruta.ktse.persist.db.table.TaskTable
 import net.kigawa.keruta.ktse.persist.model.ExposedPersistedTask
 import net.kigawa.kodel.api.err.Res
-import org.jetbrains.exposed.sql.Transaction
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.update
+import org.jetbrains.exposed.sql.*
 
 class DbTaskPersisterDsl(val transaction: Transaction) {
 
@@ -55,5 +53,32 @@ class DbTaskPersisterDsl(val transaction: Transaction) {
             }.singleOrNull()
                 ?.let { Res.Ok(ExposedPersistedTask(it)) }
                 ?: Res.Err(NoSingleRecordErr("", null))
+        }
+
+    fun moveTask(user: PersistedUser, taskId: Long, targetQueueId: Long): Res<PersistedTask, KtcpErr> =
+        transaction.run {
+            val targetQueueExists = QueueUserTable
+                .innerJoin(QueueTable)
+                .selectAll()
+                .where {
+                    (QueueTable.id eq targetQueueId) and (QueueUserTable.userId eq user.id)
+                }
+                .count() > 0
+
+            if (!targetQueueExists) {
+                return@run Res.Err(NoSingleRecordErr("Queue not found or access denied", null))
+            }
+
+            TaskTable.update({
+                (TaskTable.userId eq user.id) and (TaskTable.id eq taskId)
+            }) {
+                it[queueId] = targetQueueId
+            }
+
+            TaskTable.selectAll()
+                .where { (TaskTable.userId eq user.id) and (TaskTable.id eq taskId) }
+                .singleOrNull()
+                ?.let { Res.Ok(ExposedPersistedTask(it)) }
+                ?: Res.Err(NoSingleRecordErr("Task not found", null))
         }
 }

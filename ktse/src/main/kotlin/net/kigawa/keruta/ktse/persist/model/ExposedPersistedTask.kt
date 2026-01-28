@@ -6,6 +6,7 @@ import org.jetbrains.exposed.sql.ResultRow
 
 class ExposedPersistedTask(queue: ResultRow): PersistedTask {
     override val id: Long = queue[TaskTable.id]
+    override val queueId: Long = queue[TaskTable.queueId]
     override val title: String = queue[TaskTable.title]
     override val description: String = queue[TaskTable.description]
     override val status: String = queue[TaskTable.status]

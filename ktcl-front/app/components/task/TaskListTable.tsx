@@ -3,11 +3,14 @@ import {TaskRow} from "./TaskRow";
 
 interface TaskListTableProps {
     tasks: Task[];
+    queues: { id: number; name: string }[];
+    currentQueueId: number;
     showCompleted: boolean;
     onCompleteTask: (taskId: number) => void;
+    onMoveTask: (taskId: number, targetQueueId: number) => void;
 }
 
-export function TaskListTable({tasks, showCompleted, onCompleteTask}: TaskListTableProps) {
+export function TaskListTable({tasks, queues, currentQueueId, showCompleted, onCompleteTask, onMoveTask}: TaskListTableProps) {
     return (
         <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
@@ -35,7 +38,14 @@ export function TaskListTable({tasks, showCompleted, onCompleteTask}: TaskListTa
                 </tr>
             ) : (
                 tasks.map(task => (
-                    <TaskRow key={task.id} task={task} onComplete={onCompleteTask}/>
+                    <TaskRow
+                        key={task.id}
+                        task={task}
+                        queues={queues}
+                        currentQueueId={currentQueueId}
+                        onComplete={onCompleteTask}
+                        onMove={onMoveTask}
+                    />
                 ))
             )}
             </tbody>
