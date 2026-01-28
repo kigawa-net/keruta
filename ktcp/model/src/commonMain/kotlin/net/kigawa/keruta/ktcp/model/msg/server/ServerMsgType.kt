@@ -10,7 +10,8 @@ enum class ServerMsgType(
     AUTH_REQUEST("auth_request"),
     AUTH_SUCCESS("auth_success"),
     TASK_CREATE("task_create"),
-    PROVIDERS_REQUEST("providers_request"),
+    PROVIDER_LIST("provider_list"),
+    QUEUE_CREATE("queue_create"),
     ;
 
     companion object {

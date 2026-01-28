@@ -5,10 +5,10 @@ import net.kigawa.keruta.ktcp.model.msg.server.ServerMsg
 import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
 
 @Serializable
-data class ServerProvidersRequestMsg(
-    override val type: ServerMsgType = ServerMsgType.PROVIDERS_REQUEST,
+data class ServerProviderListMsg(
+    override val type: ServerMsgType = ServerMsgType.PROVIDER_LIST,
 ): ServerMsg {
     init {
-        require(type == ServerMsgType.PROVIDERS_REQUEST) { "type must be PROVIDER_REQUEST" }
+        require(type == ServerMsgType.PROVIDER_LIST) { "type must be PROVIDER_REQUEST" }
     }
 }

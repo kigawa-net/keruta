@@ -5,12 +5,12 @@ import net.kigawa.keruta.ktcp.model.msg.client.ClientMsg
 import net.kigawa.keruta.ktcp.model.msg.client.ClientMsgType
 
 @Serializable
-data class ClientProviderListMsg(
-    override val type: ClientMsgType = ClientMsgType.PROVIDER_LIST,
+data class ClientProviderListedMsg(
+    override val type: ClientMsgType = ClientMsgType.PROVIDER_LISTED,
     val providers: List<Provider>,
 ): ClientMsg {
     init {
-        require(type == ClientMsgType.PROVIDER_LIST) { "type must be PROVIDER_LIST" }
+        require(type == ClientMsgType.PROVIDER_LISTED) { "type must be PROVIDER_LIST" }
     }
 
     @Serializable

@@ -6,7 +6,7 @@ import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.entrypoint.EntrypointInfo
 import net.kigawa.kodel.api.err.Res
 
-interface ServerProvidersRequestEntrypoint<C>: Entrypoint<ServerProvidersRequestArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C> {
+interface ServerProviderListEntrypoint<C>: Entrypoint<ServerProviderListArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C> {
     override val info: EntrypointInfo
         get() = EntrypointInfo(
             "providers_request", emptyList(), "プロバイダー一覧要求メッセージ処理"

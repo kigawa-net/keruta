@@ -1,9 +1,9 @@
 package net.kigawa.keruta.ktcp.server.provider
 
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.provider.list.ClientProviderListMsg
-import net.kigawa.keruta.ktcp.model.provider.request.ServerProvidersRequestArg
-import net.kigawa.keruta.ktcp.model.provider.request.ServerProvidersRequestEntrypoint
+import net.kigawa.keruta.ktcp.model.provider.list.ClientProviderListedMsg
+import net.kigawa.keruta.ktcp.model.provider.request.ServerProviderListArg
+import net.kigawa.keruta.ktcp.model.provider.request.ServerProviderListEntrypoint
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktcp.server.err.ResponseErr
 import net.kigawa.keruta.ktcp.server.err.UnauthenticatedErr
@@ -13,9 +13,9 @@ import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.LoggerFactory
 import net.kigawa.kodel.api.log.traceignore.debug
 
-class ReceiveProvidersRequestEntrypoint: ServerProvidersRequestEntrypoint<ServerCtx> {
+class ReceiveProviderListEntrypoint: ServerProviderListEntrypoint<ServerCtx> {
     override fun access(
-        input: ServerProvidersRequestArg, ctx: ServerCtx,
+        input: ServerProviderListArg, ctx: ServerCtx,
     ): EntrypointDeferred<Res<Unit, KtcpErr>> {
         val logger = LoggerFactory.get(
             "net.kigawa.keruta.ktcp.server.provider.ReceiveProvidersRequestEntrypoint"
@@ -28,8 +28,8 @@ class ReceiveProvidersRequestEntrypoint: ServerProvidersRequestEntrypoint<Server
                 is Res.Ok -> {
                     logger.debug("providers: ${res.value.dump}")
                     ctx.server.clientEntrypoints.providerList.access(
-                        SendProviderListArg(
-                            ClientProviderListMsg(
+                        SendProviderListedArg(
+                            ClientProviderListedMsg(
                                 providers = res.value.map { it.asProviderListProvider() }
                             )
                         ), ctx
