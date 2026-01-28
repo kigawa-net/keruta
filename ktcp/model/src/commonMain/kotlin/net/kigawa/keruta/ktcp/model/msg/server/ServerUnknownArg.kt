@@ -8,6 +8,7 @@ import net.kigawa.keruta.ktcp.model.queue.create.ServerQueueCreateArg
 import net.kigawa.keruta.ktcp.model.queue.create.ServerQueueCreateMsg
 import net.kigawa.keruta.ktcp.model.queue.list.ServerQueueListArg
 import net.kigawa.keruta.ktcp.model.queue.list.ServerQueueListMsg
+import net.kigawa.keruta.ktcp.model.queue.show.ServerQueueShowMsg
 import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateArg
 import net.kigawa.kodel.api.err.Res
 
@@ -18,4 +19,5 @@ interface ServerUnknownArg {
     fun tryToProvidersRequest(): Res<ServerProviderListArg, KtcpErr>?
     fun tryToQueueCreate(): Res<ServerQueueCreateMsg, KtcpErr>?
     fun tryToQueueList(): Res<ServerQueueListMsg, KtcpErr>?
+    fun tryToQueueShow(): Res<ServerQueueShowMsg, KtcpErr>?
 }

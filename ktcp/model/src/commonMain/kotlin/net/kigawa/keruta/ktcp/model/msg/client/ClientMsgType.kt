@@ -10,6 +10,7 @@ enum class ClientMsgType(
     PROVIDER_LISTED("provider_listed"),
     QUEUE_CREATED("queue_created"),
     QUEUE_LISTED("queue_listed"),
+    QUEUE_SHOWED("queue_showed"),
     ;
 
     companion object {

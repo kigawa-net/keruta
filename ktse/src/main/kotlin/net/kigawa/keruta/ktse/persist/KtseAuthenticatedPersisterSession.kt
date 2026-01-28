@@ -2,6 +2,7 @@ package net.kigawa.keruta.ktse.persist
 
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.model.queue.create.ServerQueueCreateMsg
+import net.kigawa.keruta.ktcp.model.queue.show.ServerQueueShowMsg
 import net.kigawa.keruta.ktcp.server.persist.AuthenticatedPersisterSession
 import net.kigawa.keruta.ktcp.server.persist.PersistedProvider
 import net.kigawa.keruta.ktcp.server.persist.PersistedQueue
@@ -48,5 +49,11 @@ class KtseAuthenticatedPersisterSession(
 
     override fun getQueues(): Res<List<PersistedQueue>, KtcpErr> = dbPersister.execTransaction {
         it.queue.getAll(user)
+    }
+
+    override fun getQueue(
+        input: ServerQueueShowMsg,
+    ): Res<PersistedQueue, KtcpErr> = dbPersister.execTransaction {
+        it.queue.findByUserAndId(user, input.id)
     }
 }
