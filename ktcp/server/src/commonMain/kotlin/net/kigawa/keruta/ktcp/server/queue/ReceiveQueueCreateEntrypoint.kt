@@ -17,13 +17,15 @@ class ReceiveQueueCreateEntrypoint: ServerQueueCreateEntrypoint<ServerCtx> {
         return EntrypointDeferred {
             val session = ctx.session.authenticated()
                 ?: return@EntrypointDeferred Res.Err(UnauthenticatedErr("", null))
-            when (
+            val queue=when (
                 val res = session.persisterSession.createQueue(input)
             ) {
                 is Res.Err -> return@EntrypointDeferred res.x()
                 is Res.Ok -> res.value
             }
-            ctx.server.clientEntrypoints.queueCreated.access(ClientQueueCreatedMsg(), ctx)?.execute()
+            ctx.server.clientEntrypoints.queueCreated.access(ClientQueueCreatedMsg(
+                queueId = queue.id
+            ), ctx)?.execute()
                 ?: Res.Err(ResponseErr("", null))
         }
     }

@@ -1,6 +1,6 @@
 import {ReceiveMsgTypes, SendMsgTypes} from "./msg";
 
-export interface ServerProvidersRequestMsg {
+export interface ServerProviderListMsg {
     type: typeof SendMsgTypes.provider_list
 }
 

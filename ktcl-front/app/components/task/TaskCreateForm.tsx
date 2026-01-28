@@ -1,5 +1,5 @@
 import {Link} from "react-router";
-import FormTextInput, {TextInputValue} from "../form/FormTextInput";
+import FormTextInput, {InputValue} from "../form/FormTextInput";
 import {useEffect, useState} from "react";
 import {TaskCreateMsg} from "../../msg/task";
 import {useWsState} from "../websocket/Websocket";
@@ -9,7 +9,7 @@ import FormErrMsg from "../form/FormErrMsg";
 export function TaskCreateForm() {
     const [formState, setFormState] = useState<"inputting" | "submitting">("inputting")
     const ws = useWsState()
-    const [name, setName] = useState<TextInputValue>({value: ""})
+    const [name, setName] = useState<InputValue>({value: ""})
     const [err, setErr] = useState<string>()
 
     useEffect(() => {
