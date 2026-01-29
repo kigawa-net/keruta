@@ -1,0 +1,12 @@
+FROM eclipse-temurin:25.0.1_8-jdk-noble AS builder
+
+COPY . /app
+WORKDIR /app
+RUN ./gradlew :ktse:build
+
+FROM eclipse-temurin:25.0.1_8-jdk-noble
+
+COPY --from=builder /app/ktse/build/libs/ktse-all.jar /app/app.jar
+WORKDIR /work
+ENTRYPOINT ["java"]
+CMD ["-jar","/app/app.jar"]

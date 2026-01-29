@@ -86,6 +86,9 @@
       <module name="keruta.kodel.core.test" target="21" />
       <module name="keruta.kodel.main" target="21" />
       <module name="keruta.kodel.test" target="21" />
+      <module name="keruta.ktcl-web" target="23" />
+      <module name="keruta.ktcl-web.main" target="23" />
+      <module name="keruta.ktcl-web.test" target="23" />
       <module name="keruta.main" target="21" />
       <module name="keruta.test" target="21" />
       <module name="net.kigawa.keruta-api.main" target="21" />

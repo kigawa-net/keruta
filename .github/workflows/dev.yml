@@ -1,0 +1,14 @@
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  cd:
+    uses: ./.github/workflows/release.yml
+    with:
+      name: ktse
+      manifestFile: ./keruta/dev/ktse.yaml
+      harborProject: "library"
+      repository: "kigawa-net/kigawa-net-k8s"
+      dockerFile: './Dockerfile_ktse'
