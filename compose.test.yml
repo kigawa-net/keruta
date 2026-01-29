@@ -50,6 +50,11 @@ services:
     depends_on:
       rsync:
         condition: service_completed_successfully
+    environment:
+      - VITE_WEBSOCKET_URL=ws://localhost:8080/ws/ktcp
+      - VITE_KEYCLOAK_URL=https://user.kigawa.net/
+      - VITE_KEYCLOAK_REALM=develop
+      - VITE_KEYCLOAK_CLIENT_ID=keruta
     volumes:
       - type: bind
         source: ./cache/app/ktcl-front

@@ -4,7 +4,7 @@ on:
       - develop
 
 jobs:
-  cd:
+  ktse:
     uses: ./.github/workflows/release.yml
     with:
       name: ktse
@@ -12,3 +12,18 @@ jobs:
       harborProject: "library"
       repository: "kigawa-net/kigawa-net-k8s"
       dockerFile: './Dockerfile_ktse'
+  ktcl-front:
+    uses: ./.github/workflows/release.yml
+    with:
+      name: ktcl-front
+      manifestFile: ./keruta/dev/ktcl-front.yaml
+      harborProject: "library"
+      repository: "kigawa-net/kigawa-net-k8s"
+      dockerFile: './Dockerfile_ktcl_front'
+      buildArgs: |
+        {
+          "VITE_WEBSOCKET_URL": "ws://ktse-dev.kigawa.net/ws/ktcp",
+          "VITE_KEYCLOAK_URL": "https://user.kigawa.net/",
+          "VITE_KEYCLOAK_REALM": "develop",
+          "VITE_KEYCLOAK_CLIENT_ID": "keruta"
+        }
