@@ -1,7 +1,13 @@
 FROM eclipse-temurin:25.0.1_8-jdk-noble AS builder
 
-COPY buildSrc gradle kodel ktcl-claudecode ktcp ktse settings.gradle.kts gradlew gradle.properties build.gradle.kts /app/
 WORKDIR /app
+COPY buildSrc /app/buildSrc
+COPY gradle /app/gradle
+COPY kodel /app/kodel
+COPY ktcl-claudecode /app/ktcl-claudecode
+COPY ktcp /app/ktcp
+COPY ktse /app/ktse
+COPY settings.gradle.kts gradle.properties build.gradle.kts gradlew /app/
 RUN ./gradlew :ktse:build
 
 FROM eclipse-temurin:25.0.1_8-jdk-noble

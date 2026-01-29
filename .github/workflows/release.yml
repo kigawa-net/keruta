@@ -27,6 +27,8 @@ on:
     secrets:
       HARBOR_PASS:
         required: true
+      GIT_TOKEN:
+        required: true
 
 jobs:
   release:
