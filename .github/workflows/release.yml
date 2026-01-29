@@ -24,7 +24,9 @@ on:
         required: false
         type: string
         default: '{}'
-
+    secrets:
+      HARBOR_PASS:
+        required: true
 
 jobs:
   release:

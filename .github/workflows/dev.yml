@@ -6,6 +6,8 @@ on:
 jobs:
   ktse:
     uses: ./.github/workflows/release.yml
+    secrets:
+      HARBOR_PASS: ${{ secrets.HARBOR_PASS }}
     with:
       name: ktse
       manifestFile: ./keruta/dev/ktse.yaml
@@ -14,6 +16,8 @@ jobs:
       dockerFile: './Dockerfile_ktse'
   ktcl-front:
     uses: ./.github/workflows/release.yml
+    secrets:
+      HARBOR_PASS: ${{ secrets.HARBOR_PASS }}
     with:
       name: ktcl-front
       manifestFile: ./keruta/dev/ktcl-front.yaml
