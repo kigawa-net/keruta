@@ -91,6 +91,19 @@ class KerutaK8sClient(
 
 suspend fun main() {
     val config = K8sConfig.fromEnvironment()
-    val client = KerutaK8sClient(config)
-    client.start()
+
+    if (config.webMode) {
+        logger.info { "Starting in Web mode on port ${config.webPort}" }
+        startWebMode(config)
+    } else {
+        logger.info { "Starting in CLI mode" }
+        val client = KerutaK8sClient(config)
+        client.start()
+    }
 }
+
+private fun startWebMode(config: K8sConfig) {
+    net.kigawa.keruta.ktcl.k8s.web.startWebServer(config.webPort)
+}
+
+private val logger = LoggerFactory.get("Main")

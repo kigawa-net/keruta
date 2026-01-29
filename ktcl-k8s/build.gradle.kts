@@ -20,6 +20,15 @@ dependencies {
     implementation("io.ktor:ktor-client-content-negotiation:${Version.KTOR}")
     implementation("io.ktor:ktor-serialization-kotlinx-json:${Version.KTOR}")
 
+    // Ktor Server
+    implementation("io.ktor:ktor-server-core:${Version.KTOR}")
+    implementation("io.ktor:ktor-server-netty:${Version.KTOR}")
+    implementation("io.ktor:ktor-server-sessions:${Version.KTOR}")
+    implementation("io.ktor:ktor-server-auth:${Version.KTOR}")
+    implementation("io.ktor:ktor-server-content-negotiation:${Version.KTOR}")
+    implementation("io.ktor:ktor-server-cors:${Version.KTOR}")
+    implementation("io.ktor:ktor-server-status-pages:${Version.KTOR}")
+
     // Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
@@ -27,6 +36,10 @@ dependencies {
     // Kubernetes Java Client（最新25.x系）
     implementation("io.kubernetes:client-java:25.0.0")
     implementation("io.kubernetes:client-java-api:25.0.0")
+
+    // JWT検証
+    implementation("com.auth0:java-jwt:4.4.0")
+    implementation("com.auth0:jwks-rsa:0.22.1")
 
     // Testing
     testImplementation("org.jetbrains.kotlin:kotlin-test")

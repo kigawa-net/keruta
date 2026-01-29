@@ -37,7 +37,11 @@ ktcl-k8sは以下の機能を提供します：
 ./gradlew :ktcl-k8s:build
 ```
 
-### 実行
+### 実行モード
+
+ktcl-k8sは、**CLIモード**と**Webモード**の2つの起動モードをサポートしています。
+
+#### CLIモード（デフォルト）
 
 ```bash
 # 環境変数を設定
@@ -52,6 +56,30 @@ export K8S_USE_IN_CLUSTER="true"
 # 実行
 ./gradlew :ktcl-k8s:run
 ```
+
+#### Webモード
+
+Webモードでは、Keycloak OIDC認証を使用したWeb UIで設定管理が可能です。
+
+```bash
+# Webモードを有効化
+export KTCL_K8S_WEB_MODE="true"
+export KTCL_K8S_WEB_PORT="8081"
+
+# Keycloak設定
+export KEYCLOAK_URL="https://user.kigawa.net/"
+export KEYCLOAK_REALM="develop"
+export KEYCLOAK_CLIENT_ID="keruta"
+
+# 初期Kubernetes設定（オプション）
+export K8S_NAMESPACE="default"
+export K8S_USE_IN_CLUSTER="true"
+
+# 実行
+./gradlew :ktcl-k8s:run
+```
+
+Web UIにアクセス: `http://localhost:8081`
 
 ## 環境変数
 
@@ -75,6 +103,16 @@ export K8S_USE_IN_CLUSTER="true"
 | `K8S_USE_IN_CLUSTER` | true | in-cluster認証使用 |
 | `K8S_KUBECONFIG_PATH` | ~/.kube/config | kubeconfigパス（in-cluster無効時） |
 | `K8S_JOB_TIMEOUT` | 600 | Jobタイムアウト（秒） |
+
+### Webモード設定
+
+| 環境変数 | デフォルト | 説明 |
+|---------|----------|------|
+| `KTCL_K8S_WEB_MODE` | false | Webモードを有効化 |
+| `KTCL_K8S_WEB_PORT` | 8081 | Webサーバーポート |
+| `KEYCLOAK_URL` | https://user.kigawa.net/ | Keycloak URL |
+| `KEYCLOAK_REALM` | develop | Keycloakレルム |
+| `KEYCLOAK_CLIENT_ID` | keruta | KeycloakクライアントID |
 
 ## Job定義テンプレート
 
@@ -242,14 +280,55 @@ kubectl describe job keruta-task-<taskId> -n default
 # KTSEサーバーのログを確認してください
 ```
 
+## Webモード機能
+
+### OIDCログイン
+
+Keycloakを使用したOpenID Connect認証により、安全なログインを実現：
+
+1. ブラウザでWeb UIにアクセス
+2. 「Keycloakでログイン」ボタンをクリック
+3. Keycloakログイン画面で認証
+4. 認証成功後、設定管理画面にリダイレクト
+
+### 設定管理
+
+Web UIから以下の設定を変更可能：
+
+#### Kubernetes設定
+- ネームスペース
+- In-Cluster認証の使用
+- Kubeconfigパス
+- Jobタイムアウト
+
+#### キュー設定
+- キューID
+
+設定は即座にランタイムに反映されます（再起動不要）。
+
+### API エンドポイント
+
+Webモードでは以下のREST APIを提供：
+
+- `POST /api/auth/login` - JWT トークンでログイン
+- `POST /api/auth/logout` - ログアウト
+- `GET /api/auth/me` - 現在のユーザー情報
+- `GET /api/config` - 現在の設定を取得
+- `PUT /api/config/kubernetes` - Kubernetes設定を更新
+- `PUT /api/config/queue` - キュー設定を更新
+
+すべてのAPIエンドポイントは認証が必要です（`/api/auth/login`を除く）。
+
 ## 技術スタック
 
 - **Kotlin Multiplatform**: JVM対応
 - **Ktor Client**: WebSocket通信
+- **Ktor Server**: Webモード（認証、API、静的ファイル配信）
 - **Kubernetes Java Client 25.x**: Kubernetes API統合
 - **KTCP**: Kerutaプロトコル
 - **kotlinx.serialization**: JSON処理
 - **kotlinx.coroutines**: 非同期処理
+- **Auth0 Java JWT**: JWT検証とJWKSサポート
 
 ## 参考
 
