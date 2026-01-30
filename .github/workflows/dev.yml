@@ -23,7 +23,7 @@ jobs:
     with:
       name: ktcl-front
       manifestFile: ./keruta/dev/ktcl-front.yaml
-      harborProject: "library"
+      harborProject: "private"
       repository: "kigawa-net/kigawa-net-k8s"
       dockerFile: './Dockerfile_ktcl_front'
       buildArgs: |
