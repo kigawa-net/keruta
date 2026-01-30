@@ -21,6 +21,7 @@ class FlywayMigrator {
                 .dataSource(jdbcUrl, username, password)
                 .locations("classpath:db/migration")
                 .baselineOnMigrate(true)
+                .failOnMissingLocations(false)
                 .load()
 
             val result = flyway.migrate()
