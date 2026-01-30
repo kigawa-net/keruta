@@ -6,12 +6,12 @@ ktor:
     port: 8080
   security:
     defaultIdp:
-      - issuer: https://user.kigawa.net/realms/develop
-        audience: keruta
+      - issuer: ${IDP_0_ISSUER}
+        audience: ${IDP_0_AUDIENCE}
     defaultProvider:
-      - issuer: http://127.0.0.1:5173/
-        audience: keruta
-        name: web
+      - issuer: ${PROVIDER_0_ISSUER}
+        audience: ${PROVIDER_0_AUDIENCE}
+        name: ${PROVIDER_0_NAME}
 zk:
   host: ${ZK_HOST}
 db:
