@@ -1,0 +1,17 @@
+FROM eclipse-temurin:25.0.1_8-jdk-noble AS builder
+
+WORKDIR /app
+COPY buildSrc /app/buildSrc
+COPY gradle /app/gradle
+COPY kodel /app/kodel
+COPY ktcp /app/ktcp
+COPY ktcl-k8s /app/ktcl-k8s
+COPY settings.gradle.kts gradle.properties build.gradle.kts gradlew /app/
+RUN ./gradlew :ktcl-k8s:build
+
+FROM eclipse-temurin:25.0.1_8-jdk-noble
+
+COPY --from=builder /app/ktcl-k8s/build/libs/ktcl-k8s-all.jar /app/app.jar
+WORKDIR /work
+ENTRYPOINT ["java"]
+CMD ["-jar","/app/app.jar"]

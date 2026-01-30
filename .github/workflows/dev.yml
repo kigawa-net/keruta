@@ -33,3 +33,14 @@ jobs:
           "VITE_KEYCLOAK_REALM": "develop",
           "VITE_KEYCLOAK_CLIENT_ID": "keruta"
         }
+  ktcl-k8s:
+    uses: ./.github/workflows/release.yml
+    secrets:
+      HARBOR_PASS: ${{ secrets.HARBOR_PASS }}
+      GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+    with:
+      name: ktcl-k8s
+      manifestFile: ./keruta/dev/ktcl-k8s.yaml
+      harborProject: "library"
+      repository: "kigawa-net/kigawa-net-k8s"
+      dockerFile: './Dockerfile_ktcl_k8s'
