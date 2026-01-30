@@ -20,6 +20,7 @@ class FlywayMigrator {
             val flyway = Flyway.configure()
                 .dataSource(jdbcUrl, username, password)
                 .locations("classpath:db/migration")
+                .callbacks(*arrayOf<String>()) // ← これが決定打
                 .baselineOnMigrate(true)
                 .failOnMissingLocations(false)
                 .load()
