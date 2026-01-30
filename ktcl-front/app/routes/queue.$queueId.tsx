@@ -1,54 +1,25 @@
-import {Route} from "../../.react-router/types/app/+types/root";
 import PrivateRoute from "../components/PrivateRoute";
 import {useEffect, useState} from "react";
-import {useWsState} from "../components/websocket/Websocket";
-import {useKerutaTaskState} from "../components/KerutaTask";
+import {useWsState, WebsocketState} from "../components/websocket/Websocket";
+import {KerutaTaskState, useKerutaTaskState} from "../components/KerutaTask";
 import useWsReceive from "../components/websocket/useWsReceive";
 import {ClientTaskListedMsg, ServerTaskListMsg} from "../msg/task";
 import {ClientQueueListedMsg, ServerQueueListMsg} from "../msg/queue";
 import {QueueTaskCreateForm} from "../components/task/QueueTaskCreateForm";
 import {QueueTaskList} from "../components/task/QueueTaskList";
-import LoaderArgs = Route.LoaderArgs;
-import ComponentProps = Route.ComponentProps;
+import {Route} from "../../.react-router/types/app/routes/+types/queue.$queueId";
 
-export async function loader({params}: LoaderArgs) {
-    return {
-        queueId: params.queueId
-    }
-}
 
 type Task = ClientTaskListedMsg["tasks"][0]
 type Queue = ClientQueueListedMsg["queues"][0]
 
 // noinspection JSUnusedGlobalSymbols
-export default function Route({loaderData}: ComponentProps) {
+export default function Page({params: {queueId}}: Route.ComponentProps) {
     const wsState = useWsState()
     const kerutaState = useKerutaTaskState()
     const [tasks, setTasks] = useState<Task[]>([])
     const [queues, setQueues] = useState<Queue[]>([])
 
-    const loadTaskList = () => {
-        if (wsState.state !== "open") return
-        if (kerutaState.state !== "connected") return
-        if (kerutaState.auth.state !== "authenticated") return
-
-        const msg: ServerTaskListMsg = {
-            type: "task_list",
-            queueId: loaderData.queueId
-        }
-        wsState.websocket.send(JSON.stringify(msg))
-    }
-
-    const loadQueueList = () => {
-        if (wsState.state !== "open") return
-        if (kerutaState.state !== "connected") return
-        if (kerutaState.auth.state !== "authenticated") return
-
-        const msg: ServerQueueListMsg = {
-            type: "queue_list"
-        }
-        wsState.websocket.send(JSON.stringify(msg))
-    }
 
     useWsReceive(wsState, msg => {
         if (msg.type === "task_listed") {
@@ -56,21 +27,21 @@ export default function Route({loaderData}: ComponentProps) {
         } else if (msg.type === "queue_listed") {
             setQueues(msg.queues)
         } else if (msg.type === "task_created") {
-            loadTaskList()
+            loadTaskList(wsState, kerutaState, Number(queueId))
         } else if (msg.type === "task_updated") {
-            loadTaskList()
+            loadTaskList(wsState, kerutaState, Number(queueId))
         } else if (msg.type === "task_moved") {
-            loadTaskList()
+            loadTaskList(wsState, kerutaState, Number(queueId))
         }
-    }, [])
+    }, [wsState.state, kerutaState.state === "connected" && kerutaState.auth.state, queueId])
 
     useEffect(() => {
-        loadTaskList()
-        loadQueueList()
-    }, [wsState.state, kerutaState.state === "connected" && kerutaState.auth.state, loaderData.queueId])
+        loadTaskList(wsState, kerutaState, Number(queueId))
+        loadQueueList(wsState, kerutaState, Number(queueId))
+    }, [wsState.state, kerutaState.state === "connected" && kerutaState.auth.state, queueId])
 
-    const currentQueue = queues.find(q => q.id === Number(loaderData.queueId))
-    const queueDisplayName = currentQueue?.name || `Queue ${loaderData.queueId}`
+    const currentQueue = queues.find(q => q.id === Number(queueId))
+    const queueDisplayName = currentQueue?.name || `Queue ${queueId}`
 
     return (
         <PrivateRoute>
@@ -83,15 +54,40 @@ export default function Route({loaderData}: ComponentProps) {
                         <p className="mt-2 text-gray-600">このキューに含まれるタスクの一覧を表示します</p>
                     </div>
 
-                    <QueueTaskCreateForm queueId={loaderData.queueId} onTaskCreated={loadTaskList}/>
+                    <QueueTaskCreateForm
+                        queueId={queueId} onTaskCreated={() => loadTaskList(wsState, kerutaState, queueId)}
+                    />
 
                     <QueueTaskList
                         tasks={tasks}
                         queues={queues}
-                        currentQueueId={loaderData.queueId}
+                        currentQueueId={queueId}
                     />
                 </div>
             </div>
         </PrivateRoute>
     )
+}
+
+function loadTaskList(wsState: WebsocketState, kerutaState: KerutaTaskState, queueId: number) {
+    if (wsState.state !== "open") return
+    if (kerutaState.state !== "connected") return
+    if (kerutaState.auth.state !== "authenticated") return
+
+    const msg: ServerTaskListMsg = {
+        type: "task_list",
+        queueId: queueId
+    }
+    wsState.websocket.send(JSON.stringify(msg))
+}
+
+function loadQueueList(wsState: WebsocketState, kerutaState: KerutaTaskState, queueId: number) {
+    if (wsState.state !== "open") return
+    if (kerutaState.state !== "connected") return
+    if (kerutaState.auth.state !== "authenticated") return
+
+    const msg: ServerQueueListMsg = {
+        type: "queue_list"
+    }
+    wsState.websocket.send(JSON.stringify(msg))
 }
