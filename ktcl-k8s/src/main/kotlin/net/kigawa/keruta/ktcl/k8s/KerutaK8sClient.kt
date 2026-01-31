@@ -5,6 +5,7 @@ import kotlinx.coroutines.coroutineScope
 import net.kigawa.keruta.ktcl.k8s.auth.AuthManager
 import net.kigawa.keruta.ktcl.k8s.config.K8sConfig
 import net.kigawa.keruta.ktcl.k8s.connection.ConnectionManager
+import net.kigawa.keruta.ktcl.k8s.connection.JvmWebSocketConnection
 import net.kigawa.keruta.ktcl.k8s.entrypoint.*
 import net.kigawa.keruta.ktcl.k8s.k8s.JobTemplateLoader
 import net.kigawa.keruta.ktcl.k8s.k8s.K8sClientFactory
@@ -30,39 +31,53 @@ class KerutaK8sClient(
     suspend fun start() = coroutineScope {
         logger.info { "Starting Keruta K8s Client" }
 
-        // 1. WebSocket接続
+        val (connection, ctx) = connectAndCreateSession()
+        if (!authenticate(ctx)) return@coroutineScope
+
+        val taskExecutor = createTaskExecutor()
+        val clientEntrypoints = createClientEntrypoints(taskExecutor)
+
+        requestInitialTaskList(ctx)
+        startMessageReceiver(connection, ctx, clientEntrypoints)
+    }
+
+    private data class ConnectionContext(
+        val connection: JvmWebSocketConnection,
+        val ctx: ClientCtx
+    )
+
+    private suspend fun connectAndCreateSession(): ConnectionContext {
         val connectionManager = ConnectionManager(config)
         val connection = connectionManager.connect()
-
         val session = KtcpSession(connection)
         val ctx = ClientCtx(serializer, session)
+        return ConnectionContext(connection, ctx)
+    }
 
-        // 2. KTCP認証
+    private suspend fun authenticate(ctx: ClientCtx): Boolean {
         val authManager = AuthManager(config, ktcpClient, ctx)
-        when (val authRes = authManager.authenticate()) {
+        return when (val authRes = authManager.authenticate()) {
             is Res.Err -> {
                 logger.info { "Authentication failed: ${authRes.err}" }
-                return@coroutineScope
+                false
             }
-
-            is Res.Ok -> logger.info { "Authentication successful" }
+            is Res.Ok -> {
+                logger.info { "Authentication successful" }
+                true
+            }
         }
+    }
 
-        // 3. K8s Client初期化
+    private fun createTaskExecutor(): TaskExecutor {
         val k8sClient = K8sClientFactory.createClient(config)
-
-        // 4. JobTemplateLoader初期化
         val templateLoader = JobTemplateLoader(config.k8sJobTemplate)
-
-        // 5. K8s Job実行エンジン
         val jobExecutor = K8sJobExecutor(k8sClient, config, templateLoader)
         val jobWatcher = K8sJobWatcher(k8sClient, config)
+        return TaskExecutor(jobExecutor, jobWatcher, ktcpClient)
+    }
 
-        // 6. TaskExecutor初期化
-        val taskExecutor = TaskExecutor(jobExecutor, jobWatcher, ktcpClient)
-
-        // 7. エントリーポイント設定
-        val clientEntrypoints = KtcpClientEntrypoints(
+    private fun createClientEntrypoints(taskExecutor: TaskExecutor): KtcpClientEntrypoints<ClientCtx> {
+        return KtcpClientEntrypoints(
             genericErrEntrypoint = ReceiveGenericErrEntrypoint(),
             authSuccessEntrypoint = ReceiveAuthSuccessEntrypoint(),
             providerListEntrypoint = ReceiveProviderListedEntrypoint(),
@@ -75,15 +90,21 @@ class KerutaK8sClient(
             taskListedEntrypoint = ReceiveTaskListedEntrypoint(taskExecutor),
             taskShowedEntrypoint = ReceiveTaskShowedEntrypoint(taskExecutor)
         )
+    }
 
-        // 8. 起動時のタスク一覧取得
+    private suspend fun requestInitialTaskList(ctx: ClientCtx) {
         logger.info { "Requesting task list for queue ${config.queueId}" }
         ktcpClient.ktcpServerEntrypoints.taskList.access(
             ServerTaskListMsg(queueId = config.queueId),
             ctx
         )?.execute()
+    }
 
-        // 9. メッセージ受信ループ
+    private suspend fun startMessageReceiver(
+        connection: JvmWebSocketConnection,
+        ctx: ClientCtx,
+        clientEntrypoints: KtcpClientEntrypoints<ClientCtx>
+    ) {
         val taskReceiver = TaskReceiver(connection, serializer, clientEntrypoints)
         logger.info { "Starting message receiver loop" }
         taskReceiver.startReceiving(ctx)
