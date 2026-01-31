@@ -15,7 +15,10 @@ class FlywayMigrator {
         username: String,
         password: String,
     ): Flyway {
-        return Flyway.configure()
+        val classLoader = Thread.currentThread().contextClassLoader
+        logger.debug("Using ClassLoader: ${classLoader.javaClass.name}")
+
+        return Flyway.configure(classLoader)
             .dataSource(jdbcUrl, username, password)
             .locations("classpath:db/migration")
             .createSchemas(true)

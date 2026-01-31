@@ -16,10 +16,8 @@ dependencies {
 
     // Flyway and Database
     // https://mvnrepository.com/artifact/org.flywaydb/flyway-core
-    // Downgraded to 9.22.3 due to ShadowJAR compatibility issues in 10.x and 11.x
-    implementation("org.flywaydb:flyway-core:9.22.3")
-    // https://mvnrepository.com/artifact/org.flywaydb/flyway-mysql
-    implementation("org.flywaydb:flyway-mysql:9.22.3")
+    // Downgraded to 8.5.13 due to ShadowJAR resource scanning issues in 9.x, 10.x and 11.x
+    implementation("org.flywaydb:flyway-core:8.5.13")
 // Source: https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
     implementation("com.mysql:mysql-connector-j:9.5.0")
 // Source: https://mvnrepository.com/artifact/org.jetbrains.exposed/exposed-core
@@ -39,6 +37,10 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.junit.jupiter:junit-jupiter:6.0.2")
     testImplementation("io.mockk:mockk:1.14.7")
+    // Testcontainers for MySQL integration testing
+    testImplementation("org.testcontainers:testcontainers:1.20.4")
+    testImplementation("org.testcontainers:mysql:1.20.4")
+    testImplementation("org.testcontainers:junit-jupiter:1.20.4")
 }
 tasks.withType<Test> {
     useJUnitPlatform()
