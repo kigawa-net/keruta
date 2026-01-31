@@ -16,10 +16,10 @@ dependencies {
 
     // Flyway and Database
     // https://mvnrepository.com/artifact/org.flywaydb/flyway-core
-    // Downgraded to 10.21.0 due to ShadowJAR compatibility issues in 11.x
-    implementation("org.flywaydb:flyway-core:10.21.0")
+    // Downgraded to 9.22.3 due to ShadowJAR compatibility issues in 10.x and 11.x
+    implementation("org.flywaydb:flyway-core:9.22.3")
     // https://mvnrepository.com/artifact/org.flywaydb/flyway-mysql
-    implementation("org.flywaydb:flyway-mysql:10.21.0")
+    implementation("org.flywaydb:flyway-mysql:9.22.3")
 // Source: https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
     implementation("com.mysql:mysql-connector-j:9.5.0")
 // Source: https://mvnrepository.com/artifact/org.jetbrains.exposed/exposed-core
