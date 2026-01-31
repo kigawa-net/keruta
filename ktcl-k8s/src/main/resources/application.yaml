@@ -1,0 +1,11 @@
+ktor:
+  deployment:
+    port: 8081
+  application:
+    modules:
+      - net.kigawa.keruta.ktcl.k8s.web.ApplicationKt.module
+
+keycloak:
+  url: "https://user.kigawa.net/"
+  realm: "develop"
+  clientId: "keruta"
