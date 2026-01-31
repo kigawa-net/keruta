@@ -44,6 +44,7 @@ class KerutaK8sClient(
                 logger.info { "Authentication failed: ${authRes.err}" }
                 return@coroutineScope
             }
+
             is Res.Ok -> logger.info { "Authentication successful" }
         }
 
@@ -89,21 +90,25 @@ class KerutaK8sClient(
     }
 }
 
-suspend fun main() {
+suspend fun main() = coroutineScope {
     val config = K8sConfig.fromEnvironment()
 
-    if (config.webMode) {
-        logger.info { "Starting in Web mode on port ${config.webPort}" }
-        startWebMode(config)
-    } else {
-        logger.info { "Starting in CLI mode" }
-        val client = KerutaK8sClient(config)
-        client.start()
-    }
+    // 常にWebサーバーを起動
+    logger.info { "Starting web server on port ${config.webPort}" }
+
+    // 通常モード: WebサーバーとCLIモードを並行起動
+    logger.info { "Running in CLI mode with web server" }
+
+    // Webサーバーを非ブロッキングで起動（wait=falseなので即座に戻る）
+    startWebModeNonBlocking(config)
+
+    // CLIモード（タスク実行）を起動
+    val client = KerutaK8sClient(config)
+    client.start()
 }
 
-private fun startWebMode(config: K8sConfig) {
-    net.kigawa.keruta.ktcl.k8s.web.startWebServer(config.webPort)
+private fun startWebModeNonBlocking(config: K8sConfig) {
+    net.kigawa.keruta.ktcl.k8s.web.startWebServerNonBlocking(config.webPort)
 }
 
 private val logger = LoggerFactory.get("Main")
