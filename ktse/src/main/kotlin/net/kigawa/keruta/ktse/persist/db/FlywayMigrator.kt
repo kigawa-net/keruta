@@ -52,39 +52,6 @@ class FlywayMigrator {
         }
     }
 
-    fun rollbackToVersion(
-        jdbcUrl: String,
-        username: String,
-        password: String,
-        targetVersion: String,
-    ) {
-        logger.info("Starting Flyway rollback to version: $targetVersion")
-        logger.debug("JDBC URL: $jdbcUrl")
-
-        try {
-            val flyway = Flyway.configure()
-                .dataSource(jdbcUrl, username, password)
-                .locations("classpath:db/migration")
-                .baselineOnMigrate(true)
-                .failOnMissingLocations(false)
-                .target(org.flywaydb.core.api.MigrationVersion.fromVersion(targetVersion))
-                .load()
-
-            logger.info("WARNING: Rolling back to version $targetVersion - this will clean the database!")
-
-            // データベースをクリーン
-            val cleanResult = flyway.clean()
-            logger.info("Database cleaned: ${cleanResult.schemasCleaned.size} schemas cleaned")
-
-            // 指定バージョンまでマイグレート
-            val migrateResult = flyway.migrate()
-            logger.info("Rollback completed: ${migrateResult.migrationsExecuted} migrations executed to version $targetVersion")
-        } catch (e: Exception) {
-            logger.error("Flyway rollback failed", e)
-            throw e
-        }
-    }
-
     fun clean(
         jdbcUrl: String,
         username: String,
