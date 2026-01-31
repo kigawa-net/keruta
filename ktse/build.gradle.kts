@@ -9,4 +9,5 @@ application {
 
 tasks.named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
     mergeServiceFiles()
+    archiveClassifier.set("all")
 }
