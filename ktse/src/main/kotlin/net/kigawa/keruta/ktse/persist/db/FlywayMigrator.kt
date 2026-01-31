@@ -18,8 +18,7 @@ class FlywayMigrator {
         return Flyway.configure()
             .dataSource(jdbcUrl, username, password)
             .locations("classpath:db/migration")
-            .baselineOnMigrate(true)
-            .failOnMissingLocations(false)
+            .createSchemas(true)
             .load()
     }
 
