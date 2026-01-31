@@ -6,7 +6,7 @@ plugins {
 }
 
 application {
-    mainClass.set("net.kigawa.keruta.ktcl.k8s.KerutaK8sClientKt")
+    mainClass.set("net.kigawa.keruta.ktcl.k8s.Main")
 }
 
 dependencies {

@@ -89,26 +89,3 @@ class KerutaK8sClient(
         taskReceiver.startReceiving(ctx)
     }
 }
-
-suspend fun main() = coroutineScope {
-    val config = K8sConfig.fromEnvironment()
-
-    // 常にWebサーバーを起動
-    logger.info { "Starting web server on port ${config.webPort}" }
-
-    // 通常モード: WebサーバーとCLIモードを並行起動
-    logger.info { "Running in CLI mode with web server" }
-
-    // Webサーバーを非ブロッキングで起動（wait=falseなので即座に戻る）
-    startWebModeNonBlocking(config)
-
-    // CLIモード（タスク実行）を起動
-    val client = KerutaK8sClient(config)
-    client.start()
-}
-
-private fun startWebModeNonBlocking(config: K8sConfig) {
-    net.kigawa.keruta.ktcl.k8s.web.startWebServerNonBlocking(config.webPort)
-}
-
-private val logger = LoggerFactory.get("Main")
