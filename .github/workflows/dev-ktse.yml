@@ -1,0 +1,21 @@
+on:
+  push:
+    paths-ignore:
+      - /README.md
+      - /Dockerfile_ktcl_k8s
+      - /Dockerfile_ktcl_front
+    branches:
+      - develop
+
+jobs:
+  ktse:
+    uses: ./.github/workflows/release.yml
+    secrets:
+      HARBOR_PASS: ${{ secrets.HARBOR_PASS }}
+      GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+    with:
+      name: ktse
+      manifestFile: ./keruta/dev/ktse.yaml
+      harborProject: "library"
+      repository: "kigawa-net/kigawa-net-k8s"
+      dockerFile: './Dockerfile_ktse'

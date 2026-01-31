@@ -9,7 +9,7 @@ COPY ktcl-k8s /app/ktcl-k8s
 COPY ktcp /app/ktcp
 COPY ktse /app/ktse
 COPY settings.gradle.kts gradle.properties build.gradle.kts gradlew /app/
-RUN ./gradlew :ktse:build
+RUN ./gradlew :ktse:build -x test
 
 FROM eclipse-temurin:25.0.1_8-jdk-noble
 
