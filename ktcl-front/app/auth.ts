@@ -10,6 +10,9 @@ export namespace Auth {
 
     export async function getPrivateKey() {
         const encodedKey = ServerConfig.strPrivateKey
+        if (!encodedKey || encodedKey.trim() === "") {
+            throw new Error("PRIVATE_KEY environment variable is not set or empty")
+        }
         return await importPKCS8(
             Buffer.from(encodedKey, "base64").toString(),
             "RS256",
