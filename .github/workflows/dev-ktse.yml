@@ -4,6 +4,9 @@ on:
       - /README.md
       - /Dockerfile_ktcl_k8s
       - /Dockerfile_ktcl_front
+      - /ktcl-k8s/**
+      - /.github/workflows/dev-ktcl-front.yml
+      - /.github/workflows/dev-ktcl-k8s.yml
     branches:
       - develop
 

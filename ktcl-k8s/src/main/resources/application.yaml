@@ -9,3 +9,5 @@ keycloak:
   url: "https://user.kigawa.net/"
   realm: "develop"
   clientId: "keruta"
+  jwksUrl: "https://user.kigawa.net/realms/develop/protocol/openid-connect/certs"
+  issuer: "https://user.kigawa.net/realms/develop"

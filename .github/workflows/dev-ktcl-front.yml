@@ -1,9 +1,13 @@
+name: dev-ktcl-front
 on:
   push:
     paths-ignore:
       - /README.md
       - /Dockerfile_ktse
       - /Dockerfile_ktcl_k8s
+      - /ktcl-k8s/**
+      - /.github/workflows/dev-ktcl-k8s.yml
+      - /.github/workflows/dev-ktse.yml
     branches:
       - develop
 
