@@ -30,6 +30,7 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation:${Version.KTOR}")
     implementation("io.ktor:ktor-server-cors:${Version.KTOR}")
     implementation("io.ktor:ktor-server-status-pages:${Version.KTOR}")
+    implementation("io.ktor:ktor-server-config-yaml:${Version.KTOR}")
 
     // Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
