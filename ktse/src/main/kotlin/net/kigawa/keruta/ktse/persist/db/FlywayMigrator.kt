@@ -17,8 +17,10 @@ class FlywayMigrator {
     ): Flyway {
         return Flyway.configure()
             .dataSource(jdbcUrl, username, password)
-            .locations("classpath:db/migration")
+            .locations("classpath:/db/migration", "classpath:db/migration")
             .createSchemas(true)
+            .validateMigrationNaming(false)
+            .failOnMissingLocations(false)
             .load()
     }
 
@@ -32,6 +34,15 @@ class FlywayMigrator {
 
         try {
             val flyway = createFlyway(jdbcUrl, username, password)
+
+            // Log migration info before migration
+            logger.info("Checking available migrations...")
+            val info = flyway.info()
+            logger.info("Found ${info.all().size} migrations:")
+            info.all().forEach { migration ->
+                logger.info("  - ${migration.version}: ${migration.description} [${migration.state}]")
+            }
+
             val result = flyway.migrate()
             logger.info("Flyway migration completed: ${result.migrationsExecuted} migrations executed")
         } catch (e: Exception) {
