@@ -9,16 +9,23 @@ import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
+import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import net.kigawa.keruta.ktcl.k8s.Main
 import net.kigawa.keruta.ktcl.k8s.web.auth.configureAuth
 import net.kigawa.keruta.ktcl.k8s.web.routes.configureConfigRoutes
 import net.kigawa.keruta.ktcl.k8s.web.routes.configureStaticRoutes
-import net.kigawa.kodel.api.log.Kogger
 import net.kigawa.kodel.api.log.LoggerFactory
 
 fun Application.module() {
     val logger = LoggerFactory.get("WebApplication")
     logger.info("Starting ktcl-k8s Web Module")
+
+    // K8sクライアントをバックグラウンドで起動
+    launch {
+        logger.info("Starting K8s client in background")
+        Main.client.start()
+    }
 
     // JSON設定
     install(ContentNegotiation) {
@@ -73,11 +80,11 @@ fun Application.module() {
 @Serializable
 data class UserSession(
     val userId: String,
-    val token: String
+    val token: String,
 )
 
 @Serializable
 data class ErrorResponse(
     val error: String,
-    val message: String
+    val message: String,
 )
