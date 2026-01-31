@@ -28,7 +28,7 @@ jobs:
       dockerFile: './Dockerfile_ktcl_front'
       buildArgs: |
         {
-          "VITE_WEBSOCKET_URL": "ws://ktse-dev.kigawa.net/ws/ktcp",
+          "VITE_WEBSOCKET_URL": "wss://ktse-dev.kigawa.net/ws/ktcp",
           "VITE_KEYCLOAK_URL": "https://user.kigawa.net/",
           "VITE_KEYCLOAK_REALM": "develop",
           "VITE_KEYCLOAK_CLIENT_ID": "keruta"
