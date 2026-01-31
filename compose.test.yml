@@ -1,4 +1,18 @@
 services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=keruta_test
+      - MYSQL_USER=keruta
+      - MYSQL_PASSWORD=keruta
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "keruta", "-pkeruta"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    tmpfs:
+      - /var/lib/mysql
   rsync:
     build:
       context: .
@@ -71,6 +85,8 @@ services:
     depends_on:
       rsync:
         condition: service_completed_successfully
+      mysql:
+        condition: service_healthy
     volumes:
       - type: bind
         source: ./cache/app
@@ -83,6 +99,9 @@ services:
       - GRADLE_OPTS=-Dorg.gradle.daemon=false
       - CHROME_BIN=/opt/google/chrome/chrome
       - FIREFOX_BIN=/usr/bin/firefox
+      - TEST_DB_JDBC_URL=jdbc:mysql://mysql:3306/keruta_test
+      - TEST_DB_USERNAME=keruta
+      - TEST_DB_PASSWORD=keruta
   test:
     build:
       context: .
@@ -93,6 +112,8 @@ services:
         condition: service_completed_successfully
       ktcl-front-test:
         condition: service_completed_successfully
+      mysql:
+        condition: service_healthy
     volumes:
       - type: bind
         source: ./cache/app
@@ -105,4 +126,7 @@ services:
       - GRADLE_OPTS=-Dorg.gradle.daemon=false
       - CHROME_BIN=/opt/google/chrome/chrome
       - FIREFOX_BIN=/usr/bin/firefox
+      - TEST_DB_JDBC_URL=jdbc:mysql://mysql:3306/keruta_test
+      - TEST_DB_USERNAME=keruta
+      - TEST_DB_PASSWORD=keruta
 
