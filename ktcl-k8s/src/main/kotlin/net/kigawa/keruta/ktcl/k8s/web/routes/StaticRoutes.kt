@@ -3,17 +3,17 @@ package net.kigawa.keruta.ktcl.k8s.web.routes
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import net.kigawa.keruta.ktcl.k8s.web.login.LoginRoute
 
 class StaticRoutes {
+    val loginRoute = LoginRoute()
     fun configure(route: Route) {
         route.apply {
             get("/") {
                 call.respondText(getIndexHtml(), ContentType.Text.Html)
             }
 
-            get("/login") {
-                call.respondText(getIndexHtml(), ContentType.Text.Html)
-            }
+            loginRoute.configure(this)
 
             get("/config") {
                 call.respondText(getIndexHtml(), ContentType.Text.Html)
@@ -22,7 +22,7 @@ class StaticRoutes {
     }
 
     private fun getIndexHtml(): String {
-    return """
+        return $$"""
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -251,9 +251,9 @@ class StaticRoutes {
 
     <script>
         // Keycloak設定（環境変数から注入）
-        const KEYCLOAK_URL = '${System.getenv("KEYCLOAK_URL") ?: "https://user.kigawa.net/"}';
-        const KEYCLOAK_REALM = '${System.getenv("KEYCLOAK_REALM") ?: "develop"}';
-        const KEYCLOAK_CLIENT_ID = '${System.getenv("KEYCLOAK_CLIENT_ID") ?: "keruta"}';
+        const KEYCLOAK_URL = '$${System.getenv("KEYCLOAK_URL") ?: "https://user.kigawa.net/"}';
+        const KEYCLOAK_REALM = '$${System.getenv("KEYCLOAK_REALM") ?: "develop"}';
+        const KEYCLOAK_CLIENT_ID = '$${System.getenv("KEYCLOAK_CLIENT_ID") ?: "keruta"}';
 
         let token = null;
 
@@ -272,7 +272,7 @@ class StaticRoutes {
         function showMessage(elementId, text, type) {
             const el = document.getElementById(elementId);
             el.textContent = text;
-            el.className = `message ${'$'}{type}`;
+            el.className = `message ${type}`;
             el.style.display = 'block';
             setTimeout(() => {
                 el.style.display = 'none';
@@ -281,7 +281,7 @@ class StaticRoutes {
 
         // Keycloakログイン
         document.getElementById('keycloakLoginBtn').addEventListener('click', async () => {
-            const authUrl = `${'$'}{KEYCLOAK_URL}realms/${'$'}{KEYCLOAK_REALM}/protocol/openid-connect/auth`;
+            const authUrl = `${KEYCLOAK_URL}realms/${KEYCLOAK_REALM}/protocol/openid-connect/auth`;
             const params = new URLSearchParams({
                 client_id: KEYCLOAK_CLIENT_ID,
                 redirect_uri: window.location.origin + '/login',
@@ -289,7 +289,7 @@ class StaticRoutes {
                 scope: 'openid'
             });
 
-            window.location.href = `${'$'}{authUrl}?${'$'}{params}`;
+            window.location.href = `${authUrl}?${params}`;
         });
 
         // URLからトークンを取得
@@ -329,7 +329,7 @@ class StaticRoutes {
             try {
                 const response = await fetch('/api/config', {
                     headers: {
-                        'Authorization': `Bearer ${'$'}{token}`
+                        'Authorization': `Bearer ${token}`
                     }
                 });
 
@@ -356,7 +356,7 @@ class StaticRoutes {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${'$'}{token}`
+                        'Authorization': `Bearer ${token}`
                     },
                     body: JSON.stringify({
                         namespace: document.getElementById('namespace').value,
@@ -380,7 +380,7 @@ class StaticRoutes {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${'$'}{token}`
+                        'Authorization': `Bearer ${token}`
                     },
                     body: JSON.stringify({
                         queueId: parseInt(document.getElementById('queueId').value)
@@ -423,7 +423,3 @@ class StaticRoutes {
     }
 }
 
-// 後方互換性のための拡張関数
-fun Route.configureStaticRoutes() {
-    StaticRoutes().configure(this)
-}

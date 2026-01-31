@@ -15,7 +15,7 @@ import net.kigawa.keruta.ktcl.k8s.config.K8sConfig
 import net.kigawa.keruta.ktcl.k8s.k8s.KerutaK8sClient
 import net.kigawa.keruta.ktcl.k8s.web.auth.AuthConfig
 import net.kigawa.keruta.ktcl.k8s.web.routes.ConfigRoutes
-import net.kigawa.keruta.ktcl.k8s.web.routes.configureStaticRoutes
+import net.kigawa.keruta.ktcl.k8s.web.routes.StaticRoutes
 import net.kigawa.kodel.api.log.LoggerFactory
 
 class WebApplicationModule(val application: Application) {
@@ -94,7 +94,7 @@ class WebApplicationModule(val application: Application) {
     private fun configureRouting() {
         application.routing {
             ConfigRoutes(jwkProvider, keycloakConfig, appConfig).configureConfigRoutes(this)
-            configureStaticRoutes()
+            StaticRoutes().configure(this)
         }
     }
 }
