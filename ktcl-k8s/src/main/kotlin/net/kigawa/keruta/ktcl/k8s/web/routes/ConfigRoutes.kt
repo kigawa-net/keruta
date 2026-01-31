@@ -1,66 +1,55 @@
 package net.kigawa.keruta.ktcl.k8s.web.routes
 
-import io.ktor.http.*
-import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kotlinx.serialization.Serializable
-import net.kigawa.keruta.ktcl.k8s.config.K8sConfig
+import net.kigawa.keruta.ktcl.k8s.config.appConfig
 import net.kigawa.keruta.ktcl.k8s.web.auth.requireAuth
+import net.kigawa.keruta.ktcl.k8s.web.dto.ConfigResponse
+import net.kigawa.keruta.ktcl.k8s.web.dto.KubernetesConfig
+import net.kigawa.keruta.ktcl.k8s.web.dto.QueueConfig
+import net.kigawa.keruta.ktcl.k8s.web.dto.UpdateKubernetesConfigRequest
+import net.kigawa.keruta.ktcl.k8s.web.dto.UpdateQueueConfigRequest
+import net.kigawa.keruta.ktcl.k8s.web.dto.AuthInfo
+import net.kigawa.keruta.ktcl.k8s.web.dto.WellKnownKerutaResponse
 import net.kigawa.kodel.api.log.LoggerFactory
 
 private val logger = LoggerFactory.get("ConfigRoutes")
-
-@Serializable
-data class ConfigResponse(
-    val kubernetes: KubernetesConfig,
-    val queue: QueueConfig
-)
-
-@Serializable
-data class KubernetesConfig(
-    val namespace: String,
-    val useInCluster: Boolean,
-    val kubeconfigPath: String?,
-    val jobTimeout: Long
-)
-
-@Serializable
-data class QueueConfig(
-    val queueId: Long
-)
-
-@Serializable
-data class UpdateKubernetesConfigRequest(
-    val namespace: String? = null,
-    val useInCluster: Boolean? = null,
-    val kubeconfigPath: String? = null,
-    val jobTimeout: Long? = null
-)
-
-@Serializable
-data class UpdateQueueConfigRequest(
-    val queueId: Long
-)
 
 fun Route.configureConfigRoutes() {
     // 認証ルート
     configureAuthRoutes()
 
+    // .well-known エンドポイント（認証不要）
+    get("/.well-known/keruta.json") {
+        val appConfig = call.application.appConfig
+        val issuer = appConfig.keruta.ownIssuer
+        val loginUrl = "$issuer/protocol/openid-connect/auth"
+
+        val response = WellKnownKerutaResponse(
+            service = "keruta-ktcl-k8s",
+            version = "1.0.0",
+            auth = AuthInfo(
+                issuer = issuer,
+                loginUrl = loginUrl
+            )
+        )
+        call.respond(response)
+    }
+
     route("/api/config") {
         get {
             call.requireAuth { _ ->
-                val config = K8sConfig.fromEnvironment()
+                val appConfig = call.application.appConfig
                 val response = ConfigResponse(
                     kubernetes = KubernetesConfig(
-                        namespace = config.k8sNamespace,
-                        useInCluster = config.k8sUseInCluster,
-                        kubeconfigPath = config.k8sKubeConfigPath,
-                        jobTimeout = config.k8sJobTimeout
+                        namespace = appConfig.k8s.namespace,
+                        useInCluster = appConfig.k8s.useInCluster,
+                        kubeconfigPath = appConfig.k8s.kubeConfigPath,
+                        jobTimeout = appConfig.k8s.jobTimeout
                     ),
                     queue = QueueConfig(
-                        queueId = config.queueId
+                        queueId = appConfig.ktse.queueId
                     )
                 )
                 call.respond(response)

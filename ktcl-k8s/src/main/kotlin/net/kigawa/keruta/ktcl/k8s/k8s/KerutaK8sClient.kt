@@ -1,4 +1,4 @@
-package net.kigawa.keruta.ktcl.k8s
+package net.kigawa.keruta.ktcl.k8s.k8s
 
 import KtcpSession
 import kotlinx.coroutines.coroutineScope
@@ -6,11 +6,17 @@ import net.kigawa.keruta.ktcl.k8s.auth.AuthManager
 import net.kigawa.keruta.ktcl.k8s.config.K8sConfig
 import net.kigawa.keruta.ktcl.k8s.connection.ConnectionManager
 import net.kigawa.keruta.ktcl.k8s.connection.JvmWebSocketConnection
-import net.kigawa.keruta.ktcl.k8s.entrypoint.*
-import net.kigawa.keruta.ktcl.k8s.k8s.JobTemplateLoader
-import net.kigawa.keruta.ktcl.k8s.k8s.K8sClientFactory
-import net.kigawa.keruta.ktcl.k8s.k8s.K8sJobExecutor
-import net.kigawa.keruta.ktcl.k8s.k8s.K8sJobWatcher
+import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveAuthSuccessEntrypoint
+import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveGenericErrEntrypoint
+import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveProviderListedEntrypoint
+import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveQueueCreatedEntrypoint
+import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveQueueListedEntrypoint
+import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveQueueShowedEntrypoint
+import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveTaskCreatedEntrypoint
+import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveTaskListedEntrypoint
+import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveTaskMovedEntrypoint
+import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveTaskShowedEntrypoint
+import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveTaskUpdatedEntrypoint
 import net.kigawa.keruta.ktcl.k8s.task.TaskExecutor
 import net.kigawa.keruta.ktcl.k8s.task.TaskReceiver
 import net.kigawa.keruta.ktcp.client.ClientCtx

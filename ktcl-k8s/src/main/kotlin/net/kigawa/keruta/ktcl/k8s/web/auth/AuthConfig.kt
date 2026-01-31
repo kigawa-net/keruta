@@ -3,13 +3,24 @@ package net.kigawa.keruta.ktcl.k8s.web.auth
 import com.auth0.jwk.JwkProviderBuilder
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.*
 import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.sessions.*
 import io.ktor.util.*
+import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonIgnoreUnknownKeys
+import net.kigawa.keruta.ktcl.k8s.config.appConfig
 import net.kigawa.keruta.ktcl.k8s.web.UserSession
-import net.kigawa.kodel.api.log.Kogger
 import net.kigawa.kodel.api.log.LoggerFactory
 import java.net.URL
 import java.security.interfaces.RSAPublicKey
@@ -17,16 +28,26 @@ import java.util.concurrent.TimeUnit
 
 private val logger = LoggerFactory.get("AuthConfig")
 
+@OptIn(ExperimentalSerializationApi::class)
+@Serializable
+@JsonIgnoreUnknownKeys
+data class OidcDiscoveryResponse(
+    @SerialName("issuer") val issuer: String,
+    @SerialName("jwks_uri") val jwksUri: String,
+    @SerialName("authorization_endpoint") val authorizationEndpoint: String? = null,
+    @SerialName("token_endpoint") val tokenEndpoint: String? = null,
+    @SerialName("userinfo_endpoint") val userinfoEndpoint: String? = null
+)
+
 data class KeycloakConfig(
-    val url: String,
-    val realm: String,
-    val clientId: String,
+    val audience: String,
     val jwksUrl: String,
     val issuer: String
 )
 
 fun Application.configureAuth() {
-    val keycloakConfig = getKeycloakConfig()
+    val idpConfig = appConfig.idp
+    val keycloakConfig = getKeycloakConfig(idpConfig.issuer, idpConfig.audience)
     logger.info("Configuring Keycloak authentication: ${keycloakConfig.issuer}")
 
     // JWKプロバイダー設定
@@ -42,15 +63,39 @@ fun Application.configureAuth() {
     }
 }
 
-private fun Application.getKeycloakConfig(): KeycloakConfig {
-    val config = environment.config
-    val url = config.property("keycloak.url").getString()
-    val realm = config.property("keycloak.realm").getString()
-    val clientId = config.property("keycloak.clientId").getString()
-    val jwksUrl = config.property("keycloak.jwksUrl").getString()
-    val issuer = config.property("keycloak.issuer").getString()
+private fun getKeycloakConfig(issuer: String, audience: String): KeycloakConfig {
+    // OIDC well-knownエンドポイントから動的に取得
+    val wellKnownUrl = "$issuer/.well-known/openid-configuration"
+    logger.info("Fetching OIDC configuration from: $wellKnownUrl")
 
-    return KeycloakConfig(url, realm, clientId, jwksUrl, issuer)
+    val oidcMetadata = runBlocking {
+        fetchOidcMetadata(wellKnownUrl)
+    }
+
+    logger.info("OIDC configuration fetched successfully. JWKS URI: ${oidcMetadata.jwksUri}")
+
+    return KeycloakConfig(
+        audience = audience,
+        jwksUrl = oidcMetadata.jwksUri,
+        issuer = issuer
+    )
+}
+
+private suspend fun fetchOidcMetadata(wellKnownUrl: String): OidcDiscoveryResponse {
+    val client = HttpClient(CIO) {
+        install(ContentNegotiation) {
+            json()
+        }
+    }
+
+    return try {
+        client.get(wellKnownUrl).body<OidcDiscoveryResponse>()
+    } catch (e: Exception) {
+        logger.severe("Failed to fetch OIDC metadata from $wellKnownUrl: ${e.message}")
+        throw RuntimeException("Failed to fetch OIDC metadata", e)
+    } finally {
+        client.close()
+    }
 }
 
 val JWK_PROVIDER_KEY = AttributeKey<com.auth0.jwk.JwkProvider>("JwkProvider")
@@ -71,7 +116,7 @@ fun Application.verifyToken(token: String): String? {
 
         val verifier = JWT.require(algorithm)
             .withIssuer(keycloakConfig.issuer)
-            .withAudience(keycloakConfig.clientId)
+            .withAudience(keycloakConfig.audience)
             .build()
 
         val decodedJwt = verifier.verify(token)

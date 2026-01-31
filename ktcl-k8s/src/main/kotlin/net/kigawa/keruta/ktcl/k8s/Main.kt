@@ -1,6 +1,7 @@
 package net.kigawa.keruta.ktcl.k8s
 
 import net.kigawa.keruta.ktcl.k8s.config.K8sConfig
+import net.kigawa.keruta.ktcl.k8s.k8s.KerutaK8sClient
 
 object Main {
     val config = K8sConfig.fromEnvironment()

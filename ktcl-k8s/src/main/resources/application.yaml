@@ -3,11 +3,10 @@ ktor:
     port: 8081
   application:
     modules:
-      - net.kigawa.keruta.ktcl.k8s.web.ApplicationKt.module
+      - net.kigawa.keruta.ktcl.k8s.KtclK8sServer.module
 
-keycloak:
-  url: "https://user.kigawa.net/"
-  realm: "develop"
-  clientId: "keruta"
-  jwksUrl: "https://user.kigawa.net/realms/develop/protocol/openid-connect/certs"
-  issuer: "https://user.kigawa.net/realms/develop"
+idp:
+  issuer: ${IDP_ISSUER:https://user.kigawa.net/realms/develop}
+  audience: ${IDP_AUDIENCE:keruta}
+keruta:
+  ownIssuer: ${KERUTA_ISSUER:http://localhost:8081}
