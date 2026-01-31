@@ -37,7 +37,7 @@ export function WebsocketProvider(
             wsState.websocket.removeEventListener("error", err);
             wsState.websocket.removeEventListener("close", close);
         }
-    }, [wsState, open, err, close]);
+    }, [wsState.state, open, err, close]);
 
     return <Context.Provider
         value={wsState}
@@ -60,6 +60,10 @@ export type WebsocketState = {
     state: "closed",
     websocket: WebSocket,
     open(): void,
+} | {
+    state: "error",
+    websocket: WebSocket,
+    retry(): void,
 }
 
 export interface WebsocketOpenState {
@@ -74,9 +78,15 @@ function useHandlers(
     const err = useCallback(() => {
         console.log("websocket error")
         setWsState(prevState => {
-            if (prevState.state != "loaded") return prevState
+            if (prevState.state != "loaded" && prevState.state != "open") return prevState
             return {
-                state: "unloaded"
+                state: "error",
+                websocket: prevState.websocket,
+                retry() {
+                    setWsState({
+                        state: "unloaded"
+                    })
+                },
             }
         })
     }, []);

@@ -59,12 +59,13 @@ function useRetry(
     wsState: WebsocketState
 ) {
     useEffect(() => {
-        if (!(
-            wsState.state == "closed"
-        )) return;
-        const timeout = setTimeout(() => wsState.open(), 1000 * 5)
-        return () => clearTimeout(timeout)
-    }, [
-        wsState.state == "closed"
-    ]);
+        if (wsState.state == "closed") {
+            const timeout = setTimeout(() => wsState.open(), 1000 * 5)
+            return () => clearTimeout(timeout)
+        }
+        if (wsState.state == "error") {
+            const timeout = setTimeout(() => wsState.retry(), 1000 * 10)
+            return () => clearTimeout(timeout)
+        }
+    }, [wsState.state]);
 }
