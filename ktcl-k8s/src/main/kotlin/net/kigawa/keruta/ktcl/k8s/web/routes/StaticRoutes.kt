@@ -1,28 +1,27 @@
 package net.kigawa.keruta.ktcl.k8s.web.routes
 
 import io.ktor.http.*
-import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import net.kigawa.kodel.api.log.LoggerFactory
 
-private val logger = LoggerFactory.get("StaticRoutes")
+class StaticRoutes {
+    fun configure(route: Route) {
+        route.apply {
+            get("/") {
+                call.respondText(getIndexHtml(), ContentType.Text.Html)
+            }
 
-fun Route.configureStaticRoutes() {
-    get("/") {
-        call.respondText(getIndexHtml(), ContentType.Text.Html)
+            get("/login") {
+                call.respondText(getIndexHtml(), ContentType.Text.Html)
+            }
+
+            get("/config") {
+                call.respondText(getIndexHtml(), ContentType.Text.Html)
+            }
+        }
     }
 
-    get("/login") {
-        call.respondText(getIndexHtml(), ContentType.Text.Html)
-    }
-
-    get("/config") {
-        call.respondText(getIndexHtml(), ContentType.Text.Html)
-    }
-}
-
-private fun getIndexHtml(): String {
+    private fun getIndexHtml(): String {
     return """
 <!DOCTYPE html>
 <html lang="ja">
@@ -421,4 +420,10 @@ private fun getIndexHtml(): String {
 </body>
 </html>
     """.trimIndent()
+    }
+}
+
+// 後方互換性のための拡張関数
+fun Route.configureStaticRoutes() {
+    StaticRoutes().configure(this)
 }

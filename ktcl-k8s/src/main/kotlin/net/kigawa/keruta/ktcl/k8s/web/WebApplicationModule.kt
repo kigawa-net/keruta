@@ -10,54 +10,53 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import kotlinx.coroutines.launch
-import net.kigawa.keruta.ktcl.k8s.Main
-import net.kigawa.keruta.ktcl.k8s.config.APP_CONFIG_KEY
 import net.kigawa.keruta.ktcl.k8s.config.AppConfig
-import net.kigawa.keruta.ktcl.k8s.web.auth.configureAuth
-import net.kigawa.keruta.ktcl.k8s.web.routes.configureConfigRoutes
+import net.kigawa.keruta.ktcl.k8s.config.K8sConfig
+import net.kigawa.keruta.ktcl.k8s.k8s.KerutaK8sClient
+import net.kigawa.keruta.ktcl.k8s.web.auth.AuthConfig
+import net.kigawa.keruta.ktcl.k8s.web.routes.ConfigRoutes
 import net.kigawa.keruta.ktcl.k8s.web.routes.configureStaticRoutes
 import net.kigawa.kodel.api.log.LoggerFactory
 
-class WebApplicationModule {
+class WebApplicationModule(val application: Application) {
     private val logger = LoggerFactory.get("WebApplication")
+    val auth = AuthConfig()
+    val appConfig = AppConfig.load(application.environment.config)
+    val idpConfig = appConfig.idp
+    val keycloakConfig = auth.loadKeycloakConfig(idpConfig.issuer, idpConfig.audience)
+    val jwkProvider = auth.createJwkProvider(keycloakConfig.jwksUrl)
+    val config = K8sConfig.fromEnvironment()
+    val client = KerutaK8sClient(config)
 
 
-
-    fun configure(application: Application) {
+    fun configure() {
         logger.info("Starting ktcl-k8s Web Module")
 
-        loadAppConfig(application)
-        startK8sClient(application)
-        configureJson(application)
-        configureCors(application)
-        configureSessions(application)
-        configureErrorHandling(application)
-        configureAuthentication(application)
-        configureRouting(application)
+        startK8sClient()
+        configureJson()
+        configureCors()
+        configureSessions()
+        configureErrorHandling()
+        logger.info("Configuring Keycloak authentication: ${keycloakConfig.issuer}")
+        configureRouting()
 
         logger.info("ktcl-k8s Web Module started successfully")
     }
 
-    private fun loadAppConfig(application: Application) {
-        val appConfig = AppConfig.load(application.environment.config)
-        application.attributes.put(APP_CONFIG_KEY, appConfig)
-        logger.info("AppConfig loaded: server.port=${appConfig.server.port}, idp.issuer=${appConfig.idp.issuer}")
-    }
-
-    private fun startK8sClient(application: Application) {
+    private fun startK8sClient() {
         application.launch {
             logger.info("Starting K8s client in background")
-            Main.client.start()
+            client.start()
         }
     }
 
-    private fun configureJson(application: Application) {
+    private fun configureJson() {
         application.install(ContentNegotiation) {
             json()
         }
     }
 
-    private fun configureCors(application: Application) {
+    private fun configureCors() {
         application.install(CORS) {
             allowMethod(HttpMethod.Options)
             allowMethod(HttpMethod.Get)
@@ -67,11 +66,10 @@ class WebApplicationModule {
             allowHeader(HttpHeaders.Authorization)
             allowHeader(HttpHeaders.ContentType)
             allowCredentials = true
-            anyHost() // 本番環境では特定のホストのみ許可すること
         }
     }
 
-    private fun configureSessions(application: Application) {
+    private fun configureSessions() {
         application.install(Sessions) {
             cookie<UserSession>("user_session") {
                 cookie.path = "/"
@@ -80,7 +78,7 @@ class WebApplicationModule {
         }
     }
 
-    private fun configureErrorHandling(application: Application) {
+    private fun configureErrorHandling() {
         application.install(StatusPages) {
             exception<Throwable> { call, cause ->
                 val errorLogger = LoggerFactory.get("ErrorHandler")
@@ -93,13 +91,9 @@ class WebApplicationModule {
         }
     }
 
-    private fun configureAuthentication(application: Application) {
-        application.configureAuth()
-    }
-
-    private fun configureRouting(application: Application) {
+    private fun configureRouting() {
         application.routing {
-            configureConfigRoutes()
+            ConfigRoutes(jwkProvider, keycloakConfig, appConfig).configureConfigRoutes(this)
             configureStaticRoutes()
         }
     }

@@ -8,9 +8,3 @@ data class WellKnownKerutaResponse(
     val version: String,
     val auth: AuthInfo
 )
-
-@Serializable
-data class AuthInfo(
-    val issuer: String,
-    val loginUrl: String,
-)

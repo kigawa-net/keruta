@@ -11,12 +11,9 @@ import net.kigawa.keruta.ktcl.k8s.err.K8sErr
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.LoggerFactory
 
-enum class JobStatus {
-    RUNNING, SUCCEEDED, FAILED, TIMEOUT
-}
 
 class K8sJobWatcher(
-    private val apiClient: ApiClient,
+    apiClient: ApiClient,
     private val config: K8sConfig,
 ) {
     private val logger = LoggerFactory.get("K8sJobWatcher")
