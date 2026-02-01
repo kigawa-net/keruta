@@ -4,6 +4,7 @@ import net.kigawa.keruta.ktcp.model.auth.AuthToken
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.server.auth.JwtVerifier
 import net.kigawa.keruta.ktcp.server.auth.UnverifiedToken
+import net.kigawa.keruta.ktcp.server.persist.PersistedProvider
 import net.kigawa.keruta.ktcp.server.persist.PersistedUser
 import net.kigawa.keruta.ktcp.server.persist.PersistedUserIdp
 import net.kigawa.keruta.ktse.KtseConfig
@@ -16,14 +17,16 @@ class UserVerifier(
     val dbPersister: DbPersister,
     val ktcpConfig: KtseConfig,
 ) {
-    suspend fun verifyStrToken(userToken: AuthToken): Res<PersistedUser, KtcpErr> = when (
+    suspend fun verifyStrToken(userToken: AuthToken, provider: PersistedProvider): Res<PersistedUser, KtcpErr> = when (
         val res = jwtVerifier.decodeUnverified(userToken)
     ) {
         is Res.Err -> res.x()
-        is Res.Ok -> verifyToken(res.value)
+        is Res.Ok -> verifyToken(res.value, provider)
     }
 
-    suspend fun verifyToken(unverifiedToken: UnverifiedToken): Res<PersistedUser, KtcpErr> = when (
+    private suspend fun verifyToken(
+        unverifiedToken: UnverifiedToken, provider: PersistedProvider,
+    ): Res<PersistedUser, KtcpErr> = when (
         val res = dbPersister.execTransaction {
             it.user.getUserIdpOrNull(
                 unverifiedToken.subject, unverifiedToken.issuer
@@ -32,10 +35,12 @@ class UserVerifier(
     ) {
         is Res.Err -> res.x()
         is Res.Ok -> verifyWithUserIdp(unverifiedToken, res.value)
-        null -> createUser(unverifiedToken)
+        null -> createUser(unverifiedToken, provider)
     }
 
-    suspend fun createUser(unverifiedToken: UnverifiedToken): Res<PersistedUser, KtcpErr> {
+    private suspend fun createUser(
+        unverifiedToken: UnverifiedToken, provider: PersistedProvider,
+    ): Res<PersistedUser, KtcpErr> {
         val idp = ktcpConfig.defaultIdp.firstOrNull { it.issuer == unverifiedToken.issuer }
         if (idp == null) return Res.Err(UnknownIssuerErr("", null))
         return when (
@@ -45,7 +50,7 @@ class UserVerifier(
         ) {
             is Res.Err -> res.x()
             is Res.Ok -> dbPersister.execTransaction {
-                it.user.createUserAndIdp(idp, res.value)
+                it.user.createUserAndIdp(idp, res.value, provider)
             }
         }
     }

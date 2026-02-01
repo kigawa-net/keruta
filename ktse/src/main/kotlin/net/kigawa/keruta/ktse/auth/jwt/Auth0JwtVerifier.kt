@@ -1,8 +1,7 @@
-package net.kigawa.keruta.ktse.auth
+package net.kigawa.keruta.ktse.auth.jwt
 
 import com.auth0.jwk.Jwk
 import com.auth0.jwk.JwkProvider
-import com.auth0.jwk.JwkProviderBuilder
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.interfaces.DecodedJWT
@@ -14,16 +13,19 @@ import net.kigawa.keruta.ktcp.server.auth.VerifiedToken
 import net.kigawa.keruta.ktcp.server.err.VerifyErr
 import net.kigawa.keruta.ktcp.server.err.VerifyFailErr
 import net.kigawa.keruta.ktcp.server.err.VerifyUnsupportedKeyErr
+import net.kigawa.keruta.ktse.auth.jwks.JwksProvider
+import net.kigawa.keruta.ktse.http.HttpClient
 import net.kigawa.kodel.api.dump.Dumper
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.coroutine.cache.ConcurrentLruCache
 import java.security.interfaces.RSAPublicKey
 
-
-class Auth0JwtVerifier: JwtVerifier {
+class Auth0JwtVerifier(
+    httpClient: HttpClient,
+): JwtVerifier {
     val providers = ConcurrentLruCache<String, JwkProvider>(8)
     val verifierProvider = VerifierProvider()
-    val jwksProvider = JwksProvider()
+    val jwksProvider = JwksProvider(httpClient)
 
 
     override fun decodeUnverified(
@@ -42,27 +44,28 @@ class Auth0JwtVerifier: JwtVerifier {
         subject: String,
         idpConfig: IdpConfig,
         oidc: Boolean,
+        alg: Algorithm,
     ): Res<VerifiedToken, VerifyErr> {
-        val provider = if (oidc) {
-            val jwksUrl = when (val res = jwksProvider.getJwksUrl(idpConfig.issuer)) {
-                is Res.Err -> return res.x()
-                is Res.Ok -> res.value
-            }
-            providers.use {
-                getOrPut(idpConfig.issuer) {
-                    JwkProviderBuilder(jwksUrl).build()
-                }
-            }
-        } else providers.use {
-            getOrPut(idpConfig.issuer) {
-                JwkProviderBuilder(idpConfig.issuer).build()
-            }
-        }
-        val key = provider.get(rawToken.keyId)
-        val alg = when (val alg = alg(key)) {
-            is Res.Err<*, VerifyUnsupportedKeyErr> -> return alg.x()
-            is Res.Ok<Algorithm, *> -> alg.value
-        }
+//        val provider = if (oidc) {
+//            val jwksUrl = when (val res = jwksProvider.getJwksUrl(idpConfig.issuer)) {
+//                is Res.Err -> return res.x()
+//                is Res.Ok -> res.value
+//            }
+//            providers.use {
+//                getOrPut(idpConfig.issuer) {
+//                    JwkProviderBuilder(jwksUrl).build()
+//                }
+//            }
+//        } else providers.use {
+//            getOrPut(idpConfig.issuer) {
+//                JwkProviderBuilder(idpConfig.issuer).build()
+//            }
+//        }
+//        val key = provider.get(rawToken.keyId)
+//        val alg = when (val alg = alg(key)) {
+//            is Res.Err<*, VerifyUnsupportedKeyErr> -> return alg.x()
+//            is Res.Ok<Algorithm, *> -> alg.value
+//        }
         val verifier = verifierProvider.verifier(alg, idpConfig.issuer, idpConfig.audience, subject)
         return try {
             val verified = verifier.verify(token)

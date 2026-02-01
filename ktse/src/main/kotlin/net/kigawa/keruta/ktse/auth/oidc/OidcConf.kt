@@ -1,4 +1,4 @@
-package net.kigawa.keruta.ktse.auth
+package net.kigawa.keruta.ktse.auth.oidc
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName

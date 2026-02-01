@@ -26,10 +26,17 @@ class DbPersister(
         password = ktseConfig.dbConfig.password
         maximumPoolSize = 10
     }
-    private val db: Database = Database.connect(HikariDataSource(config))
+    val db: Database = Database.connect(HikariDataSource(config))
 
     init {
-        FlywayMigrator().migrate(
+        val migrator = FlywayMigrator()
+        // Repair any failed migrations before attempting to migrate
+        migrator.repair(
+            jdbcUrl = ktseConfig.dbConfig.jdbcUrl,
+            username = ktseConfig.dbConfig.username,
+            password = ktseConfig.dbConfig.password,
+        )
+        migrator.migrate(
             jdbcUrl = ktseConfig.dbConfig.jdbcUrl,
             username = ktseConfig.dbConfig.username,
             password = ktseConfig.dbConfig.password,

@@ -1,4 +1,4 @@
-package net.kigawa.keruta.ktse.auth
+package net.kigawa.keruta.ktse.auth.jwt
 
 import com.auth0.jwt.interfaces.DecodedJWT
 

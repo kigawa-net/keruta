@@ -14,7 +14,7 @@ class ServerCtx(
 ) {
     suspend fun verify(authRequestMsg: ServerAuthRequestMsg): Res<AuthenticatedSession, KtcpErr> {
         val persisterSession = when (
-            val res = persisterSession.verify(
+            val res = persisterSession.auth(
                 authRequestMsg
             )
         ) {
