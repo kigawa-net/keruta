@@ -4,19 +4,19 @@ import com.auth0.jwk.JwkProvider
 import com.auth0.jwk.JwkProviderBuilder
 import kotlinx.coroutines.runBlocking
 import net.kigawa.kodel.api.log.LoggerFactory
+import java.net.URI
 import java.net.URL
 import java.util.concurrent.TimeUnit
 
 
-class AuthConfig {
+class AuthConfig(
+    val oidcDiscoveryFetcher: OidcDiscoveryFetcher,
+) {
     private val logger = LoggerFactory.get("AuthConfig")
 
-    fun loadKeycloakConfig(issuer: String, audience: String): KeycloakConfig {
-        val wellKnownUrl = "$issuer/.well-known/openid-configuration"
-        logger.info("Fetching OIDC configuration from: $wellKnownUrl")
-
+    fun loadKeycloakConfig(issuer: URI, audience: String): KeycloakConfig {
         val oidcMetadata = runBlocking {
-            OidcDiscoveryFetcher().fetch(wellKnownUrl)
+            oidcDiscoveryFetcher.fetchByIssuer(issuer)
         }
 
         logger.info("OIDC configuration fetched successfully. JWKS URI: ${oidcMetadata.jwksUri}")

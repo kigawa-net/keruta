@@ -5,7 +5,8 @@ import net.kigawa.keruta.ktcl.k8s.web.WebApplicationModule
 
 @Suppress("unused")
 object KtclK8sServer {
+    val webApplicationModule = WebApplicationModule()
     fun Application.module() {
-        WebApplicationModule(this).configure()
+        webApplicationModule.configure(this)
     }
 }

@@ -3,17 +3,18 @@ package net.kigawa.keruta.ktcl.k8s.web.routes
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import net.kigawa.keruta.ktcl.k8s.web.login.LoginRoute
+import net.kigawa.keruta.ktcl.k8s.web.login.LoginCallbackRoute
 
 class StaticRoutes {
-    val loginRoute = LoginRoute()
+    private val loginCallbackRoute = LoginCallbackRoute()
+
     fun configure(route: Route) {
         route.apply {
             get("/") {
                 call.respondText(getIndexHtml(), ContentType.Text.Html)
             }
 
-            loginRoute.configure(this)
+            loginCallbackRoute.configure(this)
 
             get("/config") {
                 call.respondText(getIndexHtml(), ContentType.Text.Html)

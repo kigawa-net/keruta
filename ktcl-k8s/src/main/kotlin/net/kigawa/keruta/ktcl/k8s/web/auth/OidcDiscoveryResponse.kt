@@ -11,7 +11,7 @@ import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 data class OidcDiscoveryResponse(
     @SerialName("issuer") val issuer: String,
     @SerialName("jwks_uri") val jwksUri: String,
-    @SerialName("authorization_endpoint") val authorizationEndpoint: String? = null,
+    @SerialName("authorization_endpoint") val authorizationEndpoint: String,
     @SerialName("token_endpoint") val tokenEndpoint: String? = null,
-    @SerialName("userinfo_endpoint") val userinfoEndpoint: String? = null
+    @SerialName("userinfo_endpoint") val userinfoEndpoint: String? = null,
 )

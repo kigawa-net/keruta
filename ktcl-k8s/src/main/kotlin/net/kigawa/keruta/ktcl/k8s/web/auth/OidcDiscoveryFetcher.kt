@@ -1,15 +1,20 @@
 package net.kigawa.keruta.ktcl.k8s.web.auth
 
-import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.engine.cio.CIO
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.request.get
-import io.ktor.serialization.kotlinx.json.json
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.*
+import io.ktor.serialization.kotlinx.json.*
 import net.kigawa.kodel.api.log.LoggerFactory
+import java.net.URI
 
 class OidcDiscoveryFetcher {
     private val logger = LoggerFactory.get("OidcDiscoveryFetcher")
+    suspend fun fetchByIssuer(issuer: URI): OidcDiscoveryResponse {
+        val strUrl = issuer.toString().removeSuffix("/") + "/.well-known/openid-configuration"
+        return fetch(strUrl)
+    }
 
     suspend fun fetch(wellKnownUrl: String): OidcDiscoveryResponse {
         val client = createHttpClient()
