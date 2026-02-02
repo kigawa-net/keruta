@@ -43,6 +43,18 @@ kotlin {
             }
         }
     }
+
+    // iOS targets for mobile support
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "KodelApi"
+            isStatic = true
+        }
+    }
     sourceSets {
         commonMain {
             dependencies {

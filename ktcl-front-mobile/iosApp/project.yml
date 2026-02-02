@@ -1,0 +1,32 @@
+name: iosApp
+options:
+  bundleIdPrefix: net.kigawa.keruta.ktcl.mobile
+  deploymentTarget:
+    iOS: "15.0"
+
+settings:
+  MARKETING_VERSION: "1.0"
+  CURRENT_PROJECT_VERSION: "1"
+
+targets:
+  iosApp:
+    type: application
+    platform: iOS
+    sources:
+      - iosApp
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: net.kigawa.keruta.ktcl.mobile
+      INFOPLIST_FILE: iosApp/Info.plist
+      FRAMEWORK_SEARCH_PATHS:
+        - $(inherited)
+        - $(SRCROOT)/../build/bin/iosSimulatorArm64/debugFramework
+      OTHER_LDFLAGS:
+        - $(inherited)
+        - -framework
+        - ComposeApp
+    preBuildScripts:
+      - script: |
+          cd "$SRCROOT/../.."
+          ./gradlew :ktcl-front-mobile:embedAndSignAppleFrameworkForXcode
+        name: Build Kotlin Framework
+        basedOnDependencyAnalysis: false

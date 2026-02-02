@@ -21,3 +21,4 @@
 /temp.key
 /.idea/dataSources/*.corrupted.*.reason.txt
 /.idea/dataSources/*.corrupted.*.xml
+/local.properties
