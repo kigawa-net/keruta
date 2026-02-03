@@ -49,7 +49,7 @@ kotlin {
             implementation(compose.preview)
             implementation("androidx.activity:activity-compose:1.10.0")
             implementation("io.ktor:ktor-client-okhttp:${Version.KTOR}")
-            implementation("androidx.security:security-crypto:1.1.0-alpha06")
+            implementation("androidx.security:security-crypto:1.1.0")
             implementation("net.openid:appauth:0.11.1")
         }
 
