@@ -1,9 +1,10 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
+    id("com.android.application")
+    kotlin("android")
     kotlin("plugin.compose")
     id("org.jetbrains.compose")
-    id("com.android.application")
 }
 
 repositories {
@@ -42,9 +43,4 @@ kotlin {
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_21)
     }
-}
-
-dependencies {
-    implementation(project(":ktcl-front-mobile"))
-    implementation("androidx.activity:activity-compose:1.12.3")
 }

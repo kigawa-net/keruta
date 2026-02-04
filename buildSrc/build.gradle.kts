@@ -22,6 +22,7 @@ fun kotlinId(id: String) = "org.jetbrains.kotlin:$id:$kotlinVersion"
 dependencies {
     implementation(kotlinPluginId("multiplatform"))
     implementation(kotlinPluginId("jvm"))
+    implementation(kotlinPluginId("android"))
     implementation(kotlinPluginId("plugin.serialization"))
     implementation(kotlinPluginId("plugin.compose"))
     implementation(pluginId("com.gradleup.shadow", "9.3.0"))
@@ -29,5 +30,5 @@ dependencies {
     implementation(pluginId("com.google.devtools.ksp", "2.2.20-2.0.4"))
     implementation("org.jetbrains.compose:compose-gradle-plugin:$composeVersion")
 // Source: https://mvnrepository.com/artifact/com.android.tools.build/gradle
-    implementation("com.android.tools.build:gradle:9.0.0")
+    implementation("com.android.tools.build:gradle:8.12.0")
 }

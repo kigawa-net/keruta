@@ -1,4 +1,4 @@
-package net.kigawa.keruta.ktcl.mobile
+package net.kigawa.keruta.ktcl.mobile.app
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
