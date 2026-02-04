@@ -2,8 +2,9 @@ plugins {
     `kotlin-dsl`
 }
 
-
-
+kotlin {
+    jvmToolchain(21)
+}
 
 repositories {
     google()
@@ -27,5 +28,6 @@ dependencies {
     implementation(pluginId("org.jlleitschuh.gradle.ktlint", "12.1.1"))
     implementation(pluginId("com.google.devtools.ksp", "2.2.20-2.0.4"))
     implementation("org.jetbrains.compose:compose-gradle-plugin:$composeVersion")
-    implementation("com.android.tools.build:gradle:8.7.0")
+// Source: https://mvnrepository.com/artifact/com.android.tools.build/gradle
+    implementation("com.android.tools.build:gradle:9.0.0")
 }

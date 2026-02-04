@@ -1,5 +1,5 @@
 plugins {
-    id("compose-mobile")
+    id("compose-mobile-lib")
 }
 
 val iosSimulatorName = project.findProperty("iosSimulator")?.toString() ?: "iPhone 17 Pro"
@@ -82,4 +82,7 @@ tasks.register("iosSimulatorRun") {
 
         println("App launched on $simulatorName")
     }
+}
+kotlin {
+    jvmToolchain(21)
 }
