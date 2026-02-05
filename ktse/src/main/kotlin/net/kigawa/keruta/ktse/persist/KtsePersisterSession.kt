@@ -6,20 +6,20 @@ import net.kigawa.keruta.ktcp.server.auth.JwtVerifier
 import net.kigawa.keruta.ktcp.server.persist.AuthenticatedPersisterSession
 import net.kigawa.keruta.ktcp.server.persist.PersistedVerifyTables
 import net.kigawa.keruta.ktcp.server.persist.PersisterSession
-import net.kigawa.keruta.ktse.KtseConfig
 import net.kigawa.keruta.ktse.auth.AuthTokenVerifier
 import net.kigawa.keruta.ktse.auth.UnverifiedAuthTokens
+import net.kigawa.keruta.ktse.auth.jwks.JwksConfigProvider
+import net.kigawa.keruta.ktse.auth.oidc.OidcConfigProvider
 import net.kigawa.keruta.ktse.persist.db.DbPersister
 import net.kigawa.kodel.api.err.Res
 
 class KtsePersisterSession(
     val dbPersister: DbPersister,
-    val jwtVerifier: JwtVerifier,
-    ktseConfig: KtseConfig,
+    jwtVerifier: JwtVerifier,
+    jwksConfigProvider: JwksConfigProvider,
+    oidcConfigProvider: OidcConfigProvider,
 ): PersisterSession {
-    val userVerifier = UserVerifier(jwtVerifier, dbPersister, ktseConfig)
-    val providerVerifier = ProviderVerifier(jwtVerifier, dbPersister, ktseConfig)
-    val authTokenVerifier = AuthTokenVerifier(jwtVerifier)
+    val authTokenVerifier = AuthTokenVerifier(jwtVerifier, jwksConfigProvider, oidcConfigProvider)
 
     override suspend fun auth(
         authRequestMsg: ServerAuthRequestMsg,

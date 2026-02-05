@@ -3,10 +3,10 @@ package net.kigawa.keruta.ktse.auth.jwt
 import com.auth0.jwt.interfaces.DecodedJWT
 import net.kigawa.keruta.ktcp.model.auth.AuthToken
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.server.auth.Idp
-import net.kigawa.keruta.ktcp.server.auth.IdpConfig
-import net.kigawa.keruta.ktcp.server.auth.UnverifiedToken
-import net.kigawa.keruta.ktcp.server.auth.VerifiedToken
+import net.kigawa.keruta.ktcp.server.auth.jwt.UnverifiedToken
+import net.kigawa.keruta.ktcp.server.auth.oidc.UnverifiedTokenWithOidc
+import net.kigawa.keruta.ktse.auth.oidc.KtorUnverifiedTokenWithOidc
+import net.kigawa.keruta.ktse.auth.oidc.OidcConfigProvider
 import net.kigawa.kodel.api.dump.Dumper
 import net.kigawa.kodel.api.dump.withStr
 import net.kigawa.kodel.api.err.Res
@@ -15,22 +15,19 @@ class Auth0UnverifiedToken(
     val decode: DecodedJWT,
     val verifier: Auth0JwtVerifier,
     val strToken: AuthToken,
+    val oidcConfigProvider: OidcConfigProvider,
 ): UnverifiedToken {
-    override suspend fun verify(
-        idp: Idp,
-        oidc: Boolean,
-    ): Res<VerifiedToken, KtcpErr> {
-        return verifier.verify(
-            strToken, decode, idp.subject,
-            IdpConfig(idp.issuer, idp.audience),
-            oidc,
-        )
-    }
 
-    override val subject: String
-        get() = decode.subject
-    override val issuer: String
-        get() = decode.issuer
+    override val subject: String by decode::subject
+    override val issuer: String by decode::issuer
+    val keyId: String by decode::keyId
+
+    override suspend fun withOidcConfig(): Res<UnverifiedTokenWithOidc, KtcpErr> {
+        return when (val res = oidcConfigProvider.get(issuer)) {
+            is Res.Err -> res.x()
+            is Res.Ok -> Res.Ok(KtorUnverifiedTokenWithOidc(this, res.value))
+        }
+    }
 
 
     val dump

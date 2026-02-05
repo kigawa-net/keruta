@@ -1,38 +1,36 @@
 package net.kigawa.keruta.ktse.auth.jwt
 
 import com.auth0.jwk.Jwk
-import com.auth0.jwk.JwkProvider
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.interfaces.DecodedJWT
 import net.kigawa.keruta.ktcp.model.auth.AuthToken
 import net.kigawa.keruta.ktcp.server.auth.IdpConfig
 import net.kigawa.keruta.ktcp.server.auth.JwtVerifier
-import net.kigawa.keruta.ktcp.server.auth.UnverifiedToken
+import net.kigawa.keruta.ktcp.server.auth.jwt.UnverifiedToken
 import net.kigawa.keruta.ktcp.server.auth.VerifiedToken
 import net.kigawa.keruta.ktcp.server.err.VerifyErr
 import net.kigawa.keruta.ktcp.server.err.VerifyFailErr
 import net.kigawa.keruta.ktcp.server.err.VerifyUnsupportedKeyErr
-import net.kigawa.keruta.ktse.auth.jwks.JwksProvider
-import net.kigawa.keruta.ktse.http.HttpClient
+import net.kigawa.keruta.ktse.auth.oidc.OidcConfigProvider
 import net.kigawa.kodel.api.dump.Dumper
 import net.kigawa.kodel.api.err.Res
-import net.kigawa.kodel.coroutine.cache.ConcurrentLruCache
 import java.security.interfaces.RSAPublicKey
 
 class Auth0JwtVerifier(
-    httpClient: HttpClient,
+    val oidcConfigProvider: OidcConfigProvider,
 ): JwtVerifier {
-    val providers = ConcurrentLruCache<String, JwkProvider>(8)
     val verifierProvider = VerifierProvider()
-    val jwksProvider = JwksProvider(httpClient)
 
 
     override fun decodeUnverified(
         userToken: AuthToken,
     ): Res<UnverifiedToken, VerifyErr> = try {
         Res.Ok(
-            Auth0UnverifiedToken(JWT.decode(userToken), this, userToken)
+            Auth0UnverifiedToken(
+                JWT.decode(userToken), this, userToken,
+                oidcConfigProvider
+            )
         )
     } catch (e: Exception) {
         Res.Err(VerifyFailErr("decode", e))
@@ -43,7 +41,6 @@ class Auth0JwtVerifier(
         rawToken: DecodedJWT,
         subject: String,
         idpConfig: IdpConfig,
-        oidc: Boolean,
         alg: Algorithm,
     ): Res<VerifiedToken, VerifyErr> {
 //        val provider = if (oidc) {
