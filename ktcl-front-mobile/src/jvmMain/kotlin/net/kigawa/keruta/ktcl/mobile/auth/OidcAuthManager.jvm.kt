@@ -21,7 +21,15 @@ actual class OidcAuthManager actual constructor(
         return Result.failure(NotImplementedError("JVMターゲットではOIDC認証は使用できません"))
     }
 
+    actual suspend fun exchangeCodeForToken(code: String): Result<String> {
+        return Result.failure(NotImplementedError("JVMターゲットではOIDC認証は使用できません"))
+    }
+
     actual fun isAuthenticated(): Boolean {
         return false
+    }
+
+    actual fun getAccessToken(): String? {
+        return null
     }
 }

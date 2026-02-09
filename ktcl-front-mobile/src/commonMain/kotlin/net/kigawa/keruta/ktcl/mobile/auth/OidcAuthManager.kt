@@ -6,5 +6,7 @@ expect class OidcAuthManager(config: MobileConfig) {
     suspend fun login(): Result<String>
     suspend fun logout()
     suspend fun refreshToken(): Result<String>
+    suspend fun exchangeCodeForToken(code: String): Result<String>
     fun isAuthenticated(): Boolean
+    fun getAccessToken(): String?
 }
