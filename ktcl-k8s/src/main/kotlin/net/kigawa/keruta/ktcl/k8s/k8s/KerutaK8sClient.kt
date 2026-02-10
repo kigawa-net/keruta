@@ -9,6 +9,7 @@ import net.kigawa.keruta.ktcl.k8s.connection.JvmWebSocketConnection
 import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveAuthSuccessEntrypoint
 import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveGenericErrEntrypoint
 import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveProviderListedEntrypoint
+import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveProviderCreatedEntrypoint
 import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveQueueCreatedEntrypoint
 import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveQueueListedEntrypoint
 import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveQueueShowedEntrypoint
@@ -87,6 +88,7 @@ class KerutaK8sClient(
             genericErrEntrypoint = ReceiveGenericErrEntrypoint(),
             authSuccessEntrypoint = ReceiveAuthSuccessEntrypoint(),
             providerListEntrypoint = ReceiveProviderListedEntrypoint(),
+            providerCreatedEntrypoint = ReceiveProviderCreatedEntrypoint(),
             queueCreatedEntrypoint = ReceiveQueueCreatedEntrypoint(),
             queueListedEntrypoint = ReceiveQueueListedEntrypoint(),
             queueShowedEntrypoint = ReceiveQueueShowedEntrypoint(),
