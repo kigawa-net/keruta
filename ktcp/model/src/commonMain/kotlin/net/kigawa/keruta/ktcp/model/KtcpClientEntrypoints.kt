@@ -5,6 +5,7 @@ import net.kigawa.keruta.ktcp.model.err.ClientGenericErrEntrypoint
 import net.kigawa.keruta.ktcp.model.err.EntrypointNotFoundErr
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.model.msg.client.ClientUnknownArg
+import net.kigawa.keruta.ktcp.model.provider.created.ClientProviderCreatedEntrypoint
 import net.kigawa.keruta.ktcp.model.provider.listed.ClientProviderListedEntrypoint
 import net.kigawa.keruta.ktcp.model.queue.created.ClientQueueCreatedEntrypoint
 import net.kigawa.keruta.ktcp.model.queue.listed.ClientQueueListedEntrypoint
@@ -28,6 +29,7 @@ class KtcpClientEntrypoints<C>(
     genericErrEntrypoint: ClientGenericErrEntrypoint<C>,
     authSuccessEntrypoint: ClientAuthSuccessEntrypoint<C>,
     providerListEntrypoint: ClientProviderListedEntrypoint<C>,
+    providerCreatedEntrypoint: ClientProviderCreatedEntrypoint<C>,
     queueCreatedEntrypoint: ClientQueueCreatedEntrypoint<C>,
     queueListedEntrypoint: ClientQueueListedEntrypoint<C>,
     queueShowedEntrypoint: ClientQueueShowedEntrypoint<C>,
@@ -66,6 +68,15 @@ class KtcpClientEntrypoints<C>(
             this(it)
         }
     }
+
+    val providerCreated = add(providerCreatedEntrypoint) { input ->
+        input.tryToProviderCreated()?.whenErrOk(
+            { EntrypointDeferred { Res.Err(it) } }
+        ) {
+            this(it)
+        }
+    }
+
     val queueCreated = add(queueCreatedEntrypoint) { input ->
         input.tryToQueueCreated()?.whenErrOk(
             { EntrypointDeferred { Res.Err(it) } }

@@ -1,5 +1,6 @@
 package net.kigawa.keruta.ktse.persist.model
 
+import net.kigawa.keruta.ktcp.model.provider.created.ClientProviderCreatedMsg
 import net.kigawa.keruta.ktcp.model.provider.listed.ClientProviderListedMsg
 import net.kigawa.keruta.ktcp.server.persist.PersistedProvider
 import net.kigawa.keruta.ktse.persist.db.table.ProviderTable
@@ -11,10 +12,14 @@ import org.jetbrains.exposed.sql.ResultRow
 class ExposedPersistedProvider(row: ResultRow): PersistedProvider {
     override val issuer: Url = Url.parse(row[ProviderTable.issuer])
     override val audience = row[ProviderTable.audience]
-    val name: String = row[ProviderTable.name]
+    override val name: String = row[ProviderTable.name]
     override val id: Long = row[ProviderTable.id]
     override fun asProviderListProvider(): ClientProviderListedMsg.Provider = ClientProviderListedMsg.Provider(
         name, id, issuer.toStrUrl(), audience
+    )
+
+    override fun asProviderCreatedProvider(): ClientProviderCreatedMsg.Provider = ClientProviderCreatedMsg.Provider(
+        id, name, issuer.toStrUrl(), audience
     )
 
     override fun toString(): String = Dumper.dump(

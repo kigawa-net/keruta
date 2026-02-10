@@ -7,6 +7,8 @@ import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
 import net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownArg
 import net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownMsg
+import net.kigawa.keruta.ktcp.model.provider.create.ServerProviderCreateArg
+import net.kigawa.keruta.ktcp.model.provider.create.ServerProviderCreateMsg
 import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListArg
 import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListMsg
 import net.kigawa.keruta.ktcp.model.queue.create.ServerQueueCreateMsg
@@ -24,6 +26,7 @@ import net.kigawa.keruta.ktcp.server.err.DeserializeDecodeFrameErr
 import net.kigawa.keruta.ktcp.server.err.InvalidTypeDecodeFrameErr
 import net.kigawa.keruta.ktse.auth.ReceiveAuthRequestArg
 import net.kigawa.keruta.ktse.err.ReceiveGenericErrArg
+import net.kigawa.keruta.ktse.provider.ReceiveProviderCreateArg
 import net.kigawa.keruta.ktse.provider.ReceiveProviderListArg
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.getKogger
@@ -53,6 +56,13 @@ class ReceiveUnknownArg(
         if (msg.type != ServerMsgType.PROVIDER_LIST) return null
         return translate<ServerProviderListMsg, ServerProviderListArg> {
             ReceiveProviderListArg(it)
+        }
+    }
+
+    override fun tryToProviderCreate(): Res<ServerProviderCreateArg, KtcpErr>? {
+        if (msg.type != ServerMsgType.PROVIDER_CREATE) return null
+        return translate<ServerProviderCreateMsg, ServerProviderCreateArg> {
+            ReceiveProviderCreateArg(it)
         }
     }
 

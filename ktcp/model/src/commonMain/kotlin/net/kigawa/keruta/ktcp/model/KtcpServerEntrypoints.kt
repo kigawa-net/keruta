@@ -4,6 +4,7 @@ import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestEntrypoint
 import net.kigawa.keruta.ktcp.model.err.EntrypointNotFoundErr
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownArg
+import net.kigawa.keruta.ktcp.model.provider.create.ServerProviderCreateEntrypoint
 import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListEntrypoint
 import net.kigawa.keruta.ktcp.model.queue.create.ServerQueueCreateEntrypoint
 import net.kigawa.keruta.ktcp.model.queue.list.ServerQueueListEntrypoint
@@ -22,12 +23,14 @@ import net.kigawa.kodel.api.log.LoggerFactory
 import net.kigawa.kodel.api.log.traceignore.error
 import kotlin.time.ExperimentalTime
 
+@Suppress("unused")
 class KtcpServerEntrypoints<C>(
     authRequestEntrypoint: ServerAuthRequestEntrypoint<C>,
     taskCreateEntrypoint: ServerTaskCreateEntrypoint<C>,
     taskUpdateEntrypoint: ServerTaskUpdateEntrypoint<C>,
     taskMoveEntrypoint: ServerTaskMoveEntrypoint<C>,
     providersRequestEntrypoint: ServerProviderListEntrypoint<C>,
+    providerCreateEntrypoint: ServerProviderCreateEntrypoint<C>,
     queueCreateEntrypoint: ServerQueueCreateEntrypoint<C>,
     queueListEntrypoint: ServerQueueListEntrypoint<C>,
     queueShowEntrypoint: ServerQueueShowEntrypoint<C>,
@@ -41,7 +44,6 @@ class KtcpServerEntrypoints<C>(
         ""
     )
 
-    @Suppress("unused")
     val authRequestEntrypoint = add(authRequestEntrypoint) { input ->
         input.tryToAuthenticate()?.whenErrOk(
             { EntrypointDeferred { Res.Err(it) } }
@@ -50,7 +52,6 @@ class KtcpServerEntrypoints<C>(
         }
     }
 
-    @Suppress("unused")
     val taskCreateEntrypoint = add(taskCreateEntrypoint) { input ->
         input.tryToTaskCreate()?.whenErrOk(
             { EntrypointDeferred { Res.Err(it) } }
@@ -59,7 +60,6 @@ class KtcpServerEntrypoints<C>(
         }
     }
 
-    @Suppress("unused")
     val taskUpdateEntrypoint = add(taskUpdateEntrypoint) { input ->
         input.tryToTaskUpdate()?.whenErrOk(
             { EntrypointDeferred { Res.Err(it) } }
@@ -68,7 +68,6 @@ class KtcpServerEntrypoints<C>(
         }
     }
 
-    @Suppress("unused")
     val taskMoveEntrypoint = add(taskMoveEntrypoint) { input ->
         input.tryToTaskMove()?.whenErrOk(
             { EntrypointDeferred { Res.Err(it) } }
@@ -77,7 +76,6 @@ class KtcpServerEntrypoints<C>(
         }
     }
 
-    @Suppress("unused")
     val providersRequestEntrypoint = add(providersRequestEntrypoint) { input ->
         input.tryToProvidersRequest()?.whenErrOk(
             { EntrypointDeferred { Res.Err(it) } }
@@ -85,6 +83,15 @@ class KtcpServerEntrypoints<C>(
             this(it)
         }
     }
+
+    val providerCreateEntrypoint = add(providerCreateEntrypoint) { input ->
+        input.tryToProviderCreate()?.whenErrOk(
+            { EntrypointDeferred { Res.Err(it) } }
+        ) {
+            this(it)
+        }
+    }
+
     val queueCreate = add(queueCreateEntrypoint) { input ->
         input.tryToQueueCreate()?.whenErrOk(
             { EntrypointDeferred { Res.Err(it) } }
