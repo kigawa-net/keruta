@@ -22,5 +22,9 @@ include("ktcp:server")
 include("ktse")
 include("ktcl-claudecode")
 include("ktcl-k8s")
-include("ktcl-front-mobile")
-include("ktcl-front-mobile:app")
+
+// Conditionally include ktcl-front-mobile if directory exists
+if (file("ktcl-front-mobile").exists()) {
+    include("ktcl-front-mobile")
+    include("ktcl-front-mobile:app")
+}
