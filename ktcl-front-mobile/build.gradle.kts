@@ -84,5 +84,5 @@ tasks.register("iosSimulatorRun") {
     }
 }
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(25)
 }

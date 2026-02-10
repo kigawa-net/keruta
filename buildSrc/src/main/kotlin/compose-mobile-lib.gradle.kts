@@ -10,7 +10,7 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(25)
 
     // iOS targets are configured by kmp plugin
     listOf(
@@ -29,14 +29,11 @@ kotlin {
         compileSdk = 36
 
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
+            jvmTarget.set(JvmTarget.JVM_24)
         }
 
         minSdk = 26
 
-        androidResources {
-            enable = true
-        }
     }
 
     sourceSets {

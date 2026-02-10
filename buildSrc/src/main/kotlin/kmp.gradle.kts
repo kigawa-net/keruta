@@ -23,7 +23,7 @@ fun KotlinJsTest.browserTest() {
     }
 }
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(25)
 
     compilerOptions {
         freeCompilerArgs = listOf("-Xcontext-parameters")
@@ -47,7 +47,7 @@ kotlin {
         iosX64(),
         iosArm64(),
         iosSimulatorArm64()
-    ).forEach { iosTarget ->
+    ).forEach { _ ->
 
     }
     sourceSets {
