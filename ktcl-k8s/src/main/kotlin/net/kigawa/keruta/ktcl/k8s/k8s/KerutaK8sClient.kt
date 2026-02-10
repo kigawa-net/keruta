@@ -1,6 +1,6 @@
 package net.kigawa.keruta.ktcl.k8s.k8s
 
-import KtcpSession
+import net.kigawa.keruta.ktcp.client.KtcpSession
 import kotlinx.coroutines.coroutineScope
 import net.kigawa.keruta.ktcl.k8s.auth.AuthManager
 import net.kigawa.keruta.ktcl.k8s.config.K8sConfig

@@ -1,29 +1,25 @@
 package net.kigawa.keruta.ktse.auth.jwks
 
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
-import net.kigawa.keruta.ktcp.server.err.VerifyErr
-import net.kigawa.keruta.ktcp.server.err.VerifyFailErr
-import net.kigawa.keruta.ktse.auth.oidc.OidcConf
-import net.kigawa.keruta.ktse.http.HttpClient
+import com.auth0.jwk.JwkProviderBuilder
+import com.auth0.jwt.algorithms.Algorithm
+import net.kigawa.keruta.ktcp.model.err.KtcpErr
+import net.kigawa.keruta.ktcp.server.err.VerifyUnsupportedKeyErr
 import net.kigawa.kodel.api.err.Res
-import java.net.URL
+import net.kigawa.kodel.api.net.Url
+import java.security.PublicKey
+import java.security.interfaces.RSAPublicKey
 
-class JwksProvider(
-    val client: HttpClient,
-) {
-    suspend fun getJwksUrl(issuer: String): Res<URL, VerifyErr> {
-        val res = client.get("$issuer/.well-known/openid-configuration")
-        if (!res.status.isSuccess()) return Res.Err(VerifyFailErr("res: $res", null))
-        return try {
-            @Suppress("DEPRECATION")
-            Res.Ok(URL(res.body<OidcConf>().jwksUri))
-        } catch (e: Exception) {
-            Res.Err(VerifyFailErr("body: ${res.bodyAsText()}", e))
-        }
+class JwksProvider {
+    fun algorithmByUrl(jwksUrl: Url, keyId: String): Res<Algorithm, KtcpErr> = convertAlgorithm(
+        JwkProviderBuilder(jwksUrl.toJvmUrl()).build().get(keyId).publicKey
+    )
+
+    fun algorithmByIssuer(issuer: Url, keyId: String?): Res<Algorithm, KtcpErr> = convertAlgorithm(
+        JwkProviderBuilder(issuer.toStrUrl()).build().get(keyId).publicKey
+    )
+
+    private fun convertAlgorithm(key: PublicKey): Res<Algorithm, KtcpErr> = when (key) {
+        is RSAPublicKey -> Res.Ok(Algorithm.RSA256(key, null))
+        else -> Res.Err(VerifyUnsupportedKeyErr(key.toString(), null))
     }
-
 }

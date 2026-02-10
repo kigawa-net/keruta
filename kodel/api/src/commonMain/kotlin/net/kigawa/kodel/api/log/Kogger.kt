@@ -13,6 +13,9 @@ expect class Kogger {
 }
 
 
+expect fun Kogger.fine(msg: ()-> String)
+expect fun Kogger.warning(msg: ()-> String)
+expect fun Kogger.severe(msg: ()-> String)
 expect var Kogger.logLevel: LogLevel
 expect fun Kogger.removeAllHandlers()
 

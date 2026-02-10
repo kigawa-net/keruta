@@ -1,11 +1,9 @@
 package net.kigawa.keruta.ktcp.server.auth
 
+import net.kigawa.kodel.api.net.Url
+
 data class ProviderIdpConfig(
-    val issuer: String,
+    val issuer: Url,
     val audience: String,
     val name: String,
-) {
-    fun asIdp(subject: String): Idp {
-        return Idp(audience, subject, issuer)
-    }
-}
+)

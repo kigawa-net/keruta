@@ -19,7 +19,7 @@ class ReceiveTaskUpdateEntrypoint: ServerTaskUpdateEntrypoint<ServerCtx> {
         val task = when (
             val res = session.persisterSession.task.updateTaskStatus(input.taskId, input.status)
         ) {
-            is Res.Err -> return@EntrypointDeferred res.x()
+            is Res.Err -> return@EntrypointDeferred res.convert()
             is Res.Ok -> res.value
         }
         ctx.server.clientEntrypoints.taskUpdated.access(

@@ -20,7 +20,7 @@ class ReceiveQueueCreateEntrypoint: ServerQueueCreateEntrypoint<ServerCtx> {
             val queue=when (
                 val res = session.persisterSession.queue.createQueue(input)
             ) {
-                is Res.Err -> return@EntrypointDeferred res.x()
+                is Res.Err -> return@EntrypointDeferred res.convert()
                 is Res.Ok -> res.value
             }
             ctx.server.clientEntrypoints.queueCreated.access(ClientQueueCreatedMsg(

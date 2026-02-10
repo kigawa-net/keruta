@@ -21,7 +21,7 @@ class ExposedAuthedQueuePersisterSession(
         val provider = when (
             val res = it.provider.findByUserAndId(user, msg.providerId)
         ) {
-            is Res.Err -> return@execTransaction res.x()
+            is Res.Err -> return@execTransaction res.convert()
             is Res.Ok -> res.value
             null -> return@execTransaction Res.Err(NoSingleRecordErr("", null))
         }
@@ -30,7 +30,7 @@ class ExposedAuthedQueuePersisterSession(
                 QueueToCreate(msg), provider, user
             )
         ) {
-            is Res.Err -> return@execTransaction res.x()
+            is Res.Err -> return@execTransaction res.convert()
             is Res.Ok -> res.value
         }
         Res.Ok(queue)

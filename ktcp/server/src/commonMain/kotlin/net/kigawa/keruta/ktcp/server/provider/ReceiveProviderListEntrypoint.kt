@@ -24,7 +24,7 @@ class ReceiveProviderListEntrypoint: ServerProviderListEntrypoint<ServerCtx> {
             val authed = ctx.session.authenticated()
                 ?: return@EntrypointDeferred Res.Err(UnauthenticatedErr("", null))
             when (val res = authed.persisterSession.getProviders()) {
-                is Res.Err -> res.x()
+                is Res.Err -> res.convert()
                 is Res.Ok -> {
                     logger.debug("providers: ${res.value.dump}")
                     ctx.server.clientEntrypoints.providerList.access(

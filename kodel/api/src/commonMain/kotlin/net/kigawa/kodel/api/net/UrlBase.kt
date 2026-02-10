@@ -5,8 +5,11 @@ interface UrlBase {
     fun setPath(path: String): Url
 
     fun plusPath(path: String): Url {
-        val base = path.removeSuffix("/")
+        val base = this.path.removeSuffix("/")
         val path = path.trimStart('/')
         return setPath("$base/$path")
     }
+
+    fun toStrUrl(): String
+    override fun toString(): String
 }

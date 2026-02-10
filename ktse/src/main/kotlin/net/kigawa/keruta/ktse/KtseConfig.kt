@@ -1,25 +1,25 @@
 package net.kigawa.keruta.ktse
 
 import io.ktor.server.application.*
-import net.kigawa.keruta.ktcp.server.auth.IdpConfig
+import net.kigawa.keruta.ktcp.server.auth.UserIdpConfig
 import net.kigawa.keruta.ktcp.server.auth.ProviderIdpConfig
+import net.kigawa.kodel.api.net.Url
 
 class KtseConfig(environment: ApplicationEnvironment) {
 
     val zkHost = environment.config.property("zk.host").getString()
-    val defaultIdp = environment.config.configList("ktor.security.defaultIdp").map {
-        IdpConfig(
-            it.property("issuer").getString(),
-            it.property("audience").getString()
-        )
-    }
-    val defaultProvider = environment.config.configList("ktor.security.defaultProvider").map {
-        ProviderIdpConfig(
-            it.property("issuer").getString(),
-            it.property("audience").getString(),
-            it.property("name").getString(),
-        )
-    }
+    val defaultUserIdp = UserIdpConfig(
+        environment.config.property("ktor.security.defaultIdp.issuer").getString()
+            .let { Url.parse(it) },
+        environment.config.property("ktor.security.defaultIdp.audience").getString()
+    )
+
+    val defaultProviderIdp = ProviderIdpConfig(
+        environment.config.property("ktor.security.defaultProvider.issuer").getString().let { Url.parse(it) },
+        environment.config.property("ktor.security.defaultProvider.audience").getString(),
+        environment.config.property("ktor.security.defaultProvider.name").getString(),
+    )
+
 
     val dbConfig = Database(environment)
 

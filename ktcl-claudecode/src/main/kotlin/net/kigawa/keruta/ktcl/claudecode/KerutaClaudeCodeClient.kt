@@ -1,6 +1,6 @@
 package net.kigawa.keruta.ktcl.claudecode
 
-import KtcpSession
+import net.kigawa.keruta.ktcp.client.KtcpSession
 import kotlinx.coroutines.coroutineScope
 import net.kigawa.keruta.ktcl.claudecode.auth.AuthManager
 import net.kigawa.keruta.ktcl.claudecode.claude.ClaudeCodeCliClient

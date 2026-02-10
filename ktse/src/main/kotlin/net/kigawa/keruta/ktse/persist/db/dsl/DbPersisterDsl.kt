@@ -10,31 +10,61 @@ import net.kigawa.keruta.ktse.persist.model.ExposedPersistedProvider
 import net.kigawa.keruta.ktse.persist.model.ExposedPersistedUser
 import net.kigawa.keruta.ktse.persist.model.ExposedPersistedUserIdp
 import net.kigawa.kodel.api.err.Res
-import org.jetbrains.exposed.sql.JoinType
-import org.jetbrains.exposed.sql.Transaction
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.selectAll
+import net.kigawa.kodel.api.net.Url
+import org.jetbrains.exposed.sql.*
 
 class DbPersisterDsl(val transaction: Transaction) {
     fun findVerifyTables(
-        userIssuer: String, userSubject: String, providerIssuer: String,
+        userIssuer: Url, userSubject: String, providerIssuer: Url,
     ): Res<PersistedVerifyTables, KtcpErr>? = UserTable.join(UserIdpTable, JoinType.INNER)
         .join(
             ProviderTable, JoinType.INNER, additionalConstraint = {
                 UserIdpTable.providerId eq ProviderTable.id and (UserTable.id eq ProviderTable.userId)
             }
         ).selectAll().where {
-            (UserIdpTable.issuer eq userIssuer) and (UserIdpTable.subject eq userSubject) and
-                (ProviderTable.issuer eq providerIssuer)
+            (UserIdpTable.issuer eq userIssuer.toStrUrl()) and (UserIdpTable.subject eq userSubject) and
+                (ProviderTable.issuer eq providerIssuer.toStrUrl())
         }.distinct().singleOrNull()
         ?.let {
             val idp = ExposedPersistedUserIdp(it)
             PersistedVerifyTables(
-                ExposedPersistedUser(it, idp),
+                ExposedPersistedUser(it),
                 idp,
                 ExposedPersistedProvider(it)
             )
         }?.let { Res.Ok(it) }
+
+    fun insertVerifyTables(
+        userIssuer: Url, userAudience: String, userSubject: String, providerIssuer: Url, providerAudience: String,
+        providerName: String,
+    ): Res<PersistedVerifyTables, KtcpErr> {
+        val user = UserTable.insert {
+        }.resultedValues
+            ?.single()
+            ?.let { ExposedPersistedUser(it) }
+            ?: return Res.Err(NoSingleRecordErr("", null))
+        val provider = ProviderTable.insert {
+            it[ProviderTable.userId] = user.id
+            it[ProviderTable.issuer] = providerIssuer.toStrUrl()
+            it[ProviderTable.audience] = providerAudience
+            it[ProviderTable.name] = providerName
+            it[ProviderTable.setting] = ""
+        }.resultedValues
+            ?.single()
+            ?.let { ExposedPersistedProvider(it) }
+            ?: return Res.Err(NoSingleRecordErr("", null))
+        val userIdp = UserIdpTable.insert {
+            it[UserIdpTable.userId] = user.id
+            it[UserIdpTable.providerId] = provider.id
+            it[UserIdpTable.issuer] = userIssuer.toStrUrl()
+            it[UserIdpTable.subject] = userSubject
+            it[UserIdpTable.audience] = userAudience
+        }.resultedValues
+            ?.single()
+            ?.let { ExposedPersistedUserIdp(it) }
+            ?: return Res.Err(NoSingleRecordErr("", null))
+        return Res.Ok(PersistedVerifyTables(user, userIdp, provider))
+    }
 
 
     val task by lazy { DbTaskPersisterDsl(transaction) }

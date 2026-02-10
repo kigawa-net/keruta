@@ -20,7 +20,10 @@ actual class Url(
         return Url(URI(uri.scheme, uri.userInfo, uri.host, uri.port, path, uri.query, uri.fragment))
     }
 
+    actual override fun toStrUrl(): String = uri.toString()
+
+    actual override fun toString(): String = toStrUrl()
+
     actual override val path: String
         get() = uri.path
-
 }

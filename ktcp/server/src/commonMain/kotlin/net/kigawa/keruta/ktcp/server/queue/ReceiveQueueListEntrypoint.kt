@@ -21,7 +21,7 @@ class ReceiveQueueListEntrypoint: ServerQueueListEntrypoint<ServerCtx> {
                 val res = session.persisterSession.queue.getQueues()
             ) {
                 is Res.Ok -> res.value
-                is Res.Err -> return@EntrypointDeferred res.x()
+                is Res.Err -> return@EntrypointDeferred res.convert()
             }
             ctx.server.clientEntrypoints.queueListed.access(
                 ClientQueueListedMsg(

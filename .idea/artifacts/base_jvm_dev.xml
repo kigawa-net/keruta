@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="base-jvm-dev">
+    <output-path>$PROJECT_DIR$/ktcp/base/build/libs</output-path>
+    <root id="archive" name="base-jvm-dev.jar">
+      <element id="module-output" name="keruta.ktcp.base.jvmMain" />
+    </root>
+  </artifact>
+</component>

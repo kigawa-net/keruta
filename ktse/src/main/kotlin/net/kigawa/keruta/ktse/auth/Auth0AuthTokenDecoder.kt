@@ -3,20 +3,18 @@ package net.kigawa.keruta.ktse.auth
 import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestMsg
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.server.auth.JwtVerifier
-import net.kigawa.keruta.ktse.auth.jwks.JwksConfigProvider
-import net.kigawa.keruta.ktse.auth.oidc.OidcConfigProvider
+import net.kigawa.keruta.ktcp.server.auth.UnverifiedAuthTokens
+import net.kigawa.keruta.ktcp.server.auth.jwt.AuthTokenDecoder
 import net.kigawa.kodel.api.err.Res
 
-class AuthTokenVerifier(
+class Auth0AuthTokenDecoder(
     val jwtVerifier: JwtVerifier,
-    val jwksConfigProvider: JwksConfigProvider,
-    val oidcConfigProvider: OidcConfigProvider,
-) {
-    fun decodeAuthRequestMsg(authRequestMsg: ServerAuthRequestMsg): Res<UnverifiedAuthTokens, KtcpErr> {
+): AuthTokenDecoder {
+    override fun decodeAuthRequestMsg(authRequestMsg: ServerAuthRequestMsg): Res<UnverifiedAuthTokens, KtcpErr> {
         val unverifiedUserToken = when (
             val res = jwtVerifier.decodeUnverified(authRequestMsg.userToken)
         ) {
-            is Res.Err -> return res.x()
+            is Res.Err -> return res.convert()
             is Res.Ok -> res.value
         }
         val unverifiedProviderToken = when (
@@ -24,12 +22,12 @@ class AuthTokenVerifier(
                 authRequestMsg.serverToken
             )
         ) {
-            is Res.Err -> return res.x()
+            is Res.Err -> return res.convert()
             is Res.Ok -> res.value
         }
         return Res.Ok(
             UnverifiedAuthTokens(
-                unverifiedUserToken, unverifiedProviderToken, jwksConfigProvider, oidcConfigProvider
+                unverifiedUserToken, unverifiedProviderToken
             )
         )
     }

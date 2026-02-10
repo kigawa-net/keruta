@@ -19,7 +19,7 @@ class ReceiveTaskMoveEntrypoint: ServerTaskMoveEntrypoint<ServerCtx> {
         val task = when (
             val res = session.persisterSession.task.moveTask(input.taskId, input.targetQueueId)
         ) {
-            is Res.Err -> return@EntrypointDeferred res.x()
+            is Res.Err -> return@EntrypointDeferred res.convert()
             is Res.Ok -> res.value
         }
         ctx.server.clientEntrypoints.taskMoved.access(

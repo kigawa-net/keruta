@@ -1,4 +1,4 @@
-import net.kigawa.keruta.ktcp.model.KtcpConnection
+package net.kigawa.keruta.ktcp.client
 
 class KtcpSession(
     val connection: KtcpConnection

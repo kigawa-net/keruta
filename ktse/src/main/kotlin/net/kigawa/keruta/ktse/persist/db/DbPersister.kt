@@ -2,7 +2,9 @@ package net.kigawa.keruta.ktse.persist.db
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import net.kigawa.keruta.ktcp.server.auth.VerifyTablesPersister
 import net.kigawa.keruta.ktse.KtseConfig
+import net.kigawa.keruta.ktse.persist.accessor.ExposedVerifyTablesPersister
 import net.kigawa.keruta.ktse.persist.db.dsl.DbPersisterDsl
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -19,6 +21,7 @@ class DbPersister(
         }
     }
 
+    val verifyTablesPersister: VerifyTablesPersister = ExposedVerifyTablesPersister(this)
     private val config = HikariConfig().apply {
         jdbcUrl = ktseConfig.dbConfig.jdbcUrl + "?useInformationSchema=false"
         driverClassName = "com.mysql.cj.jdbc.Driver"

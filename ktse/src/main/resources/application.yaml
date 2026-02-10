@@ -6,12 +6,12 @@ ktor:
     port: 8080
   security:
     defaultIdp:
-      - issuer: ${IDP_0_ISSUER}
-        audience: ${IDP_0_AUDIENCE}
+      issuer: ${IDP_0_ISSUER}
+      audience: ${IDP_0_AUDIENCE}
     defaultProvider:
-      - issuer: ${PROVIDER_0_ISSUER}
-        audience: ${PROVIDER_0_AUDIENCE}
-        name: ${PROVIDER_0_NAME}
+      issuer: ${PROVIDER_0_ISSUER}
+      audience: ${PROVIDER_0_AUDIENCE}
+      name: ${PROVIDER_0_NAME}
 zk:
   host: ${ZK_HOST}
 db:

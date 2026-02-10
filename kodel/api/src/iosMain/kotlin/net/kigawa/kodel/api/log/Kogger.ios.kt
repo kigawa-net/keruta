@@ -14,19 +14,16 @@ actual class Kogger {
         handlers.clear()
     }
 
-    actual fun fine(msg: String) {
-        log(msg, LogLevel.DEBUG)
-    }
+    actual fun fine(msg: String) = fine { msg }
+    fun fine(msg: () -> String) = log(msg, LogLevel.DEBUG)
 
-    actual fun warning(msg: String) {
-        log(msg, LogLevel.WARN)
-    }
+    actual fun warning(msg: String) = warning { msg }
+    fun warning(msg: () -> String) = log(msg, LogLevel.WARN)
 
-    actual fun severe(msg: String) {
-        log(msg, LogLevel.ERROR)
-    }
+    actual fun severe(msg: String) = severe { msg }
+    fun severe(msg: () -> String) = log(msg, LogLevel.ERROR)
 
-    fun log(msg: String, logLevel: LogLevel) {
+    fun log(msg: () -> String, logLevel: LogLevel) {
         handlers.forEach {
             it.log(msg, logLevel)
         }
@@ -46,3 +43,9 @@ actual fun Kogger.removeAllHandlers() {
 actual fun Kogger.addHandler(handler: LoggerHandler) {
     addHandler(handler)
 }
+
+actual fun Kogger.fine(msg: () -> String) = fine(msg)
+
+actual fun Kogger.warning(msg: () -> String) = warning(msg)
+
+actual fun Kogger.severe(msg: () -> String) = severe(msg)

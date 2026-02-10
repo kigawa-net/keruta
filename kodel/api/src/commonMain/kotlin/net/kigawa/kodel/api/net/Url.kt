@@ -4,6 +4,8 @@ package net.kigawa.kodel.api.net
 expect class Url: UrlBase {
     override val path: String
     override fun setPath(path: String): Url
+    override fun toStrUrl(): String
+    override fun toString(): String
 
     companion object {
         fun parse(strUrl: String): Url

@@ -8,7 +8,7 @@ import net.kigawa.kodel.api.log.LoggerFactory
 import net.kigawa.kodel.api.log.handler.StdHandler
 
 @Suppress("unused")
-object KerutaTaskServer {
+class KerutaTaskServer {
 
     init {
         LoggerFactory.configure {
@@ -28,12 +28,12 @@ object KerutaTaskServer {
         }
     }
 
+
     @Suppress("unused")
     fun Application.module() {
-        val ws = KtorWebsocketModule(this@module)
+        val ws = KtorWebsocketModule(this@module,this@KerutaTaskServer)
         routing {
             ws.websocketModule(this@routing)
         }
     }
-
 }

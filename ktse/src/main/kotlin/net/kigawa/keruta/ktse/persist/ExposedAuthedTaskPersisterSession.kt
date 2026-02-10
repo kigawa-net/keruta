@@ -19,7 +19,7 @@ class ExposedAuthedTaskPersisterSession(
         val queue = when (
             val res = it.queue.findByUserAndId(user, task.queueId)
         ) {
-            is Res.Err -> return@execTransaction res.x()
+            is Res.Err -> return@execTransaction res.convert()
             is Res.Ok -> res.value
         }
         it.task.create(user, queue,task)
@@ -29,7 +29,7 @@ class ExposedAuthedTaskPersisterSession(
         val queue = when (
             val res = it.queue.findByUserAndId(user, input.queueId)
         ) {
-            is Res.Err -> return@execTransaction res.x()
+            is Res.Err -> return@execTransaction res.convert()
             is Res.Ok -> res.value
         }
         it.task.getAll(user, queue)
@@ -41,7 +41,7 @@ class ExposedAuthedTaskPersisterSession(
         val queue = when (
             val res = it.queue.findByUserAndId(user, input.queueId)
         ) {
-            is Res.Err -> return@execTransaction res.x()
+            is Res.Err -> return@execTransaction res.convert()
             is Res.Ok -> res.value
         }
         it.task.findByUserQueueAndId(user, queue, input.id)

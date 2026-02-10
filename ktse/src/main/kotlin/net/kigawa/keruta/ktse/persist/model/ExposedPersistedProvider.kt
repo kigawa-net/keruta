@@ -1,31 +1,27 @@
 package net.kigawa.keruta.ktse.persist.model
 
 import net.kigawa.keruta.ktcp.model.provider.listed.ClientProviderListedMsg
-import net.kigawa.keruta.ktcp.server.auth.Idp
 import net.kigawa.keruta.ktcp.server.persist.PersistedProvider
 import net.kigawa.keruta.ktse.persist.db.table.ProviderTable
 import net.kigawa.kodel.api.dump.Dumper
 import net.kigawa.kodel.api.dump.withStr
+import net.kigawa.kodel.api.net.Url
 import org.jetbrains.exposed.sql.ResultRow
 
 class ExposedPersistedProvider(row: ResultRow): PersistedProvider {
-    val issuer: String = row[ProviderTable.issuer]
-    val audience = row[ProviderTable.audience]
+    override val issuer: Url = Url.parse(row[ProviderTable.issuer])
+    override val audience = row[ProviderTable.audience]
     val name: String = row[ProviderTable.name]
     override val id: Long = row[ProviderTable.id]
-    override fun asUserIdp(subject: String): Idp = Idp(audience, subject, issuer)
     override fun asProviderListProvider(): ClientProviderListedMsg.Provider = ClientProviderListedMsg.Provider(
-        name, id, issuer, audience
+        name, id, issuer.toStrUrl(), audience
     )
 
-    val dump
-        get() = Dumper.dump(
-            this::class,
-            ::issuer withStr { it },
-            ::audience withStr { it },
-            ::name withStr { it },
-            ::id withStr { it.toString() },
-        )
-
-    override fun toString(): String = dump.str()
+    override fun toString(): String = Dumper.dump(
+        this::class,
+        ::issuer withStr { it.toStrUrl() },
+        ::audience withStr { it },
+        ::name withStr { it },
+        ::id withStr { it.toString() },
+    ).str()
 }

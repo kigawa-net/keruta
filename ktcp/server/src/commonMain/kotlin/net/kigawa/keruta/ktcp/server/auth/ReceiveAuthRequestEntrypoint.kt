@@ -19,12 +19,12 @@ class ReceiveAuthRequestEntrypoint: ServerAuthRequestEntrypoint<ServerCtx> {
     ): EntrypointDeferred<Res<Unit, KtcpErr>> {
         logger.debug("accessing authenticate request")
         return EntrypointDeferred {
-            when (val res = ctx.verify(input.authRequestMsg)) {
-                is Res.Err -> res.x<Unit>()
+            when (val res = ctx.session.authenticate(input.authRequestMsg)) {
+                is Res.Err -> res.convert<Unit>()
                     .also { logger.debug("failed to verify authenticate message") }
 
                 is Res.Ok -> {
-                    ctx.session.authenticate(res.value)
+
                     logger.debug("verified authenticate message")
                     ctx.server.clientEntrypoints.authSuccess.access(
                         SendAuthAccessArg(ClientAuthSuccessMsg()), ctx

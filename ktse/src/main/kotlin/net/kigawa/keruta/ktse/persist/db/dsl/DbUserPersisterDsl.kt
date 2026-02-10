@@ -1,8 +1,8 @@
 package net.kigawa.keruta.ktse.persist.db.dsl
 
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.server.auth.IdpConfig
-import net.kigawa.keruta.ktcp.server.auth.VerifiedToken
+import net.kigawa.keruta.ktcp.server.auth.UserIdpConfig
+import net.kigawa.keruta.ktcp.server.auth.jwt.VerifiedToken
 import net.kigawa.keruta.ktcp.server.persist.PersistedProvider
 import net.kigawa.keruta.ktcp.server.persist.PersistedUser
 import net.kigawa.keruta.ktcp.server.persist.PersistedUserIdp
@@ -37,13 +37,13 @@ class DbUserPersisterDsl(
             UserTable.id eq userIdp.userId
         }
         res.singleOrNull()?.let {
-            return@run Res.Ok(ExposedPersistedUser(it, userIdp))
+            return@run Res.Ok(ExposedPersistedUser(it))
         }
         return@run Res.Err(NoSingleRecordErr("", null))
     }
 
     fun createUserAndIdp(
-        idp: IdpConfig, verifiedToken: VerifiedToken, provider: PersistedProvider,
+        idp: UserIdpConfig, verifiedToken: VerifiedToken, provider: PersistedProvider,
     ): Res<PersistedUser, KtcpErr> = transaction.run {
         val user = UserTable.insert {}.resultedValues
             ?.singleOrNull() ?: return@run Res.Err(NoSingleRecordErr("", null))
@@ -51,11 +51,11 @@ class DbUserPersisterDsl(
             it[UserIdpTable.userId] = user[UserTable.id]
             it[UserIdpTable.providerId] = provider.id
             it[UserIdpTable.subject] = verifiedToken.subject
-            it[UserIdpTable.issuer] = idp.issuer
+            it[UserIdpTable.issuer] = idp.issuer.toStrUrl()
             it[UserIdpTable.audience] = idp.audience
         }.resultedValues?.singleOrNull() ?: return@run Res.Err(NoSingleRecordErr("", null))
         Res.Ok(
-            ExposedPersistedUser(user, ExposedPersistedUserIdp(idp))
+            ExposedPersistedUser(user)
         )
     }
 }

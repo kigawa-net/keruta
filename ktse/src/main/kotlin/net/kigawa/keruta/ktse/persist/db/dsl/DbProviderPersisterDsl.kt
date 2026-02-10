@@ -42,7 +42,7 @@ class DbProviderPersisterDsl(
 
     fun createProvider(idp: ProviderIdpConfig, user: PersistedUser): Res<PersistedProvider, KtcpErr> = transaction.run {
         val provider = ProviderTable.insert {
-            it[ProviderTable.issuer] = idp.issuer
+            it[ProviderTable.issuer] = idp.issuer.toStrUrl()
             it[ProviderTable.audience] = idp.audience
             it[ProviderTable.userId] = user.id
             it[ProviderTable.name] = idp.name

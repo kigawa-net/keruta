@@ -12,14 +12,16 @@ import net.kigawa.keruta.ktcp.server.KtcpServer
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktcp.server.err.ResponseErr
 import net.kigawa.keruta.ktcp.server.session.KtcpSession
+import net.kigawa.keruta.ktse.KerutaTaskServer
 import net.kigawa.keruta.ktse.KtseConfig
 import net.kigawa.keruta.ktse.ReceiveUnknownArg
 import net.kigawa.keruta.ktse.WebsocketConnection
-import net.kigawa.keruta.ktse.auth.jwks.JwksConfigProvider
+import net.kigawa.keruta.ktse.auth.Auth0AuthTokenDecoder
+import net.kigawa.keruta.ktse.auth.jwks.JwksProvider
 import net.kigawa.keruta.ktse.auth.jwt.Auth0JwtVerifier
 import net.kigawa.keruta.ktse.auth.oidc.OidcConfigProvider
 import net.kigawa.keruta.ktse.err.SendGenericErrArg
-import net.kigawa.keruta.ktse.persist.KtsePersisterSession
+import net.kigawa.keruta.ktse.persist.ExposedPersisterSession
 import net.kigawa.keruta.ktse.persist.db.DbPersister
 import net.kigawa.keruta.ktse.zookeeper.ZkPersister
 import net.kigawa.kodel.api.err.Res
@@ -29,17 +31,18 @@ import net.kigawa.kodel.api.log.traceignore.debug
 import net.kigawa.kodel.api.log.traceignore.error
 import kotlin.time.Duration.Companion.seconds
 
-class KtorWebsocketModule(application: Application) {
+class KtorWebsocketModule(application: Application, server: KerutaTaskServer) {
     val ktseConfig = KtseConfig(application.environment)
     val httpClient = net.kigawa.keruta.ktse.http.HttpClient()
-    val jwtVerifier = Auth0JwtVerifier()
     val serializer = JsonKerutaSerializer()
     val logger = getKogger()
     val ktcpServer = KtcpServer()
     val zkPersister = ZkPersister(ktseConfig)
     val dbPersister = DbPersister(ktseConfig)
-    val jwksConfigProvider = JwksConfigProvider()
+    val jwksProvider = JwksProvider()
     val oidcConfigProvider = OidcConfigProvider(httpClient)
+    val jwtVerifier = Auth0JwtVerifier(oidcConfigProvider, jwksProvider)
+    val authTokenDecoder = Auth0AuthTokenDecoder(jwtVerifier)
 
     init {
         application.install(WebSockets.Plugin) {
@@ -54,7 +57,8 @@ class KtorWebsocketModule(application: Application) {
         logger.debug("WebSocket connection established")
         KtcpSession.startSession(
             WebsocketConnection(this@webSocket),
-            KtsePersisterSession(dbPersister, jwtVerifier, jwksConfigProvider, oidcConfigProvider)
+            ExposedPersisterSession(dbPersister), authTokenDecoder, dbPersister.verifyTablesPersister,
+            ktseConfig.defaultUserIdp, ktseConfig.defaultProviderIdp
         ) { session ->
             consumeWs(session)
         }
@@ -92,7 +96,7 @@ class KtorWebsocketModule(application: Application) {
         is Res.Err<*, KtcpErr> -> {
             logger.error("Failed to decode frame", res.err)
             ctx.session.recordErr()
-            res.x()
+            res.convert()
         }
 
         is Res.Ok<ReceiveUnknownArg, *> -> {

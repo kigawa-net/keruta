@@ -21,7 +21,7 @@ class ReceiveTaskShowEntrypoint: ServerTaskShowEntrypoint<ServerCtx> {
                 val res = session.persisterSession.task.getTask(input)
             ) {
                 is Res.Ok -> res.value
-                is Res.Err -> return@EntrypointDeferred res.x()
+                is Res.Err -> return@EntrypointDeferred res.convert()
             }
             ctx.server.clientEntrypoints.taskShowed.access(
                 ClientTaskShowedMsg(

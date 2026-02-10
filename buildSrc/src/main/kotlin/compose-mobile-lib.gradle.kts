@@ -32,7 +32,7 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_21)
         }
 
-        minSdk = 24
+        minSdk = 26
 
         androidResources {
             enable = true

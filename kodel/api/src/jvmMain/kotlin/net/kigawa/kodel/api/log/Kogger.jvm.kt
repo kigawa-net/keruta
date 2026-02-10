@@ -3,6 +3,7 @@
 package net.kigawa.kodel.api.log
 
 import net.kigawa.kodel.api.log.handler.LoggerHandler
+import java.util.function.Supplier
 import java.util.logging.Logger
 import kotlin.reflect.KClass
 
@@ -29,3 +30,11 @@ fun <T: Any> KClass<T>.getKogger(): Kogger {
 fun <T: Any> T.getKogger(): Kogger {
     return LoggerFactory.get(this::class)
 }
+
+actual fun Kogger.fine(msg: () -> String) = fine { msg() }
+
+
+actual fun Kogger.warning(msg: () -> String) = warning { msg() }
+
+
+actual fun Kogger.severe(msg: () -> String) = severe { msg() }

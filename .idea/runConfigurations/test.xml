@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="test" type="CompoundRunConfigurationType">
+    <toRun name="keruta [allTests]" type="GradleRunConfiguration" />
+    <toRun name="keruta [test]" type="GradleRunConfiguration" />
+    <toRun name="build" type="js.build_tools.npm" />
+    <method v="2" />
+  </configuration>
+</component>

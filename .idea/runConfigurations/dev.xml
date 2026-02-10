@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="dev" type="CompoundRunConfigurationType">
+    <toRun name="compose.dev.yml: Compose デプロイ" type="docker-deploy" />
+    <toRun name="EngineMain ktse" type="KtorApplicationConfigurationType" />
+    <toRun name="Main" type="KtorApplicationConfigurationType" />
+    <toRun name="npm run dev" type="js.build_tools.npm" />
+    <method v="2" />
+  </configuration>
+</component>
