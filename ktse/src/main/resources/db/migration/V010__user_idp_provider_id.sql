@@ -1,6 +1,27 @@
--- Drop existing foreign key referencing provider.id
--- Only queue_provider.fk_2 references provider.id (confirmed via INFORMATION_SCHEMA)
-ALTER TABLE queue_provider DROP FOREIGN KEY fk_2;
+-- Drop existing foreign key referencing provider.id dynamically
+-- Look up actual FK name since auto-generated names may vary across TiDB/MySQL instances
+SET @fk_to_drop = (
+    SELECT kcu.CONSTRAINT_NAME
+    FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu
+    JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc
+        ON kcu.CONSTRAINT_NAME = tc.CONSTRAINT_NAME
+        AND kcu.TABLE_SCHEMA = tc.TABLE_SCHEMA
+        AND kcu.TABLE_NAME = tc.TABLE_NAME
+    WHERE kcu.TABLE_SCHEMA = DATABASE()
+    AND kcu.TABLE_NAME = 'queue_provider'
+    AND kcu.COLUMN_NAME = 'provider_id'
+    AND kcu.REFERENCED_TABLE_NAME = 'provider'
+    AND tc.CONSTRAINT_TYPE = 'FOREIGN KEY'
+    LIMIT 1
+);
+SET @drop_fk_sql = IF(
+    @fk_to_drop IS NOT NULL,
+    CONCAT('ALTER TABLE queue_provider DROP FOREIGN KEY `', @fk_to_drop, '`'),
+    'DO 0'
+);
+PREPARE fk_drop_stmt FROM @drop_fk_sql;
+EXECUTE fk_drop_stmt;
+DEALLOCATE PREPARE fk_drop_stmt;
 
 -- Modify provider.id from integer to bigint
 ALTER TABLE provider MODIFY COLUMN id bigint auto_increment;
