@@ -1,7 +1,8 @@
 package net.kigawa.keruta.ktcl.mobile.connection
 
-import net.kigawa.keruta.ktcp.model.KtcpConnection
+import net.kigawa.keruta.ktcp.client.KtcpConnection
 
+@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 expect class MobileWebSocketConnection {
     suspend fun send(msg: String)
     suspend fun receive(): String?
@@ -15,5 +16,6 @@ class MobileKtcpConnection(
 
     suspend fun receive(): String? = connection.receive()
 
+    @Suppress("unused")
     suspend fun close() = connection.close()
 }

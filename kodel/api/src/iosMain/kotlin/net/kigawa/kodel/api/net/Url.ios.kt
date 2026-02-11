@@ -2,20 +2,23 @@ package net.kigawa.kodel.api.net
 
 @Suppress(names = ["EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING"])
 actual class Url(
-    val url: String,
-): UrlBase {
-    actual override val path: String
-        get() = TODO("Not yet implemented")
-
-    actual override fun setPath(path: String): Url {
-        TODO("Not yet implemented")
+    schemeHost: String,
+    path: String,
+    queryAnker: String,
+): AbstractUrl(
+    schemeHost, path, queryAnker
+), UrlBase {
+    override fun copy(
+        schemeHost: String?, path: String?, queryAnker: String?,
+    ): Url {
+        return Url(
+            schemeHost ?: this.schemeHost,
+            path ?: this.path,
+            queryAnker ?: this.queryAnker
+        )
     }
 
     actual companion object {
-        actual fun parse(strUrl: String): Url {
-            val match = Regex("^[a-zA-Z]+://.+/]").matchAt(strUrl, 0)
-                ?: throw IllegalArgumentException("invalid url")
-            return Url(strUrl)
-        }
+        actual fun parse(strUrl: String): Url = parse(strUrl, ::Url)
     }
 }

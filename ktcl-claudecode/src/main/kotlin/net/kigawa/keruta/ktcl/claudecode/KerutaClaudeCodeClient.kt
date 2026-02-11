@@ -1,6 +1,5 @@
 package net.kigawa.keruta.ktcl.claudecode
 
-import net.kigawa.keruta.ktcp.client.KtcpSession
 import kotlinx.coroutines.coroutineScope
 import net.kigawa.keruta.ktcl.claudecode.auth.AuthManager
 import net.kigawa.keruta.ktcl.claudecode.claude.ClaudeCodeCliClient
@@ -11,11 +10,11 @@ import net.kigawa.keruta.ktcl.claudecode.task.TaskExecutor
 import net.kigawa.keruta.ktcl.claudecode.task.TaskReceiver
 import net.kigawa.keruta.ktcp.client.ClientCtx
 import net.kigawa.keruta.ktcp.client.KtcpClient
+import net.kigawa.keruta.ktcp.client.KtcpSession
 import net.kigawa.keruta.ktcp.model.KtcpClientEntrypoints
 import net.kigawa.keruta.ktcp.model.serialize.JsonKerutaSerializer
 import net.kigawa.keruta.ktcp.model.task.list.ServerTaskListMsg
 import net.kigawa.kodel.api.err.Res
-import net.kigawa.kodel.api.log.LoggerFactory
 import net.kigawa.kodel.api.log.LoggerFactory as KodelLoggerFactory
 
 class KerutaClaudeCodeClient(
@@ -54,6 +53,7 @@ class KerutaClaudeCodeClient(
             genericErrEntrypoint = ReceiveGenericErrEntrypoint(),
             authSuccessEntrypoint = ReceiveAuthSuccessEntrypoint(),
             providerListEntrypoint = ReceiveProviderListedEntrypoint(),
+            providerCreatedEntrypoint = ReceiveProviderCreatedEntrypoint(),
             queueCreatedEntrypoint = ReceiveQueueCreatedEntrypoint(),
             queueListedEntrypoint = ReceiveQueueListedEntrypoint(),
             queueShowedEntrypoint = ReceiveQueueShowedEntrypoint(),

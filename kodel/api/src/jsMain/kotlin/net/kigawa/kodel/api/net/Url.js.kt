@@ -18,4 +18,8 @@ actual class Url(
 
     actual override val path: String
         get() = url.pathname
+
+    actual override fun toStrUrl(): String = url.toString()
+
+    actual override fun toString(): String = toStrUrl()
 }

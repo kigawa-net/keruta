@@ -3,7 +3,7 @@ package net.kigawa.keruta.ktcl.claudecode.connection
 import io.ktor.client.plugins.websocket.DefaultClientWebSocketSession
 import io.ktor.websocket.Frame
 import io.ktor.websocket.readText
-import net.kigawa.keruta.ktcp.model.KtcpConnection
+import net.kigawa.keruta.ktcp.client.KtcpConnection
 
 class JvmWebSocketConnection(
     private val session: DefaultClientWebSocketSession,
