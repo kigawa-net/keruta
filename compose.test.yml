@@ -28,6 +28,7 @@ services:
         set -ue
         if [ ! -d /src/cache/app ]; then mkdir -p /src/cache/app; fi
         if [ ! -d /src/cache/.gradle ]; then mkdir -p /src/cache/.gradle; fi
+        if [ -d /src/cache/app/kotlin-js-store ]; then rm -r /src/cache/app/kotlin-js-store; fi
         rsync -avz --delete /src/ /src/cache/app \
           --exclude=/.git \
           --exclude=/.idea \
