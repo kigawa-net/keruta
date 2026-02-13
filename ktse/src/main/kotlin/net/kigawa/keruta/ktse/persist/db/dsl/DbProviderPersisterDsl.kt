@@ -6,7 +6,9 @@ import net.kigawa.keruta.ktcp.server.persist.PersistedUser
 import net.kigawa.keruta.ktse.err.MultipleRecordErr
 import net.kigawa.keruta.ktse.err.NoSingleRecordErr
 import net.kigawa.keruta.ktse.persist.db.table.ProviderTable
+import net.kigawa.keruta.ktse.persist.db.table.UserIdpTable
 import net.kigawa.keruta.ktse.persist.model.ExposedPersistedProvider
+import net.kigawa.keruta.ktse.persist.model.IdpData
 import net.kigawa.kodel.api.err.Res
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
@@ -17,9 +19,22 @@ class DbProviderPersisterDsl(
 ) {
 
     fun getAll(user: PersistedUser): Res<List<PersistedProvider>, KtcpErr> = Res.Ok(
-        ProviderTable.selectAll()
+        (ProviderTable leftJoin UserIdpTable)
+            .selectAll()
             .where { ProviderTable.userId eq user.id }
-            .map { ExposedPersistedProvider(it) }
+            .groupBy { it[ProviderTable.id] }
+            .map { (_, rows) ->
+                val row = rows.first()
+                val idps = rows.mapNotNull { idpRow ->
+                    val issuer = idpRow.getOrNull(UserIdpTable.issuer) ?: return@mapNotNull null
+                    IdpData(
+                        issuer = issuer,
+                        subject = idpRow[UserIdpTable.subject],
+                        audience = idpRow[UserIdpTable.audience],
+                    )
+                }
+                ExposedPersistedProvider(row, idps)
+            }
     )
 
     fun findByUserAndId(user: PersistedUser, id: Long): Res<PersistedProvider, KtcpErr>? = transaction.run {

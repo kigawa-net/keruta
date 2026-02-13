@@ -7,14 +7,37 @@ import {useKerutaTaskState} from "../components/KerutaTask";
 import {Link} from "react-router-dom";
 
 type Provider = ClientProviderListMsg["providers"][0]
+
+function buildOidcLoginUrl(authorizationEndpoint: string, clientId: string): string {
+    const url = new URL(authorizationEndpoint)
+    url.searchParams.set("response_type", "code")
+    url.searchParams.set("client_id", clientId)
+    url.searchParams.set("redirect_uri", window.location.origin)
+    url.searchParams.set("scope", "openid")
+    return url.toString()
+}
+
 export default function AboutRoute() {
     const wsState = useWsState()
     const [providers, setProviders] = useState<Provider[]>()
+    const [authEndpoints, setAuthEndpoints] = useState<Record<string, string>>({})
     const kerutaState = useKerutaTaskState()
     useWsReceive(wsState, msg => {
         if (msg.type != "provider_listed") return
         setProviders(msg.providers)
     }, [])
+    useEffect(() => {
+        if (!providers) return
+        const issuers = Array.from(new Set(providers.flatMap(p => p.idps.map(idp => idp.issuer))))
+        issuers.forEach(issuer => {
+            fetch(`${issuer}/.well-known/openid-configuration`)
+                .then(res => res.json())
+                .then((data: {authorization_endpoint: string}) => {
+                    setAuthEndpoints(prev => ({...prev, [issuer]: data.authorization_endpoint}))
+                })
+                .catch(() => {})
+        })
+    }, [providers])
     useEffect(() => {
         if (wsState.state != "open") return
         if (kerutaState.state != "connected") return;
@@ -43,6 +66,7 @@ export default function AboutRoute() {
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">名前</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Issuer</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Audience</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IDP</th>
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
@@ -52,6 +76,28 @@ export default function AboutRoute() {
                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{p.name}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{p.issuer}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{p.audience}</td>
+                                <td className="px-6 py-4 text-sm text-gray-500">
+                                    {p.idps.length === 0 ? (
+                                        <span className="text-gray-400">なし</span>
+                                    ) : (
+                                        <ul className="space-y-1">
+                                            {p.idps.map((idp, i) => (
+                                                <li key={i} className="text-xs">
+                                                    <a
+                                                        href={authEndpoints[idp.issuer]
+                                                            ? buildOidcLoginUrl(authEndpoints[idp.issuer], idp.audience)
+                                                            : idp.issuer}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="text-blue-600 hover:underline font-medium"
+                                                    >
+                                                        {idp.issuer}
+                                                    </a>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </td>
                             </tr>
                         ))}
                     </tbody>

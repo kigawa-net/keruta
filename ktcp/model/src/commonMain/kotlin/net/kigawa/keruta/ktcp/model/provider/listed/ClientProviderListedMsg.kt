@@ -17,5 +17,13 @@ data class ClientProviderListedMsg(
     class Provider(
         val name: String, val id: Long,
         val issuer: String, val audience: String,
+        val idps: List<Idp> = emptyList(),
+    )
+
+    @Serializable
+    class Idp(
+        val issuer: String,
+        val subject: String,
+        val audience: String,
     )
 }

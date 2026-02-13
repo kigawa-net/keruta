@@ -10,6 +10,11 @@ export interface ClientProviderListMsg {
         id: string
         issuer: string
         audience: string
+        idps: {
+            issuer: string
+            subject: string
+            audience: string
+        }[]
     }[]
     type: typeof ReceiveMsgTypes.provider_listed
 }
