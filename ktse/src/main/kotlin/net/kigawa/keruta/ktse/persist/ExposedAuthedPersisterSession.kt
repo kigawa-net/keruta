@@ -4,6 +4,7 @@ import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.server.persist.AuthenticatedPersisterSession
 import net.kigawa.keruta.ktcp.server.persist.PersistedProvider
 import net.kigawa.keruta.ktcp.server.persist.PersistedUser
+import net.kigawa.keruta.ktcp.server.persist.ProviderIdpInput
 import net.kigawa.keruta.ktse.persist.db.DbPersister
 import net.kigawa.kodel.api.err.Res
 
@@ -17,8 +18,8 @@ class ExposedAuthedPersisterSession(
         it.provider.getAll(user)
     }
 
-    override fun createProvider(name: String, issuer: String, audience: String): Res<PersistedProvider, KtcpErr> =
+    override fun createProvider(name: String, issuer: String, audience: String, idps: List<ProviderIdpInput>): Res<PersistedProvider, KtcpErr> =
         dbPersister.execTransaction {
-            it.provider.createProvider(user, name, issuer, audience)
+            it.provider.createProvider(user, name, issuer, audience, idps)
         }
 }

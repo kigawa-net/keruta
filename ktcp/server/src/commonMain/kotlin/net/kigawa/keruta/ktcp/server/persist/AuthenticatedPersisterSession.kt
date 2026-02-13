@@ -7,6 +7,6 @@ interface AuthenticatedPersisterSession {
     val task: AuthedTaskPersisterSession
     val queue: AuthedQueuePersisterSession
     fun getProviders(): Res<List<PersistedProvider>, KtcpErr>
-    fun createProvider(name: String, issuer: String, audience: String): Res<PersistedProvider, KtcpErr>
+    fun createProvider(name: String, issuer: String, audience: String, idps: List<ProviderIdpInput> = emptyList()): Res<PersistedProvider, KtcpErr>
 
 }

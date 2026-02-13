@@ -7,6 +7,7 @@ import net.kigawa.keruta.ktcp.model.provider.created.ClientProviderCreatedMsg
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktcp.server.err.ResponseErr
 import net.kigawa.keruta.ktcp.server.err.UnauthenticatedErr
+import net.kigawa.keruta.ktcp.server.persist.ProviderIdpInput
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.LoggerFactory
@@ -26,7 +27,8 @@ class ReceiveProviderCreateEntrypoint: ServerProviderCreateEntrypoint<ServerCtx>
             val msg = input.msg
             logger.debug("Creating provider: name=${msg.name}, issuer=${msg.issuer}, audience=${msg.audience}")
 
-            when (val res = authed.persisterSession.createProvider(msg.name, msg.issuer, msg.audience)) {
+            val idps = msg.idps.map { ProviderIdpInput(it.issuer, it.subject, it.audience) }
+            when (val res = authed.persisterSession.createProvider(msg.name, msg.issuer, msg.audience, idps)) {
                 is Res.Err -> res.convert()
                 is Res.Ok -> {
                     logger.debug("Provider created successfully: id=${res.value.id}, name=${res.value.name}")

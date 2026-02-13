@@ -3,6 +3,7 @@ package net.kigawa.keruta.ktse.persist.db.dsl
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.server.persist.PersistedProvider
 import net.kigawa.keruta.ktcp.server.persist.PersistedUser
+import net.kigawa.keruta.ktcp.server.persist.ProviderIdpInput
 import net.kigawa.keruta.ktse.err.MultipleRecordErr
 import net.kigawa.keruta.ktse.err.NoSingleRecordErr
 import net.kigawa.keruta.ktse.persist.db.table.ProviderTable
@@ -46,14 +47,25 @@ class DbProviderPersisterDsl(
         return@run Res.Err(MultipleRecordErr("", null))
     }
 
-    fun createProvider(user: PersistedUser, name: String, issuer: String, audience: String): Res<PersistedProvider, KtcpErr> = transaction.run {
+    fun createProvider(user: PersistedUser, name: String, issuer: String, audience: String, idps: List<ProviderIdpInput> = emptyList()): Res<PersistedProvider, KtcpErr> = transaction.run {
         val provider = ProviderTable.insert {
             it[ProviderTable.issuer] = issuer
             it[ProviderTable.audience] = audience
             it[ProviderTable.userId] = user.id
             it[ProviderTable.name] = name
         }.resultedValues?.singleOrNull() ?: return Res.Err(NoSingleRecordErr("", null))
-        return Res.Ok(ExposedPersistedProvider(provider))
+        val persistedProvider = ExposedPersistedProvider(provider)
+        val idpDataList = idps.map { idp ->
+            UserIdpTable.insert {
+                it[UserIdpTable.userId] = user.id
+                it[UserIdpTable.providerId] = persistedProvider.id
+                it[UserIdpTable.issuer] = idp.issuer
+                it[UserIdpTable.subject] = idp.subject
+                it[UserIdpTable.audience] = idp.audience
+            }.resultedValues?.singleOrNull() ?: return Res.Err(NoSingleRecordErr("", null))
+            IdpData(issuer = idp.issuer, subject = idp.subject, audience = idp.audience)
+        }
+        return Res.Ok(ExposedPersistedProvider(provider, idpDataList))
     }
 
 }

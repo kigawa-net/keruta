@@ -10,8 +10,16 @@ data class ServerProviderCreateMsg(
     val name: String,
     val issuer: String,
     val audience: String,
+    val idps: List<Idp> = emptyList(),
 ): ServerMsg {
     init {
         require(type == ServerMsgType.PROVIDER_CREATE) { "type must be PROVIDER_CREATE" }
     }
+
+    @Serializable
+    data class Idp(
+        val issuer: String,
+        val subject: String,
+        val audience: String,
+    )
 }

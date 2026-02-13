@@ -24,6 +24,11 @@ export interface ServerProviderCreateMsg {
     name: string
     issuer: string
     audience: string
+    idps: {
+        issuer: string
+        subject: string
+        audience: string
+    }[]
 }
 
 export interface ClientProviderCreatedMsg {
