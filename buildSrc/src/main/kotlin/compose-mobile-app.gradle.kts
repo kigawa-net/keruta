@@ -41,6 +41,6 @@ kotlin {
     jvmToolchain(25)
 
     compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_24)
+        jvmTarget.set(JvmTarget.JVM_25)
     }
 }
