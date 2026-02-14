@@ -86,17 +86,20 @@ jobs:
       # argo
       - name: checkout manifest repository
         uses: actions/checkout@v3
+        if: inputs.manifestFile != ''
         with:
           repository: ${{ inputs.repository }}
           ref: main
           token: ${{ secrets.GIT_TOKEN }}
 
       - name: Update YAML File
+        if: inputs.manifestFile != ''
         run: |
           yq -i '.spec.template.spec.containers[0].image = "harbor.kigawa.net/${{ inputs.harborProject }}/${{ inputs.name }}:${{ github.ref_name }}-${{ github.sha }}"' \
           ${{ inputs.manifestFile }}
 
       - name: push
+        if: inputs.manifestFile != ''
         run: |
           git config user.name githubActions
           git config user.email bot@kigawa.net

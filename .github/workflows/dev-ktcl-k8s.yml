@@ -5,6 +5,7 @@ on:
       - README.md
       - Dockerfile_ktse
       - Dockerfile_ktcl_front
+      - Dockerfile_ktcl_claudecode
       - .github/workflows/dev-ktcl-front.yml
       - .github/workflows/dev-ktse.yml
       - .idea/**
