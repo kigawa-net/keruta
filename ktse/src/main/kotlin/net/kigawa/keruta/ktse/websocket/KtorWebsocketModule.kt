@@ -26,6 +26,8 @@ import net.kigawa.keruta.ktse.persist.ExposedPersisterSession
 import net.kigawa.keruta.ktse.persist.ProviderAddHandler
 import net.kigawa.keruta.ktse.persist.ProviderCompleteHandler
 import net.kigawa.keruta.ktse.persist.db.DbPersister
+import net.kigawa.keruta.ktse.websocket.entrypoint.ReceiveProviderAddEntrypoint
+import net.kigawa.keruta.ktse.websocket.entrypoint.ReceiveProviderCompleteEntrypoint
 import net.kigawa.keruta.ktse.zookeeper.ZkPersister
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.err.convertErr
@@ -39,7 +41,6 @@ class KtorWebsocketModule(application: Application, server: KerutaTaskServer) {
     val httpClient = net.kigawa.keruta.ktse.http.HttpClient()
     val serializer = JsonKerutaSerializer()
     val logger = getKogger()
-    val ktcpServer = KtcpServer()
     val zkPersister = ZkPersister(ktseConfig)
     val dbPersister = DbPersister(ktseConfig)
     val jwksProvider = JwksProvider()
@@ -49,6 +50,10 @@ class KtorWebsocketModule(application: Application, server: KerutaTaskServer) {
     val authTokenDecoder = Auth0AuthTokenDecoder(jwtVerifier)
     val providerAddHandler = ProviderAddHandler(dbPersister)
     val providerCompleteHandler = ProviderCompleteHandler(dbPersister, kerutaJsonProvider, httpClient)
+    val ktcpServer = KtcpServer(
+        ReceiveProviderAddEntrypoint(providerAddHandler),
+        ReceiveProviderCompleteEntrypoint(providerCompleteHandler),
+    )
 
     init {
         application.install(WebSockets.Plugin) {
@@ -104,19 +109,6 @@ class KtorWebsocketModule(application: Application, server: KerutaTaskServer) {
             return res.convert()
         }
         val arg = (res as Res.Ok).value
-
-        arg.tryToProviderAdd()?.let { msgRes ->
-            return when (msgRes) {
-                is Res.Err -> msgRes.convert()
-                is Res.Ok -> providerAddHandler.handle(msgRes.value, ctx)
-            }
-        }
-        arg.tryToProviderComplete()?.let { msgRes ->
-            return when (msgRes) {
-                is Res.Err -> msgRes.convert()
-                is Res.Ok -> providerCompleteHandler.handle(msgRes.value, ctx)
-            }
-        }
 
         return ktcpServer.ktcpServerEntrypoints.access(arg, ctx)?.execute()
             ?.convertErr { ResponseErr("", it) } ?: Res.Err(

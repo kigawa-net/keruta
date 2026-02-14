@@ -1,6 +1,8 @@
 package net.kigawa.keruta.ktcp.client
 
 import net.kigawa.keruta.ktcp.client.auth.SendAuthRequestEntrypoint
+import net.kigawa.keruta.ktcp.client.provider.SendProviderAddEntrypoint
+import net.kigawa.keruta.ktcp.client.provider.SendProviderCompleteEntrypoint
 import net.kigawa.keruta.ktcp.client.provider.SendProviderListEntrypoint
 import net.kigawa.keruta.ktcp.client.queue.SendQueueCreateEntrypoint
 import net.kigawa.keruta.ktcp.client.queue.SendQueueListEntrypoint
@@ -20,6 +22,8 @@ class KtcpClient {
         SendTaskUpdateEntrypoint(),
         SendTaskMoveEntrypoint(),
         SendProviderListEntrypoint(),
+        SendProviderAddEntrypoint(),
+        SendProviderCompleteEntrypoint(),
         SendQueueCreateEntrypoint(),
         SendQueueListEntrypoint(),
         SendQueueShowEntrypoint(),
