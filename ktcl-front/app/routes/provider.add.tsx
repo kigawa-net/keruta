@@ -1,6 +1,6 @@
 // noinspection JSUnusedGlobalSymbols
-import {Link, useNavigate} from "react-router";
-import {useEffect, useState} from "react";
+import {Link} from "react-router";
+import {useState} from "react";
 import {useWsState} from "../components/websocket/Websocket";
 import useWsReceive from "../components/websocket/useWsReceive";
 import FormTextInput, {InputValue} from "../components/form/FormTextInput";
@@ -8,7 +8,12 @@ import FormErrMsg from "../components/form/FormErrMsg";
 import {ServerProviderAddMsg} from "../msg/provider";
 import {useKerutaTaskState} from "../components/KerutaTask";
 
-type FormState = "inputting" | "submitting" | "redirecting"
+type FormState = "inputting" | "fetching" | "submitting" | "redirecting"
+
+type KerutaJson = {
+    authorization_endpoint: string
+    audience: string
+}
 
 // noinspection JSUnusedGlobalSymbols
 export default function ProviderAddRoute() {
@@ -17,72 +22,65 @@ export default function ProviderAddRoute() {
     const [formState, setFormState] = useState<FormState>("inputting")
     const [name, setName] = useState<InputValue>({value: ""})
     const [issuer, setIssuer] = useState<InputValue>({value: ""})
-    const [audience, setAudience] = useState<InputValue>({value: ""})
     const [err, setErr] = useState<string>()
+    const [kerutaJson, setKerutaJson] = useState<KerutaJson>()
 
-    useEffect(() => {
-        if (formState != "submitting") return
+    const handleSubmit = async () => {
         if (wsState.state != "open") {
             setErr("WebSocketが接続されていません")
-            setFormState("inputting")
             return
         }
         if (kerutaState.state != "connected" || kerutaState.auth.state != "authenticated") {
             setErr("認証されていません")
-            setFormState("inputting")
             return
         }
         if (name.value.trim() == "") {
             setName({...name, error: "名前を入力してください"})
-            setFormState("inputting")
             return
         }
         if (issuer.value.trim() == "") {
             setIssuer({...issuer, error: "Issuerを入力してください"})
-            setFormState("inputting")
             return
         }
-        if (audience.value.trim() == "") {
-            setAudience({...audience, error: "Audienceを入力してください"})
-            setFormState("inputting")
-            return
-        }
-        const msg: ServerProviderAddMsg = {
-            type: "provider_add",
-            name: name.value,
-            issuer: issuer.value,
-            audience: audience.value,
-        }
-        wsState.websocket.send(JSON.stringify(msg))
-    }, [formState])
 
-    useWsReceive(wsState, async msg => {
-        if (msg.type != "provider_add_token_issued") return
-        const token = msg.token
+        setFormState("fetching")
         const issuerValue = issuer.value.replace(/\/$/, "")
-
-        let authorizationEndpoint: string
+        let json: KerutaJson
         try {
             const res = await fetch(`${issuerValue}/.well-known/keruta.json`)
-            const kerutaJson: {authorization_endpoint: string} = await res.json()
-            authorizationEndpoint = kerutaJson.authorization_endpoint
+            json = await res.json()
         } catch {
             setErr("keruta.jsonの取得に失敗しました")
             setFormState("inputting")
             return
         }
 
-        const redirectUri = `${window.location.origin}/provider/complete`
-        const url = new URL(authorizationEndpoint)
-        url.searchParams.set("state", token)
-        url.searchParams.set("redirect_uri", redirectUri)
-        url.searchParams.set("client_id", audience.value)
+        setKerutaJson(json)
+        const msg: ServerProviderAddMsg = {
+            type: "provider_add",
+            name: name.value,
+            issuer: issuerValue,
+            audience: json.audience,
+        }
+        wsState.websocket.send(JSON.stringify(msg))
+        setFormState("submitting")
+    }
+
+    useWsReceive(wsState, msg => {
+        if (msg.type != "provider_add_token_issued") return
+        if (!kerutaJson) return
+        const url = new URL(kerutaJson.authorization_endpoint)
+        url.searchParams.set("state", msg.token)
+        url.searchParams.set("redirect_uri", `${window.location.origin}/provider/complete`)
+        url.searchParams.set("client_id", kerutaJson.audience)
         url.searchParams.set("response_type", "code")
         url.searchParams.set("scope", "openid")
-
         setFormState("redirecting")
         window.location.href = url.toString()
-    }, [issuer.value, audience.value])
+    }, [kerutaJson])
+
+    const isDisabled = formState != "inputting"
+    const buttonLabel = formState == "redirecting" ? "リダイレクト中..." : formState == "fetching" || formState == "submitting" ? "処理中..." : "追加"
 
     return (
         <div className="max-w-2xl mx-auto p-6">
@@ -93,7 +91,7 @@ export default function ProviderAddRoute() {
             <div className="bg-white rounded-lg shadow p-6">
                 <form className="space-y-6" onSubmit={(e) => {
                     e.preventDefault()
-                    setFormState("submitting")
+                    void handleSubmit()
                 }}>
                     <FormTextInput
                         label="名前" id="name" placeholder="プロバイダーの名前"
@@ -103,17 +101,13 @@ export default function ProviderAddRoute() {
                         label="Issuer" id="issuer" placeholder="https://provider.example.com"
                         value={issuer} onChange={setIssuer}
                     />
-                    <FormTextInput
-                        label="Audience" id="audience" placeholder="client-id"
-                        value={audience} onChange={setAudience}
-                    />
                     <div className="flex gap-4">
                         <button
                             type="submit"
                             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
-                            disabled={formState != "inputting"}
+                            disabled={isDisabled}
                         >
-                            {formState == "redirecting" ? "リダイレクト中..." : formState == "submitting" ? "処理中..." : "追加"}
+                            {buttonLabel}
                         </button>
                         <Link
                             to="/provider"

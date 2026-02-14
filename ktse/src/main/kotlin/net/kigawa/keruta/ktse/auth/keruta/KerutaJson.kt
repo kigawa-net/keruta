@@ -13,4 +13,6 @@ data class KerutaJson(
     val authorizationEndpoint: String,
     @SerialName("token_endpoint")
     val tokenEndpoint: String,
+    @SerialName("audience")
+    val audience: String,
 )
