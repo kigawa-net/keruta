@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import net.kigawa.keruta.ktcl.mobile.connection.MobileKtcpConnection
-import net.kigawa.keruta.ktcl.mobile.msg.provider.ServerProviderCreateMsg
 import net.kigawa.keruta.ktcl.mobile.msg.provider.ServerProviderListMsg
 import net.kigawa.keruta.ktcl.mobile.msg.queue.ServerQueueCreateMsg
 import net.kigawa.keruta.ktcl.mobile.msg.queue.ServerQueueListMsg
@@ -35,11 +34,6 @@ class MessageSender {
 
     suspend fun sendProviderList() {
         val msg = ServerProviderListMsg()
-        sendMessage(json.encodeToString(msg))
-    }
-
-    suspend fun sendProviderCreate(name: String, issuer: String, audience: String) {
-        val msg = ServerProviderCreateMsg(name = name, issuer = issuer, audience = audience)
         sendMessage(json.encodeToString(msg))
     }
 

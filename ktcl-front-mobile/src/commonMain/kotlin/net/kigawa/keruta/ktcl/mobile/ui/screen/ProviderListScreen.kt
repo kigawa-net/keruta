@@ -3,7 +3,6 @@ package net.kigawa.keruta.ktcl.mobile.ui.screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,13 +24,11 @@ import androidx.compose.ui.unit.dp
 import net.kigawa.keruta.ktcl.mobile.msg.provider.Provider
 import net.kigawa.keruta.ktcl.mobile.ui.components.ErrorMessage
 import net.kigawa.keruta.ktcl.mobile.ui.components.LoadingIndicator
-import net.kigawa.keruta.ktcl.mobile.ui.components.PrimaryButton
 import net.kigawa.keruta.ktcl.mobile.viewmodel.ProviderListViewModel
 
 @Composable
 fun ProviderListScreen(
     viewModel: ProviderListViewModel,
-    onCreateProviderClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state by viewModel.state.collectAsState()
@@ -45,20 +42,10 @@ fun ProviderListScreen(
             .fillMaxSize()
             .padding(16.dp),
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = "プロバイダー一覧",
-                style = MaterialTheme.typography.headlineMedium,
-            )
-            PrimaryButton(
-                text = "新規作成",
-                onClick = onCreateProviderClick,
-            )
-        }
+        Text(
+            text = "プロバイダー一覧",
+            style = MaterialTheme.typography.headlineMedium,
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 

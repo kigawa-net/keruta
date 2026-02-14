@@ -1,10 +1,9 @@
 package net.kigawa.keruta.ktcp.model.msg.client
 
-import net.kigawa.keruta.ktcp.model.auth.sccess.ClientAuthSuccessArg
-import net.kigawa.keruta.ktcp.model.err.ClientGenericErrArg
+import net.kigawa.keruta.ktcp.model.auth.sccess.ClientAuthSuccessMsg
+import net.kigawa.keruta.ktcp.model.err.GenericErrMsg
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.provider.created.ClientProviderCreatedArg
-import net.kigawa.keruta.ktcp.model.provider.listed.ClientProviderListedArg
+import net.kigawa.keruta.ktcp.model.provider.listed.ClientProviderListedMsg
 import net.kigawa.keruta.ktcp.model.queue.created.ClientQueueCreatedMsg
 import net.kigawa.keruta.ktcp.model.queue.listed.ClientQueueListedMsg
 import net.kigawa.keruta.ktcp.model.queue.showed.ClientQueueShowedMsg
@@ -16,10 +15,9 @@ import net.kigawa.keruta.ktcp.model.task.updated.ClientTaskUpdatedMsg
 import net.kigawa.kodel.api.err.Res
 
 interface ClientUnknownArg {
-    fun tryToGenericError(): Res<ClientGenericErrArg, KtcpErr>?
-    fun tryToAuthSuccess(): Res<ClientAuthSuccessArg, KtcpErr>?
-    fun tryToProviderList(): Res<ClientProviderListedArg, KtcpErr>?
-    fun tryToProviderCreated(): Res<ClientProviderCreatedArg, KtcpErr>?
+    fun tryToGenericError(): Res<GenericErrMsg, KtcpErr>?
+    fun tryToAuthSuccess(): Res<ClientAuthSuccessMsg, KtcpErr>?
+    fun tryToProviderList(): Res<ClientProviderListedMsg, KtcpErr>?
     fun tryToQueueCreated(): Res<ClientQueueCreatedMsg, KtcpErr>?
     fun tryToQueueListed(): Res<ClientQueueListedMsg, KtcpErr>?
     fun tryToQueueShowed(): Res<ClientQueueShowedMsg, KtcpErr>?

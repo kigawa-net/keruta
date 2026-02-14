@@ -70,10 +70,6 @@ class TaskReceiver(
                     val msg = json.decodeFromString<net.kigawa.keruta.ktcl.mobile.msg.provider.ClientProviderListMsg>(message)
                     providerRepository.updateProviders(msg.providers)
                 }
-                "provider_created" -> {
-                    val msg = json.decodeFromString<net.kigawa.keruta.ktcl.mobile.msg.provider.ClientProviderCreatedMsg>(message)
-                    println("プロバイダー作成成功: ID=${msg.providerId}")
-                }
                 else -> println("不明なメッセージタイプ: $type")
             }
         } catch (e: Exception) {

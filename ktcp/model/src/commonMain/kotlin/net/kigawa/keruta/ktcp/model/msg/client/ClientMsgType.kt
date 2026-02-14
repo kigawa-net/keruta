@@ -8,7 +8,7 @@ enum class ClientMsgType(
 ) {
     GENERIC_ERROR("generic_error"),
     PROVIDER_LISTED("provider_listed"),
-    PROVIDER_CREATED("provider_created"),
+    PROVIDER_TOKEN_ISSUED("provider_token_issued"),
     QUEUE_CREATED("queue_created"),
     QUEUE_LISTED("queue_listed"),
     QUEUE_SHOWED("queue_showed"),

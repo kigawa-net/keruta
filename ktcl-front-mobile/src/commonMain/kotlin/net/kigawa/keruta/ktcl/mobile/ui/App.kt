@@ -14,7 +14,6 @@ import net.kigawa.keruta.ktcl.mobile.navigation.NavigationHost
 import net.kigawa.keruta.ktcl.mobile.navigation.Screen
 import net.kigawa.keruta.ktcl.mobile.ui.layout.MainLayout
 import net.kigawa.keruta.ktcl.mobile.ui.screen.LoginScreen
-import net.kigawa.keruta.ktcl.mobile.ui.screen.ProviderCreateScreen
 import net.kigawa.keruta.ktcl.mobile.ui.screen.ProviderListScreen
 import net.kigawa.keruta.ktcl.mobile.ui.screen.QueueCreateScreen
 import net.kigawa.keruta.ktcl.mobile.ui.screen.QueueDetailScreen
@@ -120,22 +119,6 @@ private fun AuthenticatedApp(
                     val viewModel = remember { container.createProviderListViewModel() }
                     ProviderListScreen(
                         viewModel = viewModel,
-                        onCreateProviderClick = {
-                            container.navigationController.navigate(Screen.ProviderCreate)
-                        },
-                        modifier = Modifier.fillMaxSize(),
-                    )
-                }
-                is Screen.ProviderCreate -> {
-                    val viewModel = remember { container.createProviderCreateViewModel() }
-                    ProviderCreateScreen(
-                        viewModel = viewModel,
-                        onCreated = {
-                            container.navigationController.navigateBack()
-                        },
-                        onCancel = {
-                            container.navigationController.navigateBack()
-                        },
                         modifier = Modifier.fillMaxSize(),
                     )
                 }

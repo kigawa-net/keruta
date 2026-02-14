@@ -13,7 +13,7 @@ enum class ServerMsgType(
     TASK_UPDATE("task_update"),
     TASK_MOVE("task_move"),
     PROVIDER_LIST("provider_list"),
-    PROVIDER_CREATE("provider_create"),
+    PROVIDER_ISSUE_TOKEN("provider_issue_token"),
     QUEUE_CREATE("queue_create"),
     QUEUE_LIST("queue_list"),
     QUEUE_SHOW("queue_show"),

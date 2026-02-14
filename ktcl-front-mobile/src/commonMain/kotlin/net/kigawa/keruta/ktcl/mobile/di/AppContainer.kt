@@ -17,7 +17,6 @@ import net.kigawa.keruta.ktcl.mobile.service.MessageSender
 import net.kigawa.keruta.ktcl.mobile.storage.SecureStorage
 import net.kigawa.keruta.ktcl.mobile.task.TaskRepository
 import net.kigawa.keruta.ktcl.mobile.viewmodel.AuthViewModel
-import net.kigawa.keruta.ktcl.mobile.viewmodel.ProviderCreateViewModel
 import net.kigawa.keruta.ktcl.mobile.viewmodel.ProviderListViewModel
 import net.kigawa.keruta.ktcl.mobile.viewmodel.QueueCreateViewModel
 import net.kigawa.keruta.ktcl.mobile.viewmodel.QueueDetailViewModel
@@ -79,9 +78,5 @@ open class AppContainer(
 
     fun createProviderListViewModel(): ProviderListViewModel {
         return ProviderListViewModel(providerRepository, messageSender)
-    }
-
-    fun createProviderCreateViewModel(): ProviderCreateViewModel {
-        return ProviderCreateViewModel(messageSender)
     }
 }

@@ -4,9 +4,7 @@ import net.kigawa.keruta.ktcp.model.KtcpClientEntrypoints
 import net.kigawa.keruta.ktcp.model.KtcpServerEntrypoints
 import net.kigawa.keruta.ktcp.server.auth.ReceiveAuthRequestEntrypoint
 import net.kigawa.keruta.ktcp.server.auth.success.SendAuthSuccessEntrypoint
-import net.kigawa.keruta.ktcp.server.provider.ReceiveProviderCreateEntrypoint
 import net.kigawa.keruta.ktcp.server.provider.ReceiveProviderListEntrypoint
-import net.kigawa.keruta.ktcp.server.provider.SendProviderCreatedEntrypoint
 import net.kigawa.keruta.ktcp.server.provider.SendProviderListedEntrypoint
 import net.kigawa.keruta.ktcp.server.queue.*
 import net.kigawa.keruta.ktcp.server.task.ReceiveTaskCreateEntrypoint
@@ -28,7 +26,6 @@ class KtcpServer {
         ReceiveTaskUpdateEntrypoint(),
         ReceiveTaskMoveEntrypoint(),
         ReceiveProviderListEntrypoint(),
-        ReceiveProviderCreateEntrypoint(),
         ReceiveQueueCreateEntrypoint(),
         ReceiveQueueListEntrypoint(),
         ReceiveQueueShowEntrypoint(),
@@ -39,7 +36,6 @@ class KtcpServer {
         SendGenericErrEntrypoint(),
         SendAuthSuccessEntrypoint(),
         SendProviderListedEntrypoint(),
-        SendProviderCreatedEntrypoint(),
         SendQueueCreatedEntrypoint(),
         SendQueueListedEntrypoint(),
         SendQueueShowedEntrypoint(),

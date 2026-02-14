@@ -19,19 +19,3 @@ export interface ClientProviderListMsg {
     type: typeof ReceiveMsgTypes.provider_listed
 }
 
-export interface ServerProviderCreateMsg {
-    type: typeof SendMsgTypes.provider_create
-    name: string
-    issuer: string
-    audience: string
-    idps: {
-        issuer: string
-        subject: string
-        audience: string
-    }[]
-}
-
-export interface ClientProviderCreatedMsg {
-    type: typeof ReceiveMsgTypes.provider_created
-    providerId: string
-}

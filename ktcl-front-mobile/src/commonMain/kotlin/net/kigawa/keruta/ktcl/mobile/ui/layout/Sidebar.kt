@@ -57,7 +57,6 @@ fun Sidebar(
                 item.screen == Screen.QueueList && currentScreen is Screen.QueueCreate -> true
                 item.screen == Screen.QueueList && currentScreen is Screen.QueueDetail -> true
                 item.screen == Screen.ProviderList && currentScreen is Screen.ProviderList -> true
-                item.screen == Screen.ProviderList && currentScreen is Screen.ProviderCreate -> true
                 else -> false
             }
 

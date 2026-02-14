@@ -21,16 +21,3 @@ data class ClientProviderListMsg(
     val providers: List<Provider>,
 )
 
-@Serializable
-data class ServerProviderCreateMsg(
-    val type: String = "provider_create",
-    val name: String,
-    val issuer: String,
-    val audience: String,
-)
-
-@Serializable
-data class ClientProviderCreatedMsg(
-    val type: String = "provider_created",
-    val providerId: String,
-)

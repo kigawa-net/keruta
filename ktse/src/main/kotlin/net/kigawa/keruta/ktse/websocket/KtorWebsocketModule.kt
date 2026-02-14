@@ -20,7 +20,7 @@ import net.kigawa.keruta.ktse.auth.Auth0AuthTokenDecoder
 import net.kigawa.keruta.ktse.auth.jwks.JwksProvider
 import net.kigawa.keruta.ktse.auth.jwt.Auth0JwtVerifier
 import net.kigawa.keruta.ktse.auth.oidc.OidcConfigProvider
-import net.kigawa.keruta.ktse.err.SendGenericErrArg
+import net.kigawa.keruta.ktcp.model.err.GenericErrMsg
 import net.kigawa.keruta.ktse.persist.ExposedPersisterSession
 import net.kigawa.keruta.ktse.persist.db.DbPersister
 import net.kigawa.keruta.ktse.zookeeper.ZkPersister
@@ -81,7 +81,7 @@ class KtorWebsocketModule(application: Application, server: KerutaTaskServer) {
         is Res.Err<*, KtcpErr> -> {
             logger.error("Failed to receive message", res.err)
             ktcpServer.clientEntrypoints.genericError.access(
-                SendGenericErrArg(res.err),
+                GenericErrMsg(errorCode = res.err.code, errorMessage = res.err.message ?: "empty message"),
                 ServerCtx(session, serializer, ktcpServer)
             )
         }

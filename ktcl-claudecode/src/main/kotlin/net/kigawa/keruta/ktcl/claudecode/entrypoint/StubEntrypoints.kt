@@ -2,10 +2,8 @@ package net.kigawa.keruta.ktcl.claudecode.entrypoint
 
 import net.kigawa.keruta.ktcp.client.ClientCtx
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.provider.created.ClientProviderCreatedArg
-import net.kigawa.keruta.ktcp.model.provider.created.ClientProviderCreatedEntrypoint
-import net.kigawa.keruta.ktcp.model.provider.listed.ClientProviderListedArg
 import net.kigawa.keruta.ktcp.model.provider.listed.ClientProviderListedEntrypoint
+import net.kigawa.keruta.ktcp.model.provider.listed.ClientProviderListedMsg
 import net.kigawa.keruta.ktcp.model.queue.created.ClientQueueCreatedEntrypoint
 import net.kigawa.keruta.ktcp.model.queue.created.ClientQueueCreatedMsg
 import net.kigawa.keruta.ktcp.model.queue.listed.ClientQueueListedEntrypoint
@@ -19,18 +17,9 @@ import net.kigawa.keruta.ktcp.model.task.updated.ClientTaskUpdatedMsg
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.err.Res
 
-class ReceiveProviderCreatedEntrypoint : ClientProviderCreatedEntrypoint<ClientCtx> {
-    override fun access(
-        input: ClientProviderCreatedArg,
-        ctx: ClientCtx,
-    ): EntrypointDeferred<Res<Unit, KtcpErr>> = EntrypointDeferred {
-        Res.Ok(Unit)
-    }
-}
-
 class ReceiveProviderListedEntrypoint : ClientProviderListedEntrypoint<ClientCtx> {
     override fun access(
-        input: ClientProviderListedArg,
+        input: ClientProviderListedMsg,
         ctx: ClientCtx,
     ): EntrypointDeferred<Res<Unit, KtcpErr>> = EntrypointDeferred {
         Res.Ok(Unit)

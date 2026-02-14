@@ -6,7 +6,6 @@ export default [
         layout("./layout/PrivateLayout.tsx", [
             index("./routes/index.tsx"),
             route("provider", "./routes/providers.tsx"),
-            route("provider/create", "./routes/provider.create.tsx"),
             route("task", "./routes/task.tsx"),
             route("task/create", "./routes/task.create.tsx"),
             route("queue/create", "./routes/queue.create.tsx"),

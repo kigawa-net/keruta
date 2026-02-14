@@ -4,7 +4,6 @@ import {useWsState} from "../components/websocket/Websocket";
 import {useEffect, useState} from "react";
 import {ClientProviderListMsg, ServerProviderListMsg} from "../msg/provider";
 import {useKerutaTaskState} from "../components/KerutaTask";
-import {Link} from "react-router-dom";
 
 type Provider = ClientProviderListMsg["providers"][0]
 
@@ -51,12 +50,6 @@ export default function AboutRoute() {
         <div className="max-w-6xl mx-auto p-6">
             <div className="flex justify-between items-center mb-8">
                 <h1 className="text-3xl font-bold">プロバイダー一覧</h1>
-                <Link
-                    to="/provider/create"
-                    className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                    プロバイダー追加
-                </Link>
             </div>
             <div className="bg-white rounded-lg shadow">
                 <table className="w-full">
