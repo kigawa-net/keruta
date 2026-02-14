@@ -7,6 +7,8 @@ import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
 import net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownArg
 import net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownMsg
+import net.kigawa.keruta.ktcp.model.provider.add.ServerProviderAddMsg
+import net.kigawa.keruta.ktcp.model.provider.complete.ServerProviderCompleteMsg
 import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListMsg
 import net.kigawa.keruta.ktcp.model.queue.create.ServerQueueCreateMsg
 import net.kigawa.keruta.ktcp.model.queue.list.ServerQueueListMsg
@@ -47,6 +49,16 @@ class ReceiveUnknownArg(
 
     override fun tryToProvidersRequest(): Res<ServerProviderListMsg, KtcpErr>? {
         if (msg.type != ServerMsgType.PROVIDER_LIST) return null
+        return translate()
+    }
+
+    override fun tryToProviderAdd(): Res<ServerProviderAddMsg, KtcpErr>? {
+        if (msg.type != ServerMsgType.PROVIDER_ADD) return null
+        return translate()
+    }
+
+    override fun tryToProviderComplete(): Res<ServerProviderCompleteMsg, KtcpErr>? {
+        if (msg.type != ServerMsgType.PROVIDER_COMPLETE) return null
         return translate()
     }
 

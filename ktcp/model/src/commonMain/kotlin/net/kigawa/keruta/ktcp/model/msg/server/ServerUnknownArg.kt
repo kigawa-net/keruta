@@ -3,6 +3,8 @@ package net.kigawa.keruta.ktcp.model.msg.server
 import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestMsg
 import net.kigawa.keruta.ktcp.model.err.GenericErrMsg
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
+import net.kigawa.keruta.ktcp.model.provider.add.ServerProviderAddMsg
+import net.kigawa.keruta.ktcp.model.provider.complete.ServerProviderCompleteMsg
 import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListMsg
 import net.kigawa.keruta.ktcp.model.queue.create.ServerQueueCreateMsg
 import net.kigawa.keruta.ktcp.model.queue.list.ServerQueueListMsg
@@ -19,6 +21,8 @@ interface ServerUnknownArg {
     fun tryToAuthenticate(): Res<ServerAuthRequestMsg, KtcpErr>?
     fun tryToTaskCreate(): Res<ServerTaskCreateMsg, KtcpErr>?
     fun tryToProvidersRequest(): Res<ServerProviderListMsg, KtcpErr>?
+    fun tryToProviderAdd(): Res<ServerProviderAddMsg, KtcpErr>?
+    fun tryToProviderComplete(): Res<ServerProviderCompleteMsg, KtcpErr>?
     fun tryToQueueCreate(): Res<ServerQueueCreateMsg, KtcpErr>?
     fun tryToQueueList(): Res<ServerQueueListMsg, KtcpErr>?
     fun tryToQueueShow(): Res<ServerQueueShowMsg, KtcpErr>?

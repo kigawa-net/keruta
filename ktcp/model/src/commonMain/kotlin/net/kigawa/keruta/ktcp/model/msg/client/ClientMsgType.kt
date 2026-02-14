@@ -9,6 +9,8 @@ enum class ClientMsgType(
     GENERIC_ERROR("generic_error"),
     PROVIDER_LISTED("provider_listed"),
     PROVIDER_TOKEN_ISSUED("provider_token_issued"),
+    PROVIDER_ADD_TOKEN_ISSUED("provider_add_token_issued"),
+    PROVIDER_IDP_ADDED("provider_idp_added"),
     QUEUE_CREATED("queue_created"),
     QUEUE_LISTED("queue_listed"),
     QUEUE_SHOWED("queue_showed"),

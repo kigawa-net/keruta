@@ -67,8 +67,36 @@ class DbPersisterDsl(val transaction: Transaction) {
     }
 
 
+    fun insertProviderForUser(
+        user: net.kigawa.keruta.ktcp.server.persist.PersistedUser,
+        providerIssuer: Url,
+        providerAudience: String,
+        providerName: String,
+        userSubject: String,
+    ): Res<ExposedPersistedProvider, KtcpErr> {
+        val provider = ProviderTable.insert {
+            it[ProviderTable.userId] = user.id
+            it[ProviderTable.issuer] = providerIssuer.toStrUrl()
+            it[ProviderTable.audience] = providerAudience
+            it[ProviderTable.name] = providerName
+            it[ProviderTable.setting] = ""
+        }.resultedValues
+            ?.single()
+            ?.let { ExposedPersistedProvider(it) }
+            ?: return Res.Err(NoSingleRecordErr("", null))
+        UserIdpTable.insert {
+            it[UserIdpTable.userId] = user.id
+            it[UserIdpTable.providerId] = provider.id
+            it[UserIdpTable.issuer] = providerIssuer.toStrUrl()
+            it[UserIdpTable.subject] = userSubject
+            it[UserIdpTable.audience] = providerAudience
+        }
+        return Res.Ok(provider)
+    }
+
     val task by lazy { DbTaskPersisterDsl(transaction) }
     val user by lazy { DbUserPersisterDsl(transaction) }
     val provider by lazy { DbProviderPersisterDsl(transaction) }
     val queue by lazy { DbQueuePersisterDsl(transaction) }
+    val providerAddToken by lazy { DbProviderAddTokenDsl(transaction) }
 }

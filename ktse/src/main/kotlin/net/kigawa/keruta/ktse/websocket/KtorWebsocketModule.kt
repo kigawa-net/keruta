@@ -19,9 +19,12 @@ import net.kigawa.keruta.ktse.WebsocketConnection
 import net.kigawa.keruta.ktse.auth.Auth0AuthTokenDecoder
 import net.kigawa.keruta.ktse.auth.jwks.JwksProvider
 import net.kigawa.keruta.ktse.auth.jwt.Auth0JwtVerifier
+import net.kigawa.keruta.ktse.auth.keruta.KerutaJsonProvider
 import net.kigawa.keruta.ktse.auth.oidc.OidcConfigProvider
 import net.kigawa.keruta.ktcp.model.err.GenericErrMsg
 import net.kigawa.keruta.ktse.persist.ExposedPersisterSession
+import net.kigawa.keruta.ktse.persist.ProviderAddHandler
+import net.kigawa.keruta.ktse.persist.ProviderCompleteHandler
 import net.kigawa.keruta.ktse.persist.db.DbPersister
 import net.kigawa.keruta.ktse.zookeeper.ZkPersister
 import net.kigawa.kodel.api.err.Res
@@ -41,8 +44,11 @@ class KtorWebsocketModule(application: Application, server: KerutaTaskServer) {
     val dbPersister = DbPersister(ktseConfig)
     val jwksProvider = JwksProvider()
     val oidcConfigProvider = OidcConfigProvider(httpClient)
+    val kerutaJsonProvider = KerutaJsonProvider(httpClient)
     val jwtVerifier = Auth0JwtVerifier(oidcConfigProvider, jwksProvider)
     val authTokenDecoder = Auth0AuthTokenDecoder(jwtVerifier)
+    val providerAddHandler = ProviderAddHandler(dbPersister)
+    val providerCompleteHandler = ProviderCompleteHandler(dbPersister, kerutaJsonProvider, httpClient)
 
     init {
         application.install(WebSockets.Plugin) {
@@ -90,20 +96,31 @@ class KtorWebsocketModule(application: Application, server: KerutaTaskServer) {
         }
     }
 
-    private suspend fun receive(frame: Frame, ctx: ServerCtx): Res<Unit, KtcpErr> = when (
+    private suspend fun receive(frame: Frame, ctx: ServerCtx): Res<Unit, KtcpErr> {
         val res = ReceiveUnknownArg.fromFrame(frame, ctx)
-    ) {
-        is Res.Err<*, KtcpErr> -> {
+        if (res is Res.Err) {
             logger.error("Failed to decode frame", res.err)
             ctx.session.recordErr()
-            res.convert()
+            return res.convert()
+        }
+        val arg = (res as Res.Ok).value
+
+        arg.tryToProviderAdd()?.let { msgRes ->
+            return when (msgRes) {
+                is Res.Err -> msgRes.convert()
+                is Res.Ok -> providerAddHandler.handle(msgRes.value, ctx)
+            }
+        }
+        arg.tryToProviderComplete()?.let { msgRes ->
+            return when (msgRes) {
+                is Res.Err -> msgRes.convert()
+                is Res.Ok -> providerCompleteHandler.handle(msgRes.value, ctx)
+            }
         }
 
-        is Res.Ok<ReceiveUnknownArg, *> -> {
-            ktcpServer.ktcpServerEntrypoints.access(res.value, ctx)?.execute()
-                ?.convertErr { ResponseErr("", it) } ?: Res.Err(
-                EntrypointNotFoundErr("entrypoint not found:", null)
-            )
-        }
+        return ktcpServer.ktcpServerEntrypoints.access(arg, ctx)?.execute()
+            ?.convertErr { ResponseErr("", it) } ?: Res.Err(
+            EntrypointNotFoundErr("entrypoint not found:", null)
+        )
     }
 }
