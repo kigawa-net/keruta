@@ -6,6 +6,7 @@ import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 import net.kigawa.keruta.ktcl.k8s.auth.AuthModule
+import net.kigawa.keruta.ktcl.k8s.config.CorsConfig
 import net.kigawa.keruta.ktcl.k8s.k8s.K8sModule
 import net.kigawa.keruta.ktcl.k8s.route.RouteModule
 import net.kigawa.keruta.ktcl.k8s.serialize.SerializeModule
@@ -33,6 +34,7 @@ class WebApplicationModule() {
     }
 
     private fun configureCors(application: Application) {
+        val corsConfig = CorsConfig.fromEnvironment()
         application.install(CORS) {
             allowMethod(HttpMethod.Options)
             allowMethod(HttpMethod.Get)
@@ -42,6 +44,16 @@ class WebApplicationModule() {
             allowHeader(HttpHeaders.Authorization)
             allowHeader(HttpHeaders.ContentType)
             allowCredentials = true
+            val origins = corsConfig.allowedOrigins
+            if (origins != null) {
+                origins.forEach { origin ->
+                    val scheme = if (origin.startsWith("https://")) "https" else "http"
+                    val host = origin.removePrefix("https://").removePrefix("http://")
+                    allowHost(host, schemes = listOf(scheme))
+                }
+            } else {
+                anyHost()
+            }
         }
     }
 

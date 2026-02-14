@@ -8,7 +8,8 @@ data class AppConfig(
     val idp: IdpConfig,
     val keruta: KerutaConfig,
     val ktse: KtseConfig,
-    val k8s: K8sSettings
+    val k8s: K8sSettings,
+    val cors: CorsConfig
 ) {
     companion object {
         /**
@@ -20,7 +21,8 @@ data class AppConfig(
                 idp = IdpConfig.load(applicationConfig),
                 keruta = KerutaConfig.load(applicationConfig),
                 ktse = KtseConfig.fromEnvironment(),
-                k8s = K8sSettings.fromEnvironment()
+                k8s = K8sSettings.fromEnvironment(),
+                cors = CorsConfig.fromEnvironment()
             )
         }
     }
