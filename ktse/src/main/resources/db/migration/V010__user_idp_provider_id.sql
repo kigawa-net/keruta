@@ -1,6 +1,32 @@
--- Disable foreign key constraint checks to allow column type modification.
--- This avoids needing to know auto-generated FK constraint names in TiDB.
-SET FOREIGN_KEY_CHECKS=0;
+-- Drop foreign key constraint for queue.provider_id referencing provider.id
+SET @fk_name = (
+    SELECT CONSTRAINT_NAME
+    FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+    WHERE TABLE_SCHEMA = DATABASE()
+      AND TABLE_NAME = 'queue'
+      AND COLUMN_NAME = 'provider_id'
+      AND REFERENCED_TABLE_NAME = 'provider'
+    LIMIT 1
+);
+SET @drop_sql = CONCAT('ALTER TABLE `queue` DROP FOREIGN KEY `', @fk_name, '`');
+PREPARE drop_stmt FROM @drop_sql;
+EXECUTE drop_stmt;
+DEALLOCATE PREPARE drop_stmt;
+
+-- Drop foreign key constraint for queue_provider.provider_id referencing provider.id
+SET @fk_name = (
+    SELECT CONSTRAINT_NAME
+    FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+    WHERE TABLE_SCHEMA = DATABASE()
+      AND TABLE_NAME = 'queue_provider'
+      AND COLUMN_NAME = 'provider_id'
+      AND REFERENCED_TABLE_NAME = 'provider'
+    LIMIT 1
+);
+SET @drop_sql = CONCAT('ALTER TABLE `queue_provider` DROP FOREIGN KEY `', @fk_name, '`');
+PREPARE drop_stmt FROM @drop_sql;
+EXECUTE drop_stmt;
+DEALLOCATE PREPARE drop_stmt;
 
 -- Modify provider.id from integer to bigint
 ALTER TABLE provider MODIFY COLUMN id bigint auto_increment;
@@ -9,10 +35,11 @@ ALTER TABLE provider MODIFY COLUMN id bigint auto_increment;
 ALTER TABLE queue MODIFY COLUMN provider_id bigint;
 ALTER TABLE queue_provider MODIFY COLUMN provider_id bigint;
 
--- Re-enable foreign key constraint checks
-SET FOREIGN_KEY_CHECKS=1;
+-- Re-add FK constraints with explicit names
+ALTER TABLE queue ADD CONSTRAINT queue_provider_id_fk FOREIGN KEY (provider_id) REFERENCES provider (id);
+ALTER TABLE queue_provider ADD CONSTRAINT queue_provider_provider_id_fk FOREIGN KEY (provider_id) REFERENCES provider (id);
 
--- Handle user_idp.provider_id column
+-- Add provider_id column to user_idp
 ALTER TABLE user_idp ADD provider_id bigint null;
 ALTER TABLE user_idp ADD CONSTRAINT user_idp_provider_id_fk
     FOREIGN KEY (provider_id) REFERENCES provider (id);
