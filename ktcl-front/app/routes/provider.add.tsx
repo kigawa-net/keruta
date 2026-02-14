@@ -1,6 +1,6 @@
 // noinspection JSUnusedGlobalSymbols
 import {Link} from "react-router";
-import {useState} from "react";
+import {useRef, useState} from "react";
 import {useWsState} from "../components/websocket/Websocket";
 import useWsReceive from "../components/websocket/useWsReceive";
 import FormTextInput, {InputValue} from "../components/form/FormTextInput";
@@ -23,7 +23,7 @@ export default function ProviderAddRoute() {
     const [name, setName] = useState<InputValue>({value: ""})
     const [issuer, setIssuer] = useState<InputValue>({value: ""})
     const [err, setErr] = useState<string>()
-    const [kerutaJson, setKerutaJson] = useState<KerutaJson>()
+    const kerutaJsonRef = useRef<KerutaJson | undefined>(undefined)
 
     const handleSubmit = async () => {
         if (wsState.state != "open") {
@@ -55,7 +55,7 @@ export default function ProviderAddRoute() {
             return
         }
 
-        setKerutaJson(json)
+        kerutaJsonRef.current = json
         const msg: ServerProviderAddMsg = {
             type: "provider_add",
             name: name.value,
@@ -68,16 +68,16 @@ export default function ProviderAddRoute() {
 
     useWsReceive(wsState, msg => {
         if (msg.type != "provider_add_token_issued") return
-        if (!kerutaJson) return
-        const url = new URL(kerutaJson.authorization_endpoint)
+        if (!kerutaJsonRef.current) return
+        const url = new URL(kerutaJsonRef.current.authorization_endpoint)
         url.searchParams.set("state", msg.token)
         url.searchParams.set("redirect_uri", `${window.location.origin}/provider/complete`)
-        url.searchParams.set("client_id", kerutaJson.audience)
+        url.searchParams.set("client_id", kerutaJsonRef.current.audience)
         url.searchParams.set("response_type", "code")
         url.searchParams.set("scope", "openid")
         setFormState("redirecting")
         window.location.href = url.toString()
-    }, [kerutaJson])
+    }, [])
 
     const isDisabled = formState != "inputting"
     const buttonLabel = formState == "redirecting" ? "リダイレクト中..." : formState == "fetching" || formState == "submitting" ? "処理中..." : "追加"
