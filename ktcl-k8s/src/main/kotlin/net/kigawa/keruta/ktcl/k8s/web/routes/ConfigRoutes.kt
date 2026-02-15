@@ -23,13 +23,13 @@ class ConfigRoutes(val jwkProvider: JwkProvider, val keycloakConfig: KeycloakCon
         get("/.well-known/keruta.json") {
             val appConfig = appConfig
             val issuer = appConfig.keruta.ownIssuer
-            val authorizationEndpoint = "$issuer/protocol/openid-connect/auth"
+            val authorizationEndpoint = issuer.plusPath("/protocol/openid-connect/auth")
 
             val response = WellKnownKerutaResponse(
                 service = "keruta-ktcl-k8s",
                 version = "1.0.0",
-                issuer = issuer,
-                authorizationEndpoint = authorizationEndpoint,
+                issuer = issuer.toStrUrl(),
+                authorizationEndpoint = authorizationEndpoint.toStrUrl(),
                 audience = keycloakConfig.audience,
             )
             call.respond(response)
