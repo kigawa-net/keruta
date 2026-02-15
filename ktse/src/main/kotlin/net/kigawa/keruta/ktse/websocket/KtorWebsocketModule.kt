@@ -5,6 +5,7 @@ import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.channels.consumeEach
+import net.kigawa.keruta.ktcp.base.http.HttpClient
 import net.kigawa.keruta.ktcp.model.err.EntrypointNotFoundErr
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.model.serialize.JsonKerutaSerializer
@@ -17,10 +18,10 @@ import net.kigawa.keruta.ktse.KtseConfig
 import net.kigawa.keruta.ktse.ReceiveUnknownArg
 import net.kigawa.keruta.ktse.WebsocketConnection
 import net.kigawa.keruta.ktse.auth.Auth0AuthTokenDecoder
-import net.kigawa.keruta.ktse.auth.jwks.JwksProvider
-import net.kigawa.keruta.ktse.auth.jwt.Auth0JwtVerifier
+import net.kigawa.keruta.ktcp.base.auth.jwks.JwksProvider
+import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
 import net.kigawa.keruta.ktse.auth.keruta.KerutaJsonProvider
-import net.kigawa.keruta.ktse.auth.oidc.OidcConfigProvider
+import net.kigawa.keruta.ktcp.base.auth.oidc.OidcConfigProvider
 import net.kigawa.keruta.ktcp.model.err.GenericErrMsg
 import net.kigawa.keruta.ktse.persist.ExposedPersisterSession
 import net.kigawa.keruta.ktse.persist.ProviderAddHandler
@@ -40,7 +41,7 @@ import kotlin.time.Duration.Companion.seconds
 
 class KtorWebsocketModule(application: Application, server: KerutaTaskServer) {
     val ktseConfig = KtseConfig(application.environment)
-    val httpClient = net.kigawa.keruta.ktse.http.HttpClient()
+    val httpClient = HttpClient()
     val serializer = JsonKerutaSerializer()
     val logger = getKogger()
     val zkPersister = ZkPersister(ktseConfig)

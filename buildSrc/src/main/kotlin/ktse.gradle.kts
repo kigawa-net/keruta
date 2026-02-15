@@ -8,6 +8,7 @@ kotlin {
 }
 dependencies {
     api(project(":ktcp:server"))
+    api(project(":ktcp:base"))
     // https://mvnrepository.com/artifact/com.auth0/java-jwt
     implementation("com.auth0:java-jwt:4.5.0")
     implementation("com.auth0:jwks-rsa:0.23.0")

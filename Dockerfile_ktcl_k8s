@@ -6,6 +6,7 @@ COPY gradle /app/gradle
 COPY kodel /app/kodel
 COPY ktcp /app/ktcp
 COPY ktse /app/ktse
+COPY ktcl /app/ktcl
 COPY ktcl-claudecode /app/ktcl-claudecode
 COPY ktcl-k8s /app/ktcl-k8s
 COPY settings.gradle.kts gradle.properties build.gradle.kts gradlew /app/

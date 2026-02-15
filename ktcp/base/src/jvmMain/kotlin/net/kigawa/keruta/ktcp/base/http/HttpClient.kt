@@ -1,4 +1,4 @@
-package net.kigawa.keruta.ktse.http
+package net.kigawa.keruta.ktcp.base.http
 
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*

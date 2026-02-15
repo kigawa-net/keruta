@@ -25,6 +25,7 @@
             <option value="$PROJECT_DIR$/kodel/api" />
             <option value="$PROJECT_DIR$/kodel/core" />
             <option value="$PROJECT_DIR$/kodel/coroutine" />
+            <option value="$PROJECT_DIR$/ktcl" />
             <option value="$PROJECT_DIR$/ktcl-claudecode" />
             <option value="$PROJECT_DIR$/ktcl-front-mobile" />
             <option value="$PROJECT_DIR$/ktcl-front-mobile/app" />

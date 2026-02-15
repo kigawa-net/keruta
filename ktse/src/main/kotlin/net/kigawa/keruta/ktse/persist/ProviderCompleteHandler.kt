@@ -8,10 +8,10 @@ import net.kigawa.keruta.ktcp.model.provider.idp_added.ClientProviderIdpAddedMsg
 import net.kigawa.keruta.ktcp.model.serialize.serialize
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktcp.server.err.UnauthenticatedErr
-import net.kigawa.keruta.ktcp.server.err.VerifyFailErr
+import net.kigawa.keruta.ktcp.base.auth.VerifyFailErr
 import net.kigawa.keruta.ktse.auth.keruta.KerutaJsonProvider
 import net.kigawa.keruta.ktse.auth.keruta.TokenExchangeResponse
-import net.kigawa.keruta.ktse.http.HttpClient
+import net.kigawa.keruta.ktcp.base.http.HttpClient
 import net.kigawa.keruta.ktse.persist.db.DbPersister
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.getKogger

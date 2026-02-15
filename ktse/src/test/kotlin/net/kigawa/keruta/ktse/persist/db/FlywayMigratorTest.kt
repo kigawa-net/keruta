@@ -49,8 +49,8 @@ class FlywayMigratorTest {
         // 環境変数からテスト用データベース設定を取得
         jdbcUrl = System.getenv("TEST_DB_JDBC_URL")
             ?: "jdbc:mysql://localhost:3306/keruta_test"
-        username = System.getenv("TEST_DB_USERNAME") ?: "keruta"
-        password = System.getenv("TEST_DB_PASSWORD") ?: "keruta"
+        username = System.getenv("TEST_DB_USERNAME") ?: "net/kigawa/keruta"
+        password = System.getenv("TEST_DB_PASSWORD") ?: "net/kigawa/keruta"
 
         // データベース接続確認
         try {

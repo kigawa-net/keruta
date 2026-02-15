@@ -18,7 +18,7 @@ class KerutaTaskServer {
             }
 
             child("net.kigawa") {
-                child("keruta") {
+                child("net/kigawa/keruta") {
                     level = LogLevel.DEBUG
                 }
                 child("kodel") {

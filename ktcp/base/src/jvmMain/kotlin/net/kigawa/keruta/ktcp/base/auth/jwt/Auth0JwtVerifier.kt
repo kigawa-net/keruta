@@ -1,13 +1,13 @@
-package net.kigawa.keruta.ktse.auth.jwt
+package net.kigawa.keruta.ktcp.base.auth.jwt
 
 import com.auth0.jwt.JWT
+import net.kigawa.keruta.ktcp.base.auth.VerifyFailErr
+import net.kigawa.keruta.ktcp.base.auth.jwks.JwksProvider
+import net.kigawa.keruta.ktcp.base.auth.oidc.OidcConfigProvider
 import net.kigawa.keruta.ktcp.model.auth.AuthToken
 import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifier
 import net.kigawa.keruta.ktcp.model.auth.jwt.UnverifiedToken
 import net.kigawa.keruta.ktcp.model.auth.jwt.VerifyErr
-import net.kigawa.keruta.ktcp.server.err.VerifyFailErr
-import net.kigawa.keruta.ktse.auth.jwks.JwksProvider
-import net.kigawa.keruta.ktse.auth.oidc.OidcConfigProvider
 import net.kigawa.kodel.api.dump.Dumper
 import net.kigawa.kodel.api.err.Res
 
