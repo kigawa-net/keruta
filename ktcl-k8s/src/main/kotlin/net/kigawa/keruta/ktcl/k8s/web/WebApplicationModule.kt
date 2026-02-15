@@ -47,9 +47,13 @@ class WebApplicationModule() {
             val origins = corsConfig.allowedOrigins
             if (origins != null) {
                 origins.forEach { origin ->
-                    val scheme = if (origin.startsWith("https://")) "https" else "http"
-                    val host = origin.removePrefix("https://").removePrefix("http://")
-                    allowHost(host, schemes = listOf(scheme))
+                    val scheme = when {
+                        origin.startsWith("https://") -> "https"
+                        origin.startsWith("http://") -> "http"
+                        else -> "http"
+                    }
+                    val hostWithPort = origin.removePrefix("https://").removePrefix("http://")
+                    allowHost(hostWithPort, schemes = listOf(scheme))
                 }
             } else {
                 anyHost()
