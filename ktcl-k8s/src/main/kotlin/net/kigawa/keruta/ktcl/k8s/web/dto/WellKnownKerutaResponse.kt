@@ -7,7 +7,8 @@ import kotlinx.serialization.Serializable
 data class WellKnownKerutaResponse(
     val service: String,
     val version: String,
-    val auth: AuthInfo,
-    @SerialName("authorization_endpoint") val authorizationEndpoint: String,
+    val issuer: String,
+    @SerialName("authorization_endpoint")
+    val authorizationEndpoint: String,
     val audience: String,
 )
