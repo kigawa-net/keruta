@@ -16,6 +16,7 @@ enum class ServerMsgType(
     PROVIDER_ISSUE_TOKEN("provider_issue_token"),
     PROVIDER_ADD("provider_add"),
     PROVIDER_COMPLETE("provider_complete"),
+    PROVIDER_DELETE("provider_delete"),
     QUEUE_CREATE("queue_create"),
     QUEUE_LIST("queue_list"),
     QUEUE_SHOW("queue_show"),

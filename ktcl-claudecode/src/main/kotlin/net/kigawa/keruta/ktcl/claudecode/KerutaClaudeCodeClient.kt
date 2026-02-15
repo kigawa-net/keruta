@@ -55,6 +55,7 @@ class KerutaClaudeCodeClient(
             providerListEntrypoint = ReceiveProviderListedEntrypoint(),
             providerAddTokenEntrypoint = ReceiveProviderAddTokenEntrypoint(),
             providerIdpAddedEntrypoint = ReceiveProviderIdpAddedEntrypoint(),
+            providerDeletedEntrypoint = ReceiveProviderDeletedEntrypoint(),
             queueCreatedEntrypoint = ReceiveQueueCreatedEntrypoint(),
             queueListedEntrypoint = ReceiveQueueListedEntrypoint(),
             queueShowedEntrypoint = ReceiveQueueShowedEntrypoint(),

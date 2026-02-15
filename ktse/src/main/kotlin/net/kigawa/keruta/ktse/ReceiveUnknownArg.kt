@@ -9,6 +9,7 @@ import net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownArg
 import net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownMsg
 import net.kigawa.keruta.ktcp.model.provider.add.ServerProviderAddMsg
 import net.kigawa.keruta.ktcp.model.provider.complete.ServerProviderCompleteMsg
+import net.kigawa.keruta.ktcp.model.provider.delete.ServerProviderDeleteMsg
 import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListMsg
 import net.kigawa.keruta.ktcp.model.queue.create.ServerQueueCreateMsg
 import net.kigawa.keruta.ktcp.model.queue.list.ServerQueueListMsg
@@ -59,6 +60,11 @@ class ReceiveUnknownArg(
 
     override fun tryToProviderComplete(): Res<ServerProviderCompleteMsg, KtcpErr>? {
         if (msg.type != ServerMsgType.PROVIDER_COMPLETE) return null
+        return translate()
+    }
+
+    override fun tryToProviderDelete(): Res<ServerProviderDeleteMsg, KtcpErr>? {
+        if (msg.type != ServerMsgType.PROVIDER_DELETE) return null
         return translate()
     }
 

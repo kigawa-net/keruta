@@ -11,6 +11,7 @@ enum class ClientMsgType(
     PROVIDER_TOKEN_ISSUED("provider_token_issued"),
     PROVIDER_ADD_TOKEN_ISSUED("provider_add_token_issued"),
     PROVIDER_IDP_ADDED("provider_idp_added"),
+    PROVIDER_DELETED("provider_deleted"),
     QUEUE_CREATED("queue_created"),
     QUEUE_LISTED("queue_listed"),
     QUEUE_SHOWED("queue_showed"),

@@ -5,6 +5,7 @@ import net.kigawa.keruta.ktcp.model.err.GenericErrMsg
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.model.provider.add.ServerProviderAddMsg
 import net.kigawa.keruta.ktcp.model.provider.complete.ServerProviderCompleteMsg
+import net.kigawa.keruta.ktcp.model.provider.delete.ServerProviderDeleteMsg
 import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListMsg
 import net.kigawa.keruta.ktcp.model.queue.create.ServerQueueCreateMsg
 import net.kigawa.keruta.ktcp.model.queue.list.ServerQueueListMsg
@@ -23,6 +24,7 @@ interface ServerUnknownArg {
     fun tryToProvidersRequest(): Res<ServerProviderListMsg, KtcpErr>?
     fun tryToProviderAdd(): Res<ServerProviderAddMsg, KtcpErr>?
     fun tryToProviderComplete(): Res<ServerProviderCompleteMsg, KtcpErr>?
+    fun tryToProviderDelete(): Res<ServerProviderDeleteMsg, KtcpErr>?
     fun tryToQueueCreate(): Res<ServerQueueCreateMsg, KtcpErr>?
     fun tryToQueueList(): Res<ServerQueueListMsg, KtcpErr>?
     fun tryToQueueShow(): Res<ServerQueueShowMsg, KtcpErr>?

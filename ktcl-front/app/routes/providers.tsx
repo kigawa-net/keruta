@@ -2,7 +2,7 @@
 import useWsReceive from "../components/websocket/useWsReceive";
 import {useWsState} from "../components/websocket/Websocket";
 import {useEffect, useState} from "react";
-import {ClientProviderListMsg, ServerProviderListMsg} from "../msg/provider";
+import {ClientProviderListMsg, ServerProviderDeleteMsg, ServerProviderListMsg} from "../msg/provider";
 import {useKerutaTaskState} from "../components/KerutaTask";
 import {Link} from "react-router";
 
@@ -23,8 +23,11 @@ export default function AboutRoute() {
     const [authEndpoints, setAuthEndpoints] = useState<Record<string, string>>({})
     const kerutaState = useKerutaTaskState()
     useWsReceive(wsState, msg => {
-        if (msg.type != "provider_listed") return
-        setProviders(msg.providers)
+        if (msg.type == "provider_listed") {
+            setProviders(msg.providers)
+        } else if (msg.type == "provider_deleted") {
+            setProviders(prev => prev?.filter(p => p.id !== msg.id))
+        }
     }, [])
     useEffect(() => {
         if (!providers) return
@@ -47,6 +50,16 @@ export default function AboutRoute() {
         }
         wsState.websocket.send(JSON.stringify(msg))
     }, [wsState.state, kerutaState.state == "connected" && kerutaState.auth.state]);
+    const handleDelete = (id: string) => {
+        if (!confirm("このプロバイダーを削除しますか？")) return
+        if (wsState.state != "open") return
+        const msg: ServerProviderDeleteMsg = {
+            type: "provider_delete",
+            id,
+        }
+        wsState.websocket.send(JSON.stringify(msg))
+    }
+
     return (
         <div className="max-w-6xl mx-auto p-6">
             <div className="flex justify-between items-center mb-8">
@@ -67,6 +80,7 @@ export default function AboutRoute() {
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Issuer</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Audience</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IDP</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
@@ -97,6 +111,14 @@ export default function AboutRoute() {
                                             ))}
                                         </ul>
                                     )}
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm">
+                                    <button
+                                        onClick={() => handleDelete(p.id)}
+                                        className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+                                    >
+                                        削除
+                                    </button>
                                 </td>
                             </tr>
                         ))}
