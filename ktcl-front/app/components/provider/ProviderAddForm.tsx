@@ -4,7 +4,6 @@ import FormTextInput, {InputValue} from "../form/FormTextInput";
 import FormErrMsg from "../form/FormErrMsg";
 import {ClientProviderAddTokenMsg, ServerProviderAddMsg} from "../../msg/provider";
 import {useKerutaTaskState} from "../KerutaTask";
-import {useNavigate} from "react-router-dom";
 import {ProviderAddFormActions} from "./ProviderAddFormActions";
 import {buildProviderAuthUrlFromMsg} from "./providerAuthUrl";
 import {validateProviderForm} from "./providerValidation";
@@ -30,7 +29,6 @@ export function ProviderAddForm() {
     const [issuer, setIssuer] = useState<InputValue>({value: ""})
     const [err, setErr] = useState<string>()
     const [kerutaJson, setKerutaJson] = useState<KerutaJson | undefined>(undefined)
-    const navigate = useNavigate()
 
     const handleWsReceive = useCallback((msg: ClientProviderAddTokenMsg) => {
         if (!kerutaJson) return
@@ -40,8 +38,8 @@ export function ProviderAddForm() {
             msg,
         )
         setFormState("redirecting")
-        navigate(url.toString())
-    }, [kerutaJson, navigate])
+        window.location.href = url.toString()
+    }, [kerutaJson])
 
     const handleSubmit = async () => {
         if (wsState.state != "open") {
