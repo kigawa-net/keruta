@@ -7,32 +7,21 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.forms.submitForm
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.json
+import io.ktor.server.application.ApplicationCall
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 import net.kigawa.keruta.ktcl.k8s.web.UserSession
 import net.kigawa.keruta.ktcl.k8s.web.auth.AuthConfig
-import net.kigawa.keruta.ktcl.k8s.web.auth.JwtVerifier
-import net.kigawa.keruta.ktcl.k8s.web.auth.KeycloakConfig
 import net.kigawa.keruta.ktcl.k8s.web.auth.OidcDiscoveryFetcher
 import net.kigawa.kodel.api.log.LoggerFactory
-import java.net.URI
 
 class LoginCallbackRoute(
     private val oidcDiscoveryFetcher: OidcDiscoveryFetcher = OidcDiscoveryFetcher()
 ) {
     private val logger = LoggerFactory.get("LoginCallbackRoute")
     private val authConfig = AuthConfig(oidcDiscoveryFetcher)
-
-    @Serializable
-    data class TokenResponse(
-        @SerialName("access_token") val accessToken: String,
-        @SerialName("id_token") val idToken: String? = null,
-        @SerialName("token_type") val tokenType: String,
-        @SerialName("expires_in") val expiresIn: Int? = null,
-    )
+    private val idTokenVerifier = IdTokenVerifier(authConfig)
 
     fun configure(route: Route) = route.get("/login/callback") {
         val code = call.parameters["code"]
@@ -53,22 +42,14 @@ class LoginCallbackRoute(
             return@get
         }
 
-        // セッションからOIDC情報を取得
-        val oidcSession = call.sessions.get<OidcSession>()
-        if (oidcSession == null) {
-            call.respond(HttpStatusCode.BadRequest, mapOf("error" to "No OIDC session found"))
-            return@get
-        }
-
-        // stateの検証
-        if (oidcSession.pkce.state != state) {
-            logger.warning("State mismatch: expected ${oidcSession.pkce.state}, got $state")
-            call.respond(HttpStatusCode.BadRequest, mapOf("error" to "Invalid state parameter"))
-            return@get
-        }
+        val oidcSession = getValidatedOidcSession(call, state) ?: return@get
 
         logger.info("Processing OIDC callback for issuer: ${oidcSession.issuer}")
 
+        processOidcCallback(call, code, oidcSession)
+    }
+
+    private suspend fun processOidcCallback(call: ApplicationCall, code: String, oidcSession: OidcSession) {
         try {
             // OIDC Discoveryエンドポイントから設定を取得
             val wellKnownUrl = "${oidcSession.issuer}/.well-known/openid-configuration"
@@ -79,7 +60,7 @@ class LoginCallbackRoute(
                     HttpStatusCode.InternalServerError,
                     mapOf("error" to "Token endpoint not found in OIDC discovery")
                 )
-                return@get
+                return
             }
 
             // トークンエンドポイントで認可コードをトークンに交換
@@ -91,7 +72,6 @@ class LoginCallbackRoute(
                 codeVerifier = oidcSession.pkce.codeVerifier
             )
 
-            // IDトークンの検証
             val idToken = tokenResponse.idToken
             if (idToken == null) {
                 logger.warning("No ID token received from token endpoint")
@@ -99,55 +79,16 @@ class LoginCallbackRoute(
                     HttpStatusCode.InternalServerError,
                     mapOf("error" to "No ID token received")
                 )
-                return@get
+                return
             }
 
-            // JWKプロバイダーを作成
-            val jwkProvider = authConfig.createJwkProvider(discoveryResponse.jwksUri)
-
-            // IDトークンを検証
-            val keycloakConfig = KeycloakConfig(
-                audience = oidcSession.clientId,
-                jwksUrl = discoveryResponse.jwksUri,
-                issuer = URI(oidcSession.issuer)
-            )
-            val jwtVerifier = JwtVerifier(jwkProvider, keycloakConfig)
-            val decodedJwt = jwtVerifier.verifyIdToken(
-                idToken = idToken,
-                jwkProvider = jwkProvider,
-                issuer = oidcSession.issuer,
-                clientId = oidcSession.clientId,
-                nonce = oidcSession.pkce.nonce
-            )
-
-            if (decodedJwt == null) {
-                logger.warning("ID token verification failed")
-                call.respond(
-                    HttpStatusCode.Unauthorized,
-                    mapOf("error" to "Invalid ID token")
-                )
-                return@get
-            }
-
-            val userId = decodedJwt.subject
+            val userId = idTokenVerifier.verify(idToken, discoveryResponse, oidcSession)
             if (userId == null) {
-                logger.warning("No subject found in ID token")
-                call.respond(
-                    HttpStatusCode.InternalServerError,
-                    mapOf("error" to "No user ID in token")
-                )
-                return@get
+                call.respond(HttpStatusCode.Unauthorized, mapOf("error" to "Invalid ID token"))
+                return
             }
 
-            // OIDCセッションをクリア
-            call.sessions.clear<OidcSession>()
-
-            // UserSessionを作成
-            val userSession = UserSession(
-                userId = userId,
-                token = tokenResponse.accessToken
-            )
-            call.sessions.set(userSession)
+            saveUserSession(call, userId, tokenResponse.accessToken)
 
             logger.info("Login successful for user: $userId, redirecting to home page")
 
@@ -160,6 +101,25 @@ class LoginCallbackRoute(
                 mapOf("error" to "Failed to complete login", "message" to e.message)
             )
         }
+    }
+
+    private suspend fun getValidatedOidcSession(call: ApplicationCall, state: String): OidcSession? {
+        val oidcSession = call.sessions.get<OidcSession>()
+        if (oidcSession == null) {
+            call.respond(HttpStatusCode.BadRequest, mapOf("error" to "No OIDC session found"))
+            return null
+        }
+        if (oidcSession.pkce.state != state) {
+            logger.warning("State mismatch: expected ${oidcSession.pkce.state}, got $state")
+            call.respond(HttpStatusCode.BadRequest, mapOf("error" to "Invalid state parameter"))
+            return null
+        }
+        return oidcSession
+    }
+
+    private fun saveUserSession(call: ApplicationCall, userId: String, accessToken: String) {
+        call.sessions.clear<OidcSession>()
+        call.sessions.set(UserSession(userId = userId, token = accessToken))
     }
 
     private suspend fun exchangeCodeForToken(

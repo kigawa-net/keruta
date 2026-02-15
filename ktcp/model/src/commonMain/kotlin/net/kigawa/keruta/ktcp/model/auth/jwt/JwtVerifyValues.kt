@@ -1,4 +1,4 @@
-package net.kigawa.keruta.ktcp.server.auth.jwt
+package net.kigawa.keruta.ktcp.model.auth.jwt
 
 import net.kigawa.kodel.api.net.Url
 

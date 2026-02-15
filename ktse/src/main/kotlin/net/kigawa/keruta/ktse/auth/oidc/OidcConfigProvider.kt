@@ -3,7 +3,7 @@ package net.kigawa.keruta.ktse.auth.oidc
 import io.ktor.client.call.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import net.kigawa.keruta.ktcp.server.err.VerifyErr
+import net.kigawa.keruta.ktcp.model.auth.jwt.VerifyErr
 import net.kigawa.keruta.ktcp.server.err.VerifyFailErr
 import net.kigawa.keruta.ktse.http.HttpClient
 import net.kigawa.kodel.api.err.Res

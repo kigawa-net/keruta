@@ -95,7 +95,7 @@ class DbPersisterDsl(val transaction: Transaction) {
     }
 
     val task by lazy { DbTaskPersisterDsl(transaction) }
-    val user by lazy { DbUserPersisterDsl(transaction) }
+    val user by lazy { DbUserPersisterDsl() }
     val provider by lazy { DbProviderPersisterDsl(transaction) }
     val queue by lazy { DbQueuePersisterDsl(transaction) }
     val providerAddToken by lazy { DbProviderAddTokenDsl(transaction) }
