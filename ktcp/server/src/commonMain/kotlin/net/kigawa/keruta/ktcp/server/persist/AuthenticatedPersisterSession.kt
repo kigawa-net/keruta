@@ -7,4 +7,5 @@ interface AuthenticatedPersisterSession {
     val task: AuthedTaskPersisterSession
     val queue: AuthedQueuePersisterSession
     fun getProviders(): Res<List<PersistedProvider>, KtcpErr>
+    fun deleteProvider(id: Long): Res<Unit, KtcpErr>
 }

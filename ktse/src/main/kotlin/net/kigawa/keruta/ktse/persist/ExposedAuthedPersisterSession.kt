@@ -16,4 +16,8 @@ class ExposedAuthedPersisterSession(
     override fun getProviders(): Res<List<PersistedProvider>, KtcpErr> = dbPersister.execTransaction {
         it.provider.getAll(user)
     }
+
+    override fun deleteProvider(id: Long): Res<Unit, KtcpErr> = dbPersister.execTransaction {
+        it.provider.delete(user, id)
+    }
 }

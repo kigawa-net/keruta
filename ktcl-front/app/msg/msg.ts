@@ -1,6 +1,7 @@
 import {ClientAuthSuccessMsg} from "./auth";
 import {
     ClientProviderAddTokenMsg,
+    ClientProviderDeletedMsg,
     ClientProviderIdpAddedMsg,
     ClientProviderListMsg
 } from "./provider";
@@ -18,6 +19,7 @@ export const ReceiveMsgTypes = {
     provider_listed: "provider_listed",
     provider_add_token_issued: "provider_add_token_issued",
     provider_idp_added: "provider_idp_added",
+    provider_deleted: "provider_deleted",
     queue_created: "queue_created",
     queue_listed: "queue_listed",
     task_showed: "task_showed",
@@ -32,6 +34,7 @@ export type ReceiveMsg =
     | ClientProviderListMsg
     | ClientProviderAddTokenMsg
     | ClientProviderIdpAddedMsg
+    | ClientProviderDeletedMsg
     | ClientQueueCreatedMsg
     | ClientQueueListedMsg
     | ClientTaskShowedMsg
@@ -46,6 +49,7 @@ export const SendMsgTypes = {
     provider_list: "provider_list",
     provider_add: "provider_add",
     provider_complete: "provider_complete",
+    provider_delete: "provider_delete",
     queue_create: "queue_create",
     queue_list: "queue_list",
     task_show: "task_show",

@@ -4,6 +4,7 @@ import net.kigawa.keruta.ktcp.model.auth.sccess.ClientAuthSuccessMsg
 import net.kigawa.keruta.ktcp.model.err.GenericErrMsg
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.model.provider.add_token.ClientProviderAddTokenMsg
+import net.kigawa.keruta.ktcp.model.provider.deleted.ClientProviderDeletedMsg
 import net.kigawa.keruta.ktcp.model.provider.idp_added.ClientProviderIdpAddedMsg
 import net.kigawa.keruta.ktcp.model.provider.listed.ClientProviderListedMsg
 import net.kigawa.keruta.ktcp.model.queue.created.ClientQueueCreatedMsg
@@ -22,6 +23,7 @@ interface ClientUnknownArg {
     fun tryToProviderList(): Res<ClientProviderListedMsg, KtcpErr>?
     fun tryToProviderAddToken(): Res<ClientProviderAddTokenMsg, KtcpErr>?
     fun tryToProviderIdpAdded(): Res<ClientProviderIdpAddedMsg, KtcpErr>?
+    fun tryToProviderDeleted(): Res<ClientProviderDeletedMsg, KtcpErr>?
     fun tryToQueueCreated(): Res<ClientQueueCreatedMsg, KtcpErr>?
     fun tryToQueueListed(): Res<ClientQueueListedMsg, KtcpErr>?
     fun tryToQueueShowed(): Res<ClientQueueShowedMsg, KtcpErr>?

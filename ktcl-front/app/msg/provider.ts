@@ -42,3 +42,13 @@ export interface ClientProviderIdpAddedMsg {
     type: typeof ReceiveMsgTypes.provider_idp_added
 }
 
+export interface ServerProviderDeleteMsg {
+    type: typeof SendMsgTypes.provider_delete
+    id: string
+}
+
+export interface ClientProviderDeletedMsg {
+    type: typeof ReceiveMsgTypes.provider_deleted
+    id: string
+}
+
