@@ -9,7 +9,9 @@ interface ProviderAuthUrlParams {
 export function buildProviderAuthUrl(
     {authorizationEndpoint, audience, token}: ProviderAuthUrlParams,
 ): URL {
-    const url = new URL(authorizationEndpoint);
+    // 末尾のスラッシュを削除して正規化
+    const normalizedEndpoint = authorizationEndpoint.replace(/\/$/, "");
+    const url = new URL(normalizedEndpoint);
     url.searchParams.set("state", token);
     url.searchParams.set("redirect_uri", `${window.location.origin}/provider/complete`);
     url.searchParams.set("client_id", audience);
