@@ -1,7 +1,7 @@
-package net.kigawa.keruta.ktcp.server.auth.jwt
+package net.kigawa.keruta.ktcp.model.auth.jwt
 
+import net.kigawa.keruta.ktcp.model.auth.oidc.UnverifiedTokenWithOidc
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.server.auth.oidc.UnverifiedTokenWithOidc
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.err.flatConvertOk
 import net.kigawa.kodel.api.net.Url

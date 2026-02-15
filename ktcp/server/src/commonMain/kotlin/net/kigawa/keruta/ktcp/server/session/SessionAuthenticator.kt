@@ -7,7 +7,7 @@ import net.kigawa.keruta.ktcp.server.auth.UnverifiedAuthTokens
 import net.kigawa.keruta.ktcp.server.auth.UserIdpConfig
 import net.kigawa.keruta.ktcp.server.auth.VerifyTablesPersister
 import net.kigawa.keruta.ktcp.server.auth.jwt.AuthTokenDecoder
-import net.kigawa.keruta.ktcp.server.auth.jwt.JwtVerifyValues
+import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifyValues
 import net.kigawa.keruta.ktcp.server.persist.PersistedVerifyTables
 import net.kigawa.keruta.ktcp.server.persist.PersisterSession
 import net.kigawa.kodel.api.err.Res

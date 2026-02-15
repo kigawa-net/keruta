@@ -28,6 +28,13 @@ export default function Layout() {
                 >
                     <KerutaTaskProvider>
                 <div className="flex h-screen bg-white">
+                    {/* モバイル用バックドロップ */}
+                    {isSidebarOpen && (
+                        <div
+                            className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+                            onClick={() => setIsSidebarOpen(false)}
+                        />
+                    )}
                     {/* サイドバー */}
                     <Sidebar isOpen={isSidebarOpen} />
 
@@ -63,7 +70,7 @@ export default function Layout() {
                         </header>
 
                         {/* ページコンテンツ */}
-                        <main className="flex-1 overflow-y-auto p-6">
+                        <main className="flex-1 overflow-y-auto p-3 md:p-6">
                             <Outlet/>
                         </main>
                     </div>

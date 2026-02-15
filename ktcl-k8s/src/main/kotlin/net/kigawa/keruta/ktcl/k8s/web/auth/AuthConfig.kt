@@ -24,7 +24,8 @@ class AuthConfig(
         return KeycloakConfig(
             audience = audience,
             jwksUrl = oidcMetadata.jwksUri,
-            issuer = issuer
+            issuer = issuer,
+            authorizationEndpoint = oidcMetadata.authorizationEndpoint,
         )
     }
 

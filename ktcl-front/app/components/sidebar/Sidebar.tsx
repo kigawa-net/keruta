@@ -7,8 +7,13 @@ interface SidebarProps {
 
 export default function Sidebar({isOpen}: SidebarProps) {
     return (
-        <aside className={`${isOpen ? 'w-64' : 'w-0'} transition-all duration-300 overflow-hidden`}
-               style={{backgroundColor: '#f8f9fa'}}>
+        <aside
+            className={`
+                fixed md:static inset-y-0 left-0 z-50 md:z-auto
+                w-64 transition-all duration-300 overflow-hidden
+                ${isOpen ? 'translate-x-0 md:w-64' : '-translate-x-full md:translate-x-0 md:w-0'}
+            `}
+            style={{backgroundColor: '#f8f9fa'}}>
             <div className="p-4">
                 <h1 className="text-2xl font-bold mb-8" style={{color: '#0a58ca'}}>Keruta</h1>
                 <nav>

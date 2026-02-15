@@ -28,7 +28,7 @@ const TaskDetailPanel = ({ task, onClose }: TaskDetailPanelProps) => {
 
     if (!task) {
         return (
-            <div className="w-96 bg-white rounded-lg shadow-sm border p-6" style={{borderColor: '#dee2e6'}}>
+            <div className="w-full md:w-96 bg-white rounded-lg shadow-sm border p-6" style={{borderColor: '#dee2e6'}}>
                 <div className="flex items-center justify-center h-full">
                     <div className="text-center" style={{color: '#6c757d'}}>
                         <svg className="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor"
@@ -46,7 +46,7 @@ const TaskDetailPanel = ({ task, onClose }: TaskDetailPanelProps) => {
     }
 
     return (
-        <div className="w-96 bg-white rounded-lg shadow-sm border p-6" style={{borderColor: '#dee2e6'}}>
+        <div className="w-full md:w-96 bg-white rounded-lg shadow-sm border p-6" style={{borderColor: '#dee2e6'}}>
             <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-bold" style={{color: '#0a58ca'}}>
                     タスク詳細

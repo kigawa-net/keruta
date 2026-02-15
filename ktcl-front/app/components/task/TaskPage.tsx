@@ -47,7 +47,7 @@ const TaskPage = () => {
     );
 
     return (
-        <div className="flex h-full gap-6">
+        <div className="flex flex-col md:flex-row h-full gap-4 md:gap-6">
             {/* タスク一覧 */}
             <div className="flex-1 flex flex-col">
                 <div className="mb-6">

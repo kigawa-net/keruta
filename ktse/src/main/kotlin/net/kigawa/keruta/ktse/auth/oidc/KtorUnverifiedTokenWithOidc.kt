@@ -1,8 +1,8 @@
 package net.kigawa.keruta.ktse.auth.oidc
 
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.server.auth.jwt.UnverifiedTokenWithKey
-import net.kigawa.keruta.ktcp.server.auth.oidc.UnverifiedTokenWithOidc
+import net.kigawa.keruta.ktcp.model.auth.jwt.UnverifiedTokenWithKey
+import net.kigawa.keruta.ktcp.model.auth.oidc.UnverifiedTokenWithOidc
 import net.kigawa.keruta.ktcp.server.err.VerifyFailErr
 import net.kigawa.keruta.ktse.auth.jwks.JwksProvider
 import net.kigawa.keruta.ktse.auth.jwt.Auth0UnverifiedToken
