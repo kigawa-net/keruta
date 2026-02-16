@@ -43,80 +43,6 @@ ktcl-front-mobile/
 └── build.gradle.kts
 ```
 
-## 主要機能
-
-### 実装済み
-
-- ✅ **WebSocket双方向通信**: Ktor Clientによる接続管理（Android: OkHttp、iOS: Darwin）
-- ✅ **二重トークン認証**: userToken（Keycloak OIDC）+ serverToken（`/api/token`エンドポイント）
-- ✅ **メッセージ型定義**: ktcl-frontと互換性のあるメッセージ型（auth、task、queue、provider）
-- ✅ **Repository パターン**: StateFlowベースのローカルステート管理
-- ✅ **TaskReceiver**: WebSocketメッセージ受信・デシリアライズ・Repository更新
-- ✅ **SecureStorage**: トークン永続化（Android: EncryptedSharedPreferences、iOS: NSUserDefaults）
-
-### 未実装
-
-- ⚠️ **iOS OIDC認証**: AppAuth for iOSの実装（現在スタブ）
-- ⚠️ **UI画面**: LoginScreen、QueueCreateScreen、TaskListScreen等
-- ⚠️ **Navigation**: 画面遷移ロジック
-- ⚠️ **ViewModel**: StateFlowとCompose統合
-
-## ビルド方法
-
-### 前提条件
-
-- JDK 17以上
-- Kotlin 2.3.0
-- Android SDK (Android向けビルド時)
-- Xcode (iOS向けビルド時)
-
-### Android向けビルド
-
-```bash
-# ANDROID_HOME環境変数を設定
-export ANDROID_HOME=/path/to/android/sdk
-
-# ビルド
-./gradlew :ktcl-front-mobile:assembleDebug
-```
-
-### iOS向けビルド
-
-⚠️ **現在、iOS向けビルドは依存関係の問題により失敗します。** 詳細は「既知の課題」セクションを参照。
-
-```bash
-# iOSフレームワークビルド（現在エラー）
-./gradlew :ktcl-front-mobile:linkDebugFrameworkIosArm64
-```
-
-## 認証フロー
-
-ktcl-frontの認証フローを再現：
-
-```
-1. LoginScreen表示
-   ↓
-2. OIDC認証（Keycloak）
-   - Authorization Code Flow with PKCE
-   - Redirect URI: net.kigawa.keruta.mobile:/oauth2redirect
-   ↓
-3. userToken取得
-   ↓
-4. POST /api/token {userToken}
-   ↓
-5. serverToken取得
-   ↓
-6. SecureStorageに両トークンを保存
-   ↓
-7. WebSocket接続
-   ↓
-8. ServerAuthRequestMsg送信 {userToken, serverToken}
-   ↓
-9. ClientAuthSuccessMsg受信
-   ↓
-10. 認証完了 → QueueCreateScreenへ遷移
-```
-
 ## メッセージフロー
 
 ### タスク作成
@@ -194,45 +120,6 @@ export ANDROID_HOME=/path/to/android/sdk
 ```
 sdk.dir=/path/to/android/sdk
 ```
-
-### 3. iOS OIDC認証未実装
-
-**問題**: `OidcAuthManager.ios.kt`がスタブ実装
-
-**TODO**:
-- AppAuth for iOSライブラリの統合（CocoaPods）
-- Authorization Code Flow with PKCEの実装
-- Keychainへのトークン保存
-
-## 開発ロードマップ
-
-### Phase 1: ビルド環境修正 ✅
-- [x] buildSrcにCompose Multiplatformプラグイン追加
-- [x] compose-mobile.gradle.kts作成
-- [x] iOSターゲットをkodel、ktcpに追加
-
-### Phase 2: WebSocket接続 ✅
-- [x] expect/actual WebSocket抽象化
-- [x] Android: Ktor OkHttp実装
-- [x] iOS: Ktor Darwin実装
-
-### Phase 3: 認証 ✅（一部）
-- [x] SecureStorage実装
-- [x] TokenManager実装
-- [ ] iOS OIDC認証実装
-
-### Phase 4: UI実装 ⏳
-- [ ] LoginScreen
-- [ ] QueueCreateScreen
-- [ ] QueueDetailScreen（タスク一覧）
-- [ ] TaskCreateScreen
-- [ ] ProviderListScreen
-- [ ] Navigation統合
-
-### Phase 5: iOSビルド修正 ⏳
-- [ ] Compose Multiplatform依存関係解決
-- [ ] iOSフレームワークビルド成功
-- [ ] Xcodeプロジェクト生成
 
 ## 参考資料
 

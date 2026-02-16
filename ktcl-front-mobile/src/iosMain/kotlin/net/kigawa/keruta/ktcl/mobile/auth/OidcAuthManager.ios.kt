@@ -9,12 +9,17 @@ import kotlinx.cinterop.BetaInteropApi
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.suspendCancellableCoroutine
 import net.kigawa.keruta.ktcl.mobile.config.MobileConfig
+import platform.AuthenticationServices.ASPresentationAnchor
+import platform.AuthenticationServices.ASWebAuthenticationPresentationContextProvidingProtocol
 import platform.AuthenticationServices.ASWebAuthenticationSession
 import platform.AuthenticationServices.ASWebAuthenticationSessionCompletionHandler
 import platform.Foundation.NSError
 import platform.Foundation.NSURL
 import platform.Foundation.NSURLComponents
 import platform.Foundation.NSURLQueryItem
+import platform.UIKit.UIApplication
+import platform.UIKit.UIWindow
+import platform.darwin.NSObject
 import kotlin.coroutines.resume
 
 @OptIn(ExperimentalForeignApi::class, BetaInteropApi::class)
@@ -66,6 +71,7 @@ actual class OidcAuthManager actual constructor(
             completionHandler = completionHandler,
         )
 
+        authSession?.presentationContextProvider = PresentationContextProvider()
         authSession?.prefersEphemeralWebBrowserSession = true
         authSession?.start()
 
@@ -125,5 +131,16 @@ actual class OidcAuthManager actual constructor(
 
     actual fun getAccessToken(): String? {
         return accessToken
+    }
+}
+
+private class PresentationContextProvider :
+    NSObject(),
+    ASWebAuthenticationPresentationContextProvidingProtocol {
+
+    override fun presentationAnchorForWebAuthenticationSession(
+        session: ASWebAuthenticationSession,
+    ): ASPresentationAnchor {
+        return UIApplication.sharedApplication.keyWindow ?: UIWindow()
     }
 }
