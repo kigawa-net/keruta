@@ -23,7 +23,7 @@ export default function Layout() {
   return (
     <KeycloakProvider>
       <UserProfileProvider>
-        <ServiceProvider wsUrl={Config.websocketUrl}>
+        <ServiceProvider wsUrl={Config.websocketUrl} apiBaseUrl={Config.ownIssuer}>
           <DomainServiceProvider>
             <KerutaTaskProvider>
               <div className="flex h-screen bg-white">

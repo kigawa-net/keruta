@@ -1,9 +1,7 @@
- const Config = {
+const Config = {
     websocketUrl: new URL(import.meta.env.VITE_WEBSOCKET_URL),
-    keycloak: {
-        url: import.meta.env.VITE_KEYCLOAK_URL,
-        realm: import.meta.env.VITE_KEYCLOAK_REALM,
-        clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID,
-    },
+    userIssuer: import.meta.env.VITE_USER_ISSUER,
+    userClientId: import.meta.env.VITE_USER_CLIENT_ID,
+    ownIssuer: import.meta.env.VITE_OWN_ISSUER,
 } as const
 export default Config
