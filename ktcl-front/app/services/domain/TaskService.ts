@@ -1,4 +1,4 @@
-import { TaskMessageService } from "../api/MessageServices";
+import { TaskMessageService } from "../api";
 import { ReceiveMsg } from "../../msg/msg";
 import {
   ClientTaskCreatedMsg,
@@ -31,7 +31,7 @@ export class TaskService {
 
   showTask(taskId: number): void {
     if (taskId <= 0) throw new Error("Invalid task ID");
-    this.taskMessageService.showTask(taskId);
+    this.taskMessageService.showTask();
   }
 
   updateTask(input: UpdateTaskInput): void {

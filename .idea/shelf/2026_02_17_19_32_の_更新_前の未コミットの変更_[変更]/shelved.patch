@@ -1,0 +1,17 @@
+Index: .idea/runConfigurations/compose_test_yml_test__Compose_.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/runConfigurations/compose_test_yml_test__Compose_.xml b/.idea/runConfigurations/test2.xml
+rename from .idea/runConfigurations/compose_test_yml_test__Compose_.xml
+rename to .idea/runConfigurations/test2.xml
+--- a/.idea/runConfigurations/compose_test_yml_test__Compose_.xml	(revision a084c1ca27d14f00be83072209d995313b821e53)
++++ b/.idea/runConfigurations/test2.xml	(date 1771304395356)
+@@ -1,5 +1,5 @@
+ <component name="ProjectRunConfigurationManager">
+-  <configuration default="false" name="compose.test.yml.test: Compose デプロイ" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
++  <configuration default="false" name="test" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
+     <deployment type="docker-compose.yml">
+       <settings>
+         <option name="services">
