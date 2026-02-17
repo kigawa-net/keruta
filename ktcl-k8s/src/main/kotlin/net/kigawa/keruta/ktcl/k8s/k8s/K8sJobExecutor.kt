@@ -10,7 +10,7 @@ import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.LoggerFactory
 
 class K8sJobExecutor(
-    private val apiClient: ApiClient,
+    apiClient: ApiClient,
     private val config: K8sConfig,
     private val templateLoader: JobTemplateLoader,
 ) {

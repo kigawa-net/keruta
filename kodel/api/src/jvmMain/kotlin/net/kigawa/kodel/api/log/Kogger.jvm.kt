@@ -3,7 +3,6 @@
 package net.kigawa.kodel.api.log
 
 import net.kigawa.kodel.api.log.handler.LoggerHandler
-import java.util.function.Supplier
 import java.util.logging.Logger
 import kotlin.reflect.KClass
 

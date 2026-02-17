@@ -8,7 +8,6 @@ import kotlinx.serialization.json.jsonPrimitive
 import net.kigawa.keruta.ktcl.mobile.connection.MobileKtcpConnection
 import net.kigawa.keruta.ktcl.mobile.msg.queue.ClientQueueCreatedMsg
 import net.kigawa.keruta.ktcl.mobile.msg.queue.ClientQueueListedMsg
-import net.kigawa.keruta.ktcl.mobile.msg.queue.Queue
 import net.kigawa.keruta.ktcl.mobile.msg.task.ClientTaskCreatedMsg
 import net.kigawa.keruta.ktcl.mobile.msg.task.ClientTaskListedMsg
 import net.kigawa.keruta.ktcl.mobile.msg.task.ClientTaskMovedMsg

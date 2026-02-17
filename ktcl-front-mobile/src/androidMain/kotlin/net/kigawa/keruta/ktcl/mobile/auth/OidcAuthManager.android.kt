@@ -2,18 +2,12 @@ package net.kigawa.keruta.ktcl.mobile.auth
 
 import android.content.Context
 import android.content.Intent
+import androidx.core.net.toUri
 import kotlinx.coroutines.suspendCancellableCoroutine
 import net.kigawa.keruta.ktcl.mobile.config.MobileConfig
+import net.openid.appauth.*
 import net.openid.appauth.AuthState
-import net.openid.appauth.AuthorizationException
-import net.openid.appauth.AuthorizationRequest
-import net.openid.appauth.AuthorizationResponse
-import net.openid.appauth.AuthorizationService
-import net.openid.appauth.AuthorizationServiceConfiguration
-import net.openid.appauth.ResponseTypeValues
-import net.openid.appauth.TokenRequest
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual class OidcAuthManager actual constructor(
@@ -33,7 +27,7 @@ actual class OidcAuthManager actual constructor(
         val issuerUri = "${config.keycloakUrl}realms/${config.keycloakRealm}"
 
         AuthorizationServiceConfiguration.fetchFromIssuer(
-            android.net.Uri.parse(issuerUri),
+            issuerUri.toUri(),
         ) { serviceConfig, ex ->
             if (ex != null) {
                 continuation.resume(Result.failure(ex))
@@ -44,7 +38,7 @@ actual class OidcAuthManager actual constructor(
                 serviceConfig!!,
                 config.keycloakClientId,
                 ResponseTypeValues.CODE,
-                android.net.Uri.parse("net.kigawa.keruta.mobile:/oauth2redirect"),
+                "net.kigawa.keruta.mobile:/oauth2redirect".toUri(),
             ).setScope("openid profile email")
                 .build()
 

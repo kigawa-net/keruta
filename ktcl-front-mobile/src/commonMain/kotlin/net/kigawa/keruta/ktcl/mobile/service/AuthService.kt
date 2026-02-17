@@ -3,11 +3,9 @@ package net.kigawa.keruta.ktcl.mobile.service
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import net.kigawa.keruta.ktcl.mobile.auth.AuthState
 import net.kigawa.keruta.ktcl.mobile.auth.TokenPair
-import net.kigawa.keruta.ktcl.mobile.connection.MobileKtcpConnection
 import net.kigawa.keruta.ktcl.mobile.msg.auth.ServerAuthenticateMsg
 
 class AuthService(
