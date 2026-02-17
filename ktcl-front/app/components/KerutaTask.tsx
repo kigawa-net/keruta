@@ -1,5 +1,5 @@
 import {createContext, Dispatch, type ReactNode, SetStateAction, useContext, useEffect, useState} from "react";
-import {useWsState, WebsocketState} from "./websocket/Websocket";
+import {useWsState, WsState} from "./websocket/Websocket";
 import WsSender from "./websocket/WsSender";
 import {ReceiveMsg} from "../msg/msg";
 import useWsReceive from "./websocket/useWsReceive";
@@ -32,7 +32,7 @@ export function KerutaTaskProvider(
 
 
 function useLoad(
-    wsState: WebsocketState,
+    wsState: WsState,
     kerutaState: KerutaTaskState,
     setKerutaTaskState: Dispatch<SetStateAction<KerutaTaskState>>
 ) {

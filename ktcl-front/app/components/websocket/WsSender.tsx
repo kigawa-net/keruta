@@ -1,4 +1,4 @@
-import {useWsState, WebsocketState} from "./Websocket";
+import {useWsState, WsState} from "./Websocket";
 import {KerutaTaskState, useKerutaTaskState} from "../KerutaTask";
 import {KeycloakState, useKeycloakState} from "../Keycloak";
 import {ServerAuthRequestMsg} from "../../msg/auth";
@@ -17,7 +17,7 @@ export default function WsSender(
 
 
 function useAuth(
-    wsState: WebsocketState, kc: KeycloakState, kerutaState: KerutaTaskState
+  wsState: WsState, kc: KeycloakState, kerutaState: KerutaTaskState
 ) {
     useEffect(() => {
         if (!(
@@ -56,7 +56,7 @@ function useAuth(
 }
 
 function useRetry(
-    wsState: WebsocketState
+    wsState: WsState
 ) {
     useEffect(() => {
         if (wsState.state == "closed") {

@@ -2,18 +2,17 @@ import React, {useCallback, useState} from "react";
 import {useWsState} from "../websocket/Websocket";
 import FormTextInput, {InputValue} from "../form/FormTextInput";
 import FormErrMsg from "../form/FormErrMsg";
-import {ClientProviderAddTokenMsg, ServerProviderAddMsg} from "../../msg/provider";
+import {ClientProviderAddTokenMsg} from "../../msg/provider";
 import {useKerutaTaskState} from "../KerutaTask";
 import {ProviderAddFormActions} from "./ProviderAddFormActions";
 import {buildProviderAuthUrlFromMsg} from "./providerAuthUrl";
 import {validateProviderForm} from "./providerValidation";
-import {useProviderAddWebSocket, sendProviderAddMessage} from "./providerWebSocket";
+import {useProviderAddWebSocket} from "./providerWebSocket";
 
 type FormState = "inputting" | "fetching" | "submitting" | "redirecting"
 
 type KerutaJson = {
-    authorization_endpoint: string
-    audience: string
+    login: string
 }
 
 function handleFormSubmit(e: React.FormEvent, onSubmit: () => void) {
@@ -33,8 +32,7 @@ export function ProviderAddForm() {
     const handleWsReceive = useCallback((msg: ClientProviderAddTokenMsg) => {
         if (!kerutaJson) return
         const url = buildProviderAuthUrlFromMsg(
-            kerutaJson.authorization_endpoint,
-            kerutaJson.audience,
+            kerutaJson.login,
             msg,
         )
         setFormState("redirecting")
@@ -67,18 +65,7 @@ export function ProviderAddForm() {
         }
 
         setKerutaJson(json)
-        if (!json.audience) {
-            setErr("keruta.jsonにaudienceが含まれていません。ktcl-k8sの設定を確認してください。")
-            setFormState("inputting")
-            return
-        }
-        const msg: ServerProviderAddMsg = {
-            type: "provider_add",
-            name: name.value,
-            issuer: issuerValue,
-            audience: json.audience,
-        }
-        sendProviderAddMessage(wsState, msg)
+
         setFormState("submitting")
     }
 

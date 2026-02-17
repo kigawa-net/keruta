@@ -1,7 +1,7 @@
 import {createContext, Dispatch, ReactNode, SetStateAction, useCallback, useContext, useEffect, useState} from "react";
 
 
-const Context = createContext<WebsocketState>({state: "unloaded"});
+const Context = createContext<WsState>({state: "unloaded"});
 
 export function WebsocketProvider(
     {
@@ -12,7 +12,7 @@ export function WebsocketProvider(
         wsUrl: URL,
         children: ReactNode
     }) {
-    const [wsState, setWsState] = useState<WebsocketState>({
+    const [wsState, setWsState] = useState<WsState>({
         state: "unloaded",
     })
 
@@ -20,7 +20,7 @@ export function WebsocketProvider(
     useEffect(() => {
         if (wsState.state != "unloaded") return
         const websocket = new WebSocket(wsUrl)
-        const newState: WebsocketState = {
+        const newState: WsState = {
             state: "loaded",
             websocket: websocket,
         }
@@ -51,7 +51,7 @@ export function useWsState() {
     return useContext(Context);
 }
 
-export type WebsocketState = {
+export type WsState = {
     state: "unloaded",
 } | {
     state: "loaded",
@@ -73,7 +73,7 @@ export interface WebsocketOpenState {
 }
 
 function useHandlers(
-    setWsState: Dispatch<SetStateAction<WebsocketState>>,
+    setWsState: Dispatch<SetStateAction<WsState>>,
 ) {
     const err = useCallback(() => {
         console.log("websocket error")
