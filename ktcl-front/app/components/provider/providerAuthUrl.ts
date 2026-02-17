@@ -1,24 +1,18 @@
-import {ClientProviderAddTokenMsg} from "../../msg/provider";
+import { Url } from "../../utils/Url";
+import { ClientProviderAddTokenMsg } from "../../msg/provider";
 
 interface ProviderAuthUrlParams {
-    login: string;
-    token: string;
+  login: string;
+  token: string;
 }
 
-export function buildProviderAuthUrl(
-    {login, token}: ProviderAuthUrlParams,
-): URL {
-    const url = new URL(login);
-    url.searchParams.set("token", token);
-    return url;
+export function buildProviderAuthUrl({ login, token }: ProviderAuthUrlParams): Url {
+  return Url.parse(login).setQueryParam("token", token);
 }
 
-export function buildProviderAuthUrlFromMsg(
-    login: string,
-    msg: ClientProviderAddTokenMsg,
-): URL {
-    return buildProviderAuthUrl({
-        login,
-        token: msg.token,
-    });
+export function buildProviderAuthUrlFromMsg(login: string, msg: ClientProviderAddTokenMsg): Url {
+  return buildProviderAuthUrl({
+    login,
+    token: msg.token,
+  });
 }
