@@ -1,29 +1,17 @@
 package net.kigawa.keruta.ktcl.k8s.k8s
 
-import net.kigawa.keruta.ktcp.client.KtcpSession
 import kotlinx.coroutines.coroutineScope
 import net.kigawa.keruta.ktcl.k8s.auth.AuthManager
 import net.kigawa.keruta.ktcl.k8s.config.K8sConfig
+import net.kigawa.keruta.ktcl.k8s.connection.ConnectionContext
 import net.kigawa.keruta.ktcl.k8s.connection.ConnectionManager
 import net.kigawa.keruta.ktcl.k8s.connection.JvmWebSocketConnection
-import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveAuthSuccessEntrypoint
-import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveGenericErrEntrypoint
-import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveProviderAddTokenEntrypoint
-import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveProviderDeletedEntrypoint
-import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveProviderIdpAddedEntrypoint
-import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveProviderListedEntrypoint
-import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveQueueCreatedEntrypoint
-import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveQueueListedEntrypoint
-import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveQueueShowedEntrypoint
-import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveTaskCreatedEntrypoint
-import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveTaskListedEntrypoint
-import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveTaskMovedEntrypoint
-import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveTaskShowedEntrypoint
-import net.kigawa.keruta.ktcl.k8s.entrypoint.ReceiveTaskUpdatedEntrypoint
-import net.kigawa.keruta.ktcl.k8s.task.TaskExecutor
+import net.kigawa.keruta.ktcl.k8s.entrypoint.ClientEntrypointsFactory
+import net.kigawa.keruta.ktcl.k8s.task.TaskExecutorFactory
 import net.kigawa.keruta.ktcl.k8s.task.TaskReceiver
 import net.kigawa.keruta.ktcp.client.ClientCtx
 import net.kigawa.keruta.ktcp.client.KtcpClient
+import net.kigawa.keruta.ktcp.client.KtcpSession
 import net.kigawa.keruta.ktcp.model.KtcpClientEntrypoints
 import net.kigawa.keruta.ktcp.model.serialize.JsonKerutaSerializer
 import net.kigawa.keruta.ktcp.model.task.list.ServerTaskListMsg
@@ -43,17 +31,12 @@ class KerutaK8sClient(
         val (connection, ctx) = connectAndCreateSession()
         if (!authenticate(ctx)) return@coroutineScope
 
-        val taskExecutor = createTaskExecutor()
-        val clientEntrypoints = createClientEntrypoints(taskExecutor)
+        val taskExecutor = TaskExecutorFactory(config, ktcpClient).create()
+        val clientEntrypoints = ClientEntrypointsFactory(ktcpClient, config, taskExecutor).create()
 
         requestInitialTaskList(ctx)
         startMessageReceiver(connection, ctx, clientEntrypoints)
     }
-
-    private data class ConnectionContext(
-        val connection: JvmWebSocketConnection,
-        val ctx: ClientCtx
-    )
 
     private suspend fun connectAndCreateSession(): ConnectionContext {
         val connectionManager = ConnectionManager(config)
@@ -77,33 +60,6 @@ class KerutaK8sClient(
         }
     }
 
-    private fun createTaskExecutor(): TaskExecutor {
-        val k8sClient = K8sClientFactory.createClient(config)
-        val templateLoader = JobTemplateLoader(config.k8sJobTemplate)
-        val jobExecutor = K8sJobExecutor(k8sClient, config, templateLoader)
-        val jobWatcher = K8sJobWatcher(k8sClient, config)
-        return TaskExecutor(jobExecutor, jobWatcher, ktcpClient)
-    }
-
-    private fun createClientEntrypoints(taskExecutor: TaskExecutor): KtcpClientEntrypoints<ClientCtx> {
-        return KtcpClientEntrypoints(
-            genericErrEntrypoint = ReceiveGenericErrEntrypoint(),
-            authSuccessEntrypoint = ReceiveAuthSuccessEntrypoint(),
-            providerListEntrypoint = ReceiveProviderListedEntrypoint(),
-            providerAddTokenEntrypoint = ReceiveProviderAddTokenEntrypoint(),
-            providerIdpAddedEntrypoint = ReceiveProviderIdpAddedEntrypoint(),
-            providerDeletedEntrypoint = ReceiveProviderDeletedEntrypoint(),
-            queueCreatedEntrypoint = ReceiveQueueCreatedEntrypoint(),
-            queueListedEntrypoint = ReceiveQueueListedEntrypoint(),
-            queueShowedEntrypoint = ReceiveQueueShowedEntrypoint(),
-            taskCreatedEntrypoint = ReceiveTaskCreatedEntrypoint(ktcpClient, config.queueId),
-            taskUpdatedEntrypoint = ReceiveTaskUpdatedEntrypoint(),
-            taskMovedEntrypoint = ReceiveTaskMovedEntrypoint(),
-            taskListedEntrypoint = ReceiveTaskListedEntrypoint(taskExecutor),
-            taskShowedEntrypoint = ReceiveTaskShowedEntrypoint(taskExecutor)
-        )
-    }
-
     private suspend fun requestInitialTaskList(ctx: ClientCtx) {
         logger.info { "Requesting task list for queue ${config.queueId}" }
         ktcpClient.ktcpServerEntrypoints.taskList.access(
@@ -115,9 +71,9 @@ class KerutaK8sClient(
     private suspend fun startMessageReceiver(
         connection: JvmWebSocketConnection,
         ctx: ClientCtx,
-        clientEntrypoints: KtcpClientEntrypoints<ClientCtx>
+        clientEntrypoints: KtcpClientEntrypoints<ClientCtx>,
     ) {
-        val taskReceiver = TaskReceiver(connection, serializer, clientEntrypoints)
+        val taskReceiver = TaskReceiver(connection, clientEntrypoints)
         logger.info { "Starting message receiver loop" }
         taskReceiver.startReceiving(ctx)
     }
