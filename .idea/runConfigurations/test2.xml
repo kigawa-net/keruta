@@ -1,10 +1,12 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="test" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
+  <configuration default="false" name="test docker" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
     <deployment type="docker-compose.yml">
       <settings>
         <option name="services">
           <list>
             <option value="test" />
+            <option value="all-tests" />
+            <option value="ktcl-front-test" />
           </list>
         </option>
         <option name="sourceFilePath" value="compose.test.yml" />

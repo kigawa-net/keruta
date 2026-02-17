@@ -109,10 +109,6 @@ services:
       dockerfile: Dockerfile_test
     command: ./gradlew test
     depends_on:
-      all-tests:
-        condition: service_completed_successfully
-      ktcl-front-test:
-        condition: service_completed_successfully
       mysql:
         condition: service_healthy
     volumes:

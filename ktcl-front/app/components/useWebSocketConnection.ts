@@ -13,14 +13,35 @@ export interface WebsocketOpenState {
   close: () => void;
 }
 
+// Check if running in browser environment
+const isBrowser = typeof window !== "undefined";
+
 export function useWebSocketConnection(wsUrl: URL): WsState {
-  const [wsState, setWsState] = useState<WsState>(() => ({
-    state: "loaded",
-    websocket: new WebSocket(wsUrl),
-  }));
+  const [wsState, setWsState] = useState<WsState>(() => {
+    // On server-side, return unloaded state
+    if (!isBrowser) {
+      return { state: "unloaded" };
+    }
+    return {
+      state: "loaded",
+      websocket: new WebSocket(wsUrl),
+    };
+  });
+
+  // Initialize WebSocket on client-side after mount
+  useEffect(() => {
+    if (!isBrowser) return;
+    if (wsState.state !== "unloaded") return;
+    
+    setWsState({
+      state: "loaded",
+      websocket: new WebSocket(wsUrl),
+    });
+  }, [wsState, wsUrl]);
 
   // Handle WebSocket events
   useEffect(() => {
+    if (!isBrowser) return;
     if (wsState.state === "unloaded") return;
     const ws = wsState.websocket;
 
