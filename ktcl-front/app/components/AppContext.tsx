@@ -3,9 +3,9 @@ import {
   TaskService,
   QueueService,
   ProviderService,
-  useConnectionStateService,
-  useMessageRouterService,
 } from "../services";
+import { useConnectionStateService } from "../services";
+import { useMessageRouterService } from "../services";
 import {
   useWsState,
   useTaskMessageService,
@@ -90,4 +90,4 @@ export function useProviderService(): ProviderService {
 }
 
 // Re-export types for convenience
-export type { KerutaTaskState, ConnectedKerutaTaskState, AuthState } from "../services";
+export type { KerutaTaskState, ConnectedKerutaTaskState, AuthState } from "../services/ConnectionStateTypes";

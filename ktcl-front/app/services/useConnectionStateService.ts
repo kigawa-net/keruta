@@ -1,20 +1,9 @@
 import { useEffect, useState } from "react";
 import type { WsState } from "../components/useWebSocketConnection";
-
-export type KerutaTaskState =
-  | { state: "unloaded" }
-  | ConnectedKerutaTaskState
-  | { state: "disconnected" };
-
-export interface ConnectedKerutaTaskState {
-  state: "connected";
-  auth: AuthState;
-}
-
-export type AuthState = { state: "unauthenticated" } | { state: "authenticated" };
+import type { KerutaTaskState } from "./ConnectionStateTypes";
 
 /**
- * WebSocket接続状態からKerutaTaskStateを管理する
+ * WebSocket接続状態からKerutaTaskStateを管理するフック
  */
 export function useConnectionStateService(wsState: WsState): KerutaTaskState {
   const [kerutaState, setKerutaState] = useState<KerutaTaskState>({ state: "unloaded" });
