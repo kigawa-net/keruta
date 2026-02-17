@@ -1,6 +1,6 @@
-import {WsState} from "./Websocket";
-import {useCallback, useEffect} from "react";
-import {ReceiveMsg} from "../../msg/msg";
+import { WsState } from "../ServiceContext";
+import { useCallback, useEffect } from "react";
+import { ReceiveMsg } from "../../msg/msg";
 
 export default function useWsReceive(
   wsState: WsState, onReceive: (msg: ReceiveMsg) => void, deps: any[]

@@ -1,13 +1,14 @@
 import PrivateRoute from "../components/PrivateRoute";
-import {useEffect, useState} from "react";
-import {useWsState, WsState} from "../components/websocket/Websocket";
-import {KerutaTaskState, useKerutaTaskState} from "../components/KerutaTask";
+import { useEffect, useState } from "react";
+import { useWsState } from "../components/useServiceHooks";
+import type { WsState } from "../components/useWebSocketConnection";
+import { KerutaTaskState, useKerutaTaskState } from "../components/KerutaTask";
 import useWsReceive from "../components/websocket/useWsReceive";
-import {ClientTaskListedMsg, ServerTaskListMsg} from "../msg/task";
-import {ClientQueueListedMsg, ServerQueueListMsg} from "../msg/queue";
-import {QueueTaskCreateForm} from "../components/task/QueueTaskCreateForm";
-import {QueueTaskList} from "../components/task/QueueTaskList";
-import {Route} from "../../.react-router/types/app/routes/+types/queue.$queueId";
+import { ClientTaskListedMsg, ServerTaskListMsg } from "../msg/task";
+import { ClientQueueListedMsg, ServerQueueListMsg } from "../msg/queue";
+import { QueueTaskCreateForm } from "../components/task/QueueTaskCreateForm";
+import { QueueTaskList } from "../components/task/QueueTaskList";
+import { Route } from "../../.react-router/types/app/routes/+types/queue.$queueId";
 
 
 type Task = ClientTaskListedMsg["tasks"][0]

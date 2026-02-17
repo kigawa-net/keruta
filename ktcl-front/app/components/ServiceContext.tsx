@@ -1,13 +1,14 @@
-import { createContext, ReactNode, useContext, useMemo } from "react";
+import { createContext, ReactNode, useMemo } from "react";
 import {
-  WebSocketService,
   ApiService,
   AuthMessageService,
-  TaskMessageService,
-  QueueMessageService,
   ProviderMessageService,
+  QueueMessageService,
+  TaskMessageService,
   TokenApiService,
+  WebSocketService,
 } from "../services";
+import { useWebSocketConnection, WsState } from "./useWebSocketConnection";
 
 interface Services {
   wsService: WebSocketService;
@@ -19,7 +20,11 @@ interface Services {
   tokenApiService: TokenApiService;
 }
 
-const ServiceContext = createContext<Services | null>(null);
+export interface ServiceContextValue extends Services {
+  wsState: WsState;
+}
+
+export const ServiceContext = createContext<ServiceContextValue | null>(null);
 
 export interface ServiceProviderProps {
   wsUrl: URL;
@@ -31,11 +36,13 @@ export interface ServiceProviderProps {
 
 export function ServiceProvider({
   wsUrl,
-  apiBaseUrl = "",
+  apiBaseUrl,
   children,
   getAuthToken,
   onUnauthorized,
 }: ServiceProviderProps) {
+  const wsState = useWebSocketConnection(wsUrl);
+
   const services = useMemo(() => {
     const wsService = new WebSocketService({ url: wsUrl });
     const apiService = new ApiService({
@@ -54,41 +61,15 @@ export function ServiceProvider({
     };
   }, [wsUrl, apiBaseUrl, getAuthToken, onUnauthorized]);
 
+  const contextValue = useMemo<ServiceContextValue>(
+    () => ({ ...services, wsState }),
+    [services, wsState]
+  );
+
   return (
-    <ServiceContext.Provider value={services}>{children}</ServiceContext.Provider>
+    <ServiceContext.Provider value={contextValue}>{children}</ServiceContext.Provider>
   );
 }
 
-export function useServices(): Services {
-  const services = useContext(ServiceContext);
-  if (!services) throw new Error("useServices must be used within ServiceProvider");
-  return services;
-}
+export type { WsState, WebsocketOpenState } from "./useWebSocketConnection";
 
-export function useWsService(): WebSocketService {
-  return useServices().wsService;
-}
-
-export function useApiService(): ApiService {
-  return useServices().apiService;
-}
-
-export function useAuthMessageService(): AuthMessageService {
-  return useServices().authMessageService;
-}
-
-export function useTaskMessageService(): TaskMessageService {
-  return useServices().taskMessageService;
-}
-
-export function useQueueMessageService(): QueueMessageService {
-  return useServices().queueMessageService;
-}
-
-export function useProviderMessageService(): ProviderMessageService {
-  return useServices().providerMessageService;
-}
-
-export function useTokenApiService(): TokenApiService {
-  return useServices().tokenApiService;
-}

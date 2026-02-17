@@ -3,8 +3,9 @@ import {InputValue} from "./FormTextInput";
 import {useEffect, useState} from "react";
 import {ClientProviderListMsg, ServerProviderListMsg} from "../../msg/provider";
 import useWsReceive from "../websocket/useWsReceive";
-import {useWsState} from "../websocket/Websocket";
+
 import {useKerutaTaskState} from "../KerutaTask";
+import {useWsState} from "../useServiceHooks";
 
 
 type Provider = ClientProviderListMsg["providers"][0]

@@ -4,7 +4,7 @@ import {
   useTaskMessageService,
   useQueueMessageService,
   useProviderMessageService,
-} from "./ServiceContext";
+} from "./useServiceHooks";
 
 interface DomainServices {
   taskService: TaskService;
