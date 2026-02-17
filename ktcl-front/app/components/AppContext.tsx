@@ -1,11 +1,11 @@
-import { createContext, ReactNode, useContext, useMemo } from "react";
+import { createContext, ReactNode, useMemo } from "react";
 import {
   TaskService,
   QueueService,
   ProviderService,
+  useConnectionStateService,
+  useMessageRouterService,
 } from "../services";
-import { useConnectionStateService } from "../services";
-import { useMessageRouterService } from "../services";
 import {
   useWsState,
   useTaskMessageService,
@@ -15,14 +15,14 @@ import {
 import WsSender from "./websocket/WsSender";
 import type { KerutaTaskState } from "../services";
 
-interface AppState {
+export interface AppState {
   kerutaState: KerutaTaskState;
   taskService: TaskService;
   queueService: QueueService;
   providerService: ProviderService;
 }
 
-const AppContext = createContext<AppState | null>(null);
+export const AppContext = createContext<AppState | null>(null);
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const wsState = useWsState();
@@ -67,27 +67,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function useAppState(): AppState {
-  const context = useContext(AppContext);
-  if (!context) throw new Error("useAppState must be used within AppProvider");
-  return context;
-}
-
-export function useKerutaTaskState(): KerutaTaskState {
-  return useAppState().kerutaState;
-}
-
-export function useTaskService(): TaskService {
-  return useAppState().taskService;
-}
-
-export function useQueueService(): QueueService {
-  return useAppState().queueService;
-}
-
-export function useProviderService(): ProviderService {
-  return useAppState().providerService;
-}
+// Re-export hooks from hooks/index.ts for backward compatibility
+export { useAppState, useKerutaTaskState, useTaskService, useQueueService, useProviderService } from "./hooks";
 
 // Re-export types for convenience
 export type { KerutaTaskState, ConnectedKerutaTaskState, AuthState } from "../services/ConnectionStateTypes";
