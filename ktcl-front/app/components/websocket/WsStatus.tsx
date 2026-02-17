@@ -1,4 +1,4 @@
-import {useKerutaTaskState} from "../KerutaTask";
+import {useKerutaTaskState} from "../AppContext";
 
 export default function WsStatus(
     {}: {},
