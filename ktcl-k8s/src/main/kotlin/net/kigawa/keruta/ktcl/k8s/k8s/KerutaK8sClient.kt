@@ -1,7 +1,6 @@
 package net.kigawa.keruta.ktcl.k8s.k8s
 
 import kotlinx.coroutines.coroutineScope
-import net.kigawa.keruta.ktcl.k8s.auth.AuthManager
 import net.kigawa.keruta.ktcl.k8s.config.K8sConfig
 import net.kigawa.keruta.ktcl.k8s.connection.ConnectionContext
 import net.kigawa.keruta.ktcl.k8s.connection.ConnectionManager
@@ -15,7 +14,6 @@ import net.kigawa.keruta.ktcp.client.KtcpSession
 import net.kigawa.keruta.ktcp.model.KtcpClientEntrypoints
 import net.kigawa.keruta.ktcp.model.serialize.JsonKerutaSerializer
 import net.kigawa.keruta.ktcp.model.task.list.ServerTaskListMsg
-import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.LoggerFactory
 
 class KerutaK8sClient(
@@ -29,7 +27,6 @@ class KerutaK8sClient(
         logger.info { "Starting Keruta K8s Client" }
 
         val (connection, ctx) = connectAndCreateSession()
-        if (!authenticate(ctx)) return@coroutineScope
 
         val taskExecutor = TaskExecutorFactory(config, ktcpClient).create()
         val clientEntrypoints = ClientEntrypointsFactory(ktcpClient, config, taskExecutor).create()
@@ -44,20 +41,6 @@ class KerutaK8sClient(
         val session = KtcpSession(connection)
         val ctx = ClientCtx(serializer, session)
         return ConnectionContext(connection, ctx)
-    }
-
-    private suspend fun authenticate(ctx: ClientCtx): Boolean {
-        val authManager = AuthManager(config, ktcpClient, ctx)
-        return when (val authRes = authManager.authenticate()) {
-            is Res.Err -> {
-                logger.info { "Authentication failed: ${authRes.err}" }
-                false
-            }
-            is Res.Ok -> {
-                logger.info { "Authentication successful" }
-                true
-            }
-        }
     }
 
     private suspend fun requestInitialTaskList(ctx: ClientCtx) {
