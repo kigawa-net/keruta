@@ -1,0 +1,447 @@
+Index: ktcl-front/app/components/websocket/WsSender.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import { useEffect } from \"react\";\nimport { useWsState, useAuthMessageService, useTokenApiService } from \"../useServiceHooks\";\nimport { KerutaTaskState, useKerutaTaskState } from \"../KerutaTask\";\nimport { KeycloakState, useKeycloakState } from \"../Keycloak\";\nimport type { WsState } from \"../useWebSocketConnection\";\n\nexport default function WsSender() {\n  const wsState = useWsState();\n  const kc = useKeycloakState();\n  const kerutaState = useKerutaTaskState();\n  useAuth(wsState, kc, kerutaState);\n  useRetry(wsState);\n  return null;\n}\n\nfunction useAuth(wsState: WsState, kc: KeycloakState, kerutaState: KerutaTaskState) {\n  const authMsgService = useAuthMessageService();\n  const tokenApiService = useTokenApiService();\n\n  useEffect(() => {\n    const shouldAuth =\n      wsState.state === \"open\" &&\n      kc.state === \"authenticated\" &&\n      kerutaState.state === \"connected\" &&\n      kerutaState.auth.state === \"unauthenticated\";\n    if (!shouldAuth) return;\n\n    const doAuth = async () => {\n      if (wsState.state !== \"open\") return;\n      try {\n        const userToken = await kc.getToken();\n        const result = await tokenApiService.getServerToken(userToken);\n        // Check again after async operations - WebSocket may have closed during await\n        if (wsState.state !== \"open\") return;\n        if (result.success) {\n          authMsgService.sendAuthRequest(userToken, result.data.token);\n        }\n      } catch (e) {\n        console.warn(\"Auth request failed:\", e);\n      }\n    };\n\n    const interval = setInterval(doAuth, 5000);\n    doAuth();\n    return () => clearInterval(interval);\n  }, [wsState.state, kc, kerutaState, authMsgService, tokenApiService]);\n}\n\nfunction useRetry(wsState: WsState) {\n  useEffect(() => {\n    if (wsState.state === \"closed\") {\n      const timeout = setTimeout(() => wsState.open(), 5000);\n      return () => clearTimeout(timeout);\n    }\n    if (wsState.state === \"error\") {\n      const timeout = setTimeout(() => wsState.retry(), 10000);\n      return () => clearTimeout(timeout);\n    }\n  }, [wsState]);\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front/app/components/websocket/WsSender.tsx b/ktcl-front/app/components/websocket/WsSender.tsx
+--- a/ktcl-front/app/components/websocket/WsSender.tsx	(revision b8662e2a014092783ca5b4067b46691899f2eb95)
++++ b/ktcl-front/app/components/websocket/WsSender.tsx	(date 1771350288377)
+@@ -1,8 +1,9 @@
+ import { useEffect } from "react";
+ import { useWsState, useAuthMessageService, useTokenApiService } from "../useServiceHooks";
+-import { KerutaTaskState, useKerutaTaskState } from "../KerutaTask";
++import { useKerutaTaskState } from "../AppContext";
+ import { KeycloakState, useKeycloakState } from "../Keycloak";
+ import type { WsState } from "../useWebSocketConnection";
++import type { KerutaTaskState } from "../AppContext";
+ 
+ export default function WsSender() {
+   const wsState = useWsState();
+Index: ktcl-front/app/layout/RootLayout.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import { Outlet } from \"react-router\";\nimport { useLocation } from \"react-router-dom\";\nimport AuthButton from \"../components/AuthButton\";\nimport { useEffect, useState } from \"react\";\nimport { KeycloakProvider } from \"../components/Keycloak\";\nimport { UserProfileProvider } from \"../components/UserProfile\";\nimport WsStatus from \"../components/websocket/WsStatus\";\nimport { KerutaTaskProvider } from \"../components/KerutaTask\";\nimport Sidebar from \"../components/sidebar/Sidebar\";\nimport Config from \"../Config\";\nimport { ServiceProvider } from \"../components/ServiceContext\";\nimport { DomainServiceProvider } from \"../components/DomainContext\";\n\n// noinspection JSUnusedGlobalSymbols\nexport default function Layout() {\n  const loc = useLocation();\n  const [isSidebarOpen, setIsSidebarOpen] = useState(true);\n\n  useEffect(() => {\n    console.log(\"layout rendered\");\n  }, [loc]);\n\n  return (\n    <KeycloakProvider>\n      <UserProfileProvider>\n        <ServiceProvider wsUrl={Config.websocketUrl}>\n          <DomainServiceProvider>\n            <KerutaTaskProvider>\n              <div className=\"flex h-screen bg-white\">\n                {isSidebarOpen && (\n                  <div\n                    className=\"fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden\"\n                    onClick={() => setIsSidebarOpen(false)}\n                  />\n                )}\n                <Sidebar isOpen={isSidebarOpen} />\n                <div className=\"flex-1 flex flex-col overflow-hidden\">\n                  <header className=\"bg-white shadow-sm border-b\" style={{ borderColor: \"#dee2e6\" }}>\n                    <div className=\"flex items-center justify-between px-4 py-3\">\n                      <button\n                        onClick={() => setIsSidebarOpen(!isSidebarOpen)}\n                        className=\"p-2 rounded hover:bg-gray-100 transition-colors\"\n                        aria-label=\"Toggle sidebar\"\n                      >\n                        <svg className=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\">\n                          <path strokeLinecap=\"round\" strokeLinejoin=\"round\" strokeWidth={2} d=\"M4 6h16M4 12h16M4 18h16\" />\n                        </svg>\n                      </button>\n                      <div className=\"flex gap-4\">\n                        <WsStatus />\n                        <AuthButton />\n                      </div>\n                    </div>\n                  </header>\n                  <main className=\"flex-1 overflow-y-auto p-3 md:p-6\">\n                    <Outlet />\n                  </main>\n                </div>\n              </div>\n            </KerutaTaskProvider>\n          </DomainServiceProvider>\n        </ServiceProvider>\n      </UserProfileProvider>\n    </KeycloakProvider>\n  );\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front/app/layout/RootLayout.tsx b/ktcl-front/app/layout/RootLayout.tsx
+--- a/ktcl-front/app/layout/RootLayout.tsx	(revision b8662e2a014092783ca5b4067b46691899f2eb95)
++++ b/ktcl-front/app/layout/RootLayout.tsx	(date 1771350288421)
+@@ -5,11 +5,10 @@
+ import { KeycloakProvider } from "../components/Keycloak";
+ import { UserProfileProvider } from "../components/UserProfile";
+ import WsStatus from "../components/websocket/WsStatus";
+-import { KerutaTaskProvider } from "../components/KerutaTask";
+ import Sidebar from "../components/sidebar/Sidebar";
+ import Config from "../Config";
+ import { ServiceProvider } from "../components/ServiceContext";
+-import { DomainServiceProvider } from "../components/DomainContext";
++import { AppProvider } from "../components/AppContext";
+ 
+ // noinspection JSUnusedGlobalSymbols
+ export default function Layout() {
+@@ -24,41 +23,39 @@
+     <KeycloakProvider>
+       <UserProfileProvider>
+         <ServiceProvider wsUrl={Config.websocketUrl}>
+-          <DomainServiceProvider>
+-            <KerutaTaskProvider>
+-              <div className="flex h-screen bg-white">
+-                {isSidebarOpen && (
+-                  <div
+-                    className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+-                    onClick={() => setIsSidebarOpen(false)}
+-                  />
+-                )}
+-                <Sidebar isOpen={isSidebarOpen} />
+-                <div className="flex-1 flex flex-col overflow-hidden">
+-                  <header className="bg-white shadow-sm border-b" style={{ borderColor: "#dee2e6" }}>
+-                    <div className="flex items-center justify-between px-4 py-3">
+-                      <button
+-                        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+-                        className="p-2 rounded hover:bg-gray-100 transition-colors"
+-                        aria-label="Toggle sidebar"
+-                      >
+-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+-                        </svg>
+-                      </button>
+-                      <div className="flex gap-4">
+-                        <WsStatus />
+-                        <AuthButton />
+-                      </div>
+-                    </div>
+-                  </header>
+-                  <main className="flex-1 overflow-y-auto p-3 md:p-6">
+-                    <Outlet />
+-                  </main>
+-                </div>
+-              </div>
+-            </KerutaTaskProvider>
+-          </DomainServiceProvider>
++          <AppProvider>
++            <div className="flex h-screen bg-white">
++              {isSidebarOpen && (
++                <div
++                  className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
++                  onClick={() => setIsSidebarOpen(false)}
++                />
++              )}
++              <Sidebar isOpen={isSidebarOpen} />
++              <div className="flex-1 flex flex-col overflow-hidden">
++                <header className="bg-white shadow-sm border-b" style={{ borderColor: "#dee2e6" }}>
++                  <div className="flex items-center justify-between px-4 py-3">
++                    <button
++                      onClick={() => setIsSidebarOpen(!isSidebarOpen)}
++                      className="p-2 rounded hover:bg-gray-100 transition-colors"
++                      aria-label="Toggle sidebar"
++                    >
++                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
++                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
++                      </svg>
++                    </button>
++                    <div className="flex gap-4">
++                      <WsStatus />
++                      <AuthButton />
++                    </div>
++                  </div>
++                </header>
++                <main className="flex-1 overflow-y-auto p-3 md:p-6">
++                  <Outlet />
++                </main>
++              </div>
++            </div>
++          </AppProvider>
+         </ServiceProvider>
+       </UserProfileProvider>
+     </KeycloakProvider>
+Index: ktcl-front/app/components/DomainContext.tsx
+===================================================================
+diff --git a/ktcl-front/app/components/DomainContext.tsx b/ktcl-front/app/components/DomainContext.tsx
+deleted file mode 100644
+--- a/ktcl-front/app/components/DomainContext.tsx	(revision b8662e2a014092783ca5b4067b46691899f2eb95)
++++ /dev/null	(revision b8662e2a014092783ca5b4067b46691899f2eb95)
+@@ -1,50 +0,0 @@
+-import { createContext, ReactNode, useContext, useMemo } from "react";
+-import { TaskService, QueueService, ProviderService } from "../services";
+-import {
+-  useTaskMessageService,
+-  useQueueMessageService,
+-  useProviderMessageService,
+-} from "./useServiceHooks";
+-
+-interface DomainServices {
+-  taskService: TaskService;
+-  queueService: QueueService;
+-  providerService: ProviderService;
+-}
+-
+-const DomainContext = createContext<DomainServices | null>(null);
+-
+-export function DomainServiceProvider({ children }: { children: ReactNode }) {
+-  const taskMsgService = useTaskMessageService();
+-  const queueMsgService = useQueueMessageService();
+-  const providerMsgService = useProviderMessageService();
+-
+-  const services = useMemo(
+-    () => ({
+-      taskService: new TaskService(taskMsgService),
+-      queueService: new QueueService(queueMsgService),
+-      providerService: new ProviderService(providerMsgService),
+-    }),
+-    [taskMsgService, queueMsgService, providerMsgService]
+-  );
+-
+-  return <DomainContext.Provider value={services}>{children}</DomainContext.Provider>;
+-}
+-
+-export function useDomainServices(): DomainServices {
+-  const services = useContext(DomainContext);
+-  if (!services) throw new Error("useDomainServices must be used within DomainServiceProvider");
+-  return services;
+-}
+-
+-export function useTaskService(): TaskService {
+-  return useDomainServices().taskService;
+-}
+-
+-export function useQueueService(): QueueService {
+-  return useDomainServices().queueService;
+-}
+-
+-export function useProviderService(): ProviderService {
+-  return useDomainServices().providerService;
+-}
+Index: ktcl-front/app/components/KerutaTask.tsx
+===================================================================
+diff --git a/ktcl-front/app/components/KerutaTask.tsx b/ktcl-front/app/components/KerutaTask.tsx
+deleted file mode 100644
+--- a/ktcl-front/app/components/KerutaTask.tsx	(revision b8662e2a014092783ca5b4067b46691899f2eb95)
++++ /dev/null	(revision b8662e2a014092783ca5b4067b46691899f2eb95)
+@@ -1,80 +0,0 @@
+-import {createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState,} from "react";
+-import {WsState} from "./ServiceContext";
+-import WsSender from "./websocket/WsSender";
+-import {useDomainServices} from "./DomainContext";
+-import {useWsState} from "./useServiceHooks";
+-
+-const Context = createContext<KerutaTaskState>({state: "unloaded"});
+-
+-export function KerutaTaskProvider({children}: { children: ReactNode }) {
+-    const [state, setState] = useState<KerutaTaskState>({state: "unloaded"});
+-    const wsState = useWsState();
+-    const domainServices = useDomainServices();
+-
+-    useLoad(wsState, state, setState);
+-    useMessageHandling(state, domainServices);
+-
+-    return (
+-        <Context.Provider value={state}>
+-            <WsSender/>
+-            {children}
+-        </Context.Provider>
+-    );
+-}
+-
+-function useLoad(
+-    wsState: WsState,
+-    kerutaState: KerutaTaskState,
+-    setState: Dispatch<SetStateAction<KerutaTaskState>>
+-) {
+-    useEffect(() => {
+-        if (wsState.state === "open" && kerutaState.state !== "connected") {
+-            setState({state: "connected", auth: {state: "unauthenticated"}});
+-        } else if (wsState.state === "closed") {
+-            setState({state: "disconnected"});
+-        } else if (wsState.state !== "open" && kerutaState.state === "connected") {
+-            setState({state: "unloaded"});
+-        }
+-    }, [wsState.state, kerutaState.state]);
+-}
+-
+-function useMessageHandling(
+-    state: KerutaTaskState,
+-    domainServices: ReturnType<typeof useDomainServices>
+-) {
+-    const wsState = useWsState();
+-
+-    useEffect(() => {
+-        if (wsState.state !== "open" || state.state !== "connected") return;
+-        const ws = wsState.websocket;
+-
+-        const handler = (event: MessageEvent) => {
+-            const msg = JSON.parse(event.data);
+-            if (msg.type === "auth_success" && state.state === "connected") {
+-                // auth success handled in state
+-            }
+-            domainServices.taskService.handleMessage(msg);
+-            domainServices.queueService.handleMessage(msg);
+-            domainServices.providerService.handleMessage(msg);
+-        };
+-
+-        ws.addEventListener("message", handler);
+-        return () => ws.removeEventListener("message", handler);
+-    }, [wsState, state, domainServices]);
+-}
+-
+-export function useKerutaTaskState() {
+-    return useContext(Context);
+-}
+-
+-export type KerutaTaskState =
+-    | { state: "unloaded" }
+-    | ConnectedKerutaTaskState
+-    | { state: "disconnected" };
+-
+-export interface ConnectedKerutaTaskState {
+-    state: "connected";
+-    auth: AuthState;
+-}
+-
+-export type AuthState = { state: "unauthenticated" } | { state: "authenticated" };
+Index: ktcl-front/app/components/queue/QueueCreateForm.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import { Link } from \"react-router\";\nimport FormTextInput, { InputValue } from \"../form/FormTextInput\";\nimport { useEffect, useState } from \"react\";\nimport FormErrMsg from \"../form/FormErrMsg\";\nimport { useNavigate } from \"react-router-dom\";\nimport FormProviderInput from \"../form/FormProviderInput\";\nimport { useQueueService } from \"../DomainContext\";\n\nexport function QueueCreateForm() {\n  const [formState, setFormState] = useState<\"inputting\" | \"submitting\">(\"inputting\");\n  const queueService = useQueueService();\n  const [provider, setProvider] = useState<InputValue>({ value: \"\" });\n  const [name, setName] = useState<InputValue>({ value: \"\" });\n  const [err, setErr] = useState<string>();\n  const navigate = useNavigate();\n\n  useEffect(() => {\n    if (formState !== \"submitting\") return;\n    if (name.value.trim() === \"\") {\n      setName({ error: \"キュー名を入力してください\", ...name });\n      setFormState(\"inputting\");\n      return;\n    }\n    try {\n      queueService.createQueue({\n        providerId: parseInt(provider.value),\n        name: name.value,\n      });\n    } catch (e) {\n      setErr(e instanceof Error ? e.message : \"エラーが発生しました\");\n      setFormState(\"inputting\");\n    }\n  }, [formState, name, provider, queueService]);\n\n  useEffect(() => {\n    return queueService.onQueueCreated((queueId) => {\n      navigate(`/queue/${queueId}`);\n    });\n  }, [queueService, navigate]);\n\n  return (\n    <form\n      className=\"space-y-6\"\n      onSubmit={(event) => {\n        event.preventDefault();\n        setFormState(\"submitting\");\n      }}\n    >\n      <input type=\"hidden\" name=\"form_type\" value=\"queue_create\" />\n      <FormTextInput\n        label=\"キュー名\"\n        id=\"name\"\n        placeholder=\"キュー名を入力してください\"\n        value={name}\n        onChange={setName}\n      />\n      <FormProviderInput label=\"プロバイダー\" id=\"provider\" value={provider} onChange={setProvider} />\n      <div className=\"flex gap-4\">\n        <button\n          type=\"submit\"\n          className=\"px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors\"\n          disabled={formState === \"submitting\"}\n        >\n          作成\n        </button>\n        <Link\n          to=\"/task\"\n          className=\"px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors\"\n        >\n          キャンセル\n        </Link>\n      </div>\n      <FormErrMsg err={err} />\n    </form>\n  );\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front/app/components/queue/QueueCreateForm.tsx b/ktcl-front/app/components/queue/QueueCreateForm.tsx
+--- a/ktcl-front/app/components/queue/QueueCreateForm.tsx	(revision b8662e2a014092783ca5b4067b46691899f2eb95)
++++ b/ktcl-front/app/components/queue/QueueCreateForm.tsx	(date 1771350288462)
+@@ -4,7 +4,7 @@
+ import FormErrMsg from "../form/FormErrMsg";
+ import { useNavigate } from "react-router-dom";
+ import FormProviderInput from "../form/FormProviderInput";
+-import { useQueueService } from "../DomainContext";
++import { useQueueService } from "../AppContext";
+ 
+ export function QueueCreateForm() {
+   const [formState, setFormState] = useState<"inputting" | "submitting">("inputting");
+Index: ktcl-front/app/routes/provider.complete.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>// noinspection JSUnusedGlobalSymbols\nimport { useNavigate, useSearchParams } from \"react-router\";\nimport { useEffect, useState } from \"react\";\nimport { useWsState } from \"../components/useServiceHooks\";\nimport useWsReceive from \"../components/websocket/useWsReceive\";\nimport { ServerProviderCompleteMsg } from \"../msg/provider\";\nimport { useKerutaTaskState } from \"../components/KerutaTask\";\n\ntype Status = \"processing\" | \"success\" | \"error\"\n\nexport default function ProviderCompleteRoute() {\n    const [searchParams] = useSearchParams()\n    const wsState = useWsState()\n    const kerutaState = useKerutaTaskState()\n    const navigate = useNavigate()\n    const [status, setStatus] = useState<Status>(\"processing\")\n    const [errMsg, setErrMsg] = useState<string>()\n\n    const code = searchParams.get(\"code\")\n    const token = searchParams.get(\"state\")\n\n    useEffect(() => {\n        if (!code || !token) {\n            setStatus(\"error\")\n            setErrMsg(\"無効なコールバックパラメータです\")\n            return\n        }\n        if (wsState.state != \"open\") return\n        if (kerutaState.state != \"connected\") return\n        if (kerutaState.auth.state != \"authenticated\") return\n\n        const redirectUri = `${window.location.origin}/provider/complete`\n        const msg: ServerProviderCompleteMsg = {\n            type: \"provider_complete\",\n            token,\n            code,\n            redirectUri,\n        }\n        wsState.websocket.send(JSON.stringify(msg))\n    }, [wsState.state, kerutaState.state == \"connected\" && kerutaState.auth.state])\n\n    useWsReceive(wsState, msg => {\n        if (msg.type != \"provider_idp_added\") return\n        setStatus(\"success\")\n        setTimeout(() => navigate(\"/provider\"), 1500)\n    }, [])\n\n    return (\n        <div className=\"max-w-lg mx-auto p-6 mt-16 text-center\">\n            {status == \"processing\" && (\n                <div>\n                    <div className=\"text-4xl mb-4\">⏳</div>\n                    <h1 className=\"text-2xl font-bold mb-2\">プロバイダーを登録中...</h1>\n                    <p className=\"text-gray-500\">しばらくお待ちください</p>\n                </div>\n            )}\n            {status == \"success\" && (\n                <div>\n                    <div className=\"text-4xl mb-4\">✓</div>\n                    <h1 className=\"text-2xl font-bold mb-2 text-green-600\">登録完了</h1>\n                    <p className=\"text-gray-500\">プロバイダー一覧に移動します...</p>\n                </div>\n            )}\n            {status == \"error\" && (\n                <div>\n                    <div className=\"text-4xl mb-4\">✗</div>\n                    <h1 className=\"text-2xl font-bold mb-2 text-red-600\">エラー</h1>\n                    <p className=\"text-gray-500 mb-4\">{errMsg ?? \"プロバイダーの登録に失敗しました\"}</p>\n                    <button\n                        onClick={() => navigate(\"/provider\")}\n                        className=\"px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors\"\n                    >\n                        プロバイダー一覧に戻る\n                    </button>\n                </div>\n            )}\n        </div>\n    )\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front/app/routes/provider.complete.tsx b/ktcl-front/app/routes/provider.complete.tsx
+--- a/ktcl-front/app/routes/provider.complete.tsx	(revision b8662e2a014092783ca5b4067b46691899f2eb95)
++++ b/ktcl-front/app/routes/provider.complete.tsx	(date 1771350288487)
+@@ -4,7 +4,7 @@
+ import { useWsState } from "../components/useServiceHooks";
+ import useWsReceive from "../components/websocket/useWsReceive";
+ import { ServerProviderCompleteMsg } from "../msg/provider";
+-import { useKerutaTaskState } from "../components/KerutaTask";
++import { useKerutaTaskState } from "../components/AppContext";
+ 
+ type Status = "processing" | "success" | "error"
+ 
+Index: ktcl-front/app/components/task/TaskCreateForm.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import { Link } from \"react-router\";\nimport FormTextInput, { InputValue } from \"../form/FormTextInput\";\nimport { useEffect, useState } from \"react\";\nimport { useTaskService } from \"../DomainContext\";\nimport FormErrMsg from \"../form/FormErrMsg\";\n\nexport function TaskCreateForm() {\n  const [formState, setFormState] = useState<\"inputting\" | \"submitting\">(\"inputting\");\n  const taskService = useTaskService();\n  const [name, setName] = useState<InputValue>({ value: \"\" });\n  const [err, setErr] = useState<string>();\n\n  useEffect(() => {\n    if (formState !== \"submitting\") return;\n    if (name.value.trim() === \"\") {\n      setName({ error: \"タスク名を入力してください\", ...name });\n      setFormState(\"inputting\");\n      return;\n    }\n    try {\n      taskService.createTask({\n        queueId: 1, // TODO: queueIdをpropsで受け取る\n        title: name.value,\n        description: \"\",\n      });\n    } catch (e) {\n      setErr(e instanceof Error ? e.message : \"エラーが発生しました\");\n      setFormState(\"inputting\");\n    }\n  }, [formState, name, taskService]);\n\n  return (\n    <form\n      className=\"space-y-6\"\n      onSubmit={(event) => {\n        event.preventDefault();\n        setFormState(\"submitting\");\n      }}\n    >\n      <input type=\"hidden\" name=\"form_type\" value=\"task_create\" />\n      <FormTextInput\n        label=\"タスク名\"\n        id=\"taskName\"\n        placeholder=\"タスク名を入力してください\"\n        value={name}\n        onChange={setName}\n      />\n      <div className=\"flex gap-4\">\n        <button\n          type=\"submit\"\n          className=\"px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors\"\n        >\n          作成\n        </button>\n        <Link\n          to=\"/task\"\n          className=\"px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors\"\n        >\n          キャンセル\n        </Link>\n      </div>\n      <FormErrMsg err={err} />\n    </form>\n  );\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front/app/components/task/TaskCreateForm.tsx b/ktcl-front/app/components/task/TaskCreateForm.tsx
+--- a/ktcl-front/app/components/task/TaskCreateForm.tsx	(revision b8662e2a014092783ca5b4067b46691899f2eb95)
++++ b/ktcl-front/app/components/task/TaskCreateForm.tsx	(date 1771350288514)
+@@ -1,7 +1,7 @@
+ import { Link } from "react-router";
+ import FormTextInput, { InputValue } from "../form/FormTextInput";
+ import { useEffect, useState } from "react";
+-import { useTaskService } from "../DomainContext";
++import { useTaskService } from "../AppContext";
+ import FormErrMsg from "../form/FormErrMsg";
+ 
+ export function TaskCreateForm() {
+Index: ktcl-front/app/routes/queue.$queueId.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import PrivateRoute from \"../components/PrivateRoute\";\nimport { useEffect, useState } from \"react\";\nimport { useWsState } from \"../components/useServiceHooks\";\nimport type { WsState } from \"../components/useWebSocketConnection\";\nimport { KerutaTaskState, useKerutaTaskState } from \"../components/KerutaTask\";\nimport useWsReceive from \"../components/websocket/useWsReceive\";\nimport { ClientTaskListedMsg, ServerTaskListMsg } from \"../msg/task\";\nimport { ClientQueueListedMsg, ServerQueueListMsg } from \"../msg/queue\";\nimport { QueueTaskCreateForm } from \"../components/task/QueueTaskCreateForm\";\nimport { QueueTaskList } from \"../components/task/QueueTaskList\";\nimport { Route } from \"../../.react-router/types/app/routes/+types/queue.$queueId\";\n\n\ntype Task = ClientTaskListedMsg[\"tasks\"][0]\ntype Queue = ClientQueueListedMsg[\"queues\"][0]\n\n// noinspection JSUnusedGlobalSymbols\nexport default function Page({params: {queueId}}: Route.ComponentProps) {\n    const wsState = useWsState()\n    const kerutaState = useKerutaTaskState()\n    const [tasks, setTasks] = useState<Task[]>([])\n    const [queues, setQueues] = useState<Queue[]>([])\n\n\n    useWsReceive(wsState, msg => {\n        if (msg.type === \"task_listed\") {\n            setTasks(msg.tasks)\n        } else if (msg.type === \"queue_listed\") {\n            setQueues(msg.queues)\n        } else if (msg.type === \"task_created\") {\n            loadTaskList(wsState, kerutaState, Number(queueId))\n        } else if (msg.type === \"task_updated\") {\n            loadTaskList(wsState, kerutaState, Number(queueId))\n        } else if (msg.type === \"task_moved\") {\n            loadTaskList(wsState, kerutaState, Number(queueId))\n        }\n    }, [wsState.state, kerutaState.state === \"connected\" && kerutaState.auth.state, queueId])\n\n    useEffect(() => {\n        loadTaskList(wsState, kerutaState, Number(queueId))\n        loadQueueList(wsState, kerutaState)\n    }, [wsState.state, kerutaState.state === \"connected\" && kerutaState.auth.state, queueId])\n\n    const currentQueue = queues.find(q => q.id === Number(queueId))\n    const queueDisplayName = currentQueue?.name || `Queue ${queueId}`\n\n    return (\n        <PrivateRoute>\n            <div className=\"h-full p-8\">\n                <div className=\"max-w-6xl mx-auto\">\n                    <div className=\"mb-8\">\n                        <h1 className=\"text-3xl font-bold text-gray-900\">\n                            タスク一覧 - {queueDisplayName}\n                        </h1>\n                        <p className=\"mt-2 text-gray-600\">このキューに含まれるタスクの一覧を表示します</p>\n                    </div>\n\n                    <QueueTaskCreateForm\n                        queueId={queueId} onTaskCreated={() => loadTaskList(wsState, kerutaState, queueId)}\n                    />\n\n                    <QueueTaskList\n                        tasks={tasks}\n                        queues={queues}\n                        currentQueueId={queueId}\n                    />\n                </div>\n            </div>\n        </PrivateRoute>\n    )\n}\n\nfunction loadTaskList(wsState: WsState, kerutaState: KerutaTaskState, queueId: number) {\n    if (wsState.state !== \"open\") return\n    if (kerutaState.state !== \"connected\") return\n    if (kerutaState.auth.state !== \"authenticated\") return\n\n    const msg: ServerTaskListMsg = {\n        type: \"task_list\",\n        queueId: queueId\n    }\n    wsState.websocket.send(JSON.stringify(msg))\n}\n\nfunction loadQueueList(wsState: WsState, kerutaState: KerutaTaskState) {\n    if (wsState.state !== \"open\") return\n    if (kerutaState.state !== \"connected\") return\n    if (kerutaState.auth.state !== \"authenticated\") return\n\n    const msg: ServerQueueListMsg = {\n        type: \"queue_list\"\n    }\n    wsState.websocket.send(JSON.stringify(msg))\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front/app/routes/queue.$queueId.tsx b/ktcl-front/app/routes/queue.$queueId.tsx
+--- a/ktcl-front/app/routes/queue.$queueId.tsx	(revision b8662e2a014092783ca5b4067b46691899f2eb95)
++++ b/ktcl-front/app/routes/queue.$queueId.tsx	(date 1771350288546)
+@@ -2,7 +2,8 @@
+ import { useEffect, useState } from "react";
+ import { useWsState } from "../components/useServiceHooks";
+ import type { WsState } from "../components/useWebSocketConnection";
+-import { KerutaTaskState, useKerutaTaskState } from "../components/KerutaTask";
++import { useKerutaTaskState } from "../components/AppContext";
++import type { KerutaTaskState } from "../components/AppContext";
+ import useWsReceive from "../components/websocket/useWsReceive";
+ import { ClientTaskListedMsg, ServerTaskListMsg } from "../msg/task";
+ import { ClientQueueListedMsg, ServerQueueListMsg } from "../msg/queue";
+Index: ktcl-front/app/components/form/FormProviderInput.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import FormErrMsg from \"./FormErrMsg\";\nimport {InputValue} from \"./FormTextInput\";\nimport {useEffect, useState} from \"react\";\nimport {ClientProviderListMsg, ServerProviderListMsg} from \"../../msg/provider\";\nimport useWsReceive from \"../websocket/useWsReceive\";\n\nimport {useKerutaTaskState} from \"../KerutaTask\";\nimport {useWsState} from \"../useServiceHooks\";\n\n\ntype Provider = ClientProviderListMsg[\"providers\"][0]\nexport default function FormProviderInput(\n    {\n        label,\n        id,\n        value,\n        onChange,\n    }: {\n        label: string,\n        id: string,\n        value: InputValue,\n        onChange: (value: InputValue) => void,\n    },\n) {\n    const [providers, setProviders] = useState<Provider[]>()\n    const wsState = useWsState()\n    const keruta = useKerutaTaskState()\n    useWsReceive(wsState, msg => {\n        if (msg.type != \"provider_listed\") return\n        setProviders(msg.providers)\n    }, [])\n    useEffect(() => {\n        if (wsState.state != \"open\") return\n        if (keruta.state != \"connected\") return;\n        if (keruta.auth.state != \"authenticated\") return;\n        const res: ServerProviderListMsg = {\n            type: \"provider_list\",\n        }\n        wsState.websocket.send(JSON.stringify(res))\n    }, [wsState.state, keruta.state == \"connected\" && keruta.auth.state]);\n    return (\n        <div>\n            <label htmlFor={id} className=\"block text-sm font-medium text-gray-700 mb-2\">\n                {label}\n            </label>\n            <select\n                id={id}\n                value={value.value}\n                onChange={\n                    (e) => onChange({value: e.target.value, error: undefined})\n                }\n                className={\n                    \"w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2\" +\n                    \" focus:ring-blue-500\"\n                }\n            >\n                <option value=\"\">--- 選択 ---</option>\n                {providers?.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}\n            </select>\n            <FormErrMsg err={value.error}/>\n        </div>\n    )\n}\n\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front/app/components/form/FormProviderInput.tsx b/ktcl-front/app/components/form/FormProviderInput.tsx
+--- a/ktcl-front/app/components/form/FormProviderInput.tsx	(revision b8662e2a014092783ca5b4067b46691899f2eb95)
++++ b/ktcl-front/app/components/form/FormProviderInput.tsx	(date 1771350288578)
+@@ -4,7 +4,7 @@
+ import {ClientProviderListMsg, ServerProviderListMsg} from "../../msg/provider";
+ import useWsReceive from "../websocket/useWsReceive";
+ 
+-import {useKerutaTaskState} from "../KerutaTask";
++import {useKerutaTaskState} from "../AppContext";
+ import {useWsState} from "../useServiceHooks";
+ 
+ 
+Index: ktcl-front/app/routes/providers.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>// noinspection JSUnusedGlobalSymbols\nimport useWsReceive from \"../components/websocket/useWsReceive\";\nimport { useWsState } from \"../components/useServiceHooks\";\nimport { useEffect, useState } from \"react\";\nimport { ClientProviderListMsg, ServerProviderDeleteMsg, ServerProviderListMsg } from \"../msg/provider\";\nimport { useKerutaTaskState } from \"../components/KerutaTask\";\nimport { Link } from \"react-router\";\n\ntype Provider = ClientProviderListMsg[\"providers\"][0]\n\nfunction buildOidcLoginUrl(authorizationEndpoint: string, clientId: string): string {\n    const url = new URL(authorizationEndpoint)\n    url.searchParams.set(\"response_type\", \"code\")\n    url.searchParams.set(\"client_id\", clientId)\n    url.searchParams.set(\"redirect_uri\", window.location.origin)\n    url.searchParams.set(\"scope\", \"openid\")\n    return url.toString()\n}\n\nexport default function AboutRoute() {\n    const wsState = useWsState()\n    const [providers, setProviders] = useState<Provider[]>()\n    const [authEndpoints, setAuthEndpoints] = useState<Record<string, string>>({})\n    const kerutaState = useKerutaTaskState()\n    useWsReceive(wsState, msg => {\n        if (msg.type == \"provider_listed\") {\n            setProviders(msg.providers)\n        } else if (msg.type == \"provider_deleted\") {\n            setProviders(prev => prev?.filter(p => p.id !== msg.id))\n        }\n    }, [])\n    useEffect(() => {\n        if (!providers) return\n        const issuers = Array.from(new Set(providers.flatMap(p => p.idps.map(idp => idp.issuer))))\n        issuers.forEach(issuer => {\n            fetch(`${issuer}/.well-known/openid-configuration`)\n                .then(res => res.json())\n                .then((data: {authorization_endpoint: string}) => {\n                    setAuthEndpoints(prev => ({...prev, [issuer]: data.authorization_endpoint}))\n                })\n                .catch(() => {})\n        })\n    }, [providers])\n    useEffect(() => {\n        if (wsState.state != \"open\") return\n        if (kerutaState.state != \"connected\") return;\n        if (kerutaState.auth.state != \"authenticated\") return;\n        const msg: ServerProviderListMsg = {\n            type: \"provider_list\"\n        }\n        wsState.websocket.send(JSON.stringify(msg))\n    }, [wsState.state, kerutaState.state == \"connected\" && kerutaState.auth.state]);\n    const handleDelete = (id: string) => {\n        if (!confirm(\"このプロバイダーを削除しますか？\")) return\n        if (wsState.state != \"open\") return\n        const msg: ServerProviderDeleteMsg = {\n            type: \"provider_delete\",\n            id,\n        }\n        wsState.websocket.send(JSON.stringify(msg))\n    }\n\n    return (\n        <div className=\"max-w-6xl mx-auto p-6\">\n            <div className=\"flex justify-between items-center mb-8\">\n                <h1 className=\"text-3xl font-bold\">プロバイダー一覧</h1>\n                <Link\n                    to=\"/provider/add\"\n                    className=\"px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors\"\n                >\n                    プロバイダーを追加\n                </Link>\n            </div>\n            <div className=\"bg-white rounded-lg shadow\">\n                <table className=\"w-full\">\n                    <thead className=\"bg-gray-50 border-b\">\n                        <tr>\n                            <th className=\"px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider\">ID</th>\n                            <th className=\"px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider\">名前</th>\n                            <th className=\"px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider\">Issuer</th>\n                            <th className=\"px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider\">Audience</th>\n                            <th className=\"px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider\">IDP</th>\n                            <th className=\"px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider\">操作</th>\n                        </tr>\n                    </thead>\n                    <tbody className=\"bg-white divide-y divide-gray-200\">\n                        {providers?.map(p => (\n                            <tr key={p.id} className=\"hover:bg-gray-50\">\n                                <td className=\"px-6 py-4 whitespace-nowrap text-sm text-gray-900\">{p.id}</td>\n                                <td className=\"px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900\">{p.name}</td>\n                                <td className=\"px-6 py-4 whitespace-nowrap text-sm text-gray-500\">{p.issuer}</td>\n                                <td className=\"px-6 py-4 whitespace-nowrap text-sm text-gray-500\">{p.audience}</td>\n                                <td className=\"px-6 py-4 text-sm text-gray-500\">\n                                    {p.idps.length === 0 ? (\n                                        <span className=\"text-gray-400\">なし</span>\n                                    ) : (\n                                        <ul className=\"space-y-1\">\n                                            {p.idps.map((idp, i) => (\n                                                <li key={i} className=\"text-xs\">\n                                                    <a\n                                                        href={authEndpoints[idp.issuer]\n                                                            ? buildOidcLoginUrl(authEndpoints[idp.issuer], idp.audience)\n                                                            : idp.issuer}\n                                                        target=\"_blank\"\n                                                        rel=\"noopener noreferrer\"\n                                                        className=\"text-blue-600 hover:underline font-medium\"\n                                                    >\n                                                        {idp.issuer}\n                                                    </a>\n                                                </li>\n                                            ))}\n                                        </ul>\n                                    )}\n                                </td>\n                                <td className=\"px-6 py-4 whitespace-nowrap text-sm\">\n                                    <button\n                                        onClick={() => handleDelete(p.id)}\n                                        className=\"px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition-colors\"\n                                    >\n                                        削除\n                                    </button>\n                                </td>\n                            </tr>\n                        ))}\n                    </tbody>\n                </table>\n                {(!providers || providers.length === 0) && (\n                    <div className=\"text-center py-12 text-gray-500\">\n                        プロバイダーが登録されていません\n                    </div>\n                )}\n            </div>\n        </div>\n    )\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front/app/routes/providers.tsx b/ktcl-front/app/routes/providers.tsx
+--- a/ktcl-front/app/routes/providers.tsx	(revision b8662e2a014092783ca5b4067b46691899f2eb95)
++++ b/ktcl-front/app/routes/providers.tsx	(date 1771350288629)
+@@ -3,7 +3,7 @@
+ import { useWsState } from "../components/useServiceHooks";
+ import { useEffect, useState } from "react";
+ import { ClientProviderListMsg, ServerProviderDeleteMsg, ServerProviderListMsg } from "../msg/provider";
+-import { useKerutaTaskState } from "../components/KerutaTask";
++import { useKerutaTaskState } from "../components/AppContext";
+ import { Link } from "react-router";
+ 
+ type Provider = ClientProviderListMsg["providers"][0]
+Index: ktcl-front/app/components/provider/useProviderAddForm.ts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import { useCallback, useEffect, useState } from \"react\";\nimport { useKerutaTaskState } from \"../KerutaTask\";\nimport { useProviderService } from \"../DomainContext\";\nimport { buildProviderAuthUrlFromMsg } from \"./providerAuthUrl\";\nimport { validateProviderForm } from \"./providerValidation\";\nimport { Url } from \"../../utils/Url\";\nimport type { InputValue } from \"../form/FormTextInput\";\n\ntype FormState = \"inputting\" | \"fetching\" | \"submitting\" | \"redirecting\";\n\ntype KerutaJson = { login: string };\n\nexport interface ProviderAddFormState {\n  formState: FormState;\n  name: InputValue;\n  issuer: InputValue;\n  err: string | undefined;\n  isDisabled: boolean;\n  buttonLabel: string;\n  setName: (value: InputValue) => void;\n  setIssuer: (value: InputValue) => void;\n  handleSubmit: () => Promise<void>;\n}\n\nexport function useProviderAddForm(): ProviderAddFormState {\n  const kerutaState = useKerutaTaskState();\n  const providerService = useProviderService();\n  const [formState, setFormState] = useState<FormState>(\"inputting\");\n  const [name, setName] = useState<InputValue>({ value: \"\" });\n  const [issuer, setIssuer] = useState<InputValue>({ value: \"\" });\n  const [err, setErr] = useState<string>();\n  const [kerutaJson, setKerutaJson] = useState<KerutaJson | undefined>(undefined);\n\n  const handleTokenReceived = useCallback(\n    (token: string) => {\n      if (!kerutaJson) return;\n      const url = buildProviderAuthUrlFromMsg(kerutaJson.login, { type: \"provider_add_token_issued\", token });\n      setFormState(\"redirecting\");\n      window.location.href = url.toStrUrl();\n    },\n    [kerutaJson]\n  );\n\n  useEffect(() => {\n    return providerService.onTokenIssued(handleTokenReceived);\n  }, [providerService, handleTokenReceived]);\n\n  const handleSubmit = useCallback(async () => {\n    if (kerutaState.state !== \"connected\" || kerutaState.auth.state !== \"authenticated\") {\n      setErr(\"認証されていません\");\n      return;\n    }\n\n    const isValid = validateProviderForm({ name, setName, issuer, setIssuer });\n    if (!isValid) return;\n\n    setFormState(\"fetching\");\n    const issuerUrl = Url.parse(issuer.value.replace(/\\/$/, \"\"));\n    let json: KerutaJson;\n    try {\n      const res = await fetch(issuerUrl.plusPath(\".well-known/keruta.json\").toStrUrl());\n      json = await res.json();\n    } catch {\n      setErr(\"keruta.jsonの取得に失敗しました\");\n      setFormState(\"inputting\");\n      return;\n    }\n\n    setKerutaJson(json);\n    setFormState(\"submitting\");\n    providerService.addProvider({ name: name.value, issuer: issuerUrl.toStrUrl(), audience: \"keruta\" });\n  }, [kerutaState, name, issuer, providerService]);\n\n  const isDisabled = formState !== \"inputting\";\n  const buttonLabel =\n    formState === \"redirecting\"\n      ? \"リダイレクト中...\"\n      : formState === \"fetching\" || formState === \"submitting\"\n        ? \"処理中...\"\n        : \"追加\";\n\n  return {\n    formState,\n    name,\n    issuer,\n    err,\n    isDisabled,\n    buttonLabel,\n    setName,\n    setIssuer,\n    handleSubmit,\n  };\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front/app/components/provider/useProviderAddForm.ts b/ktcl-front/app/components/provider/useProviderAddForm.ts
+--- a/ktcl-front/app/components/provider/useProviderAddForm.ts	(revision b8662e2a014092783ca5b4067b46691899f2eb95)
++++ b/ktcl-front/app/components/provider/useProviderAddForm.ts	(date 1771350288663)
+@@ -1,6 +1,5 @@
+ import { useCallback, useEffect, useState } from "react";
+-import { useKerutaTaskState } from "../KerutaTask";
+-import { useProviderService } from "../DomainContext";
++import { useKerutaTaskState, useProviderService } from "../AppContext";
+ import { buildProviderAuthUrlFromMsg } from "./providerAuthUrl";
+ import { validateProviderForm } from "./providerValidation";
+ import { Url } from "../../utils/Url";
+Index: ktcl-front/app/components/websocket/WsStatus.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import {useKerutaTaskState} from \"../KerutaTask\";\n\nexport default function WsStatus(\n    {}: {},\n) {\n    const keruta = useKerutaTaskState()\n    const isConnected = keruta.state == \"connected\"\n    return (\n        <div style={{\n            padding: '10px',\n            backgroundColor: isConnected ? '#d4edda' : '#f8d7da',\n            color: isConnected ? '#155724' : '#721c24',\n            borderRadius: '4px',\n        }}>\n            Status: {isConnected ? 'Connected' : 'Disconnected'}\n        </div>\n    )\n}\n\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front/app/components/websocket/WsStatus.tsx b/ktcl-front/app/components/websocket/WsStatus.tsx
+--- a/ktcl-front/app/components/websocket/WsStatus.tsx	(revision b8662e2a014092783ca5b4067b46691899f2eb95)
++++ b/ktcl-front/app/components/websocket/WsStatus.tsx	(date 1771350288707)
+@@ -1,4 +1,4 @@
+-import {useKerutaTaskState} from "../KerutaTask";
++import {useKerutaTaskState} from "../AppContext";
+ 
+ export default function WsStatus(
+     {}: {},
+Index: ktcl-front/app/components/sidebar/SidebarQueueButtons.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import { Link } from \"react-router-dom\";\nimport { useWsState } from \"../useServiceHooks\";\nimport { useKerutaTaskState } from \"../KerutaTask\";\nimport useWsReceive from \"../websocket/useWsReceive\";\nimport { ClientQueueListedMsg, ServerQueueListMsg } from \"../../msg/queue\";\nimport { useEffect, useState } from \"react\";\n\ntype Queue = ClientQueueListedMsg[\"queues\"][0]\nexport default function SidebarQueueButtons(\n    {}: {},\n) {\n    const [queues, setQueues] = useState<Queue[]>([])\n    const wsState = useWsState()\n    const keruta = useKerutaTaskState()\n    useWsReceive(wsState, msg => {\n        if (msg.type != \"queue_listed\") return\n        setQueues(msg.queues)\n    }, [])\n    useEffect(() => {\n        if (wsState.state != \"open\") return\n        if (keruta.state != \"connected\") return;\n        if (keruta.auth.state != \"authenticated\") return;\n        const msg: ServerQueueListMsg = {\n            type: \"queue_list\",\n        }\n        wsState.websocket.send(JSON.stringify(msg))\n    }, [wsState, keruta.state == \"connected\" && keruta.auth.state]);\n    return queues.map(value =>\n        <li key={value.id}>\n            <Link\n                to={`/queue/${value.id}`}\n                className=\"sidebar-link block px-4 py-2 rounded transition-colors\"\n                style={{color: '#0a58ca'}}\n            >\n                {value.name}\n            </Link>\n        </li>\n    )\n}\n\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front/app/components/sidebar/SidebarQueueButtons.tsx b/ktcl-front/app/components/sidebar/SidebarQueueButtons.tsx
+--- a/ktcl-front/app/components/sidebar/SidebarQueueButtons.tsx	(revision b8662e2a014092783ca5b4067b46691899f2eb95)
++++ b/ktcl-front/app/components/sidebar/SidebarQueueButtons.tsx	(date 1771350288747)
+@@ -1,6 +1,6 @@
+ import { Link } from "react-router-dom";
+ import { useWsState } from "../useServiceHooks";
+-import { useKerutaTaskState } from "../KerutaTask";
++import { useKerutaTaskState } from "../AppContext";
+ import useWsReceive from "../websocket/useWsReceive";
+ import { ClientQueueListedMsg, ServerQueueListMsg } from "../../msg/queue";
+ import { useEffect, useState } from "react";
+Index: ktcl-front/app/components/task/QueueTaskList.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import { useState } from \"react\";\nimport { useTaskService } from \"../DomainContext\";\nimport { Task } from \"./types\";\nimport { TaskListHeader } from \"./TaskListHeader\";\nimport { TaskListTable } from \"./TaskListTable\";\n\ninterface QueueTaskListProps {\n  tasks: Task[];\n  queues: { id: number; name: string }[];\n  currentQueueId: number;\n}\n\nexport function QueueTaskList({ tasks, queues, currentQueueId }: QueueTaskListProps) {\n  const taskService = useTaskService();\n  const [showCompleted, setShowCompleted] = useState(false);\n\n  const filteredTasks = showCompleted ? tasks : tasks.filter((task) => task.status === \"pending\");\n\n  const handleCompleteTask = (taskId: number) => {\n    taskService.updateTask({ taskId, status: \"completed\" });\n  };\n\n  const handleMoveTask = (taskId: number, targetQueueId: number) => {\n    taskService.moveTask({ taskId, targetQueueId });\n  };\n\n  return (\n    <div className=\"bg-white rounded-lg shadow overflow-hidden\">\n      <TaskListHeader showCompleted={showCompleted} onToggleShowCompleted={setShowCompleted} />\n      <TaskListTable\n        tasks={filteredTasks}\n        queues={queues}\n        currentQueueId={currentQueueId}\n        showCompleted={showCompleted}\n        onCompleteTask={handleCompleteTask}\n        onMoveTask={handleMoveTask}\n      />\n    </div>\n  );\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front/app/components/task/QueueTaskList.tsx b/ktcl-front/app/components/task/QueueTaskList.tsx
+--- a/ktcl-front/app/components/task/QueueTaskList.tsx	(revision b8662e2a014092783ca5b4067b46691899f2eb95)
++++ b/ktcl-front/app/components/task/QueueTaskList.tsx	(date 1771350288780)
+@@ -1,5 +1,5 @@
+ import { useState } from "react";
+-import { useTaskService } from "../DomainContext";
++import { useTaskService } from "../AppContext";
+ import { Task } from "./types";
+ import { TaskListHeader } from "./TaskListHeader";
+ import { TaskListTable } from "./TaskListTable";

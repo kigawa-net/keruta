@@ -1,5 +1,11 @@
-import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from "react";
-import { TaskService, QueueService, ProviderService } from "../services";
+import { createContext, ReactNode, useContext, useMemo } from "react";
+import {
+  TaskService,
+  QueueService,
+  ProviderService,
+  useConnectionStateService,
+  useMessageRouterService,
+} from "../services";
 import {
   useWsState,
   useTaskMessageService,
@@ -7,7 +13,7 @@ import {
   useProviderMessageService,
 } from "./useServiceHooks";
 import WsSender from "./websocket/WsSender";
-import type { WsState } from "./useWebSocketConnection";
+import type { KerutaTaskState } from "../services";
 
 interface AppState {
   kerutaState: KerutaTaskState;
@@ -19,7 +25,6 @@ interface AppState {
 const AppContext = createContext<AppState | null>(null);
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [kerutaState, setKerutaState] = useState<KerutaTaskState>({ state: "unloaded" });
   const wsState = useWsState();
   const taskMsgService = useTaskMessageService();
   const queueMsgService = useQueueMessageService();
@@ -35,32 +40,17 @@ export function AppProvider({ children }: { children: ReactNode }) {
     [taskMsgService, queueMsgService, providerMsgService]
   );
 
-  // KerutaTaskState management
-  useEffect(() => {
-    if (wsState.state === "open" && kerutaState.state !== "connected") {
-      setKerutaState({ state: "connected", auth: { state: "unauthenticated" } });
-    } else if (wsState.state === "closed") {
-      setKerutaState({ state: "disconnected" });
-    } else if (wsState.state !== "open" && kerutaState.state === "connected") {
-      setKerutaState({ state: "unloaded" });
-    }
-  }, [wsState.state, kerutaState.state]);
+  // Connection state management
+  const kerutaState = useConnectionStateService(wsState);
 
-  // Message handling - route messages to domain services
-  useEffect(() => {
-    if (wsState.state !== "open" || kerutaState.state !== "connected") return;
-    const ws = wsState.websocket;
-
-    const handler = (event: MessageEvent) => {
-      const msg = JSON.parse(event.data);
-      services.taskService.handleMessage(msg);
-      services.queueService.handleMessage(msg);
-      services.providerService.handleMessage(msg);
-    };
-
-    ws.addEventListener("message", handler);
-    return () => ws.removeEventListener("message", handler);
-  }, [wsState, kerutaState.state, services]);
+  // Message routing
+  useMessageRouterService({
+    wsState,
+    kerutaState,
+    taskService: services.taskService,
+    queueService: services.queueService,
+    providerService: services.providerService,
+  });
 
   const appState: AppState = {
     kerutaState,
@@ -99,14 +89,5 @@ export function useProviderService(): ProviderService {
   return useAppState().providerService;
 }
 
-export type KerutaTaskState =
-  | { state: "unloaded" }
-  | ConnectedKerutaTaskState
-  | { state: "disconnected" };
-
-export interface ConnectedKerutaTaskState {
-  state: "connected";
-  auth: AuthState;
-}
-
-export type AuthState = { state: "unauthenticated" } | { state: "authenticated" };
+// Re-export types for convenience
+export type { KerutaTaskState, ConnectedKerutaTaskState, AuthState } from "../services";
