@@ -20,6 +20,7 @@ export class AuthMessageService {
   constructor(private wsService: WebSocketService) {}
 
   sendAuthRequest(userToken: string, serverToken: string): void {
+    if (!this.wsService.isConnected()) return;
     const msg: ServerAuthRequestMsg = {
       type: "auth_request",
       userToken,
@@ -43,8 +44,8 @@ export class TaskMessageService {
     this.wsService.send(msg);
   }
 
-  showTask(taskId: number): void {
-    const msg: ServerTaskShowMsg = { type: "task_show", taskId };
+  showTask(): void {
+    const msg: ServerTaskShowMsg = { type: "task_show" };
     this.wsService.send(msg);
   }
 
