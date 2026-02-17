@@ -26,10 +26,16 @@ function useAuth(wsState: WsState, kc: KeycloakState, kerutaState: KerutaTaskSta
     if (!shouldAuth) return;
 
     const doAuth = async () => {
-      const userToken = await kc.getToken();
-      const result = await tokenApiService.getServerToken(userToken);
-      if (result.success) {
-        authMsgService.sendAuthRequest(userToken, result.data.token);
+      // Re-check WebSocket state before sending
+      if (wsState.state !== "open") return;
+      try {
+        const userToken = await kc.getToken();
+        const result = await tokenApiService.getServerToken(userToken);
+        if (result.success) {
+          authMsgService.sendAuthRequest(userToken, result.data.token);
+        }
+      } catch (e) {
+        console.warn("Auth request failed:", e);
       }
     };
 
