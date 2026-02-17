@@ -1,10 +1,10 @@
 import { createContext, ReactNode, useContext, useMemo } from "react";
-import { TaskService, QueueService, ProviderService } from "../../services/domain";
+import { TaskService, QueueService, ProviderService } from "../services";
 import {
   useTaskMessageService,
   useQueueMessageService,
   useProviderMessageService,
-} from "../ServiceContext";
+} from "./ServiceContext";
 
 interface DomainServices {
   taskService: TaskService;
