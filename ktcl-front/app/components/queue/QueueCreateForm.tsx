@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import FormErrMsg from "../form/FormErrMsg";
 import { useNavigate } from "react-router-dom";
 import FormProviderInput from "../form/FormProviderInput";
-import { useQueueService } from "../DomainContext";
+import { useQueueService } from "../AppContext";
 
 export function QueueCreateForm() {
   const [formState, setFormState] = useState<"inputting" | "submitting">("inputting");

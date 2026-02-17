@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useWsState } from "../useServiceHooks";
-import { useKerutaTaskState } from "../KerutaTask";
+import { useKerutaTaskState } from "../AppContext";
 import useWsReceive from "../websocket/useWsReceive";
 import { ClientQueueListedMsg, ServerQueueListMsg } from "../../msg/queue";
 import { useEffect, useState } from "react";

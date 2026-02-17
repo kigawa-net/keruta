@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useKerutaTaskState } from "../KerutaTask";
-import { useProviderService } from "../DomainContext";
+import { useKerutaTaskState, useProviderService } from "../AppContext";
 import { buildProviderAuthUrlFromMsg } from "./providerAuthUrl";
 import { validateProviderForm } from "./providerValidation";
 import { Url } from "../../utils/Url";

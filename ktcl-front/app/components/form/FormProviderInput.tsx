@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import {ClientProviderListMsg, ServerProviderListMsg} from "../../msg/provider";
 import useWsReceive from "../websocket/useWsReceive";
 
-import {useKerutaTaskState} from "../KerutaTask";
+import {useKerutaTaskState} from "../AppContext";
 import {useWsState} from "../useServiceHooks";
 
 

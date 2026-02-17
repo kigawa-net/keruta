@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { useWsState, useAuthMessageService, useTokenApiService } from "../useServiceHooks";
-import { KerutaTaskState, useKerutaTaskState } from "../KerutaTask";
+import { useKerutaTaskState } from "../AppContext";
 import { KeycloakState, useKeycloakState } from "../Keycloak";
 import type { WsState } from "../useWebSocketConnection";
+import type { KerutaTaskState } from "../AppContext";
 
 export default function WsSender() {
   const wsState = useWsState();

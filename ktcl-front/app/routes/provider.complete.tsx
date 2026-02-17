@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useWsState } from "../components/useServiceHooks";
 import useWsReceive from "../components/websocket/useWsReceive";
 import { ServerProviderCompleteMsg } from "../msg/provider";
-import { useKerutaTaskState } from "../components/KerutaTask";
+import { useKerutaTaskState } from "../components/AppContext";
 
 type Status = "processing" | "success" | "error"
 
