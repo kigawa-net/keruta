@@ -4,7 +4,7 @@ import net.kigawa.keruta.ktcp.model.KtcpClientEntrypoints
 import net.kigawa.keruta.ktcp.model.KtcpServerEntrypoints
 import net.kigawa.keruta.ktcp.server.auth.ReceiveAuthRequestEntrypoint
 import net.kigawa.keruta.ktcp.server.auth.success.SendAuthSuccessEntrypoint
-import net.kigawa.keruta.ktcp.model.provider.add.ServerProviderAddEntrypoint
+import net.kigawa.keruta.ktcp.model.provider.add.ServerProviderRegisterTokenEntrypoint
 import net.kigawa.keruta.ktcp.model.provider.complete.ServerProviderCompleteEntrypoint
 import net.kigawa.keruta.ktcp.model.provider.delete.ServerProviderDeleteEntrypoint
 import net.kigawa.keruta.ktcp.server.provider.ReceiveProviderListEntrypoint
@@ -25,7 +25,7 @@ import net.kigawa.keruta.ktcp.server.task.SendTaskShowedEntrypoint
 import net.kigawa.keruta.ktcp.server.task.SendTaskUpdatedEntrypoint
 
 class KtcpServer(
-    providerAddEntrypoint: ServerProviderAddEntrypoint<ServerCtx>,
+    providerRegisterTokenEntrypoint: ServerProviderRegisterTokenEntrypoint<ServerCtx>,
     providerCompleteEntrypoint: ServerProviderCompleteEntrypoint<ServerCtx>,
     providerDeleteEntrypoint: ServerProviderDeleteEntrypoint<ServerCtx>,
 ) {
@@ -36,7 +36,7 @@ class KtcpServer(
         ReceiveTaskUpdateEntrypoint(),
         ReceiveTaskMoveEntrypoint(),
         ReceiveProviderListEntrypoint(),
-        providerAddEntrypoint,
+        providerRegisterTokenEntrypoint,
         providerCompleteEntrypoint,
         providerDeleteEntrypoint,
         ReceiveQueueCreateEntrypoint(),

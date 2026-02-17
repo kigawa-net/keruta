@@ -28,7 +28,7 @@ import net.kigawa.keruta.ktse.persist.ProviderAddHandler
 import net.kigawa.keruta.ktse.persist.ProviderCompleteHandler
 import net.kigawa.keruta.ktse.persist.ProviderDeleteHandler
 import net.kigawa.keruta.ktse.persist.db.DbPersister
-import net.kigawa.keruta.ktse.websocket.entrypoint.ReceiveProviderAddEntrypoint
+import net.kigawa.keruta.ktse.websocket.entrypoint.ReceiveProviderRegisterTokenEntrypoint
 import net.kigawa.keruta.ktse.websocket.entrypoint.ReceiveProviderCompleteEntrypoint
 import net.kigawa.keruta.ktse.websocket.entrypoint.ReceiveProviderDeleteEntrypoint
 import net.kigawa.keruta.ktse.zookeeper.ZkPersister
@@ -55,7 +55,7 @@ class KtorWebsocketModule(application: Application, server: KerutaTaskServer) {
     val providerCompleteHandler = ProviderCompleteHandler(dbPersister, kerutaJsonProvider, httpClient)
     val providerDeleteHandler = ProviderDeleteHandler(dbPersister)
     val ktcpServer = KtcpServer(
-        ReceiveProviderAddEntrypoint(providerAddHandler),
+        ReceiveProviderRegisterTokenEntrypoint(providerAddHandler),
         ReceiveProviderCompleteEntrypoint(providerCompleteHandler),
         ReceiveProviderDeleteEntrypoint(providerDeleteHandler),
     )
