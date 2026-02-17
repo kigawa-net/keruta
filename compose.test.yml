@@ -109,6 +109,8 @@ services:
       dockerfile: Dockerfile_test
     command: ./gradlew test
     depends_on:
+      rsync:
+        condition: service_completed_successfully
       mysql:
         condition: service_healthy
     volumes:
