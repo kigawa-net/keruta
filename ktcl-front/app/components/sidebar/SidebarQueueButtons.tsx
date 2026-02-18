@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { useWsState } from "../useServiceHooks";
-import { useKerutaTaskState } from "../AppContext";
-import useWsReceive from "../websocket/useWsReceive";
-import { ClientQueueListedMsg, ServerQueueListMsg } from "../../msg/queue";
+import { useWsState } from "../service/useServiceHooks";
+import { useKerutaTaskState } from "../app/AppContext";
+import useWsReceive from "../net/websocket/useWsReceive";
+import { ClientQueueListedMsg, ServerQueueListMsg } from "../msg/queue";
 import { useEffect, useState } from "react";
 
 type Queue = ClientQueueListedMsg["queues"][0]

@@ -1,6 +1,6 @@
-import { useCallback, useMemo, useState } from "react";
-import type { WsState } from "../components/useWebSocketConnection";
-import type { AuthState, KerutaTaskState } from "./ConnectionStateTypes";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import type { WsState } from "./useWebSocketConnection";
+import type { AuthState, KerutaTaskState } from "../ConnectionStateTypes";
 
 /**
  * WebSocket接続状態からKerutaTaskStateを管理するフック
@@ -11,7 +11,15 @@ export function useConnectionStateService(wsState: WsState): {
 } {
   const [internalAuthState, setInternalAuthState] = useState<AuthState>({ state: "unauthenticated" });
 
-  // wsStateに基づいて認証状態をリセット
+  // WebSocketが再接続された場合、認証状態をリセット
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => {
+    if (wsState.state === "open") {
+      setInternalAuthState({ state: "unauthenticated" });
+    }
+  }, [wsState.state]);
+
+  // wsStateに基づいて認証状態を計算
   // WebSocketがopenでない場合は常にunauthenticated
   const authState: AuthState = useMemo(() => {
     if (wsState.state !== "open") {

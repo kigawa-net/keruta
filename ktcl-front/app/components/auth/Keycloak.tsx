@@ -8,7 +8,7 @@ import {
     useState
 } from "react";
 import Keycloak from "keycloak-js";
-import {keycloak} from "../keycloak";
+import {keycloak} from "../../keycloak";
 
 
 const Context = createContext<KeycloakState>({

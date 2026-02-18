@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { AppContext } from "../AppContext";
-import type { AppState, KerutaTaskState } from "../AppContext";
+import { AppContext } from "./AppContext";
+import type { AppState, KerutaTaskState } from "./AppContext";
 
 /**
  * AppContext から状態を取得するベースフック

@@ -1,14 +1,14 @@
 import { Outlet } from "react-router";
 import { useLocation } from "react-router-dom";
-import AuthButton from "../components/AuthButton";
+import AuthButton from "../components/auth/AuthButton";
 import { useEffect, useState } from "react";
-import { KeycloakProvider } from "../components/Keycloak";
-import { UserProfileProvider } from "../components/UserProfile";
-import WsStatus from "../components/websocket/WsStatus";
+import { KeycloakProvider } from "../components/auth/Keycloak";
+import { UserProfileProvider } from "../components/user/UserProfile";
+import WsStatus from "../components/net/websocket/WsStatus";
 import Sidebar from "../components/sidebar/Sidebar";
 import Config from "../Config";
-import { ServiceProvider } from "../components/ServiceContext";
-import { AppProvider } from "../components/AppContext";
+import { ServiceProvider } from "../components/service/ServiceContext";
+import { AppProvider } from "../components/app/AppContext";
 
 // noinspection JSUnusedGlobalSymbols
 export default function Layout() {

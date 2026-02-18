@@ -5,15 +5,15 @@ import {
   ProviderService,
   useConnectionStateService,
   useMessageRouterService,
-} from "../services";
+} from "../../services";
 import {
   useWsState,
   useTaskMessageService,
   useQueueMessageService,
   useProviderMessageService,
-} from "./useServiceHooks";
-import WsSender from "./websocket/WsSender";
-import type { KerutaTaskState } from "../services";
+} from "../service/useServiceHooks";
+import WsSender from "../net/websocket/WsSender";
+import type { KerutaTaskState } from "../../services";
 
 export interface AppState {
   kerutaState: KerutaTaskState;
@@ -74,7 +74,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 }
 
 // Re-export hooks from hooks/index.ts for backward compatibility
-export { useAppState, useKerutaTaskState, useTaskService, useQueueService, useProviderService } from "./hooks";
+export { useAppState, useKerutaTaskState, useTaskService, useQueueService, useProviderService } from "../hooks";
 
 // Re-export types for convenience
-export type { KerutaTaskState, ConnectedKerutaTaskState, AuthState } from "../services/ConnectionStateTypes";
+export type { KerutaTaskState, ConnectedKerutaTaskState, AuthState } from "../net/ConnectionStateTypes";

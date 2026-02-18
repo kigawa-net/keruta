@@ -1,10 +1,10 @@
 // noinspection JSUnusedGlobalSymbols
 import { useNavigate, useSearchParams } from "react-router";
 import { useEffect, useState } from "react";
-import { useWsState } from "../components/useServiceHooks";
-import useWsReceive from "../components/websocket/useWsReceive";
-import { ServerProviderCompleteMsg } from "../msg/provider";
-import { useKerutaTaskState } from "../components/AppContext";
+import { useWsState } from "../components/service/useServiceHooks";
+import useWsReceive from "../components/net/websocket/useWsReceive";
+import { ServerProviderCompleteMsg } from "../components/msg/provider";
+import { useKerutaTaskState } from "../components/app/AppContext";
 
 type Status = "processing" | "success" | "error"
 

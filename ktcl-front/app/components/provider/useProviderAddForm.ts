@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import { useKerutaTaskState, useProviderService } from "../AppContext";
+import { useKerutaTaskState, useProviderService } from "../app/AppContext";
 import { buildProviderAuthUrlFromMsg } from "./providerAuthUrl";
 import { validateProviderForm } from "./providerValidation";
-import { Url } from "../../utils/Url";
+import { Url } from "../net/Url";
 import type { InputValue } from "../form/FormTextInput";
 
 type FormState = "inputting" | "fetching" | "submitting" | "redirecting";

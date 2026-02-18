@@ -1,5 +1,5 @@
-import { Url } from "../../utils/Url";
-import { ClientProviderAddTokenMsg } from "../../msg/provider";
+import { Url } from "../net/Url";
+import { ClientProviderAddTokenMsg } from "../msg/provider";
 
 interface ProviderAuthUrlParams {
   login: string;

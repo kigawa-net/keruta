@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { TaskService, QueueService, ProviderService } from "./domain";
-import { KerutaTaskState } from "./ConnectionStateTypes";
+import { TaskService, QueueService, ProviderService } from "../domain";
+import { KerutaTaskState } from "../net/ConnectionStateTypes";
 import { createMessageHandler } from "./MessageRouterService";
-import type { WsState } from "../components/useWebSocketConnection";
+import type { WsState } from "../net/websocket/useWebSocketConnection";
 
 export interface UseMessageRouterServiceParams {
   wsState: WsState;

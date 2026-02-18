@@ -1,6 +1,6 @@
-import { QueueMessageService } from "../api/MessageServices";
-import { ReceiveMsg } from "../../msg/msg";
-import { ClientQueueCreatedMsg, ClientQueueListedMsg } from "../../msg/queue";
+import { QueueMessageService } from "../api";
+import { ReceiveMsg } from "../msg/msg";
+import { ClientQueueCreatedMsg, ClientQueueListedMsg } from "../msg/queue";
 import { Queue, CreateQueueInput } from "./QueueTypes";
 import { validateQueueName } from "./QueueUtils";
 

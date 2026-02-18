@@ -60,6 +60,32 @@ services:
       - |
         set -ue
         npm install
+        npm run test
+    working_dir: /app/ktcl-front
+    depends_on:
+      rsync:
+        condition: service_completed_successfully
+    environment:
+      - VITE_WEBSOCKET_URL=ws://localhost:8080/ws/ktcp
+      - VITE_KEYCLOAK_URL=https://user.kigawa.net/
+      - VITE_KEYCLOAK_REALM=develop
+      - VITE_KEYCLOAK_CLIENT_ID=keruta
+    volumes:
+      - type: bind
+        source: ./cache/app/ktcl-front
+        target: /app/ktcl-front
+      - type: bind
+        source: ./cache/npm
+        target: /root/.npm
+
+  ktcl-front-build:
+    image: node
+    command:
+      - bash
+      - -c
+      - |
+        set -ue
+        npm install
         npm run build
     working_dir: /app/ktcl-front
     depends_on:
@@ -78,7 +104,7 @@ services:
         source: ./cache/npm
         target: /root/.npm
 
-  all-tests:
+  gradle-all-tests:
     build:
       context: .
       dockerfile: Dockerfile_test
@@ -103,7 +129,7 @@ services:
       - TEST_DB_JDBC_URL=jdbc:mysql://mysql:3306/keruta_test
       - TEST_DB_USERNAME=keruta
       - TEST_DB_PASSWORD=keruta
-  test:
+  gradle-test:
     build:
       context: .
       dockerfile: Dockerfile_test
@@ -129,3 +155,14 @@ services:
       - TEST_DB_USERNAME=keruta
       - TEST_DB_PASSWORD=keruta
 
+  test:
+    image: busybox
+    depends_on:
+      gradle-all-tests:
+        condition: service_completed_successfully
+      ktcl-front-test:
+        condition: service_completed_successfully
+      gradle-test:
+        condition: service_completed_successfully
+      ktcl-front-build:
+        condition: service_completed_successfully

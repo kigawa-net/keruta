@@ -1,9 +1,9 @@
 // noinspection JSUnusedGlobalSymbols
-import useWsReceive from "../components/websocket/useWsReceive";
-import { useWsState } from "../components/useServiceHooks";
+import useWsReceive from "../components/net/websocket/useWsReceive";
+import { useWsState } from "../components/service/useServiceHooks";
 import { useEffect, useState } from "react";
-import { ClientProviderListMsg, ServerProviderDeleteMsg, ServerProviderListMsg } from "../msg/provider";
-import { useKerutaTaskState } from "../components/AppContext";
+import { ClientProviderListMsg, ServerProviderDeleteMsg, ServerProviderListMsg } from "../components/msg/provider";
+import { useKerutaTaskState } from "../components/app/AppContext";
 import { Link } from "react-router";
 
 type Provider = ClientProviderListMsg["providers"][0]

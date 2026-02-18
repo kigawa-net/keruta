@@ -7,8 +7,8 @@ import {
   TaskMessageService,
   TokenApiService,
   WebSocketService,
-} from "../services";
-import { useWebSocketConnection, WsState } from "./useWebSocketConnection";
+} from "../api";
+import { useWebSocketConnection, WsState } from "../net/websocket/useWebSocketConnection";
 
 interface Services {
   wsService: WebSocketService;
@@ -69,5 +69,5 @@ export function ServiceProvider({
   );
 }
 
-export type { WsState, WebsocketOpenState } from "./useWebSocketConnection";
+export type { WsState, WebsocketOpenState } from "../net/websocket/useWebSocketConnection";
 

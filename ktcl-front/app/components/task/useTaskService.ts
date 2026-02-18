@@ -1,5 +1,5 @@
-import { useAppState } from "./useAppState";
-import type { TaskService } from "../../services";
+import { useAppState } from "../app/useAppState";
+import type { TaskService } from "../domain";
 
 /**
  * TaskService を取得するフック

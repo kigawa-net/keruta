@@ -1,5 +1,6 @@
-import {useKeycloakState} from "./Keycloak.tsx";
-import {useUserProfileState} from "./UserProfile.tsx";
+import {useKeycloakState} from "./Keycloak";
+import {useUserProfileState} from "../user/UserProfile";
+
 
 const AuthButton = () => {
     const kcState = useKeycloakState()
