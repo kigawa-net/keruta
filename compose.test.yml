@@ -133,8 +133,6 @@ services:
   test:
     image: busybox
     depends_on:
-      gradle-all-tests:
-        condition: service_completed_successfully
       ktcl-front-test:
         condition: service_completed_successfully
       gradle-test:
