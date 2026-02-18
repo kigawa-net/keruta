@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useMemo } from "react";
+import { createContext, ReactNode, useCallback, useMemo } from "react";
 import {
   TaskService,
   QueueService,
@@ -41,7 +41,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
 
   // Connection state management
-  const kerutaState = useConnectionStateService(wsState);
+  const { kerutaState, setAuthState } = useConnectionStateService(wsState);
+
+  // Auth success callback
+  const onAuthSuccess = useCallback(() => {
+    setAuthState({ state: "authenticated" });
+  }, [setAuthState]);
 
   // Message routing
   useMessageRouterService({
@@ -50,6 +55,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     taskService: services.taskService,
     queueService: services.queueService,
     providerService: services.providerService,
+    onAuthSuccess,
   });
 
   const appState: AppState = {

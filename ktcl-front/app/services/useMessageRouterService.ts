@@ -10,6 +10,7 @@ export interface UseMessageRouterServiceParams {
   taskService: TaskService;
   queueService: QueueService;
   providerService: ProviderService;
+  onAuthSuccess: () => void;
 }
 
 /**
@@ -17,7 +18,7 @@ export interface UseMessageRouterServiceParams {
  * WebSocketがopenかつconnected状態の時のみメッセージを処理する
  */
 export function useMessageRouterService(params: UseMessageRouterServiceParams): void {
-  const { wsState, kerutaState, taskService, queueService, providerService } = params;
+  const { wsState, kerutaState, taskService, queueService, providerService, onAuthSuccess } = params;
 
   useEffect(() => {
     if (wsState.state !== "open" || kerutaState.state !== "connected") return;
@@ -28,9 +29,10 @@ export function useMessageRouterService(params: UseMessageRouterServiceParams): 
       taskService,
       queueService,
       providerService,
+      onAuthSuccess,
     });
 
     ws.addEventListener("message", handler);
     return () => ws.removeEventListener("message", handler);
-  }, [wsState.state, wsState, kerutaState.state, taskService, queueService, providerService]);
+  }, [wsState.state, wsState, kerutaState.state, taskService, queueService, providerService, onAuthSuccess]);
 }
