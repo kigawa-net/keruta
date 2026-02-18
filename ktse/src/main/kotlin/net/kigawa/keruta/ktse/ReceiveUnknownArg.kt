@@ -1,12 +1,16 @@
 package net.kigawa.keruta.ktse
 
 import io.ktor.websocket.*
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestMsg
 import net.kigawa.keruta.ktcp.model.err.GenericErrMsg
+import net.kigawa.keruta.ktcp.model.err.IllegalFormatDeserializeErr
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
 import net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownArg
-import net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownMsg
 import net.kigawa.keruta.ktcp.model.provider.add.ServerProviderAddMsg
 import net.kigawa.keruta.ktcp.model.provider.complete.ServerProviderCompleteMsg
 import net.kigawa.keruta.ktcp.model.provider.delete.ServerProviderDeleteMsg
@@ -29,77 +33,77 @@ import net.kigawa.kodel.api.log.getKogger
 import net.kigawa.kodel.api.log.traceignore.debug
 
 class ReceiveUnknownArg(
-    val msg: ServerUnknownMsg,
+    val typeStr: String,
     val ctx: ServerCtx,
     val text: String,
 ): ServerUnknownArg {
     override fun tryToGenericError(): Res<GenericErrMsg, KtcpErr>? {
-        if (msg.type != ServerMsgType.GENERIC_ERROR) return null
+        if (typeStr != ServerMsgType.GENERIC_ERROR.str) return null
         return translate()
     }
 
     override fun tryToAuthenticate(): Res<ServerAuthRequestMsg, KtcpErr>? {
-        if (msg.type != ServerMsgType.AUTH_REQUEST) return null
+        if (typeStr != ServerMsgType.AUTH_REQUEST.str) return null
         return translate()
     }
 
     override fun tryToTaskCreate(): Res<ServerTaskCreateMsg, KtcpErr>? {
-        if (msg.type != ServerMsgType.TASK_CREATE) return null
+        if (typeStr != ServerMsgType.TASK_CREATE.str) return null
         return translate()
     }
 
     override fun tryToProvidersRequest(): Res<ServerProviderListMsg, KtcpErr>? {
-        if (msg.type != ServerMsgType.PROVIDER_LIST) return null
+        if (typeStr != ServerMsgType.PROVIDER_LIST.str) return null
         return translate()
     }
 
     override fun tryToProviderAdd(): Res<ServerProviderAddMsg, KtcpErr>? {
-        if (msg.type != ServerMsgType.PROVIDER_ADD) return null
+        if (typeStr != ServerMsgType.PROVIDER_ADD.str) return null
         return translate()
     }
 
     override fun tryToProviderComplete(): Res<ServerProviderCompleteMsg, KtcpErr>? {
-        if (msg.type != ServerMsgType.PROVIDER_COMPLETE) return null
+        if (typeStr != ServerMsgType.PROVIDER_COMPLETE.str) return null
         return translate()
     }
 
     override fun tryToProviderDelete(): Res<ServerProviderDeleteMsg, KtcpErr>? {
-        if (msg.type != ServerMsgType.PROVIDER_DELETE) return null
+        if (typeStr != ServerMsgType.PROVIDER_DELETE.str) return null
         return translate()
     }
 
     override fun tryToQueueCreate(): Res<ServerQueueCreateMsg, KtcpErr>? {
-        if (msg.type != ServerMsgType.QUEUE_CREATE) return null
+        if (typeStr != ServerMsgType.QUEUE_CREATE.str) return null
         return translate()
     }
 
     override fun tryToQueueList(): Res<ServerQueueListMsg, KtcpErr>? {
-        if (msg.type != ServerMsgType.QUEUE_LIST) return null
+        if (typeStr != ServerMsgType.QUEUE_LIST.str) return null
         return translate()
     }
 
     override fun tryToQueueShow(): Res<ServerQueueShowMsg, KtcpErr>? {
-        if (msg.type != ServerMsgType.QUEUE_SHOW) return null
+        if (typeStr != ServerMsgType.QUEUE_SHOW.str) return null
         return translate()
     }
 
     override fun tryToTaskList(): Res<ServerTaskListMsg, KtcpErr>? {
-        if (msg.type != ServerMsgType.TASK_LIST) return null
+        if (typeStr != ServerMsgType.TASK_LIST.str) return null
         return translate()
     }
 
     override fun tryToTaskShow(): Res<ServerTaskShowMsg, KtcpErr>? {
-        if (msg.type != ServerMsgType.TASK_SHOW) return null
+        if (typeStr != ServerMsgType.TASK_SHOW.str) return null
         return translate()
     }
 
     override fun tryToTaskUpdate(): Res<ServerTaskUpdateMsg, KtcpErr>? {
-        if (msg.type != ServerMsgType.TASK_UPDATE) return null
+        if (typeStr != ServerMsgType.TASK_UPDATE.str) return null
         return translate()
     }
 
     override fun tryToTaskMove(): Res<ServerTaskMoveMsg, KtcpErr>? {
-        if (msg.type != ServerMsgType.TASK_MOVE) return null
+        if (typeStr != ServerMsgType.TASK_MOVE.str) return null
         return translate()
     }
 
@@ -124,16 +128,17 @@ class ReceiveUnknownArg(
             if (frame !is Frame.Text) return Res.Err(InvalidTypeDecodeFrameErr("", null))
             val text = frame.readText()
             logger.debug("frameText: $text")
-            return when (
-                val msg = ctx.serializer.deserialize<ServerUnknownMsg>(text)
-            ) {
-                is Res.Err<*, KtcpErr> -> msg.mapErr { DeserializeDecodeFrameErr("", it) }
-                is Res.Ok<ServerUnknownMsg, *> -> Res.Ok(
-                    ReceiveUnknownArg(
-                        msg.value, ctx, text
-                    )
-                )
+            
+            // First, extract type field from JSON without full deserialization
+            val jsonElement = Json.parseToJsonElement(text)
+            val typeStr = (jsonElement as? JsonObject)?.get("type")?.jsonPrimitive?.content
+            
+            if (typeStr == null) {
+                return Res.Err(DeserializeDecodeFrameErr("", 
+                    IllegalFormatDeserializeErr("type field is required", SerializationException("type field is required"))))
             }
+            
+            return Res.Ok(ReceiveUnknownArg(typeStr, ctx, text))
         }
     }
 }
