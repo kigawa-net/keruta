@@ -1,6 +1,7 @@
 package net.kigawa.keruta.ktcl.k8s.k8s
 
 import kotlinx.coroutines.coroutineScope
+import net.kigawa.keruta.ktcl.k8s.auth.OidcTokenProvider
 import net.kigawa.keruta.ktcl.k8s.config.K8sConfig
 import net.kigawa.keruta.ktcl.k8s.connection.ConnectionContext
 import net.kigawa.keruta.ktcl.k8s.connection.ConnectionManager
@@ -12,6 +13,7 @@ import net.kigawa.keruta.ktcp.client.ClientCtx
 import net.kigawa.keruta.ktcp.client.KtcpClient
 import net.kigawa.keruta.ktcp.client.KtcpSession
 import net.kigawa.keruta.ktcp.model.KtcpClientEntrypoints
+import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestMsg
 import net.kigawa.keruta.ktcp.model.serialize.JsonKerutaSerializer
 import net.kigawa.keruta.ktcp.model.task.list.ServerTaskListMsg
 import net.kigawa.kodel.api.log.LoggerFactory
@@ -26,11 +28,17 @@ class KerutaK8sClient(
     suspend fun start() = coroutineScope {
         logger.info { "Starting Keruta K8s Client" }
 
+        // OIDCトークンを取得
+        val tokenProvider = OidcTokenProvider(OidcTokenProvider.fromEnvironment())
+        val (userToken, serverToken) = tokenProvider.getTokens()
+        logger.info { "Tokens obtained, proceeding with connection" }
+
         val (connection, ctx) = connectAndCreateSession()
 
         val taskExecutor = TaskExecutorFactory(config, ktcpClient).create()
         val clientEntrypoints = ClientEntrypointsFactory(ktcpClient, config, taskExecutor).create()
 
+        authenticate(ctx, userToken, serverToken)
         requestInitialTaskList(ctx)
         startMessageReceiver(connection, ctx, clientEntrypoints)
     }
@@ -41,6 +49,16 @@ class KerutaK8sClient(
         val session = KtcpSession(connection)
         val ctx = ClientCtx(serializer, session)
         return ConnectionContext(connection, ctx)
+    }
+
+    private suspend fun authenticate(ctx: ClientCtx, userToken: String, serverToken: String) {
+        logger.info { "Authenticating with server" }
+        val authMsg = ServerAuthRequestMsg(
+            userToken = userToken,
+            serverToken = serverToken,
+        )
+        ktcpClient.ktcpServerEntrypoints.authRequestEntrypoint.access(authMsg, ctx)?.execute()
+        logger.info { "Authentication request sent" }
     }
 
     private suspend fun requestInitialTaskList(ctx: ClientCtx) {

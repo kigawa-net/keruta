@@ -1,0 +1,342 @@
+Index: ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/k8s/KerutaK8sClient.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.k8s.k8s\n\nimport kotlinx.coroutines.coroutineScope\nimport net.kigawa.keruta.ktcl.k8s.config.K8sConfig\nimport net.kigawa.keruta.ktcl.k8s.connection.ConnectionContext\nimport net.kigawa.keruta.ktcl.k8s.connection.ConnectionManager\nimport net.kigawa.keruta.ktcl.k8s.connection.JvmWebSocketConnection\nimport net.kigawa.keruta.ktcl.k8s.entrypoint.ClientEntrypointsFactory\nimport net.kigawa.keruta.ktcl.k8s.task.TaskExecutorFactory\nimport net.kigawa.keruta.ktcl.k8s.task.TaskReceiver\nimport net.kigawa.keruta.ktcp.client.ClientCtx\nimport net.kigawa.keruta.ktcp.client.KtcpClient\nimport net.kigawa.keruta.ktcp.client.KtcpSession\nimport net.kigawa.keruta.ktcp.model.KtcpClientEntrypoints\nimport net.kigawa.keruta.ktcp.model.serialize.JsonKerutaSerializer\nimport net.kigawa.keruta.ktcp.model.task.list.ServerTaskListMsg\nimport net.kigawa.kodel.api.log.LoggerFactory\n\nclass KerutaK8sClient(\n    private val config: K8sConfig,\n) {\n    private val logger = LoggerFactory.get(\"KerutaK8sClient\")\n    private val serializer = JsonKerutaSerializer()\n    private val ktcpClient = KtcpClient()\n\n    suspend fun start() = coroutineScope {\n        logger.info { \"Starting Keruta K8s Client\" }\n\n        val (connection, ctx) = connectAndCreateSession()\n\n        val taskExecutor = TaskExecutorFactory(config, ktcpClient).create()\n        val clientEntrypoints = ClientEntrypointsFactory(ktcpClient, config, taskExecutor).create()\n\n        requestInitialTaskList(ctx)\n        startMessageReceiver(connection, ctx, clientEntrypoints)\n    }\n\n    private suspend fun connectAndCreateSession(): ConnectionContext {\n        val connectionManager = ConnectionManager(config)\n        val connection = connectionManager.connect()\n        val session = KtcpSession(connection)\n        val ctx = ClientCtx(serializer, session)\n        return ConnectionContext(connection, ctx)\n    }\n\n    private suspend fun requestInitialTaskList(ctx: ClientCtx) {\n        logger.info { \"Requesting task list for queue ${config.queueId}\" }\n        ktcpClient.ktcpServerEntrypoints.taskList.access(\n            ServerTaskListMsg(queueId = config.queueId),\n            ctx\n        )?.execute()\n    }\n\n    private suspend fun startMessageReceiver(\n        connection: JvmWebSocketConnection,\n        ctx: ClientCtx,\n        clientEntrypoints: KtcpClientEntrypoints<ClientCtx>,\n    ) {\n        val taskReceiver = TaskReceiver(connection, clientEntrypoints)\n        logger.info { \"Starting message receiver loop\" }\n        taskReceiver.startReceiving(ctx)\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/k8s/KerutaK8sClient.kt b/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/k8s/KerutaK8sClient.kt
+--- a/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/k8s/KerutaK8sClient.kt	(revision 15271b93e73edace128f1dddaa99f57355cd724e)
++++ b/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/k8s/KerutaK8sClient.kt	(date 1771391687011)
+@@ -1,6 +1,7 @@
+ package net.kigawa.keruta.ktcl.k8s.k8s
+ 
+ import kotlinx.coroutines.coroutineScope
++import net.kigawa.keruta.ktcl.k8s.auth.OidcTokenProvider
+ import net.kigawa.keruta.ktcl.k8s.config.K8sConfig
+ import net.kigawa.keruta.ktcl.k8s.connection.ConnectionContext
+ import net.kigawa.keruta.ktcl.k8s.connection.ConnectionManager
+@@ -12,6 +13,7 @@
+ import net.kigawa.keruta.ktcp.client.KtcpClient
+ import net.kigawa.keruta.ktcp.client.KtcpSession
+ import net.kigawa.keruta.ktcp.model.KtcpClientEntrypoints
++import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestMsg
+ import net.kigawa.keruta.ktcp.model.serialize.JsonKerutaSerializer
+ import net.kigawa.keruta.ktcp.model.task.list.ServerTaskListMsg
+ import net.kigawa.kodel.api.log.LoggerFactory
+@@ -26,11 +28,17 @@
+     suspend fun start() = coroutineScope {
+         logger.info { "Starting Keruta K8s Client" }
+ 
++        // OIDCトークンを取得
++        val tokenProvider = OidcTokenProvider(OidcTokenProvider.fromEnvironment())
++        val (userToken, serverToken) = tokenProvider.getTokens()
++        logger.info { "Tokens obtained, proceeding with connection" }
++
+         val (connection, ctx) = connectAndCreateSession()
+ 
+         val taskExecutor = TaskExecutorFactory(config, ktcpClient).create()
+         val clientEntrypoints = ClientEntrypointsFactory(ktcpClient, config, taskExecutor).create()
+ 
++        authenticate(ctx, userToken, serverToken)
+         requestInitialTaskList(ctx)
+         startMessageReceiver(connection, ctx, clientEntrypoints)
+     }
+@@ -43,6 +51,16 @@
+         return ConnectionContext(connection, ctx)
+     }
+ 
++    private suspend fun authenticate(ctx: ClientCtx, userToken: String, serverToken: String) {
++        logger.info { "Authenticating with server" }
++        val authMsg = ServerAuthRequestMsg(
++            userToken = userToken,
++            serverToken = serverToken,
++        )
++        ktcpClient.ktcpServerEntrypoints.authRequestEntrypoint.access(authMsg, ctx)?.execute()
++        logger.info { "Authentication request sent" }
++    }
++
+     private suspend fun requestInitialTaskList(ctx: ClientCtx) {
+         logger.info { "Requesting task list for queue ${config.queueId}" }
+         ktcpClient.ktcpServerEntrypoints.taskList.access(
+Index: ktcl-k8s/docs/configuration.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+># 設定\n\n## 環境変数\n\n### KTSE接続設定\n\n| 環境変数 | デフォルト | 説明 |\n|---------|----------|------|\n| `KTSE_HOST` | localhost | KTSEサーバーホスト |\n| `KTSE_PORT` | 8080 | KTSEサーバーポート |\n| `KTSE_USE_TLS` | false | TLS使用 |\n| `KERUTA_USER_TOKEN` | (必須) | ユーザー認証トークン |\n| `KERUTA_SERVER_TOKEN` | (必須) | プロバイダー認証トークン |\n| `KERUTA_QUEUE_ID` | (必須) | 監視するキューID |\n\n### Kubernetes設定\n\n| 環境変数 | デフォルト | 説明 |\n|---------|----------|------|\n| `K8S_NAMESPACE` | default | Kubernetesネームスペース |\n| `K8S_JOB_TEMPLATE` | resources/job-template.yaml | Job定義YAMLパス |\n| `K8S_USE_IN_CLUSTER` | true | in-cluster認証使用 |\n| `K8S_KUBECONFIG_PATH` | ~/.kube/config | kubeconfigパス（in-cluster無効時） |\n| `K8S_JOB_TIMEOUT` | 600 | Jobタイムアウト（秒） |\n\n### Webモード設定\n\n| 環境変数 | デフォルト | 説明 |\n|---------|----------|------|\n| `KTCL_K8S_WEB_MODE` | false | Webモードを有効化 |\n| `KTCL_K8S_WEB_PORT` | 8081 | Webサーバーポート |\n| `KEYCLOAK_URL` | https://user.kigawa.net/ | Keycloak URL |\n| `KEYCLOAK_REALM` | develop | Keycloakレルム |\n| `KEYCLOAK_CLIENT_ID` | keruta | KeycloakクライアントID |\n\n## Job定義テンプレート\n\nデフォルトのJob定義は`src/main/resources/job-template.yaml`に配置されています。\n\n### テンプレート例\n\n```yaml\napiVersion: batch/v1\nkind: Job\nmetadata:\n  name: keruta-task-template\n  namespace: default\nspec:\n  ttlSecondsAfterFinished: 3600  # 1時間後に自動削除\n  backoffLimit: 0  # リトライなし\n  template:\n    spec:\n      restartPolicy: Never\n      containers:\n      - name: task-executor\n        image: harbor.kigawa.net/library/keruta-executor:latest\n        env:\n        - name: TASK_ID\n          value: \"\"\n        - name: TASK_TITLE\n          value: \"\"\n        - name: TASK_DESCRIPTION\n          value: \"\"\n```\n\n### カスタマイズ可能な環境変数\n\nJob定義をカスタマイズする場合は、以下の環境変数を使用できます：\n\n- `TASK_ID`: タスクID\n- `TASK_TITLE`: タスクタイトル\n- `TASK_DESCRIPTION`: タスク説明\n\nこれらの環境変数はJobTemplateLoaderによって自動的に設定されます。\n\n### テンプレートのカスタマイズ例\n\n```yaml\napiVersion: batch/v1\nkind: Job\nmetadata:\n  name: keruta-task-template\n  namespace: default\n  labels:\n    app: keruta-executor\n    managed-by: ktcl-k8s\nspec:\n  ttlSecondsAfterFinished: 7200  # 2時間後に自動削除\n  backoffLimit: 3  # 3回までリトライ\n  template:\n    spec:\n      restartPolicy: OnFailure\n      containers:\n      - name: task-executor\n        image: harbor.kigawa.net/library/keruta-executor:latest\n        resources:\n          requests:\n            memory: \"256Mi\"\n            cpu: \"250m\"\n          limits:\n            memory: \"512Mi\"\n            cpu: \"500m\"\n        env:\n        - name: TASK_ID\n          value: \"\"\n        - name: TASK_TITLE\n          value: \"\"\n        - name: TASK_DESCRIPTION\n          value: \"\"\n        - name: LOG_LEVEL\n          value: \"INFO\"\n```\n\n## 設定のプライオリティ\n\n1. **環境変数**: 最優先（起動時に読み込み）\n2. **システムプロパティ**: `-DK8S_NAMESPACE=production`形式\n3. **デフォルト値**: K8sConfig内で定義\n\n## 設定の検証\n\n起動時に以下の設定を検証します：\n\n- `KERUTA_USER_TOKEN`が設定されているか\n- `KERUTA_SERVER_TOKEN`が設定されているか\n- `K8S_JOB_TEMPLATE`ファイルが存在するか（CLIモード時）\n- Kubernetes Clientが初期化できるか
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-k8s/docs/configuration.md b/ktcl-k8s/docs/configuration.md
+--- a/ktcl-k8s/docs/configuration.md	(revision 15271b93e73edace128f1dddaa99f57355cd724e)
++++ b/ktcl-k8s/docs/configuration.md	(date 1771390225211)
+@@ -9,10 +9,17 @@
+ | `KTSE_HOST` | localhost | KTSEサーバーホスト |
+ | `KTSE_PORT` | 8080 | KTSEサーバーポート |
+ | `KTSE_USE_TLS` | false | TLS使用 |
+-| `KERUTA_USER_TOKEN` | (必須) | ユーザー認証トークン |
+-| `KERUTA_SERVER_TOKEN` | (必須) | プロバイダー認証トークン |
+ | `KERUTA_QUEUE_ID` | (必須) | 監視するキューID |
+ 
++### OIDC認証設定
++
++| 環境変数 | デフォルト | 説明 |
++|---------|----------|------|
++| `KTSE_OIDC_ISSUER` | (必須) | OIDC発行者URL (Keycloak) |
++| `KTSE_OIDC_CLIENT_ID` | keruta | OIDCクライアントID |
++| `KTSE_OIDC_CLIENT_SECRET` | (必須) | OIDCクライアントシークレット |
++| `KTSE_OIDC_TOKEN_PATH` | /var/run/secrets/tokens/keruta-token | Service Accountトークンファイルパス |
++
+ ### Kubernetes設定
+ 
+ | 環境変数 | デフォルト | 説明 |
+@@ -121,7 +128,46 @@
+ 
+ 起動時に以下の設定を検証します：
+ 
+-- `KERUTA_USER_TOKEN`が設定されているか
+-- `KERUTA_SERVER_TOKEN`が設定されているか
++- `KERUTA_QUEUE_ID`が設定されているか
++- `KTSE_OIDC_ISSUER`が設定されているか
++- `KTSE_OIDC_CLIENT_SECRET`が設定されているか（またはService Account Tokenが利用可能）
+ - `K8S_JOB_TEMPLATE`ファイルが存在するか（CLIモード時）
+-- Kubernetes Clientが初期化できるか
+\ No newline at end of file
++- Kubernetes Clientが初期化できるか
++
++## OIDC認証
++
++ktcl-k8sはOIDC (OpenID Connect) を使用してトークンを取得します。優先順位:
++
++1. **Kubernetes Service Account Token**: Token Projectionが有効な場合、`/var/run/secrets/tokens/keruta-token`からトークンを自動取得
++2. **Keycloak Service Account**: Client Credentials Flowでトークンを取得
++
++### K8s Service Account Tokenを有効化する方法
++
++```yaml
++apiVersion: v1
++kind: ServiceAccount
++metadata:
++  name: keruta-k8s-client
++---
++apiVersion: v1
++kind: Pod
++spec:
++  serviceAccountName: keruta-k8s-client
++  volumes:
++  - name: keruta-token
++    projected:
++      sources:
++      - serviceAccountToken:
++          path: keruta-token
++          expirationSeconds: 3600
++          audience: keruta
++```
++
++### Keycloak Service Accountを使用する場合
++
++```bash
++export KTSE_USE_OIDC=true
++export KTSE_OIDC_ISSUER=https://keycloak.example.com/realms/develop
++export KTSE_OIDC_CLIENT_ID=keruta
++export KTSE_OIDC_CLIENT_SECRET=your-client-secret
++```
+\ No newline at end of file
+Index: ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/config/KtseConfig.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.k8s.config\n\n/**\n * KTSE接続設定\n */\ndata class KtseConfig(\n    val host: String,\n    val port: Int,\n    val useTls: Boolean,\n    val userToken: String,\n    val serverToken: String,\n    val queueId: Long\n) {\n    companion object {\n        fun fromEnvironment(): KtseConfig {\n            return KtseConfig(\n                host = System.getenv(\"KTSE_HOST\") ?: \"localhost\",\n                port = System.getenv(\"KTSE_PORT\")?.toInt() ?: 8080,\n                useTls = System.getenv(\"KTSE_USE_TLS\")?.toBoolean() ?: false,\n                userToken = System.getenv(\"KERUTA_USER_TOKEN\") ?: \"\",\n                serverToken = System.getenv(\"KERUTA_SERVER_TOKEN\") ?: \"\",\n                queueId = System.getenv(\"KERUTA_QUEUE_ID\")?.toLongOrNull() ?: 1L\n            )\n        }\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/config/KtseConfig.kt b/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/config/KtseConfig.kt
+--- a/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/config/KtseConfig.kt	(revision 15271b93e73edace128f1dddaa99f57355cd724e)
++++ b/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/config/KtseConfig.kt	(date 1771390166746)
+@@ -7,9 +7,7 @@
+     val host: String,
+     val port: Int,
+     val useTls: Boolean,
+-    val userToken: String,
+-    val serverToken: String,
+-    val queueId: Long
++    val queueId: Long,
+ ) {
+     companion object {
+         fun fromEnvironment(): KtseConfig {
+@@ -17,9 +15,7 @@
+                 host = System.getenv("KTSE_HOST") ?: "localhost",
+                 port = System.getenv("KTSE_PORT")?.toInt() ?: 8080,
+                 useTls = System.getenv("KTSE_USE_TLS")?.toBoolean() ?: false,
+-                userToken = System.getenv("KERUTA_USER_TOKEN") ?: "",
+-                serverToken = System.getenv("KERUTA_SERVER_TOKEN") ?: "",
+-                queueId = System.getenv("KERUTA_QUEUE_ID")?.toLongOrNull() ?: 1L
++                queueId = System.getenv("KERUTA_QUEUE_ID")?.toLongOrNull() ?: 1L,
+             )
+         }
+     }
+Index: ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/auth/OidcTokenProvider.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/auth/OidcTokenProvider.kt b/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/auth/OidcTokenProvider.kt
+new file mode 100644
+--- /dev/null	(date 1771393804699)
++++ b/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/auth/OidcTokenProvider.kt	(date 1771393804699)
+@@ -0,0 +1,157 @@
++package net.kigawa.keruta.ktcl.k8s.auth
++
++import kotlinx.coroutines.runBlocking
++import kotlinx.serialization.json.Json
++import net.kigawa.kodel.api.log.getKogger
++import java.io.OutputStream
++import java.net.HttpURLConnection
++import java.net.URL
++import java.nio.charset.StandardCharsets
++
++/**
++ * OIDCトークン取得サービス
++ *
++ * 優先順位:
++ * 1. Service Account Token (K8s Volume Projection)
++ * 2. Keycloak Service Account (Client Credentials Flow)
++ */
++class OidcTokenProvider(
++    private val config: OidcConfig,
++) {
++    private val logger = getKogger()
++
++    data class OidcConfig(
++        val issuer: String,
++        val clientId: String,
++        val clientSecret: String,
++        val serviceAccountTokenPath: String,
++    )
++
++    /**
++     * トークンを取得
++     * Pair<userToken, serverToken>を返す
++     */
++    fun getTokens(): Pair<String, String> {
++        // 1. Service Account Tokenを試す
++        val serviceAccountToken = tryGetServiceAccountToken()
++        if (serviceAccountToken != null) {
++            logger.info { "Using Service Account Token from volume projection" }
++            return Pair(serviceAccountToken, serviceAccountToken)
++        }
++
++        // 2. Keycloak Service Accountを試す
++        val keycloakTokens = tryGetKeycloakTokens()
++        if (keycloakTokens != null) {
++            logger.info { "Using Keycloak Service Account tokens" }
++            return keycloakTokens
++        }
++
++        throw IllegalStateException("Failed to get OIDC tokens from any source")
++    }
++
++    /**
++     * K8s Service Account Tokenを取得
++     * Token Projectionが有効な場合、/var/run/secrets/tokens/にトークンがマウントされる
++     */
++    private fun tryGetServiceAccountToken(): String? {
++        return try {
++            val tokenFile = java.io.File(config.serviceAccountTokenPath)
++            if (tokenFile.exists()) {
++                tokenFile.readText().trim()
++            } else {
++                logger.info { "Service account token file not found: ${config.serviceAccountTokenPath}" }
++                null
++            }
++        } catch (e: Exception) {
++            logger.info { "Failed to read service account token: ${e.message}" }
++            null
++        }
++    }
++
++    /**
++     * Keycloak Service Accountからトークンを取得 (Client Credentials Flow)
++     */
++    private fun tryGetKeycloakTokens(): Pair<String, String>? {
++        return try {
++            runBlocking {
++                // OIDC DiscoveryでToken Endpointを取得
++                val discoveryUrl = "${config.issuer}/.well-known/openid-configuration"
++                val discoveryJson = httpGet(discoveryUrl)
++                val discovery = Json.decodeFromString<OidcDiscovery>(discoveryJson)
++
++                val tokenEndpoint = discovery.token_endpoint
++                    ?: throw IllegalStateException("Token endpoint not found in OIDC discovery")
++
++                // Client Credentials Flowでトークンを取得
++                val formData = "grant_type=client_credentials" +
++                    "&client_id=${config.clientId}" +
++                    "&client_secret=${config.clientSecret}" +
++                    "&scope=openid profile email"
++
++                val responseJson = httpPost(tokenEndpoint, formData)
++                val response = Json.decodeFromString<TokenResponse>(responseJson)
++
++                val accessToken = response.access_token
++                    ?: throw IllegalStateException("Access token not found in response")
++
++                Pair(accessToken, accessToken)
++            }
++        } catch (e: Exception) {
++            logger.info { "Failed to get Keycloak tokens: ${e.message}" }
++            null
++        }
++    }
++
++    private fun httpGet(urlString: String): String {
++        val url = URL(urlString)
++        val connection = url.openConnection() as HttpURLConnection
++        connection.requestMethod = "GET"
++        connection.connectTimeout = 5000
++        connection.readTimeout = 5000
++
++        return connection.inputStream.bufferedReader().use { it.readText() }
++    }
++
++    private fun httpPost(urlString: String, body: String): String {
++        val url = URL(urlString)
++        val connection = url.openConnection() as HttpURLConnection
++        connection.requestMethod = "POST"
++        connection.doOutput = true
++        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded")
++        connection.connectTimeout = 5000
++        connection.readTimeout = 5000
++
++        val outputStream: OutputStream = connection.outputStream
++        outputStream.write(body.toByteArray(StandardCharsets.UTF_8))
++        outputStream.flush()
++        outputStream.close()
++
++        return connection.inputStream.bufferedReader().use { it.readText() }
++    }
++
++    @kotlinx.serialization.Serializable
++    private data class OidcDiscovery(
++        val token_endpoint: String?,
++    )
++
++    @kotlinx.serialization.Serializable
++    private data class TokenResponse(
++        val access_token: String?,
++        val refresh_token: String? = null,
++        val expires_in: Long? = null,
++        val token_type: String? = null,
++    )
++
++    companion object {
++        fun fromEnvironment(): OidcConfig {
++            return OidcConfig(
++                issuer = System.getenv("KTSE_OIDC_ISSUER") ?: System.getenv("KEYCLOAK_URL")
++                    ?: throw IllegalStateException("KTSE_OIDC_ISSUER is required"),
++                clientId = System.getenv("KTSE_OIDC_CLIENT_ID") ?: "keruta",
++                clientSecret = System.getenv("KTSE_OIDC_CLIENT_SECRET") ?: "",
++                serviceAccountTokenPath = System.getenv("KTSE_OIDC_TOKEN_PATH")
++                    ?: "/var/run/secrets/tokens/keruta-token",
++            )
++        }
++    }
++}
