@@ -104,36 +104,11 @@ services:
         source: ./cache/npm
         target: /root/.npm
 
-  gradle-all-tests:
-    build:
-      context: .
-      dockerfile: Dockerfile_test
-    command: ./gradlew allTests
-    depends_on:
-      rsync:
-        condition: service_completed_successfully
-      mysql:
-        condition: service_healthy
-    volumes:
-      - type: bind
-        source: ./cache/app
-        target: /app
-      - type: bind
-        source: ./cache/.gradle
-        target: /root/.gradle
-    working_dir: /app
-    environment:
-      - GRADLE_OPTS=-Dorg.gradle.daemon=false
-      - CHROME_BIN=/opt/google/chrome/chrome
-      - FIREFOX_BIN=/usr/bin/firefox
-      - TEST_DB_JDBC_URL=jdbc:mysql://mysql:3306/keruta_test
-      - TEST_DB_USERNAME=keruta
-      - TEST_DB_PASSWORD=keruta
   gradle-test:
     build:
       context: .
       dockerfile: Dockerfile_test
-    command: ./gradlew test
+    command: ./gradlew test allTests
     depends_on:
       rsync:
         condition: service_completed_successfully
