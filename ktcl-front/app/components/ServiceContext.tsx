@@ -36,7 +36,6 @@ export interface ServiceProviderProps {
 
 export function ServiceProvider({
   wsUrl,
-  apiBaseUrl,
   children,
   getAuthToken,
   onUnauthorized,
@@ -46,7 +45,6 @@ export function ServiceProvider({
   const services = useMemo(() => {
     const wsService = new WebSocketService({ url: wsUrl });
     const apiService = new ApiService({
-      baseUrl: apiBaseUrl,
       getAuthToken,
       onUnauthorized,
     });
@@ -59,7 +57,7 @@ export function ServiceProvider({
       providerMessageService: new ProviderMessageService(wsService),
       tokenApiService: new TokenApiService(apiService),
     };
-  }, [wsUrl, apiBaseUrl, getAuthToken, onUnauthorized]);
+  }, [wsUrl, getAuthToken, onUnauthorized]);
 
   const contextValue = useMemo<ServiceContextValue>(
     () => ({ ...services, wsState }),

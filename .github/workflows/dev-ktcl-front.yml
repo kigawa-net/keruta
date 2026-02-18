@@ -34,6 +34,9 @@ jobs:
         {
           "VITE_WEBSOCKET_URL": "wss://ktse-dev.kigawa.net/ws/ktcp",
           "VITE_USER_ISSUER": "https://user.kigawa.net/realms/develop",
-          "VITE_USER_CLIENT_ID": "keruta"
+          "VITE_USER_CLIENT_ID": "keruta",
+          "VITE_KEYCLOAK_URL": "https://user.kigawa.net/",
+          "VITE_KEYCLOAK_REALM": "develop",
+          "VITE_KEYCLOAK_CLIENT_ID": "keruta"
         }
 

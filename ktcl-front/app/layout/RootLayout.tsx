@@ -22,7 +22,7 @@ export default function Layout() {
   return (
     <KeycloakProvider>
       <UserProfileProvider>
-        <ServiceProvider wsUrl={Config.websocketUrl} apiBaseUrl={Config.ownIssuer}>
+        <ServiceProvider wsUrl={Config.websocketUrl}>
           <AppProvider>
             <div className="flex h-screen bg-white">
               {isSidebarOpen && (

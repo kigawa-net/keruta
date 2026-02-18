@@ -3,9 +3,9 @@ import Config from "./Config";
 
 // Keycloak設定
 export const keycloakConfig: Keycloak.KeycloakConfig = {
-    url: Config.keycloak.url,
-    realm: Config.keycloak.realm,
-    clientId: Config.keycloak.clientId,
+    url: Config.keycloakUrl,
+    realm: Config.keycloakRealm,
+    clientId: Config.keycloakClientId,
 }
 
 // Keycloakインスタンスの初期化
