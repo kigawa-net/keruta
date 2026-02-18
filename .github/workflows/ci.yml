@@ -32,9 +32,11 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
           COMPOSE_DOCKER_CLI_BUILD: 1
-      - run: docker compose -f compose.test.yml logs test
+      - run: docker compose -f compose.test.yml logs gradle-test
         if: always()
       - run: docker compose -f compose.test.yml logs ktcl-front-test
         if: always()
-      - run: docker compose -f compose.test.yml logs all-tests
+      - run: docker compose -f compose.test.yml logs ktcl-front-build
+        if: always()
+      - run: docker compose -f compose.test.yml logs gradle-all-tests
         if: always()
