@@ -20,7 +20,7 @@ export class ApiService {
       };
       if (authToken) requestHeaders["Authorization"] = `Bearer ${authToken}`;
 
-      const response = await fetch(`${this.config.baseUrl}${endpoint}`, {
+      const response = await fetch(`${this.config.baseUrl || ""}${endpoint}`, {
         method,
         headers: requestHeaders,
         body: body ? JSON.stringify(body) : undefined,
