@@ -1,0 +1,726 @@
+Index: .idea/shelf/2026_02_09_9_38_の_更新_前の未コミットの変更_[変更]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/2026_02_09_9_38_の_更新_前の未コミットの変更_[変更]/shelved.patch b/.idea/shelf/2026_02_09_9_38_の_更新_前の未コミットの変更_[変更]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/2026_02_09_9_38_の_更新_前の未コミットの変更_[変更]/shelved.patch	(revision 3d1fc5a5624ec1ccbb55c117c00f1aad5df89be7)
++++ /dev/null	(revision 3d1fc5a5624ec1ccbb55c117c00f1aad5df89be7)
+@@ -1,687 +0,0 @@
+-Index: .idea/shelf/2026_01_28_11_36______.xml
+-===================================================================
+-diff --git a/.idea/shelf/2026_01_28_11_36______.xml b/.idea/shelf/2026_01_28_11_36______.xml
+-deleted file mode 100644
+---- a/.idea/shelf/2026_01_28_11_36______.xml	(revision 1232a1c3b3e3cdce3ce76f888fa066e03cfa6e1c)
+-+++ /dev/null	(revision 1232a1c3b3e3cdce3ce76f888fa066e03cfa6e1c)
+-@@ -1,4 +0,0 @@
+--<changelist name="2026_01_28_11_36_の_マージ_前の未コミットの変更_[変更]" date="1769567768534" recycled="true" deleted="true">
+--  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/2026_01_28_11_36_の_マージ_前の未コミットの変更_[変更]/shelved.patch" />
+--  <option name="DESCRIPTION" value="2026/01/28 11:36 の マージ 前の未コミットの変更 [変更]" />
+--</changelist>
+-\ No newline at end of file
+-Index: .idea/shelf/2026_01_30_9_23_の_更新_前の未コミットの変更_[変更]/shelved.patch
+-===================================================================
+-diff --git a/.idea/shelf/2026_01_30_9_23_の_更新_前の未コミットの変更_[変更]/shelved.patch b/.idea/shelf/2026_01_30_9_23_の_更新_前の未コミットの変更_[変更]/shelved.patch
+-deleted file mode 100644
+---- a/.idea/shelf/2026_01_30_9_23_の_更新_前の未コミットの変更_[変更]/shelved.patch	(revision 1232a1c3b3e3cdce3ce76f888fa066e03cfa6e1c)
+-+++ /dev/null	(revision 1232a1c3b3e3cdce3ce76f888fa066e03cfa6e1c)
+-@@ -1,14 +0,0 @@
+--Index: .idea/data_source_mapping.xml
+--===================================================================
+--diff --git a/.idea/data_source_mapping.xml b/.idea/data_source_mapping.xml
+--deleted file mode 100644
+----- a/.idea/data_source_mapping.xml	(revision c9b35c6b4e72d67bf7bdffe3166e1fd6f4b749bf)
+--+++ /dev/null	(revision c9b35c6b4e72d67bf7bdffe3166e1fd6f4b749bf)
+--@@ -1,6 +0,0 @@
+---<?xml version="1.0" encoding="UTF-8"?>
+---<project version="4">
+---  <component name="DataSourcePerFileMappings">
+---    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/4a6f03e4-94ad-4e5c-af79-d5fac89beb91/console.sql" value="4a6f03e4-94ad-4e5c-af79-d5fac89beb91" />
+---  </component>
+---</project>
+--\ No newline at end of file
+-Index: .idea/shelf/2026_01_29_13_51_の_チェックアウト_前の未コミットの変更_[変更]/shelved.patch
+-===================================================================
+-diff --git a/.idea/shelf/2026_01_29_13_51_の_チェックアウト_前の未コミットの変更_[変更]/shelved.patch b/.idea/shelf/2026_01_29_13_51_の_チェックアウト_前の未コミットの変更_[変更]/shelved.patch
+-deleted file mode 100644
+---- a/.idea/shelf/2026_01_29_13_51_の_チェックアウト_前の未コミットの変更_[変更]/shelved.patch	(revision 1232a1c3b3e3cdce3ce76f888fa066e03cfa6e1c)
+-+++ /dev/null	(revision 1232a1c3b3e3cdce3ce76f888fa066e03cfa6e1c)
+-@@ -1,50 +0,0 @@
+--Index: .idea/dataSources.local.xml
+--IDEA additional info:
+--Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+--<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"dataSourceStorageLocal\" created-in=\"IU-253.29346.240\">\n    <data-source name=\"@localhost\" uuid=\"4a6f03e4-94ad-4e5c-af79-d5fac89beb91\">\n      <database-info product=\"MySQL\" version=\"8.0.11-TiDB-v7.5.1\" jdbc-version=\"4.2\" driver-name=\"MySQL Connector/J\" driver-version=\"mysql-connector-j-9.5.0 (Revision: a7b3c94f50efbddb9f0dd69b3e0d1aaa25305cd6)\" dbms=\"TIDB\" exact-version=\"7.5.1\" exact-driver-version=\"9.5\">\n        <extra-name-characters>$</extra-name-characters>\n        <identifier-quote-string>`</identifier-quote-string>\n        <jdbc-catalog-is-schema>true</jdbc-catalog-is-schema>\n      </database-info>\n      <case-sensitivity plain-identifiers=\"mixed\" quoted-identifiers=\"mixed\" />\n      <secret-storage>master_key</secret-storage>\n      <user-name>root</user-name>\n      <schema-mapping>\n        <introspection-scope>\n          <node kind=\"schema\">\n            <name qname=\"keruta\" />\n            <name qname=\"@\" />\n          </node>\n        </introspection-scope>\n      </schema-mapping>\n    </data-source>\n  </component>\n</project>
+--Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+--<+>UTF-8
+--===================================================================
+--diff --git a/.idea/dataSources.local.xml b/.idea/dataSources.local.xml
+----- a/.idea/dataSources.local.xml	(revision efdb4a2f3c4e2090c7920af7515e244536635cb3)
+--+++ b/.idea/dataSources.local.xml	(date 1769393477333)
+--@@ -1,11 +1,10 @@
+-- <?xml version="1.0" encoding="UTF-8"?>
+-- <project version="4">
+---  <component name="dataSourceStorageLocal" created-in="IU-253.29346.240">
+--+  <component name="dataSourceStorageLocal" created-in="IU-253.30387.90">
+--     <data-source name="@localhost" uuid="4a6f03e4-94ad-4e5c-af79-d5fac89beb91">
+--       <database-info product="MySQL" version="8.0.11-TiDB-v7.5.1" jdbc-version="4.2" driver-name="MySQL Connector/J" driver-version="mysql-connector-j-9.5.0 (Revision: a7b3c94f50efbddb9f0dd69b3e0d1aaa25305cd6)" dbms="TIDB" exact-version="7.5.1" exact-driver-version="9.5">
+--         <extra-name-characters>$</extra-name-characters>
+--         <identifier-quote-string>`</identifier-quote-string>
+---        <jdbc-catalog-is-schema>true</jdbc-catalog-is-schema>
+--       </database-info>
+--       <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed" />
+--       <secret-storage>master_key</secret-storage>
+--@@ -20,4 +19,4 @@
+--       </schema-mapping>
+--     </data-source>
+--   </component>
+---</project>
+--\ No newline at end of file
+--+</project>
+--Index: .idea/compiler.xml
+--IDEA additional info:
+--Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+--<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"CompilerConfiguration\">\n    <bytecodeTargetLevel target=\"21\">\n      <module name=\"keruta-api\" target=\"21\" />\n      <module name=\"keruta-api.api\" target=\"21\" />\n      <module name=\"keruta-api.api.main\" target=\"21\" />\n      <module name=\"keruta-api.api.test\" target=\"21\" />\n      <module name=\"keruta-api.buildSrc\" target=\"21\" />\n      <module name=\"keruta-api.buildSrc.main\" target=\"21\" />\n      <module name=\"keruta-api.buildSrc.test\" target=\"21\" />\n      <module name=\"keruta-api.core\" target=\"21\" />\n      <module name=\"keruta-api.core.domain\" target=\"21\" />\n      <module name=\"keruta-api.core.domain.main\" target=\"21\" />\n      <module name=\"keruta-api.core.domain.test\" target=\"21\" />\n      <module name=\"keruta-api.core.main\" target=\"21\" />\n      <module name=\"keruta-api.core.test\" target=\"21\" />\n      <module name=\"keruta-api.core.usecase\" target=\"21\" />\n      <module name=\"keruta-api.core.usecase.main\" target=\"21\" />\n      <module name=\"keruta-api.core.usecase.test\" target=\"21\" />\n      <module name=\"keruta-api.generated-api\" target=\"21\" />\n      <module name=\"keruta-api.generated-api.main\" target=\"21\" />\n      <module name=\"keruta-api.generated-api.test\" target=\"21\" />\n      <module name=\"keruta-api.infra\" target=\"21\" />\n      <module name=\"keruta-api.infra.app\" target=\"21\" />\n      <module name=\"keruta-api.infra.app.main\" target=\"21\" />\n      <module name=\"keruta-api.infra.app.test\" target=\"21\" />\n      <module name=\"keruta-api.infra.core\" target=\"21\" />\n      <module name=\"keruta-api.infra.core.main\" target=\"21\" />\n      <module name=\"keruta-api.infra.core.test\" target=\"21\" />\n      <module name=\"keruta-api.infra.main\" target=\"21\" />\n      <module name=\"keruta-api.infra.persistence\" target=\"21\" />\n      <module name=\"keruta-api.infra.persistence.main\" target=\"21\" />\n      <module name=\"keruta-api.infra.persistence.test\" target=\"21\" />\n      <module name=\"keruta-api.infra.security\" target=\"21\" />\n      <module name=\"keruta-api.infra.security.main\" target=\"21\" />\n      <module name=\"keruta-api.infra.security.test\" target=\"21\" />\n      <module name=\"keruta-api.infra.test\" target=\"21\" />\n      <module name=\"keruta-api.main\" target=\"21\" />\n      <module name=\"keruta-api.test\" target=\"21\" />\n      <module name=\"keruta-sdk\" target=\"21\" />\n      <module name=\"keruta-sdk.buildSrc\" target=\"21\" />\n      <module name=\"keruta-sdk.buildSrc.main\" target=\"21\" />\n      <module name=\"keruta-sdk.buildSrc.test\" target=\"21\" />\n      <module name=\"keruta-sdk.client\" target=\"21\" />\n      <module name=\"keruta-sdk.client.infrastructure\" target=\"21\" />\n      <module name=\"keruta-sdk.client.infrastructure.main\" target=\"21\" />\n      <module name=\"keruta-sdk.client.infrastructure.test\" target=\"21\" />\n      <module name=\"keruta-sdk.client.main\" target=\"21\" />\n      <module name=\"keruta-sdk.client.model\" target=\"21\" />\n      <module name=\"keruta-sdk.client.model.main\" target=\"21\" />\n      <module name=\"keruta-sdk.client.model.test\" target=\"21\" />\n      <module name=\"keruta-sdk.client.test\" target=\"21\" />\n      <module name=\"keruta-sdk.common\" target=\"21\" />\n      <module name=\"keruta-sdk.common.infrastructure\" target=\"21\" />\n      <module name=\"keruta-sdk.common.infrastructure.main\" target=\"21\" />\n      <module name=\"keruta-sdk.common.infrastructure.test\" target=\"21\" />\n      <module name=\"keruta-sdk.common.main\" target=\"21\" />\n      <module name=\"keruta-sdk.common.model\" target=\"21\" />\n      <module name=\"keruta-sdk.common.model.main\" target=\"21\" />\n      <module name=\"keruta-sdk.common.model.test\" target=\"21\" />\n      <module name=\"keruta-sdk.common.test\" target=\"21\" />\n      <module name=\"keruta-sdk.main\" target=\"21\" />\n      <module name=\"keruta-sdk.server\" target=\"21\" />\n      <module name=\"keruta-sdk.server.infrastructure\" target=\"21\" />\n      <module name=\"keruta-sdk.server.infrastructure.main\" target=\"21\" />\n      <module name=\"keruta-sdk.server.infrastructure.test\" target=\"21\" />\n      <module name=\"keruta-sdk.server.main\" target=\"21\" />\n      <module name=\"keruta-sdk.server.model\" target=\"21\" />\n      <module name=\"keruta-sdk.server.model.main\" target=\"21\" />\n      <module name=\"keruta-sdk.server.model.test\" target=\"21\" />\n      <module name=\"keruta-sdk.server.test\" target=\"21\" />\n      <module name=\"keruta-sdk.test\" target=\"21\" />\n      <module name=\"keruta.keruta-task-client-protocol.client\" target=\"21\" />\n      <module name=\"keruta.keruta-task-client-protocol.main\" target=\"21\" />\n      <module name=\"keruta.keruta-task-client-protocol.server\" target=\"21\" />\n      <module name=\"keruta.keruta-task-client-protocol.test\" target=\"21\" />\n      <module name=\"keruta.keruta-task-server\" target=\"21\" />\n      <module name=\"keruta.keruta-task-server.main\" target=\"21\" />\n      <module name=\"keruta.keruta-task-server.model\" target=\"21\" />\n      <module name=\"keruta.keruta-task-server.server\" target=\"21\" />\n      <module name=\"keruta.keruta-task-server.test\" target=\"21\" />\n      <module name=\"keruta.kodel.api.main\" target=\"21\" />\n      <module name=\"keruta.kodel.api.test\" target=\"21\" />\n      <module name=\"keruta.kodel.core.main\" target=\"21\" />\n      <module name=\"keruta.kodel.core.test\" target=\"21\" />\n      <module name=\"keruta.kodel.main\" target=\"21\" />\n      <module name=\"keruta.kodel.test\" target=\"21\" />\n      <module name=\"keruta.main\" target=\"21\" />\n      <module name=\"keruta.test\" target=\"21\" />\n      <module name=\"net.kigawa.keruta-api.main\" target=\"21\" />\n      <module name=\"net.kigawa.keruta-api.test\" target=\"21\" />\n    </bytecodeTargetLevel>\n  </component>\n  <component name=\"JavacSettings\">\n    <option name=\"ADDITIONAL_OPTIONS_OVERRIDE\">\n      <module name=\"keruta-api\" options=\"-parameters\" />\n      <module name=\"keruta-api.api\" options=\"-parameters\" />\n      <module name=\"keruta-api.api.main\" options=\"-parameters\" />\n      <module name=\"keruta-api.api.test\" options=\"-parameters\" />\n      <module name=\"keruta-api.infra.app\" options=\"-parameters\" />\n      <module name=\"keruta-api.infra.app.main\" options=\"-parameters\" />\n      <module name=\"keruta-api.infra.app.test\" options=\"-parameters\" />\n      <module name=\"keruta-api.infra.core\" options=\"-parameters\" />\n      <module name=\"keruta-api.infra.core.main\" options=\"-parameters\" />\n      <module name=\"keruta-api.infra.core.test\" options=\"-parameters\" />\n      <module name=\"keruta-api.main\" options=\"-parameters\" />\n      <module name=\"keruta-api.test\" options=\"-parameters\" />\n      <module name=\"keruta-executor\" options=\"-parameters\" />\n      <module name=\"keruta-executor.main\" options=\"-parameters\" />\n      <module name=\"keruta-executor.test\" options=\"-parameters\" />\n      <module name=\"net.kigawa.keruta-api.main\" options=\"-parameters\" />\n      <module name=\"net.kigawa.keruta-api.test\" options=\"-parameters\" />\n      <module name=\"net.kigawa.keruta.keruta-executor.test\" options=\"-parameters\" />\n    </option>\n  </component>\n</project>\n
+--Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+--<+>UTF-8
+--===================================================================
+--diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+----- a/.idea/compiler.xml	(revision efdb4a2f3c4e2090c7920af7515e244536635cb3)
+--+++ b/.idea/compiler.xml	(date 1769393477346)
+--@@ -86,6 +86,9 @@
+--       <module name="keruta.kodel.core.test" target="21" />
+--       <module name="keruta.kodel.main" target="21" />
+--       <module name="keruta.kodel.test" target="21" />
+--+      <module name="keruta.ktcl-web" target="23" />
+--+      <module name="keruta.ktcl-web.main" target="23" />
+--+      <module name="keruta.ktcl-web.test" target="23" />
+--       <module name="keruta.main" target="21" />
+--       <module name="keruta.test" target="21" />
+--       <module name="net.kigawa.keruta-api.main" target="21" />
+-Index: .idea/shelf/2026_01_29_13_51______.xml
+-===================================================================
+-diff --git a/.idea/shelf/2026_01_29_13_51______.xml b/.idea/shelf/2026_01_29_13_51______.xml
+-deleted file mode 100644
+---- a/.idea/shelf/2026_01_29_13_51______.xml	(revision 1232a1c3b3e3cdce3ce76f888fa066e03cfa6e1c)
+-+++ /dev/null	(revision 1232a1c3b3e3cdce3ce76f888fa066e03cfa6e1c)
+-@@ -1,4 +0,0 @@
+--<changelist name="2026_01_29_13_51_の_チェックアウト_前の未コミットの変更_[変更]" date="1769662274187" recycled="true" deleted="true">
+--  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/2026_01_29_13_51_の_チェックアウト_前の未コミットの変更_[変更]/shelved.patch" />
+--  <option name="DESCRIPTION" value="2026/01/29 13:51 の チェックアウト 前の未コミットの変更 [変更]" />
+--</changelist>
+-\ No newline at end of file
+-Index: .idea/shelf/2026_01_30_9_23______.xml
+-===================================================================
+-diff --git a/.idea/shelf/2026_01_30_9_23______.xml b/.idea/shelf/2026_01_30_9_23______.xml
+-deleted file mode 100644
+---- a/.idea/shelf/2026_01_30_9_23______.xml	(revision 1232a1c3b3e3cdce3ce76f888fa066e03cfa6e1c)
+-+++ /dev/null	(revision 1232a1c3b3e3cdce3ce76f888fa066e03cfa6e1c)
+-@@ -1,4 +0,0 @@
+--<changelist name="2026_01_30_9_23_の_更新_前の未コミットの変更_[変更]" date="1769732599887" recycled="true" deleted="true">
+--  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/2026_01_30_9_23_の_更新_前の未コミットの変更_[変更]/shelved.patch" />
+--  <option name="DESCRIPTION" value="2026/01/30 9:23 の 更新 前の未コミットの変更 [変更]" />
+--</changelist>
+-\ No newline at end of file
+-Index: .idea/shelf/2026_01_28_11_36_の_マージ_前の未コミットの変更_[変更]/shelved.patch
+-===================================================================
+-diff --git a/.idea/shelf/2026_01_28_11_36_の_マージ_前の未コミットの変更_[変更]/shelved.patch b/.idea/shelf/2026_01_28_11_36_の_マージ_前の未コミットの変更_[変更]/shelved.patch
+-deleted file mode 100644
+---- a/.idea/shelf/2026_01_28_11_36_の_マージ_前の未コミットの変更_[変更]/shelved.patch	(revision 1232a1c3b3e3cdce3ce76f888fa066e03cfa6e1c)
+-+++ /dev/null	(revision 1232a1c3b3e3cdce3ce76f888fa066e03cfa6e1c)
+-@@ -1,566 +0,0 @@
+--Index: ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/KtcpServer.kt
+--IDEA additional info:
+--Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+--<+>package net.kigawa.keruta.ktcp.server\n\nimport net.kigawa.keruta.ktcp.model.KtcpClientEntrypoints\nimport net.kigawa.keruta.ktcp.model.KtcpServerEntrypoints\nimport net.kigawa.keruta.ktcp.server.auth.ReceiveAuthRequestEntrypoint\nimport net.kigawa.keruta.ktcp.server.auth.success.SendAuthSuccessEntrypoint\nimport net.kigawa.keruta.ktcp.server.provider.ReceiveProviderListEntrypoint\nimport net.kigawa.keruta.ktcp.server.provider.SendProviderListedEntrypoint\nimport net.kigawa.keruta.ktcp.server.queue.SendQueueCreatedEntrypoint\nimport net.kigawa.keruta.ktcp.server.task.ReceiveTaskCreateEntrypoint\n\nclass KtcpServer {\n\n    val ktcpServerEntrypoints = KtcpServerEntrypoints(\n        ReceiveAuthRequestEntrypoint(),\n        ReceiveTaskCreateEntrypoint(),\n        ReceiveProviderListEntrypoint(),\n    )\n    val clientEntrypoints = KtcpClientEntrypoints(\n        SendGenericErrEntrypoint(),\n        SendAuthSuccessEntrypoint(),\n        SendProviderListedEntrypoint(),\n        SendQueueCreatedEntrypoint(),\n    )\n}\n
+--Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+--<+>UTF-8
+--===================================================================
+--diff --git a/ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/KtcpServer.kt b/ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/KtcpServer.kt
+----- a/ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/KtcpServer.kt	(revision c1f848928249b5701409fff5e0a6d983c7ccf2cd)
+--+++ b/ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/KtcpServer.kt	(date 1769567765089)
+--@@ -6,7 +6,10 @@
+-- import net.kigawa.keruta.ktcp.server.auth.success.SendAuthSuccessEntrypoint
+-- import net.kigawa.keruta.ktcp.server.provider.ReceiveProviderListEntrypoint
+-- import net.kigawa.keruta.ktcp.server.provider.SendProviderListedEntrypoint
+--+import net.kigawa.keruta.ktcp.server.queue.ReceiveQueueCreateEntrypoint
+--+import net.kigawa.keruta.ktcp.server.queue.ReceiveQueueListEntrypoint
+-- import net.kigawa.keruta.ktcp.server.queue.SendQueueCreatedEntrypoint
+--+import net.kigawa.keruta.ktcp.server.queue.SendQueueListedEntrypoint
+-- import net.kigawa.keruta.ktcp.server.task.ReceiveTaskCreateEntrypoint
+-- 
+-- class KtcpServer {
+--@@ -15,11 +18,14 @@
+--         ReceiveAuthRequestEntrypoint(),
+--         ReceiveTaskCreateEntrypoint(),
+--         ReceiveProviderListEntrypoint(),
+--+        ReceiveQueueCreateEntrypoint(),
+--+        ReceiveQueueListEntrypoint(),
+--     )
+--     val clientEntrypoints = KtcpClientEntrypoints(
+--         SendGenericErrEntrypoint(),
+--         SendAuthSuccessEntrypoint(),
+--         SendProviderListedEntrypoint(),
+--         SendQueueCreatedEntrypoint(),
+--+        SendQueueListedEntrypoint(),
+--     )
+-- }
+--Index: ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/provider/list/ServerProviderListEntrypoint.kt
+--IDEA additional info:
+--Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+--<+>package net.kigawa.keruta.ktcp.model.provider.list\n\nimport net.kigawa.keruta.ktcp.model.err.KtcpErr\nimport net.kigawa.kodel.api.entrypoint.Entrypoint\nimport net.kigawa.kodel.api.entrypoint.EntrypointDeferred\nimport net.kigawa.kodel.api.entrypoint.EntrypointInfo\nimport net.kigawa.kodel.api.err.Res\n\ninterface ServerProviderListEntrypoint<C>: Entrypoint<ServerProviderListArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C> {\n    override val info: EntrypointInfo\n        get() = EntrypointInfo(\n            \"providers_request\", emptyList(), \"プロバイダー一覧要求メッセージ処理\"\n        )\n}\n
+--Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+--<+>UTF-8
+--===================================================================
+--diff --git a/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/provider/list/ServerProviderListEntrypoint.kt b/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/provider/list/ServerProviderListEntrypoint.kt
+----- a/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/provider/list/ServerProviderListEntrypoint.kt	(revision c1f848928249b5701409fff5e0a6d983c7ccf2cd)
+--+++ b/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/provider/list/ServerProviderListEntrypoint.kt	(date 1769567765089)
+--@@ -1,6 +1,7 @@
+-- package net.kigawa.keruta.ktcp.model.provider.list
+-- 
+-- import net.kigawa.keruta.ktcp.model.err.KtcpErr
+--+import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
+-- import net.kigawa.kodel.api.entrypoint.Entrypoint
+-- import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
+-- import net.kigawa.kodel.api.entrypoint.EntrypointInfo
+--@@ -9,6 +10,6 @@
+-- interface ServerProviderListEntrypoint<C>: Entrypoint<ServerProviderListArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C> {
+--     override val info: EntrypointInfo
+--         get() = EntrypointInfo(
+---            "providers_request", emptyList(), "プロバイダー一覧要求メッセージ処理"
+--+            ServerMsgType.PROVIDER_LIST.str, emptyList(), "プロバイダー一覧要求メッセージ処理"
+--         )
+-- }
+--Index: ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/msg/client/ClientUnknownArg.kt
+--IDEA additional info:
+--Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+--<+>package net.kigawa.keruta.ktcp.model.msg.client\n\nimport net.kigawa.keruta.ktcp.model.auth.sccess.ClientAuthSuccessArg\nimport net.kigawa.keruta.ktcp.model.err.ClientGenericErrArg\nimport net.kigawa.keruta.ktcp.model.err.KtcpErr\nimport net.kigawa.keruta.ktcp.model.provider.listed.ClientProviderListedArg\nimport net.kigawa.keruta.ktcp.model.queue.created.ClientQueueCreatedArg\nimport net.kigawa.kodel.api.err.Res\n\ninterface ClientUnknownArg {\n    fun tryToGenericError(): Res<ClientGenericErrArg, KtcpErr>?\n    fun tryToAuthSuccess(): Res<ClientAuthSuccessArg, KtcpErr>?\n    fun tryToProviderList(): Res<ClientProviderListedArg, KtcpErr>?\n    fun tryToQueueCreated(): Res<ClientQueueCreatedArg, KtcpErr>?\n\n}\n
+--Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+--<+>UTF-8
+--===================================================================
+--diff --git a/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/msg/client/ClientUnknownArg.kt b/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/msg/client/ClientUnknownArg.kt
+----- a/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/msg/client/ClientUnknownArg.kt	(revision c1f848928249b5701409fff5e0a6d983c7ccf2cd)
+--+++ b/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/msg/client/ClientUnknownArg.kt	(date 1769567765089)
+--@@ -5,6 +5,7 @@
+-- import net.kigawa.keruta.ktcp.model.err.KtcpErr
+-- import net.kigawa.keruta.ktcp.model.provider.listed.ClientProviderListedArg
+-- import net.kigawa.keruta.ktcp.model.queue.created.ClientQueueCreatedArg
+--+import net.kigawa.keruta.ktcp.model.queue.listed.ClientQueueListedArg
+-- import net.kigawa.kodel.api.err.Res
+-- 
+-- interface ClientUnknownArg {
+--@@ -12,5 +13,6 @@
+--     fun tryToAuthSuccess(): Res<ClientAuthSuccessArg, KtcpErr>?
+--     fun tryToProviderList(): Res<ClientProviderListedArg, KtcpErr>?
+--     fun tryToQueueCreated(): Res<ClientQueueCreatedArg, KtcpErr>?
+--+    fun tryToQueueListed(): Res<ClientQueueListedArg, KtcpErr>?
+-- 
+-- }
+--Index: ktse/src/main/kotlin/net/kigawa/keruta/ktse/ReceiveUnknownArg.kt
+--IDEA additional info:
+--Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+--<+>package net.kigawa.keruta.ktse\n\nimport io.ktor.websocket.*\nimport net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestMsg\nimport net.kigawa.keruta.ktcp.model.err.GenericErrMsg\nimport net.kigawa.keruta.ktcp.model.err.KtcpErr\nimport net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType\nimport net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownArg\nimport net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownMsg\nimport net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListArg\nimport net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListMsg\nimport net.kigawa.keruta.ktcp.model.serialize.deserialize\nimport net.kigawa.keruta.ktcp.model.task.ServerTaskCreateArg\nimport net.kigawa.keruta.ktcp.model.task.ServerTaskCreateMsg\nimport net.kigawa.keruta.ktcp.server.ServerCtx\nimport net.kigawa.keruta.ktcp.server.err.DecodeFrameErr\nimport net.kigawa.keruta.ktcp.server.err.DeserializeDecodeFrameErr\nimport net.kigawa.keruta.ktcp.server.err.InvalidTypeDecodeFrameErr\nimport net.kigawa.keruta.ktse.auth.ReceiveAuthRequestArg\nimport net.kigawa.keruta.ktse.err.ReceiveGenericErrArg\nimport net.kigawa.keruta.ktse.provider.ReceiveProviderListArg\nimport net.kigawa.keruta.ktse.task.ReceiveTaskCreateArg\nimport net.kigawa.kodel.api.err.Res\nimport net.kigawa.kodel.api.log.getKogger\nimport net.kigawa.kodel.api.log.traceignore.debug\n\nclass ReceiveUnknownArg(\n    val msg: ServerUnknownMsg,\n    val ctx: ServerCtx,\n    val text: String,\n): ServerUnknownArg {\n    override fun tryToGenericError(): Res<ReceiveGenericErrArg, DecodeFrameErr>? {\n        if (msg.type != ServerMsgType.GENERIC_ERROR) return null\n        return translate<GenericErrMsg, ReceiveGenericErrArg> { ReceiveGenericErrArg(it) }\n    }\n\n    override fun tryToAuthenticate(): Res<ReceiveAuthRequestArg, DecodeFrameErr>? {\n        if (msg.type != ServerMsgType.AUTH_REQUEST) return null\n        return translate<ServerAuthRequestMsg, ReceiveAuthRequestArg> { ReceiveAuthRequestArg(it) }\n    }\n\n    override fun tryToTaskCreate(): Res<ServerTaskCreateArg, KtcpErr>? {\n        if (msg.type != ServerMsgType.TASK_CREATE) return null\n        return translate<ServerTaskCreateMsg, ReceiveTaskCreateArg> { ReceiveTaskCreateArg(it) }\n    }\n\n    override fun tryToProvidersRequest(): Res<ServerProviderListArg, KtcpErr>? {\n        if (msg.type != ServerMsgType.PROVIDER_LIST) return null\n        return translate<ServerProviderListMsg, ServerProviderListArg> {\n            ReceiveProviderListArg(it)\n        }\n    }\n\n    inline fun <reified T, R> translate(initialize: ReceiveUnknownArg.(T) -> R): Res<R, DecodeFrameErr> {\n        return when (\n            val msg = ctx.serializer.deserialize<T>(text)\n        ) {\n            is Res.Err<*, KtcpErr> -> msg.mapErr { DeserializeDecodeFrameErr(\"\", it) }\n            is Res.Ok<T, *> -> Res.Ok(\n                initialize(msg.value)\n            )\n        }\n    }\n\n    companion object {\n        val logger = getKogger()\n        fun fromFrame(frame: Frame, ctx: ServerCtx): Res<ReceiveUnknownArg, DecodeFrameErr> {\n            if (frame !is Frame.Text) return Res.Err(InvalidTypeDecodeFrameErr(\"\", null))\n            val text = frame.readText()\n            logger.debug(\"frameText: $text\")\n            return when (\n                val msg = ctx.serializer.deserialize<ServerUnknownMsg>(text)\n            ) {\n                is Res.Err<*, KtcpErr> -> msg.mapErr { DeserializeDecodeFrameErr(\"\", it) }\n                is Res.Ok<ServerUnknownMsg, *> -> Res.Ok(\n                    ReceiveUnknownArg(\n                        msg.value, ctx, text\n                    )\n                )\n            }\n        }\n    }\n}\n
+--Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+--<+>UTF-8
+--===================================================================
+--diff --git a/ktse/src/main/kotlin/net/kigawa/keruta/ktse/ReceiveUnknownArg.kt b/ktse/src/main/kotlin/net/kigawa/keruta/ktse/ReceiveUnknownArg.kt
+----- a/ktse/src/main/kotlin/net/kigawa/keruta/ktse/ReceiveUnknownArg.kt	(revision c1f848928249b5701409fff5e0a6d983c7ccf2cd)
+--+++ b/ktse/src/main/kotlin/net/kigawa/keruta/ktse/ReceiveUnknownArg.kt	(date 1769567765089)
+--@@ -9,6 +9,8 @@
+-- import net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownMsg
+-- import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListArg
+-- import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListMsg
+--+import net.kigawa.keruta.ktcp.model.queue.create.ServerQueueCreateMsg
+--+import net.kigawa.keruta.ktcp.model.queue.list.ServerQueueListMsg
+-- import net.kigawa.keruta.ktcp.model.serialize.deserialize
+-- import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateArg
+-- import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateMsg
+--@@ -51,6 +53,20 @@
+--         }
+--     }
+-- 
+--+    override fun tryToQueueCreate(): Res<ServerQueueCreateMsg, KtcpErr>? {
+--+        if (msg.type != ServerMsgType.QUEUE_CREATE) return null
+--+        return translate()
+--+    }
+--+
+--+    override fun tryToQueueList(): Res<ServerQueueListMsg, KtcpErr>? {
+--+        if (msg.type != ServerMsgType.QUEUE_LIST) return null
+--+        return translate()
+--+    }
+--+
+--+    inline fun <reified T> translate(): Res<T, DecodeFrameErr> {
+--+        return translate<T, T> { it }
+--+    }
+--+
+--     inline fun <reified T, R> translate(initialize: ReceiveUnknownArg.(T) -> R): Res<R, DecodeFrameErr> {
+--         return when (
+--             val msg = ctx.serializer.deserialize<T>(text)
+--Index: ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/msg/server/ServerMsgType.kt
+--IDEA additional info:
+--Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+--<+>package net.kigawa.keruta.ktcp.model.msg.server\n\nimport kotlinx.serialization.Serializable\n\n@Serializable(ServerMsgTypeSerializer::class)\nenum class ServerMsgType(\n    val str: String,\n) {\n    GENERIC_ERROR(\"generic_error\"),\n    AUTH_REQUEST(\"auth_request\"),\n    AUTH_SUCCESS(\"auth_success\"),\n    TASK_CREATE(\"task_create\"),\n    PROVIDER_LIST(\"provider_list\"),\n    QUEUE_CREATE(\"queue_create\"),\n    QUEUE_LIST(\"queue_list\"),\n    ;\n\n    companion object {\n        fun fromString(decodeString: String): ServerMsgType {\n            return entries.single { it.str == decodeString }\n        }\n    }\n}\n
+--Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+--<+>UTF-8
+--===================================================================
+--diff --git a/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/msg/server/ServerMsgType.kt b/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/msg/server/ServerMsgType.kt
+----- a/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/msg/server/ServerMsgType.kt	(revision c1f848928249b5701409fff5e0a6d983c7ccf2cd)
+--+++ b/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/msg/server/ServerMsgType.kt	(date 1769567765089)
+--@@ -17,7 +17,8 @@
+-- 
+--     companion object {
+--         fun fromString(decodeString: String): ServerMsgType {
+---            return entries.single { it.str == decodeString }
+--+            return entries.singleOrNull { it.str == decodeString }
+--+                ?: throw IllegalArgumentException("unknown msg type $decodeString")
+--         }
+--     }
+-- }
+--Index: ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/KtcpServerEntrypoints.kt
+--IDEA additional info:
+--Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+--<+>package net.kigawa.keruta.ktcp.model\n\nimport net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestEntrypoint\nimport net.kigawa.keruta.ktcp.model.err.EntrypointNotFoundErr\nimport net.kigawa.keruta.ktcp.model.err.KtcpErr\nimport net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownArg\nimport net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListEntrypoint\nimport net.kigawa.keruta.ktcp.model.task.ServerTaskCreateEntrypoint\nimport net.kigawa.kodel.api.entrypoint.EntrypointDeferred\nimport net.kigawa.kodel.api.entrypoint.EntrypointGroupBase\nimport net.kigawa.kodel.api.entrypoint.EntrypointInfo\nimport net.kigawa.kodel.api.err.Res\nimport net.kigawa.kodel.api.err.whenErrOk\nimport net.kigawa.kodel.api.log.LoggerFactory\nimport net.kigawa.kodel.api.log.traceignore.error\nimport kotlin.time.ExperimentalTime\n\nclass KtcpServerEntrypoints<C>(\n    authRequestEntrypoint: ServerAuthRequestEntrypoint<C>,\n    taskCreateEntrypoint: ServerTaskCreateEntrypoint<C>,\n    providersRequestEntrypoint: ServerProviderListEntrypoint<C>,\n): EntrypointGroupBase<ServerUnknownArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C>() {\n    val logger = LoggerFactory.get(\"net.kigawa.keruta.ktcp.model.KtcpServerEntrypoints\")\n    override val info: EntrypointInfo = EntrypointInfo(\n        \"ktcp-server\",\n        listOf(),\n        \"\"\n    )\n    @Suppress(\"unused\")\n    val authRequestEntrypoint = add(authRequestEntrypoint) { input ->\n        input.tryToAuthenticate()?.whenErrOk(\n            { EntrypointDeferred { Res.Err(it) } }\n        ) {\n            this(it)\n        }\n    }\n    @Suppress(\"unused\")\n    val taskCreateEntrypoint = add(taskCreateEntrypoint) { input ->\n        input.tryToTaskCreate()?.whenErrOk(\n            { EntrypointDeferred { Res.Err(it) } }\n        ) {\n            this(it)\n        }\n    }\n    @Suppress(\"unused\")\n    val providersRequestEntrypoint = add(providersRequestEntrypoint) { input ->\n        input.tryToProvidersRequest()?.whenErrOk(\n            { EntrypointDeferred { Res.Err(it) } }\n        ) {\n            this(it)\n        }\n    }\n\n    @OptIn(ExperimentalTime::class)\n    override fun onSubEntrypointNotFound(\n        input: ServerUnknownArg,\n    ): EntrypointDeferred<Res<Unit, KtcpErr>> = EntrypointDeferred {\n        logger.error(\"not found entrypoint: $input\")\n        Res.Err(\n            EntrypointNotFoundErr(\n                \"No entrypoint found for message type: $input\",\n                null,\n            )\n        )\n    }\n}\n
+--Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+--<+>UTF-8
+--===================================================================
+--diff --git a/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/KtcpServerEntrypoints.kt b/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/KtcpServerEntrypoints.kt
+----- a/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/KtcpServerEntrypoints.kt	(revision c1f848928249b5701409fff5e0a6d983c7ccf2cd)
+--+++ b/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/KtcpServerEntrypoints.kt	(date 1769567765088)
+--@@ -5,6 +5,8 @@
+-- import net.kigawa.keruta.ktcp.model.err.KtcpErr
+-- import net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownArg
+-- import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListEntrypoint
+--+import net.kigawa.keruta.ktcp.model.queue.create.ServerQueueCreateEntrypoint
+--+import net.kigawa.keruta.ktcp.model.queue.list.ServerQueueListEntrypoint
+-- import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateEntrypoint
+-- import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
+-- import net.kigawa.kodel.api.entrypoint.EntrypointGroupBase
+--@@ -19,6 +21,8 @@
+--     authRequestEntrypoint: ServerAuthRequestEntrypoint<C>,
+--     taskCreateEntrypoint: ServerTaskCreateEntrypoint<C>,
+--     providersRequestEntrypoint: ServerProviderListEntrypoint<C>,
+--+    queueCreateEntrypoint: ServerQueueCreateEntrypoint<C>,
+--+    queueListEntrypoint: ServerQueueListEntrypoint<C>,
+-- ): EntrypointGroupBase<ServerUnknownArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C>() {
+--     val logger = LoggerFactory.get("net.kigawa.keruta.ktcp.model.KtcpServerEntrypoints")
+--     override val info: EntrypointInfo = EntrypointInfo(
+--@@ -26,6 +30,7 @@
+--         listOf(),
+--         ""
+--     )
+--+
+--     @Suppress("unused")
+--     val authRequestEntrypoint = add(authRequestEntrypoint) { input ->
+--         input.tryToAuthenticate()?.whenErrOk(
+--@@ -34,6 +39,7 @@
+--             this(it)
+--         }
+--     }
+--+
+--     @Suppress("unused")
+--     val taskCreateEntrypoint = add(taskCreateEntrypoint) { input ->
+--         input.tryToTaskCreate()?.whenErrOk(
+--@@ -42,6 +48,7 @@
+--             this(it)
+--         }
+--     }
+--+
+--     @Suppress("unused")
+--     val providersRequestEntrypoint = add(providersRequestEntrypoint) { input ->
+--         input.tryToProvidersRequest()?.whenErrOk(
+--@@ -50,6 +57,20 @@
+--             this(it)
+--         }
+--     }
+--+    val queueCreate = add(queueCreateEntrypoint) { input ->
+--+        input.tryToQueueCreate()?.whenErrOk(
+--+            { EntrypointDeferred { Res.Err(it) } }
+--+        ) {
+--+            this(it)
+--+        }
+--+    }
+--+    val queueList = add(queueListEntrypoint) { input ->
+--+        input.tryToQueueList()?.whenErrOk(
+--+            { EntrypointDeferred { Res.Err(it) } }
+--+        ) {
+--+            this(it)
+--+        }
+--+    }
+-- 
+--     @OptIn(ExperimentalTime::class)
+--     override fun onSubEntrypointNotFound(
+--Index: ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/queue/SendQueueCreateEntrypoint.kt
+--IDEA additional info:
+--Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+--<+>UTF-8
+--===================================================================
+--diff --git a/ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/queue/SendQueueCreateEntrypoint.kt b/ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/queue/SendQueueCreateEntrypoint.kt
+--new file mode 100644
+----- /dev/null	(date 1769567765088)
+--+++ b/ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/queue/SendQueueCreateEntrypoint.kt	(date 1769567765088)
+--@@ -0,0 +1,20 @@
+--+package net.kigawa.keruta.ktcp.client.queue
+--+
+--+import net.kigawa.keruta.ktcp.client.ClientCtx
+--+import net.kigawa.keruta.ktcp.client.err.KtcpClientErr
+--+import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListArg
+--+import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListEntrypoint
+--+import net.kigawa.keruta.ktcp.model.queue.create.ServerQueueCreateArg
+--+import net.kigawa.keruta.ktcp.model.queue.create.ServerQueueCreateEntrypoint
+--+import net.kigawa.keruta.ktcp.model.serialize.serialize
+--+import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
+--+import net.kigawa.kodel.api.err.Res
+--+
+--+class SendQueueCreateEntrypoint: ServerQueueCreateEntrypoint<ClientCtx> {
+--+    override fun access(
+--+        input: ServerQueueCreateArg, ctx: ClientCtx,
+--+    ): EntrypointDeferred<Res<Unit, KtcpClientErr>> = EntrypointDeferred {
+--+        ctx.connection.send(ctx.serializer.serialize(input.msg))
+--+        Res.Ok(Unit)
+--+    }
+--+}
+--Index: ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/queue/SendQueueListEntrypoint.kt
+--IDEA additional info:
+--Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+--<+>UTF-8
+--===================================================================
+--diff --git a/ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/queue/SendQueueListEntrypoint.kt b/ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/queue/SendQueueListEntrypoint.kt
+--new file mode 100644
+----- /dev/null	(date 1769567765088)
+--+++ b/ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/queue/SendQueueListEntrypoint.kt	(date 1769567765088)
+--@@ -0,0 +1,18 @@
+--+package net.kigawa.keruta.ktcp.client.queue
+--+
+--+import net.kigawa.keruta.ktcp.client.ClientCtx
+--+import net.kigawa.keruta.ktcp.client.err.KtcpClientErr
+--+import net.kigawa.keruta.ktcp.model.queue.list.ServerQueueListArg
+--+import net.kigawa.keruta.ktcp.model.queue.list.ServerQueueListEntrypoint
+--+import net.kigawa.keruta.ktcp.model.serialize.serialize
+--+import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
+--+import net.kigawa.kodel.api.err.Res
+--+
+--+class SendQueueListEntrypoint: ServerQueueListEntrypoint<ClientCtx> {
+--+    override fun access(
+--+        input: ServerQueueListArg, ctx: ClientCtx,
+--+    ): EntrypointDeferred<Res<Unit, KtcpClientErr>> = EntrypointDeferred {
+--+        ctx.connection.send(ctx.serializer.serialize(input.msg))
+--+        Res.Ok(Unit)
+--+    }
+--+}
+--Index: ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/queue/SendQueueListedEntrypoint.kt
+--IDEA additional info:
+--Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+--<+>UTF-8
+--===================================================================
+--diff --git a/ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/queue/SendQueueListedEntrypoint.kt b/ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/queue/SendQueueListedEntrypoint.kt
+--new file mode 100644
+----- /dev/null	(date 1769567765089)
+--+++ b/ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/queue/SendQueueListedEntrypoint.kt	(date 1769567765089)
+--@@ -0,0 +1,21 @@
+--+package net.kigawa.keruta.ktcp.server.queue
+--+
+--+import net.kigawa.keruta.ktcp.model.queue.listed.ClientQueueListedArg
+--+import net.kigawa.keruta.ktcp.model.queue.listed.ClientQueueListedEntrypoint
+--+import net.kigawa.keruta.ktcp.model.serialize.serialize
+--+import net.kigawa.keruta.ktcp.server.ServerCtx
+--+import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
+--+import net.kigawa.kodel.api.err.Res
+--+
+--+class SendQueueListedEntrypoint: ClientQueueListedEntrypoint<ServerCtx> {
+--+    override fun access(
+--+        input: ClientQueueListedArg, ctx: ServerCtx,
+--+    ): EntrypointDeferred<Res<Unit, Nothing>> {
+--+        return EntrypointDeferred {
+--+            ctx.connection.send(
+--+                ctx.serializer.serialize(input.msg)
+--+            )
+--+            Res.Ok(Unit)
+--+        }
+--+    }
+--+}
+--Index: ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/queue/SendQueueListedArg.kt
+--IDEA additional info:
+--Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+--<+>UTF-8
+--===================================================================
+--diff --git a/ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/queue/SendQueueListedArg.kt b/ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/queue/SendQueueListedArg.kt
+--new file mode 100644
+----- /dev/null	(date 1769567765089)
+--+++ b/ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/queue/SendQueueListedArg.kt	(date 1769567765089)
+--@@ -0,0 +1,8 @@
+--+package net.kigawa.keruta.ktcp.server.queue
+--+
+--+import net.kigawa.keruta.ktcp.model.queue.listed.ClientQueueListedArg
+--+import net.kigawa.keruta.ktcp.model.queue.listed.ClientQueueListedMsg
+--+
+--+class SendQueueListedArg(
+--+    override val msg: ClientQueueListedMsg,
+--+): ClientQueueListedArg
+--Index: ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/KtcpClient.kt
+--IDEA additional info:
+--Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+--<+>package net.kigawa.keruta.ktcp.client\n\nimport net.kigawa.keruta.ktcp.client.auth.SendAuthRequestEntrypoint\nimport net.kigawa.keruta.ktcp.client.provider.SendProviderRequestEntrypoint\nimport net.kigawa.keruta.ktcp.client.task.SendTaskCreateEntrypoint\nimport net.kigawa.keruta.ktcp.model.KtcpServerEntrypoints\n\nclass KtcpClient {\n    @Suppress(\"unused\")\n    val ktcpServerEntrypoints = KtcpServerEntrypoints(\n        SendAuthRequestEntrypoint(),\n        SendTaskCreateEntrypoint(),\n        SendProviderRequestEntrypoint(),\n    )\n\n    @Suppress(\"unused\")\n    fun startConnection(): ClientConnection {\n        return ClientConnection()\n    }\n}\n
+--Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+--<+>UTF-8
+--===================================================================
+--diff --git a/ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/KtcpClient.kt b/ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/KtcpClient.kt
+----- a/ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/KtcpClient.kt	(revision c1f848928249b5701409fff5e0a6d983c7ccf2cd)
+--+++ b/ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/KtcpClient.kt	(date 1769567765088)
+--@@ -1,7 +1,7 @@
+-- package net.kigawa.keruta.ktcp.client
+-- 
+-- import net.kigawa.keruta.ktcp.client.auth.SendAuthRequestEntrypoint
+---import net.kigawa.keruta.ktcp.client.provider.SendProviderRequestEntrypoint
+--+import net.kigawa.keruta.ktcp.client.provider.SendProviderListEntrypoint
+-- import net.kigawa.keruta.ktcp.client.task.SendTaskCreateEntrypoint
+-- import net.kigawa.keruta.ktcp.model.KtcpServerEntrypoints
+-- 
+--@@ -10,7 +10,7 @@
+--     val ktcpServerEntrypoints = KtcpServerEntrypoints(
+--         SendAuthRequestEntrypoint(),
+--         SendTaskCreateEntrypoint(),
+---        SendProviderRequestEntrypoint(),
+--+        SendProviderListEntrypoint(),
+--     )
+-- 
+--     @Suppress("unused")
+--Index: ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/queue/ReceiveQueueCreateEntrypoint.kt
+--IDEA additional info:
+--Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+--<+>UTF-8
+--===================================================================
+--diff --git a/ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/queue/ReceiveQueueCreateEntrypoint.kt b/ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/queue/ReceiveQueueCreateEntrypoint.kt
+--new file mode 100644
+----- /dev/null	(date 1769567765089)
+--+++ b/ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/queue/ReceiveQueueCreateEntrypoint.kt	(date 1769567765089)
+--@@ -0,0 +1,19 @@
+--+package net.kigawa.keruta.ktcp.server.queue
+--+
+--+import net.kigawa.keruta.ktcp.model.err.KtcpErr
+--+import net.kigawa.keruta.ktcp.model.queue.create.ServerQueueCreateEntrypoint
+--+import net.kigawa.keruta.ktcp.model.queue.create.ServerQueueCreateMsg
+--+import net.kigawa.keruta.ktcp.server.ServerCtx
+--+import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
+--+import net.kigawa.kodel.api.err.Res
+--+
+--+class ReceiveQueueCreateEntrypoint: ServerQueueCreateEntrypoint<ServerCtx> {
+--+    override fun access(
+--+        input: ServerQueueCreateMsg, ctx: ServerCtx,
+--+    ): EntrypointDeferred<Res<Unit, KtcpErr>> {
+--+        return EntrypointDeferred {
+--+            TODO()
+--+        }
+--+    }
+--+
+--+}
+--Index: ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/msg/server/ServerUnknownArg.kt
+--IDEA additional info:
+--Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+--<+>package net.kigawa.keruta.ktcp.model.msg.server\n\nimport net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestArg\nimport net.kigawa.keruta.ktcp.model.err.ClientGenericErrArg\nimport net.kigawa.keruta.ktcp.model.err.KtcpErr\nimport net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListArg\nimport net.kigawa.keruta.ktcp.model.task.ServerTaskCreateArg\nimport net.kigawa.kodel.api.err.Res\n\ninterface ServerUnknownArg {\n    fun tryToGenericError(): Res<ClientGenericErrArg, KtcpErr>?\n    fun tryToAuthenticate(): Res<ServerAuthRequestArg, KtcpErr>?\n    fun tryToTaskCreate(): Res<ServerTaskCreateArg, KtcpErr>?\n    fun tryToProvidersRequest(): Res<ServerProviderListArg, KtcpErr>?\n}\n
+--Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+--<+>UTF-8
+--===================================================================
+--diff --git a/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/msg/server/ServerUnknownArg.kt b/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/msg/server/ServerUnknownArg.kt
+----- a/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/msg/server/ServerUnknownArg.kt	(revision c1f848928249b5701409fff5e0a6d983c7ccf2cd)
+--+++ b/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/msg/server/ServerUnknownArg.kt	(date 1769567765089)
+--@@ -4,6 +4,10 @@
+-- import net.kigawa.keruta.ktcp.model.err.ClientGenericErrArg
+-- import net.kigawa.keruta.ktcp.model.err.KtcpErr
+-- import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListArg
+--+import net.kigawa.keruta.ktcp.model.queue.create.ServerQueueCreateArg
+--+import net.kigawa.keruta.ktcp.model.queue.create.ServerQueueCreateMsg
+--+import net.kigawa.keruta.ktcp.model.queue.list.ServerQueueListArg
+--+import net.kigawa.keruta.ktcp.model.queue.list.ServerQueueListMsg
+-- import net.kigawa.keruta.ktcp.model.task.ServerTaskCreateArg
+-- import net.kigawa.kodel.api.err.Res
+-- 
+--@@ -12,4 +16,6 @@
+--     fun tryToAuthenticate(): Res<ServerAuthRequestArg, KtcpErr>?
+--     fun tryToTaskCreate(): Res<ServerTaskCreateArg, KtcpErr>?
+--     fun tryToProvidersRequest(): Res<ServerProviderListArg, KtcpErr>?
+--+    fun tryToQueueCreate(): Res<ServerQueueCreateMsg, KtcpErr>?
+--+    fun tryToQueueList(): Res<ServerQueueListMsg, KtcpErr>?
+-- }
+--Index: ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/queue/ReceiveQueueListEntrypoint.kt
+--IDEA additional info:
+--Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+--<+>UTF-8
+--===================================================================
+--diff --git a/ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/queue/ReceiveQueueListEntrypoint.kt b/ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/queue/ReceiveQueueListEntrypoint.kt
+--new file mode 100644
+----- /dev/null	(date 1769567765089)
+--+++ b/ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/queue/ReceiveQueueListEntrypoint.kt	(date 1769567765089)
+--@@ -0,0 +1,19 @@
+--+package net.kigawa.keruta.ktcp.server.queue
+--+
+--+import net.kigawa.keruta.ktcp.model.err.KtcpErr
+--+import net.kigawa.keruta.ktcp.model.queue.list.ServerQueueListEntrypoint
+--+import net.kigawa.keruta.ktcp.model.queue.list.ServerQueueListMsg
+--+import net.kigawa.keruta.ktcp.server.ServerCtx
+--+import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
+--+import net.kigawa.kodel.api.err.Res
+--+
+--+class ReceiveQueueListEntrypoint: ServerQueueListEntrypoint<ServerCtx> {
+--+    override fun access(
+--+        input: ServerQueueListMsg, ctx: ServerCtx,
+--+    ): EntrypointDeferred<Res<Unit, KtcpErr>> {
+--+        return EntrypointDeferred {
+--+            TODO()
+--+        }
+--+    }
+--+
+--+}
+--Index: ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/provider/SendProviderRequestEntrypoint.kt
+--IDEA additional info:
+--Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+--<+>UTF-8
+--===================================================================
+--diff --git a/ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/provider/SendProviderRequestEntrypoint.kt b/ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/provider/SendProviderListEntrypoint.kt
+--rename from ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/provider/SendProviderRequestEntrypoint.kt
+--rename to ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/provider/SendProviderListEntrypoint.kt
+----- a/ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/provider/SendProviderRequestEntrypoint.kt	(revision c1f848928249b5701409fff5e0a6d983c7ccf2cd)
+--+++ b/ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/provider/SendProviderListEntrypoint.kt	(date 1769567765088)
+--@@ -8,7 +8,7 @@
+-- import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
+-- import net.kigawa.kodel.api.err.Res
+-- 
+---class SendProviderRequestEntrypoint: ServerProviderListEntrypoint<ClientCtx> {
+--+class SendProviderListEntrypoint: ServerProviderListEntrypoint<ClientCtx> {
+--     override fun access(
+--         input: ServerProviderListArg, ctx: ClientCtx,
+--     ): EntrypointDeferred<Res<Unit, KtcpClientErr>> = EntrypointDeferred {
+--Index: ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/queue/list/ServerQueueListEntrypoint.kt
+--IDEA additional info:
+--Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+--<+>package net.kigawa.keruta.ktcp.model.queue.list\n\nimport net.kigawa.keruta.ktcp.model.err.KtcpErr\nimport net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType\nimport net.kigawa.kodel.api.entrypoint.Entrypoint\nimport net.kigawa.kodel.api.entrypoint.EntrypointDeferred\nimport net.kigawa.kodel.api.entrypoint.EntrypointInfo\nimport net.kigawa.kodel.api.err.Res\n\ninterface ServerQueueListEntrypoint<C>: Entrypoint<ServerQueueListArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C> {\n    override val info: EntrypointInfo\n        get() = EntrypointInfo(\n            ServerMsgType.QUEUE_LIST.str, emptyList(),\n            \"キュー一覧要求メッセージ処理\"\n        )\n}\n
+--Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+--<+>UTF-8
+--===================================================================
+--diff --git a/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/queue/list/ServerQueueListEntrypoint.kt b/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/queue/list/ServerQueueListEntrypoint.kt
+----- a/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/queue/list/ServerQueueListEntrypoint.kt	(revision c1f848928249b5701409fff5e0a6d983c7ccf2cd)
+--+++ b/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/queue/list/ServerQueueListEntrypoint.kt	(date 1769567765089)
+--@@ -7,7 +7,7 @@
+-- import net.kigawa.kodel.api.entrypoint.EntrypointInfo
+-- import net.kigawa.kodel.api.err.Res
+-- 
+---interface ServerQueueListEntrypoint<C>: Entrypoint<ServerQueueListArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C> {
+--+interface ServerQueueListEntrypoint<C>: Entrypoint<ServerQueueListMsg, EntrypointDeferred<Res<Unit, KtcpErr>>, C> {
+--     override val info: EntrypointInfo
+--         get() = EntrypointInfo(
+--             ServerMsgType.QUEUE_LIST.str, emptyList(),
+--Index: ktcl-front/app/routes/providers.tsx
+--IDEA additional info:
+--Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+--<+>// noinspection JSUnusedGlobalSymbols\nimport useWsReceive from \"../components/websocket/useWsReceive\";\nimport {useWsState} from \"../components/websocket/Websocket\";\nimport {useEffect, useState} from \"react\";\nimport {ClientProviderListMsg, ServerProvidersRequestMsg} from \"../msg/provider\";\nimport {useKerutaTaskState} from \"../components/KerutaTask\";\n\ntype Provider = ClientProviderListMsg[\"providers\"][0]\nexport default function AboutRoute() {\n    const wsState = useWsState()\n    const [providers, setProviders] = useState<Provider[]>()\n    const kerutaState = useKerutaTaskState()\n    useWsReceive(wsState, msg => {\n        if (msg.type != \"provider_list\") return\n        setProviders(msg.providers)\n    }, [])\n    useEffect(() => {\n        if (wsState.state != \"open\") return\n        if (kerutaState.state != \"connected\") return;\n        if (kerutaState.auth.state != \"authenticated\") return;\n        const msg: ServerProvidersRequestMsg = {\n            type: \"providers_request\"\n        }\n        wsState.websocket.send(JSON.stringify(msg))\n    }, [wsState.state, kerutaState.state == \"connected\" && kerutaState.auth.state]);\n    return <div>{\n        providers?.map(p => <div key={p.id}>{p.name}</div>)\n    }</div>\n}\n
+--Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+--<+>UTF-8
+--===================================================================
+--diff --git a/ktcl-front/app/routes/providers.tsx b/ktcl-front/app/routes/providers.tsx
+----- a/ktcl-front/app/routes/providers.tsx	(revision c1f848928249b5701409fff5e0a6d983c7ccf2cd)
+--+++ b/ktcl-front/app/routes/providers.tsx	(date 1769567765088)
+--@@ -11,7 +11,7 @@
+--     const [providers, setProviders] = useState<Provider[]>()
+--     const kerutaState = useKerutaTaskState()
+--     useWsReceive(wsState, msg => {
+---        if (msg.type != "provider_list") return
+--+        if (msg.type != "provider_listed") return
+--         setProviders(msg.providers)
+--     }, [])
+--     useEffect(() => {
+--@@ -19,7 +19,7 @@
+--         if (kerutaState.state != "connected") return;
+--         if (kerutaState.auth.state != "authenticated") return;
+--         const msg: ServerProvidersRequestMsg = {
+---            type: "providers_request"
+--+            type: "provider_list"
+--         }
+--         wsState.websocket.send(JSON.stringify(msg))
+--     }, [wsState.state, kerutaState.state == "connected" && kerutaState.auth.state]);
+--Index: ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/KtcpClientEntrypoints.kt
+--IDEA additional info:
+--Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+--<+>package net.kigawa.keruta.ktcp.model\n\nimport net.kigawa.keruta.ktcp.model.auth.sccess.ClientAuthSuccessEntrypoint\nimport net.kigawa.keruta.ktcp.model.err.ClientGenericErrEntrypoint\nimport net.kigawa.keruta.ktcp.model.err.EntrypointNotFoundErr\nimport net.kigawa.keruta.ktcp.model.err.KtcpErr\nimport net.kigawa.keruta.ktcp.model.msg.client.ClientUnknownArg\nimport net.kigawa.keruta.ktcp.model.provider.listed.ClientProviderListedEntrypoint\nimport net.kigawa.keruta.ktcp.model.queue.created.ClientQueueCreatedEntrypoint\nimport net.kigawa.kodel.api.entrypoint.EntrypointDeferred\nimport net.kigawa.kodel.api.entrypoint.EntrypointGroupBase\nimport net.kigawa.kodel.api.entrypoint.EntrypointInfo\nimport net.kigawa.kodel.api.err.Res\nimport net.kigawa.kodel.api.err.whenErrOk\nimport net.kigawa.kodel.api.log.LoggerFactory\nimport net.kigawa.kodel.api.log.traceignore.error\nimport kotlin.time.ExperimentalTime\n\n@Suppress(\"unused\")\nclass KtcpClientEntrypoints<C>(\n    genericErrEntrypoint: ClientGenericErrEntrypoint<C>,\n    authSuccessEntrypoint: ClientAuthSuccessEntrypoint<C>,\n    providerListEntrypoint: ClientProviderListedEntrypoint<C>,\n    queueCreatedEntrypoint: ClientQueueCreatedEntrypoint<C>,\n): EntrypointGroupBase<ClientUnknownArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C>() {\n    val logger = LoggerFactory.get(\"net.kigawa.keruta.ktcp.model.KtcpClientEntrypoints\")\n    override val info: EntrypointInfo = EntrypointInfo(\n        \"ktcp-client\",\n        listOf(),\n        \"\"\n    )\n    val genericError = add(\n        genericErrEntrypoint\n    ) { input ->\n        input.tryToGenericError()?.whenErrOk(\n            { EntrypointDeferred { Res.Err(it) } }\n        ) {\n            this(it)\n        }\n    }\n    val authSuccess = add(authSuccessEntrypoint) { input ->\n        input.tryToAuthSuccess()?.whenErrOk(\n            { EntrypointDeferred { Res.Err(it) } }\n        ) {\n            this(it)\n        }\n    }\n    val providerList = add(providerListEntrypoint) { input ->\n        input.tryToProviderList()?.whenErrOk(\n            { EntrypointDeferred { Res.Err(it) } }\n        ) {\n            this(it)\n        }\n    }\n    val queueCreated = add(queueCreatedEntrypoint) { input ->\n        input.tryToQueueCreated()?.whenErrOk(\n            { EntrypointDeferred { Res.Err(it) } }\n        ) {\n            this(it)\n        }\n    }\n\n    @OptIn(ExperimentalTime::class)\n    override fun onSubEntrypointNotFound(\n        input: ClientUnknownArg,\n    ): EntrypointDeferred<Res<Unit, KtcpErr>> {\n        logger.error(\"not found entrypoint: $input\")\n        return EntrypointDeferred {\n            Res.Err(\n                EntrypointNotFoundErr(\n                    \"No entrypoint found for message type: $input\",\n                    null\n                )\n            )\n        }\n    }\n\n\n}\n
+--Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+--<+>UTF-8
+--===================================================================
+--diff --git a/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/KtcpClientEntrypoints.kt b/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/KtcpClientEntrypoints.kt
+----- a/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/KtcpClientEntrypoints.kt	(revision c1f848928249b5701409fff5e0a6d983c7ccf2cd)
+--+++ b/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/KtcpClientEntrypoints.kt	(date 1769567765088)
+--@@ -7,6 +7,7 @@
+-- import net.kigawa.keruta.ktcp.model.msg.client.ClientUnknownArg
+-- import net.kigawa.keruta.ktcp.model.provider.listed.ClientProviderListedEntrypoint
+-- import net.kigawa.keruta.ktcp.model.queue.created.ClientQueueCreatedEntrypoint
+--+import net.kigawa.keruta.ktcp.model.queue.listed.ClientQueueListedEntrypoint
+-- import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
+-- import net.kigawa.kodel.api.entrypoint.EntrypointGroupBase
+-- import net.kigawa.kodel.api.entrypoint.EntrypointInfo
+--@@ -22,6 +23,7 @@
+--     authSuccessEntrypoint: ClientAuthSuccessEntrypoint<C>,
+--     providerListEntrypoint: ClientProviderListedEntrypoint<C>,
+--     queueCreatedEntrypoint: ClientQueueCreatedEntrypoint<C>,
+--+    queueListedEntrypoint: ClientQueueListedEntrypoint<C>,
+-- ): EntrypointGroupBase<ClientUnknownArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C>() {
+--     val logger = LoggerFactory.get("net.kigawa.keruta.ktcp.model.KtcpClientEntrypoints")
+--     override val info: EntrypointInfo = EntrypointInfo(
+--@@ -59,6 +61,13 @@
+--             this(it)
+--         }
+--     }
+--+    val queueListed = add(queueListedEntrypoint) { input ->
+--+        input.tryToQueueListed()?.whenErrOk(
+--+            { EntrypointDeferred { Res.Err(it) } }
+--+        ) {
+--+            this(it)
+--+        }
+--+    }
+-- 
+--     @OptIn(ExperimentalTime::class)
+--     override fun onSubEntrypointNotFound(
+--Index: ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/queue/create/ServerQueueCreateEntrypoint.kt
+--IDEA additional info:
+--Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+--<+>package net.kigawa.keruta.ktcp.model.queue.create\n\nimport net.kigawa.keruta.ktcp.model.err.KtcpErr\nimport net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType\nimport net.kigawa.kodel.api.entrypoint.Entrypoint\nimport net.kigawa.kodel.api.entrypoint.EntrypointDeferred\nimport net.kigawa.kodel.api.entrypoint.EntrypointInfo\nimport net.kigawa.kodel.api.err.Res\n\ninterface ServerQueueCreateEntrypoint<C>: Entrypoint<ServerQueueCreateArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C> {\n    override val info: EntrypointInfo\n        get() = EntrypointInfo(\n            ServerMsgType.QUEUE_CREATE.str, emptyList(),\n            \"キュー作成メッセージ処理\"\n        )\n}\n
+--Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+--<+>UTF-8
+--===================================================================
+--diff --git a/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/queue/create/ServerQueueCreateEntrypoint.kt b/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/queue/create/ServerQueueCreateEntrypoint.kt
+----- a/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/queue/create/ServerQueueCreateEntrypoint.kt	(revision c1f848928249b5701409fff5e0a6d983c7ccf2cd)
+--+++ b/ktcp/model/src/commonMain/kotlin/net/kigawa/keruta/ktcp/model/queue/create/ServerQueueCreateEntrypoint.kt	(date 1769567765089)
+--@@ -7,7 +7,7 @@
+-- import net.kigawa.kodel.api.entrypoint.EntrypointInfo
+-- import net.kigawa.kodel.api.err.Res
+-- 
+---interface ServerQueueCreateEntrypoint<C>: Entrypoint<ServerQueueCreateArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C> {
+--+interface ServerQueueCreateEntrypoint<C>: Entrypoint<ServerQueueCreateMsg, EntrypointDeferred<Res<Unit, KtcpErr>>, C> {
+--     override val info: EntrypointInfo
+--         get() = EntrypointInfo(
+--             ServerMsgType.QUEUE_CREATE.str, emptyList(),
+Index: .idea/shelf/2026_02_09_9_38______.xml
+===================================================================
+diff --git a/.idea/shelf/2026_02_09_9_38______.xml b/.idea/shelf/2026_02_09_9_38______.xml
+deleted file mode 100644
+--- a/.idea/shelf/2026_02_09_9_38______.xml	(revision 3d1fc5a5624ec1ccbb55c117c00f1aad5df89be7)
++++ /dev/null	(revision 3d1fc5a5624ec1ccbb55c117c00f1aad5df89be7)
+@@ -1,4 +0,0 @@
+-<changelist name="2026_02_09_9_38_の_更新_前の未コミットの変更_[変更]" date="1770597532598" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/2026_02_09_9_38_の_更新_前の未コミットの変更_[変更]/shelved.patch" />
+-  <option name="DESCRIPTION" value="2026/02/09 9:38 の 更新 前の未コミットの変更 [変更]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"VcsDirectoryMappings\">\n    <mapping directory=\"\" vcs=\"Git\" />\n    <mapping directory=\"$PROJECT_DIR$/keruta-coder-template\" vcs=\"Git\" />\n    <mapping directory=\"$PROJECT_DIR$/kigawa-net-k8s\" vcs=\"Git\" />\n    <mapping directory=\"$PROJECT_DIR$/kigawa-net-k8s/fonsole-doc\" vcs=\"Git\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+--- a/.idea/vcs.xml	(revision 3d1fc5a5624ec1ccbb55c117c00f1aad5df89be7)
++++ b/.idea/vcs.xml	(date 1771296596579)
+@@ -2,8 +2,5 @@
+ <project version="4">
+   <component name="VcsDirectoryMappings">
+     <mapping directory="" vcs="Git" />
+-    <mapping directory="$PROJECT_DIR$/keruta-coder-template" vcs="Git" />
+-    <mapping directory="$PROJECT_DIR$/kigawa-net-k8s" vcs="Git" />
+-    <mapping directory="$PROJECT_DIR$/kigawa-net-k8s/fonsole-doc" vcs="Git" />
+   </component>
+ </project>
+\ No newline at end of file

@@ -8,6 +8,7 @@ repositories {
     gradlePluginPortal()
 }
 kotlin {
+    jvmToolchain(25)
     compilerOptions {
         freeCompilerArgs = listOf("-Xcontext-parameters")
     }

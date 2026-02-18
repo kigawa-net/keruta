@@ -1,13 +1,15 @@
 import PrivateRoute from "../components/PrivateRoute";
-import {useEffect, useState} from "react";
-import {useWsState, WebsocketState} from "../components/websocket/Websocket";
-import {KerutaTaskState, useKerutaTaskState} from "../components/KerutaTask";
+import { useEffect, useState } from "react";
+import { useWsState } from "../components/useServiceHooks";
+import type { WsState } from "../components/useWebSocketConnection";
+import { useKerutaTaskState } from "../components/AppContext";
+import type { KerutaTaskState } from "../components/AppContext";
 import useWsReceive from "../components/websocket/useWsReceive";
-import {ClientTaskListedMsg, ServerTaskListMsg} from "../msg/task";
-import {ClientQueueListedMsg, ServerQueueListMsg} from "../msg/queue";
-import {QueueTaskCreateForm} from "../components/task/QueueTaskCreateForm";
-import {QueueTaskList} from "../components/task/QueueTaskList";
-import {Route} from "../../.react-router/types/app/routes/+types/queue.$queueId";
+import { ClientTaskListedMsg, ServerTaskListMsg } from "../msg/task";
+import { ClientQueueListedMsg, ServerQueueListMsg } from "../msg/queue";
+import { QueueTaskCreateForm } from "../components/task/QueueTaskCreateForm";
+import { QueueTaskList } from "../components/task/QueueTaskList";
+import { Route } from "../../.react-router/types/app/routes/+types/queue.$queueId";
 
 
 type Task = ClientTaskListedMsg["tasks"][0]
@@ -37,7 +39,7 @@ export default function Page({params: {queueId}}: Route.ComponentProps) {
 
     useEffect(() => {
         loadTaskList(wsState, kerutaState, Number(queueId))
-        loadQueueList(wsState, kerutaState, Number(queueId))
+        loadQueueList(wsState, kerutaState)
     }, [wsState.state, kerutaState.state === "connected" && kerutaState.auth.state, queueId])
 
     const currentQueue = queues.find(q => q.id === Number(queueId))
@@ -69,7 +71,7 @@ export default function Page({params: {queueId}}: Route.ComponentProps) {
     )
 }
 
-function loadTaskList(wsState: WebsocketState, kerutaState: KerutaTaskState, queueId: number) {
+function loadTaskList(wsState: WsState, kerutaState: KerutaTaskState, queueId: number) {
     if (wsState.state !== "open") return
     if (kerutaState.state !== "connected") return
     if (kerutaState.auth.state !== "authenticated") return
@@ -81,7 +83,7 @@ function loadTaskList(wsState: WebsocketState, kerutaState: KerutaTaskState, que
     wsState.websocket.send(JSON.stringify(msg))
 }
 
-function loadQueueList(wsState: WebsocketState, kerutaState: KerutaTaskState, queueId: number) {
+function loadQueueList(wsState: WsState, kerutaState: KerutaTaskState) {
     if (wsState.state !== "open") return
     if (kerutaState.state !== "connected") return
     if (kerutaState.auth.state !== "authenticated") return

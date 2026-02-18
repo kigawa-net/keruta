@@ -7,6 +7,7 @@ import net.kigawa.keruta.ktcl.k8s.config.AppConfig
 import net.kigawa.keruta.ktcl.k8s.web.auth.AuthConfig
 import net.kigawa.keruta.ktcl.k8s.web.auth.OidcDiscoveryFetcher
 import net.kigawa.keruta.ktcl.k8s.web.login.LoginRoute
+import net.kigawa.keruta.ktcl.k8s.web.login.TokenRoute
 import net.kigawa.keruta.ktcl.k8s.web.routes.ConfigRoutes
 import net.kigawa.keruta.ktcl.k8s.web.routes.StaticRoutes
 
@@ -23,10 +24,12 @@ class RouteModule {
         val jwkProvider = auth.createJwkProvider(keycloakConfig.jwksUrl)
         val configRoutes = ConfigRoutes(jwkProvider, keycloakConfig, appConfig)
         val loginRoute = LoginRoute(oidcDiscoveryFetcher, pkceGenerator, idpConfig)
+        val tokenRoute = TokenRoute(oidcDiscoveryFetcher, idpConfig)
         application.routing {
             configRoutes.configureConfigRoutes(this)
             staticRoutes.configure(this)
             loginRoute.configure(this)
+            tokenRoute.configure(this)
         }
     }
 }

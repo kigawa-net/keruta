@@ -1,7 +1,7 @@
-import {useCallback} from "react";
-import {WsState} from "../websocket/Websocket";
+import { useCallback } from "react";
+import { WsState } from "../ServiceContext";
 import useWsReceive from "../websocket/useWsReceive";
-import {ClientProviderAddTokenMsg} from "../../msg/provider";
+import { ClientProviderAddTokenMsg } from "../../msg/provider";
 
 export type ProviderAddCallback = (msg: ClientProviderAddTokenMsg) => void;
 

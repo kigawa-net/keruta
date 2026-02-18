@@ -7,7 +7,6 @@ import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListMsg
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktcp.server.err.ResponseErr
 import net.kigawa.keruta.ktcp.server.err.UnauthenticatedErr
-import net.kigawa.kodel.api.dump.dump
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.LoggerFactory
@@ -26,7 +25,7 @@ class ReceiveProviderListEntrypoint: ServerProviderListEntrypoint<ServerCtx> {
             when (val res = authed.persisterSession.getProviders()) {
                 is Res.Err -> res.convert()
                 is Res.Ok -> {
-                    logger.debug("providers: ${res.value.dump}")
+                    logger.debug("providers: ${res.value.map { it.name }}")
                     ctx.server.clientEntrypoints.providerList.access(
                         ClientProviderListedMsg(
                             providers = res.value.map { it.asProviderListProvider() }

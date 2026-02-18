@@ -7,9 +7,9 @@ import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.entrypoint.EntrypointInfo
 import net.kigawa.kodel.api.err.Res
 
-interface ServerProviderAddEntrypoint<C> : Entrypoint<ServerProviderAddMsg, EntrypointDeferred<Res<Unit, KtcpErr>>, C> {
+interface ServerProviderRegisterTokenEntrypoint<C> : Entrypoint<ServerProviderAddMsg, EntrypointDeferred<Res<Unit, KtcpErr>>, C> {
     override val info: EntrypointInfo
         get() = EntrypointInfo(
-            ServerMsgType.PROVIDER_ADD.str, emptyList(), "プロバイダー追加メッセージ処理"
+            ServerMsgType.PROVIDER_ADD.str, emptyList(), "プロバイダートークン登録メッセージ処理"
         )
 }

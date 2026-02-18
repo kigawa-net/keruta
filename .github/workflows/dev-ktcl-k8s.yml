@@ -9,6 +9,11 @@ on:
       - .github/workflows/dev-ktcl-front.yml
       - .github/workflows/dev-ktse.yml
       - .idea/**
+      - ktcl-claudecode/**
+      - ktcl-front/**
+      - ktcl-front-mobile/**
+      - ktcp/server/**
+      - ktse/**
     branches:
       - develop
 

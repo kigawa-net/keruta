@@ -8,8 +8,9 @@ typealias State = String
 typealias Nonce = String
 
 @Serializable
-class Pkce(
+data class Pkce(
     val codeVerifier: CodeVerifier,
-    val codeChallenge: CodeChallenge, val state: State,
+    val codeChallenge: CodeChallenge,
+    val state: State,
     val nonce: Nonce,
 )

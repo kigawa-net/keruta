@@ -1,8 +1,8 @@
-import {useEffect, useState} from "react";
-import {useWsState} from "../websocket/Websocket";
-import FormTextInput, {InputValue} from "../form/FormTextInput";
+import { useEffect, useState } from "react";
+import { useWsState } from "../useServiceHooks";
+import FormTextInput, { InputValue } from "../form/FormTextInput";
 import FormErrMsg from "../form/FormErrMsg";
-import {ServerTaskCreateMsg} from "../../msg/task";
+import { ServerTaskCreateMsg } from "../../msg/task";
 
 interface QueueTaskCreateFormProps {
     queueId: string;

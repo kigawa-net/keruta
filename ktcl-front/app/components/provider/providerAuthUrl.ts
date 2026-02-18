@@ -1,33 +1,18 @@
-import {ClientProviderAddTokenMsg} from "../../msg/provider";
+import { Url } from "../../utils/Url";
+import { ClientProviderAddTokenMsg } from "../../msg/provider";
 
 interface ProviderAuthUrlParams {
-    authorizationEndpoint: string;
-    audience: string;
-    token: string;
+  login: string;
+  token: string;
 }
 
-export function buildProviderAuthUrl(
-    {authorizationEndpoint, audience, token}: ProviderAuthUrlParams,
-): URL {
-    // 末尾のスラッシュを削除して正規化
-    const normalizedEndpoint = authorizationEndpoint.replace(/\/$/, "");
-    const url = new URL(normalizedEndpoint);
-    url.searchParams.set("state", token);
-    url.searchParams.set("redirect_uri", `${window.location.origin}/provider/complete`);
-    url.searchParams.set("client_id", audience);
-    url.searchParams.set("response_type", "code");
-    url.searchParams.set("scope", "openid");
-    return url;
+export function buildProviderAuthUrl({ login, token }: ProviderAuthUrlParams): Url {
+  return Url.parse(login).setQueryParam("token", token);
 }
 
-export function buildProviderAuthUrlFromMsg(
-    authorizationEndpoint: string,
-    audience: string,
-    msg: ClientProviderAddTokenMsg,
-): URL {
-    return buildProviderAuthUrl({
-        authorizationEndpoint,
-        audience,
-        token: msg.token,
-    });
+export function buildProviderAuthUrlFromMsg(login: string, msg: ClientProviderAddTokenMsg): Url {
+  return buildProviderAuthUrl({
+    login,
+    token: msg.token,
+  });
 }

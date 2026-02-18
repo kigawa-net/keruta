@@ -1,6 +1,5 @@
 package net.kigawa.keruta.ktcl.k8s.entrypoint
 
-import kotlinx.coroutines.launch
 import net.kigawa.keruta.ktcl.k8s.task.TaskExecutor
 import net.kigawa.keruta.ktcp.client.ClientCtx
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
