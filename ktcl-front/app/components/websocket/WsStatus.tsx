@@ -1,4 +1,4 @@
-import {useKerutaTaskState} from "../AppContext";
+import {useKerutaTaskState} from "../hooks";
 
 export default function WsStatus(
     {}: {},
@@ -12,7 +12,7 @@ export default function WsStatus(
             color: isConnected ? '#155724' : '#721c24',
             borderRadius: '4px',
         }}>
-            Status: {isConnected ? 'Connected' : 'Disconnected'}
+            Status: {keruta.state}, {keruta.state == "connected" ? keruta.auth.state : "unauth"}
         </div>
     )
 }
