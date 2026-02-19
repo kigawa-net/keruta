@@ -9,7 +9,7 @@ data class ServerProviderListMsg(
 
 @Serializable
 data class Provider(
-    val id: String,
+    val id: Long,
     val name: String,
     val issuer: String,
     val audience: String,

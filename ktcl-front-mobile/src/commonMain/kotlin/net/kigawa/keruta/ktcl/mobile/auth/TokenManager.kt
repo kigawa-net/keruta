@@ -81,4 +81,9 @@ class TokenManager(
             Result.failure(e)
         }
     }
+
+    /**
+     * サーバートークンを取得する（publicバージョン）
+     */
+    suspend fun getServerToken(userToken: String): Result<String> = fetchServerToken(userToken)
 }

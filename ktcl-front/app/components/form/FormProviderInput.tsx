@@ -37,7 +37,7 @@ export default function FormProviderInput(
             type: "provider_list",
         }
         wsState.websocket.send(JSON.stringify(res))
-    }, [wsState.state, keruta.state == "connected" && keruta.auth.state]);
+    }, [wsState.state, keruta.state, keruta.auth.state]);
     return (
         <div>
             <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-2">

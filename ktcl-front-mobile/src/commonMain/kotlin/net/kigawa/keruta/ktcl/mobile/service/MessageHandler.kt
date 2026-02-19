@@ -1,12 +1,11 @@
-package net.kigawa.keruta.ktcl.mobile.task
+package net.kigawa.keruta.ktcl.mobile.service
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import net.kigawa.keruta.ktcl.mobile.connection.MobileKtcpConnection
-import net.kigawa.keruta.ktcl.mobile.msg.queue.ClientQueueCreatedMsg
+import net.kigawa.keruta.ktcl.mobile.msg.provider.ClientProviderListMsg
 import net.kigawa.keruta.ktcl.mobile.msg.queue.ClientQueueListedMsg
 import net.kigawa.keruta.ktcl.mobile.msg.task.ClientTaskCreatedMsg
 import net.kigawa.keruta.ktcl.mobile.msg.task.ClientTaskListedMsg
@@ -14,21 +13,30 @@ import net.kigawa.keruta.ktcl.mobile.msg.task.ClientTaskMovedMsg
 import net.kigawa.keruta.ktcl.mobile.msg.task.ClientTaskUpdatedMsg
 import net.kigawa.keruta.ktcl.mobile.provider.ProviderRepository
 import net.kigawa.keruta.ktcl.mobile.queue.QueueRepository
+import net.kigawa.keruta.ktcl.mobile.task.TaskRepository
 
-class TaskReceiver(
-    private val connection: MobileKtcpConnection,
-    private val taskRepository: TaskRepository,
+class MessageHandler(
+    private val messageSender: MessageSender,
     private val queueRepository: QueueRepository,
+    private val taskRepository: TaskRepository,
     private val providerRepository: ProviderRepository,
     private val scope: CoroutineScope,
 ) {
     private val json = Json { ignoreUnknownKeys = true }
 
-    fun startReceiving() {
+    fun start() {
         scope.launch {
-            while (true) {
-                val message = connection.receive() ?: continue
-                handleMessage(message)
+            messageSender.connection.collect { connection ->
+                if (connection != null) {
+                    println("=== MessageHandler: connection established, collecting messages ===")
+                    // Use the connection's messages flow
+                    launch {
+                        connection.messages.collect { message ->
+                            println("=== MessageHandler: received from flow: $message ===")
+                            handleMessage(message)
+                        }
+                    }
+                }
             }
         }
     }
@@ -37,42 +45,47 @@ class TaskReceiver(
         try {
             val jsonElement = json.parseToJsonElement(message)
             val type = jsonElement.jsonObject["type"]?.jsonPrimitive?.content
+            println("=== MessageHandler: message type: $type ===")
 
             when (type) {
                 "task_listed" -> {
                     val msg = json.decodeFromString<ClientTaskListedMsg>(message)
+                    println("=== MessageHandler: got ${msg.tasks.size} tasks ===")
                     taskRepository.updateTasks(msg.tasks)
                 }
                 "task_created" -> {
                     val msg = json.decodeFromString<ClientTaskCreatedMsg>(message)
-                    println("タスク作成成功: ID=${msg.id}")
+                    println("=== MessageHandler: task created: ${msg.id} ===")
                 }
                 "task_updated" -> {
                     val msg = json.decodeFromString<ClientTaskUpdatedMsg>(message)
+                    println("=== MessageHandler: task updated: ${msg.id} ===")
                     taskRepository.updateTask(msg.id) { task ->
                         task.copy(status = msg.status)
                     }
                 }
                 "task_moved" -> {
                     val msg = json.decodeFromString<ClientTaskMovedMsg>(message)
+                    println("=== MessageHandler: task moved: ${msg.taskId} ===")
                     taskRepository.removeTask(msg.taskId)
-                }
-                "queue_created" -> {
-                    val msg = json.decodeFromString<ClientQueueCreatedMsg>(message)
-                    println("キュー作成成功: ID=${msg.queueId}")
                 }
                 "queue_listed" -> {
                     val msg = json.decodeFromString<ClientQueueListedMsg>(message)
+                    println("=== MessageHandler: got ${msg.queues.size} queues ===")
                     queueRepository.updateQueues(msg.queues)
                 }
                 "provider_listed" -> {
-                    val msg = json.decodeFromString<net.kigawa.keruta.ktcl.mobile.msg.provider.ClientProviderListMsg>(message)
+                    val msg = json.decodeFromString<ClientProviderListMsg>(message)
+                    println("=== MessageHandler: got ${msg.providers.size} providers ===")
                     providerRepository.updateProviders(msg.providers)
                 }
-                else -> println("不明なメッセージタイプ: $type")
+                "auth_success" -> {
+                    println("=== MessageHandler: authentication successful ===")
+                }
+                else -> println("=== MessageHandler: unknown message type: $type ===")
             }
         } catch (e: Exception) {
-            println("メッセージ処理エラー: ${e.message}")
+            println("=== MessageHandler: error: ${e.message} ===")
         }
     }
 }

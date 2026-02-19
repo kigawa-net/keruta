@@ -7,6 +7,7 @@ import kotlinx.serialization.json.Json
 import net.kigawa.keruta.ktcl.mobile.auth.AuthState
 import net.kigawa.keruta.ktcl.mobile.auth.TokenPair
 import net.kigawa.keruta.ktcl.mobile.msg.auth.ServerAuthenticateMsg
+import net.kigawa.keruta.ktcl.mobile.msg.auth.ServerAuthRequestMsg
 
 class AuthService(
     private val messageSender: MessageSender,
@@ -14,7 +15,10 @@ class AuthService(
     private val _authState = MutableStateFlow<AuthState>(AuthState.Unauthenticated)
     val authState: StateFlow<AuthState> = _authState.asStateFlow()
 
-    private val json = Json { ignoreUnknownKeys = true }
+    private val json = Json {
+        ignoreUnknownKeys = true
+        encodeDefaults = true
+    }
 
     fun setAuthenticating() {
         _authState.value = AuthState.Authenticating
@@ -34,7 +38,7 @@ class AuthService(
 
     suspend fun sendAuthentication(userToken: String, serverToken: String) {
         val connection = messageSender.connection.value ?: return
-        val msg = ServerAuthenticateMsg(userToken = userToken, serverToken = serverToken)
+        val msg = ServerAuthRequestMsg(userToken = userToken, serverToken = serverToken)
         connection.send(json.encodeToString(msg))
     }
 }

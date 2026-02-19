@@ -39,6 +39,7 @@ fun QueueListScreen(
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(Unit) {
+        println("=== QueueListScreen: LaunchedEffect triggered ===")
         viewModel.loadQueues()
     }
 

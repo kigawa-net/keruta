@@ -24,7 +24,7 @@ export default function SidebarQueueButtons(
             type: "queue_list",
         }
         wsState.websocket.send(JSON.stringify(msg))
-    }, [wsState, keruta.state == "connected" && keruta.auth.state]);
+    }, [wsState, keruta.state, keruta.auth.state]);
     return queues.map(value =>
         <li key={value.id}>
             <Link

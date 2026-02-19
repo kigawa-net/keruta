@@ -73,7 +73,7 @@ fun QueueCreateScreen(
 
         val providerItems = state.providers.map { provider ->
             DropdownItem(
-                value = provider.id.toLongOrNull() ?: 0L,
+                value = provider.id,
                 label = provider.name,
             )
         }

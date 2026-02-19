@@ -15,7 +15,10 @@ class MessageSender {
     private val _connection = MutableStateFlow<MobileKtcpConnection?>(null)
     val connection: StateFlow<MobileKtcpConnection?> = _connection.asStateFlow()
 
-    private val json = Json { ignoreUnknownKeys = true }
+    private val json = Json {
+        ignoreUnknownKeys = true
+        encodeDefaults = true
+    }
 
     fun setConnection(connection: MobileKtcpConnection?) {
         _connection.value = connection

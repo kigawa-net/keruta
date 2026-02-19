@@ -11,11 +11,11 @@ data class MobileConfig(
     companion object {
         fun default(): MobileConfig {
             return MobileConfig(
-                websocketUrl = "ws://localhost:8080/ws/ktcp",
+                websocketUrl = "wss://ktse-dev.kigawa.net/ws/ktcp",
                 keycloakUrl = "https://user.kigawa.net/",
                 keycloakRealm = "develop",
                 keycloakClientId = "keruta",
-                apiBaseUrl = "http://localhost:5173/",
+                apiBaseUrl = "https://keruta-dev.kigawa.net/",
                 ktseAudience = "keruta",
             )
         }
