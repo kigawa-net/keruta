@@ -1,4 +1,4 @@
-import { WsState } from "../ServiceContext";
+import { WsState } from "./useWebSocketConnection";
 import { useCallback, useEffect } from "react";
 import { ReceiveMsg } from "../../msg/msg";
 

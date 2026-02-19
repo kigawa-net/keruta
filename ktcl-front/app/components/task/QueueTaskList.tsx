@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTaskService } from "../AppContext";
+import { useTaskService } from "./useTaskService";
 import { Task } from "./types";
 import { TaskListHeader } from "./TaskListHeader";
 import { TaskListTable } from "./TaskListTable";

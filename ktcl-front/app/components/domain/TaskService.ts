@@ -1,11 +1,11 @@
 import { TaskMessageService } from "../api";
-import { ReceiveMsg } from "../../msg/msg";
+import { ReceiveMsg } from "../msg/msg";
 import {
   ClientTaskCreatedMsg,
   ClientTaskListedMsg,
   ClientTaskUpdatedMsg,
   ClientTaskMovedMsg,
-} from "../../msg/task";
+} from "../msg/task";
 import { Task, CreateTaskInput, UpdateTaskInput, MoveTaskInput } from "./TaskTypes";
 
 /** タスク関連のビジネスロジックを管理するドメインサービス */

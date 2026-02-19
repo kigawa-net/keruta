@@ -1,3 +1,3 @@
-import {ClientTaskListedMsg} from "../../msg/task";
+import {ClientTaskListedMsg} from "../msg/task";
 
 export type Task = ClientTaskListedMsg["tasks"][0];

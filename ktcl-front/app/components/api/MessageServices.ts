@@ -1,19 +1,19 @@
 import { WebSocketService } from "./WebSocketService";
-import { ServerAuthRequestMsg } from "../../msg/auth";
+import { ServerAuthRequestMsg } from "../msg/auth";
 import {
   ServerTaskCreateMsg,
   ServerTaskListMsg,
   ServerTaskShowMsg,
   ServerTaskUpdateMsg,
   ServerTaskMoveMsg,
-} from "../../msg/task";
-import { ServerQueueCreateMsg, ServerQueueListMsg } from "../../msg/queue";
+} from "../msg/task";
+import { ServerQueueCreateMsg, ServerQueueListMsg } from "../msg/queue";
 import {
   ServerProviderListMsg,
   ServerProviderAddMsg,
   ServerProviderCompleteMsg,
   ServerProviderDeleteMsg,
-} from "../../msg/provider";
+} from "../msg/provider";
 
 /** 認証メッセージ送信サービス */
 export class AuthMessageService {

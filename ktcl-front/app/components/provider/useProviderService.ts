@@ -1,5 +1,5 @@
-import { useAppState } from "./useAppState";
-import type { ProviderService } from "../../services";
+import { useAppState } from "../app/useAppState";
+import type { ProviderService } from "../domain";
 
 /**
  * ProviderService を取得するフック

@@ -1,11 +1,11 @@
 import FormErrMsg from "./FormErrMsg";
 import {InputValue} from "./FormTextInput";
 import {useEffect, useState} from "react";
-import {ClientProviderListMsg, ServerProviderListMsg} from "../../msg/provider";
-import useWsReceive from "../websocket/useWsReceive";
+import {ClientProviderListMsg, ServerProviderListMsg} from "../msg/provider";
+import useWsReceive from "../net/websocket/useWsReceive";
 
-import {useKerutaTaskState} from "../AppContext";
-import {useWsState} from "../useServiceHooks";
+import {useKerutaTaskState} from "../app/AppContext";
+import {useWsState} from "../service/useServiceHooks";
 
 
 type Provider = ClientProviderListMsg["providers"][0]

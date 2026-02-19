@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { ServiceContext } from "./ServiceContext";
-import type { WsState } from "./useWebSocketConnection";
+import type { WsState } from "../net/websocket/useWebSocketConnection";
 import type {
   ApiService,
   AuthMessageService,
@@ -9,7 +9,7 @@ import type {
   TaskMessageService,
   TokenApiService,
   WebSocketService,
-} from "../services";
+} from "../api";
 
 export function useWsState(): WsState {
   const context = useContext(ServiceContext);

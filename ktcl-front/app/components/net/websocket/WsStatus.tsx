@@ -1,4 +1,4 @@
-import {useKerutaTaskState} from "../hooks";
+import {useKerutaTaskState} from "../../hooks";
 
 export default function WsStatus(
     {}: {},

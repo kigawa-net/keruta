@@ -1,4 +1,4 @@
-import PrivateRoute from '../components/PrivateRoute'
+import PrivateRoute from '../components/auth/PrivateRoute'
 import TaskCreatePage from "../components/task/TaskCreatePage";
 
 // noinspection JSUnusedGlobalSymbols

@@ -5,8 +5,6 @@
         <option name="services">
           <list>
             <option value="test" />
-            <option value="all-tests" />
-            <option value="ktcl-front-test" />
           </list>
         </option>
         <option name="sourceFilePath" value="compose.test.yml" />

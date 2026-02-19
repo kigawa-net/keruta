@@ -1,5 +1,5 @@
 import {createContext, type ReactNode, useContext, useEffect, useState} from "react";
-import {useKeycloakState} from "./Keycloak";
+import {useKeycloakState} from "../auth/Keycloak";
 import type {KeycloakProfile} from "keycloak-js";
 
 

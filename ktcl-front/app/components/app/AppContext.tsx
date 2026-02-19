@@ -1,19 +1,19 @@
-import { createContext, ReactNode, useMemo } from "react";
+import { createContext, ReactNode, useCallback, useMemo } from "react";
 import {
   TaskService,
   QueueService,
   ProviderService,
   useConnectionStateService,
   useMessageRouterService,
-} from "../services";
+} from "../../services";
 import {
   useWsState,
   useTaskMessageService,
   useQueueMessageService,
   useProviderMessageService,
-} from "./useServiceHooks";
-import WsSender from "./websocket/WsSender";
-import type { KerutaTaskState } from "../services";
+} from "../service/useServiceHooks";
+import WsSender from "../net/websocket/WsSender";
+import type { KerutaTaskState } from "../../services";
 
 export interface AppState {
   kerutaState: KerutaTaskState;
@@ -41,7 +41,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
 
   // Connection state management
-  const kerutaState = useConnectionStateService(wsState);
+  const { kerutaState, setAuthState } = useConnectionStateService(wsState);
+
+  // Auth success callback
+  const onAuthSuccess = useCallback(() => {
+    setAuthState({ state: "authenticated" });
+  }, [setAuthState]);
 
   // Message routing
   useMessageRouterService({
@@ -50,6 +55,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     taskService: services.taskService,
     queueService: services.queueService,
     providerService: services.providerService,
+    onAuthSuccess,
   });
 
   const appState: AppState = {
@@ -68,7 +74,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 }
 
 // Re-export hooks from hooks/index.ts for backward compatibility
-export { useAppState, useKerutaTaskState, useTaskService, useQueueService, useProviderService } from "./hooks";
+export { useAppState, useKerutaTaskState, useTaskService, useQueueService, useProviderService } from "../hooks";
 
 // Re-export types for convenience
-export type { KerutaTaskState, ConnectedKerutaTaskState, AuthState } from "../services/ConnectionStateTypes";
+export type { KerutaTaskState, ConnectedKerutaTaskState, AuthState } from "../net/ConnectionStateTypes";

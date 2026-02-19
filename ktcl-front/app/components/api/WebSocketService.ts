@@ -1,4 +1,4 @@
-import { ReceiveMsg, SendMsgType } from "../../msg/msg";
+import { ReceiveMsg, SendMsgType } from "../msg/msg";
 import { WsConnectionOptions, WsConnectionState, MessageHandler } from "./WsTypes";
 
 /** WebSocket通信を抽象化するサービス */

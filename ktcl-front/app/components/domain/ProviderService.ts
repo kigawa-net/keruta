@@ -1,10 +1,10 @@
-import { ProviderMessageService } from "../api/MessageServices";
-import { ReceiveMsg } from "../../msg/msg";
+import { ProviderMessageService } from "../api";
+import { ReceiveMsg } from "../msg/msg";
 import {
   ClientProviderListMsg,
   ClientProviderAddTokenMsg,
   ClientProviderDeletedMsg,
-} from "../../msg/provider";
+} from "../msg/provider";
 import { Provider, CreateProviderInput, CompleteProviderInput } from "./ProviderTypes";
 import { validateCreateInput } from "./ProviderUtils";
 

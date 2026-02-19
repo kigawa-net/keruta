@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {Task} from '../../types/task';
+import {Task} from './task';
 import TaskHeader from './TaskHeader';
 import TaskSearchBar from './TaskSearchBar';
 import TaskTable from './TaskTable';
