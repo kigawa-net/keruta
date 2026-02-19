@@ -38,5 +38,3 @@ jobs:
         if: always()
       - run: docker compose -f compose.test.yml logs ktcl-front-build
         if: always()
-      - run: docker compose -f compose.test.yml logs gradle-all-tests
-        if: always()
