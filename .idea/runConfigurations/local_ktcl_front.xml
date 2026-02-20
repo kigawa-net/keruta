@@ -13,7 +13,7 @@
       <env name="USER_ISSUER" value="https://localhost:8082/realms/develop" />
       <env name="VITE_KEYCLOAK_CLIENT_ID" value="keruta" />
       <env name="VITE_KEYCLOAK_REALM" value="develop" />
-      <env name="VITE_KEYCLOAK_URL" value="https://user.kigawa.net/" />
+      <env name="VITE_KEYCLOAK_URL" value="http://localhost:8082/" />
       <env name="VITE_WEBSOCKET_URL" value="ws://localhost:8080/ws/ktcp" />
     </envs>
     <EXTENSION ID="com.intellij.javascript.debugger.execution.StartBrowserRunConfigurationExtension">

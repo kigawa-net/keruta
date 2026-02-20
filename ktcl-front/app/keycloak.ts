@@ -6,6 +6,7 @@ export const keycloakConfig: Keycloak.KeycloakConfig = {
     url: Config.keycloakUrl,
     realm: Config.keycloakRealm,
     clientId: Config.keycloakClientId,
+    pkceMethod: 'S256',
 }
 
 // Keycloakインスタンスの初期化

@@ -61,7 +61,9 @@ function initKeycloak(
     if (!keycloak.didInitialize) keycloak.init({
         onLoad: 'check-sso',
         silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
-        checkLoginIframe: false
+        checkLoginIframe: false,
+        pkceMethod: 'S256',
+        check3pCookies: false,
     }).then(value => {
         if (!value) {
             console.log("failed to initialize keycloak")
