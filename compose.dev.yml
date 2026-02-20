@@ -112,6 +112,19 @@ services:
     environment:
       ZOO_MY_ID: 3
       ZOO_SERVERS: server.1=zk-dev1:2888:3888;2181 server.2=zk-dev2:2888:3888;2181 server.3=zk-dev3:2888:3888;2181
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0
+    command: start-dev
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_DB=dev-file
+    ports:
+      - "8082:8080"
+    volumes:
+      - keycloak-data:/opt/keycloak/data
+    restart: unless-stopped
+
 networks:
   zknet:
   tidbnet:
@@ -124,3 +137,4 @@ volumes:
   zk2-datalog:
   zk3-data:
   zk3-datalog:
+  keycloak-data:
