@@ -20,6 +20,7 @@ export function createMessageHandler(deps: MessageRouterDependencies): (event: M
 
         // auth_successメッセージを処理
         if (msg.type === "auth_success") {
+            console.debug("Received auth_success message, calling onAuthSuccess callback");
             onAuthSuccess();
             return;
         }
