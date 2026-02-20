@@ -1,5 +1,8 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Main" type="KtorApplicationConfigurationType" factoryName="Ktor" nameIsGenerated="true">
+  <configuration default="false" name="local ktcl-k8s " type="KtorApplicationConfigurationType" factoryName="Ktor">
+    <option name="envFilePaths">
+      <option value="$PROJECT_DIR$/ktcl-k8s/.env.example" />
+    </option>
     <option name="MAIN_CLASS_NAME" value="net.kigawa.keruta.ktcl.k8s.Main" />
     <module name="keruta.ktcl-k8s.main" />
     <extension name="coverage">

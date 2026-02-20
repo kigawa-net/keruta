@@ -146,10 +146,14 @@ class OidcTokenProvider(
     companion object {
         fun fromEnvironment(): OidcConfig {
             return OidcConfig(
-                issuer = System.getenv("KTSE_OIDC_ISSUER") ?: System.getenv("KEYCLOAK_URL")
-                    ?: throw IllegalStateException("KTSE_OIDC_ISSUER is required"),
-                clientId = System.getenv("KTSE_OIDC_CLIENT_ID") ?: "keruta",
-                clientSecret = System.getenv("KTSE_OIDC_CLIENT_SECRET") ?: "",
+                issuer = System.getenv("IDP_ISSUER")
+                    ?: throw IllegalStateException("IDP_ISSUER is required"),
+                clientId = System.getenv("KTSE_OIDC_CLIENT_ID")
+                    ?: System.getenv("IDP_CLIENT_ID")
+                    ?: "keruta",
+                clientSecret = System.getenv("KTSE_OIDC_CLIENT_SECRET")
+                    ?: System.getenv("IDP_CLIENT_SECRET")
+                    ?: "",
                 serviceAccountTokenPath = System.getenv("KTSE_OIDC_TOKEN_PATH")
                     ?: "/var/run/secrets/tokens/keruta-token",
             )

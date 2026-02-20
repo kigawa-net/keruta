@@ -1,8 +1,11 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="dev" type="CompoundRunConfigurationType">
-    <toRun name="compose.dev.yml: Compose デプロイ" type="docker-deploy" />
-    <toRun name="EngineMain ktse" type="KtorApplicationConfigurationType" />
-    <toRun name="npm run dev" type="js.build_tools.npm" />
+  <configuration default="false" name="dev" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
+    <deployment type="docker-compose.yml">
+      <settings>
+        <option name="sourceFilePath" value="compose.dev.yml" />
+        <option name="upDetach" value="false" />
+      </settings>
+    </deployment>
     <method v="2" />
   </configuration>
 </component>
