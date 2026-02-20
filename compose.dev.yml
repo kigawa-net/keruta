@@ -119,6 +119,10 @@ services:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
       - KC_DB=dev-file
+      - KC_SPI_LOGIN_PROTOCOL_OPENID_CONNECT_CHECK3PCOOKIES_ENABLED=false
+      - KC_HTTP_CORS_ENABLED=true
+      - KC_HTTP_CORS_ALLOWED_ORIGINS=http://localhost:5173
+      - KC_HTTP_CSP=frame-src 'self' http://localhost:5173; frame-ancestors 'self' http://localhost:5173
     ports:
       - "8082:8080"
     volumes:

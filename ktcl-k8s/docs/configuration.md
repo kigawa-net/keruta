@@ -167,7 +167,7 @@ spec:
 
 ```bash
 export KTSE_USE_OIDC=true
-export KTSE_OIDC_ISSUER=https://keycloak.example.com/realms/develop
+export KTSE_OIDC_ISSUER=https://keycloakClient.example.com/realms/develop
 export KTSE_OIDC_CLIENT_ID=keruta
 export KTSE_OIDC_CLIENT_SECRET=your-client-secret
 ```

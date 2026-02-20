@@ -8,7 +8,7 @@ import {
     useState
 } from "react";
 import Keycloak from "keycloak-js";
-import {keycloak} from "../../keycloak";
+import {keycloakClient} from "./keycloak.client";
 
 
 const Context = createContext<KeycloakState>({
@@ -38,27 +38,27 @@ export function KeycloakProvider(
 function initKeycloak(
     setKeycloak: Dispatch<SetStateAction<KeycloakState>>,
 ) {
-    keycloak.onAuthSuccess = () => {
+    keycloakClient.onAuthSuccess = () => {
         setKeycloak(updateKeycloakState({state: "authenticated"}))
     }
-    keycloak.onAuthRefreshSuccess = () => {
+    keycloakClient.onAuthRefreshSuccess = () => {
         setKeycloak(updateKeycloakState({state: "authenticated"}))
     }
-    keycloak.onAuthLogout = () => {
+    keycloakClient.onAuthLogout = () => {
         setKeycloak(updateKeycloakState({state: "unauthenticated"}))
     }
-    keycloak.onAuthRefreshError = () => {
+    keycloakClient.onAuthRefreshError = () => {
         setKeycloak(updateKeycloakState({state: "unauthenticated"}))
     }
-    keycloak.onAuthError = () => {
+    keycloakClient.onAuthError = () => {
         setKeycloak(updateKeycloakState({state: "unauthenticated"}))
     }
-    keycloak.onReady = () => {
+    keycloakClient.onReady = () => {
         setKeycloak(updateKeycloakState({
-            state: keycloak.authenticated ? "authenticated" : "unauthenticated"
+            state: keycloakClient.authenticated ? "authenticated" : "unauthenticated"
         }))
     }
-    if (!keycloak.didInitialize) keycloak.init({
+    if (!keycloakClient.didInitialize) keycloakClient.init({
         onLoad: 'check-sso',
         silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
         checkLoginIframe: false,
@@ -76,20 +76,20 @@ function updateKeycloakState(
 ): KeycloakState {
     if (state.state == "authenticated") return {
         state: state.state,
-        keycloak,
+        keycloak: keycloakClient,
         logout() {
-            return keycloak.logout()
+            return keycloakClient.logout()
         },
         async getToken(): Promise<string> {
-            await keycloak.updateToken(60)
-            return keycloak.token
+            await keycloakClient.updateToken(60)
+            return keycloakClient.token
         }
     }
     return {
         state: state.state,
-        keycloak,
+        keycloak: keycloakClient,
         login() {
-            return keycloak.login()
+            return keycloakClient.login()
         }
     }
 }

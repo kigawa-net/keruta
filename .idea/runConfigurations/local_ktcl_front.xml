@@ -15,6 +15,7 @@
       <env name="VITE_KEYCLOAK_REALM" value="develop" />
       <env name="VITE_KEYCLOAK_URL" value="http://localhost:8082/" />
       <env name="VITE_WEBSOCKET_URL" value="ws://localhost:8080/ws/ktcp" />
+      <env name="VITE_KEYCLOAK_CHECK_LOGIN_IFRAME" value="false" />
     </envs>
     <EXTENSION ID="com.intellij.javascript.debugger.execution.StartBrowserRunConfigurationExtension">
       <browser with-js-debugger="true" />
