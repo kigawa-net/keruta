@@ -11,50 +11,52 @@ import type {
   WebSocketService,
 } from "../api";
 
+const defaultWsState: WsState = { state: "unloaded" }
+
 export function useWsState(): WsState {
   const context = useContext(ServiceContext);
-  if (!context) throw new Error("useWsState must be used within ServiceProvider");
+  if (!context) return defaultWsState;
   return context.wsState;
 }
 
-export function useWsService(): WebSocketService {
+export function useWsService(): WebSocketService | null {
   const context = useContext(ServiceContext);
-  if (!context) throw new Error("useWsService must be used within ServiceProvider");
+  if (!context) return null;
   return context.wsService;
 }
 
-export function useApiService(): ApiService {
+export function useApiService(): ApiService | null {
   const context = useContext(ServiceContext);
-  if (!context) throw new Error("useApiService must be used within ServiceProvider");
+  if (!context) return null;
   return context.apiService;
 }
 
-export function useAuthMessageService(): AuthMessageService {
+export function useAuthMessageService(): AuthMessageService | null {
   const context = useContext(ServiceContext);
-  if (!context) throw new Error("useAuthMessageService must be used within ServiceProvider");
+  if (!context) return null;
   return context.authMessageService;
 }
 
-export function useTaskMessageService(): TaskMessageService {
+export function useTaskMessageService(): TaskMessageService | null {
   const context = useContext(ServiceContext);
-  if (!context) throw new Error("useTaskMessageService must be used within ServiceProvider");
+  if (!context) return null;
   return context.taskMessageService;
 }
 
-export function useQueueMessageService(): QueueMessageService {
+export function useQueueMessageService(): QueueMessageService | null {
   const context = useContext(ServiceContext);
-  if (!context) throw new Error("useQueueMessageService must be used within ServiceProvider");
+  if (!context) return null;
   return context.queueMessageService;
 }
 
-export function useProviderMessageService(): ProviderMessageService {
+export function useProviderMessageService(): ProviderMessageService | null {
   const context = useContext(ServiceContext);
-  if (!context) throw new Error("useProviderMessageService must be used within ServiceProvider");
+  if (!context) return null;
   return context.providerMessageService;
 }
 
-export function useTokenApiService(): TokenApiService {
+export function useTokenApiService(): TokenApiService | null {
   const context = useContext(ServiceContext);
-  if (!context) throw new Error("useTokenApiService must be used within ServiceProvider");
+  if (!context) return null;
   return context.tokenApiService;
 }

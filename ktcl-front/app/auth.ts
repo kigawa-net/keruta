@@ -2,7 +2,8 @@ import {createRemoteJWKSet, exportJWK, importPKCS8, jwtVerify, SignJWT} from "jo
 import ServerConfig from "./ServerConfig.server";
 
 export namespace Auth {
-    let cachedOidcConfig: { jwks_uri: string; issuer: string } | null = null
+    let cachedOidcConfig: {jwks_uri: string; issuer: string} | null = null
+    let cachedJwks: ReturnType<typeof createRemoteJWKSet> | null = null
 
     async function getOidcConfig() {
         if (cachedOidcConfig) return cachedOidcConfig
@@ -14,8 +15,10 @@ export namespace Auth {
     }
 
     export async function getUserJwks() {
+        if (cachedJwks) return cachedJwks
         const config = await getOidcConfig()
-        return createRemoteJWKSet(new URL(config.jwks_uri))
+        cachedJwks = createRemoteJWKSet(new URL(config.jwks_uri))
+        return cachedJwks
     }
 
     export async function verifyUserJwt(jwt: string) {
