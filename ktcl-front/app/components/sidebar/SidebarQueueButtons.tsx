@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom";
-import { useWsState } from "../service/useServiceHooks";
-import { useKerutaTaskState } from "../app/AppContext";
+import {Link} from "react-router-dom";
+import {useWsState} from "../service/useServiceHooks";
 import useWsReceive from "../net/websocket/useWsReceive";
-import { ClientQueueListedMsg, ServerQueueListMsg } from "../msg/queue";
-import { useEffect, useState } from "react";
+import {ClientQueueListedMsg, ServerQueueListMsg} from "../msg/queue";
+import {useEffect, useState} from "react";
+import {useKerutaTaskState} from "../app/useAppState";
 
 type Queue = ClientQueueListedMsg["queues"][0]
 export default function SidebarQueueButtons(
@@ -17,7 +17,7 @@ export default function SidebarQueueButtons(
         setQueues(msg.queues)
     }, [])
     const authState = "auth" in keruta ? keruta.auth.state : undefined
-    
+
     useEffect(() => {
         if (wsState.state != "open") return
         if (keruta.state != "connected") return;

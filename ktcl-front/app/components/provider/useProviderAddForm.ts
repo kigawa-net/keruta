@@ -1,92 +1,93 @@
-import { useCallback, useEffect, useState } from "react";
-import { useKerutaTaskState, useProviderService } from "../app/AppContext";
-import { buildProviderAuthUrlFromMsg } from "./providerAuthUrl";
-import { validateProviderForm } from "./providerValidation";
-import { Url } from "../net/Url";
-import type { InputValue } from "../form/FormTextInput";
+import {useCallback, useEffect, useState} from "react";
+import {buildProviderAuthUrlFromMsg} from "./providerAuthUrl";
+import {validateProviderForm} from "./providerValidation";
+import {Url} from "../net/Url";
+import type {InputValue} from "../form/FormTextInput";
+import {useKerutaTaskState} from "../app/useAppState";
+import {useProviderService} from "./useProviderService";
 
 type FormState = "inputting" | "fetching" | "submitting" | "redirecting";
 
 type KerutaJson = { login: string };
 
 export interface ProviderAddFormState {
-  formState: FormState;
-  name: InputValue;
-  issuer: InputValue;
-  err: string | undefined;
-  isDisabled: boolean;
-  buttonLabel: string;
-  setName: (value: InputValue) => void;
-  setIssuer: (value: InputValue) => void;
-  handleSubmit: () => Promise<void>;
+    formState: FormState;
+    name: InputValue;
+    issuer: InputValue;
+    err: string | undefined;
+    isDisabled: boolean;
+    buttonLabel: string;
+    setName: (value: InputValue) => void;
+    setIssuer: (value: InputValue) => void;
+    handleSubmit: () => Promise<void>;
 }
 
 export function useProviderAddForm(): ProviderAddFormState {
-  const kerutaState = useKerutaTaskState();
-  const providerService = useProviderService();
-  const [formState, setFormState] = useState<FormState>("inputting");
-  const [name, setName] = useState<InputValue>({ value: "" });
-  const [issuer, setIssuer] = useState<InputValue>({ value: "" });
-  const [err, setErr] = useState<string>();
-  const [kerutaJson, setKerutaJson] = useState<KerutaJson | undefined>(undefined);
+    const kerutaState = useKerutaTaskState();
+    const providerService = useProviderService();
+    const [formState, setFormState] = useState<FormState>("inputting");
+    const [name, setName] = useState<InputValue>({value: ""});
+    const [issuer, setIssuer] = useState<InputValue>({value: ""});
+    const [err, setErr] = useState<string>();
+    const [kerutaJson, setKerutaJson] = useState<KerutaJson | undefined>(undefined);
 
-  const handleTokenReceived = useCallback(
-    (token: string) => {
-      if (!kerutaJson) return;
-      const url = buildProviderAuthUrlFromMsg(kerutaJson.login, { type: "provider_add_token_issued", token });
-      setFormState("redirecting");
-      window.location.href = url.toStrUrl();
-    },
-    [kerutaJson]
-  );
+    const handleTokenReceived = useCallback(
+        (token: string) => {
+            if (!kerutaJson) return;
+            const url = buildProviderAuthUrlFromMsg(kerutaJson.login, {type: "provider_add_token_issued", token});
+            setFormState("redirecting");
+            window.location.href = url.toStrUrl();
+        },
+        [kerutaJson]
+    );
 
-  useEffect(() => {
-    return providerService.onTokenIssued(handleTokenReceived);
-  }, [providerService, handleTokenReceived]);
+    useEffect(() => {
+        return providerService.onTokenIssued(handleTokenReceived);
+    }, [providerService, handleTokenReceived]);
 
-  const handleSubmit = useCallback(async () => {
-    if (kerutaState.state !== "connected" || kerutaState.auth.state !== "authenticated") {
-      setErr("認証されていません");
-      return;
-    }
+    const handleSubmit = useCallback(async () => {
+        if (kerutaState.state !== "connected" || kerutaState.auth.state !== "authenticated") {
+            setErr("認証されていません");
+            return;
+        }
 
-    const isValid = validateProviderForm({ name, setName, issuer, setIssuer });
-    if (!isValid) return;
+        const isValid = validateProviderForm({name, setName, issuer, setIssuer});
+        if (!isValid) return;
 
-    setFormState("fetching");
-    const issuerUrl = Url.parse(issuer.value.replace(/\/$/, ""));
-    let json: KerutaJson;
-    try {
-      const res = await fetch(issuerUrl.plusPath(".well-known/keruta.json").toStrUrl());
-      json = await res.json();
-    } catch {
-      setErr("keruta.jsonの取得に失敗しました");
-      setFormState("inputting");
-      return;
-    }
+        setFormState("fetching");
+        const issuerUrl = Url.parse(issuer.value.replace(/\/$/, ""));
+        let json: KerutaJson;
+        try {
+            const res = await fetch(issuerUrl.plusPath(".well-known/keruta.json").toStrUrl());
+            json = await res.json();
+        } catch {
+            setErr("keruta.jsonの取得に失敗しました");
+            setFormState("inputting");
+            return;
+        }
 
-    setKerutaJson(json);
-    setFormState("submitting");
-    providerService.addProvider({ name: name.value, issuer: issuerUrl.toStrUrl(), audience: "keruta" });
-  }, [kerutaState, name, issuer, providerService]);
+        setKerutaJson(json);
+        setFormState("submitting");
+        providerService.addProvider({name: name.value, issuer: issuerUrl.toStrUrl(), audience: "keruta"});
+    }, [kerutaState, name, issuer, providerService]);
 
-  const isDisabled = formState !== "inputting";
-  const buttonLabel =
-    formState === "redirecting"
-      ? "リダイレクト中..."
-      : formState === "fetching" || formState === "submitting"
-        ? "処理中..."
-        : "追加";
+    const isDisabled = formState !== "inputting";
+    const buttonLabel =
+        formState === "redirecting"
+            ? "リダイレクト中..."
+            : formState === "fetching" || formState === "submitting"
+                ? "処理中..."
+                : "追加";
 
-  return {
-    formState,
-    name,
-    issuer,
-    err,
-    isDisabled,
-    buttonLabel,
-    setName,
-    setIssuer,
-    handleSubmit,
-  };
+    return {
+        formState,
+        name,
+        issuer,
+        err,
+        isDisabled,
+        buttonLabel,
+        setName,
+        setIssuer,
+        handleSubmit,
+    };
 }
