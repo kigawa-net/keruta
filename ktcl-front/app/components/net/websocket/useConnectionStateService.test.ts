@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { useConnectionStateService } from '../components/net/websocket/useConnectionStateService';
-import type { WsState } from '../components/net/websocket/WsTypes';
+import { useConnectionStateService } from './useConnectionStateService';
+import type { WsState } from './WsTypes';
 
 describe('useConnectionStateService', () => {
   describe('初期状態', () => {

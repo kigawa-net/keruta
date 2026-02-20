@@ -1,11 +1,7 @@
 import { createContext, ReactNode, useCallback, useMemo } from "react";
-import {
-  TaskService,
-  QueueService,
-  ProviderService,
-  useConnectionStateService,
-  useMessageRouterService,
-} from "../../services";
+import { TaskService, QueueService, ProviderService } from "../domain";
+import { useConnectionStateService } from "../net/websocket/useConnectionStateService";
+import { useMessageRouterService } from "../msg/useMessageRouterService";
 import {
   useWsState,
   useTaskMessageService,
@@ -13,7 +9,7 @@ import {
   useProviderMessageService,
 } from "../service/useServiceHooks";
 import WsSender from "../net/websocket/WsSender";
-import type { KerutaTaskState } from "../../services";
+import type { KerutaTaskState } from "../net/websocket/ConnectionStateTypes";
 
 export interface AppState {
   kerutaState: KerutaTaskState;
@@ -77,4 +73,4 @@ export function AppProvider({ children }: { children: ReactNode }) {
 export { useAppState, useKerutaTaskState, useTaskService, useQueueService, useProviderService } from "../hooks";
 
 // Re-export types for convenience
-export type { KerutaTaskState, ConnectedKerutaTaskState, AuthState } from "../net/ConnectionStateTypes";
+export type { KerutaTaskState, ConnectedKerutaTaskState, AuthState } from "../net/websocket/ConnectionStateTypes";

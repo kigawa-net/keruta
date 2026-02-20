@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { WsState } from "./useWebSocketConnection";
-import type { AuthState, KerutaTaskState } from "../ConnectionStateTypes";
+import type { AuthState, KerutaTaskState } from "./ConnectionStateTypes";
 
 /**
  * WebSocket接続状態からKerutaTaskStateを管理するフック

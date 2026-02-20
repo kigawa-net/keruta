@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from 'vitest';
-import { createMessageHandler } from '../components/msg/MessageRouterService';
-import type { TaskService } from '../components/domain';
-import type { QueueService } from '../components/domain';
-import type { ProviderService } from '../components/domain';
+import { createMessageHandler } from './MessageRouterService';
+import type { TaskService } from '../domain';
+import type { QueueService } from '../domain';
+import type { ProviderService } from '../domain';
 
 describe('createMessageHandler', () => {
   const createMockServices = () => ({
