@@ -2,10 +2,26 @@ import {createRemoteJWKSet, exportJWK, importPKCS8, jwtVerify, SignJWT} from "jo
 import ServerConfig from "./ServerConfig.server";
 
 export namespace Auth {
-    export const userJwks = createRemoteJWKSet(new URL(ServerConfig.userJwksUrl))
+    let cachedOidcConfig: { jwks_uri: string; issuer: string } | null = null
+
+    async function getOidcConfig() {
+        if (cachedOidcConfig) return cachedOidcConfig
+        const issuerUrl = ServerConfig.userIssuer.replace(/\/$/, "")
+        const response = await fetch(`${issuerUrl}/.well-known/openid-configuration`)
+        if (!response.ok) throw new Error(`Failed to fetch OIDC configuration: ${response.statusText}`)
+        cachedOidcConfig = await response.json()
+        return cachedOidcConfig
+    }
+
+    export async function getUserJwks() {
+        const config = await getOidcConfig()
+        return createRemoteJWKSet(new URL(config.jwks_uri))
+    }
 
     export async function verifyUserJwt(jwt: string) {
-        return jwtVerify(jwt, userJwks, {issuer: ServerConfig.userIssuer, audience: ServerConfig.ktseAud})
+        const jwks = await getUserJwks()
+        const config = await getOidcConfig()
+        return jwtVerify(jwt, jwks, {issuer: config.issuer, audience: ServerConfig.ktseAud})
     }
 
     export async function getPrivateKey() {

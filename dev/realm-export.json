@@ -4,12 +4,12 @@
   "sslRequired": "external",
   "users": [
     {
-      "username": "testuser",
+      "username": "admin",
       "enabled": true,
       "credentials": [
         {
           "type": "password",
-          "value": "testpass",
+          "value": "password",
           "temporary": false
         }
       ],
