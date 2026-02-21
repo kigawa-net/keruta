@@ -1,3 +1,5 @@
+import {Url} from "../net/Url";
+
 /**
  * WebSocketの接続状態
  */
@@ -11,7 +13,7 @@ export type WsConnectionState =
  * WebSocket接続のオプション
  */
 export interface WsConnectionOptions {
-  url: URL;
+  url: Url;
   onOpen?: () => void;
   onClose?: () => void;
   onError?: (error: Event) => void;

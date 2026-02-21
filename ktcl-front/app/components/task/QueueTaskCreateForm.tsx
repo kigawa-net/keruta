@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { useWsState } from "../service/useServiceHooks";
-import FormTextInput, { InputValue } from "../form/FormTextInput";
+import {useEffect, useState} from "react";
+import FormTextInput, {InputValue} from "../form/FormTextInput";
 import FormErrMsg from "../form/FormErrMsg";
-import { ServerTaskCreateMsg } from "../msg/task";
+import {ServerTaskCreateMsg} from "../msg/task";
+import {useGlobalState} from "../app/Global";
 
 interface QueueTaskCreateFormProps {
     queueId: string;
@@ -10,7 +10,7 @@ interface QueueTaskCreateFormProps {
 }
 
 export function QueueTaskCreateForm({queueId, onTaskCreated}: QueueTaskCreateFormProps) {
-    const wsState = useWsState();
+    const wsState = useGlobalState();
     const [formState, setFormState] = useState<"inputting" | "submitting">("inputting");
     const [taskName, setTaskName] = useState<InputValue>({value: ""});
     const [description, setDescription] = useState<InputValue>({value: ""});

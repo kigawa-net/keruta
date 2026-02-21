@@ -1,9 +1,9 @@
-import { WsState } from "./useWebSocketConnection";
-import { useCallback, useEffect } from "react";
-import { ReceiveMsg } from "../../msg/msg";
+import {useCallback, useEffect} from "react";
+import {ReceiveMsg} from "../../msg/msg";
+import {GlobalState} from "../../app/Global";
 
 export default function useWsReceive(
-  wsState: WsState, onReceive: (msg: ReceiveMsg) => void, deps: any[]
+    globalState: GlobalState, onReceive: (msg: ReceiveMsg) => void, deps: any[]
 ) {
     const onEvt = useCallback((event: MessageEvent) => {
         if (event == undefined) return
@@ -11,8 +11,8 @@ export default function useWsReceive(
         onReceive(message)
     }, deps);
     useEffect(() => {
-        if (wsState.state != "open") return
-        wsState.websocket.addEventListener("message", onEvt)
-        return () => wsState.websocket.removeEventListener("message", onEvt)
-    }, [wsState.state, onEvt]);
+        if (globalState.state != "open") return
+        globalState.websocket.addEventListener("message", onEvt)
+        return () => globalState.websocket.removeEventListener("message", onEvt)
+    }, [globalState.state, onEvt]);
 }

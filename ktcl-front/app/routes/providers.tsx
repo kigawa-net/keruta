@@ -1,10 +1,11 @@
 // noinspection JSUnusedGlobalSymbols
 import useWsReceive from "../components/net/websocket/useWsReceive";
-import { useWsState } from "../components/service/useServiceHooks";
 import { useEffect, useState } from "react";
 import { ClientProviderListMsg, ServerProviderDeleteMsg, ServerProviderListMsg } from "../components/msg/provider";
-import { useKerutaTaskState } from "../components/app/AppContext";
+
 import { Link } from "react-router";
+import {useKerutaTaskState} from "../components/app/useAppState";
+import {useGlobalState} from "../components/app/Global";
 
 type Provider = ClientProviderListMsg["providers"][0]
 
@@ -18,7 +19,7 @@ function buildOidcLoginUrl(authorizationEndpoint: string, clientId: string): str
 }
 
 export default function AboutRoute() {
-    const wsState = useWsState()
+    const wsState = useGlobalState()
     const [providers, setProviders] = useState<Provider[]>()
     const [authEndpoints, setAuthEndpoints] = useState<Record<string, string>>({})
     const kerutaState = useKerutaTaskState()

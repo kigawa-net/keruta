@@ -1,16 +1,18 @@
 // noinspection JSUnusedGlobalSymbols
 import { useNavigate, useSearchParams } from "react-router";
 import { useEffect, useState } from "react";
-import { useWsState } from "../components/service/useServiceHooks";
 import useWsReceive from "../components/net/websocket/useWsReceive";
 import { ServerProviderCompleteMsg } from "../components/msg/provider";
-import { useKerutaTaskState } from "../components/app/AppContext";
+import {useKerutaTaskState} from "../components/app/useAppState";
+import {useGlobalState} from "../components/app/Global";
+
 
 type Status = "processing" | "success" | "error"
 
+// noinspection JSUnusedGlobalSymbols
 export default function ProviderCompleteRoute() {
     const [searchParams] = useSearchParams()
-    const wsState = useWsState()
+    const wsState = useGlobalState()
     const kerutaState = useKerutaTaskState()
     const navigate = useNavigate()
     const [status, setStatus] = useState<Status>("processing")

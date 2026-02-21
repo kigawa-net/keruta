@@ -2,14 +2,10 @@ import {createContext, ReactNode, useCallback, useMemo} from "react";
 import {ProviderService, QueueService, TaskService} from "../domain";
 import {useConnectionStateService} from "../net/websocket/useConnectionStateService";
 import {useMessageRouterService} from "../msg/useMessageRouterService";
-import {
-    useProviderMessageService,
-    useQueueMessageService,
-    useTaskMessageService,
-    useWsState,
-} from "../service/useServiceHooks";
+import {useProviderMessageService, useQueueMessageService, useTaskMessageService,} from "../service/useServiceHooks";
 import WsSender from "../net/websocket/WsSender";
 import type {KerutaTaskState} from "../net/websocket/ConnectionStateTypes";
+import {useGlobalState} from "./Global";
 
 export interface AppState {
     kerutaState: KerutaTaskState;
@@ -18,10 +14,10 @@ export interface AppState {
     providerService: ProviderService;
 }
 
-export const AppContext = createContext<AppState | null>(null);
+export const AppContentContext = createContext<AppState | null>(null);
 
-export function AppProvider({children}: { children: ReactNode }) {
-    const wsState = useWsState();
+export function AppContentProvider({children}: { children: ReactNode }) {
+    const globalState = useGlobalState();
     const taskMsgService = useTaskMessageService();
     const queueMsgService = useQueueMessageService();
     const providerMsgService = useProviderMessageService();
@@ -37,7 +33,7 @@ export function AppProvider({children}: { children: ReactNode }) {
     );
 
     // Connection state management
-    const {kerutaState, setAuthState} = useConnectionStateService(wsState);
+    const {kerutaState, setAuthState} = useConnectionStateService(globalState);
 
     // Auth success callback
     const onAuthSuccess = useCallback(() => {
@@ -46,7 +42,7 @@ export function AppProvider({children}: { children: ReactNode }) {
 
     // Message routing
     useMessageRouterService({
-        wsState,
+        globalState: globalState,
         kerutaState,
         taskService: services.taskService,
         queueService: services.queueService,
@@ -62,10 +58,10 @@ export function AppProvider({children}: { children: ReactNode }) {
     };
 
     return (
-        <AppContext.Provider value={appState}>
+        <AppContentContext.Provider value={appState}>
             <WsSender/>
             {children}
-        </AppContext.Provider>
+        </AppContentContext.Provider>
     );
 }
 

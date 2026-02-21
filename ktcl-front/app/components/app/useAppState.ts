@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { AppContext } from "./AppContext";
-import type { AppState, KerutaTaskState } from "./AppContext";
+import {KerutaTaskState} from "../net/websocket/ConnectionStateTypes";
+import {AppContentContext, AppState} from "./AppContentContext";
 
 const defaultKerutaState: KerutaTaskState = { state: "unloaded" }
 
@@ -8,7 +8,7 @@ const defaultKerutaState: KerutaTaskState = { state: "unloaded" }
  * AppContext から状態を取得するベースフック
  */
 export function useAppState(): AppState {
-  const context = useContext(AppContext);
+  const context = useContext(AppContentContext);
   if (!context) {
     return {
       kerutaState: defaultKerutaState,

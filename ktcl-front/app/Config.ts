@@ -1,5 +1,7 @@
+import {Url} from "./components/net/Url";
+
 const Config = {
-    websocketUrl: new URL(import.meta.env.VITE_WEBSOCKET_URL),
+    websocketUrl: Url.parse(import.meta.env.VITE_WEBSOCKET_URL),
     keycloakUrl: import.meta.env.VITE_KEYCLOAK_URL,
     keycloakRealm: import.meta.env.VITE_KEYCLOAK_REALM,
     keycloakClientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID,

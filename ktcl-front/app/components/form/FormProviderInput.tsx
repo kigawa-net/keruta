@@ -4,8 +4,9 @@ import {useEffect, useState} from "react";
 import {ClientProviderListMsg, ServerProviderListMsg} from "../msg/provider";
 import useWsReceive from "../net/websocket/useWsReceive";
 
-import {useKerutaTaskState} from "../app/AppContext";
-import {useWsState} from "../service/useServiceHooks";
+
+import {useKerutaTaskState} from "../app/useAppState";
+import {useGlobalState} from "../app/Global";
 
 
 type Provider = ClientProviderListMsg["providers"][0]
@@ -23,21 +24,21 @@ export default function FormProviderInput(
     },
 ) {
     const [providers, setProviders] = useState<Provider[]>()
-    const wsState = useWsState()
+    const globalState = useGlobalState()
     const keruta = useKerutaTaskState()
-    useWsReceive(wsState, msg => {
+    useWsReceive(globalState, msg => {
         if (msg.type != "provider_listed") return
         setProviders(msg.providers)
     }, [])
     useEffect(() => {
-        if (wsState.state != "open") return
+        if (globalState.state != "open") return
         if (keruta.state != "connected") return;
         if (keruta.auth.state != "authenticated") return;
         const res: ServerProviderListMsg = {
             type: "provider_list",
         }
-        wsState.websocket.send(JSON.stringify(res))
-    }, [wsState.state, keruta.state, keruta.auth.state]);
+        globalState.websocket.send(JSON.stringify(res))
+    }, [globalState.state, keruta.state,keruta.state == "connected" && keruta.auth.state]);
     return (
         <div>
             <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-2">
