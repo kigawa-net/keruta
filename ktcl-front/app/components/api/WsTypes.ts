@@ -1,4 +1,4 @@
-import {Url} from "../net/Url";
+import {Url} from "../../util/net/Url";
 
 /**
  * WebSocketの接続状態

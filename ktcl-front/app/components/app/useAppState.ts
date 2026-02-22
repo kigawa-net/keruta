@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import {KerutaTaskState} from "../net/websocket/ConnectionStateTypes";
+import {KerutaTaskState} from "../../util/net/websocket/ConnectionStateTypes";
 import {AppContentContext, AppState} from "./AppContentContext";
 
 const defaultKerutaState: KerutaTaskState = { state: "unloaded" }

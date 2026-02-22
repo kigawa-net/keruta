@@ -1,7 +1,7 @@
 import {useCallback, useEffect, useState} from "react";
 import {buildProviderAuthUrlFromMsg} from "./providerAuthUrl";
 import {validateProviderForm} from "./providerValidation";
-import {Url} from "../net/Url";
+import {Url} from "../../util/net/Url";
 import type {InputValue} from "../form/FormTextInput";
 import {useKerutaTaskState} from "../app/useAppState";
 import {useProviderService} from "./useProviderService";

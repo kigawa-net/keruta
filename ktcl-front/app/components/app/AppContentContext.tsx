@@ -1,11 +1,16 @@
-import {createContext, ReactNode, useCallback, useMemo} from "react";
+import {createContext, ReactNode, useMemo} from "react";
 import {ProviderService, QueueService, TaskService} from "../domain";
-import {useConnectionStateService} from "../net/websocket/useConnectionStateService";
-import {useMessageRouterService} from "../msg/useMessageRouterService";
-import {useProviderMessageService, useQueueMessageService, useTaskMessageService,} from "../service/useServiceHooks";
-import WsSender from "../net/websocket/WsSender";
-import type {KerutaTaskState} from "../net/websocket/ConnectionStateTypes";
-import {useGlobalState} from "./Global";
+import {useConnectionStateService} from "../../util/net/websocket/useConnectionStateService";
+
+import {
+    useProviderMessageService,
+    useQueueMessageService,
+    useTaskMessageService,
+} from "../../util/net/service/useServiceHooks";
+import type {KerutaTaskState} from "../../util/net/websocket/ConnectionStateTypes";
+import {useWebsocketState} from "../../util/net/websocket/WebsocketProvider";
+
+
 
 export interface AppState {
     kerutaState: KerutaTaskState;
@@ -17,7 +22,7 @@ export interface AppState {
 export const AppContentContext = createContext<AppState | null>(null);
 
 export function AppContentProvider({children}: { children: ReactNode }) {
-    const globalState = useGlobalState();
+    const websocketState = useWebsocketState();
     const taskMsgService = useTaskMessageService();
     const queueMsgService = useQueueMessageService();
     const providerMsgService = useProviderMessageService();
@@ -33,22 +38,7 @@ export function AppContentProvider({children}: { children: ReactNode }) {
     );
 
     // Connection state management
-    const {kerutaState, setAuthState} = useConnectionStateService(globalState);
-
-    // Auth success callback
-    const onAuthSuccess = useCallback(() => {
-        setAuthState({state: "authenticated"});
-    }, [setAuthState]);
-
-    // Message routing
-    useMessageRouterService({
-        globalState: globalState,
-        kerutaState,
-        taskService: services.taskService,
-        queueService: services.queueService,
-        providerService: services.providerService,
-        onAuthSuccess,
-    });
+    const {kerutaState, setAuthState} = useConnectionStateService(websocketState);
 
     const appState: AppState = {
         kerutaState,
@@ -59,7 +49,6 @@ export function AppContentProvider({children}: { children: ReactNode }) {
 
     return (
         <AppContentContext.Provider value={appState}>
-            <WsSender/>
             {children}
         </AppContentContext.Provider>
     );
@@ -67,4 +56,4 @@ export function AppContentProvider({children}: { children: ReactNode }) {
 
 
 // Re-export types for convenience
-export type {KerutaTaskState, ConnectedKerutaTaskState, AuthState} from "../net/websocket/ConnectionStateTypes";
+export type {KerutaTaskState, ConnectedKerutaTaskState, AuthState} from "../../util/net/websocket/ConnectionStateTypes";

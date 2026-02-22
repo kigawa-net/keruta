@@ -1,11 +1,12 @@
 // noinspection JSUnusedGlobalSymbols
-import useWsReceive from "../components/net/websocket/useWsReceive";
-import { useEffect, useState } from "react";
-import { ClientProviderListMsg, ServerProviderDeleteMsg, ServerProviderListMsg } from "../components/msg/provider";
+import {useWebsocketReceive} from "../util/net/websocket/useWebsocketReceive";
+import {useEffect, useState} from "react";
+import {ClientProviderListMsg, ServerProviderDeleteMsg, ServerProviderListMsg} from "../components/msg/provider";
 
-import { Link } from "react-router";
+import {Link} from "react-router";
 import {useKerutaTaskState} from "../components/app/useAppState";
-import {useGlobalState} from "../components/app/Global";
+import {useWebsocketState} from "../util/net/websocket/WebsocketProvider";
+
 
 type Provider = ClientProviderListMsg["providers"][0]
 
@@ -18,12 +19,13 @@ function buildOidcLoginUrl(authorizationEndpoint: string, clientId: string): str
     return url.toString()
 }
 
+// noinspection JSUnusedGlobalSymbols
 export default function AboutRoute() {
-    const wsState = useGlobalState()
+    const wsState = useWebsocketState()
     const [providers, setProviders] = useState<Provider[]>()
     const [authEndpoints, setAuthEndpoints] = useState<Record<string, string>>({})
     const kerutaState = useKerutaTaskState()
-    useWsReceive(wsState, msg => {
+    useWebsocketReceive(msg => {
         if (msg.type == "provider_listed") {
             setProviders(msg.providers)
         } else if (msg.type == "provider_deleted") {
@@ -36,10 +38,11 @@ export default function AboutRoute() {
         issuers.forEach(issuer => {
             fetch(`${issuer}/.well-known/openid-configuration`)
                 .then(res => res.json())
-                .then((data: {authorization_endpoint: string}) => {
+                .then((data: { authorization_endpoint: string }) => {
                     setAuthEndpoints(prev => ({...prev, [issuer]: data.authorization_endpoint}))
                 })
-                .catch(() => {})
+                .catch(() => {
+                })
         })
     }, [providers])
     useEffect(() => {
@@ -75,54 +78,54 @@ export default function AboutRoute() {
             <div className="bg-white rounded-lg shadow">
                 <table className="w-full">
                     <thead className="bg-gray-50 border-b">
-                        <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">名前</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Issuer</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Audience</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IDP</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
-                        </tr>
+                    <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">名前</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Issuer</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Audience</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IDP</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                    </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                        {providers?.map(p => (
-                            <tr key={p.id} className="hover:bg-gray-50">
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{p.id}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{p.name}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{p.issuer}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{p.audience}</td>
-                                <td className="px-6 py-4 text-sm text-gray-500">
-                                    {p.idps.length === 0 ? (
-                                        <span className="text-gray-400">なし</span>
-                                    ) : (
-                                        <ul className="space-y-1">
-                                            {p.idps.map((idp, i) => (
-                                                <li key={i} className="text-xs">
-                                                    <a
-                                                        href={authEndpoints[idp.issuer]
-                                                            ? buildOidcLoginUrl(authEndpoints[idp.issuer], idp.audience)
-                                                            : idp.issuer}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="text-blue-600 hover:underline font-medium"
-                                                    >
-                                                        {idp.issuer}
-                                                    </a>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    )}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                    <button
-                                        onClick={() => handleDelete(p.id)}
-                                        className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
-                                    >
-                                        削除
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
+                    {providers?.map(p => (
+                        <tr key={p.id} className="hover:bg-gray-50">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{p.id}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{p.name}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{p.issuer}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{p.audience}</td>
+                            <td className="px-6 py-4 text-sm text-gray-500">
+                                {p.idps.length === 0 ? (
+                                    <span className="text-gray-400">なし</span>
+                                ) : (
+                                    <ul className="space-y-1">
+                                        {p.idps.map((idp, i) => (
+                                            <li key={i} className="text-xs">
+                                                <a
+                                                    href={authEndpoints[idp.issuer]
+                                                        ? buildOidcLoginUrl(authEndpoints[idp.issuer], idp.audience)
+                                                        : idp.issuer}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-blue-600 hover:underline font-medium"
+                                                >
+                                                    {idp.issuer}
+                                                </a>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm">
+                                <button
+                                    onClick={() => handleDelete(p.id)}
+                                    className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+                                >
+                                    削除
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
                     </tbody>
                 </table>
                 {(!providers || providers.length === 0) && (

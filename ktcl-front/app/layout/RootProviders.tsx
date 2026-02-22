@@ -1,11 +1,14 @@
 import {ReactNode, useEffect, useState} from "react";
 import {KeycloakProvider} from "../components/auth/Keycloak";
 import {UserProfileProvider} from "../components/user/UserProfile";
-import {ServiceProvider} from "../components/service/ServiceContext";
+import {ServiceProvider} from "../util/net/service/ServiceContext";
 
 import Config from "../Config";
-import {GlobalProvider} from "../components/app/Global";
 import {AppContentProvider} from "../components/app/AppContentContext";
+import {KtclApiProvider} from "../components/api/KtclApiProvider";
+import {WebsocketProvider} from "../util/net/websocket/WebsocketProvider";
+import {KtseApiProvider} from "../components/api/KtseApiProvider";
+import {AuthedKtseProvider} from "../components/api/AuthedKtseProvider";
 
 interface RootProvidersProps {
     children: ReactNode;
@@ -28,14 +31,20 @@ export function RootProviders({children}: RootProvidersProps) {
     }
 
     return (
-        <GlobalProvider wsUrl={Config.websocketUrl} >
-            <KeycloakProvider>
-                <UserProfileProvider>
-                    <ServiceProvider wsUrl={Config.websocketUrl}>
-                        <AppContentProvider>{children}</AppContentProvider>
-                    </ServiceProvider>
-                </UserProfileProvider>
-            </KeycloakProvider>
-        </GlobalProvider>
+        <KeycloakProvider>
+            <UserProfileProvider>
+                <KtclApiProvider>
+                    <WebsocketProvider wsUrl={Config.websocketUrl}>
+                        <KtseApiProvider>
+                            <AuthedKtseProvider>
+                                <ServiceProvider wsUrl={Config.websocketUrl}>
+                                    <AppContentProvider>{children}</AppContentProvider>
+                                </ServiceProvider>
+                            </AuthedKtseProvider>
+                        </KtseApiProvider>
+                    </WebsocketProvider>
+                </KtclApiProvider>
+            </UserProfileProvider>
+        </KeycloakProvider>
     );
 }

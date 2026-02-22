@@ -1,4 +1,4 @@
-import { Url } from "../net/Url";
+import { Url } from "../../util/net/Url";
 import { ClientProviderAddTokenMsg } from "../msg/provider";
 
 interface ProviderAuthUrlParams {

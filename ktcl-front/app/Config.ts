@@ -1,4 +1,4 @@
-import {Url} from "./components/net/Url";
+import {Url} from "./util/net/Url";
 
 const Config = {
     websocketUrl: Url.parse(import.meta.env.VITE_WEBSOCKET_URL),

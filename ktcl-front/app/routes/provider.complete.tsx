@@ -1,10 +1,10 @@
 // noinspection JSUnusedGlobalSymbols
-import { useNavigate, useSearchParams } from "react-router";
-import { useEffect, useState } from "react";
-import useWsReceive from "../components/net/websocket/useWsReceive";
-import { ServerProviderCompleteMsg } from "../components/msg/provider";
+import {useNavigate, useSearchParams} from "react-router";
+import {useEffect, useState} from "react";
+import {useWebsocketReceive} from "../util/net/websocket/useWebsocketReceive";
+import {ServerProviderCompleteMsg} from "../components/msg/provider";
 import {useKerutaTaskState} from "../components/app/useAppState";
-import {useGlobalState} from "../components/app/Global";
+import {useWebsocketState} from "../util/net/websocket/WebsocketProvider";
 
 
 type Status = "processing" | "success" | "error"
@@ -12,7 +12,7 @@ type Status = "processing" | "success" | "error"
 // noinspection JSUnusedGlobalSymbols
 export default function ProviderCompleteRoute() {
     const [searchParams] = useSearchParams()
-    const wsState = useGlobalState()
+    const wsState = useWebsocketState()
     const kerutaState = useKerutaTaskState()
     const navigate = useNavigate()
     const [status, setStatus] = useState<Status>("processing")
@@ -41,7 +41,7 @@ export default function ProviderCompleteRoute() {
         wsState.websocket.send(JSON.stringify(msg))
     }, [wsState.state, kerutaState.state == "connected" && kerutaState.auth.state])
 
-    useWsReceive(wsState, msg => {
+    useWebsocketReceive(msg => {
         if (msg.type != "provider_idp_added") return
         setStatus("success")
         setTimeout(() => navigate("/provider"), 1500)

@@ -1,18 +1,18 @@
 import {Link} from "react-router-dom";
-import useWsReceive from "../net/websocket/useWsReceive";
 import {ClientQueueListedMsg, ServerQueueListMsg} from "../msg/queue";
 import {useEffect, useState} from "react";
 import {useKerutaTaskState} from "../app/useAppState";
-import {useGlobalState} from "../app/Global";
+import {useWebsocketReceive} from "../../util/net/websocket/useWebsocketReceive";
+import {useWebsocketState} from "../../util/net/websocket/WebsocketProvider";
 
 type Queue = ClientQueueListedMsg["queues"][0]
 export default function SidebarQueueButtons(
     {}: {},
 ) {
     const [queues, setQueues] = useState<Queue[]>([])
-    const wsState = useGlobalState()
+    const wsState = useWebsocketState()
     const keruta = useKerutaTaskState()
-    useWsReceive(wsState, msg => {
+    useWebsocketReceive(msg => {
         if (msg.type != "queue_listed") return
         setQueues(msg.queues)
     }, [])

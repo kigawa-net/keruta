@@ -1,4 +1,4 @@
-import {useKerutaTaskState} from "../../app/useAppState";
+import {useKerutaTaskState} from "../../../components/app/useAppState";
 
 
 export default function WsStatus(

@@ -2,11 +2,11 @@ import FormErrMsg from "./FormErrMsg";
 import {InputValue} from "./FormTextInput";
 import {useEffect, useState} from "react";
 import {ClientProviderListMsg, ServerProviderListMsg} from "../msg/provider";
-import useWsReceive from "../net/websocket/useWsReceive";
+import {useWebsocketReceive} from "../../util/net/websocket/useWebsocketReceive";
 
 
 import {useKerutaTaskState} from "../app/useAppState";
-import {useGlobalState} from "../app/Global";
+import {useWebsocketState} from "../../util/net/websocket/WebsocketProvider";
 
 
 type Provider = ClientProviderListMsg["providers"][0]
@@ -24,9 +24,9 @@ export default function FormProviderInput(
     },
 ) {
     const [providers, setProviders] = useState<Provider[]>()
-    const globalState = useGlobalState()
+    const globalState = useWebsocketState()
     const keruta = useKerutaTaskState()
-    useWsReceive(globalState, msg => {
+    useWebsocketReceive(msg => {
         if (msg.type != "provider_listed") return
         setProviders(msg.providers)
     }, [])
@@ -38,7 +38,7 @@ export default function FormProviderInput(
             type: "provider_list",
         }
         globalState.websocket.send(JSON.stringify(res))
-    }, [globalState.state, keruta.state,keruta.state == "connected" && keruta.auth.state]);
+    }, [globalState.state, keruta.state, keruta.state == "connected" && keruta.auth.state]);
     return (
         <div>
             <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-2">

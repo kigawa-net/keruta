@@ -1,15 +1,15 @@
 import PrivateRoute from "../components/auth/PrivateRoute";
 import {useEffect, useState} from "react";
 
-import useWsReceive from "../components/net/websocket/useWsReceive";
+import {useWebsocketReceive} from "../util/net/websocket/useWebsocketReceive";
 import {ClientTaskListedMsg, ServerTaskListMsg} from "../components/msg/task";
 import {ClientQueueListedMsg, ServerQueueListMsg} from "../components/msg/queue";
 import {QueueTaskCreateForm} from "../components/task/QueueTaskCreateForm";
 import {QueueTaskList} from "../components/task/QueueTaskList";
 import {Route} from "../../.react-router/types/app/routes/+types/queue.$queueId";
 import {useKerutaTaskState} from "../components/app/useAppState";
-import {KerutaTaskState} from "../components/net/websocket/ConnectionStateTypes";
-import {GlobalState, useGlobalState} from "../components/app/Global";
+import {KerutaTaskState} from "../util/net/websocket/ConnectionStateTypes";
+import {useWebsocketState, WebsocketState} from "../util/net/websocket/WebsocketProvider";
 
 
 type Task = ClientTaskListedMsg["tasks"][0]
@@ -17,13 +17,13 @@ type Queue = ClientQueueListedMsg["queues"][0]
 
 // noinspection JSUnusedGlobalSymbols
 export default function Page({params: {queueId}}: Route.ComponentProps) {
-    const globalState = useGlobalState()
+    const globalState = useWebsocketState()
     const kerutaState = useKerutaTaskState()
     const [tasks, setTasks] = useState<Task[]>([])
     const [queues, setQueues] = useState<Queue[]>([])
 
 
-    useWsReceive(globalState, msg => {
+    useWebsocketReceive(msg => {
         if (msg.type === "task_listed") {
             setTasks(msg.tasks)
         } else if (msg.type === "queue_listed") {
@@ -57,13 +57,14 @@ export default function Page({params: {queueId}}: Route.ComponentProps) {
                     </div>
 
                     <QueueTaskCreateForm
-                        queueId={queueId} onTaskCreated={() => loadTaskList(globalState, kerutaState, queueId)}
+                        queueId={queueId}
+                        onTaskCreated={() => loadTaskList(globalState, kerutaState, Number(queueId))}
                     />
 
                     <QueueTaskList
                         tasks={tasks}
                         queues={queues}
-                        currentQueueId={queueId}
+                        currentQueueId={Number(queueId)}
                     />
                 </div>
             </div>
@@ -71,7 +72,7 @@ export default function Page({params: {queueId}}: Route.ComponentProps) {
     )
 }
 
-function loadTaskList(globalState: GlobalState, kerutaState: KerutaTaskState, queueId: number) {
+function loadTaskList(globalState: WebsocketState, kerutaState: KerutaTaskState, queueId: number) {
     if (globalState.state !== "open") return
     if (kerutaState.state !== "connected") return
     if (kerutaState.auth.state !== "authenticated") return
@@ -83,7 +84,7 @@ function loadTaskList(globalState: GlobalState, kerutaState: KerutaTaskState, qu
     globalState.websocket.send(JSON.stringify(msg))
 }
 
-function loadQueueList(globalState: GlobalState, kerutaState: KerutaTaskState) {
+function loadQueueList(globalState: WebsocketState, kerutaState: KerutaTaskState) {
     if (globalState.state !== "open") return
     if (kerutaState.state !== "connected") return
     if (kerutaState.auth.state !== "authenticated") return

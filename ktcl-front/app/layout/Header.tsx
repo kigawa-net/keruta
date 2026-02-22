@@ -1,5 +1,5 @@
 import AuthButton from "../components/auth/AuthButton";
-import WsStatus from "../components/net/websocket/WsStatus";
+import WsStatus from "../util/net/websocket/WsStatus";
 
 interface HeaderProps {
   onMenuClick: () => void;
