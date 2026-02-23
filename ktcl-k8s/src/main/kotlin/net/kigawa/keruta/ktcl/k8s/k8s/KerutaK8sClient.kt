@@ -1,7 +1,6 @@
 package net.kigawa.keruta.ktcl.k8s.k8s
 
 import kotlinx.coroutines.coroutineScope
-import net.kigawa.keruta.ktcl.k8s.auth.OidcTokenProvider
 import net.kigawa.keruta.ktcl.k8s.config.K8sConfig
 import net.kigawa.keruta.ktcl.k8s.connection.ConnectionContext
 import net.kigawa.keruta.ktcl.k8s.connection.ConnectionManager
@@ -28,9 +27,7 @@ class KerutaK8sClient(
     suspend fun start() = coroutineScope {
         logger.info { "Starting Keruta K8s Client" }
 
-        // OIDCトークンを取得
-        val tokenProvider = OidcTokenProvider(OidcTokenProvider.fromEnvironment())
-        val (userToken, serverToken) = tokenProvider.getTokens()
+
         logger.info { "Tokens obtained, proceeding with connection" }
 
         val (connection, ctx) = connectAndCreateSession()
@@ -38,7 +35,7 @@ class KerutaK8sClient(
         val taskExecutor = TaskExecutorFactory(config, ktcpClient).create()
         val clientEntrypoints = ClientEntrypointsFactory(ktcpClient, config, taskExecutor).create()
 
-        authenticate(ctx, userToken, serverToken)
+
         requestInitialTaskList(ctx)
         startMessageReceiver(connection, ctx, clientEntrypoints)
     }
