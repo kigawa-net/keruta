@@ -4,7 +4,7 @@ import {KtseAuthApi} from "../auth/KtseAuthApi";
 
 export class KtseApi {
     private readonly receiver: MutableStateFlow<ReceiveMsg>
-    readonly auth = new KtseAuthApi(this)
+    readonly auth: KtseAuthApi
 
     private listener(event: MessageEvent) {
         if (this.receiver == null) {
@@ -18,9 +18,9 @@ export class KtseApi {
     }
 
     constructor(private readonly websocket: WebSocket) {
-        this.receiver =  new MutableStateFlow<ReceiveMsg>()
+        this.receiver = new MutableStateFlow<ReceiveMsg>()
         websocket.addEventListener("message", this.listener)
-        console.debug("KtseApi created",this.receiver)
+        this.auth = new KtseAuthApi(this)
     }
 
     close() {
