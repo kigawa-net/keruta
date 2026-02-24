@@ -4,8 +4,8 @@ import {useEffect, useState} from "react";
 import {ClientProviderListMsg, ServerProviderDeleteMsg, ServerProviderListMsg} from "../components/msg/provider";
 
 import {Link} from "react-router";
-import {useKerutaTaskState} from "../components/app/useAppState";
 import {useWebsocketState} from "../util/net/websocket/WebsocketProvider";
+import {useAuthedKtseState} from "../components/api/AuthedKtseProvider";
 
 
 type Provider = ClientProviderListMsg["providers"][0]
@@ -22,9 +22,9 @@ function buildOidcLoginUrl(authorizationEndpoint: string, clientId: string): str
 // noinspection JSUnusedGlobalSymbols
 export default function AboutRoute() {
     const wsState = useWebsocketState()
+    const authedKtse = useAuthedKtseState()
     const [providers, setProviders] = useState<Provider[]>()
     const [authEndpoints, setAuthEndpoints] = useState<Record<string, string>>({})
-    const kerutaState = useKerutaTaskState()
     useWebsocketReceive(msg => {
         if (msg.type == "provider_listed") {
             setProviders(msg.providers)
@@ -47,13 +47,12 @@ export default function AboutRoute() {
     }, [providers])
     useEffect(() => {
         if (wsState.state != "open") return
-        if (kerutaState.state != "connected") return;
-        if (kerutaState.auth.state != "authenticated") return;
+        if (authedKtse.state != "loaded") return;
         const msg: ServerProviderListMsg = {
             type: "provider_list"
         }
         wsState.websocket.send(JSON.stringify(msg))
-    }, [wsState.state, kerutaState.state == "connected" && kerutaState.auth.state]);
+    }, [wsState.state, authedKtse.state]);
     const handleDelete = (id: string) => {
         if (!confirm("このプロバイダーを削除しますか？")) return
         if (wsState.state != "open") return

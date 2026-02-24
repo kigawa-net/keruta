@@ -19,10 +19,3 @@ export function useAppState(): AppState {
   }
   return context;
 }
-
-/**
- * KerutaTaskState を取得するフック
- */
-export function useKerutaTaskState(): KerutaTaskState {
-  return useAppState().kerutaState;
-}

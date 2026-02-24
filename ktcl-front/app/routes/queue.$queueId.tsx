@@ -7,9 +7,8 @@ import {ClientQueueListedMsg, ServerQueueListMsg} from "../components/msg/queue"
 import {QueueTaskCreateForm} from "../components/task/QueueTaskCreateForm";
 import {QueueTaskList} from "../components/task/QueueTaskList";
 import {Route} from "../../.react-router/types/app/routes/+types/queue.$queueId";
-import {useKerutaTaskState} from "../components/app/useAppState";
-import {KerutaTaskState} from "../util/net/websocket/ConnectionStateTypes";
 import {useWebsocketState, WebsocketState} from "../util/net/websocket/WebsocketProvider";
+import {useAuthedKtseState, AuthedKtseState} from "../components/api/AuthedKtseProvider";
 
 
 type Task = ClientTaskListedMsg["tasks"][0]
@@ -18,7 +17,7 @@ type Queue = ClientQueueListedMsg["queues"][0]
 // noinspection JSUnusedGlobalSymbols
 export default function Page({params: {queueId}}: Route.ComponentProps) {
     const globalState = useWebsocketState()
-    const kerutaState = useKerutaTaskState()
+    const authedKtse = useAuthedKtseState()
     const [tasks, setTasks] = useState<Task[]>([])
     const [queues, setQueues] = useState<Queue[]>([])
 
@@ -29,18 +28,18 @@ export default function Page({params: {queueId}}: Route.ComponentProps) {
         } else if (msg.type === "queue_listed") {
             setQueues(msg.queues)
         } else if (msg.type === "task_created") {
-            loadTaskList(globalState, kerutaState, Number(queueId))
+            loadTaskList(globalState, authedKtse, Number(queueId))
         } else if (msg.type === "task_updated") {
-            loadTaskList(globalState, kerutaState, Number(queueId))
+            loadTaskList(globalState, authedKtse, Number(queueId))
         } else if (msg.type === "task_moved") {
-            loadTaskList(globalState, kerutaState, Number(queueId))
+            loadTaskList(globalState, authedKtse, Number(queueId))
         }
-    }, [globalState.state, kerutaState.state === "connected" && kerutaState.auth.state, queueId])
+    }, [globalState.state, authedKtse.state, queueId])
 
     useEffect(() => {
-        loadTaskList(globalState, kerutaState, Number(queueId))
-        loadQueueList(globalState, kerutaState)
-    }, [globalState.state, kerutaState.state === "connected" && kerutaState.auth.state, queueId])
+        loadTaskList(globalState, authedKtse, Number(queueId))
+        loadQueueList(globalState, authedKtse)
+    }, [globalState.state, authedKtse.state, queueId])
 
     const currentQueue = queues.find(q => q.id === Number(queueId))
     const queueDisplayName = currentQueue?.name || `Queue ${queueId}`
@@ -58,7 +57,7 @@ export default function Page({params: {queueId}}: Route.ComponentProps) {
 
                     <QueueTaskCreateForm
                         queueId={queueId}
-                        onTaskCreated={() => loadTaskList(globalState, kerutaState, Number(queueId))}
+                        onTaskCreated={() => loadTaskList(globalState, authedKtse, Number(queueId))}
                     />
 
                     <QueueTaskList
@@ -72,10 +71,9 @@ export default function Page({params: {queueId}}: Route.ComponentProps) {
     )
 }
 
-function loadTaskList(globalState: WebsocketState, kerutaState: KerutaTaskState, queueId: number) {
+function loadTaskList(globalState: WebsocketState, authedKtse: AuthedKtseState, queueId: number) {
     if (globalState.state !== "open") return
-    if (kerutaState.state !== "connected") return
-    if (kerutaState.auth.state !== "authenticated") return
+    if (authedKtse.state !== "loaded") return
 
     const msg: ServerTaskListMsg = {
         type: "task_list",
@@ -84,10 +82,9 @@ function loadTaskList(globalState: WebsocketState, kerutaState: KerutaTaskState,
     globalState.websocket.send(JSON.stringify(msg))
 }
 
-function loadQueueList(globalState: WebsocketState, kerutaState: KerutaTaskState) {
+function loadQueueList(globalState: WebsocketState, authedKtse: AuthedKtseState) {
     if (globalState.state !== "open") return
-    if (kerutaState.state !== "connected") return
-    if (kerutaState.auth.state !== "authenticated") return
+    if (authedKtse.state !== "loaded") return
 
     const msg: ServerQueueListMsg = {
         type: "queue_list"

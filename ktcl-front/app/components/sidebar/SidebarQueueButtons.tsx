@@ -1,9 +1,9 @@
 import {Link} from "react-router-dom";
 import {ClientQueueListedMsg, ServerQueueListMsg} from "../msg/queue";
 import {useEffect, useState} from "react";
-import {useKerutaTaskState} from "../app/useAppState";
 import {useWebsocketReceive} from "../../util/net/websocket/useWebsocketReceive";
 import {useWebsocketState} from "../../util/net/websocket/WebsocketProvider";
+import {useAuthedKtseState} from "../api/AuthedKtseProvider";
 
 type Queue = ClientQueueListedMsg["queues"][0]
 export default function SidebarQueueButtons(
@@ -11,7 +11,7 @@ export default function SidebarQueueButtons(
 ) {
     const [queues, setQueues] = useState<Queue[]>([])
     const wsState = useWebsocketState()
-    const keruta = useKerutaTaskState()
+    const authedKtse = useAuthedKtseState()
     useWebsocketReceive(msg => {
         if (msg.type != "queue_listed") return
         setQueues(msg.queues)
@@ -19,13 +19,12 @@ export default function SidebarQueueButtons(
 
     useEffect(() => {
         if (wsState.state != "open") return
-        if (keruta.state != "connected") return;
-        if (keruta.auth.state != "authenticated") return;
+        if (authedKtse.state != "loaded") return;
         const msg: ServerQueueListMsg = {
             type: "queue_list",
         }
         wsState.websocket.send(JSON.stringify(msg))
-    }, [wsState, keruta.state, keruta.state == "connected" && keruta.auth.state == "authenticated"]);
+    }, [wsState, authedKtse.state]);
     return queues.map(value =>
         <li key={value.id}>
             <Link

@@ -3,7 +3,7 @@ import {buildProviderAuthUrlFromMsg} from "./providerAuthUrl";
 import {validateProviderForm} from "./providerValidation";
 import {Url} from "../../util/net/Url";
 import type {InputValue} from "../form/FormTextInput";
-import {useKerutaTaskState} from "../app/useAppState";
+import {useAuthedKtseState} from "../app/api/AuthedKtseProvider";
 import {useProviderService} from "./useProviderService";
 
 type FormState = "inputting" | "fetching" | "submitting" | "redirecting";
@@ -23,7 +23,7 @@ export interface ProviderAddFormState {
 }
 
 export function useProviderAddForm(): ProviderAddFormState {
-    const kerutaState = useKerutaTaskState();
+    const authedKtse = useAuthedKtseState();
     const providerService = useProviderService();
     const [formState, setFormState] = useState<FormState>("inputting");
     const [name, setName] = useState<InputValue>({value: ""});
@@ -46,7 +46,7 @@ export function useProviderAddForm(): ProviderAddFormState {
     }, [providerService, handleTokenReceived]);
 
     const handleSubmit = useCallback(async () => {
-        if (kerutaState.state !== "connected" || kerutaState.auth.state !== "authenticated") {
+        if (authedKtse.state !== "loaded") {
             setErr("認証されていません");
             return;
         }
@@ -69,7 +69,7 @@ export function useProviderAddForm(): ProviderAddFormState {
         setKerutaJson(json);
         setFormState("submitting");
         providerService.addProvider({name: name.value, issuer: issuerUrl.toStrUrl(), audience: "keruta"});
-    }, [kerutaState, name, issuer, providerService]);
+    }, [authedKtse, name, issuer, providerService]);
 
     const isDisabled = formState !== "inputting";
     const buttonLabel =

@@ -3,8 +3,8 @@ import {useNavigate, useSearchParams} from "react-router";
 import {useEffect, useState} from "react";
 import {useWebsocketReceive} from "../util/net/websocket/useWebsocketReceive";
 import {ServerProviderCompleteMsg} from "../components/msg/provider";
-import {useKerutaTaskState} from "../components/app/useAppState";
 import {useWebsocketState} from "../util/net/websocket/WebsocketProvider";
+import {useAuthedKtseState} from "../components/api/AuthedKtseProvider";
 
 
 type Status = "processing" | "success" | "error"
@@ -13,7 +13,7 @@ type Status = "processing" | "success" | "error"
 export default function ProviderCompleteRoute() {
     const [searchParams] = useSearchParams()
     const wsState = useWebsocketState()
-    const kerutaState = useKerutaTaskState()
+    const authedKtse = useAuthedKtseState()
     const navigate = useNavigate()
     const [status, setStatus] = useState<Status>("processing")
     const [errMsg, setErrMsg] = useState<string>()
@@ -28,8 +28,7 @@ export default function ProviderCompleteRoute() {
             return
         }
         if (wsState.state != "open") return
-        if (kerutaState.state != "connected") return
-        if (kerutaState.auth.state != "authenticated") return
+        if (authedKtse.state != "loaded") return
 
         const redirectUri = `${window.location.origin}/provider/complete`
         const msg: ServerProviderCompleteMsg = {
@@ -39,7 +38,7 @@ export default function ProviderCompleteRoute() {
             redirectUri,
         }
         wsState.websocket.send(JSON.stringify(msg))
-    }, [wsState.state, kerutaState.state == "connected" && kerutaState.auth.state])
+    }, [wsState.state, authedKtse.state])
 
     useWebsocketReceive(msg => {
         if (msg.type != "provider_idp_added") return
