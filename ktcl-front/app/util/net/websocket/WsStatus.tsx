@@ -1,11 +1,13 @@
-import {useKerutaTaskState} from "../../../components/app/useAppState";
+import {useWebsocketState} from "./WebsocketProvider";
+import {useAuthedKtseState} from "../../../components/api/AuthedKtseProvider";
 
 
 export default function WsStatus(
     {}: {},
 ) {
-    const keruta = useKerutaTaskState()
-    const isConnected = keruta.state == "connected"
+    const websocket = useWebsocketState()
+    const authedKtse = useAuthedKtseState()
+    const isConnected = websocket.state == "open"
     return (
         <div style={{
             padding: '10px',
@@ -13,7 +15,7 @@ export default function WsStatus(
             color: isConnected ? '#155724' : '#721c24',
             borderRadius: '4px',
         }}>
-            Status: {keruta.state}, {keruta.state == "connected" ? keruta.auth.state : "unauth"}
+            Status: {websocket.state}, {authedKtse.state}
         </div>
     )
 }

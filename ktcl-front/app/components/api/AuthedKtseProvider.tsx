@@ -36,8 +36,8 @@ export function AuthedKtseProvider(
     useStateFlow(
         ktse.state == "loaded" ? ktse.ktclApi.auth.getAuthSuccessReceiver() : undefined,
         value => {
-            console.log("Auth success:", value)
-            setAuthedKtseState({state: "loaded", authedKtseApi: new AuthedKtseApi()})
+            if (ktse.state != "loaded") return;
+            setAuthedKtseState({state: "loaded", authedKtseApi: new AuthedKtseApi(ktse.ktclApi)})
         }
     )
     return <Context.Provider

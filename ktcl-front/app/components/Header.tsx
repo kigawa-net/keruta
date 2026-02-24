@@ -1,4 +1,4 @@
-import AuthButton from "../components/auth/AuthButton";
+import AuthButton from "./auth/AuthButton";
 import WsStatus from "../util/net/websocket/WsStatus";
 
 interface HeaderProps {
