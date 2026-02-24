@@ -106,6 +106,8 @@ class QueueDetailViewModel(
                         newTaskDescription = "",
                     )
                 }
+                // タスク一覧を再取得
+                loadTasks()
             } catch (e: Exception) {
                 updateState { it.copy(isCreatingTask = false, errorMessage = e.message) }
             }
