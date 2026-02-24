@@ -8,6 +8,7 @@ on:
       - Dockerfile_ktcl_claudecode
       - .github/workflows/dev-ktcl-front.yml
       - .github/workflows/dev-ktse.yml
+      - .github/workflows/renovate.yaml
       - .idea/**
       - ktcl-claudecode/**
       - ktcl-front/**
