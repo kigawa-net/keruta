@@ -16,17 +16,16 @@ export default function SidebarQueueButtons(
         if (msg.type != "queue_listed") return
         setQueues(msg.queues)
     }, [])
-    const authState = "auth" in keruta ? keruta.auth.state : undefined
 
     useEffect(() => {
         if (wsState.state != "open") return
         if (keruta.state != "connected") return;
-        if (authState != "authenticated") return;
+        if (keruta.auth.state != "authenticated") return;
         const msg: ServerQueueListMsg = {
             type: "queue_list",
         }
         wsState.websocket.send(JSON.stringify(msg))
-    }, [wsState, keruta.state, authState]);
+    }, [wsState, keruta.state, keruta.state == "connected" && keruta.auth.state == "authenticated"]);
     return queues.map(value =>
         <li key={value.id}>
             <Link

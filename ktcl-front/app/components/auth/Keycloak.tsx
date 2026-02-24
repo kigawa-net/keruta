@@ -93,8 +93,8 @@ function updateKeycloakState(
     }
 }
 
-export function useKeycloakState() {
-    return useContext(Context);
+export function useKeycloakState(): KeycloakState {
+    return useContext(Context) || {state: "unloaded"};
 }
 
 export type KeycloakState = {
