@@ -7,6 +7,13 @@ export class KtseApi {
     readonly auth = new KtseAuthApi(this)
 
     private listener(event: MessageEvent) {
+        if (this.receiver == null) {
+            console.error(
+                "Received message:",
+                event.data
+            )
+            return
+        }
         this.receiver.call(JSON.parse(event.data))
     }
 
