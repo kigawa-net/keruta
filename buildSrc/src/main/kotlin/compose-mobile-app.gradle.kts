@@ -1,8 +1,8 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("com.android.application")
-    kotlin("android")
     kotlin("plugin.compose")
     id("org.jetbrains.compose")
 }
@@ -37,10 +37,11 @@ android {
     }
 }
 
-kotlin {
-    jvmToolchain(25)
-
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_25)
+// Configure JVM target via task - AGP 9.0+ built-in Kotlin uses tasks
+afterEvaluate {
+    tasks.withType<KotlinCompile>().configureEach {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_25)
+        }
     }
 }

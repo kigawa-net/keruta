@@ -18,12 +18,21 @@ class QueueListViewModel(
     private val queueRepository: QueueRepository,
     private val messageSender: MessageSender,
     private val authService: AuthService,
-) : BaseViewModel<QueueListViewState>(QueueListViewState()) {
+): BaseViewModel<QueueListViewState>(QueueListViewState()) {
 
     init {
         viewModelScope.launch {
-            queueRepository.queues.collect { queues ->
-                updateState { it.copy(queues = queues, isLoading = false) }
+            try {
+
+                queueRepository.queues.collect { queues ->
+                    println("=== QueueListViewModel: queueRepository.queues.collect called ===")
+                    if (queues == null) return@collect
+                    updateState { it.copy(queues = queues, isLoading = false) }
+                    println("=== QueueListViewModel: queues: ${queues.size} ===")
+                }
+            } catch (t: Throwable) {
+                println("=== QueueListViewModel: error: ${t.message} ==")
+                throw t
             }
         }
     }
