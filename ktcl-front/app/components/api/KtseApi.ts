@@ -19,6 +19,7 @@ export class KtseApi {
 
     constructor(private readonly websocket: WebSocket) {
         websocket.addEventListener("message", this.listener)
+        console.debug("KtseApi created")
     }
 
     close() {
