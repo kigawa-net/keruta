@@ -82,6 +82,7 @@ private fun AuthenticatedApp(
                     val viewModel = remember { container.createQueueListViewModel() }
                     QueueListScreen(
                         viewModel = viewModel,
+                        currentScreen = screen,
                         onQueueClick = { queueId ->
                             container.navigationController.navigate(Screen.QueueDetail(queueId))
                         },

@@ -18,7 +18,7 @@ class QueueListViewModel(
     private val queueRepository: QueueRepository,
     private val messageSender: MessageSender,
     private val authService: AuthService,
-): BaseViewModel<QueueListViewState>(QueueListViewState()) {
+): BaseViewModel<QueueListViewState>(QueueListViewState(isLoading = true)) {
 
     init {
         viewModelScope.launch {
@@ -40,7 +40,6 @@ class QueueListViewModel(
     fun loadQueues() {
         println("=== loadQueues called ===")
         viewModelScope.launch {
-            updateState { it.copy(isLoading = true, errorMessage = null) }
             try {
                 // 接続が確立されるまで待つ
                 println("=== loadQueues: waiting for connection ===")

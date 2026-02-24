@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import net.kigawa.keruta.ktcl.mobile.msg.queue.Queue
+import net.kigawa.keruta.ktcl.mobile.navigation.Screen
 import net.kigawa.keruta.ktcl.mobile.ui.components.ErrorMessage
 import net.kigawa.keruta.ktcl.mobile.ui.components.LoadingIndicator
 import net.kigawa.keruta.ktcl.mobile.ui.components.PrimaryButton
@@ -32,14 +33,14 @@ import net.kigawa.keruta.ktcl.mobile.viewmodel.QueueListViewModel
 @Composable
 fun QueueListScreen(
     viewModel: QueueListViewModel,
+    currentScreen: Screen,
     onQueueClick: (Long) -> Unit,
     onCreateQueueClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state by viewModel.state.collectAsState()
 
-    LaunchedEffect(Unit) {
-        println("=== QueueListScreen: LaunchedEffect triggered ===")
+    LaunchedEffect(currentScreen) {
         viewModel.loadQueues()
     }
 

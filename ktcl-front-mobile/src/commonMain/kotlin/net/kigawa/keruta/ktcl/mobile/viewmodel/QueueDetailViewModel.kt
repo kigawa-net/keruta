@@ -22,7 +22,7 @@ class QueueDetailViewModel(
     private val taskRepository: TaskRepository,
     private val messageSender: MessageSender,
     private val authService: AuthService,
-) : BaseViewModel<QueueDetailViewState>(QueueDetailViewState()) {
+) : BaseViewModel<QueueDetailViewState>(QueueDetailViewState(isLoading = true)) {
 
     init {
         viewModelScope.launch {
@@ -41,7 +41,6 @@ class QueueDetailViewModel(
         if (queueId == 0L) return
 
         viewModelScope.launch {
-            updateState { it.copy(isLoading = true, errorMessage = null) }
             try {
                 // 接続が確立されるまで待つ
                 val connection = messageSender.connection.first { it != null }
@@ -84,7 +83,6 @@ class QueueDetailViewModel(
         }
 
         viewModelScope.launch {
-            updateState { it.copy(isCreatingTask = true, errorMessage = null) }
             try {
                 // 接続が確立されるまで待つ
                 val connection = messageSender.connection.first { it != null }
