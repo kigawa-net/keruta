@@ -9,7 +9,7 @@ export class KtseApi {
     private listener(event: MessageEvent) {
         if (this.receiver == null) {
             console.error(
-                "Received message:",
+                "received message but receiver is null:",
                 event.data
             )
             return
@@ -19,7 +19,10 @@ export class KtseApi {
 
     constructor(private readonly websocket: WebSocket) {
         this.receiver = new MutableStateFlow<ReceiveMsg>()
-        websocket.addEventListener("message", this.listener)
+        websocket.addEventListener("message",(evt)=>{
+            console.debug("received message:", this.receiver)
+            this.listener(evt)
+        })
         this.auth = new KtseAuthApi(this)
     }
 
