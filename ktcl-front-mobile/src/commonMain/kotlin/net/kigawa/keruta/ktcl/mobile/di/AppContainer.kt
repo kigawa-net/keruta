@@ -27,6 +27,7 @@ import net.kigawa.keruta.ktcl.mobile.viewmodel.ProviderListViewModel
 import net.kigawa.keruta.ktcl.mobile.viewmodel.QueueCreateViewModel
 import net.kigawa.keruta.ktcl.mobile.viewmodel.QueueDetailViewModel
 import net.kigawa.keruta.ktcl.mobile.viewmodel.QueueListViewModel
+import net.kigawa.keruta.ktcl.mobile.viewmodel.TaskDetailViewModel
 
 open class AppContainer(
     val config: MobileConfig = MobileConfig.default(),
@@ -73,7 +74,6 @@ open class AppContainer(
 
     // WebSocket接続 состояние
     private var _isWebSocketConnected = false
-    val isWebSocketConnected: Boolean get() = _isWebSocketConnected
 
     /**
      * WebSocketに接続し、messageSenderに設定する
@@ -134,5 +134,9 @@ open class AppContainer(
 
     fun createProviderListViewModel(): ProviderListViewModel {
         return ProviderListViewModel(providerRepository, messageSender, authService)
+    }
+
+    fun createTaskDetailViewModel(): TaskDetailViewModel {
+        return TaskDetailViewModel(taskRepository, messageSender, authService)
     }
 }

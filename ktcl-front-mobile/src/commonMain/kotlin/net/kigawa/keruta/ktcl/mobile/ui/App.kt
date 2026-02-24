@@ -18,6 +18,7 @@ import net.kigawa.keruta.ktcl.mobile.ui.screen.ProviderListScreen
 import net.kigawa.keruta.ktcl.mobile.ui.screen.QueueCreateScreen
 import net.kigawa.keruta.ktcl.mobile.ui.screen.QueueDetailScreen
 import net.kigawa.keruta.ktcl.mobile.ui.screen.QueueListScreen
+import net.kigawa.keruta.ktcl.mobile.ui.screen.TaskDetailScreen
 
 @Composable
 fun App(
@@ -110,6 +111,20 @@ private fun AuthenticatedApp(
                     QueueDetailScreen(
                         viewModel = viewModel,
                         queueId = screen.queueId,
+                        onBack = {
+                            container.navigationController.navigateBack()
+                        },
+                        onTaskClick = { taskId ->
+                            container.navigationController.navigate(Screen.TaskDetail(taskId, screen.queueId))
+                        },
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
+                is Screen.TaskDetail -> {
+                    val viewModel = remember { container.createTaskDetailViewModel() }
+                    TaskDetailScreen(
+                        viewModel = viewModel,
+                        currentScreen = screen,
                         onBack = {
                             container.navigationController.navigateBack()
                         },

@@ -1,5 +1,6 @@
 package net.kigawa.keruta.ktcl.mobile.ui.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -38,6 +39,7 @@ fun QueueDetailScreen(
     viewModel: QueueDetailViewModel,
     queueId: Long,
     onBack: () -> Unit,
+    onTaskClick: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state by viewModel.state.collectAsState()
@@ -160,7 +162,10 @@ fun QueueDetailScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     items(state.tasks) { task ->
-                        TaskCard(task = task)
+                        TaskCard(
+                            task = task,
+                            onClick = { onTaskClick(task.id) },
+                        )
                     }
                 }
             }
@@ -171,10 +176,13 @@ fun QueueDetailScreen(
 @Composable
 private fun TaskCard(
     task: Task,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
     ) {
         Column(

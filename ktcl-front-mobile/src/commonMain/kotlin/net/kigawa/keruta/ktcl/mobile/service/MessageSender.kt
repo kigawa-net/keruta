@@ -49,6 +49,12 @@ class MessageSender {
         sendMessage(json.encodeToString(msg))
     }
 
+    suspend fun sendTaskUpdate(taskId: Long, status: String) {
+        // KTVCPモデルに合わせてtaskIdとstatusのみを送信
+        val msg = """{"type":"task_update","taskId":$taskId,"status":"$status"}"""
+        sendMessage(msg)
+    }
+
     private suspend fun sendMessage(message: String) {
         _connection.value?.send(message)
     }

@@ -5,5 +5,6 @@ sealed class Screen {
     data object QueueList : Screen()
     data object QueueCreate : Screen()
     data class QueueDetail(val queueId: Long) : Screen()
+    data class TaskDetail(val taskId: Long, val queueId: Long) : Screen()
     data object ProviderList : Screen()
 }

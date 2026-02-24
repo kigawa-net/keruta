@@ -37,37 +37,10 @@ data class ClientTaskListedMsg(
 )
 
 @Serializable
-data class ServerTaskShowMsg(
-    val type: String = "task_show",
-)
-
-@Serializable
-data class ClientTaskShowedMsg(
-    val type: String = "task_showed",
-    val id: Long,
-    val title: String,
-    val description: String,
-)
-
-@Serializable
-data class ServerTaskUpdateMsg(
-    val type: String = "task_update",
-    val taskId: Long,
-    val status: String,
-)
-
-@Serializable
 data class ClientTaskUpdatedMsg(
     val type: String = "task_updated",
     val id: Long,
     val status: String,
-)
-
-@Serializable
-data class ServerTaskMoveMsg(
-    val type: String = "task_move",
-    val taskId: Long,
-    val targetQueueId: Long,
 )
 
 @Serializable
