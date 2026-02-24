@@ -3,7 +3,7 @@ import {buildProviderAuthUrlFromMsg} from "./providerAuthUrl";
 import {validateProviderForm} from "./providerValidation";
 import {Url} from "../../util/net/Url";
 import type {InputValue} from "../form/FormTextInput";
-import {useAuthedKtseState} from "../app/api/AuthedKtseProvider";
+import {useAuthedKtseState} from "../api/AuthedKtseProvider";
 import {useProviderService} from "./useProviderService";
 
 type FormState = "inputting" | "fetching" | "submitting" | "redirecting";
