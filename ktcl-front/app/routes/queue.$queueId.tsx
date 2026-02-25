@@ -74,6 +74,7 @@ export default function Page({params: {queueId}}: Route.ComponentProps) {
 function loadTaskList(globalState: WebsocketState, authedKtse: AuthedKtseState, queueId: number) {
     if (globalState.state !== "open") return
     if (authedKtse.state !== "loaded") return
+    if (!Number.isFinite(queueId)) return
 
     const msg: ServerTaskListMsg = {
         type: "task_list",

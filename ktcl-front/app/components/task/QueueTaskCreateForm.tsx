@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
 import FormTextInput, {InputValue} from "../form/FormTextInput";
 import FormErrMsg from "../form/FormErrMsg";
-import {ServerTaskCreateMsg} from "../msg/task";
 import {useWebsocketState} from "../../util/net/websocket/WebsocketProvider";
+import {useAuthedKtseState} from "../api/AuthedKtseProvider";
 
 interface QueueTaskCreateFormProps {
     queueId: string;
@@ -15,9 +15,11 @@ export function QueueTaskCreateForm({queueId, onTaskCreated}: QueueTaskCreateFor
     const [taskName, setTaskName] = useState<InputValue>({value: ""});
     const [description, setDescription] = useState<InputValue>({value: ""});
     const [err, setErr] = useState<string>();
+    const authedKtse = useAuthedKtseState()
 
     useEffect(() => {
         if (formState !== "submitting") return;
+        if (authedKtse.state !== "loaded") return;
         if (wsState.state !== "open") {
             setErr("websocket is not connected");
             setFormState("inputting");
@@ -29,19 +31,19 @@ export function QueueTaskCreateForm({queueId, onTaskCreated}: QueueTaskCreateFor
             return;
         }
 
-        const msg: ServerTaskCreateMsg = {
-            type: "task_create",
-            queueId: parseInt(queueId),
-            title: taskName.value,
-            description: description.value.trim(),
-        };
-        wsState.websocket.send(JSON.stringify(msg));
+        const parsedQueueId = parseInt(queueId);
+        if (!Number.isFinite(parsedQueueId)) {
+            setErr("Invalid queue ID");
+            setFormState("inputting");
+            return;
+        }
+        authedKtse.authedKtseApi.createTask(parsedQueueId, taskName.value, description.value.trim());
 
         setTaskName({value: ""});
         setDescription({value: ""});
         setFormState("inputting");
         onTaskCreated?.();
-    }, [formState]);
+    }, [formState, authedKtse]);
 
     return (
         <div className="bg-white rounded-lg shadow p-6 mb-6">

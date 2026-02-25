@@ -2,6 +2,7 @@ import {ClientProviderListMsg, ServerProviderListMsg} from "../msg/provider";
 import {KtseApi} from "./KtseApi";
 import {MutableStateFlow} from "../../util/StateFlow";
 import {ClientQueueCreatedMsg, ServerQueueCreateMsg, ServerQueueListMsg} from "../msg/queue";
+import {ServerTaskCreateMsg} from "../msg/task";
 
 export class AuthedKtseApi {
     readonly providerListed = new MutableStateFlow<ClientProviderListMsg>()
@@ -24,6 +25,7 @@ export class AuthedKtseApi {
     close() {
         this.ktse.getReceiver().removeListener(this.providerListedId)
     }
+
     sendProviderList() {
         const res: ServerProviderListMsg = {
             type: "provider_list",
@@ -38,6 +40,16 @@ export class AuthedKtseApi {
 
     listQueues(): void {
         const msg: ServerQueueListMsg = {type: "queue_list"};
+        this.ktse.send(msg);
+    }
+
+    createTask(queueId: number, title: string, description: string): void {
+        const msg: ServerTaskCreateMsg = {
+            type: "task_create",
+            queueId: queueId,
+            title: title,
+            description: description,
+        };
         this.ktse.send(msg);
     }
 }
