@@ -32,8 +32,8 @@ export function QueueCreateForm() {
 
     useStateFlow(
         authedKtse.state == "loaded" ? authedKtse.authedKtseApi.queueCreated : undefined,
-        queueId => {
-            navigate(`/queue/${queueId}`);
+        msg => {
+            navigate(`/queue/${msg.queueId}`);
         },
         [navigate]
     )
