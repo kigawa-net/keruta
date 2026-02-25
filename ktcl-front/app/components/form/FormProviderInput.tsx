@@ -3,7 +3,6 @@ import {InputValue} from "./FormTextInput";
 import {useEffect, useState} from "react";
 import {ClientProviderListMsg} from "../msg/provider";
 import {useWebsocketReceive} from "../../util/net/websocket/useWebsocketReceive";
-import {useWebsocketState} from "../../util/net/websocket/WebsocketProvider";
 import {useAuthedKtseState} from "../api/AuthedKtseProvider";
 import {useStateFlow} from "../../util/StateFlow";
 
@@ -29,9 +28,9 @@ export default function FormProviderInput(
         setProviders(msg.providers)
     }, [])
     useStateFlow(
-        authedKtse.state == "loaded" ? authedKtse.authedKtseApi.receiveProviderListed() : undefined,
+        authedKtse.state == "loaded" ? authedKtse.authedKtseApi.providerListed : undefined,
         value1 => {
-         setProviders(value1.providers)
+            setProviders(value1.providers)
         }
     )
     useEffect(() => {

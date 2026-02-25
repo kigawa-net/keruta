@@ -27,10 +27,10 @@ export class MutableStateFlow<T> implements StateFlow<T> {
     }
 }
 
-export function useStateFlow<T>(flow: StateFlow<T> | undefined, listener: (value: T) => void) {
+export function useStateFlow<T>(flow: StateFlow<T> | undefined, listener: (value: T) => void, deps: any[] = []) {
     useEffect(() => {
         if (flow === undefined) return
         const id = flow.addListener(listener)
         return () => flow.removeListener(id)
-    }, [flow]);
+    }, [flow, ...deps]);
 }

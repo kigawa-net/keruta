@@ -35,7 +35,7 @@ export function AuthedKtseProvider(
     }, [kc, ktcl, ktse]);
     useStateFlow(
         ktse.state == "loaded" ? ktse.ktclApi.auth.getAuthSuccessReceiver() : undefined,
-        value => {
+        () => {
             if (ktse.state != "loaded") return;
             setAuthedKtseState({state: "loaded", authedKtseApi: new AuthedKtseApi(ktse.ktclApi)})
         }

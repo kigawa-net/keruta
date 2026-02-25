@@ -1,22 +1,12 @@
 import {createContext, ReactNode, useMemo} from "react";
-import {
-    ApiService,
-    AuthMessageService,
-    ProviderMessageService,
-    QueueMessageService,
-    TaskMessageService,
-    WebSocketService,
-} from "../../../components/api";
-import {WsState} from "../websocket/useWebSocketConnection";
+import {ApiService, ProviderMessageService, TaskMessageService, WebSocketService,} from "../../../components/api";
 import {Url} from "../Url";
 import {useWebsocketState, WebsocketState} from "../websocket/WebsocketProvider";
 
 interface Services {
     wsService: WebSocketService;
     apiService: ApiService;
-    authMessageService: AuthMessageService;
     taskMessageService: TaskMessageService;
-    queueMessageService: QueueMessageService;
     providerMessageService: ProviderMessageService;
 }
 
@@ -51,9 +41,7 @@ export function ServiceProvider(
         return {
             wsService,
             apiService,
-            authMessageService: new AuthMessageService(wsService),
             taskMessageService: new TaskMessageService(wsService),
-            queueMessageService: new QueueMessageService(wsService),
             providerMessageService: new ProviderMessageService(wsService),
         };
     }, [wsUrl, getAuthToken]);
