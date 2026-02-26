@@ -2,8 +2,10 @@ plugins {
     `kotlin-dsl`
 }
 
-kotlin {
-    jvmToolchain(25)
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(25))
+    }
 }
 
 repositories {
