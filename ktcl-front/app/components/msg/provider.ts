@@ -23,7 +23,6 @@ export interface ServerProviderAddMsg {
     type: typeof SendMsgTypes.provider_add
     name: string
     issuer: string
-    audience: string
 }
 
 export interface ClientProviderAddTokenMsg {

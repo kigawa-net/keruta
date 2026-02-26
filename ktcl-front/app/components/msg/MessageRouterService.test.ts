@@ -1,16 +1,13 @@
 import {describe, expect, it, vi} from 'vitest';
 import {createMessageHandler} from './MessageRouterService';
-import type {ProviderService, TaskService} from '../domain';
+import type {TaskService} from '../domain';
 
 describe('createMessageHandler', () => {
     const createMockServices = () => ({
         taskService: {
             handleMessage: vi.fn(),
         } as unknown as TaskService,
-        providerService: {
-            handleMessage: vi.fn(),
-        } as unknown as ProviderService,
-    });
+    })
 
     const createMockWebSocket = () => ({} as WebSocket);
 
@@ -34,7 +31,6 @@ describe('createMessageHandler', () => {
 
             expect(onAuthSuccess).toHaveBeenCalledTimes(1);
             expect(services.taskService.handleMessage).not.toHaveBeenCalled();
-            expect(services.providerService.handleMessage).not.toHaveBeenCalled();
         });
     });
 
@@ -62,7 +58,7 @@ describe('createMessageHandler', () => {
             handler(event);
 
             expect(services.taskService.handleMessage).toHaveBeenCalledTimes(1);
-            expect(services.providerService.handleMessage).toHaveBeenCalledTimes(1);
+
             expect(onAuthSuccess).not.toHaveBeenCalled();
         });
     });
@@ -89,7 +85,7 @@ describe('createMessageHandler', () => {
             handler(event);
 
             expect(services.taskService.handleMessage).toHaveBeenCalledTimes(1);
-            expect(services.providerService.handleMessage).toHaveBeenCalledTimes(1);
+
         });
     });
 
@@ -117,7 +113,7 @@ describe('createMessageHandler', () => {
             handler(event);
 
             expect(services.taskService.handleMessage).toHaveBeenCalledTimes(1);
-            expect(services.providerService.handleMessage).toHaveBeenCalledTimes(1);
+
         });
     });
 });

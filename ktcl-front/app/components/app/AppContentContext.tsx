@@ -1,5 +1,5 @@
 import {createContext, ReactNode, useMemo} from "react";
-import {ProviderService, TaskService} from "../domain";
+import {TaskService} from "../domain";
 import {useConnectionStateService} from "../../util/net/websocket/useConnectionStateService";
 
 import {useProviderMessageService, useTaskMessageService,} from "../../util/net/service/useServiceHooks";
@@ -10,7 +10,6 @@ import {useWebsocketState} from "../../util/net/websocket/WebsocketProvider";
 export interface AppState {
     kerutaState: KerutaTaskState;
     taskService: TaskService;
-    providerService: ProviderService;
 }
 
 export const AppContentContext = createContext<AppState | null>(null);
@@ -24,7 +23,6 @@ export function AppContentProvider({children}: { children: ReactNode }) {
     const services = useMemo(
         () => ({
             taskService: new TaskService(taskMsgService),
-            providerService: new ProviderService(providerMsgService),
         }),
         [taskMsgService, providerMsgService]
     );
@@ -35,7 +33,6 @@ export function AppContentProvider({children}: { children: ReactNode }) {
     const appState: AppState = {
         kerutaState,
         taskService: services.taskService,
-        providerService: services.providerService,
     };
 
     return (

@@ -1,10 +1,10 @@
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useState} from "react";
 import {buildProviderAuthUrlFromMsg} from "./providerAuthUrl";
 import {validateProviderForm} from "./providerValidation";
 import {Url} from "../../util/net/Url";
 import type {InputValue} from "../form/FormTextInput";
 import {useAuthedKtseState} from "../api/AuthedKtseProvider";
-import {useProviderService} from "./useProviderService";
+import {useStateFlow} from "../../util/StateFlow";
 
 type FormState = "inputting" | "fetching" | "submitting" | "redirecting";
 
@@ -24,7 +24,6 @@ export interface ProviderAddFormState {
 
 export function useProviderAddForm(): ProviderAddFormState {
     const authedKtse = useAuthedKtseState();
-    const providerService = useProviderService();
     const [formState, setFormState] = useState<FormState>("inputting");
     const [name, setName] = useState<InputValue>({value: ""});
     const [issuer, setIssuer] = useState<InputValue>({value: ""});
@@ -40,11 +39,13 @@ export function useProviderAddForm(): ProviderAddFormState {
         },
         [kerutaJson]
     );
-
-    useEffect(() => {
-        return providerService.onTokenIssued(handleTokenReceived);
-    }, [providerService, handleTokenReceived]);
-
+    useStateFlow(
+        authedKtse.state === "loaded" ? authedKtse.authedKtseApi.providerTokenIssued : undefined,
+        msg => {
+            handleTokenReceived(msg.token);
+        },
+        [handleTokenReceived]
+    )
     const handleSubmit = useCallback(async () => {
         if (authedKtse.state !== "loaded") {
             setErr("認証されていません");
@@ -68,8 +69,8 @@ export function useProviderAddForm(): ProviderAddFormState {
 
         setKerutaJson(json);
         setFormState("submitting");
-        providerService.addProvider({name: name.value, issuer: issuerUrl.toStrUrl(), audience: "keruta"});
-    }, [authedKtse, name, issuer, providerService]);
+        authedKtse.authedKtseApi.addProvider(name.value, issuerUrl.toStrUrl());
+    }, [authedKtse, name, issuer]);
 
     const isDisabled = formState !== "inputting";
     const buttonLabel =

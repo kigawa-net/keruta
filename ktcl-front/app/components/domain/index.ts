@@ -9,8 +9,6 @@ export type {
 export {filterQueues, sortQueues, validateQueueName, MAX_QUEUE_NAME_LENGTH} from "./QueueUtils";
 export type {Queue, CreateQueueInput, QueueListState, QueueFilterOptions, QueueSortField} from "./QueueTypes";
 
-// Provider
-export {ProviderService} from "./ProviderService";
 export {
     filterProviders, sortProviders, validateCreateInput, validateProviderName, validateIssuer, validateAudience
 } from "./ProviderUtils";

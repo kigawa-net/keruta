@@ -1,9 +1,8 @@
-import {ProviderService, TaskService} from "../domain";
+import {TaskService} from "../domain";
 
 export interface MessageRouterDependencies {
     ws: WebSocket;
     taskService: TaskService;
-    providerService: ProviderService;
     onAuthSuccess: () => void;
 }
 
@@ -11,7 +10,7 @@ export interface MessageRouterDependencies {
  * WebSocketメッセージハンドラを作成する
  */
 export function createMessageHandler(deps: MessageRouterDependencies): (event: MessageEvent) => void {
-    const {taskService, providerService, onAuthSuccess} = deps;
+    const {taskService, onAuthSuccess} = deps;
 
     return (event: MessageEvent) => {
         const msg = JSON.parse(event.data);
@@ -25,6 +24,5 @@ export function createMessageHandler(deps: MessageRouterDependencies): (event: M
         }
 
         taskService.handleMessage(msg);
-        providerService.handleMessage(msg);
     };
 }
