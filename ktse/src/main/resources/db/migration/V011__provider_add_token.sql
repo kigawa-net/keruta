@@ -1,4 +1,4 @@
-CREATE TABLE provider_add_token
+CREATE TABLE IF NOT EXISTS provider_add_token
 (
     token      VARCHAR(36)  NOT NULL,
     user_id    INT          NOT NULL,

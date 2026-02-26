@@ -1,4 +1,4 @@
-create table queue_provider (
+create table if not exists queue_provider (
     queue_id int,
     provider_id int,
     primary key (queue_id, provider_id),

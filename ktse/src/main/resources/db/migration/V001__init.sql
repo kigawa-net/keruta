@@ -1,4 +1,4 @@
-create table provider
+create table if not exists provider
 (
     id      integer auto_increment,
     name    varchar(50),
@@ -7,7 +7,7 @@ create table provider
     create_at timestamp,
     primary key (id)
 );
-create table queue
+create table if not exists queue
 (
     id          integer auto_increment,
     name        varchar(50),
@@ -17,19 +17,19 @@ create table queue
     primary key (id),
     foreign key (provider_id) references provider (id)
 );
-create table user(
+create table if not exists user(
     id   integer auto_increment,
     create_at timestamp,
     primary key (id)
 );
-create table queue_user(
+create table if not exists queue_user(
     queue_id integer,
     user_id  integer,
     create_at timestamp,
     foreign key (queue_id) references queue (id),
     foreign key (user_id) references user (id)
 );
-create table task(
+create table if not exists task(
     id   integer auto_increment,
     user_id integer,
     queue_id integer,
@@ -38,7 +38,7 @@ create table task(
     foreign key (user_id) references user (id),
     foreign key (queue_id) references queue (id)
 );
-create table user_idp(
+create table if not exists user_idp(
     user_id integer,
     issuer varchar(50),
     subject varchar(50),
