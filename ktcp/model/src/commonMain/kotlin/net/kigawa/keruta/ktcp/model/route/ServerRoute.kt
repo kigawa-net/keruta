@@ -1,7 +1,10 @@
 package net.kigawa.keruta.ktcp.model.route
 
+import kotlinx.serialization.KSerializer
+import net.kigawa.keruta.ktcp.model.msg.KtcpMsg
 import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
 
-interface ServerRoute: KtcpRoute {
+interface ServerRoute<T: KtcpMsg>: KtcpRoute {
     val type: ServerMsgType
+    val serializer: KSerializer<T>
 }

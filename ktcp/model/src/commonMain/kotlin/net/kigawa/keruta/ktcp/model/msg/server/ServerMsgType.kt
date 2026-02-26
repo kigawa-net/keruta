@@ -1,11 +1,12 @@
 package net.kigawa.keruta.ktcp.model.msg.server
 
 import kotlinx.serialization.Serializable
+import net.kigawa.keruta.ktcp.model.msg.MsgType
 
 @Serializable(ServerMsgTypeSerializer::class)
 enum class ServerMsgType(
     val str: String,
-) {
+): MsgType {
     GENERIC_ERROR("generic_error"),
     AUTH_REQUEST("auth_request"),
     AUTH_SUCCESS("auth_success"),
