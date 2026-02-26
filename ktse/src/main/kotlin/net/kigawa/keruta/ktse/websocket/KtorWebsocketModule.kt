@@ -20,11 +20,11 @@ import net.kigawa.keruta.ktse.WebsocketConnection
 import net.kigawa.keruta.ktse.auth.Auth0AuthTokenDecoder
 import net.kigawa.keruta.ktcp.base.auth.jwks.JwksProvider
 import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
+import net.kigawa.keruta.ktse.auth.KtseJwtVerifier
 import net.kigawa.keruta.ktse.auth.keruta.KerutaJsonProvider
 import net.kigawa.keruta.ktcp.base.auth.oidc.OidcConfigProvider
 import net.kigawa.keruta.ktcp.model.err.GenericErrMsg
 import net.kigawa.keruta.ktse.persist.ExposedPersisterSession
-import net.kigawa.keruta.ktse.persist.ProviderAddHandler
 import net.kigawa.keruta.ktse.persist.ProviderCompleteHandler
 import net.kigawa.keruta.ktse.persist.ProviderDeleteHandler
 import net.kigawa.keruta.ktse.persist.db.DbPersister
@@ -39,7 +39,7 @@ import net.kigawa.kodel.api.log.traceignore.debug
 import net.kigawa.kodel.api.log.traceignore.error
 import kotlin.time.Duration.Companion.seconds
 
-class KtorWebsocketModule(application: Application, server: KerutaTaskServer) {
+class KtorWebsocketModule(application: Application, val server: KerutaTaskServer) {
     val ktseConfig = KtseConfig(application.environment)
     val httpClient = HttpClient()
     val serializer = JsonKerutaSerializer()
@@ -49,15 +49,21 @@ class KtorWebsocketModule(application: Application, server: KerutaTaskServer) {
     val jwksProvider = JwksProvider()
     val oidcConfigProvider = OidcConfigProvider(httpClient)
     val kerutaJsonProvider = KerutaJsonProvider(httpClient)
-    val jwtVerifier = Auth0JwtVerifier(oidcConfigProvider, jwksProvider)
-    val authTokenDecoder = Auth0AuthTokenDecoder(jwtVerifier)
-    val providerAddHandler = ProviderAddHandler(dbPersister)
+    val auth0JwtVerifier = Auth0JwtVerifier(oidcConfigProvider, jwksProvider)
+    val jwtVerifier = KtseJwtVerifier(
+        auth0JwtVerifier = auth0JwtVerifier,
+        jwtSecret = ktseConfig.jwtSecret,
+        issuer = ktseConfig.defaultProviderIdp.issuer.toStrUrl(),
+        audience = ktseConfig.defaultProviderIdp.audience,
+    )
+    val authTokenDecoder = Auth0AuthTokenDecoder(auth0JwtVerifier)
     val providerCompleteHandler = ProviderCompleteHandler(dbPersister, kerutaJsonProvider, httpClient)
     val providerDeleteHandler = ProviderDeleteHandler(dbPersister)
     val ktcpServer = KtcpServer(
-        ReceiveProviderRegisterTokenEntrypoint(providerAddHandler),
+        ReceiveProviderRegisterTokenEntrypoint(),
         ReceiveProviderCompleteEntrypoint(providerCompleteHandler),
         ReceiveProviderDeleteEntrypoint(providerDeleteHandler),
+        jwtVerifier,
     )
 
     init {
@@ -72,7 +78,7 @@ class KtorWebsocketModule(application: Application, server: KerutaTaskServer) {
     fun websocketModule(routing: Route) = routing.webSocket("/ws/ktcp") {
         logger.debug("WebSocket connection established")
         KtcpSession.startSession(
-            WebsocketConnection(this@webSocket),
+            WebsocketConnection(this@webSocket, ktcpServer),
             ExposedPersisterSession(dbPersister), authTokenDecoder, dbPersister.verifyTablesPersister,
             ktseConfig.defaultUserIdp, ktseConfig.defaultProviderIdp
         ) { session ->

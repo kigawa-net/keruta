@@ -9,6 +9,7 @@ import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifyValues
 import net.kigawa.keruta.ktcp.model.auth.jwt.UnverifiedToken
 import net.kigawa.keruta.ktcp.model.auth.jwt.VerifyErr
 import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifier as KtcpJwtVerifier
+import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.err.err
 import net.kigawa.kodel.api.err.ok
@@ -21,6 +22,9 @@ class JwtVerifier(
     val keycloakConfig: KeycloakConfig,
 ) : KtcpJwtVerifier {
     private val logger = LoggerFactory.get("JwtVerifier")
+
+    override fun createToken(): Res<AuthToken, KtcpErr> =
+        Res.Err(VerifyErr("not_supported", "Token creation is not supported in web JwtVerifier", null))
 
     override fun decodeUnverified(userToken: AuthToken): Res<UnverifiedToken, VerifyErr> {
         return try {

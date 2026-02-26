@@ -10,5 +10,7 @@ import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 @JsonIgnoreUnknownKeys
 data class OidcConf(
     @SerialName("jwks_uri")
-    val jwksUri: String
+    val jwksUri: String,
+    @SerialName("token_endpoint")
+    val tokenEndpoint: String? = null,
 )

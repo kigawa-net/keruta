@@ -6,6 +6,7 @@ import kotlinx.coroutines.launch
 import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestMsg
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.server.KtcpConnection
+import net.kigawa.keruta.ktcp.server.KtcpServer
 import net.kigawa.keruta.ktcp.server.auth.ProviderIdpConfig
 import net.kigawa.keruta.ktcp.server.auth.UserIdpConfig
 import net.kigawa.keruta.ktcp.server.auth.VerifyTablesPersister
@@ -26,6 +27,7 @@ class KtcpSession private constructor(
     userIdpConfig: UserIdpConfig,
     providerIdpConfig: ProviderIdpConfig,
 ) {
+    val server: KtcpServer by connection::server
     private val counterInDuration = CounterInDuration(30.minutes, 3)
     private val lastAccess = MutableStateFlow(Clock.System.now())
     private val timeout = 1.minutes
