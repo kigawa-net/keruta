@@ -22,9 +22,13 @@ fun KotlinJsTest.browserTest() {
         if (chrome) useChromeHeadlessNoSandbox()
     }
 }
-kotlin {
-    jvmToolchain(25)
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(25))
+    }
+}
 
+kotlin {
     compilerOptions {
         freeCompilerArgs = listOf("-Xcontext-parameters")
     }

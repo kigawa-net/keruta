@@ -10,8 +10,6 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(25)
-
     // iOS targets are configured by kmp plugin
     listOf(
         iosX64(),
