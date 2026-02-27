@@ -15,7 +15,7 @@ data class IdpConfig(
             return IdpConfig(
                 issuer = URI(config.property("idp.issuer").getString()),
                 strIssuer = config.property("idp.issuer").getString(),
-                clientId = config.propertyOrNull("idp.audience")?.getString() ?: "keruta"
+                clientId = config.propertyOrNull("idp.audience")?.getString() ?: throw IllegalStateException("idp.audience is required"),
             )
         }
     }
