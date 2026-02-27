@@ -3,13 +3,25 @@ package net.kigawa.keruta.ktcl.k8s.web.routes
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import net.kigawa.keruta.ktcl.k8s.web.auth.AuthenticationHelper
+import net.kigawa.kodel.api.log.LoggerFactory
 
-class StaticRoutes {
+class StaticRoutes(
+    private val authenticationHelper: AuthenticationHelper,
+) {
+    private val logger = LoggerFactory.get("StaticRoutes")
 
     fun configure(route: Route) {
         route.apply {
             get("/") {
-                call.respondText(getIndexHtml(), ContentType.Text.Html)
+                val user = authenticationHelper.getAuthenticatedUser(call)
+                if (user == null) {
+                    logger.fine("User not authenticated, redirecting to /login")
+                    call.respondRedirect("/login")
+                } else {
+                    logger.fine("User authenticated: ${user.userId}")
+                    call.respondText(getIndexHtml(), ContentType.Text.Html)
+                }
             }
 
 
