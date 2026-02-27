@@ -12,6 +12,8 @@ import net.kigawa.keruta.ktse.persist.db.table.TaskTable
 import net.kigawa.keruta.ktse.persist.model.ExposedPersistedTask
 import net.kigawa.kodel.api.err.Res
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.and
 
 class DbTaskPersisterDsl(val transaction: Transaction) {
 

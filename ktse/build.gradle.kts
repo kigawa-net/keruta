@@ -34,16 +34,16 @@ dependencies {
 // Source: https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
     implementation("com.mysql:mysql-connector-j:9.6.0")
 // Source: https://mvnrepository.com/artifact/org.jetbrains.exposed/exposed-core
-    implementation("org.jetbrains.exposed:exposed-core:1.1.1")
-    implementation("org.jetbrains.exposed:exposed-dao:1.1.1")
-    implementation("org.jetbrains.exposed:exposed-jdbc:1.1.1")
+    implementation("org.jetbrains.exposed:exposed-core:0.60.0")
+    implementation("org.jetbrains.exposed:exposed-dao:0.60.0")
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.60.0")
 
     // Connection Pool
     implementation("com.zaxxer:HikariCP:7.0.2")
     // コルーチンを使う場合
-    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:1.1.1")
+    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:0.60.0")
 // Source: https://mvnrepository.com/artifact/org.jetbrains.exposed/exposed-json
-    implementation("org.jetbrains.exposed:exposed-json:1.1.1")
+    implementation("org.jetbrains.exposed:exposed-json:0.60.0")
 
     // Testing
     testImplementation("io.ktor:ktor-server-test-host")
