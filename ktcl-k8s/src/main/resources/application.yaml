@@ -7,6 +7,6 @@ ktor:
 
 idp:
   issuer: ${IDP_ISSUER:https://user.kigawa.net/realms/develop}
-  audience: ${IDP_AUDIENCE:keruta}
+  audience: ${IDP_AUDIENCE:}
 keruta:
   ownIssuer: ${KERUTA_K8S_OWN_ISSUER}

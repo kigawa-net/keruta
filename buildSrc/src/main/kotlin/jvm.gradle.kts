@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     kotlin("jvm")
 }
@@ -8,10 +10,8 @@ repositories {
     gradlePluginPortal()
 }
 kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(25))
-    }
     compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_25)
         freeCompilerArgs = listOf("-Xcontext-parameters")
     }
 }

@@ -83,8 +83,3 @@ tasks.register("iosSimulatorRun") {
         println("App launched on $simulatorName")
     }
 }
-kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(25))
-    }
-}
