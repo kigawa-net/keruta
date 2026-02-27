@@ -84,5 +84,7 @@ tasks.register("iosSimulatorRun") {
     }
 }
 kotlin {
-    jvmToolchain(25)
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(25))
+    }
 }
