@@ -24,10 +24,6 @@ fun KotlinJsTest.browserTest() {
     }
 }
 kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(25))
-    }
-
     compilerOptions {
         freeCompilerArgs = listOf("-Xcontext-parameters")
     }
