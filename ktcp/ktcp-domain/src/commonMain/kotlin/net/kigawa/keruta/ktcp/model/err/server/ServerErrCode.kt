@@ -3,8 +3,6 @@ package net.kigawa.keruta.ktcp.model.err.server
 enum class ServerErrCode {
     INVALID_TYPE_DECODE_FRAME,
     DESERIALIZE_DECODE_FRAME,
-    VERIFY_UNSUPPORTED_KEY,
-    VERIFY_FAIL,
     UNEXPECTED,
     RESPONSE_ERR,
     UNAUTHENTICATED,

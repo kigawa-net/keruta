@@ -5,8 +5,7 @@ plugins {
 }
 kotlin {
     sourceSets["commonMain"].dependencies {
-        api(project(":ktcp:ktcp-domain"))
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
+        api(project(":kodel:api"))
     }
     sourceSets["commonTest"].dependencies {
     }

@@ -89,6 +89,21 @@
       <module name="keruta.ktcl-web" target="23" />
       <module name="keruta.ktcl-web.main" target="23" />
       <module name="keruta.ktcl-web.test" target="23" />
+      <module name="keruta.ktcp.base.jvmMain" target="25" />
+      <module name="keruta.ktcp.base.jvmTest" target="25" />
+      <module name="keruta.ktcp.infra" target="25" />
+      <module name="keruta.ktcp.model" target="25" />
+      <module name="keruta.ktcp.model.jvmMain" target="25" />
+      <module name="keruta.ktcp.model.jvmTest" target="25" />
+      <module name="keruta.ktcp.model.server" target="25" />
+      <module name="keruta.ktcp.model.server.jvmMain" target="25" />
+      <module name="keruta.ktcp.model.server.jvmTest" target="25" />
+      <module name="keruta.ktcp.usecase" target="25" />
+      <module name="keruta.ktcp.usecase.jvmMain" target="25" />
+      <module name="keruta.ktcp.usecase.jvmTest" target="25" />
+      <module name="keruta.ktcp.usecase.server" target="25" />
+      <module name="keruta.ktcp.usecase.server.jvmMain" target="25" />
+      <module name="keruta.ktcp.usecase.server.jvmTest" target="25" />
       <module name="keruta.main" target="21" />
       <module name="keruta.test" target="21" />
       <module name="net.kigawa.keruta-api.main" target="21" />
