@@ -21,7 +21,7 @@ dependencies {
     implementation("org.flywaydb:flyway-core:8.5.13")
     implementation("org.flywaydb:flyway-mysql:8.5.13")
 // Source: https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
-    implementation("com.mysql:mysql-connector-j:9.5.0")
+    implementation("com.mysql:mysql-connector-j:9.6.0")
 // Source: https://mvnrepository.com/artifact/org.jetbrains.exposed/exposed-core
     implementation("org.jetbrains.exposed:exposed-core:0.61.0")
     implementation("org.jetbrains.exposed:exposed-dao:0.61.0")
@@ -40,7 +40,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:6.0.2")
     testImplementation("io.mockk:mockk:1.14.7")
     // MySQL JDBC driver for Flyway tests
-    testRuntimeOnly("com.mysql:mysql-connector-j:9.5.0")
+    testRuntimeOnly("com.mysql:mysql-connector-j:9.6.0")
 }
 tasks.withType<Test> {
     useJUnitPlatform()
