@@ -10,7 +10,7 @@ COPY ktcp /app/ktcp
 COPY ktse /app/ktse
 COPY ktcl /app/ktcl
 COPY settings.gradle.kts gradle.properties build.gradle.kts gradlew /app/
-RUN ./gradlew :ktse:build -x test
+RUN --mount=type=cache,target=/root/.gradle ./gradlew :ktse:build -x test
 
 FROM eclipse-temurin:25.0.1_8-jdk-noble
 
