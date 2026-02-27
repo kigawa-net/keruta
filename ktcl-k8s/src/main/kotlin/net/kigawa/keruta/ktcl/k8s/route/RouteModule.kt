@@ -7,6 +7,7 @@ import net.kigawa.keruta.ktcl.k8s.auth.PkceGenerator
 import net.kigawa.keruta.ktcl.k8s.config.AppConfig
 import net.kigawa.keruta.ktcl.k8s.web.auth.AuthConfig
 import net.kigawa.keruta.ktcl.k8s.web.auth.OidcDiscoveryFetcher
+import net.kigawa.keruta.ktcl.k8s.web.login.LoginCallbackRoute
 import net.kigawa.keruta.ktcl.k8s.web.login.LoginRoute
 import net.kigawa.keruta.ktcl.k8s.web.login.TokenRoute
 import net.kigawa.keruta.ktcl.k8s.web.routes.ConfigRoutes
@@ -17,6 +18,7 @@ class RouteModule {
     val auth = AuthConfig(oidcDiscoveryFetcher)
     val pkceGenerator = PkceGenerator()
     val staticRoutes = StaticRoutes()
+    private val loginCallbackRoute = LoginCallbackRoute()
 
     fun configure(application: Application) {
         val appConfig = AppConfig.load(application.environment.config)
@@ -32,6 +34,7 @@ class RouteModule {
             staticRoutes.configure(this)
             loginRoute.configure(this)
             tokenRoute.configure(this)
+            loginCallbackRoute.configure(this)
         }
     }
 }
