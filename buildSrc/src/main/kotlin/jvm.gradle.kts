@@ -7,13 +7,10 @@ repositories {
     mavenCentral()
     gradlePluginPortal()
 }
-java {
-    toolchain {
+kotlin {
+    jvmToolchain {
         languageVersion.set(JavaLanguageVersion.of(25))
     }
-}
-
-kotlin {
     compilerOptions {
         freeCompilerArgs = listOf("-Xcontext-parameters")
     }
