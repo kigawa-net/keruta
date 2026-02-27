@@ -1,5 +1,7 @@
 package net.kigawa.keruta.ktcp.model.msg.server
 
-interface ServerMsg {
-    val type: ServerMsgType
+import net.kigawa.keruta.ktcp.model.msg.KtcpMsg
+
+interface ServerMsg: KtcpMsg {
+    override val type: ServerMsgType
 }
