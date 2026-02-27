@@ -24,7 +24,7 @@ class KtseConfig(environment: ApplicationEnvironment) {
     val jwtSecret: String =
         environment.config.propertyOrNull("ktor.security.jwtSecret")?.getString()
             ?: System.getenv("KTSE_JWT_SECRET")
-            ?: ""
+            ?: throw IllegalStateException("KTSE_JWT_SECRET not set")
 
     val dbConfig = Database(environment)
 

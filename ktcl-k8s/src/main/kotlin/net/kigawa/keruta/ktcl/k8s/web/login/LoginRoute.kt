@@ -4,18 +4,21 @@ import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
+import net.kigawa.keruta.ktcl.k8s.KerutaEndpoints
 import net.kigawa.keruta.ktcl.k8s.auth.Pkce
 import net.kigawa.keruta.ktcl.k8s.auth.PkceGenerator
 import net.kigawa.keruta.ktcl.k8s.config.IdpConfig
 import net.kigawa.keruta.ktcl.k8s.web.auth.OidcDiscoveryFetcher
 import net.kigawa.keruta.ktcl.k8s.web.auth.OidcDiscoveryResponse
 import net.kigawa.kodel.api.log.LoggerFactory
+import net.kigawa.kodel.api.net.Url
 import java.net.URI
 
 class LoginRoute(
     private val oidcDiscoveryFetcher: OidcDiscoveryFetcher,
     private val pkceGenerator: PkceGenerator,
-    val idpConfig: IdpConfig
+    val idpConfig: IdpConfig,
+    val kerutaEndpoints: KerutaEndpoints,
 ) {
     private val logger = LoggerFactory.get("LoginRoute")
 
@@ -28,7 +31,7 @@ class LoginRoute(
         try {
             val discoveryResponse = oidcDiscoveryFetcher.fetchByIssuer(issuer)
             val pkce = pkceGenerator.generate()
-            val redirectUri = createRedirectUri()
+            val redirectUri = kerutaEndpoints.callback
             saveSession(pkce, redirectUri, issuer, clientId)
             // 認可エンドポイントにリダイレクト
             respondRedirectIssuer(discoveryResponse, clientId, redirectUri, pkce)
@@ -41,16 +44,7 @@ class LoginRoute(
         }
     }
 
-    fun RoutingContext.createRedirectUri(): URI {
-        // リダイレクトURIを構築
-        val local = call.request.local
-        val scheme = local.scheme
-        val host = local.serverHost
-        val port = local.serverPort
-        return URI(scheme, null, host, port, "/login/callback", null, null)
-    }
-
-    fun RoutingContext.saveSession(pkce: Pkce, redirectUri: URI, issuer: URI, clientId: String) {
+    fun RoutingContext.saveSession(pkce: Pkce, redirectUri: Url, issuer: URI, clientId: String) {
         // セッションにOIDC情報を保存
         val oidcSession = OidcSession(
             pkce = pkce,
@@ -62,7 +56,7 @@ class LoginRoute(
     }
 
     suspend fun RoutingContext.respondRedirectIssuer(
-        discoveryResponse: OidcDiscoveryResponse, clientId: String, redirectUri: URI, pkce: Pkce,
+        discoveryResponse: OidcDiscoveryResponse, clientId: String, redirectUri: Url, pkce: Pkce,
     ) {
         val authUrl = URLBuilder(discoveryResponse.authorizationEndpoint).apply {
             parameters.append("client_id", clientId)
