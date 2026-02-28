@@ -22,6 +22,7 @@ class FlywayMigrator {
             .dataSource(jdbcUrl, username, password)
             .locations("classpath:db/migration")
             .createSchemas(true)
+            .cleanDisabled(false)
             .load()
     }
 
