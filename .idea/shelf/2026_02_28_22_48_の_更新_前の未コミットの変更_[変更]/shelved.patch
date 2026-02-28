@@ -1,0 +1,323 @@
+Index: ktcp/ktcp-usecase/ktcp-usecase-server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/server/KtcpServerBinder.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcp.usecase.server\n\nclass KtcpServerBinder(\n    private val server: net.kigawa.keruta.ktcp.model.server.KtcpServer\n) {\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcp/ktcp-usecase/ktcp-usecase-server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/server/KtcpServerBinder.kt b/ktcp/ktcp-usecase/ktcp-usecase-server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/server/KtcpServerBinder.kt
+--- a/ktcp/ktcp-usecase/ktcp-usecase-server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/server/KtcpServerBinder.kt	(revision 24e3ed26ec1354cf5f528094c8c2048aed9d26dd)
++++ b/ktcp/ktcp-usecase/ktcp-usecase-server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/server/KtcpServerBinder.kt	(date 1772216182644)
+@@ -1,6 +1,17 @@
+ package net.kigawa.keruta.ktcp.usecase.server
+ 
++import net.kigawa.keruta.ktcp.model.server.KtcpServer
++import net.kigawa.keruta.ktcp.usecase.server.websocket.WebsocketServer
++
+ class KtcpServerBinder(
+-    private val server: net.kigawa.keruta.ktcp.model.server.KtcpServer
++    private val webSocketServer: WebsocketServer,
+ ) {
++    suspend fun bind(ktcpServer: KtcpServer) {
++        val ktcpMsgRouter = KtcpMsgRouter(ktcpServer)
++        webSocketServer.bind {
++            it.receive {
++                ktcpMsgRouter.route(it)
++            }
++        }
++    }
+ }
+Index: ktcp/ktcp-usecase/ktcp-usecase-server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/server/KtcpMsgRouter.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcp/ktcp-usecase/ktcp-usecase-server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/server/KtcpMsgRouter.kt b/ktcp/ktcp-usecase/ktcp-usecase-server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/server/KtcpMsgRouter.kt
+new file mode 100644
+--- /dev/null	(date 1772216182683)
++++ b/ktcp/ktcp-usecase/ktcp-usecase-server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/server/KtcpMsgRouter.kt	(date 1772216182683)
+@@ -0,0 +1,8 @@
++package net.kigawa.keruta.ktcp.usecase.server
++
++import net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownMsg
++import net.kigawa.keruta.ktcp.model.server.KtcpServer
++
++class KtcpMsgRouter(ktcpServer: KtcpServer) {
++    fun route(msg: ServerUnknownMsg) {}
++}
+Index: ktcp/ktcp-usecase/ktcp-usecase-server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/server/websocket/WebsocketServer.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcp/ktcp-usecase/ktcp-usecase-server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/server/websocket/WebsocketServer.kt b/ktcp/ktcp-usecase/ktcp-usecase-server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/server/websocket/WebsocketServer.kt
+new file mode 100644
+--- /dev/null	(date 1772215719007)
++++ b/ktcp/ktcp-usecase/ktcp-usecase-server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/server/websocket/WebsocketServer.kt	(date 1772215719007)
+@@ -0,0 +1,5 @@
++package net.kigawa.keruta.ktcp.usecase.server.websocket
++
++interface WebsocketServer {
++    suspend fun bind(block: suspend (WebsocketConnection) -> Unit)
++}
+Index: ktcp/ktcp-usecase/ktcp-usecase-server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/server/websocket/WebsocketConnection.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcp/ktcp-usecase/ktcp-usecase-server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/server/websocket/WebsocketConnection.kt b/ktcp/ktcp-usecase/ktcp-usecase-server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/server/websocket/WebsocketConnection.kt
+new file mode 100644
+--- /dev/null	(date 1772216007785)
++++ b/ktcp/ktcp-usecase/ktcp-usecase-server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/server/websocket/WebsocketConnection.kt	(date 1772216007785)
+@@ -0,0 +1,5 @@
++package net.kigawa.keruta.ktcp.usecase.server.websocket
++
++interface WebsocketConnection {
++    suspend fun receive(block: (WebsocketPacket) -> Unit)
++}
+Index: .idea/artifacts/ktcp_usecase_server_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-usecase-server-jvm-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-usecase/ktcp-usecase-server/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-usecase-server-jvm-dev.jar\" />\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_usecase_server_jvm_dev.xml b/.idea/artifacts/ktcp_usecase_server_jvm_dev.xml
+--- a/.idea/artifacts/ktcp_usecase_server_jvm_dev.xml	(revision 24e3ed26ec1354cf5f528094c8c2048aed9d26dd)
++++ b/.idea/artifacts/ktcp_usecase_server_jvm_dev.xml	(date 1772286525702)
+@@ -1,6 +1,8 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-usecase-server-jvm-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-usecase/ktcp-usecase-server/build/libs</output-path>
+-    <root id="archive" name="ktcp-usecase-server-jvm-dev.jar" />
++    <root id="archive" name="ktcp-usecase-server-jvm-dev.jar">
++      <element id="module-output" name="keruta.ktcp.ktcp-usecase.ktcp-usecase-server.jvmMain" />
++    </root>
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_usecase_server_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-usecase-server-js-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-usecase/ktcp-usecase-server/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-usecase-server-js-dev.jar\" />\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_usecase_server_js_dev.xml b/.idea/artifacts/ktcp_usecase_server_js_dev.xml
+--- a/.idea/artifacts/ktcp_usecase_server_js_dev.xml	(revision 24e3ed26ec1354cf5f528094c8c2048aed9d26dd)
++++ b/.idea/artifacts/ktcp_usecase_server_js_dev.xml	(date 1772286525700)
+@@ -1,6 +1,8 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-usecase-server-js-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-usecase/ktcp-usecase-server/build/libs</output-path>
+-    <root id="archive" name="ktcp-usecase-server-js-dev.jar" />
++    <root id="archive" name="ktcp-usecase-server-js-dev.jar">
++      <element id="module-output" name="keruta.ktcp.ktcp-usecase.ktcp-usecase-server.jsMain" />
++    </root>
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_usecase_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-usecase-jvm-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-usecase/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-usecase-jvm-dev.jar\" />\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_usecase_jvm_dev.xml b/.idea/artifacts/ktcp_usecase_jvm_dev.xml
+--- a/.idea/artifacts/ktcp_usecase_jvm_dev.xml	(revision 24e3ed26ec1354cf5f528094c8c2048aed9d26dd)
++++ b/.idea/artifacts/ktcp_usecase_jvm_dev.xml	(date 1772286525684)
+@@ -1,6 +1,8 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-usecase-jvm-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-usecase/build/libs</output-path>
+-    <root id="archive" name="ktcp-usecase-jvm-dev.jar" />
++    <root id="archive" name="ktcp-usecase-jvm-dev.jar">
++      <element id="module-output" name="keruta.ktcp.ktcp-usecase.jvmMain" />
++    </root>
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_usecase_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-usecase-js-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-usecase/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-usecase-js-dev.jar\" />\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_usecase_js_dev.xml b/.idea/artifacts/ktcp_usecase_js_dev.xml
+--- a/.idea/artifacts/ktcp_usecase_js_dev.xml	(revision 24e3ed26ec1354cf5f528094c8c2048aed9d26dd)
++++ b/.idea/artifacts/ktcp_usecase_js_dev.xml	(date 1772286525668)
+@@ -1,6 +1,8 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-usecase-js-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-usecase/build/libs</output-path>
+-    <root id="archive" name="ktcp-usecase-js-dev.jar" />
++    <root id="archive" name="ktcp-usecase-js-dev.jar">
++      <element id="module-output" name="keruta.ktcp.ktcp-usecase.jsMain" />
++    </root>
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_infra_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-infra-jvm-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-infra/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-infra-jvm-dev.jar\" />\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_infra_jvm_dev.xml b/.idea/artifacts/ktcp_infra_jvm_dev.xml
+--- a/.idea/artifacts/ktcp_infra_jvm_dev.xml	(revision 24e3ed26ec1354cf5f528094c8c2048aed9d26dd)
++++ b/.idea/artifacts/ktcp_infra_jvm_dev.xml	(date 1772286525651)
+@@ -1,6 +1,8 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-infra-jvm-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-infra/build/libs</output-path>
+-    <root id="archive" name="ktcp-infra-jvm-dev.jar" />
++    <root id="archive" name="ktcp-infra-jvm-dev.jar">
++      <element id="module-output" name="keruta.ktcp.ktcp-infra.jvmMain" />
++    </root>
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_infra_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-infra-js-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-infra/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-infra-js-dev.jar\" />\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_infra_js_dev.xml b/.idea/artifacts/ktcp_infra_js_dev.xml
+--- a/.idea/artifacts/ktcp_infra_js_dev.xml	(revision 24e3ed26ec1354cf5f528094c8c2048aed9d26dd)
++++ b/.idea/artifacts/ktcp_infra_js_dev.xml	(date 1772286525635)
+@@ -1,6 +1,8 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-infra-js-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-infra/build/libs</output-path>
+-    <root id="archive" name="ktcp-infra-js-dev.jar" />
++    <root id="archive" name="ktcp-infra-js-dev.jar">
++      <element id="module-output" name="keruta.ktcp.ktcp-infra.jsMain" />
++    </root>
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_domain_server_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-domain-server-jvm-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-domain/ktcp-domain-server/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-domain-server-jvm-dev.jar\" />\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_domain_server_jvm_dev.xml b/.idea/artifacts/ktcp_domain_server_jvm_dev.xml
+--- a/.idea/artifacts/ktcp_domain_server_jvm_dev.xml	(revision 24e3ed26ec1354cf5f528094c8c2048aed9d26dd)
++++ b/.idea/artifacts/ktcp_domain_server_jvm_dev.xml	(date 1772286525621)
+@@ -1,6 +1,8 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-domain-server-jvm-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-domain/ktcp-domain-server/build/libs</output-path>
+-    <root id="archive" name="ktcp-domain-server-jvm-dev.jar" />
++    <root id="archive" name="ktcp-domain-server-jvm-dev.jar">
++      <element id="module-output" name="keruta.ktcp.ktcp-domain.ktcp-domain-server.jvmMain" />
++    </root>
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_domain_server_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-domain-server-js-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-domain/ktcp-domain-server/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-domain-server-js-dev.jar\" />\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_domain_server_js_dev.xml b/.idea/artifacts/ktcp_domain_server_js_dev.xml
+--- a/.idea/artifacts/ktcp_domain_server_js_dev.xml	(revision 24e3ed26ec1354cf5f528094c8c2048aed9d26dd)
++++ b/.idea/artifacts/ktcp_domain_server_js_dev.xml	(date 1772286525620)
+@@ -1,6 +1,8 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-domain-server-js-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-domain/ktcp-domain-server/build/libs</output-path>
+-    <root id="archive" name="ktcp-domain-server-js-dev.jar" />
++    <root id="archive" name="ktcp-domain-server-js-dev.jar">
++      <element id="module-output" name="keruta.ktcp.ktcp-domain.ktcp-domain-server.jsMain" />
++    </root>
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_domain_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-domain-jvm-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-domain/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-domain-jvm-dev.jar\" />\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_domain_jvm_dev.xml b/.idea/artifacts/ktcp_domain_jvm_dev.xml
+--- a/.idea/artifacts/ktcp_domain_jvm_dev.xml	(revision 24e3ed26ec1354cf5f528094c8c2048aed9d26dd)
++++ b/.idea/artifacts/ktcp_domain_jvm_dev.xml	(date 1772286525603)
+@@ -1,6 +1,8 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-domain-jvm-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-domain/build/libs</output-path>
+-    <root id="archive" name="ktcp-domain-jvm-dev.jar" />
++    <root id="archive" name="ktcp-domain-jvm-dev.jar">
++      <element id="module-output" name="keruta.ktcp.ktcp-domain.jvmMain" />
++    </root>
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_domain_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-domain-js-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-domain/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-domain-js-dev.jar\" />\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_domain_js_dev.xml b/.idea/artifacts/ktcp_domain_js_dev.xml
+--- a/.idea/artifacts/ktcp_domain_js_dev.xml	(revision 24e3ed26ec1354cf5f528094c8c2048aed9d26dd)
++++ b/.idea/artifacts/ktcp_domain_js_dev.xml	(date 1772286525587)
+@@ -1,6 +1,8 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-domain-js-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-domain/build/libs</output-path>
+-    <root id="archive" name="ktcp-domain-js-dev.jar" />
++    <root id="archive" name="ktcp-domain-js-dev.jar">
++      <element id="module-output" name="keruta.ktcp.ktcp-domain.jsMain" />
++    </root>
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: ktcp/ktcp-usecase/ktcp-usecase-server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/server/websocket/WebsocketPacket.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcp/ktcp-usecase/ktcp-usecase-server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/server/websocket/WebsocketPacket.kt b/ktcp/ktcp-usecase/ktcp-usecase-server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/server/websocket/WebsocketPacket.kt
+new file mode 100644
+--- /dev/null	(date 1772215925709)
++++ b/ktcp/ktcp-usecase/ktcp-usecase-server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/server/websocket/WebsocketPacket.kt	(date 1772215925709)
+@@ -0,0 +1,4 @@
++package net.kigawa.keruta.ktcp.usecase.server.websocket
++
++interface WebsocketPacket {
++}
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"GradleMigrationSettings\" migrationVersion=\"1\" />\n  <component name=\"GradleSettings\">\n    <option name=\"linkedExternalProjectsSettings\">\n      <GradleProjectSettings>\n        <compositeConfiguration>\n          <compositeBuild compositeDefinitionSource=\"SCRIPT\">\n            <builds>\n              <build path=\"$PROJECT_DIR$/buildSrc\" name=\"buildSrc\">\n                <projects>\n                  <project path=\"$PROJECT_DIR$/buildSrc\" />\n                </projects>\n              </build>\n            </builds>\n          </compositeBuild>\n        </compositeConfiguration>\n        <option name=\"testRunner\" value=\"CHOOSE_PER_TEST\" />\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\n        <option name=\"modules\">\n          <set>\n            <option value=\"$PROJECT_DIR$\" />\n            <option value=\"$PROJECT_DIR$/buildSrc\" />\n            <option value=\"$PROJECT_DIR$/kodel\" />\n            <option value=\"$PROJECT_DIR$/kodel/api\" />\n            <option value=\"$PROJECT_DIR$/kodel/core\" />\n            <option value=\"$PROJECT_DIR$/kodel/coroutine\" />\n            <option value=\"$PROJECT_DIR$/ktcl\" />\n            <option value=\"$PROJECT_DIR$/ktcl-claudecode\" />\n            <option value=\"$PROJECT_DIR$/ktcl-front-mobile\" />\n            <option value=\"$PROJECT_DIR$/ktcl-front-mobile/app\" />\n            <option value=\"$PROJECT_DIR$/ktcl-k8s\" />\n            <option value=\"$PROJECT_DIR$/ktcp\" />\n            <option value=\"$PROJECT_DIR$/ktcp/client\" />\n            <option value=\"$PROJECT_DIR$/ktcp/ktcp-domain\" />\n            <option value=\"$PROJECT_DIR$/ktcp/ktcp-domain/ktcp-domain-client\" />\n            <option value=\"$PROJECT_DIR$/ktcp/ktcp-domain/ktcp-domain-server\" />\n            <option value=\"$PROJECT_DIR$/ktcp/ktcp-infra\" />\n            <option value=\"$PROJECT_DIR$/ktcp/ktcp-usecase\" />\n            <option value=\"$PROJECT_DIR$/ktcp/ktcp-usecase/ktcp-usecase-client\" />\n            <option value=\"$PROJECT_DIR$/ktcp/ktcp-usecase/ktcp-usecase-server\" />\n            <option value=\"$PROJECT_DIR$/ktcp/server\" />\n            <option value=\"$PROJECT_DIR$/ktse\" />\n          </set>\n        </option>\n      </GradleProjectSettings>\n    </option>\n    <option name=\"parallelModelFetch\" value=\"true\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+--- a/.idea/gradle.xml	(revision 24e3ed26ec1354cf5f528094c8c2048aed9d26dd)
++++ b/.idea/gradle.xml	(date 1772286525859)
+@@ -33,11 +33,9 @@
+             <option value="$PROJECT_DIR$/ktcp" />
+             <option value="$PROJECT_DIR$/ktcp/client" />
+             <option value="$PROJECT_DIR$/ktcp/ktcp-domain" />
+-            <option value="$PROJECT_DIR$/ktcp/ktcp-domain/ktcp-domain-client" />
+             <option value="$PROJECT_DIR$/ktcp/ktcp-domain/ktcp-domain-server" />
+             <option value="$PROJECT_DIR$/ktcp/ktcp-infra" />
+             <option value="$PROJECT_DIR$/ktcp/ktcp-usecase" />
+-            <option value="$PROJECT_DIR$/ktcp/ktcp-usecase/ktcp-usecase-client" />
+             <option value="$PROJECT_DIR$/ktcp/ktcp-usecase/ktcp-usecase-server" />
+             <option value="$PROJECT_DIR$/ktcp/server" />
+             <option value="$PROJECT_DIR$/ktse" />
