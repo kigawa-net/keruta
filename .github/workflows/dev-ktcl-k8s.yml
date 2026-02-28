@@ -9,6 +9,7 @@ on:
       - .github/workflows/dev-ktcl-front.yml
       - .github/workflows/dev-ktse.yml
       - .github/workflows/renovate.yaml
+      - .github/renovate.json
       - .idea/**
       - ktcl-claudecode/**
       - ktcl-front/**
