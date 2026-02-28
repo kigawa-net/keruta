@@ -10,6 +10,7 @@ import net.kigawa.keruta.ktcl.mobile.msg.queue.ServerQueueCreateMsg
 import net.kigawa.keruta.ktcl.mobile.msg.queue.ServerQueueListMsg
 import net.kigawa.keruta.ktcl.mobile.msg.task.ServerTaskCreateMsg
 import net.kigawa.keruta.ktcl.mobile.msg.task.ServerTaskListMsg
+import platform.Foundation.NSLog
 
 class MessageSender {
     private val _connection = MutableStateFlow<MobileKtcpConnection?>(null)
@@ -21,10 +22,12 @@ class MessageSender {
     }
 
     fun setConnection(connection: MobileKtcpConnection?) {
+        NSLog("=== MessageSender: setConnection called ===")
         _connection.value = connection
     }
 
     suspend fun sendQueueList() {
+        NSLog("=== MessageSender: sendQueueList called ===")
         val msg = ServerQueueListMsg()
         sendMessage(json.encodeToString(msg))
     }
@@ -56,6 +59,7 @@ class MessageSender {
     }
 
     private suspend fun sendMessage(message: String) {
+        NSLog("=== MessageSender: sendMessage: $message ===")
         _connection.value?.send(message)
     }
 }

@@ -40,10 +40,6 @@ fun QueueListScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    LaunchedEffect(currentScreen) {
-        viewModel.loadQueues()
-    }
-
     Column(
         modifier = modifier
             .fillMaxSize()

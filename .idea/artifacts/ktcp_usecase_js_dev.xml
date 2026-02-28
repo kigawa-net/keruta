@@ -1,6 +1,8 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="ktcp-usecase-js-dev">
     <output-path>$PROJECT_DIR$/ktcp/ktcp-usecase/build/libs</output-path>
-    <root id="archive" name="ktcp-usecase-js-dev.jar" />
+    <root id="archive" name="ktcp-usecase-js-dev.jar">
+      <element id="module-output" name="keruta.ktcp.ktcp-usecase.jsMain" />
+    </root>
   </artifact>
 </component>

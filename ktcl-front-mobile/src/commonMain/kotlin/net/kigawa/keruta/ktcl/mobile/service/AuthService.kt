@@ -6,8 +6,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.serialization.json.Json
 import net.kigawa.keruta.ktcl.mobile.auth.AuthState
 import net.kigawa.keruta.ktcl.mobile.auth.TokenPair
-import net.kigawa.keruta.ktcl.mobile.msg.auth.ServerAuthenticateMsg
 import net.kigawa.keruta.ktcl.mobile.msg.auth.ServerAuthRequestMsg
+import platform.Foundation.NSLog
 
 class AuthService(
     private val messageSender: MessageSender,
@@ -37,8 +37,15 @@ class AuthService(
     }
 
     suspend fun sendAuthentication(userToken: String, serverToken: String) {
-        val connection = messageSender.connection.value ?: return
+        NSLog("=== AuthService: sendAuthentication called ===")
+        val connection = messageSender.connection.value
+        NSLog("=== AuthService: connection = ${connection != null} ===")
+        if (connection == null) {
+            NSLog("=== AuthService: connection is null! ===")
+            return
+        }
         val msg = ServerAuthRequestMsg(userToken = userToken, serverToken = serverToken)
+        NSLog("=== AuthService: sending auth: ${json.encodeToString(msg)} ===")
         connection.send(json.encodeToString(msg))
     }
 }

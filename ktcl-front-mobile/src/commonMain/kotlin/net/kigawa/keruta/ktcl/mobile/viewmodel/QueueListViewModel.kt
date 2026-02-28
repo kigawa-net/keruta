@@ -7,6 +7,7 @@ import net.kigawa.keruta.ktcl.mobile.msg.queue.Queue
 import net.kigawa.keruta.ktcl.mobile.queue.QueueRepository
 import net.kigawa.keruta.ktcl.mobile.service.AuthService
 import net.kigawa.keruta.ktcl.mobile.service.MessageSender
+import platform.Foundation.NSLog
 
 data class QueueListViewState(
     val queues: List<Queue> = emptyList(),
@@ -25,47 +26,47 @@ class QueueListViewModel(
             try {
 
                 queueRepository.queues.collect { queues ->
-                    println("=== QueueListViewModel: queueRepository.queues.collect called ===")
+                    NSLog("=== QueueListViewModel: queueRepository.queues.collect called ===")
                     if (queues == null) return@collect
                     updateState { it.copy(queues = queues, isLoading = false) }
-                    println("=== QueueListViewModel: queues: ${queues.size} ===")
+                    NSLog("=== QueueListViewModel: queues: ${queues.size} ===")
                 }
             } catch (t: Throwable) {
-                println("=== QueueListViewModel: error: ${t.message} ==")
+                NSLog("=== QueueListViewModel: error: ${t.message} ===")
                 throw t
             }
         }
     }
 
     fun loadQueues() {
-        println("=== loadQueues called ===")
+        NSLog("=== loadQueues called ===")
         viewModelScope.launch {
             try {
                 // 接続が確立されるまで待つ
-                println("=== loadQueues: waiting for connection ===")
+                NSLog("=== loadQueues: waiting for connection ===")
                 val connection = messageSender.connection.first { it != null }
                 if (connection == null) {
-                    println("=== loadQueues: connection is null ===")
+                    NSLog("=== loadQueues: connection is null ===")
                     updateState { it.copy(isLoading = false, errorMessage = "WebSocket接続に失敗しました") }
                     return@launch
                 }
 
-                println("=== loadQueues: connection exists ===")
+                NSLog("=== loadQueues: connection exists ===")
 
                 // 認証が完了するまで待つ
-                println("=== loadQueues: waiting for auth ===")
+                NSLog("=== loadQueues: waiting for auth ===")
                 val authState = authService.authState.first { it is AuthState.Authenticated }
                 if (authState !is AuthState.Authenticated) {
-                    println("=== loadQueues: auth failed ===")
+                    NSLog("=== loadQueues: auth failed ===")
                     updateState { it.copy(isLoading = false, errorMessage = "認証に失敗しました") }
                     return@launch
                 }
 
-                println("=== loadQueues: sending queue list request ===")
+                NSLog("=== loadQueues: sending queue list request ===")
                 messageSender.sendQueueList()
-                println("=== loadQueues: request sent ===")
+                NSLog("=== loadQueues: request sent ===")
             } catch (e: Exception) {
-                println("=== loadQueues: error: ${e.message} ===")
+                NSLog("=== loadQueues: error: ${e.message} ===")
                 updateState { it.copy(isLoading = false, errorMessage = e.message) }
             }
         }

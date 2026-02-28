@@ -24,11 +24,13 @@ fun MainViewController() = ComposeUIViewController {
                     val tokenResult = container.oidcAuthManager.exchangeCodeForToken(code)
                     tokenResult.onSuccess { accessToken ->
                         container.secureStorage.saveUserToken(accessToken)
+                        val serverToken = container.getServerToken(accessToken) ?: ""
                         val tokens = TokenPair(
                             userToken = accessToken,
-                            serverToken = "",
+                            serverToken = serverToken,
                         )
                         container.authService.setAuthenticated(tokens)
+                        container.connectWebSocket()
                         container.navigationController.navigateToRoot(Screen.QueueList)
                     }.onFailure { error ->
                         container.authService.setError(error.message ?: "トークン交換エラー")

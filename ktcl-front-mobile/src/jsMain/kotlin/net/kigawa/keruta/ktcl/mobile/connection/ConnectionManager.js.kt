@@ -12,4 +12,6 @@ actual class ConnectionManager actual constructor(
     actual suspend fun connect(): MobileKtcpConnection {
         throw NotImplementedError("JSターゲットではConnectionManagerは使用できません")
     }
+
+    actual fun disconnect() {}
 }

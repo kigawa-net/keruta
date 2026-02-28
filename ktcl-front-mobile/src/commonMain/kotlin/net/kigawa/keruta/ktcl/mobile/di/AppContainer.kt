@@ -2,12 +2,19 @@ package net.kigawa.keruta.ktcl.mobile.di
 
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import net.kigawa.keruta.ktcl.mobile.auth.AuthState
 import net.kigawa.keruta.ktcl.mobile.auth.OidcAuthManager
 import net.kigawa.keruta.ktcl.mobile.auth.TokenManager
@@ -18,6 +25,7 @@ import net.kigawa.keruta.ktcl.mobile.navigation.Screen
 import net.kigawa.keruta.ktcl.mobile.provider.ProviderRepository
 import net.kigawa.keruta.ktcl.mobile.queue.QueueRepository
 import net.kigawa.keruta.ktcl.mobile.service.AuthService
+import platform.Foundation.NSLog
 import net.kigawa.keruta.ktcl.mobile.service.MessageHandler
 import net.kigawa.keruta.ktcl.mobile.service.MessageSender
 import net.kigawa.keruta.ktcl.mobile.storage.SecureStorage
@@ -80,18 +88,18 @@ open class AppContainer(
      * 接続後に自動て認証メッセージを送信する
      */
     fun connectWebSocket(onConnected: () -> Unit = {}, onError: (Throwable) -> Unit = {}) {
-        println("=== connectWebSocket called ===")
+        NSLog("=== connectWebSocket called ===")
         if (_isWebSocketConnected) {
-            println("=== connectWebSocket: already connected ===")
+            NSLog("=== connectWebSocket: already connected ===")
             onConnected()
             return
         }
 
         CoroutineScope(Dispatchers.Main).launch {
             try {
-                println("=== connectWebSocket: connecting... ===")
+                NSLog("=== connectWebSocket: connecting... ===")
                 val connection = connectionManager.connect()
-                println("=== connectWebSocket: connected, setting connection ===")
+                NSLog("=== connectWebSocket: connected, setting connection ===")
                 messageSender.setConnection(connection)
                 _isWebSocketConnected = true
 
@@ -100,16 +108,17 @@ open class AppContainer(
 
                 // 認証メッセージを送信（トークンが设定されている场合）
                 val authState = authService.authState.value
-                println("=== connectWebSocket: authState = $authState ===")
+                NSLog("=== connectWebSocket: authState = $authState ===")
                 if (authState is AuthState.Authenticated) {
-                    println("=== connectWebSocket: sending authentication ===")
+                    NSLog("=== connectWebSocket: sending authentication ===")
                     authService.sendAuthentication(authState.tokens.userToken, authState.tokens.serverToken)
+                    messageSender.sendQueueList()
                 }
 
-                println("=== connectWebSocket: calling onConnected ===")
+                NSLog("=== connectWebSocket: calling onConnected ===")
                 onConnected()
             } catch (e: Exception) {
-                println("=== connectWebSocket: ERROR: ${e.message} ===")
+                NSLog("=== connectWebSocket: ERROR: ${e.message} ===")
                 _isWebSocketConnected = false
                 onError(e)
             }
@@ -138,5 +147,19 @@ open class AppContainer(
 
     fun createTaskDetailViewModel(): TaskDetailViewModel {
         return TaskDetailViewModel(taskRepository, messageSender, authService)
+    }
+
+    suspend fun getServerToken(userToken: String): String? {
+        return try {
+            val response = httpClient.post("${config.apiBaseUrl}api/token") {
+                setBody(JsonObject(mapOf("token" to JsonPrimitive(userToken))))
+                headers.append("Content-Type", "application/json")
+            }
+            val jsonResponse = Json.parseToJsonElement(response.bodyAsText()).jsonObject
+            jsonResponse["token"]?.jsonPrimitive?.content
+        } catch (e: Exception) {
+            NSLog("=== getServerToken error: ${e.message} ===")
+            null
+        }
     }
 }

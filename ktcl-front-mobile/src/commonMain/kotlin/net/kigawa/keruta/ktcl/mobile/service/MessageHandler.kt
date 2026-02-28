@@ -14,6 +14,7 @@ import net.kigawa.keruta.ktcl.mobile.msg.task.ClientTaskUpdatedMsg
 import net.kigawa.keruta.ktcl.mobile.provider.ProviderRepository
 import net.kigawa.keruta.ktcl.mobile.queue.QueueRepository
 import net.kigawa.keruta.ktcl.mobile.task.TaskRepository
+import platform.Foundation.NSLog
 
 class MessageHandler(
     private val messageSender: MessageSender,
@@ -25,14 +26,17 @@ class MessageHandler(
     private val json = Json { ignoreUnknownKeys = true }
 
     fun start() {
+        NSLog("=== MessageHandler: start called ===")
         scope.launch {
             messageSender.connection.collect { connection ->
+                NSLog("=== MessageHandler: connection changed: ${connection != null} ===")
                 if (connection != null) {
-                    println("=== MessageHandler: connection established, collecting messages ===")
+                    NSLog("=== MessageHandler: connection established, collecting messages ===")
                     // Use the connection's messages flow
                     launch {
+                        NSLog("=== MessageHandler: about to collect messages ===")
                         connection.messages.collect { message ->
-                            println("=== MessageHandler: received from flow: $message ===")
+                            NSLog("=== MessageHandler: received from flow: $message ===")
                             handleMessage(message)
                         }
                     }
@@ -45,47 +49,53 @@ class MessageHandler(
         try {
             val jsonElement = json.parseToJsonElement(message)
             val type = jsonElement.jsonObject["type"]?.jsonPrimitive?.content
-            println("=== MessageHandler: message type: $type ===")
+            NSLog("=== MessageHandler: message type: $type ===")
 
             when (type) {
                 "task_listed" -> {
                     val msg = json.decodeFromString<ClientTaskListedMsg>(message)
-                    println("=== MessageHandler: got ${msg.tasks.size} tasks ===")
+                    NSLog("=== MessageHandler: got ${msg.tasks.size} tasks ===")
                     taskRepository.updateTasks(msg.tasks)
                 }
                 "task_created" -> {
                     val msg = json.decodeFromString<ClientTaskCreatedMsg>(message)
-                    println("=== MessageHandler: task created: ${msg.id} ===")
+                    NSLog("=== MessageHandler: task created: ${msg.id} ===")
                 }
                 "task_updated" -> {
                     val msg = json.decodeFromString<ClientTaskUpdatedMsg>(message)
-                    println("=== MessageHandler: task updated: ${msg.id} ===")
+                    NSLog("=== MessageHandler: task updated: ${msg.id} ===")
                     taskRepository.updateTask(msg.id) { task ->
                         task.copy(status = msg.status)
                     }
                 }
                 "task_moved" -> {
                     val msg = json.decodeFromString<ClientTaskMovedMsg>(message)
-                    println("=== MessageHandler: task moved: ${msg.taskId} ===")
+                    NSLog("=== MessageHandler: task moved: ${msg.taskId} ===")
                     taskRepository.removeTask(msg.taskId)
                 }
                 "queue_listed" -> {
                     val msg = json.decodeFromString<ClientQueueListedMsg>(message)
-                    println("=== MessageHandler: got ${msg.queues.size} queues ===")
+                    NSLog("=== MessageHandler: got ${msg.queues.size} queues ===")
                     queueRepository.updateQueues(msg.queues)
+                }
+                "queue_created" -> {
+                    NSLog("=== MessageHandler: queue created, requesting queue list ===")
+                    scope.launch {
+                        messageSender.sendQueueList()
+                    }
                 }
                 "provider_listed" -> {
                     val msg = json.decodeFromString<ClientProviderListMsg>(message)
-                    println("=== MessageHandler: got ${msg.providers.size} providers ===")
+                    NSLog("=== MessageHandler: got ${msg.providers.size} providers ===")
                     providerRepository.updateProviders(msg.providers)
                 }
                 "auth_success" -> {
-                    println("=== MessageHandler: authentication successful ===")
+                    NSLog("=== MessageHandler: authentication successful ===")
                 }
-                else -> println("=== MessageHandler: unknown message type: $type ===")
+                else -> NSLog("=== MessageHandler: unknown message type: $type ===")
             }
         } catch (e: Exception) {
-            println("=== MessageHandler: error: ${e.message} ===")
+            NSLog("=== MessageHandler: error: ${e.message} ===")
         }
     }
 }
