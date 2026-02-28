@@ -4,6 +4,8 @@ ktor:
   application:
     modules:
       - net.kigawa.keruta.ktcl.k8s.KtclK8sServer.module
+  logging:
+    level: DEBUG
 
 idp:
   issuer: ${IDP_ISSUER:https://user.kigawa.net/realms/develop}
