@@ -11,14 +11,15 @@ class AuthModule {
             cookie<UserSession>("user_session") {
                 cookie.path = "/"
                 cookie.maxAgeInSeconds = 3600
-                cookie.httpOnly = false
-                cookie.extensions["SameSite"] = "Lax"
+                // クロスドメイン対応: SameSite=NoneでSecure=true（HTTPS必須）
+                cookie.extensions["SameSite"] = "None"
+                cookie.secure = true
             }
             cookie<net.kigawa.keruta.ktcl.k8s.web.login.OidcSession>("oidc_session") {
                 cookie.path = "/"
                 cookie.maxAgeInSeconds = 600
-                cookie.httpOnly = false
-                cookie.extensions["SameSite"] = "Lax"
+                cookie.extensions["SameSite"] = "None"
+                cookie.secure = true
             }
         }
     }
