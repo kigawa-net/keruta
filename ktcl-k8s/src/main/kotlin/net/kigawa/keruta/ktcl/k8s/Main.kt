@@ -2,11 +2,16 @@ package net.kigawa.keruta.ktcl.k8s
 
 import net.kigawa.kodel.api.log.LogLevel
 import net.kigawa.kodel.api.log.LoggerFactory
+import net.kigawa.kodel.api.log.handler.StdHandler
 
 object Main {
     init {
         LoggerFactory.configure {
             level = LogLevel.DEBUG
+
+            handler(::StdHandler) {
+                level = LogLevel.DEBUG
+            }
         }
     }
 

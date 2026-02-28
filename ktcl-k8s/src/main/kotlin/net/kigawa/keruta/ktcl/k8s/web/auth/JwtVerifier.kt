@@ -39,7 +39,8 @@ class JwtVerifier(
     fun verify(token: String): String? {
         val verifyValues = JwtVerifyValues(
             issuer = Url.parse(keycloakConfig.issuer.toString()),
-            audience = keycloakConfig.audience,
+            // 空の場合はデフォルトで issuer を使用
+            audience = keycloakConfig.audience.ifEmpty { keycloakConfig.issuer.toString() },
             subject = "",
         )
         return when (val unverified = decodeUnverified(token)) {

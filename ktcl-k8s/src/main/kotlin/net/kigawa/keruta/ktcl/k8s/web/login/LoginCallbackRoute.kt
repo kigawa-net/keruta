@@ -1,25 +1,25 @@
 package net.kigawa.keruta.ktcl.k8s.web.login
 
-import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.engine.cio.CIO
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.request.forms.submitForm
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.forms.*
 import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.json
-import io.ktor.server.application.ApplicationCall
+import io.ktor.serialization.kotlinx.json.*
+import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import net.kigawa.keruta.ktcl.k8s.web.UserSession
 import net.kigawa.keruta.ktcl.k8s.web.auth.AuthConfig
 import net.kigawa.keruta.ktcl.k8s.web.auth.OidcDiscoveryFetcher
-import net.kigawa.kodel.api.log.LoggerFactory
+import net.kigawa.kodel.api.log.getKogger
 
 class LoginCallbackRoute(
     private val oidcDiscoveryFetcher: OidcDiscoveryFetcher = OidcDiscoveryFetcher()
 ) {
-    private val logger = LoggerFactory.get("LoginCallbackRoute")
+    private val logger = getKogger()
     private val authConfig = AuthConfig(oidcDiscoveryFetcher)
     private val idTokenVerifier = IdTokenVerifier(authConfig)
 
