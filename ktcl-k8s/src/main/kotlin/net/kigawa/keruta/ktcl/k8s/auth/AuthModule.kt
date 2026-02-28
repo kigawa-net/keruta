@@ -11,10 +11,12 @@ class AuthModule {
             cookie<UserSession>("user_session") {
                 cookie.path = "/"
                 cookie.maxAgeInSeconds = 3600
+                cookie.extensions["SameSite"] = "Lax"
             }
             cookie<net.kigawa.keruta.ktcl.k8s.web.login.OidcSession>("oidc_session") {
                 cookie.path = "/"
                 cookie.maxAgeInSeconds = 600 // 10分（OIDCフローの完了まで）
+                cookie.extensions["SameSite"] = "Lax"
             }
         }
     }

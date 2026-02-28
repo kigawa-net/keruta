@@ -32,7 +32,7 @@ class RouteModule {
         
         val configRoutes = ConfigRoutes(jwkProvider, keycloakConfig, appConfig)
         val kerutaEndpoints = KerutaEndpoints(appConfig.keruta)
-        val loginRoute = LoginRoute(oidcDiscoveryFetcher, pkceGenerator, idpConfig, kerutaEndpoints)
+        val loginRoute = LoginRoute(oidcDiscoveryFetcher, pkceGenerator, idpConfig, kerutaEndpoints, authenticationHelper)
         val tokenRoute = TokenRoute(oidcDiscoveryFetcher, idpConfig)
         
         application.routing {

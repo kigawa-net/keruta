@@ -8,6 +8,7 @@ import net.kigawa.keruta.ktcl.k8s.KerutaEndpoints
 import net.kigawa.keruta.ktcl.k8s.auth.Pkce
 import net.kigawa.keruta.ktcl.k8s.auth.PkceGenerator
 import net.kigawa.keruta.ktcl.k8s.config.IdpConfig
+import net.kigawa.keruta.ktcl.k8s.web.auth.AuthenticationHelper
 import net.kigawa.keruta.ktcl.k8s.web.auth.OidcDiscoveryFetcher
 import net.kigawa.keruta.ktcl.k8s.web.auth.OidcDiscoveryResponse
 import net.kigawa.kodel.api.log.LoggerFactory
@@ -19,10 +20,18 @@ class LoginRoute(
     private val pkceGenerator: PkceGenerator,
     val idpConfig: IdpConfig,
     val kerutaEndpoints: KerutaEndpoints,
+    private val authenticationHelper: AuthenticationHelper? = null,
 ) {
     private val logger = LoggerFactory.get("LoginRoute")
 
     fun configure(route: Route) = route.get("/login") {
+        // 認証済みユーザーの場合はホーム画面にリダイレクト（リダイレクトループ防止）
+        val user = authenticationHelper?.getAuthenticatedUser(call)
+        if (user != null) {
+            call.respondRedirect("/")
+            return@get
+        }
+
         val issuer = call.queryParameters["issuer"]?.let { URI(it) } ?: idpConfig.issuer
         val clientId = call.queryParameters["clientId"] ?: idpConfig.clientId
 
