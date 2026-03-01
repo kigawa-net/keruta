@@ -9,4 +9,5 @@ data class OidcSession(
     val issuer: String,
     val clientId: String,
     val pkce: Pkce,
+    val registerToken: String,
 )

@@ -11,13 +11,13 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
-import net.kigawa.keruta.ktcl.k8s.auth.UserSession
 import net.kigawa.keruta.ktcl.k8s.auth.OidcDiscoveryFetcher
 import net.kigawa.keruta.ktcl.k8s.auth.RemoteConfigProvider
+import net.kigawa.keruta.ktcl.k8s.auth.UserSession
 import net.kigawa.kodel.api.log.getKogger
 
 class LoginCallbackRoute(
-    private val oidcDiscoveryFetcher: OidcDiscoveryFetcher = OidcDiscoveryFetcher()
+    private val oidcDiscoveryFetcher: OidcDiscoveryFetcher = OidcDiscoveryFetcher(),
 ) {
     private val logger = getKogger()
     private val remoteConfigProvider = RemoteConfigProvider(oidcDiscoveryFetcher)
@@ -91,6 +91,7 @@ class LoginCallbackRoute(
             saveUserSession(call, userId, tokenResponse.accessToken)
 
             logger.info("Login successful for user: $userId, redirecting to home page")
+            TODO("refresh tokenをDBに保存する")
 
             // フロントエンドにリダイレクト
             call.respondRedirect("/")
@@ -127,7 +128,7 @@ class LoginCallbackRoute(
         code: String,
         redirectUri: String,
         clientId: String,
-        codeVerifier: String
+        codeVerifier: String,
     ): TokenResponse {
         val client = HttpClient(CIO) {
             install(ContentNegotiation) {

@@ -5,12 +5,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import net.kigawa.keruta.ktcl.k8s.KerutaEndpoints
-import net.kigawa.keruta.ktcl.k8s.auth.Pkce
-import net.kigawa.keruta.ktcl.k8s.auth.PkceGenerator
+import net.kigawa.keruta.ktcl.k8s.auth.*
 import net.kigawa.keruta.ktcl.k8s.config.IdpConfig
-import net.kigawa.keruta.ktcl.k8s.auth.AuthenticationHelper
-import net.kigawa.keruta.ktcl.k8s.auth.OidcDiscoveryFetcher
-import net.kigawa.keruta.ktcl.k8s.auth.OidcDiscoveryResponse
 import net.kigawa.kodel.api.log.LoggerFactory
 import net.kigawa.kodel.api.net.Url
 import java.net.URI
@@ -34,6 +30,7 @@ class LoginRoute(
 
         val issuer = call.queryParameters["issuer"]?.let { URI(it) } ?: idpConfig.issuer
         val clientId = call.queryParameters["clientId"] ?: idpConfig.clientId
+        val registerToken = call.queryParameters["token"] ?: throw IllegalArgumentException("Missing token")
 
         logger.info("Starting OIDC login flow for issuer: $issuer, clientId: $clientId")
 
@@ -41,7 +38,7 @@ class LoginRoute(
             val discoveryResponse = oidcDiscoveryFetcher.fetchByIssuer(issuer)
             val pkce = pkceGenerator.generate()
             val redirectUri = kerutaEndpoints.callback
-            saveSession(pkce, redirectUri, issuer, clientId)
+            saveSession(pkce, redirectUri, issuer, clientId, registerToken)
             // 認可エンドポイントにリダイレクト
             respondRedirectIssuer(discoveryResponse, clientId, redirectUri, pkce)
         } catch (e: Exception) {
@@ -53,13 +50,16 @@ class LoginRoute(
         }
     }
 
-    fun RoutingContext.saveSession(pkce: Pkce, redirectUri: Url, issuer: URI, clientId: String) {
+    fun RoutingContext.saveSession(
+        pkce: Pkce, redirectUri: Url, issuer: URI, clientId: String, registerToken: String,
+    ) {
         // セッションにOIDC情報を保存
         val oidcSession = OidcSession(
             pkce = pkce,
             redirectUri = redirectUri.toString(),
             issuer = issuer.toString(),
-            clientId = clientId
+            clientId = clientId,
+            registerToken = registerToken,
         )
         call.sessions.set(oidcSession)
     }

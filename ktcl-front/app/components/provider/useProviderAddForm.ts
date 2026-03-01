@@ -33,7 +33,7 @@ export function useProviderAddForm(): ProviderAddFormState {
     const handleTokenReceived = useCallback(
         (token: string) => {
             if (!kerutaJson) return;
-            const url = buildProviderAuthUrlFromMsg(kerutaJson.login, {type: "provider_add_token_issued", token});
+            const url = buildProviderAuthUrlFromMsg(kerutaJson.login, token);
             setFormState("redirecting");
             window.location.href = url.toStrUrl();
         },
