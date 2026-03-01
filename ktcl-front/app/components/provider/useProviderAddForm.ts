@@ -69,7 +69,7 @@ export function useProviderAddForm(): ProviderAddFormState {
 
         setKerutaJson(json);
         setFormState("submitting");
-        authedKtse.authedKtseApi.addProvider(name.value, issuerUrl.toStrUrl());
+        authedKtse.authedKtseApi.providerIssuerToken(name.value, issuerUrl.toStrUrl());
     }, [authedKtse, name, issuer]);
 
     const isDisabled = formState !== "inputting";

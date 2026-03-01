@@ -47,7 +47,7 @@ export const SendMsgTypes = {
     auth_request: "auth_request",
     task_create: "task_create",
     provider_list: "provider_list",
-    provider_add: "provider_add",
+    provider_issue_token: "provider_issue_token",
     provider_complete: "provider_complete",
     provider_delete: "provider_delete",
     queue_create: "queue_create",

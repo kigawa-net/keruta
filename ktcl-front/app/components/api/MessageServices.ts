@@ -6,12 +6,7 @@ import {
     ServerTaskShowMsg,
     ServerTaskUpdateMsg,
 } from "../msg/task";
-import {
-    ServerProviderAddMsg,
-    ServerProviderCompleteMsg,
-    ServerProviderDeleteMsg,
-    ServerProviderListMsg,
-} from "../msg/provider";
+
 /** タスク関連のメッセージ送信サービス */
 export class TaskMessageService {
     constructor(private wsService: WebSocketService) {
@@ -39,32 +34,6 @@ export class TaskMessageService {
 
     moveTask(taskId: number, targetQueueId: number): void {
         const msg: ServerTaskMoveMsg = {type: "task_move", taskId, targetQueueId};
-        this.wsService.send(msg);
-    }
-}
-
-/** プロバイダー関連のメッセージ送信サービス */
-export class ProviderMessageService {
-    constructor(private wsService: WebSocketService) {
-    }
-
-    listProviders(): void {
-        const msg: ServerProviderListMsg = {type: "provider_list"};
-        this.wsService.send(msg);
-    }
-
-    addProvider(name: string, issuer: string, audience: string): void {
-        const msg: ServerProviderAddMsg = {type: "provider_add", name, issuer, audience};
-        this.wsService.send(msg);
-    }
-
-    completeProviderAdd(token: string, code: string, redirectUri: string): void {
-        const msg: ServerProviderCompleteMsg = {type: "provider_complete", token, code, redirectUri};
-        this.wsService.send(msg);
-    }
-
-    deleteProvider(id: string): void {
-        const msg: ServerProviderDeleteMsg = {type: "provider_delete", id};
         this.wsService.send(msg);
     }
 }

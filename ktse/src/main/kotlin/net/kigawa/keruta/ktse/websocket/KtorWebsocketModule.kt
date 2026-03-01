@@ -5,8 +5,12 @@ import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.channels.consumeEach
+import net.kigawa.keruta.ktcp.base.auth.jwks.JwksProvider
+import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
+import net.kigawa.keruta.ktcp.base.auth.oidc.OidcConfigProvider
 import net.kigawa.keruta.ktcp.base.http.HttpClient
 import net.kigawa.keruta.ktcp.model.err.EntrypointNotFoundErr
+import net.kigawa.keruta.ktcp.model.err.GenericErrMsg
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.model.serialize.JsonKerutaSerializer
 import net.kigawa.keruta.ktcp.server.KtcpServer
@@ -18,20 +22,15 @@ import net.kigawa.keruta.ktse.KtseConfig
 import net.kigawa.keruta.ktse.ReceiveUnknownArg
 import net.kigawa.keruta.ktse.WebsocketConnection
 import net.kigawa.keruta.ktse.auth.Auth0AuthTokenDecoder
-import net.kigawa.keruta.ktcp.base.auth.jwks.JwksProvider
-import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
 import net.kigawa.keruta.ktse.auth.KtseJwtVerifier
 import net.kigawa.keruta.ktse.auth.keruta.KerutaJsonProvider
-import net.kigawa.keruta.ktcp.base.auth.oidc.OidcConfigProvider
-import net.kigawa.keruta.ktcp.model.err.GenericErrMsg
 import net.kigawa.keruta.ktse.persist.ExposedPersisterSession
 import net.kigawa.keruta.ktse.persist.ProviderCompleteHandler
 import net.kigawa.keruta.ktse.persist.ProviderDeleteHandler
 import net.kigawa.keruta.ktse.persist.db.DbPersister
-import net.kigawa.keruta.ktse.websocket.entrypoint.ReceiveProviderRegisterTokenEntrypoint
 import net.kigawa.keruta.ktse.websocket.entrypoint.ReceiveProviderCompleteEntrypoint
 import net.kigawa.keruta.ktse.websocket.entrypoint.ReceiveProviderDeleteEntrypoint
-import net.kigawa.keruta.ktse.zookeeper.ZkPersister
+import net.kigawa.keruta.ktse.websocket.entrypoint.ReceiveProviderIssueTokenEntrypoint
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.err.convertErr
 import net.kigawa.kodel.api.log.getKogger
@@ -44,7 +43,6 @@ class KtorWebsocketModule(application: Application, val server: KerutaTaskServer
     val httpClient = HttpClient()
     val serializer = JsonKerutaSerializer()
     val logger = getKogger()
-    val zkPersister = ZkPersister(ktseConfig)
     val dbPersister = DbPersister(ktseConfig)
     val jwksProvider = JwksProvider()
     val oidcConfigProvider = OidcConfigProvider(httpClient)
@@ -60,7 +58,7 @@ class KtorWebsocketModule(application: Application, val server: KerutaTaskServer
     val providerCompleteHandler = ProviderCompleteHandler(dbPersister, kerutaJsonProvider, httpClient)
     val providerDeleteHandler = ProviderDeleteHandler(dbPersister)
     val ktcpServer = KtcpServer(
-        ReceiveProviderRegisterTokenEntrypoint(),
+        ReceiveProviderIssueTokenEntrypoint(),
         ReceiveProviderCompleteEntrypoint(providerCompleteHandler),
         ReceiveProviderDeleteEntrypoint(providerDeleteHandler),
         jwtVerifier,

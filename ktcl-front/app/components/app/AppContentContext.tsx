@@ -2,7 +2,7 @@ import {createContext, ReactNode, useMemo} from "react";
 import {TaskService} from "../domain";
 import {useConnectionStateService} from "../../util/net/websocket/useConnectionStateService";
 
-import {useProviderMessageService, useTaskMessageService,} from "../../util/net/service/useServiceHooks";
+import {useTaskMessageService,} from "../../util/net/service/useServiceHooks";
 import type {KerutaTaskState} from "../../util/net/websocket/ConnectionStateTypes";
 import {useWebsocketState} from "../../util/net/websocket/WebsocketProvider";
 
@@ -17,14 +17,12 @@ export const AppContentContext = createContext<AppState | null>(null);
 export function AppContentProvider({children}: { children: ReactNode }) {
     const websocketState = useWebsocketState();
     const taskMsgService = useTaskMessageService();
-    const providerMsgService = useProviderMessageService();
-
-    // Domain services
+// Domain services
     const services = useMemo(
         () => ({
             taskService: new TaskService(taskMsgService),
         }),
-        [taskMsgService, providerMsgService]
+        [taskMsgService]
     );
 
     // Connection state management

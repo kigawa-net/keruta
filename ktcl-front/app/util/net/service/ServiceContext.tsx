@@ -1,5 +1,5 @@
 import {createContext, ReactNode, useMemo} from "react";
-import {ApiService, ProviderMessageService, TaskMessageService, WebSocketService,} from "../../../components/api";
+import {ApiService, TaskMessageService, WebSocketService,} from "../../../components/api";
 import {Url} from "../Url";
 import {useWebsocketState, WebsocketState} from "../websocket/WebsocketProvider";
 
@@ -7,7 +7,6 @@ interface Services {
     wsService: WebSocketService;
     apiService: ApiService;
     taskMessageService: TaskMessageService;
-    providerMessageService: ProviderMessageService;
 }
 
 export interface ServiceContextValue extends Services {
@@ -42,7 +41,6 @@ export function ServiceProvider(
             wsService,
             apiService,
             taskMessageService: new TaskMessageService(wsService),
-            providerMessageService: new ProviderMessageService(wsService),
         };
     }, [wsUrl, getAuthToken]);
 

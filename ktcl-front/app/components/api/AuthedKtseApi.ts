@@ -3,7 +3,7 @@ import {
     ClientProviderDeletedMsg,
     ClientProviderIdpAddedMsg,
     ClientProviderListMsg,
-    ServerProviderAddMsg,
+    ServerProviderIssueTokenMsg,
     ServerProviderListMsg
 } from "../msg/provider";
 import {KtseApi} from "./KtseApi";
@@ -67,8 +67,8 @@ export class AuthedKtseApi {
         this.ktse.send(msg);
     }
 
-    addProvider(name: string, issuer: string): void {
-        const msg: ServerProviderAddMsg = {type: "provider_add", name, issuer};
+    providerIssuerToken(name: string, issuer: string): void {
+        const msg: ServerProviderIssueTokenMsg = {type: "provider_issue_token", name, issuer};
         this.ktse.send(msg);
     }
 }

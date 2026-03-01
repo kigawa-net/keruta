@@ -1,8 +1,8 @@
 package net.kigawa.keruta.ktse.websocket.entrypoint
 
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.provider.add.ServerProviderAddMsg
-import net.kigawa.keruta.ktcp.model.provider.add.ServerProviderRegisterTokenEntrypoint
+import net.kigawa.keruta.ktcp.model.provider.add.ServerProviderIssueTokenEntrypoint
+import net.kigawa.keruta.ktcp.model.provider.add.ServerProviderIssueTokenMsg
 import net.kigawa.keruta.ktcp.model.provider.add_token.ClientProviderAddTokenMsg
 import net.kigawa.keruta.ktcp.model.serialize.serialize
 import net.kigawa.keruta.ktcp.server.ServerCtx
@@ -12,10 +12,10 @@ import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.getKogger
 import net.kigawa.kodel.api.log.traceignore.debug
 
-class ReceiveProviderRegisterTokenEntrypoint: ServerProviderRegisterTokenEntrypoint<ServerCtx> {
+class ReceiveProviderIssueTokenEntrypoint: ServerProviderIssueTokenEntrypoint<ServerCtx> {
     private val logger = getKogger()
     override fun access(
-        input: ServerProviderAddMsg, ctx: ServerCtx,
+        input: ServerProviderIssueTokenMsg, ctx: ServerCtx,
     ): EntrypointDeferred<Res<Unit, KtcpErr>> = EntrypointDeferred {
         val authed = ctx.session.authenticated()
             ?: return@EntrypointDeferred Res.Err(UnauthenticatedErr("", null))

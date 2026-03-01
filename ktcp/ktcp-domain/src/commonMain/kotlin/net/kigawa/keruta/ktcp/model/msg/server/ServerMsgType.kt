@@ -14,8 +14,9 @@ enum class ServerMsgType(
     TASK_UPDATE("task_update"),
     TASK_MOVE("task_move"),
     PROVIDER_LIST("provider_list"),
+
+    //    PROVIDER_ISSUE_TOKEN("provider_issue_token"),
     PROVIDER_ISSUE_TOKEN("provider_issue_token"),
-    PROVIDER_ADD("provider_add"),
     PROVIDER_COMPLETE("provider_complete"),
     PROVIDER_DELETE("provider_delete"),
     QUEUE_CREATE("queue_create"),

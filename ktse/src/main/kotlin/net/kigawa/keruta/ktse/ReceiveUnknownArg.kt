@@ -11,7 +11,7 @@ import net.kigawa.keruta.ktcp.model.err.IllegalFormatDeserializeErr
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
 import net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownArg
-import net.kigawa.keruta.ktcp.model.provider.add.ServerProviderAddMsg
+import net.kigawa.keruta.ktcp.model.provider.add.ServerProviderIssueTokenMsg
 import net.kigawa.keruta.ktcp.model.provider.complete.ServerProviderCompleteMsg
 import net.kigawa.keruta.ktcp.model.provider.delete.ServerProviderDeleteMsg
 import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListMsg
@@ -57,8 +57,8 @@ class ReceiveUnknownArg(
         return translate()
     }
 
-    override fun tryToProviderAdd(): Res<ServerProviderAddMsg, KtcpErr>? {
-        if (typeStr != ServerMsgType.PROVIDER_ADD.str) return null
+    override fun tryToProviderIssueToken(): Res<ServerProviderIssueTokenMsg, KtcpErr>? {
+        if (typeStr != ServerMsgType.PROVIDER_ISSUE_TOKEN.str) return null
         return translate()
     }
 
@@ -128,16 +128,16 @@ class ReceiveUnknownArg(
             if (frame !is Frame.Text) return Res.Err(InvalidTypeDecodeFrameErr("", null))
             val text = frame.readText()
             logger.debug("frameText: $text")
-            
+
             // First, extract type field from JSON without full deserialization
             val jsonElement = Json.parseToJsonElement(text)
             val typeStr = (jsonElement as? JsonObject)?.get("type")?.jsonPrimitive?.content
-            
+
             if (typeStr == null) {
-                return Res.Err(DeserializeDecodeFrameErr("", 
+                return Res.Err(DeserializeDecodeFrameErr("",
                     IllegalFormatDeserializeErr("type field is required", SerializationException("type field is required"))))
             }
-            
+
             return Res.Ok(ReceiveUnknownArg(typeStr, ctx, text))
         }
     }

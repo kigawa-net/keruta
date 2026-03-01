@@ -4,7 +4,7 @@ import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestEntrypoint
 import net.kigawa.keruta.ktcp.model.err.EntrypointNotFoundErr
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.model.msg.server.ServerUnknownArg
-import net.kigawa.keruta.ktcp.model.provider.add.ServerProviderRegisterTokenEntrypoint
+import net.kigawa.keruta.ktcp.model.provider.add.ServerProviderIssueTokenEntrypoint
 import net.kigawa.keruta.ktcp.model.provider.complete.ServerProviderCompleteEntrypoint
 import net.kigawa.keruta.ktcp.model.provider.delete.ServerProviderDeleteEntrypoint
 import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListEntrypoint
@@ -32,7 +32,7 @@ class KtcpServerEntrypoints<C>(
     taskUpdateEntrypoint: ServerTaskUpdateEntrypoint<C>,
     taskMoveEntrypoint: ServerTaskMoveEntrypoint<C>,
     providersRequestEntrypoint: ServerProviderListEntrypoint<C>,
-    providerRegisterTokenEntrypoint: ServerProviderRegisterTokenEntrypoint<C>,
+    providerIssueTokenEntrypoint: ServerProviderIssueTokenEntrypoint<C>,
     providerCompleteEntrypoint: ServerProviderCompleteEntrypoint<C>,
     providerDeleteEntrypoint: ServerProviderDeleteEntrypoint<C>,
     queueCreateEntrypoint: ServerQueueCreateEntrypoint<C>,
@@ -88,8 +88,8 @@ class KtcpServerEntrypoints<C>(
         }
     }
 
-    val providerRegisterToken = add(providerRegisterTokenEntrypoint) { input ->
-        input.tryToProviderAdd()?.whenErrOk(
+    val providerIssueToken = add(providerIssueTokenEntrypoint) { input ->
+        input.tryToProviderIssueToken()?.whenErrOk(
             { EntrypointDeferred { Res.Err(it) } }
         ) {
             this(it)

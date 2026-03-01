@@ -19,8 +19,8 @@ export interface ClientProviderListMsg {
     type: typeof ReceiveMsgTypes.provider_listed
 }
 
-export interface ServerProviderAddMsg {
-    type: typeof SendMsgTypes.provider_add
+export interface ServerProviderIssueTokenMsg {
+    type: typeof SendMsgTypes.provider_issue_token
     name: string
     issuer: string
 }

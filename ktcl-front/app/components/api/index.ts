@@ -1,6 +1,6 @@
 // WebSocket
 export {WebSocketService} from "./WebSocketService";
-export {TaskMessageService, ProviderMessageService} from "./MessageServices";
+export {TaskMessageService} from "./MessageServices";
 export type {WsConnectionState, WsConnectionOptions, MessageHandler} from "./WsTypes";
 
 // API
