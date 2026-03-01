@@ -48,6 +48,15 @@ class StaticRoutes(
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ktcl-k8s 設定管理</title>
     <style>
+        :root {
+            --color-primary: #0a58ca;
+            --color-bg: #ffffff;
+            --color-bg-sidebar: #f8f9fa;
+            --color-border: #dee2e6;
+            --color-text: #212529;
+            --color-text-muted: #6c757d;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -56,43 +65,99 @@ class StaticRoutes(
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--color-bg);
+            color: var(--color-text);
             min-height: 100vh;
+        }
+
+        .app-container {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 256px;
+            background: var(--color-bg-sidebar);
+            border-right: 1px solid var(--color-border);
+            padding: 24px 16px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 32px;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar-link {
+            display: block;
+            padding: 8px 16px;
+            color: var(--color-primary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.15s;
+        }
+
+        .sidebar-link:hover {
+            background: rgba(10, 88, 202, 0.1);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
         }
 
         .container {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 40px;
             max-width: 600px;
-            width: 100%;
+            margin: 0 auto;
         }
 
         h1 {
-            color: #333;
-            margin-bottom: 10px;
             font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--color-text);
         }
 
         .subtitle {
-            color: #666;
-            margin-bottom: 30px;
+            color: var(--color-text-muted);
+            margin-bottom: 32px;
             font-size: 14px;
         }
 
+        .card {
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
-            color: #444;
+            margin-bottom: 6px;
+            color: var(--color-text);
             font-weight: 500;
             font-size: 14px;
         }
@@ -101,93 +166,85 @@ class StaticRoutes(
         input[type="number"],
         select {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e1e8ed;
-            border-radius: 8px;
+            padding: 10px 12px;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
             font-size: 14px;
-            transition: border-color 0.3s;
+            transition: border-color 0.15s, box-shadow 0.15s;
         }
 
         input:focus,
         select:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(10, 88, 202, 0.1);
         }
 
         .checkbox-group {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .checkbox-group input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            accent-color: var(--color-primary);
         }
 
         .checkbox-group label {
             margin-bottom: 0;
+            font-weight: 400;
         }
 
         button {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 10px 20px;
+            background: var(--color-primary);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: background-color 0.15s, transform 0.1s;
         }
 
         button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+            background: #0842a0;
         }
 
         button:active {
-            transform: translateY(0);
+            transform: scale(0.98);
         }
 
         button:disabled {
             opacity: 0.6;
             cursor: not-allowed;
-            transform: none;
         }
 
         .message {
             padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            border-radius: 6px;
+            margin-bottom: 16px;
             display: none;
             font-size: 14px;
         }
 
         .message.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background: #d1e7dd;
+            color: #0f5132;
+            border: 1px solid #badbcc;
         }
 
         .message.error {
             background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            color: #842029;
+            border: 1px solid #f5c2c7;
         }
 
         .section {
-            border-top: 1px solid #e1e8ed;
-            padding-top: 20px;
-            margin-top: 20px;
-        }
-
-        .section h2 {
-            color: #444;
-            margin-bottom: 15px;
-            font-size: 18px;
+            margin-top: 24px;
         }
 
         .login-screen,
@@ -199,72 +256,118 @@ class StaticRoutes(
             display: block;
         }
 
+        .logout-btn {
+            background: #dc3545;
+        }
+
+        .logout-btn:hover {
+            background: #bb2d3b;
+        }
+
         .keycloak-btn {
-            background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
+            background: #0d6efd;
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
         }
 
         .keycloak-btn:hover {
-            box-shadow: 0 10px 20px rgba(66, 133, 244, 0.4);
+            background: #0b5ed7;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                z-index: 100;
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                padding: 16px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- ログイン画面 -->
-        <div id="loginScreen" class="login-screen active">
-            <h1>ktcl-k8s 設定管理</h1>
-            <p class="subtitle">Keycloakで認証してください</p>
-            <div id="loginMessage" class="message"></div>
-            <button id="keycloakLoginBtn" class="keycloak-btn">Keycloakでログイン</button>
-        </div>
+    <div class="app-container">
+        <!-- サイドバー -->
+        <aside id="sidebar" class="sidebar">
+            <h1 class="sidebar-title">Keruta</h1>
+            <nav class="sidebar-nav">
+                <a href="/" class="sidebar-link active">設定</a>
+            </nav>
+        </aside>
 
-        <!-- 設定画面 -->
-        <div id="configScreen" class="config-screen">
-            <h1>設定管理</h1>
-            <p class="subtitle">Kubernetes とキューの設定を変更できます</p>
-            <div id="configMessage" class="message"></div>
-
-            <!-- Kubernetes設定 -->
-            <div class="section">
-                <h2>Kubernetes設定</h2>
-                <div class="form-group">
-                    <label for="namespace">ネームスペース</label>
-                    <input type="text" id="namespace" placeholder="default">
+        <!-- メインコンテンツ -->
+        <main class="main-content">
+            <div class="container">
+                <!-- ログイン画面 -->
+                <div id="loginScreen" class="login-screen">
+                    <div class="card">
+                        <h1>ktcl-k8s 設定管理</h1>
+                        <p class="subtitle">Keycloakで認証してください</p>
+                        <div id="loginMessage" class="message"></div>
+                        <button id="keycloakLoginBtn" class="keycloak-btn">Keycloakでログイン</button>
+                    </div>
                 </div>
 
-                <div class="checkbox-group">
-                    <input type="checkbox" id="useInCluster">
-                    <label for="useInCluster">In-Cluster認証を使用</label>
-                </div>
+                <!-- 設定画面 -->
+                <div id="configScreen" class="config-screen">
+                    <h1>設定管理</h1>
+                    <p class="subtitle">Kubernetes とキューの設定を変更できます</p>
+                    <div id="configMessage" class="message"></div>
 
-                <div class="form-group">
-                    <label for="kubeconfigPath">Kubeconfigパス（In-Cluster無効時）</label>
-                    <input type="text" id="kubeconfigPath" placeholder="~/.kube/config">
-                </div>
+                    <!-- Kubernetes設定 -->
+                    <div class="card">
+                        <h2 class="card-title">Kubernetes設定</h2>
+                        <div class="form-group">
+                            <label for="namespace">ネームスペース</label>
+                            <input type="text" id="namespace" placeholder="default">
+                        </div>
 
-                <div class="form-group">
-                    <label for="jobTimeout">Jobタイムアウト（秒）</label>
-                    <input type="number" id="jobTimeout" placeholder="600">
-                </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="useInCluster">
+                            <label for="useInCluster">In-Cluster認証を使用</label>
+                        </div>
 
-                <button id="updateK8sBtn">Kubernetes設定を更新</button>
+                        <div class="form-group">
+                            <label for="kubeconfigPath">Kubeconfigパス（In-Cluster無効時）</label>
+                            <input type="text" id="kubeconfigPath" placeholder="~/.kube/config">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="jobTimeout">Jobタイムアウト（秒）</label>
+                            <input type="number" id="jobTimeout" placeholder="600">
+                        </div>
+
+                        <button id="updateK8sBtn">Kubernetes設定を更新</button>
+                    </div>
+
+                    <!-- キュー設定 -->
+                    <div class="card">
+                        <h2 class="card-title">キュー設定</h2>
+                        <div class="form-group">
+                            <label for="queueId">キューID</label>
+                            <input type="number" id="queueId" placeholder="1">
+                        </div>
+
+                        <button id="updateQueueBtn">キュー設定を更新</button>
+                    </div>
+
+                    <div class="card">
+                        <button id="logoutBtn" class="logout-btn">ログアウト</button>
+                    </div>
+                </div>
             </div>
-
-            <!-- キュー設定 -->
-            <div class="section">
-                <h2>キュー設定</h2>
-                <div class="form-group">
-                    <label for="queueId">キューID</label>
-                    <input type="number" id="queueId" placeholder="1">
-                </div>
-
-                <button id="updateQueueBtn">キュー設定を更新</button>
-            </div>
-
-            <div class="section">
-                <button id="logoutBtn" style="background: #dc3545;">ログアウト</button>
-            </div>
-        </div>
+        </main>
     </div>
 
     <script>
