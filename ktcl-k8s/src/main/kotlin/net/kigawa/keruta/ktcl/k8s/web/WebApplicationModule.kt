@@ -9,6 +9,7 @@ import net.kigawa.keruta.ktcl.k8s.auth.AuthModule
 import net.kigawa.keruta.ktcl.k8s.config.CorsConfig
 import net.kigawa.keruta.ktcl.k8s.err.ErrorResponse
 import net.kigawa.keruta.ktcl.k8s.k8s.K8sModule
+import net.kigawa.keruta.ktcl.k8s.persist.DbModule
 import net.kigawa.keruta.ktcl.k8s.route.RouteModule
 import net.kigawa.keruta.ktcl.k8s.serialize.SerializeModule
 import net.kigawa.keruta.ktcp.base.http.HttpClient
@@ -25,6 +26,9 @@ class WebApplicationModule() {
 
     fun configure(application: Application) {
         logger.info("Starting ktcl-k8s Web Module")
+
+        val dbModule = DbModule.create(application.environment.config)
+        dbModule.configure(application)
 
         k8sModule.configure(application)
         serializeModule.configure(application)

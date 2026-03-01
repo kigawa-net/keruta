@@ -94,7 +94,7 @@ class LoginCallbackRoute(
             TODO("refresh tokenをDBに保存する")
 
             // フロントエンドにリダイレクト
-            call.respondRedirect("/")
+//            call.respondRedirect("/")
         } catch (e: Exception) {
             logger.severe("Failed to process OIDC callback: ${e.message}")
             call.respond(

@@ -45,6 +45,20 @@ dependencies {
     implementation("com.auth0:java-jwt:4.4.0")
     implementation("com.auth0:jwks-rsa:0.22.1")
 
+    // Flyway and Database
+    implementation("org.flywaydb:flyway-core:12.0.2")
+    implementation("org.flywaydb:flyway-mysql:12.0.2")
+    implementation("com.mysql:mysql-connector-j:9.6.0")
+
+    // Exposed ORM
+    implementation("org.jetbrains.exposed:exposed-core:0.60.0")
+    implementation("org.jetbrains.exposed:exposed-dao:0.60.0")
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.60.0")
+    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:0.60.0")
+
+    // Connection Pool
+    implementation("com.zaxxer:HikariCP:7.0.2")
+
     // Testing
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.junit.jupiter:junit-jupiter:6.0.2")

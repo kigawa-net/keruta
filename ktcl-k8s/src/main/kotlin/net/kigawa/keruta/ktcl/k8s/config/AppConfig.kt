@@ -11,6 +11,7 @@ data class AppConfig(
     val k8s: K8sSettings,
     val cors: CorsConfig,
     val auth: AuthConfig,
+    val db: DbConfig,
 ) {
     companion object {
         /**
@@ -24,7 +25,8 @@ data class AppConfig(
                 ktse = KtseConfig.fromEnvironment(),
                 k8s = K8sSettings.fromEnvironment(),
                 cors = CorsConfig.fromEnvironment(),
-                auth = AuthConfig.load()
+                auth = AuthConfig.load(),
+                db = DbConfig.load(applicationConfig)
             )
         }
     }
