@@ -1,0 +1,19 @@
+name: renovate-merge.yml
+on:
+  pull_request:
+    types: [synchronize, opened, reopened, edited]
+jobs:
+  test:
+    uses: ./.github/workflows/renovate.yaml
+  merge:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Merge
+        uses: devmasx/merge-branch@v1.3.1
+        with:
+          type: now
+          from_branch: ${{ github.head_ref }}
+          target_branch: ${{ github.base_ref }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          commit_message: Merge pull request #${{ github.event.number }} from ${{ github.head_ref }} into ${{ github.base_ref }}

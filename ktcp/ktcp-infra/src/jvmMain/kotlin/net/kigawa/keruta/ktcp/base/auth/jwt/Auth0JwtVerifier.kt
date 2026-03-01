@@ -3,6 +3,7 @@ package net.kigawa.keruta.ktcp.base.auth.jwt
 import com.auth0.jwt.JWT
 import net.kigawa.keruta.ktcp.base.auth.VerifyFailErr
 import net.kigawa.keruta.ktcp.base.auth.jwks.JwksProvider
+import net.kigawa.keruta.ktcp.base.auth.key.Auth0AlgorithmInitializer
 import net.kigawa.keruta.ktcp.base.auth.oidc.OidcConfigProvider
 import net.kigawa.keruta.ktcp.model.auth.AuthToken
 import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifier
@@ -15,6 +16,7 @@ import net.kigawa.kodel.api.err.Res
 class Auth0JwtVerifier(
     val oidcConfigProvider: OidcConfigProvider,
     val jwksProvider: JwksProvider,
+    val auth0AlgorithmInitializer: Auth0AlgorithmInitializer = Auth0AlgorithmInitializer(),
 ): JwtVerifier {
 
     override fun createToken(): Res<AuthToken, KtcpErr> =
@@ -26,7 +28,7 @@ class Auth0JwtVerifier(
         Res.Ok(
             Auth0UnverifiedToken(
                 JWT.decode(userToken), userToken,
-                oidcConfigProvider, jwksProvider
+                oidcConfigProvider, jwksProvider, auth0AlgorithmInitializer
             )
         )
     } catch (e: Exception) {
