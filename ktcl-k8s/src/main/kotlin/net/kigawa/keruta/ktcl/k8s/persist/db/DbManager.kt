@@ -13,7 +13,7 @@ class DbManager(
 ) {
     private val config = HikariConfig().apply {
         jdbcUrl = dbConfig.jdbcUrl + "?useInformationSchema=false"
-        driverClassName = "com.mysql.cj.jdbc.Driver"
+        driverClassName = "org.mariadb.jdbc.Driver"
         username = dbConfig.username
         password = dbConfig.password
         maximumPoolSize = 10
