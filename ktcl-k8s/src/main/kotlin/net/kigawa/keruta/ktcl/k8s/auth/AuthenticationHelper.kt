@@ -4,7 +4,6 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.sessions.*
-import net.kigawa.keruta.ktcl.k8s.auth.UserSession
 import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
 import net.kigawa.keruta.ktcp.model.auth.key.PrivateKey
 import net.kigawa.kodel.api.err.flatConvertOk

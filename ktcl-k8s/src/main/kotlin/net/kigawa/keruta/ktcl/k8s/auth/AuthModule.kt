@@ -3,7 +3,6 @@ package net.kigawa.keruta.ktcl.k8s.auth
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
 import net.kigawa.keruta.ktcl.k8s.login.OidcSession
-import net.kigawa.keruta.ktcl.k8s.auth.UserSession
 
 class AuthModule {
 
