@@ -2,6 +2,26 @@ plugins {
     id("compose-mobile-lib")
 }
 
+kotlin {
+    sourceSets {
+        commonTest {
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
+        jvmMain {
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
+        jvmTest {
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
+            }
+        }
+    }
+}
+
 val iosSimulatorName = project.findProperty("iosSimulator")?.toString() ?: "iPhone 17 Pro"
 
 tasks.register<Exec>("iosSimulatorBuild") {

@@ -2,10 +2,7 @@ package net.kigawa.keruta.ktcl.mobile.viewmodel
 
 import kotlinx.coroutines.launch
 import net.kigawa.keruta.ktcl.mobile.auth.AuthState
-import net.kigawa.keruta.ktcl.mobile.auth.TokenPair
-import net.kigawa.keruta.ktcl.mobile.di.AppContainer
 import net.kigawa.keruta.ktcl.mobile.service.AuthService
-import platform.Foundation.NSLog
 
 data class AuthViewState(
     val isLoading: Boolean = false,
@@ -15,7 +12,6 @@ data class AuthViewState(
 
 class AuthViewModel(
     private val authService: AuthService,
-    private val appContainer: AppContainer? = null,
 ) : BaseViewModel<AuthViewState>(AuthViewState()) {
 
     init {
@@ -38,34 +34,9 @@ class AuthViewModel(
         authService.setAuthenticating()
     }
 
-    fun onLoginSuccess(tokens: TokenPair) {
-        NSLog("=== AuthViewModel: onLoginSuccess called ===")
-        updateState { it.copy(isLoading = false) }
-        authService.setAuthenticated(tokens)
-
-        // WebSocketに接続
-        appContainer?.connectWebSocket(
-            onConnected = {
-                NSLog("=== AuthViewModel: WebSocket connected ===")
-            },
-            onError = { error ->
-                NSLog("=== AuthViewModel: WebSocket error: ${error.message} ===")
-                updateState { it.copy(errorMessage = "WebSocket接続に失敗しました: ${error.message}") }
-            }
-        )
-    }
-
-    fun onLoginError(message: String) {
-        updateState { it.copy(isLoading = false, errorMessage = message) }
-        authService.setError(message)
-    }
-
     fun logout() {
         authService.logout()
         updateState { AuthViewState() }
     }
 
-    fun clearError() {
-        updateState { it.copy(errorMessage = null) }
-    }
 }

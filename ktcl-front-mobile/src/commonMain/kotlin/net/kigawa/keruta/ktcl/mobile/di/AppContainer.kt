@@ -25,11 +25,11 @@ import net.kigawa.keruta.ktcl.mobile.navigation.Screen
 import net.kigawa.keruta.ktcl.mobile.provider.ProviderRepository
 import net.kigawa.keruta.ktcl.mobile.queue.QueueRepository
 import net.kigawa.keruta.ktcl.mobile.service.AuthService
-import platform.Foundation.NSLog
 import net.kigawa.keruta.ktcl.mobile.service.MessageHandler
 import net.kigawa.keruta.ktcl.mobile.service.MessageSender
 import net.kigawa.keruta.ktcl.mobile.storage.SecureStorage
 import net.kigawa.keruta.ktcl.mobile.task.TaskRepository
+import net.kigawa.keruta.ktcl.mobile.util.log
 import net.kigawa.keruta.ktcl.mobile.viewmodel.AuthViewModel
 import net.kigawa.keruta.ktcl.mobile.viewmodel.ProviderListViewModel
 import net.kigawa.keruta.ktcl.mobile.viewmodel.QueueCreateViewModel
@@ -88,18 +88,18 @@ open class AppContainer(
      * 接続後に自動て認証メッセージを送信する
      */
     fun connectWebSocket(onConnected: () -> Unit = {}, onError: (Throwable) -> Unit = {}) {
-        NSLog("=== connectWebSocket called ===")
+        log("=== connectWebSocket called ===")
         if (_isWebSocketConnected) {
-            NSLog("=== connectWebSocket: already connected ===")
+            log("=== connectWebSocket: already connected ===")
             onConnected()
             return
         }
 
         CoroutineScope(Dispatchers.Main).launch {
             try {
-                NSLog("=== connectWebSocket: connecting... ===")
+                log("=== connectWebSocket: connecting... ===")
                 val connection = connectionManager.connect()
-                NSLog("=== connectWebSocket: connected, setting connection ===")
+                log("=== connectWebSocket: connected, setting connection ===")
                 messageSender.setConnection(connection)
                 _isWebSocketConnected = true
 
@@ -108,17 +108,17 @@ open class AppContainer(
 
                 // 認証メッセージを送信（トークンが设定されている场合）
                 val authState = authService.authState.value
-                NSLog("=== connectWebSocket: authState = $authState ===")
+                log("=== connectWebSocket: authState = $authState ===")
                 if (authState is AuthState.Authenticated) {
-                    NSLog("=== connectWebSocket: sending authentication ===")
+                    log("=== connectWebSocket: sending authentication ===")
                     authService.sendAuthentication(authState.tokens.userToken, authState.tokens.serverToken)
                     messageSender.sendQueueList()
                 }
 
-                NSLog("=== connectWebSocket: calling onConnected ===")
+                log("=== connectWebSocket: calling onConnected ===")
                 onConnected()
             } catch (e: Exception) {
-                NSLog("=== connectWebSocket: ERROR: ${e.message} ===")
+                log("=== connectWebSocket: ERROR: ${e.message} ===")
                 _isWebSocketConnected = false
                 onError(e)
             }
@@ -126,11 +126,11 @@ open class AppContainer(
     }
 
     fun createAuthViewModel(): AuthViewModel {
-        return AuthViewModel(authService, this)
+        return AuthViewModel(authService)
     }
 
     fun createQueueListViewModel(): QueueListViewModel {
-        return QueueListViewModel(queueRepository, messageSender, authService)
+        return QueueListViewModel(queueRepository)
     }
 
     fun createQueueCreateViewModel(): QueueCreateViewModel {
@@ -158,7 +158,7 @@ open class AppContainer(
             val jsonResponse = Json.parseToJsonElement(response.bodyAsText()).jsonObject
             jsonResponse["token"]?.jsonPrimitive?.content
         } catch (e: Exception) {
-            NSLog("=== getServerToken error: ${e.message} ===")
+            log("=== getServerToken error: ${e.message} ===")
             null
         }
     }
