@@ -1,19 +1,19 @@
 package net.kigawa.keruta.ktcl.k8s.web.login
 
-import net.kigawa.keruta.ktcl.k8s.web.auth.AuthConfig
 import net.kigawa.keruta.ktcl.k8s.web.auth.JwtVerifier
 import net.kigawa.keruta.ktcl.k8s.web.auth.KeycloakConfig
 import net.kigawa.keruta.ktcl.k8s.web.auth.OidcDiscoveryResponse
+import net.kigawa.keruta.ktcl.k8s.web.auth.RemoteConfigProvider
 import net.kigawa.kodel.api.log.LoggerFactory
 import java.net.URI
 
 class IdTokenVerifier(
-    private val authConfig: AuthConfig,
+    private val remoteConfigProvider: RemoteConfigProvider,
 ) {
     private val logger = LoggerFactory.get("IdTokenVerifier")
 
     fun verify(idToken: String, discoveryResponse: OidcDiscoveryResponse, oidcSession: OidcSession): String? {
-        val jwkProvider = authConfig.createJwkProvider(discoveryResponse.jwksUri)
+        val jwkProvider = remoteConfigProvider.createJwkProvider(discoveryResponse.jwksUri)
 
         val keycloakConfig = KeycloakConfig(
             audience = oidcSession.clientId,

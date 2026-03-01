@@ -1,16 +1,21 @@
 package net.kigawa.keruta.ktcl.k8s.web.auth
 
-import com.auth0.jwk.JwkProvider
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.sessions.*
 import net.kigawa.keruta.ktcl.k8s.web.UserSession
+import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
+import net.kigawa.keruta.ktcp.model.auth.key.PrivateKey
+import net.kigawa.kodel.api.err.flatConvertOk
+import net.kigawa.kodel.api.err.unwrap
 import net.kigawa.kodel.api.log.LoggerFactory
 
-class AuthenticationHelper(jwkProvider: JwkProvider, keycloakConfig: KeycloakConfig) {
+class AuthenticationHelper(
+    private val auth0JwtVerifier: Auth0JwtVerifier,
+    private val privateKey: PrivateKey,
+) {
     private val logger = LoggerFactory.get("AuthenticationHelper")
-    private val jwtVerifier = JwtVerifier(jwkProvider, keycloakConfig)
 
     fun getAuthenticatedUser(call: ApplicationCall): UserSession? {
         val session = call.sessions.get<UserSession>()
@@ -19,12 +24,13 @@ class AuthenticationHelper(jwkProvider: JwkProvider, keycloakConfig: KeycloakCon
             return null
         }
 
-        val userId = jwtVerifier.verify(session.token)
-        if (userId == null) {
-            logger.fine("Token verification failed")
-            call.sessions.clear<UserSession>()
-            return null
-        }
+        auth0JwtVerifier.decodeUnverified(session.token)
+            .flatConvertOk {
+                it.withKey(privateKey)
+            }.unwrap {
+                call.sessions.clear<UserSession>()
+                throw IllegalStateException("Token verification failed", it)
+            }
 
         return session
     }

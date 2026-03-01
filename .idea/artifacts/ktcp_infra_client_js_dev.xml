@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ktcp-infra-client-js-dev">
+    <output-path>$PROJECT_DIR$/ktcp/ktcp-infra/ktcp-infra-client/build/libs</output-path>
+    <root id="archive" name="ktcp-infra-client-js-dev.jar">
+      <element id="module-output" name="keruta.ktcp.ktcp-infra.ktcp-infra-client.jsMain" />
+    </root>
+  </artifact>
+</component>

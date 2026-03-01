@@ -10,6 +10,7 @@ import net.kigawa.keruta.ktcl.k8s.config.CorsConfig
 import net.kigawa.keruta.ktcl.k8s.k8s.K8sModule
 import net.kigawa.keruta.ktcl.k8s.route.RouteModule
 import net.kigawa.keruta.ktcl.k8s.serialize.SerializeModule
+import net.kigawa.keruta.ktcp.base.http.HttpClient
 import net.kigawa.kodel.api.log.LoggerFactory
 import net.kigawa.kodel.api.log.getKogger
 
@@ -18,7 +19,8 @@ class WebApplicationModule() {
     val k8sModule = K8sModule()
     val serializeModule = SerializeModule()
     val authModule = AuthModule()
-    val routeModule = RouteModule()
+    private val httpClient = HttpClient()
+    val routeModule = RouteModule(httpClient)
 
     fun configure(application: Application) {
         logger.info("Starting ktcl-k8s Web Module")

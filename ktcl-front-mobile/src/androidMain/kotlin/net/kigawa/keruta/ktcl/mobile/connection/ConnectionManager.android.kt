@@ -1,18 +1,13 @@
 package net.kigawa.keruta.ktcl.mobile.connection
 
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.okhttp.OkHttp
-import io.ktor.client.plugins.websocket.WebSockets
-import io.ktor.client.plugins.websocket.webSocketSession
-import io.ktor.websocket.Frame
-import io.ktor.websocket.readText
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
+import io.ktor.client.*
+import io.ktor.client.engine.okhttp.*
+import io.ktor.client.plugins.websocket.*
+import io.ktor.websocket.*
+import kotlinx.coroutines.*
 import net.kigawa.keruta.ktcl.mobile.config.MobileConfig
 
+@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual class ConnectionManager actual constructor(
     private val config: MobileConfig,
 ) {
@@ -55,7 +50,7 @@ actual class ConnectionManager actual constructor(
         return MobileKtcpConnection(webSocketConnection!!)
     }
 
-    fun disconnect() {
+    actual fun disconnect() {
         scope.cancel()
         webSocketConnection?.let { conn ->
             CoroutineScope(Dispatchers.IO).launch {

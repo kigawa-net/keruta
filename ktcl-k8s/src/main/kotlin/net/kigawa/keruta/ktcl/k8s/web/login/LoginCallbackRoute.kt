@@ -12,16 +12,16 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import net.kigawa.keruta.ktcl.k8s.web.UserSession
-import net.kigawa.keruta.ktcl.k8s.web.auth.AuthConfig
 import net.kigawa.keruta.ktcl.k8s.web.auth.OidcDiscoveryFetcher
+import net.kigawa.keruta.ktcl.k8s.web.auth.RemoteConfigProvider
 import net.kigawa.kodel.api.log.getKogger
 
 class LoginCallbackRoute(
     private val oidcDiscoveryFetcher: OidcDiscoveryFetcher = OidcDiscoveryFetcher()
 ) {
     private val logger = getKogger()
-    private val authConfig = AuthConfig(oidcDiscoveryFetcher)
-    private val idTokenVerifier = IdTokenVerifier(authConfig)
+    private val remoteConfigProvider = RemoteConfigProvider(oidcDiscoveryFetcher)
+    private val idTokenVerifier = IdTokenVerifier(remoteConfigProvider)
 
     fun configure(route: Route) = route.get("/login/callback") {
         val code = call.parameters["code"]

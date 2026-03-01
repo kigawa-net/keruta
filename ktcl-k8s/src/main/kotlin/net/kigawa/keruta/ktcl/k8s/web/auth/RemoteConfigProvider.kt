@@ -9,7 +9,7 @@ import java.net.URL
 import java.util.concurrent.TimeUnit
 
 
-class AuthConfig(
+class RemoteConfigProvider(
     val oidcDiscoveryFetcher: OidcDiscoveryFetcher,
 ) {
     private val logger = LoggerFactory.get("AuthConfig")

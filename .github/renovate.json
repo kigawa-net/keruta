@@ -21,9 +21,6 @@
                 "major"
             ],
             "automerge": true,
-            "requiredStatusChecks": [
-                "CI"
-            ],
             "automergeType": "pr"
         }
     ]

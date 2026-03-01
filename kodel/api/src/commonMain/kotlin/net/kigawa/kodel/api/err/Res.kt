@@ -75,6 +75,10 @@ inline fun <reified T, reified E: Throwable, R> Res<T, E>.whenErrOk(onErr: (E) -
     is Res.Ok<T, E> -> onOk(value)
     is Res.Err<T, E> -> onErr(err)
 }
+inline fun <reified T, reified E: Throwable> Res<T, E>.unwrap(onErr: (E) -> T): T = when (this) {
+    is Res.Ok<T, E> -> value
+    is Res.Err<T, E> -> onErr(err)
+}
 
 fun <T, U, E: Throwable> Res<T, E>.with(res: Res<U, E>): Res<Pair<T, U>, E> {
     val a = when (val r = this) {

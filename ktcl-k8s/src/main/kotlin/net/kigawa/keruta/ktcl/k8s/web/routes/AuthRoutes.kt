@@ -10,15 +10,18 @@ import net.kigawa.keruta.ktcl.k8s.web.UserSession
 import net.kigawa.keruta.ktcl.k8s.web.auth.AuthenticationHelper
 import net.kigawa.keruta.ktcl.k8s.web.auth.JwtVerifier
 import net.kigawa.keruta.ktcl.k8s.web.auth.KeycloakConfig
+import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
 import net.kigawa.kodel.api.log.LoggerFactory
 
 class AuthRoutes(
     jwkProvider: JwkProvider,
-    keycloakConfig: KeycloakConfig
+    keycloakConfig: KeycloakConfig,
+    auth0JwtVerifier: Auth0JwtVerifier,
+    privateKey: net.kigawa.keruta.ktcp.model.auth.key.PrivateKey,
 ) {
     private val logger = LoggerFactory.get("AuthRoutes")
     private val jwtVerifier = JwtVerifier(jwkProvider, keycloakConfig)
-    private val authenticationHelper = AuthenticationHelper(jwkProvider, keycloakConfig)
+    private val authenticationHelper = AuthenticationHelper(auth0JwtVerifier, privateKey)
 
     fun configure(route: Route) {
         route.route("/api/auth") {

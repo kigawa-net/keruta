@@ -7,9 +7,12 @@ import net.kigawa.kodel.api.log.handler.StdHandler
 object Main {
     init {
         LoggerFactory.configure {
-            level = LogLevel.DEBUG
+            level = LogLevel.INFO
 
             handler(::StdHandler) {
+                level = LogLevel.DEBUG
+            }
+            child("net.kigawa.keruta") {
                 level = LogLevel.DEBUG
             }
         }

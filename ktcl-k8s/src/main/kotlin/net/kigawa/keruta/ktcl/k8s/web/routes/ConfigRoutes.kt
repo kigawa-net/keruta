@@ -8,16 +8,24 @@ import net.kigawa.keruta.ktcl.k8s.config.AppConfig
 import net.kigawa.keruta.ktcl.k8s.web.auth.AuthGuard
 import net.kigawa.keruta.ktcl.k8s.web.auth.KeycloakConfig
 import net.kigawa.keruta.ktcl.k8s.web.dto.*
+import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
 import net.kigawa.kodel.api.log.LoggerFactory
 
-class ConfigRoutes(val jwkProvider: JwkProvider, val keycloakConfig: KeycloakConfig, val appConfig: AppConfig) {
+class ConfigRoutes(
+    jwkProvider: JwkProvider,
+    keycloakConfig: KeycloakConfig, val appConfig: AppConfig,
+    auth0JwtVerifier: Auth0JwtVerifier,
+    privateKey: net.kigawa.keruta.ktcp.model.auth.key.PrivateKey,
+) {
     private val logger = LoggerFactory.get("ConfigRoutes")
+    private val authGuard = AuthGuard(auth0JwtVerifier, privateKey)
+    private val authRoute = AuthRoutes(jwkProvider, keycloakConfig, auth0JwtVerifier, privateKey)
 
     fun configureConfigRoutes(
         route: Route,
     ) = route.apply {
         // 認証ルート
-        AuthRoutes(jwkProvider, keycloakConfig).configure(this)
+        authRoute.configure(this)
 
         // .well-known エンドポイント（認証不要）
         get("/.well-known/keruta.json") {
@@ -33,11 +41,9 @@ class ConfigRoutes(val jwkProvider: JwkProvider, val keycloakConfig: KeycloakCon
             )
             call.respond(response)
         }
-
         route("/api/config") {
             get {
-
-                AuthGuard(jwkProvider, keycloakConfig).requireAuth(call) { _ ->
+                authGuard.requireAuth(call) { _ ->
                     val appConfig = appConfig
                     val response = ConfigResponse(
                         kubernetes = KubernetesConfig(
@@ -55,7 +61,7 @@ class ConfigRoutes(val jwkProvider: JwkProvider, val keycloakConfig: KeycloakCon
             }
 
             put("/kubernetes") {
-                AuthGuard(jwkProvider, keycloakConfig).requireAuth(call) { _ ->
+                authGuard.requireAuth(call) { _ ->
                     val request = call.receive<UpdateKubernetesConfigRequest>()
                     logger.info("Updating Kubernetes config: $request")
 
@@ -71,7 +77,7 @@ class ConfigRoutes(val jwkProvider: JwkProvider, val keycloakConfig: KeycloakCon
             }
 
             put("/queue") {
-                AuthGuard(jwkProvider, keycloakConfig).requireAuth(call) { _ ->
+                authGuard.requireAuth(call) { _ ->
                     val request = call.receive<UpdateQueueConfigRequest>()
                     logger.info("Updating Queue config: $request")
 
