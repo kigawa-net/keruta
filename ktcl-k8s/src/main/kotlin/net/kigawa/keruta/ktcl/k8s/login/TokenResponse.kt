@@ -13,4 +13,5 @@ data class TokenResponse(
     @SerialName("id_token") val idToken: String? = null,
     @SerialName("token_type") val tokenType: String,
     @SerialName("expires_in") val expiresIn: Int? = null,
+    @SerialName("refresh_token") val refreshToken: String? = null,
 )

@@ -22,13 +22,15 @@ class WebApplicationModule() {
     val serializeModule = SerializeModule()
     val authModule = AuthModule()
     private val httpClient = HttpClient()
-    val routeModule = RouteModule(httpClient)
+    private lateinit var dbModule: DbModule
+    lateinit var routeModule: RouteModule
 
     fun configure(application: Application) {
         logger.info("Starting ktcl-k8s Web Module")
 
-        val dbModule = DbModule.create(application.environment.config)
+        dbModule = DbModule.create(application.environment.config)
         dbModule.configure(application)
+        routeModule = RouteModule(httpClient, dbModule)
 
         k8sModule.configure(application)
         serializeModule.configure(application)

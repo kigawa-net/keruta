@@ -28,3 +28,16 @@ object QueueConfigTable : Table("queue_config") {
 
     override val primaryKey = PrimaryKey(id)
 }
+
+/**
+ * ユーザートークンテーブル（refresh token永続化用）
+ */
+object UserTokenTable : Table("user_token") {
+    val id = long("id").autoIncrement()
+    val userId = varchar("user_id", 255).uniqueIndex()
+    val refreshToken = text("refresh_token")
+    val createdAt = datetime("created_at")
+    val updatedAt = datetime("updated_at")
+
+    override val primaryKey = PrimaryKey(id)
+}

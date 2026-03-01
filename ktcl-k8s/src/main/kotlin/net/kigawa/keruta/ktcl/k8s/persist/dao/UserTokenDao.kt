@@ -1,0 +1,45 @@
+package net.kigawa.keruta.ktcl.k8s.persist.dao
+
+import net.kigawa.keruta.ktcl.k8s.persist.db.DbManager
+import net.kigawa.keruta.ktcl.k8s.persist.table.UserTokenTable
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
+
+/**
+ * ユーザートークンDao（refresh token管理用）
+ */
+class UserTokenDao(
+    private val dbManager: DbManager,
+) {
+    /**
+     * ユーザーのrefresh tokenを保存または更新する
+     */
+    fun saveOrUpdate(userId: String, refreshToken: String) {
+        transaction(dbManager.db) {
+            val existing = UserTokenTable.select(UserTokenTable.userId eq userId).firstOrNull()
+            if (existing != null) {
+                UserTokenTable.update({ UserTokenTable.userId eq userId }) {
+                    it[UserTokenTable.refreshToken] = refreshToken
+                }
+            } else {
+                UserTokenTable.insert {
+                    it[UserTokenTable.userId] = userId
+                    it[UserTokenTable.refreshToken] = refreshToken
+                }
+            }
+        }
+    }
+
+    /**
+     * ユーザーのrefresh tokenを取得する
+     */
+    fun get(userId: String): String? {
+        return transaction(dbManager.db) {
+            UserTokenTable.select(UserTokenTable.userId eq userId)
+                .firstOrNull()
+                ?.get(UserTokenTable.refreshToken)
+        }
+    }
+}

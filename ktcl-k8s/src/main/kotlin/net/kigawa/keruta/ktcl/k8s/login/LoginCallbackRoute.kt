@@ -14,10 +14,13 @@ import io.ktor.server.sessions.*
 import net.kigawa.keruta.ktcl.k8s.auth.OidcDiscoveryFetcher
 import net.kigawa.keruta.ktcl.k8s.auth.RemoteConfigProvider
 import net.kigawa.keruta.ktcl.k8s.auth.UserSession
+import net.kigawa.keruta.ktcl.k8s.persist.dao.UserTokenDao
 import net.kigawa.kodel.api.log.getKogger
+import java.io.InvalidObjectException
 
 class LoginCallbackRoute(
     private val oidcDiscoveryFetcher: OidcDiscoveryFetcher = OidcDiscoveryFetcher(),
+    private val userTokenDao: UserTokenDao,
 ) {
     private val logger = getKogger()
     private val remoteConfigProvider = RemoteConfigProvider(oidcDiscoveryFetcher)
@@ -90,11 +93,20 @@ class LoginCallbackRoute(
 
             saveUserSession(call, userId, tokenResponse.accessToken)
 
+            // refresh tokenをDBに保存
+            val refreshToken = tokenResponse.refreshToken
+            if (refreshToken != null) {
+                userTokenDao.saveOrUpdate(userId, refreshToken)
+                logger.info("Refresh token saved for user: $userId")
+            } else {
+                logger.warning("No refresh token received for user: $userId")
+                throw InvalidObjectException("Token was null for user: $userId")
+            }
+
             logger.info("Login successful for user: $userId, redirecting to home page")
-            TODO("refresh tokenをDBに保存する")
 
             // フロントエンドにリダイレクト
-//            call.respondRedirect("/")
+            call.respondRedirect("/")
         } catch (e: Exception) {
             logger.severe("Failed to process OIDC callback: ${e.message}")
             call.respond(

@@ -3,14 +3,15 @@ package net.kigawa.keruta.ktcl.k8s.route
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 import net.kigawa.keruta.ktcl.k8s.KerutaEndpoints
-import net.kigawa.keruta.ktcl.k8s.auth.PkceGenerator
-import net.kigawa.keruta.ktcl.k8s.config.AppConfig
 import net.kigawa.keruta.ktcl.k8s.auth.AuthenticationHelper
 import net.kigawa.keruta.ktcl.k8s.auth.OidcDiscoveryFetcher
+import net.kigawa.keruta.ktcl.k8s.auth.PkceGenerator
 import net.kigawa.keruta.ktcl.k8s.auth.RemoteConfigProvider
+import net.kigawa.keruta.ktcl.k8s.config.AppConfig
 import net.kigawa.keruta.ktcl.k8s.login.LoginCallbackRoute
 import net.kigawa.keruta.ktcl.k8s.login.LoginRoute
 import net.kigawa.keruta.ktcl.k8s.login.TokenRoute
+import net.kigawa.keruta.ktcl.k8s.persist.DbModule
 import net.kigawa.keruta.ktcp.base.auth.jwks.JwksProvider
 import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
 import net.kigawa.keruta.ktcp.base.auth.oidc.OidcConfigProvider
@@ -18,11 +19,13 @@ import net.kigawa.keruta.ktcp.base.http.HttpClient
 
 class RouteModule(
     private val httpClient: HttpClient,
+    dbModule: DbModule,
 ) {
     private val oidcDiscoveryFetcher = OidcDiscoveryFetcher()
     private val remoteConfigProvider = RemoteConfigProvider(oidcDiscoveryFetcher)
     private val pkceGenerator = PkceGenerator()
-    private val loginCallbackRoute = LoginCallbackRoute()
+    private val userTokenDao = dbModule.userTokenDao
+    private val loginCallbackRoute = LoginCallbackRoute(oidcDiscoveryFetcher, userTokenDao)
 
     fun configure(application: Application) {
         val appConfig = AppConfig.load(application.environment.config)
