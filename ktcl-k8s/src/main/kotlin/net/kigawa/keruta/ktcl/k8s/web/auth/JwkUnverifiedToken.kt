@@ -5,6 +5,7 @@ import com.auth0.jwt.interfaces.DecodedJWT
 import net.kigawa.keruta.ktcp.model.auth.jwt.UnverifiedToken
 import net.kigawa.keruta.ktcp.model.auth.jwt.UnverifiedTokenWithKey
 import net.kigawa.keruta.ktcp.model.auth.jwt.VerifyErr
+import net.kigawa.keruta.ktcp.model.auth.key.PrivateKey
 import net.kigawa.keruta.ktcp.model.auth.oidc.UnverifiedTokenWithOidc
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.kodel.api.err.Res
@@ -20,6 +21,11 @@ class JwkUnverifiedToken(
 ) : UnverifiedToken {
     override val subject: String = decodedJwt.subject
     override val issuer: Url = Url.parse(decodedJwt.issuer)
+
+    override fun withKey(key: PrivateKey): Res<UnverifiedTokenWithKey, KtcpErr> {
+        // JWKベースのトークンでは直接キーを使用できない
+        return VerifyErr("withKey_not_supported", "JWK-based tokens don't support direct key", null).err()
+    }
 
     override suspend fun withOidcConfig(): Res<UnverifiedTokenWithOidc, KtcpErr> {
         return try {

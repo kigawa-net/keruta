@@ -9,13 +9,6 @@
     "prHourlyLimit": 0,
     "packageRules": [
         {
-            "automerge": true,
-            "requiredStatusChecks": [
-                "CI"
-            ],
-            "automergeType": "pr"
-        },
-        {
             "matchUpdateTypes": [
                 "patch",
                 "major"

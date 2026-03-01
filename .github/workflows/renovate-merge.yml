@@ -2,6 +2,8 @@ name: renovate-merge.yml
 on:
   pull_request:
     types: [synchronize, opened, reopened, edited]
+    branches:
+      - "renovate/**"
 jobs:
   test:
     uses: ./.github/workflows/renovate.yaml

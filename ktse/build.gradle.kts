@@ -54,6 +54,7 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers:1.20.4")
     testImplementation("org.testcontainers:junit-jupiter:1.20.4")
     testImplementation("org.testcontainers:mysql:1.20.4")
+    testImplementation("org.testcontainers:kafka:1.20.4")
     // Ktor client for WebSocket testing
     testImplementation("io.ktor:ktor-client-cio:3.4.0")
     testImplementation("io.ktor:ktor-client-websockets:3.4.0")
