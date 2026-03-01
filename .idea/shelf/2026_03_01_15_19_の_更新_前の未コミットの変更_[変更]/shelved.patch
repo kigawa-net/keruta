@@ -1,0 +1,733 @@
+Index: .idea/artifacts/coroutine_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"coroutine-js-dev\">\n    <output-path>$PROJECT_DIR$/kodel/coroutine/build/libs</output-path>\n    <root id=\"archive\" name=\"coroutine-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.kodel.coroutine.jsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/coroutine_js_dev.xml b/.idea/artifacts/coroutine_js_dev.xml
+--- a/.idea/artifacts/coroutine_js_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/coroutine_js_dev.xml	(date 1772345928991)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="coroutine-js-dev">
+     <output-path>$PROJECT_DIR$/kodel/coroutine/build/libs</output-path>
+-    <root id="archive" name="coroutine-js-dev.jar">
+-      <element id="module-output" name="keruta.kodel.coroutine.jsMain" />
+-    </root>
++    <root id="archive" name="coroutine-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_usecase_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-usecase-jvm-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-usecase/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-usecase-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.ktcp-usecase.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_usecase_jvm_dev.xml b/.idea/artifacts/ktcp_usecase_jvm_dev.xml
+--- a/.idea/artifacts/ktcp_usecase_jvm_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/ktcp_usecase_jvm_dev.xml	(date 1772345929282)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-usecase-jvm-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-usecase/build/libs</output-path>
+-    <root id="archive" name="ktcp-usecase-jvm-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.ktcp-usecase.jvmMain" />
+-    </root>
++    <root id="archive" name="ktcp-usecase-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_usecase_server_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-usecase-server-jvm-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-usecase/ktcp-usecase-server/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-usecase-server-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.ktcp-usecase.ktcp-usecase-server.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_usecase_server_jvm_dev.xml b/.idea/artifacts/ktcp_usecase_server_jvm_dev.xml
+--- a/.idea/artifacts/ktcp_usecase_server_jvm_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/ktcp_usecase_server_jvm_dev.xml	(date 1772345929298)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-usecase-server-jvm-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-usecase/ktcp-usecase-server/build/libs</output-path>
+-    <root id="archive" name="ktcp-usecase-server-jvm-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.ktcp-usecase.ktcp-usecase-server.jvmMain" />
+-    </root>
++    <root id="archive" name="ktcp-usecase-server-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_infra_client_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-infra-client-jvm-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-infra/ktcp-infra-client/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-infra-client-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.ktcp-infra.ktcp-infra-client.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_infra_client_jvm_dev.xml b/.idea/artifacts/ktcp_infra_client_jvm_dev.xml
+--- a/.idea/artifacts/ktcp_infra_client_jvm_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/ktcp_infra_client_jvm_dev.xml	(date 1772345929201)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-infra-client-jvm-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-infra/ktcp-infra-client/build/libs</output-path>
+-    <root id="archive" name="ktcp-infra-client-jvm-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.ktcp-infra.ktcp-infra-client.jvmMain" />
+-    </root>
++    <root id="archive" name="ktcp-infra-client-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_domain_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-domain-jvm-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-domain/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-domain-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.ktcp-domain.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_domain_jvm_dev.xml b/.idea/artifacts/ktcp_domain_jvm_dev.xml
+--- a/.idea/artifacts/ktcp_domain_jvm_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/ktcp_domain_jvm_dev.xml	(date 1772345929136)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-domain-jvm-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-domain/build/libs</output-path>
+-    <root id="archive" name="ktcp-domain-jvm-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.ktcp-domain.jvmMain" />
+-    </root>
++    <root id="archive" name="ktcp-domain-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_usecase_client_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-usecase-client-jvm-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-usecase/ktcp-usecase-client/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-usecase-client-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.ktcp-usecase.ktcp-usecase-client.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_usecase_client_jvm_dev.xml b/.idea/artifacts/ktcp_usecase_client_jvm_dev.xml
+--- a/.idea/artifacts/ktcp_usecase_client_jvm_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/ktcp_usecase_client_jvm_dev.xml	(date 1772345929249)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-usecase-client-jvm-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-usecase/ktcp-usecase-client/build/libs</output-path>
+-    <root id="archive" name="ktcp-usecase-client-jvm-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.ktcp-usecase.ktcp-usecase-client.jvmMain" />
+-    </root>
++    <root id="archive" name="ktcp-usecase-client-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/api_wasm_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"api-wasm-js-dev\">\n    <output-path>$PROJECT_DIR$/kodel/api/build/libs</output-path>\n    <root id=\"archive\" name=\"api-wasm-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.kodel.api.wasmJsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/api_wasm_js_dev.xml b/.idea/artifacts/api_wasm_js_dev.xml
+--- a/.idea/artifacts/api_wasm_js_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/api_wasm_js_dev.xml	(date 1772345928910)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="api-wasm-js-dev">
+     <output-path>$PROJECT_DIR$/kodel/api/build/libs</output-path>
+-    <root id="archive" name="api-wasm-js-dev.jar">
+-      <element id="module-output" name="keruta.kodel.api.wasmJsMain" />
+-    </root>
++    <root id="archive" name="api-wasm-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_usecase_server_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-usecase-server-js-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-usecase/ktcp-usecase-server/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-usecase-server-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.ktcp-usecase.ktcp-usecase-server.jsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_usecase_server_js_dev.xml b/.idea/artifacts/ktcp_usecase_server_js_dev.xml
+--- a/.idea/artifacts/ktcp_usecase_server_js_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/ktcp_usecase_server_js_dev.xml	(date 1772345929283)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-usecase-server-js-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-usecase/ktcp-usecase-server/build/libs</output-path>
+-    <root id="archive" name="ktcp-usecase-server-js-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.ktcp-usecase.ktcp-usecase-server.jsMain" />
+-    </root>
++    <root id="archive" name="ktcp-usecase-server-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcl_front_mobile_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcl-front-mobile-js-dev\">\n    <output-path>$PROJECT_DIR$/ktcl-front-mobile/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcl-front-mobile-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcl-front-mobile.jsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcl_front_mobile_js_dev.xml b/.idea/artifacts/ktcl_front_mobile_js_dev.xml
+--- a/.idea/artifacts/ktcl_front_mobile_js_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/ktcl_front_mobile_js_dev.xml	(date 1772345929071)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcl-front-mobile-js-dev">
+     <output-path>$PROJECT_DIR$/ktcl-front-mobile/build/libs</output-path>
+-    <root id="archive" name="ktcl-front-mobile-js-dev.jar">
+-      <element id="module-output" name="keruta.ktcl-front-mobile.jsMain" />
+-    </root>
++    <root id="archive" name="ktcl-front-mobile-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_domain_client_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-domain-client-js-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-domain/ktcp-domain-client/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-domain-client-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.ktcp-domain.ktcp-domain-client.jsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_domain_client_js_dev.xml b/.idea/artifacts/ktcp_domain_client_js_dev.xml
+--- a/.idea/artifacts/ktcp_domain_client_js_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/ktcp_domain_client_js_dev.xml	(date 1772345929104)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-domain-client-js-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-domain/ktcp-domain-client/build/libs</output-path>
+-    <root id="archive" name="ktcp-domain-client-js-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.ktcp-domain.ktcp-domain-client.jsMain" />
+-    </root>
++    <root id="archive" name="ktcp-domain-client-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/client_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"client-js-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/client/build/libs</output-path>\n    <root id=\"archive\" name=\"client-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.client.jsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/client_js_dev.xml b/.idea/artifacts/client_js_dev.xml
+--- a/.idea/artifacts/client_js_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/client_js_dev.xml	(date 1772345928926)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="client-js-dev">
+     <output-path>$PROJECT_DIR$/ktcp/client/build/libs</output-path>
+-    <root id="archive" name="client-js-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.client.jsMain" />
+-    </root>
++    <root id="archive" name="client-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/core_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"core-jvm-dev\">\n    <output-path>$PROJECT_DIR$/kodel/core/build/libs</output-path>\n    <root id=\"archive\" name=\"core-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.kodel.core.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/core_jvm_dev.xml b/.idea/artifacts/core_jvm_dev.xml
+--- a/.idea/artifacts/core_jvm_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/core_jvm_dev.xml	(date 1772345928960)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="core-jvm-dev">
+     <output-path>$PROJECT_DIR$/kodel/core/build/libs</output-path>
+-    <root id="archive" name="core-jvm-dev.jar">
+-      <element id="module-output" name="keruta.kodel.core.jvmMain" />
+-    </root>
++    <root id="archive" name="core-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/coroutine_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"coroutine-jvm-dev\">\n    <output-path>$PROJECT_DIR$/kodel/coroutine/build/libs</output-path>\n    <root id=\"archive\" name=\"coroutine-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.kodel.coroutine.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/coroutine_jvm_dev.xml b/.idea/artifacts/coroutine_jvm_dev.xml
+--- a/.idea/artifacts/coroutine_jvm_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/coroutine_jvm_dev.xml	(date 1772345929007)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="coroutine-jvm-dev">
+     <output-path>$PROJECT_DIR$/kodel/coroutine/build/libs</output-path>
+-    <root id="archive" name="coroutine-jvm-dev.jar">
+-      <element id="module-output" name="keruta.kodel.coroutine.jvmMain" />
+-    </root>
++    <root id="archive" name="coroutine-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/server_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"server-js-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/server/build/libs</output-path>\n    <root id=\"archive\" name=\"server-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.server.jsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/server_js_dev.xml b/.idea/artifacts/server_js_dev.xml
+--- a/.idea/artifacts/server_js_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/server_js_dev.xml	(date 1772345929314)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="server-js-dev">
+     <output-path>$PROJECT_DIR$/ktcp/server/build/libs</output-path>
+-    <root id="archive" name="server-js-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.server.jsMain" />
+-    </root>
++    <root id="archive" name="server-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/core_wasm_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"core-wasm-js-dev\">\n    <output-path>$PROJECT_DIR$/kodel/core/build/libs</output-path>\n    <root id=\"archive\" name=\"core-wasm-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.kodel.core.wasmJsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/core_wasm_js_dev.xml b/.idea/artifacts/core_wasm_js_dev.xml
+--- a/.idea/artifacts/core_wasm_js_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/core_wasm_js_dev.xml	(date 1772345928974)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="core-wasm-js-dev">
+     <output-path>$PROJECT_DIR$/kodel/core/build/libs</output-path>
+-    <root id="archive" name="core-wasm-js-dev.jar">
+-      <element id="module-output" name="keruta.kodel.core.wasmJsMain" />
+-    </root>
++    <root id="archive" name="core-wasm-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/coroutine_wasm_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"coroutine-wasm-js-dev\">\n    <output-path>$PROJECT_DIR$/kodel/coroutine/build/libs</output-path>\n    <root id=\"archive\" name=\"coroutine-wasm-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.kodel.coroutine.wasmJsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/coroutine_wasm_js_dev.xml b/.idea/artifacts/coroutine_wasm_js_dev.xml
+--- a/.idea/artifacts/coroutine_wasm_js_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/coroutine_wasm_js_dev.xml	(date 1772345929023)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="coroutine-wasm-js-dev">
+     <output-path>$PROJECT_DIR$/kodel/coroutine/build/libs</output-path>
+-    <root id="archive" name="coroutine-wasm-js-dev.jar">
+-      <element id="module-output" name="keruta.kodel.coroutine.wasmJsMain" />
+-    </root>
++    <root id="archive" name="coroutine-wasm-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcl_front_mobile_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcl-front-mobile-jvm-dev\">\n    <output-path>$PROJECT_DIR$/ktcl-front-mobile/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcl-front-mobile-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcl-front-mobile.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcl_front_mobile_jvm_dev.xml b/.idea/artifacts/ktcl_front_mobile_jvm_dev.xml
+--- a/.idea/artifacts/ktcl_front_mobile_jvm_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/ktcl_front_mobile_jvm_dev.xml	(date 1772345929088)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcl-front-mobile-jvm-dev">
+     <output-path>$PROJECT_DIR$/ktcl-front-mobile/build/libs</output-path>
+-    <root id="archive" name="ktcl-front-mobile-jvm-dev.jar">
+-      <element id="module-output" name="keruta.ktcl-front-mobile.jvmMain" />
+-    </root>
++    <root id="archive" name="ktcl-front-mobile-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/keruta_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"keruta-jvm-dev\">\n    <output-path>$PROJECT_DIR$/build/libs</output-path>\n    <root id=\"archive\" name=\"keruta-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/keruta_jvm_dev.xml b/.idea/artifacts/keruta_jvm_dev.xml
+--- a/.idea/artifacts/keruta_jvm_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/keruta_jvm_dev.xml	(date 1772345929041)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="keruta-jvm-dev">
+     <output-path>$PROJECT_DIR$/build/libs</output-path>
+-    <root id="archive" name="keruta-jvm-dev.jar">
+-      <element id="module-output" name="keruta.jvmMain" />
+-    </root>
++    <root id="archive" name="keruta-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_usecase_client_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-usecase-client-js-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-usecase/ktcp-usecase-client/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-usecase-client-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.ktcp-usecase.ktcp-usecase-client.jsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_usecase_client_js_dev.xml b/.idea/artifacts/ktcp_usecase_client_js_dev.xml
+--- a/.idea/artifacts/ktcp_usecase_client_js_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/ktcp_usecase_client_js_dev.xml	(date 1772345929233)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-usecase-client-js-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-usecase/ktcp-usecase-client/build/libs</output-path>
+-    <root id="archive" name="ktcp-usecase-client-js-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.ktcp-usecase.ktcp-usecase-client.jsMain" />
+-    </root>
++    <root id="archive" name="ktcp-usecase-client-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_domain_client_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-domain-client-jvm-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-domain/ktcp-domain-client/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-domain-client-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.ktcp-domain.ktcp-domain-client.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_domain_client_jvm_dev.xml b/.idea/artifacts/ktcp_domain_client_jvm_dev.xml
+--- a/.idea/artifacts/ktcp_domain_client_jvm_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/ktcp_domain_client_jvm_dev.xml	(date 1772345929120)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-domain-client-jvm-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-domain/ktcp-domain-client/build/libs</output-path>
+-    <root id="archive" name="ktcp-domain-client-jvm-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.ktcp-domain.ktcp-domain-client.jvmMain" />
+-    </root>
++    <root id="archive" name="ktcp-domain-client-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/client_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"client-jvm-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/client/build/libs</output-path>\n    <root id=\"archive\" name=\"client-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.client.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/client_jvm_dev.xml b/.idea/artifacts/client_jvm_dev.xml
+--- a/.idea/artifacts/client_jvm_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/client_jvm_dev.xml	(date 1772345928942)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="client-jvm-dev">
+     <output-path>$PROJECT_DIR$/ktcp/client/build/libs</output-path>
+-    <root id="archive" name="client-jvm-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.client.jvmMain" />
+-    </root>
++    <root id="archive" name="client-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/keruta_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"keruta-js-dev\">\n    <output-path>$PROJECT_DIR$/build/libs</output-path>\n    <root id=\"archive\" name=\"keruta-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.jsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/keruta_js_dev.xml b/.idea/artifacts/keruta_js_dev.xml
+--- a/.idea/artifacts/keruta_js_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/keruta_js_dev.xml	(date 1772345929040)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="keruta-js-dev">
+     <output-path>$PROJECT_DIR$/build/libs</output-path>
+-    <root id="archive" name="keruta-js-dev.jar">
+-      <element id="module-output" name="keruta.jsMain" />
+-    </root>
++    <root id="archive" name="keruta-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_domain_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-domain-js-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-domain/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-domain-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.ktcp-domain.jsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_domain_js_dev.xml b/.idea/artifacts/ktcp_domain_js_dev.xml
+--- a/.idea/artifacts/ktcp_domain_js_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/ktcp_domain_js_dev.xml	(date 1772345929122)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-domain-js-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-domain/build/libs</output-path>
+-    <root id="archive" name="ktcp-domain-js-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.ktcp-domain.jsMain" />
+-    </root>
++    <root id="archive" name="ktcp-domain-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_infra_client_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-infra-client-js-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-infra/ktcp-infra-client/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-infra-client-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.ktcp-infra.ktcp-infra-client.jsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_infra_client_js_dev.xml b/.idea/artifacts/ktcp_infra_client_js_dev.xml
+--- a/.idea/artifacts/ktcp_infra_client_js_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/ktcp_infra_client_js_dev.xml	(date 1772345929184)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-infra-client-js-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-infra/ktcp-infra-client/build/libs</output-path>
+-    <root id="archive" name="ktcp-infra-client-js-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.ktcp-infra.ktcp-infra-client.jsMain" />
+-    </root>
++    <root id="archive" name="ktcp-infra-client-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"ProjectModuleManager\">\n    <modules>\n      <module fileurl=\"file://$PROJECT_DIR$/.idea/modules/keruta.iml\" filepath=\"$PROJECT_DIR$/.idea/modules/keruta.iml\" />\n      <module fileurl=\"file://$PROJECT_DIR$/.idea/modules/kodel/coroutine/keruta.kodel.coroutine.jvmMain.iml\" filepath=\"$PROJECT_DIR$/.idea/modules/kodel/coroutine/keruta.kodel.coroutine.jvmMain.iml\" />\n      <module fileurl=\"file://$PROJECT_DIR$/ktcl-front/ktcl-front.iml\" filepath=\"$PROJECT_DIR$/ktcl-front/ktcl-front.iml\" />\n    </modules>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+--- a/.idea/modules.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/modules.xml	(date 1772345929355)
+@@ -2,8 +2,6 @@
+ <project version="4">
+   <component name="ProjectModuleManager">
+     <modules>
+-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/keruta.iml" filepath="$PROJECT_DIR$/.idea/modules/keruta.iml" />
+-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kodel/coroutine/keruta.kodel.coroutine.jvmMain.iml" filepath="$PROJECT_DIR$/.idea/modules/kodel/coroutine/keruta.kodel.coroutine.jvmMain.iml" />
+       <module fileurl="file://$PROJECT_DIR$/ktcl-front/ktcl-front.iml" filepath="$PROJECT_DIR$/ktcl-front/ktcl-front.iml" />
+     </modules>
+   </component>
+Index: .idea/artifacts/core_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"core-js-dev\">\n    <output-path>$PROJECT_DIR$/kodel/core/build/libs</output-path>\n    <root id=\"archive\" name=\"core-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.kodel.core.jsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/core_js_dev.xml b/.idea/artifacts/core_js_dev.xml
+--- a/.idea/artifacts/core_js_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/core_js_dev.xml	(date 1772345928959)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="core-js-dev">
+     <output-path>$PROJECT_DIR$/kodel/core/build/libs</output-path>
+-    <root id="archive" name="core-js-dev.jar">
+-      <element id="module-output" name="keruta.kodel.core.jsMain" />
+-    </root>
++    <root id="archive" name="core-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/api_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"api-jvm-dev\">\n    <output-path>$PROJECT_DIR$/kodel/api/build/libs</output-path>\n    <root id=\"archive\" name=\"api-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.kodel.api.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/api_jvm_dev.xml b/.idea/artifacts/api_jvm_dev.xml
+--- a/.idea/artifacts/api_jvm_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/api_jvm_dev.xml	(date 1772345928894)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="api-jvm-dev">
+     <output-path>$PROJECT_DIR$/kodel/api/build/libs</output-path>
+-    <root id="archive" name="api-jvm-dev.jar">
+-      <element id="module-output" name="keruta.kodel.api.jvmMain" />
+-    </root>
++    <root id="archive" name="api-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_domain_server_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-domain-server-jvm-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-domain/ktcp-domain-server/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-domain-server-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.ktcp-domain.ktcp-domain-server.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_domain_server_jvm_dev.xml b/.idea/artifacts/ktcp_domain_server_jvm_dev.xml
+--- a/.idea/artifacts/ktcp_domain_server_jvm_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/ktcp_domain_server_jvm_dev.xml	(date 1772345929169)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-domain-server-jvm-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-domain/ktcp-domain-server/build/libs</output-path>
+-    <root id="archive" name="ktcp-domain-server-jvm-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.ktcp-domain.ktcp-domain-server.jvmMain" />
+-    </root>
++    <root id="archive" name="ktcp-domain-server-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_domain_server_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-domain-server-js-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-domain/ktcp-domain-server/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-domain-server-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.ktcp-domain.ktcp-domain-server.jsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_domain_server_js_dev.xml b/.idea/artifacts/ktcp_domain_server_js_dev.xml
+--- a/.idea/artifacts/ktcp_domain_server_js_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/ktcp_domain_server_js_dev.xml	(date 1772345929153)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-domain-server-js-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-domain/ktcp-domain-server/build/libs</output-path>
+-    <root id="archive" name="ktcp-domain-server-js-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.ktcp-domain.ktcp-domain-server.jsMain" />
+-    </root>
++    <root id="archive" name="ktcp-domain-server-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcl_front_mobile_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcl-front-mobile-dev\">\n    <output-path>$PROJECT_DIR$/ktcl-front-mobile/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcl-front-mobile-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcl-front-mobile.androidMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcl_front_mobile_dev.xml b/.idea/artifacts/ktcl_front_mobile_dev.xml
+--- a/.idea/artifacts/ktcl_front_mobile_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/ktcl_front_mobile_dev.xml	(date 1772345929055)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcl-front-mobile-dev">
+     <output-path>$PROJECT_DIR$/ktcl-front-mobile/build/libs</output-path>
+-    <root id="archive" name="ktcl-front-mobile-dev.jar">
+-      <element id="module-output" name="keruta.ktcl-front-mobile.androidMain" />
+-    </root>
++    <root id="archive" name="ktcl-front-mobile-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/api_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"api-js-dev\">\n    <output-path>$PROJECT_DIR$/kodel/api/build/libs</output-path>\n    <root id=\"archive\" name=\"api-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.kodel.api.jsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/api_js_dev.xml b/.idea/artifacts/api_js_dev.xml
+--- a/.idea/artifacts/api_js_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/api_js_dev.xml	(date 1772345928880)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="api-js-dev">
+     <output-path>$PROJECT_DIR$/kodel/api/build/libs</output-path>
+-    <root id="archive" name="api-js-dev.jar">
+-      <element id="module-output" name="keruta.kodel.api.jsMain" />
+-    </root>
++    <root id="archive" name="api-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/server_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"server-jvm-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/server/build/libs</output-path>\n    <root id=\"archive\" name=\"server-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.server.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/server_jvm_dev.xml b/.idea/artifacts/server_jvm_dev.xml
+--- a/.idea/artifacts/server_jvm_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/server_jvm_dev.xml	(date 1772345929330)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="server-jvm-dev">
+     <output-path>$PROJECT_DIR$/ktcp/server/build/libs</output-path>
+-    <root id="archive" name="server-jvm-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.server.jvmMain" />
+-    </root>
++    <root id="archive" name="server-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_usecase_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-usecase-js-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-usecase/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-usecase-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.ktcp-usecase.jsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_usecase_js_dev.xml b/.idea/artifacts/ktcp_usecase_js_dev.xml
+--- a/.idea/artifacts/ktcp_usecase_js_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/ktcp_usecase_js_dev.xml	(date 1772345929266)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-usecase-js-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-usecase/build/libs</output-path>
+-    <root id="archive" name="ktcp-usecase-js-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.ktcp-usecase.jsMain" />
+-    </root>
++    <root id="archive" name="ktcp-usecase-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_infra_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-infra-js-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-infra/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-infra-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.ktcp-infra.jsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_infra_js_dev.xml b/.idea/artifacts/ktcp_infra_js_dev.xml
+--- a/.idea/artifacts/ktcp_infra_js_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/ktcp_infra_js_dev.xml	(date 1772345929202)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-infra-js-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-infra/build/libs</output-path>
+-    <root id="archive" name="ktcp-infra-js-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.ktcp-infra.jsMain" />
+-    </root>
++    <root id="archive" name="ktcp-infra-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcp_infra_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcp-infra-jvm-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/ktcp-infra/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcp-infra-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.ktcp-infra.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcp_infra_jvm_dev.xml b/.idea/artifacts/ktcp_infra_jvm_dev.xml
+--- a/.idea/artifacts/ktcp_infra_jvm_dev.xml	(revision 48594ba641c5a41da203d44ef6f0af4fe9cd4e9c)
++++ b/.idea/artifacts/ktcp_infra_jvm_dev.xml	(date 1772345929217)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcp-infra-jvm-dev">
+     <output-path>$PROJECT_DIR$/ktcp/ktcp-infra/build/libs</output-path>
+-    <root id="archive" name="ktcp-infra-jvm-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.ktcp-infra.jvmMain" />
+-    </root>
++    <root id="archive" name="ktcp-infra-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
