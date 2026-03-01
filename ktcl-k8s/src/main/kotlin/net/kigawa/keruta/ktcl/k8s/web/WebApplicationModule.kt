@@ -7,6 +7,7 @@ import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 import net.kigawa.keruta.ktcl.k8s.auth.AuthModule
 import net.kigawa.keruta.ktcl.k8s.config.CorsConfig
+import net.kigawa.keruta.ktcl.k8s.err.ErrorResponse
 import net.kigawa.keruta.ktcl.k8s.k8s.K8sModule
 import net.kigawa.keruta.ktcl.k8s.route.RouteModule
 import net.kigawa.keruta.ktcl.k8s.serialize.SerializeModule

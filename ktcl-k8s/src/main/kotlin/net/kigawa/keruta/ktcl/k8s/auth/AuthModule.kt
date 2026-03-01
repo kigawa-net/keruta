@@ -2,7 +2,8 @@ package net.kigawa.keruta.ktcl.k8s.auth
 
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
-import net.kigawa.keruta.ktcl.k8s.web.UserSession
+import net.kigawa.keruta.ktcl.k8s.login.OidcSession
+import net.kigawa.keruta.ktcl.k8s.auth.UserSession
 
 class AuthModule {
 
@@ -18,7 +19,7 @@ class AuthModule {
                 cookie.extensions["SameSite"] = sameSite
                 if (secure) cookie.secure = true
             }
-            cookie<net.kigawa.keruta.ktcl.k8s.web.login.OidcSession>("oidc_session") {
+            cookie<OidcSession>("oidc_session") {
                 cookie.path = "/"
                 cookie.maxAgeInSeconds = 600
                 cookie.extensions["SameSite"] = sameSite
