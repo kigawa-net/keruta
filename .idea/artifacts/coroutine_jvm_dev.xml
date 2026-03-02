@@ -1,8 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="coroutine-jvm-dev">
     <output-path>$PROJECT_DIR$/kodel/coroutine/build/libs</output-path>
-    <root id="archive" name="coroutine-jvm-dev.jar">
-      <element id="module-output" name="keruta.kodel.coroutine.jvmMain" />
-    </root>
+    <root id="archive" name="coroutine-jvm-dev.jar" />
   </artifact>
 </component>

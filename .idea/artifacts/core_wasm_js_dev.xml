@@ -1,8 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="core-wasm-js-dev">
     <output-path>$PROJECT_DIR$/kodel/core/build/libs</output-path>
-    <root id="archive" name="core-wasm-js-dev.jar">
-      <element id="module-output" name="keruta.kodel.core.wasmJsMain" />
-    </root>
+    <root id="archive" name="core-wasm-js-dev.jar" />
   </artifact>
 </component>

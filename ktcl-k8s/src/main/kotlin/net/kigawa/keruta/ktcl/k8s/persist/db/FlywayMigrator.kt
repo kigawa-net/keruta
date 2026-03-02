@@ -22,6 +22,7 @@ class FlywayMigrator {
             .locations("classpath:db/migration")
             .createSchemas(true)
             .cleanDisabled(false)
+            .validateMigrationNaming(true)
             .load()
     }
 
