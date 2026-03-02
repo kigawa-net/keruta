@@ -2,7 +2,7 @@
 <project version="4">
   <component name="deploymentTargetSelector">
     <selectionStates>
-      <SelectionState runConfigName="keruta.ktcl-front-mobile.app">
+      <SelectionState runConfigName="ktcl-front-mobile.app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
