@@ -46,8 +46,8 @@ dependencies {
     implementation("com.auth0:jwks-rsa:0.22.1")
 
     // Flyway and Database
-    implementation("org.flywaydb:flyway-core:12.0.2")
-    implementation("org.flywaydb:flyway-mysql:12.0.2")
+    implementation("org.flywaydb:flyway-core:9.22.3")
+    implementation("org.flywaydb:flyway-mysql:9.22.3")
     implementation("org.mariadb.jdbc:mariadb-java-client:3.5.5")
 
     // Exposed ORM

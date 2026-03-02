@@ -30,7 +30,11 @@ class LoginRoute(
 
         val issuer = call.queryParameters["issuer"]?.let { URI(it) } ?: idpConfig.issuer
         val clientId = call.queryParameters["clientId"] ?: idpConfig.clientId
-        val registerToken = call.queryParameters["token"] ?: throw IllegalArgumentException("Missing token")
+        val registerToken = call.queryParameters["token"]
+        if (registerToken == null) {
+            call.respondText("Token required for login", ContentType.Text.Plain, HttpStatusCode.BadRequest)
+            return@get
+        }
 
         logger.info("Starting OIDC login flow for issuer: $issuer, clientId: $clientId")
 
