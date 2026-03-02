@@ -21,6 +21,7 @@ class FlywayMigrator {
         return Flyway.configure(classLoader)
             .dataSource(jdbcUrl, username, password)
             .locations("classpath:db/migration")
+            .callbacks(*emptyArray())
             .skipDefaultCallbacks(true)
             .createSchemas(true)
             .cleanDisabled(false)
