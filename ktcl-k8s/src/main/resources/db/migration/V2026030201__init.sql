@@ -1,6 +1,4 @@
 -- Flyway migration for ktcl-k8s settings
--- V001__init.sql
-
 CREATE TABLE IF NOT EXISTS k8s_config (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     config_key VARCHAR(255) NOT NULL UNIQUE,
