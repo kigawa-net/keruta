@@ -19,7 +19,7 @@ class FlywayMigrator {
 
         return Flyway.configure()
             .dataSource(jdbcUrl, username, password)
-            .locations("classpath:db/migration")
+            .locations("db/migration")
             .sqlMigrationPrefix("V")
             .sqlMigrationSeparator("__")
             .sqlMigrationSuffixes(".sql")
