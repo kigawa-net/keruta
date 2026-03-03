@@ -43,7 +43,7 @@ dependencies {
     // コルーチンを使う場合
     implementation("org.jetbrains.exposed:exposed-kotlin-datetime:0.60.0")
 // Source: https://mvnrepository.com/artifact/org.jetbrains.exposed/exposed-json
-    implementation("org.jetbrains.exposed:exposed-json:0.60.0")
+    implementation("org.jetbrains.exposed:exposed-json:0.61.0")
 
     // Testing
     testImplementation("io.ktor:ktor-server-test-host")
