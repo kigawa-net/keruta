@@ -56,8 +56,8 @@ dependencies {
     testImplementation("org.testcontainers:mysql:1.20.4")
     testImplementation("org.testcontainers:kafka:1.20.4")
     // Ktor client for WebSocket testing
-    testImplementation("io.ktor:ktor-client-cio:3.4.0")
-    testImplementation("io.ktor:ktor-client-websockets:3.4.0")
+    testImplementation("io.ktor:ktor-client-cio:3.4.1")
+    testImplementation("io.ktor:ktor-client-websockets:3.4.1")
     // MySQL JDBC driver for Flyway tests
     testRuntimeOnly("com.mysql:mysql-connector-j:9.6.0")
 }
