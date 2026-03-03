@@ -48,7 +48,7 @@ dependencies {
     // Flyway and Database
     implementation("org.flywaydb:flyway-core:10.17.1")
     implementation("org.flywaydb:flyway-mysql:10.17.1")
-    implementation("org.mariadb.jdbc:mariadb-java-client:3.5.5")
+    implementation("org.mariadb.jdbc:mariadb-java-client:3.5.7")
 
     // Exposed ORM
     implementation("org.jetbrains.exposed:exposed-core:0.60.0")
