@@ -43,7 +43,7 @@ dependencies {
 
     // JWT検証
     implementation("com.auth0:java-jwt:4.4.0")
-    implementation("com.auth0:jwks-rsa:0.22.1")
+    implementation("com.auth0:jwks-rsa:0.23.0")
 
     // Flyway and Database
     implementation("org.flywaydb:flyway-core:10.17.1")
