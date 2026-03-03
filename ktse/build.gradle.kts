@@ -35,7 +35,7 @@ dependencies {
     implementation("com.mysql:mysql-connector-j:9.6.0")
 // Source: https://mvnrepository.com/artifact/org.jetbrains.exposed/exposed-core
     implementation("org.jetbrains.exposed:exposed-core:0.60.0")
-    implementation("org.jetbrains.exposed:exposed-dao:0.60.0")
+    implementation("org.jetbrains.exposed:exposed-dao:1.1.1")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.60.0")
 
     // Connection Pool
