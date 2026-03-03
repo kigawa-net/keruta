@@ -42,7 +42,7 @@ dependencies {
     implementation("io.kubernetes:client-java-api:25.0.0")
 
     // JWT検証
-    implementation("com.auth0:java-jwt:4.4.0")
+    implementation("com.auth0:java-jwt:4.5.1")
     implementation("com.auth0:jwks-rsa:0.22.1")
 
     // Flyway and Database
