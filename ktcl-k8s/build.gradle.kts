@@ -54,7 +54,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-core:0.60.0")
     implementation("org.jetbrains.exposed:exposed-dao:0.60.0")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.60.0")
-    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:0.60.0")
+    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:1.1.1")
 
     // Connection Pool
     implementation("com.zaxxer:HikariCP:7.0.2")

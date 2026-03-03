@@ -41,7 +41,7 @@ dependencies {
     // Connection Pool
     implementation("com.zaxxer:HikariCP:7.0.2")
     // コルーチンを使う場合
-    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:0.60.0")
+    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:1.1.1")
 // Source: https://mvnrepository.com/artifact/org.jetbrains.exposed/exposed-json
     implementation("org.jetbrains.exposed:exposed-json:0.60.0")
 
