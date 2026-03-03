@@ -17,7 +17,7 @@ dependencies {
     implementation("io.ktor:ktor-client-content-negotiation:${Version.KTOR}")
     implementation("io.ktor:ktor-serialization-kotlinx-json:${Version.KTOR}")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
     implementation(project(":kodel:api"))
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
