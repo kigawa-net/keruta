@@ -25,7 +25,7 @@ class FlywayMigrator {
             .sqlMigrationSuffixes(".sql")
             .createSchemas(true)
             .cleanDisabled(false)
-            .validateMigrationNaming(false)
+            .validateMigrationNaming(true)
             .load()
     }
 
