@@ -37,7 +37,7 @@ kotlin {
         commonMain {
             dependencies {
                 api(project(":kodel:api"))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Version.KOTLINX_COROUTINES}")
             }
         }
         commonTest {

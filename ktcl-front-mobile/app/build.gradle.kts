@@ -4,6 +4,6 @@ plugins {
 
 dependencies {
     implementation(project(":ktcl-front-mobile"))
-    implementation("androidx.activity:activity-compose:1.12.4")
-    implementation("net.openid:appauth:0.11.1")
+    implementation("androidx.activity:activity-compose:${Version.ACTIVITY_COMPOSE}")
+    implementation("net.openid:appauth:${Version.APP_AUTH}")
 }

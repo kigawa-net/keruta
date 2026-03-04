@@ -34,35 +34,35 @@ dependencies {
     implementation("io.ktor:ktor-server-config-yaml:${Version.KTOR}")
 
     // Serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Version.KOTLINX_SERIALIZATION}")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Version.KOTLINX_COROUTINES}")
 
     // Kubernetes Java Client（最新25.x系）
-    implementation("io.kubernetes:client-java:25.0.0")
-    implementation("io.kubernetes:client-java-api:25.0.0")
+    implementation("io.kubernetes:client-java:${Version.KUBERNETES_CLIENT}")
+    implementation("io.kubernetes:client-java-api:${Version.KUBERNETES_CLIENT}")
 
     // JWT検証
-    implementation("com.auth0:java-jwt:4.4.0")
-    implementation("com.auth0:jwks-rsa:0.22.1")
+    implementation("com.auth0:java-jwt:${Version.JAVA_JWT}")
+    implementation("com.auth0:jwks-rsa:${Version.JWKS_RSA}")
 
     // Flyway and Database
-    implementation("org.flywaydb:flyway-core:10.17.1")
-    implementation("org.flywaydb:flyway-mysql:10.17.1")
-    implementation("org.mariadb.jdbc:mariadb-java-client:3.5.5")
+    implementation("org.flywaydb:flyway-core:${Version.FLYWAY}")
+    implementation("org.flywaydb:flyway-mysql:${Version.FLYWAY}")
+    implementation("org.mariadb.jdbc:mariadb-java-client:${Version.MARIADB_CONNECTOR}")
 
     // Exposed ORM
-    implementation("org.jetbrains.exposed:exposed-core:0.60.0")
-    implementation("org.jetbrains.exposed:exposed-dao:0.60.0")
-    implementation("org.jetbrains.exposed:exposed-jdbc:0.60.0")
-    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:0.60.0")
+    implementation("org.jetbrains.exposed:exposed-core:${Version.EXPOSED}")
+    implementation("org.jetbrains.exposed:exposed-dao:${Version.EXPOSED}")
+    implementation("org.jetbrains.exposed:exposed-jdbc:${Version.EXPOSED}")
+    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:${Version.EXPOSED}")
 
     // Connection Pool
-    implementation("com.zaxxer:HikariCP:7.0.2")
+    implementation("com.zaxxer:HikariCP:${Version.HIKARI_CP}")
 
     // Testing
     testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("org.junit.jupiter:junit-jupiter:6.0.2")
-    testImplementation("io.mockk:mockk:1.14.7")
+    testImplementation("org.junit.jupiter:junit-jupiter:${Version.JUNIT_JUPITER}")
+    testImplementation("io.mockk:mockk:${Version.MOCKK}")
     testImplementation("io.ktor:ktor-server-test-host:${Version.KTOR}")
 }
 
