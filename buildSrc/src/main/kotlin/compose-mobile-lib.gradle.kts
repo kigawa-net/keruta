@@ -27,7 +27,7 @@ kotlin {
         compileSdk = 36
 
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_24)
+            jvmTarget.set(JvmTarget.JVM_25)
         }
 
         minSdk = 26

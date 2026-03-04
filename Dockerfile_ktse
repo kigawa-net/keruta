@@ -1,4 +1,4 @@
-FROM eclipse-temurin:24-jdk-noble AS builder
+FROM eclipse-temurin:25-jdk-noble AS builder
 
 WORKDIR /app
 COPY settings.gradle.kts gradle.properties build.gradle.kts gradlew /app/
@@ -11,7 +11,7 @@ RUN --mount=type=cache,target=/root/.gradle ./gradlew ktcp:server:compileKotlinJ
 COPY ktse /app/ktse
 RUN --mount=type=cache,target=/root/.gradle ./gradlew :ktse:build -x test
 
-FROM eclipse-temurin:24-jdk-noble
+FROM eclipse-temurin:25-jdk-noble
 
 COPY --from=builder /app/ktse/build/libs/ktse-all.jar /app/app.jar
 WORKDIR /work
