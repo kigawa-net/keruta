@@ -1,6 +1,6 @@
 object Version {
     const val KOTLIN = "2.3.0"
-    const val KTOR = "3.4.0"
+    const val KTOR = "3.4.1"
     const val LOGBACK = "1.5.32"
     const val FRITZ2 = "1.0-RC21"
 
@@ -14,7 +14,7 @@ object Version {
     const val KOTLINX_DATETIME = "0.7.1-0.6.x-compat"
 
     // Database
-    const val FLYWAY = "11.0.0"
+    const val FLYWAY = "12.0.2"
     const val MYSQL_CONNECTOR = "9.6.0"
     const val MARIADB_CONNECTOR = "3.5.5"
     const val EXPOSED = "0.60.0"

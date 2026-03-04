@@ -9,11 +9,11 @@ RUN --mount=type=cache,target=/root/.gradle ./gradlew compileKotlinJvm -x allTes
 COPY ktcp /app/ktcp
 RUN --mount=type=cache,target=/root/.gradle ./gradlew ktcp:server:compileKotlinJvm -x allTests
 COPY ktse /app/ktse
-RUN --mount=type=cache,target=/root/.gradle ./gradlew :ktse:build -x test
+RUN --mount=type=cache,target=/root/.gradle ./gradlew :ktse:shadowJar -x test
 
 FROM eclipse-temurin:25-jdk-noble
 
-COPY --from=builder /app/ktse/build/libs/ktse-all.jar /app/app.jar
+COPY --from=builder /app/ktse/build/libs/ktse.jar /app/app.jar
 WORKDIR /work
 ENTRYPOINT ["java"]
 CMD ["-jar","/app/app.jar"]

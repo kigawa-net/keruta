@@ -26,7 +26,8 @@ kotlin {
     compilerOptions {
         freeCompilerArgs = listOf("-Xcontext-parameters")
     }
-    jvm {}
+    jvm {
+    }
     js {
         browser {
             testTask {

@@ -18,12 +18,15 @@ class FlywayMigrator {
         val classLoader = Thread.currentThread().contextClassLoader
         logger.debug("Using ClassLoader: ${classLoader.javaClass.name}")
 
-        return Flyway.configure(FlywayMigrator::class.java.classLoader)
+        return Flyway.configure()
             .dataSource(jdbcUrl, username, password)
             .locations("classpath:db/migration")
             .createSchemas(true)
             .cleanDisabled(false)
             .validateMigrationNaming(true)
+            .apply {
+                pluginRegister
+            }
             .load()
     }
 

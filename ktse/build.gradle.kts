@@ -2,10 +2,11 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 
 plugins {
-    id("io.ktor.plugin") version Version.KTOR
+//    id("io.ktor.plugin") version Version.KTOR
     kotlin("jvm")
-
+    id("com.gradleup.shadow")
     kotlin("plugin.serialization")
+    application
 }
 
 repositories {
@@ -25,17 +26,15 @@ application {
     mainClass.set("io.ktor.server.netty.EngineMain")
 }
 
-//tasks.named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
-//    mergeServiceFiles()
-//    archiveClassifier.set("all")
-//
-//    // リソースの重複やマージに関する問題を防ぐための明示的な設定（必要に応じて）
-//    append("META-INF/services/org.flywaydb.core.internal.scanner.ScannerCustomizer")
-//}
+tasks.shadowJar {
+    archiveFileName = "ktse.jar"
+    mergeServiceFiles()
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
 
 dependencies {
-    api(project(":ktcp:server"))
-    api(project(":ktcp:ktcp-infra"))
+    implementation(project(":ktcp:server"))
+    implementation(project(":ktcp:ktcp-infra"))
     // https://mvnrepository.com/artifact/com.auth0/java-jwt
     implementation("com.auth0:java-jwt:${Version.JAVA_JWT}")
     implementation("com.auth0:jwks-rsa:${Version.JWKS_RSA}")
@@ -46,12 +45,12 @@ dependencies {
     implementation("io.ktor:ktor-server-netty:${Version.KTOR}")
     implementation("io.ktor:ktor-server-config-yaml:${Version.KTOR}")
     implementation("ch.qos.logback:logback-classic:${Version.LOGBACK}")
-    implementation("io.ktor:ktor-server-auth")
-    implementation("io.ktor:ktor-server-auth-jwt")
-    implementation("io.ktor:ktor-server-content-negotiation")
-    implementation("io.ktor:ktor-serialization-kotlinx-json")
-    implementation("io.ktor:ktor-server-html-builder")
-    implementation("io.ktor:ktor-server-sessions")
+    implementation("io.ktor:ktor-server-auth:${Version.KTOR}")
+    implementation("io.ktor:ktor-server-auth-jwt:${Version.KTOR}")
+    implementation("io.ktor:ktor-server-content-negotiation:${Version.KTOR}")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:${Version.KTOR}")
+    implementation("io.ktor:ktor-server-html-builder:${Version.KTOR}")
+    implementation("io.ktor:ktor-server-sessions:${Version.KTOR}")
     implementation("io.ktor:ktor-client-core:${Version.KTOR}")
     implementation("io.ktor:ktor-client-cio:${Version.KTOR}")
     implementation("io.ktor:ktor-client-content-negotiation:${Version.KTOR}")
@@ -75,7 +74,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-json:${Version.EXPOSED}")
 
     // Testing
-    testImplementation("io.ktor:ktor-server-test-host")
+    testImplementation("io.ktor:ktor-server-test-host:${Version.KTOR}")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.junit.jupiter:junit-jupiter:${Version.JUNIT_JUPITER}")
     testImplementation("io.mockk:mockk:${Version.MOCKK}")
