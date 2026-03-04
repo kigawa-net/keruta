@@ -1,3 +1,4 @@
+name: dev-ktse
 on:
   push:
     paths-ignore:
