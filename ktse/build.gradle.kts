@@ -1,10 +1,23 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 
 plugins {
     id("io.ktor.plugin") version Version.KTOR
-    id("jvm")
+    kotlin("jvm")
     id("ktor-server-websocket")
 
     kotlin("plugin.serialization")
+}
+
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
+}
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_25)
+        freeCompilerArgs = listOf("-Xcontext-parameters")
+    }
 }
 
 application {
@@ -27,10 +40,9 @@ dependencies {
     implementation("org.apache.zookeeper:zookeeper:3.9.4")
 
     // Flyway and Database
-    // https://mvnrepository.com/artifact/org.flywaydb/flyway-core
-    // Downgraded to 9.22.3 due to location prefix issues in 11.x and 12.x
-    implementation("org.flywaydb:flyway-core:9.22.3")
-    implementation("org.flywaydb:flyway-mysql:9.22.3")
+    // Upgraded to 10.22.0 (latest v10.x)
+    implementation("org.flywaydb:flyway-core:10.22.0")
+    implementation("org.flywaydb:flyway-mysql:10.22.0")
 // Source: https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
     implementation("com.mysql:mysql-connector-j:9.6.0")
 // Source: https://mvnrepository.com/artifact/org.jetbrains.exposed/exposed-core
