@@ -20,6 +20,12 @@ kotlin {
     }
 }
 
+// Java compile tasks also set to JVM 25
+tasks.withType<JavaCompile>().configureEach {
+    sourceCompatibility = JavaVersion.VERSION_25.toString()
+    targetCompatibility = JavaVersion.VERSION_25.toString()
+}
+
 application {
     mainClass.set("io.ktor.server.netty.EngineMain")
 }
@@ -27,15 +33,17 @@ application {
 tasks.named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
     mergeServiceFiles()
     archiveClassifier.set("all")
+
+    // リソースの重複やマージに関する問題を防ぐための明示的な設定（必要に応じて）
+    append("META-INF/services/org.flywaydb.core.internal.scanner.ScannerCustomizer")
 }
-kotlin {
-}
+
 dependencies {
     api(project(":ktcp:server"))
     api(project(":ktcp:ktcp-infra"))
     // https://mvnrepository.com/artifact/com.auth0/java-jwt
-    implementation("com.auth0:java-jwt:4.5.1")
-    implementation("com.auth0:jwks-rsa:0.23.0")
+    implementation("com.auth0:java-jwt:4.4.0")
+    implementation("com.auth0:jwks-rsa:0.22.0")
 // https://mvnrepository.com/artifact/org.apache.zookeeper/zookeeper
     implementation("org.apache.zookeeper:zookeeper:3.9.4")
 

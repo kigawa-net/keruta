@@ -11,7 +11,9 @@ plugins {
 }
 
 rootProject.name = "keruta"
-
+fun Settings.includesIfExists(dir: String, vararg includes: String) {
+    if (file(dir).exists()) this.include(*includes)
+}
 include("kodel:api")
 include("kodel:coroutine")
 include("kodel:core")
@@ -27,7 +29,7 @@ include("ktcp:client")
 include("ktcp:server")
 include("ktse")
 include("ktcl-claudecode")
-include("ktcl-k8s")
+if (file("ktcl-k8s").exists()) include("ktcl-k8s")
 include("ktcl")
 
 // Conditionally include ktcl-front-mobile if directory exists

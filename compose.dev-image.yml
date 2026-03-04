@@ -1,5 +1,11 @@
 services:
   ktse:
+#    entrypoint:
+#      - bash
+#      - -c
+#    command:
+#      - |
+#        jar tf /app/app.jar | grep db/migration
     depends_on:
       init-tidb:
         condition: service_completed_successfully
