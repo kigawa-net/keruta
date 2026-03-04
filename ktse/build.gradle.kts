@@ -20,11 +20,7 @@ kotlin {
     }
 }
 
-// Java compile tasks also set to JVM 25
-tasks.withType<JavaCompile>().configureEach {
-    sourceCompatibility = JavaVersion.VERSION_25.toString()
-    targetCompatibility = JavaVersion.VERSION_25.toString()
-}
+
 
 application {
     mainClass.set("io.ktor.server.netty.EngineMain")

@@ -5,7 +5,8 @@ services:
 #      - -c
 #    command:
 #      - |
-#        jar tf /app/app.jar | grep db/migration
+#        jar tf /app/app.jar
+#        sleep 10
     depends_on:
       init-tidb:
         condition: service_completed_successfully
