@@ -17,7 +17,7 @@ class FlywayMigrator {
         val classLoader = Thread.currentThread().contextClassLoader
         logger.debug("Using ClassLoader: ${classLoader.javaClass.name}")
 
-        return Flyway.configure()
+        return Flyway.configure(FlywayMigrator::class.java.classLoader)
             .dataSource(jdbcUrl, username, password)
             .locations("db/migration")
             .sqlMigrationPrefix("V")

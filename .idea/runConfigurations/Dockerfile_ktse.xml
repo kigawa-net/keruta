@@ -1,0 +1,55 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Dockerfile_ktse" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
+    <deployment type="dockerfile">
+      <settings>
+        <option name="containerName" value="" />
+        <option name="envVars">
+          <list>
+            <DockerEnvVarImpl>
+              <option name="name" value="DB_JDBC_URL" />
+              <option name="value" value="jdbc:mysql://localhost:4000/keruta" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
+              <option name="name" value="DB_PASSWORD" />
+              <option name="value" value="keruta-pass" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
+              <option name="name" value="DB_USERNAME" />
+              <option name="value" value="keruta-user" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
+              <option name="name" value="IDP_0_AUDIENCE" />
+              <option name="value" value="keruta" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
+              <option name="name" value="IDP_0_ISSUER" />
+              <option name="value" value="https://user.kigawa.net/realms/develop" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
+              <option name="name" value="KTSE_JWT_SECRET" />
+              <option name="value" value="-----BEGIN PRIVATE KEY----- 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 BrHXfTseBxpqQzFTHZE4EDerqhtiDQ\=\= -----END PRIVATE KEY----- " />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
+              <option name="name" value="PROVIDER_0_AUDIENCE" />
+              <option name="value" value="keruta" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
+              <option name="name" value="PROVIDER_0_ISSUER" />
+              <option name="value" value="http://127.0.0.1:5173/" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
+              <option name="name" value="PROVIDER_0_NAME" />
+              <option name="value" value="web" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
+              <option name="name" value="ZK_HOST" />
+              <option name="value" value="localhost:2181,localhost:2182,localhost:2183" />
+            </DockerEnvVarImpl>
+          </list>
+        </option>
+        <option name="sourceFilePath" value="Dockerfile_ktse" />
+      </settings>
+    </deployment>
+    <method v="2" />
+  </configuration>
+</component>
