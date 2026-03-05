@@ -8,8 +8,10 @@ import net.kigawa.keruta.ktcl.k8s.auth.OidcDiscoveryFetcher
 import net.kigawa.keruta.ktcl.k8s.auth.PkceGenerator
 import net.kigawa.keruta.ktcl.k8s.auth.RemoteConfigProvider
 import net.kigawa.keruta.ktcl.k8s.config.AppConfig
+import net.kigawa.keruta.ktcl.k8s.auth.OidcTokenProvider
 import net.kigawa.keruta.ktcl.k8s.login.LoginCallbackRoute
 import net.kigawa.keruta.ktcl.k8s.login.LoginRoute
+import net.kigawa.keruta.ktcl.k8s.login.ProviderRegistrationClient
 import net.kigawa.keruta.ktcl.k8s.login.TokenRoute
 import net.kigawa.keruta.ktcl.k8s.persist.DbModule
 import net.kigawa.keruta.ktcp.base.auth.jwks.JwksProvider
@@ -25,10 +27,12 @@ class RouteModule(
     private val remoteConfigProvider = RemoteConfigProvider(oidcDiscoveryFetcher)
     private val pkceGenerator = PkceGenerator()
     private val userTokenDao = dbModule.userTokenDao
-    private val loginCallbackRoute = LoginCallbackRoute(oidcDiscoveryFetcher, userTokenDao)
 
     fun configure(application: Application) {
         val appConfig = AppConfig.load(application.environment.config)
+        val oidcTokenProvider = OidcTokenProvider(OidcTokenProvider.fromEnvironment())
+        val providerRegistrationClient = ProviderRegistrationClient(appConfig.ktse, oidcTokenProvider)
+        val loginCallbackRoute = LoginCallbackRoute(oidcDiscoveryFetcher, userTokenDao, providerRegistrationClient)
         val idpConfig = appConfig.idp
         val keycloakConfig = remoteConfigProvider.loadKeycloakConfig(idpConfig.issuer, idpConfig.clientId)
         val jwkProvider = remoteConfigProvider.createJwkProvider(keycloakConfig.jwksUrl)
