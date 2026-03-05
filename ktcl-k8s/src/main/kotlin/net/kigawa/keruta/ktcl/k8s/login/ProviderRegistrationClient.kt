@@ -12,21 +12,22 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import net.kigawa.keruta.ktcl.k8s.config.KtseConfig
 import net.kigawa.keruta.ktcp.base.auth.key.Auth0AlgorithmInitializer
-import net.kigawa.keruta.ktcp.model.auth.key.PrivateKey
+import net.kigawa.keruta.ktcp.base.auth.key.JavaPrivateKeyInitializer
+import net.kigawa.keruta.ktcp.model.auth.key.KerutaPrivateKey
 import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestMsg
 import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
 import net.kigawa.keruta.ktcp.model.provider.complete.ServerProviderCompleteMsg
 import net.kigawa.keruta.ktcp.model.serialize.serialize
 import net.kigawa.keruta.ktcp.usecase.JsonKerutaSerializer
 import net.kigawa.kodel.api.log.getKogger
-import java.security.PEMDecoder
 import java.util.*
 import kotlin.time.Duration.Companion.seconds
 
 class ProviderRegistrationClient(
     private val ktseConfig: KtseConfig,
-    private val privateKey: PrivateKey,
+    private val privateKey: KerutaPrivateKey,
     private val issuer: String,
+    private val javaPrivateKeyInitializer: JavaPrivateKeyInitializer,
 ) {
     private val logger = getKogger()
     private val serializer = JsonKerutaSerializer()
@@ -85,8 +86,7 @@ class ProviderRegistrationClient(
 
     private fun createServerToken(userToken: String): String {
         val subject = JWT.decode(userToken).subject
-        val key = PEMDecoder.of()
-            .decode(privateKey.strKey, java.security.PrivateKey::class.java)
+        val key = javaPrivateKeyInitializer.initialize(privateKey)
         val algorithm = Auth0AlgorithmInitializer().initPrivateKey(key)
         return JWT.create()
             .withIssuer(issuer)

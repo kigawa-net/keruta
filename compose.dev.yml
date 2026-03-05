@@ -34,6 +34,8 @@ services:
 
   tidb:
     image: pingcap/tidb:latest
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "127.0.0.1", "-P", "4000", "-u", "root"]
     depends_on:
       - pd
       - tikv
@@ -47,7 +49,8 @@ services:
   init-tidb:
     image: mysql:8.0
     depends_on:
-      - tidb
+      tidb:
+        condition: service_started
     networks:
       - tidbnet
     restart: "no"

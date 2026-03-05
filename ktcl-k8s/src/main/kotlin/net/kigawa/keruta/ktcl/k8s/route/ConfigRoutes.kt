@@ -11,39 +11,52 @@ import net.kigawa.keruta.ktcl.k8s.config.AppConfig
 import net.kigawa.keruta.ktcl.k8s.dto.*
 import net.kigawa.keruta.ktcl.k8s.persist.dao.UserClaudeConfigDao
 import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
-import net.kigawa.keruta.ktcp.model.auth.key.PrivateKey
+import net.kigawa.keruta.ktcp.base.auth.key.JavaPrivateKeyInitializer
+import net.kigawa.keruta.ktcp.infra.client.NimbusdsJwksGenerator
+import net.kigawa.keruta.ktcp.model.auth.key.KerutaPrivateKey
+import net.kigawa.keruta.ktcp.usecase.client.JwksJsonGenerator
 import net.kigawa.kodel.api.log.LoggerFactory
 
 class ConfigRoutes(
     jwkProvider: JwkProvider,
     keycloakConfig: KeycloakConfig, val appConfig: AppConfig,
     auth0JwtVerifier: Auth0JwtVerifier,
-    privateKey: PrivateKey,
+    private val privateKey: KerutaPrivateKey,
     private val userClaudeConfigDao: UserClaudeConfigDao,
+    javaPrivateKeyInitializer: JavaPrivateKeyInitializer,
 ) {
     private val logger = LoggerFactory.get("ConfigRoutes")
     private val authGuard = AuthGuard(auth0JwtVerifier, privateKey)
     private val authRoute = AuthRoutes(jwkProvider, keycloakConfig, auth0JwtVerifier, privateKey)
 
+    private val jwksJsonGenerator: JwksJsonGenerator = NimbusdsJwksGenerator(javaPrivateKeyInitializer)
     fun configureConfigRoutes(
         route: Route,
     ) = route.apply {
         // 認証ルート
         authRoute.configure(this)
 
-        // .well-known エンドポイント（認証不要）
-        get("/.well-known/keruta.json") {
-            val appConfig = appConfig
-            val issuer = appConfig.keruta.ownIssuer
-            val loginEndpoint = issuer.plusPath("/login")
+        route("/.well-known") {
+            // .well-known エンドポイント（認証不要）
+            get("keruta.json") {
+                val appConfig = appConfig
+                val issuer = appConfig.keruta.ownIssuer
+                val loginEndpoint = issuer.plusPath("/login")
 
-            val response = WellKnownKerutaResponse(
-                service = "keruta-ktcl-k8s",
-                version = "1.0.0",
-                issuer = issuer.toStrUrl(),
-                login = loginEndpoint.toString()
-            )
-            call.respond(response)
+                val response = WellKnownKerutaResponse(
+                    service = "keruta-ktcl-k8s",
+                    version = "1.0.0",
+                    issuer = issuer.toStrUrl(),
+                    login = loginEndpoint.toString()
+                )
+                call.respond(response)
+            }
+            get("jwks.json") {
+                val jwksJson = jwksJsonGenerator.generate(privateKey)
+                call.respondText(
+                    jwksJson, contentType = ContentType.Application.Json
+                )
+            }
         }
         route("/api/config") {
             get {

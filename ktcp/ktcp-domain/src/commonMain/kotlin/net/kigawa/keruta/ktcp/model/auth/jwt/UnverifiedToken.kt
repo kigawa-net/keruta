@@ -1,6 +1,6 @@
 package net.kigawa.keruta.ktcp.model.auth.jwt
 
-import net.kigawa.keruta.ktcp.model.auth.key.PrivateKey
+import net.kigawa.keruta.ktcp.model.auth.key.KerutaPrivateKey
 import net.kigawa.keruta.ktcp.model.auth.oidc.UnverifiedTokenWithOidc
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.kodel.api.err.Res
@@ -8,7 +8,7 @@ import net.kigawa.kodel.api.err.flatConvertOk
 import net.kigawa.kodel.api.net.Url
 
 interface UnverifiedToken {
-    fun withKey(key: PrivateKey): Res<UnverifiedTokenWithKey, KtcpErr>
+    fun withKey(key: KerutaPrivateKey): Res<UnverifiedTokenWithKey, KtcpErr>
     suspend fun withOidcConfig(): Res<UnverifiedTokenWithOidc, KtcpErr>
     suspend fun verifyWithOidcJwks(
         userVerifyValues: JwtVerifyValues,

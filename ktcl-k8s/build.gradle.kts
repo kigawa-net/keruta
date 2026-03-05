@@ -49,7 +49,6 @@ dependencies {
     // JWT検証
     implementation("com.auth0:java-jwt:${Version.JAVA_JWT}")
     implementation("com.auth0:jwks-rsa:${Version.JWKS_RSA}")
-
     // Flyway and Database
     implementation("org.flywaydb:flyway-core:${Version.FLYWAY}")
     implementation("org.flywaydb:flyway-mysql:${Version.FLYWAY}")

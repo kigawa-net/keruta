@@ -20,7 +20,7 @@ includesIfExists(
     "ktcp",
     "ktcp:ktcp-domain", "ktcp:ktcp-domain:ktcp-domain-server", "ktcp:ktcp-domain:ktcp-domain-client",
     "ktcp:ktcp-usecase", "ktcp:ktcp-usecase:ktcp-usecase-server", "ktcp:ktcp-usecase:ktcp-usecase-client",
-    "ktcp:ktcp-infra", "ktcp:ktcp-infra:ktcp-infra-client",
+    "ktcp:ktcp-infra", "ktcp:ktcp-infra:ktcp-infra-server","ktcp:ktcp-infra:ktcp-infra-client",
     "ktcp:client", "ktcp:server",
 )
 includesIfExists("ktse", "ktse")

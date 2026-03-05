@@ -16,7 +16,7 @@ import net.kigawa.keruta.ktcp.base.http.HttpClient
 import net.kigawa.kodel.api.log.LoggerFactory
 import net.kigawa.kodel.api.log.getKogger
 
-class WebApplicationModule() {
+class WebApplicationModule {
     val logger = getKogger()
     val k8sModule = K8sModule()
     val serializeModule = SerializeModule()

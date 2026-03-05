@@ -6,19 +6,19 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
-import net.kigawa.keruta.ktcl.k8s.auth.UserSession
 import net.kigawa.keruta.ktcl.k8s.auth.AuthenticationHelper
 import net.kigawa.keruta.ktcl.k8s.auth.JwtVerifier
 import net.kigawa.keruta.ktcl.k8s.auth.KeycloakConfig
+import net.kigawa.keruta.ktcl.k8s.auth.UserSession
 import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
-import net.kigawa.keruta.ktcp.model.auth.key.PrivateKey
+import net.kigawa.keruta.ktcp.model.auth.key.KerutaPrivateKey
 import net.kigawa.kodel.api.log.LoggerFactory
 
 class AuthRoutes(
     jwkProvider: JwkProvider,
     keycloakConfig: KeycloakConfig,
     auth0JwtVerifier: Auth0JwtVerifier,
-    privateKey: PrivateKey,
+    privateKey: KerutaPrivateKey,
 ) {
     private val logger = LoggerFactory.get("AuthRoutes")
     private val jwtVerifier = JwtVerifier(jwkProvider, keycloakConfig)

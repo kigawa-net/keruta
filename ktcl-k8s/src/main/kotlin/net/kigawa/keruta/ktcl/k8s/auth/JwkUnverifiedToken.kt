@@ -5,7 +5,7 @@ import com.auth0.jwt.interfaces.DecodedJWT
 import net.kigawa.keruta.ktcp.model.auth.jwt.UnverifiedToken
 import net.kigawa.keruta.ktcp.model.auth.jwt.UnverifiedTokenWithKey
 import net.kigawa.keruta.ktcp.model.auth.jwt.VerifyErr
-import net.kigawa.keruta.ktcp.model.auth.key.PrivateKey
+import net.kigawa.keruta.ktcp.model.auth.key.KerutaPrivateKey
 import net.kigawa.keruta.ktcp.model.auth.oidc.UnverifiedTokenWithOidc
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.kodel.api.err.Res
@@ -26,7 +26,7 @@ class JwkUnverifiedToken(
     override val subject: String = decodedJwt.subject
     override val issuer: Url = Url.parse(decodedJwt.issuer)
 
-    override fun withKey(key: PrivateKey): Res<UnverifiedTokenWithKey, KtcpErr> {
+    override fun withKey(key: KerutaPrivateKey): Res<UnverifiedTokenWithKey, KtcpErr> {
         return try {
             val pemKey = key.strKey
                 .replace("-----BEGIN PRIVATE KEY-----", "")
