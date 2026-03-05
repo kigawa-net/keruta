@@ -12,8 +12,8 @@ import net.kigawa.keruta.ktcp.client.ClientCtx
 import net.kigawa.keruta.ktcp.client.KtcpClient
 import net.kigawa.keruta.ktcp.client.KtcpSession
 import net.kigawa.keruta.ktcp.model.KtcpClientEntrypoints
-import net.kigawa.keruta.ktcp.model.serialize.JsonKerutaSerializer
 import net.kigawa.keruta.ktcp.model.task.list.ServerTaskListMsg
+import net.kigawa.keruta.ktcp.usecase.JsonKerutaSerializer
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.LoggerFactory as KodelLoggerFactory
 

@@ -1,15 +1,14 @@
-package net.kigawa.keruta.ktcp.model.serialize
+package net.kigawa.keruta.ktcp.usecase
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
 import net.kigawa.keruta.ktcp.model.err.IllegalFormatDeserializeErr
 import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
+import net.kigawa.keruta.ktcp.model.serialize.deserialize
+import net.kigawa.keruta.ktcp.model.serialize.serialize
 import net.kigawa.keruta.ktcp.model.task.create.ServerTaskCreateMsg
 import net.kigawa.kodel.api.err.Res
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertIs
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 class JsonKerutaSerializerTest {
     private val serializer = JsonKerutaSerializer()
@@ -51,7 +50,7 @@ class JsonKerutaSerializerTest {
                 assertEquals(123L, msg.queueId)
             }
 
-            is Res.Err -> kotlin.test.fail("Expected Ok but got Err: ${result.err}")
+            is Res.Err -> fail("Expected Ok but got Err: ${result.err}")
         }
     }
 
@@ -65,7 +64,7 @@ class JsonKerutaSerializerTest {
 
         // Assert
         when (result) {
-            is Res.Ok -> kotlin.test.fail("Expected Err but got Ok")
+            is Res.Ok -> fail("Expected Err but got Ok")
             is Res.Err -> assertIs<IllegalFormatDeserializeErr>(result.err)
         }
     }
@@ -80,7 +79,7 @@ class JsonKerutaSerializerTest {
 
         // Assert
         when (result) {
-            is Res.Ok -> kotlin.test.fail("Expected Err but got Ok")
+            is Res.Ok -> fail("Expected Err but got Ok")
             is Res.Err -> assertIs<IllegalFormatDeserializeErr>(result.err)
         }
     }
@@ -123,7 +122,7 @@ class JsonKerutaSerializerTest {
                 assertEquals(original.queueId, deserialized.queueId)
             }
 
-            is Res.Err -> kotlin.test.fail("Expected Ok but got Err: ${result.err}")
+            is Res.Err -> fail("Expected Ok but got Err: ${result.err}")
         }
     }
 
@@ -159,7 +158,8 @@ class JsonKerutaSerializerTest {
                 assertEquals("inline-test", result.value.title)
                 assertEquals(789L, result.value.queueId)
             }
-            is Res.Err -> kotlin.test.fail("Expected Ok but got Err: ${result.err}")
+
+            is Res.Err -> fail("Expected Ok but got Err: ${result.err}")
         }
     }
 }

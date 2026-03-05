@@ -8,7 +8,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
-import net.kigawa.keruta.ktcp.model.serialize.JsonKerutaSerializer
+import net.kigawa.keruta.ktcp.usecase.JsonKerutaSerializer
 
 /**
  * KTCP WebSocket e2eテスト用クライアントユーティリティ

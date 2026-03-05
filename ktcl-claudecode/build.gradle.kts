@@ -11,6 +11,7 @@ application {
 
 dependencies {
     implementation(project(":ktcp:client"))
+    implementation(project(":ktcp:ktcp-infra:ktcp-infra-client"))
     implementation("io.ktor:ktor-client-core:${Version.KTOR}")
     implementation("io.ktor:ktor-client-cio:${Version.KTOR}")
     implementation("io.ktor:ktor-client-websockets:${Version.KTOR}")

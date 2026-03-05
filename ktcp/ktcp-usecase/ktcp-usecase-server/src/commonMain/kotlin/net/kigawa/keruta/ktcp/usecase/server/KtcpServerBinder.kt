@@ -7,10 +7,10 @@ class KtcpServerBinder(
     private val webSocketServer: WebsocketServer,
 ) {
     suspend fun bind(ktcpServer: KtcpServer) {
-        val ktcpMsgRouter = KtcpMsgRouter(ktcpServer)
-        webSocketServer.bind {
-            it.receive {
-//                ktcpMsgRouter.route(it)
+        val ktcpMsgRouter = KtcpMsgRouter(ktcpServer.serverRoutes)
+        webSocketServer.bind { connection ->
+            connection.receive {
+                ktcpMsgRouter.route(it)
             }
         }
     }

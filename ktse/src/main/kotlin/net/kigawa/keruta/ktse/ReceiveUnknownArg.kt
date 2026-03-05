@@ -131,12 +131,14 @@ class ReceiveUnknownArg(
 
             // First, extract type field from JSON without full deserialization
             val jsonElement = Json.parseToJsonElement(text)
-            val typeStr = (jsonElement as? JsonObject)?.get("type")?.jsonPrimitive?.content
-
-            if (typeStr == null) {
-                return Res.Err(DeserializeDecodeFrameErr("",
-                    IllegalFormatDeserializeErr("type field is required", SerializationException("type field is required"))))
-            }
+            val typeStr = (jsonElement as? JsonObject)?.get("type")?.jsonPrimitive?.content ?: return Res.Err(
+                DeserializeDecodeFrameErr(
+                    "",
+                    IllegalFormatDeserializeErr(
+                        "type field is required", SerializationException("type field is required")
+                    )
+                )
+            )
 
             return Res.Ok(ReceiveUnknownArg(typeStr, ctx, text))
         }

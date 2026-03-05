@@ -29,7 +29,7 @@ class ReceiveClientUnknownArg(
     private val typeStr: String,
     private val serializer: KerutaSerializer,
     private val text: String,
-) : ClientUnknownArg {
+): ClientUnknownArg {
 
     override fun tryToGenericError(): Res<GenericErrMsg, KtcpErr>? {
         if (typeStr != ClientMsgType.GENERIC_ERROR.str) return null

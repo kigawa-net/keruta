@@ -33,33 +33,33 @@ class TaskReceiver(
                 // JSONから型を判別
                 val jsonElement = Json.parseToJsonElement(message)
                 if (jsonElement is JsonObject) {
-                    val type = jsonElement["type"]?.jsonPrimitive?.content
-                    when (type) {
+                    when (val type = jsonElement["type"]?.jsonPrimitive?.content) {
                         ClientMsgType.TASK_CREATED.str -> {
-                            val msg = serializer.deserialize<ClientTaskCreatedMsg>(message)
-                            when (msg) {
+                            when (val msg = serializer.deserialize<ClientTaskCreatedMsg>(message)) {
                                 is Res.Ok -> clientEntrypoints.taskCreated.access(msg.value, ctx)?.execute()
                                 is Res.Err -> logger.info { "Failed to parse ClientTaskCreatedMsg: ${msg.err}" }
                             }
                         }
+
                         ClientMsgType.TASK_LISTED.str -> {
-                            val msg = serializer.deserialize<ClientTaskListedMsg>(message)
-                            when (msg) {
+                            when (val msg = serializer.deserialize<ClientTaskListedMsg>(message)) {
                                 is Res.Ok -> clientEntrypoints.taskListed.access(msg.value, ctx)?.execute()
                                 is Res.Err -> logger.info { "Failed to parse ClientTaskListedMsg: ${msg.err}" }
                             }
                         }
+
                         ClientMsgType.TASK_SHOWED.str -> {
-                            val msg = serializer.deserialize<ClientTaskShowedMsg>(message)
-                            when (msg) {
+                            when (val msg = serializer.deserialize<ClientTaskShowedMsg>(message)) {
                                 is Res.Ok -> clientEntrypoints.taskShowed.access(msg.value, ctx)?.execute()
                                 is Res.Err -> logger.info { "Failed to parse ClientTaskShowedMsg: ${msg.err}" }
                             }
                         }
+
                         ServerMsgType.AUTH_SUCCESS.str -> {
                             // 認証成功メッセージは特に処理しない（ログのみ）
                             logger.info { "Authentication success confirmed" }
                         }
+
                         else -> {
                             logger.info { "Unknown message type: $type" }
                         }

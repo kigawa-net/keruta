@@ -13,8 +13,8 @@ import net.kigawa.keruta.ktcp.client.KtcpClient
 import net.kigawa.keruta.ktcp.client.KtcpSession
 import net.kigawa.keruta.ktcp.model.KtcpClientEntrypoints
 import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestMsg
-import net.kigawa.keruta.ktcp.model.serialize.JsonKerutaSerializer
 import net.kigawa.keruta.ktcp.model.task.list.ServerTaskListMsg
+import net.kigawa.keruta.ktcp.usecase.JsonKerutaSerializer
 import net.kigawa.kodel.api.log.LoggerFactory
 
 class KerutaK8sClient(

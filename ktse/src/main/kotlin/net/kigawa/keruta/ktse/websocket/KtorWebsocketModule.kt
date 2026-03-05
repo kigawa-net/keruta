@@ -12,11 +12,11 @@ import net.kigawa.keruta.ktcp.base.http.HttpClient
 import net.kigawa.keruta.ktcp.model.err.EntrypointNotFoundErr
 import net.kigawa.keruta.ktcp.model.err.GenericErrMsg
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.serialize.JsonKerutaSerializer
 import net.kigawa.keruta.ktcp.server.KtcpServer
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktcp.server.err.ResponseErr
 import net.kigawa.keruta.ktcp.server.session.KtcpSession
+import net.kigawa.keruta.ktcp.usecase.JsonKerutaSerializer
 import net.kigawa.keruta.ktse.KerutaTaskServer
 import net.kigawa.keruta.ktse.KtseConfig
 import net.kigawa.keruta.ktse.ReceiveUnknownArg
