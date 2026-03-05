@@ -1,0 +1,201 @@
+Index: compose.test.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>services:\n  mysql:\n    image: mysql:8.0\n    environment:\n      - MYSQL_ROOT_PASSWORD=root\n      - MYSQL_DATABASE=keruta_test\n      - MYSQL_USER=keruta\n      - MYSQL_PASSWORD=keruta\n    healthcheck:\n      test: [\"CMD\", \"mysqladmin\", \"ping\", \"-h\", \"localhost\", \"-u\", \"keruta\", \"-pkeruta\"]\n      interval: 5s\n      timeout: 3s\n      retries: 10\n    tmpfs:\n      - /var/lib/mysql\n  rsync:\n    build:\n      context: .\n      dockerfile: Dockerfile_rsync\n      cache_from:\n        - type=gha\n      cache_to:\n        - type=gha,mode=max\n    command:\n      - bash\n      - -c\n      - |\n        set -ue\n        if [ ! -d /src/cache/app ]; then mkdir -p /src/cache/app; fi\n        if [ ! -d /src/cache/.gradle ]; then mkdir -p /src/cache/.gradle; fi\n        if [ -d /src/cache/app/kotlin-js-store ]; then rm -r /src/cache/app/kotlin-js-store; fi\n        rsync -avz --delete /src/ /src/cache/app \\\n          --exclude=/.git \\\n          --exclude=/.idea \\\n          --exclude=/.claude \\\n          --exclude=/.github \\\n          --exclude=/.junie \\\n          --exclude=/.kotlin \\\n          --exclude=/.serena \\\n          --exclude=/.coder-templates \\\n          --exclude=/.gradle \\\n          --exclude=/cache \\\n          --exclude=/keruta-coder-template \\\n          --exclude=/kigawa-net-k8s \\\n          --exclude=/kotlin-js-store \\\n          --exclude=/ktcl-front/node_modules \\\n          --exclude=/ktcl-front/dist \\\n          --exclude=/*/build \\\n          --exclude=/build \\\n          --exclude=/*/*/build\n    volumes:\n      - type: bind\n        source: .\n        target: /src\n  ktcl-front-test:\n    image: node\n    command:\n      - bash\n      - -c\n      - |\n        set -ue\n        npm install\n        npm run test\n    working_dir: /app/ktcl-front\n    depends_on:\n      rsync:\n        condition: service_completed_successfully\n    environment:\n      - VITE_WEBSOCKET_URL=ws://localhost:8080/ws/ktcp\n      - VITE_KEYCLOAK_URL=https://user.kigawa.net/\n      - VITE_KEYCLOAK_REALM=develop\n      - VITE_KEYCLOAK_CLIENT_ID=keruta\n    volumes:\n      - type: bind\n        source: ./cache/app/ktcl-front\n        target: /app/ktcl-front\n      - type: bind\n        source: ./cache/npm\n        target: /root/.npm\n\n  ktcl-front-build:\n    image: node\n    command:\n      - bash\n      - -c\n      - |\n        set -ue\n        npm install\n        npm run build\n    working_dir: /app/ktcl-front\n    depends_on:\n      rsync:\n        condition: service_completed_successfully\n    environment:\n      - VITE_WEBSOCKET_URL=ws://localhost:8080/ws/ktcp\n      - VITE_KEYCLOAK_URL=https://user.kigawa.net/\n      - VITE_KEYCLOAK_REALM=develop\n      - VITE_KEYCLOAK_CLIENT_ID=keruta\n    volumes:\n      - type: bind\n        source: ./cache/app/ktcl-front\n        target: /app/ktcl-front\n      - type: bind\n        source: ./cache/npm\n        target: /root/.npm\n\n  gradle-test:\n    build:\n      context: .\n      dockerfile: Dockerfile_test\n    command: ./gradlew test allTests\n    depends_on:\n      rsync:\n        condition: service_completed_successfully\n      mysql:\n        condition: service_healthy\n    volumes:\n      - type: bind\n        source: ./cache/app\n        target: /app\n      - type: bind\n        source: ./cache/.gradle\n        target: /root/.gradle\n    working_dir: /app\n    environment:\n      - GRADLE_OPTS=-Dorg.gradle.daemon=false\n      - CHROME_BIN=/opt/google/chrome/chrome\n      - FIREFOX_BIN=/usr/bin/firefox\n      - TEST_DB_JDBC_URL=jdbc:mysql://mysql:3306/keruta_test\n      - TEST_DB_USERNAME=keruta\n      - TEST_DB_PASSWORD=keruta\n\n  test:\n    image: busybox\n    depends_on:\n      ktcl-front-test:\n        condition: service_completed_successfully\n      gradle-test:\n        condition: service_completed_successfully\n      ktcl-front-build:\n        condition: service_completed_successfully\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/compose.test.yml b/compose.test.yml
+--- a/compose.test.yml	(revision d643835b8f11dedae4a10080981ffe1331176fd9)
++++ b/compose.test.yml	(date 1772700409751)
+@@ -52,6 +52,31 @@
+       - type: bind
+         source: .
+         target: /src
++  ktcl-front-npm-install:
++    image: node
++    command:
++      - bash
++      - -c
++      - |
++        set -ue
++        npm install
++    working_dir: /app/ktcl-front
++    depends_on:
++      rsync:
++        condition: service_completed_successfully
++    environment:
++      - VITE_WEBSOCKET_URL=ws://localhost:8080/ws/ktcp
++      - VITE_KEYCLOAK_URL=https://user.kigawa.net/
++      - VITE_KEYCLOAK_REALM=develop
++      - VITE_KEYCLOAK_CLIENT_ID=keruta
++    volumes:
++      - type: bind
++        source: ./cache/app/ktcl-front
++        target: /app/ktcl-front
++      - type: bind
++        source: ./cache/npm
++        target: /root/.npm
++
+   ktcl-front-test:
+     image: node
+     command:
+@@ -59,11 +84,10 @@
+       - -c
+       - |
+         set -ue
+-        npm install
+         npm run test
+     working_dir: /app/ktcl-front
+     depends_on:
+-      rsync:
++      ktcl-front-npm-install:
+         condition: service_completed_successfully
+     environment:
+       - VITE_WEBSOCKET_URL=ws://localhost:8080/ws/ktcp
+@@ -85,11 +109,10 @@
+       - -c
+       - |
+         set -ue
+-        npm install
+         npm run build
+     working_dir: /app/ktcl-front
+     depends_on:
+-      rsync:
++      ktcl-front-npm-install:
+         condition: service_completed_successfully
+     environment:
+       - VITE_WEBSOCKET_URL=ws://localhost:8080/ws/ktcp
+Index: ktse/build.gradle.kts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import org.jetbrains.kotlin.gradle.dsl.JvmTarget\n\n\nplugins {\n//    id(\"io.ktor.plugin\") version Version.KTOR\n    kotlin(\"jvm\")\n    id(\"com.gradleup.shadow\")\n    kotlin(\"plugin.serialization\")\n    application\n}\n\nrepositories {\n    mavenCentral()\n    gradlePluginPortal()\n}\nkotlin {\n    compilerOptions {\n        jvmTarget.set(JvmTarget.JVM_25)\n        freeCompilerArgs = listOf(\"-Xcontext-parameters\")\n    }\n}\n\n\n\napplication {\n    mainClass.set(\"io.ktor.server.netty.EngineMain\")\n}\n\ntasks.shadowJar {\n    archiveFileName = \"ktse.jar\"\n    mergeServiceFiles()\n    duplicatesStrategy = DuplicatesStrategy.INCLUDE\n}\n\ndependencies {\n    implementation(project(\":ktcp:server\"))\n    implementation(project(\":ktcp:ktcp-infra\"))\n    // https://mvnrepository.com/artifact/com.auth0/java-jwt\n    implementation(\"com.auth0:java-jwt:${Version.JAVA_JWT}\")\n    implementation(\"com.auth0:jwks-rsa:${Version.JWKS_RSA}\")\n// https://mvnrepository.com/artifact/org.apache.zookeeper/zookeeper\n    implementation(\"org.apache.zookeeper:zookeeper:${Version.ZOOKEEPER}\")\n    implementation(\"io.ktor:ktor-server-websockets:${Version.KTOR}\")\n    implementation(\"io.ktor:ktor-server-core-jvm:${Version.KTOR}\")\n    implementation(\"io.ktor:ktor-server-netty:${Version.KTOR}\")\n    implementation(\"io.ktor:ktor-server-config-yaml:${Version.KTOR}\")\n    implementation(\"ch.qos.logback:logback-classic:${Version.LOGBACK}\")\n    implementation(\"io.ktor:ktor-server-auth:${Version.KTOR}\")\n    implementation(\"io.ktor:ktor-server-auth-jwt:${Version.KTOR}\")\n    implementation(\"io.ktor:ktor-server-content-negotiation:${Version.KTOR}\")\n    implementation(\"io.ktor:ktor-serialization-kotlinx-json:${Version.KTOR}\")\n    implementation(\"io.ktor:ktor-server-html-builder:${Version.KTOR}\")\n    implementation(\"io.ktor:ktor-server-sessions:${Version.KTOR}\")\n    implementation(\"io.ktor:ktor-client-core:${Version.KTOR}\")\n    implementation(\"io.ktor:ktor-client-cio:${Version.KTOR}\")\n    implementation(\"io.ktor:ktor-client-content-negotiation:${Version.KTOR}\")\n\n    // Flyway and Database\n    // Upgraded to 11.0.0 (V11)\n    implementation(\"org.flywaydb:flyway-core:${Version.FLYWAY}\")\n    implementation(\"org.flywaydb:flyway-mysql:${Version.FLYWAY}\")\n// Source: https://mvnrepository.com/artifact/com.mysql/mysql-connector-j\n    implementation(\"com.mysql:mysql-connector-j:${Version.MYSQL_CONNECTOR}\")\n// Source: https://mvnrepository.com/artifact/org.jetbrains.exposed/exposed-core\n    implementation(\"org.jetbrains.exposed:exposed-core:${Version.EXPOSED}\")\n    implementation(\"org.jetbrains.exposed:exposed-dao:${Version.EXPOSED}\")\n    implementation(\"org.jetbrains.exposed:exposed-jdbc:${Version.EXPOSED}\")\n\n    // Connection Pool\n    implementation(\"com.zaxxer:HikariCP:${Version.HIKARI_CP}\")\n    // コルーチンを使う場合\n    implementation(\"org.jetbrains.exposed:exposed-kotlin-datetime:${Version.EXPOSED}\")\n// Source: https://mvnrepository.com/artifact/org.jetbrains.exposed/exposed-json\n    implementation(\"org.jetbrains.exposed:exposed-json:${Version.EXPOSED}\")\n\n    // Testing\n    testImplementation(\"io.ktor:ktor-server-test-host:${Version.KTOR}\")\n    testImplementation(\"org.jetbrains.kotlin:kotlin-test\")\n    testImplementation(\"org.junit.jupiter:junit-jupiter:${Version.JUNIT_JUPITER}\")\n    testImplementation(\"io.mockk:mockk:${Version.MOCKK}\")\n    // Testcontainers for integration testing\n    testImplementation(\"org.testcontainers:testcontainers:${Version.TESTCONTAINERS}\")\n    testImplementation(\"org.testcontainers:junit-jupiter:${Version.TESTCONTAINERS}\")\n    testImplementation(\"org.testcontainers:mysql:${Version.TESTCONTAINERS}\")\n    testImplementation(\"org.testcontainers:kafka:${Version.TESTCONTAINERS}\")\n    // Ktor client for WebSocket testing\n    testImplementation(\"io.ktor:ktor-client-cio:${Version.KTOR}\")\n    testImplementation(\"io.ktor:ktor-client-websockets:${Version.KTOR}\")\n    // MySQL JDBC driver for Flyway tests\n    testRuntimeOnly(\"com.mysql:mysql-connector-j:${Version.MYSQL_CONNECTOR}\")\n}\ntasks.withType<Test> {\n    useJUnitPlatform()\n}\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktse/build.gradle.kts b/ktse/build.gradle.kts
+--- a/ktse/build.gradle.kts	(revision d643835b8f11dedae4a10080981ffe1331176fd9)
++++ b/ktse/build.gradle.kts	(date 1772701218140)
+@@ -2,7 +2,6 @@
+ 
+ 
+ plugins {
+-//    id("io.ktor.plugin") version Version.KTOR
+     kotlin("jvm")
+     id("com.gradleup.shadow")
+     kotlin("plugin.serialization")
+Index: ktse/src/main/resources/db/callback/v2__init.sql
+===================================================================
+diff --git a/ktse/src/main/resources/db/callback/v2__init.sql b/ktse/src/main/resources/db/callback/v2__init.sql
+deleted file mode 100644
+--- a/ktse/src/main/resources/db/callback/v2__init.sql	(revision d643835b8f11dedae4a10080981ffe1331176fd9)
++++ /dev/null	(revision d643835b8f11dedae4a10080981ffe1331176fd9)
+@@ -1,7 +0,0 @@
+-alter table provider
+-    add user_id int null;
+-
+-alter table provider
+-    add constraint provider_user_id_fk
+-        foreign key (user_id) references user (id);
+-
+Index: ktse/src/main/resources/db/callback/v3__queue_privder.sql
+===================================================================
+diff --git a/ktse/src/main/resources/db/callback/v3__queue_privder.sql b/ktse/src/main/resources/db/callback/v3__queue_privder.sql
+deleted file mode 100644
+--- a/ktse/src/main/resources/db/callback/v3__queue_privder.sql	(revision d643835b8f11dedae4a10080981ffe1331176fd9)
++++ /dev/null	(revision d643835b8f11dedae4a10080981ffe1331176fd9)
+@@ -1,7 +0,0 @@
+-create table if not exists queue_provider (
+-    queue_id int,
+-    provider_id int,
+-    primary key (queue_id, provider_id),
+-    foreign key (queue_id) references queue(id),
+-    foreign key (provider_id) references provider(id)
+-);
+Index: .idea/runConfigurations/dev_local.xml
+===================================================================
+diff --git a/.idea/runConfigurations/dev_local.xml b/.idea/runConfigurations/dev_local.xml
+deleted file mode 100644
+--- a/.idea/runConfigurations/dev_local.xml	(revision d643835b8f11dedae4a10080981ffe1331176fd9)
++++ /dev/null	(revision d643835b8f11dedae4a10080981ffe1331176fd9)
+@@ -1,9 +0,0 @@
+-<component name="ProjectRunConfigurationManager">
+-  <configuration default="false" name="dev local" type="CompoundRunConfigurationType">
+-    <toRun name="dev" type="docker-deploy" />
+-    <toRun name="local ktcl-k8s " type="KtorApplicationConfigurationType" />
+-    <toRun name="local ktse " type="KtorApplicationConfigurationType" />
+-    <toRun name="local ktcl-front" type="js.build_tools.npm" />
+-    <method v="2" />
+-  </configuration>
+-</component>
+\ No newline at end of file
+Index: .idea/runConfigurations/test.xml
+===================================================================
+diff --git a/.idea/runConfigurations/test.xml b/.idea/runConfigurations/test.xml
+deleted file mode 100644
+--- a/.idea/runConfigurations/test.xml	(revision d643835b8f11dedae4a10080981ffe1331176fd9)
++++ /dev/null	(revision d643835b8f11dedae4a10080981ffe1331176fd9)
+@@ -1,8 +0,0 @@
+-<component name="ProjectRunConfigurationManager">
+-  <configuration default="false" name="test" type="CompoundRunConfigurationType">
+-    <toRun name="keruta [allTests]" type="GradleRunConfiguration" />
+-    <toRun name="keruta [test]" type="GradleRunConfiguration" />
+-    <toRun name="build" type="js.build_tools.npm" />
+-    <method v="2" />
+-  </configuration>
+-</component>
+Index: ktse/src/main/resources/db/callback/v1__init.sql
+===================================================================
+diff --git a/ktse/src/main/resources/db/callback/v1__init.sql b/ktse/src/main/resources/db/callback/v1__init.sql
+deleted file mode 100644
+--- a/ktse/src/main/resources/db/callback/v1__init.sql	(revision d643835b8f11dedae4a10080981ffe1331176fd9)
++++ /dev/null	(revision d643835b8f11dedae4a10080981ffe1331176fd9)
+@@ -1,48 +0,0 @@
+-create table if not exists provider
+-(
+-    id      integer auto_increment,
+-    name    varchar(50),
+-    issuer  varchar(50),
+-    setting text,
+-    create_at timestamp,
+-    primary key (id)
+-);
+-create table if not exists queue
+-(
+-    id          integer auto_increment,
+-    name        varchar(50),
+-    provider_id integer,
+-    setting     text,
+-    create_at timestamp,
+-    primary key (id),
+-    foreign key (provider_id) references provider (id)
+-);
+-create table if not exists user(
+-    id   integer auto_increment,
+-    create_at timestamp,
+-    primary key (id)
+-);
+-create table if not exists queue_user(
+-    queue_id integer,
+-    user_id  integer,
+-    create_at timestamp,
+-    foreign key (queue_id) references queue (id),
+-    foreign key (user_id) references user (id)
+-);
+-create table if not exists task(
+-    id   integer auto_increment,
+-    user_id integer,
+-    queue_id integer,
+-    create_at timestamp,
+-    primary key (id),
+-    foreign key (user_id) references user (id),
+-    foreign key (queue_id) references queue (id)
+-);
+-create table if not exists user_idp(
+-    user_id integer,
+-    issuer varchar(50),
+-    subject varchar(50),
+-    create_at timestamp,
+-    primary key (user_id, issuer),
+-    foreign key (user_id) references user (id)
+-)
