@@ -171,6 +171,7 @@ class StaticRoutes(
         }
 
         input[type="text"],
+        input[type="password"],
         input[type="number"],
         select {
             width: 100%;
@@ -330,7 +331,7 @@ class StaticRoutes(
                 <!-- 設定画面 -->
                 <div id="configScreen" class="config-screen">
                     <h1>設定管理</h1>
-                    <p class="subtitle">Kubernetes とキューの設定を変更できます</p>
+                    <p class="subtitle">Kubernetes、キュー、Claude Code の設定を変更できます</p>
                     <div id="configMessage" class="message"></div>
 
                     <!-- Kubernetes設定 -->
@@ -368,6 +369,17 @@ class StaticRoutes(
                         </div>
 
                         <button id="updateQueueBtn">キュー設定を更新</button>
+                    </div>
+
+                    <!-- Claude Code設定 -->
+                    <div class="card">
+                        <h2 class="card-title">Claude Code設定</h2>
+                        <p id="claudeApiKeyStatus" class="subtitle">APIキー未設定</p>
+                        <div class="form-group">
+                            <label for="anthropicApiKey">Anthropic APIキー</label>
+                            <input type="password" id="anthropicApiKey" placeholder="sk-ant-...">
+                        </div>
+                        <button id="updateClaudeCodeBtn">Claude Code APIキーを更新</button>
                     </div>
 
                     <div class="card">
@@ -473,6 +485,9 @@ class StaticRoutes(
                 document.getElementById('kubeconfigPath').value = data.kubernetes.kubeconfigPath || '';
                 document.getElementById('jobTimeout').value = data.kubernetes.jobTimeout;
                 document.getElementById('queueId').value = data.queue.queueId;
+                document.getElementById('claudeApiKeyStatus').textContent = data.claudeCode.hasApiKey
+                    ? 'APIキー設定済み'
+                    : 'APIキー未設定';
             } catch (error) {
                 showMessage('configMessage', '設定の読み込みエラー: ' + error.message, 'error');
             }
@@ -496,6 +511,39 @@ class StaticRoutes(
                 });
 
                 const data = await response.json();
+                showMessage('configMessage', data.message, 'success');
+            } catch (error) {
+                showMessage('configMessage', '更新エラー: ' + error.message, 'error');
+            }
+        });
+
+        // Claude Code設定更新
+        document.getElementById('updateClaudeCodeBtn').addEventListener('click', async () => {
+            try {
+                const anthropicApiKey = document.getElementById('anthropicApiKey').value.trim();
+                if (!anthropicApiKey) {
+                    showMessage('configMessage', 'Anthropic APIキーを入力してください', 'error');
+                    return;
+                }
+
+                const response = await fetch('/api/config/claudecode', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        anthropicApiKey: anthropicApiKey
+                    })
+                });
+
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.error || 'Claude Code設定の更新に失敗しました');
+                }
+
+                document.getElementById('anthropicApiKey').value = '';
+                document.getElementById('claudeApiKeyStatus').textContent = 'APIキー設定済み';
                 showMessage('configMessage', data.message, 'success');
             } catch (error) {
                 showMessage('configMessage', '更新エラー: ' + error.message, 'error');
@@ -551,4 +599,3 @@ class StaticRoutes(
     """.trimIndent()
     }
 }
-

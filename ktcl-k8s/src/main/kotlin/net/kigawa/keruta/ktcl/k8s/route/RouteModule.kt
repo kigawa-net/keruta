@@ -20,7 +20,7 @@ import net.kigawa.keruta.ktcp.base.http.HttpClient
 
 class RouteModule(
     private val httpClient: HttpClient,
-    dbModule: DbModule,
+    private val dbModule: DbModule,
 ) {
     private val oidcDiscoveryFetcher = OidcDiscoveryFetcher()
     private val remoteConfigProvider = RemoteConfigProvider(oidcDiscoveryFetcher)
@@ -45,7 +45,10 @@ class RouteModule(
         // 認証ヘルパーと静的ルートを初期化
         val authenticationHelper = AuthenticationHelper(auth0JwtVerifier, authConfig.privateKey)
         val staticRoutes = StaticRoutes(authenticationHelper)
-        val configRoutes = ConfigRoutes(jwkProvider, keycloakConfig, appConfig, auth0JwtVerifier, authConfig.privateKey)
+        val configRoutes = ConfigRoutes(
+            jwkProvider, keycloakConfig, appConfig, auth0JwtVerifier,
+            authConfig.privateKey, dbModule.userClaudeConfigDao
+        )
         val kerutaEndpoints = KerutaEndpoints(appConfig.keruta)
         val loginRoute = LoginRoute(
             oidcDiscoveryFetcher, pkceGenerator, idpConfig, kerutaEndpoints, authenticationHelper

@@ -1,45 +1,45 @@
 package net.kigawa.keruta.ktcl.k8s.persist.dao
 
 import net.kigawa.keruta.ktcl.k8s.persist.db.DbManager
-import net.kigawa.keruta.ktcl.k8s.persist.table.K8sConfigTable
-import net.kigawa.keruta.ktcl.k8s.persist.table.QueueConfigTable
+import net.kigawa.keruta.ktcl.k8s.persist.table.UserClaudeConfigTable
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 
 /**
- * Kubernetes設定Dao
+ * ユーザーClaude Code設定Dao
  */
-class K8sConfigDao(
+class UserClaudeConfigDao(
     private val dbManager: DbManager,
 ) {
     /**
-     * 設定を取得する
+     * ユーザーのAnthropic APIキーを保存または更新する
      */
-    fun get(configKey: String): String? {
-        return transaction(dbManager.db) {
-            K8sConfigTable.select(K8sConfigTable.configKey eq configKey)
-                .firstOrNull()
-                ?.get(K8sConfigTable.configValue)
+    fun saveOrUpdate(userId: String, anthropicApiKey: String) {
+        transaction(dbManager.db) {
+            val existing = UserClaudeConfigTable.select(UserClaudeConfigTable.userId eq userId).firstOrNull()
+            if (existing != null) {
+                UserClaudeConfigTable.update({ UserClaudeConfigTable.userId eq userId }) {
+                    it[UserClaudeConfigTable.anthropicApiKey] = anthropicApiKey
+                }
+            } else {
+                UserClaudeConfigTable.insert {
+                    it[UserClaudeConfigTable.userId] = userId
+                    it[UserClaudeConfigTable.anthropicApiKey] = anthropicApiKey
+                }
+            }
         }
     }
 
-}
-
-/**
- * キュー設定Dao
- */
-class QueueConfigDao(
-    private val dbManager: DbManager,
-) {
     /**
-     * 設定を取得する
+     * ユーザーのAnthropic APIキーを取得する
      */
-    fun get(configKey: String): String? {
+    fun get(userId: String): String? {
         return transaction(dbManager.db) {
-            QueueConfigTable.select(QueueConfigTable.configKey eq configKey)
+            UserClaudeConfigTable.select(UserClaudeConfigTable.userId eq userId)
                 .firstOrNull()
-                ?.get(QueueConfigTable.configValue)
+                ?.get(UserClaudeConfigTable.anthropicApiKey)
         }
     }
-
 }

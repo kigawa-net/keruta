@@ -29,7 +29,6 @@ class WebApplicationModule() {
         logger.info("Starting ktcl-k8s Web Module")
 
         dbModule = DbModule.create(application.environment.config)
-        dbModule.configure(application)
         routeModule = RouteModule(httpClient, dbModule)
 
         k8sModule.configure(application)
