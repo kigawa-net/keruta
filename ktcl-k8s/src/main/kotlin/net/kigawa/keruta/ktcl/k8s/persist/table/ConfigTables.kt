@@ -30,6 +30,19 @@ object QueueConfigTable : Table("queue_config") {
 }
 
 /**
+ * ユーザーClaudeCode設定テーブル
+ */
+object UserClaudeConfigTable : Table("user_claude_config") {
+    val id = long("id").autoIncrement()
+    val userId = varchar("user_id", 255).uniqueIndex()
+    val anthropicApiKey = text("anthropic_api_key")
+    val createdAt = datetime("created_at")
+    val updatedAt = datetime("updated_at")
+
+    override val primaryKey = PrimaryKey(id)
+}
+
+/**
  * ユーザートークンテーブル（refresh token永続化用）
  */
 object UserTokenTable : Table("user_token") {
