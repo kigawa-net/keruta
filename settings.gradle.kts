@@ -11,27 +11,20 @@ plugins {
 }
 
 rootProject.name = "keruta"
-
-include("kodel:api")
-include("kodel:coroutine")
-include("kodel:core")
-include("ktcp:ktcp-domain")
-include("ktcp:ktcp-domain:ktcp-domain-server")
-include("ktcp:ktcp-domain:ktcp-domain-client")
-include("ktcp:ktcp-usecase")
-include("ktcp:ktcp-usecase:ktcp-usecase-server")
-include("ktcp:ktcp-usecase:ktcp-usecase-client")
-include("ktcp:ktcp-infra")
-include("ktcp:ktcp-infra:ktcp-infra-client")
-include("ktcp:client")
-include("ktcp:server")
-include("ktse")
-include("ktcl-claudecode")
-include("ktcl-k8s")
-include("ktcl")
-
-// Conditionally include ktcl-front-mobile if directory exists
-if (file("ktcl-front-mobile").exists()) {
-    include("ktcl-front-mobile")
-    include("ktcl-front-mobile:app")
+fun Settings.includesIfExists(dir: String, vararg includes: String) {
+    if (file(dir).exists()) this.include(*includes)
 }
+
+includesIfExists("kodel", "kodel:api", "kodel:coroutine", "kodel:core")
+includesIfExists(
+    "ktcp",
+    "ktcp:ktcp-domain", "ktcp:ktcp-domain:ktcp-domain-server", "ktcp:ktcp-domain:ktcp-domain-client",
+    "ktcp:ktcp-usecase", "ktcp:ktcp-usecase:ktcp-usecase-server", "ktcp:ktcp-usecase:ktcp-usecase-client",
+    "ktcp:ktcp-infra", "ktcp:ktcp-infra:ktcp-infra-client",
+    "ktcp:client", "ktcp:server",
+)
+includesIfExists("ktse", "ktse")
+includesIfExists("ktcl-claudecode", "ktcl-claudecode")
+includesIfExists("ktcl-k8s", "ktcl-k8s")
+includesIfExists("ktcl", "ktcl")
+includesIfExists("ktcl-front-mobile", "ktcl-front-mobile", "ktcl-front-mobile:app")

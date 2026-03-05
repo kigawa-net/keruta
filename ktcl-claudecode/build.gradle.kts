@@ -17,13 +17,13 @@ dependencies {
     implementation("io.ktor:ktor-client-websockets:${Version.KTOR}")
     implementation("io.ktor:ktor-client-content-negotiation:${Version.KTOR}")
     implementation("io.ktor:ktor-serialization-kotlinx-json:${Version.KTOR}")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Version.KOTLINX_SERIALIZATION}")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Version.KOTLINX_COROUTINES}")
     implementation(project(":kodel:api"))
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("org.junit.jupiter:junit-jupiter:6.0.2")
-    testImplementation("io.mockk:mockk:1.14.7")
+    testImplementation("org.junit.jupiter:junit-jupiter:${Version.JUNIT_JUPITER}")
+    testImplementation("io.mockk:mockk:${Version.MOCKK}")
 }
 
 tasks.withType<Test> {

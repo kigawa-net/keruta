@@ -1,6 +1,4 @@
 -- Flyway migration for user tokens
--- V002__user_token.sql
-
 CREATE TABLE IF NOT EXISTS user_token (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id VARCHAR(255) NOT NULL UNIQUE,

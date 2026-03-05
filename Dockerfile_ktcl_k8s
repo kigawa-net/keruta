@@ -5,16 +5,14 @@ COPY buildSrc /app/buildSrc
 COPY gradle /app/gradle
 COPY kodel /app/kodel
 COPY ktcp /app/ktcp
-COPY ktse /app/ktse
 COPY ktcl /app/ktcl
-COPY ktcl-claudecode /app/ktcl-claudecode
 COPY ktcl-k8s /app/ktcl-k8s
 COPY settings.gradle.kts gradle.properties build.gradle.kts gradlew /app/
 RUN --mount=type=cache,target=/root/.gradle ./gradlew :ktcl-k8s:build -x test
 
 FROM eclipse-temurin:25-jdk-noble
 
-COPY --from=builder /app/ktcl-k8s/build/libs/ktcl-k8s-all.jar /app/app.jar
+COPY --from=builder /app/ktcl-k8s/build/libs/ktcl-k8s.jar /app/app.jar
 WORKDIR /work
 ENTRYPOINT ["java"]
 CMD ["-jar","/app/app.jar"]

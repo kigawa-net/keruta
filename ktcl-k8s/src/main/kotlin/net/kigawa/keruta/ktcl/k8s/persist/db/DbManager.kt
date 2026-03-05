@@ -22,12 +22,7 @@ class DbManager(
 
     init {
         val migrator = FlywayMigrator()
-        // Repair any failed migrations before attempting to migrate
-        migrator.repair(
-            jdbcUrl = dbConfig.jdbcUrl,
-            username = dbConfig.username,
-            password = dbConfig.password,
-        )
+        // 直接 migrate を実行（repair は Flyway 9.x で問題を起こす可能性があるためスキップ）
         migrator.migrate(
             jdbcUrl = dbConfig.jdbcUrl,
             username = dbConfig.username,

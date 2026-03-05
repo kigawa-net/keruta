@@ -1,6 +1,8 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="ktcl-front-mobile-js-dev">
     <output-path>$PROJECT_DIR$/ktcl-front-mobile/build/libs</output-path>
-    <root id="archive" name="ktcl-front-mobile-js-dev.jar" />
+    <root id="archive" name="ktcl-front-mobile-js-dev.jar">
+      <element id="module-output" name="keruta.ktcl-front-mobile.jsMain" />
+    </root>
   </artifact>
 </component>

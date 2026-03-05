@@ -1,20 +1,19 @@
-FROM eclipse-temurin:25.0.1_8-jdk-noble AS builder
+FROM eclipse-temurin:25-jdk-noble AS builder
 
 WORKDIR /app
+COPY settings.gradle.kts gradle.properties build.gradle.kts gradlew /app/
 COPY buildSrc /app/buildSrc
 COPY gradle /app/gradle
 COPY kodel /app/kodel
-COPY ktcl-claudecode /app/ktcl-claudecode
-COPY ktcl-k8s /app/ktcl-k8s
+RUN --mount=type=cache,target=/root/.gradle ./gradlew compileKotlinJvm -x allTests
 COPY ktcp /app/ktcp
+RUN --mount=type=cache,target=/root/.gradle ./gradlew ktcp:server:compileKotlinJvm -x allTests
 COPY ktse /app/ktse
-COPY ktcl /app/ktcl
-COPY settings.gradle.kts gradle.properties build.gradle.kts gradlew /app/
-RUN --mount=type=cache,target=/root/.gradle ./gradlew :ktse:build -x test
+RUN --mount=type=cache,target=/root/.gradle ./gradlew :ktse:shadowJar -x test
 
-FROM eclipse-temurin:25.0.1_8-jdk-noble
+FROM eclipse-temurin:25-jdk-noble
 
-COPY --from=builder /app/ktse/build/libs/ktse-all.jar /app/app.jar
+COPY --from=builder /app/ktse/build/libs/ktse.jar /app/app.jar
 WORKDIR /work
 ENTRYPOINT ["java"]
 CMD ["-jar","/app/app.jar"]
