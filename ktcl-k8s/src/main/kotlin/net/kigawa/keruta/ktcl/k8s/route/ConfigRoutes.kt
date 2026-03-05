@@ -53,8 +53,8 @@ class ConfigRoutes(
             }
             get("jwks.json") {
                 val jwksJson = jwksJsonGenerator.generate(privateKey)
-                call.respondText(
-                    jwksJson, contentType = ContentType.Application.Json
+                call.respond(
+                    jwksJson
                 )
             }
         }

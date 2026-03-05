@@ -6,7 +6,6 @@ import com.nimbusds.jose.jwk.KeyUse
 import com.nimbusds.jose.jwk.RSAKey
 import net.kigawa.keruta.ktcp.base.auth.key.JavaPrivateKeyInitializer
 import net.kigawa.keruta.ktcp.model.auth.key.KerutaPrivateKey
-import net.kigawa.keruta.ktcp.model.serialize.JsonString
 import java.security.KeyFactory
 import java.security.KeyPair
 import java.security.interfaces.RSAPrivateKey
@@ -20,7 +19,7 @@ actual class NimbusdsJwksGenerator(
     private val javaPrivateKeyInitializer: JavaPrivateKeyInitializer,
 ): NimbusdsJwksGeneratorBase() {
 
-    actual override fun platformGenerate(key: KerutaPrivateKey): JsonString {
+    actual override fun platformGenerate(key: KerutaPrivateKey): Map<String?, Any?> {
         val privateKey = javaPrivateKeyInitializer.initialize(key)
 
         val kf = KeyFactory.getInstance("RSA")
@@ -39,7 +38,7 @@ actual class NimbusdsJwksGenerator(
 
         // toJSONObject(true) の引数 true は「公開鍵のみ（public only）」という意味
         // これを忘れると秘密鍵が漏洩するリスクがあるため、.toPublicJWKSet() を使うのがより安全です
-        return jwkSet.toPublicJWKSet().toJSONObject().toString()
+        return jwkSet.toPublicJWKSet().toJSONObject()
     }
 
 }
