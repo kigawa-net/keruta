@@ -1,9 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="dev local" type="CompoundRunConfigurationType">
-    <toRun name="dev" type="docker-deploy" />
-    <toRun name="local ktcl-k8s " type="KtorApplicationConfigurationType" />
-    <toRun name="local ktse " type="KtorApplicationConfigurationType" />
-    <toRun name="local ktcl-front" type="js.build_tools.npm" />
-    <method v="2" />
-  </configuration>
-</component>

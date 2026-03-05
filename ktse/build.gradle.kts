@@ -2,7 +2,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 
 plugins {
-//    id("io.ktor.plugin") version Version.KTOR
     kotlin("jvm")
     id("com.gradleup.shadow")
     kotlin("plugin.serialization")

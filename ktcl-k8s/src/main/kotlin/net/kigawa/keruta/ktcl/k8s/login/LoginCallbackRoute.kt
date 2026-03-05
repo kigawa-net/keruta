@@ -21,6 +21,7 @@ import java.io.InvalidObjectException
 class LoginCallbackRoute(
     private val oidcDiscoveryFetcher: OidcDiscoveryFetcher = OidcDiscoveryFetcher(),
     private val userTokenDao: UserTokenDao,
+    private val providerRegistrationClient: ProviderRegistrationClient,
 ) {
     private val logger = getKogger()
     private val remoteConfigProvider = RemoteConfigProvider(oidcDiscoveryFetcher)
@@ -104,6 +105,13 @@ class LoginCallbackRoute(
             }
 
             logger.info("Login successful for user: $userId, redirecting to home page")
+
+            // ktse にプロバイダーを登録
+            providerRegistrationClient.register(
+                registerToken = oidcSession.registerToken,
+                code = code,
+                redirectUri = oidcSession.redirectUri,
+            )
 
             // フロントエンドにリダイレクト
             call.respondRedirect("/")
