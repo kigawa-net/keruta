@@ -1,5 +1,6 @@
 package net.kigawa.keruta.ktcl.k8s.login
 
+import com.auth0.jwt.JWT
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.websocket.*
@@ -9,19 +10,23 @@ import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import net.kigawa.keruta.ktcl.k8s.auth.OidcTokenProvider
 import net.kigawa.keruta.ktcl.k8s.config.KtseConfig
+import net.kigawa.keruta.ktcp.base.auth.key.Auth0AlgorithmInitializer
+import net.kigawa.keruta.ktcp.model.auth.key.PrivateKey
 import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestMsg
 import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
 import net.kigawa.keruta.ktcp.model.provider.complete.ServerProviderCompleteMsg
 import net.kigawa.keruta.ktcp.model.serialize.serialize
 import net.kigawa.keruta.ktcp.usecase.JsonKerutaSerializer
 import net.kigawa.kodel.api.log.getKogger
+import java.security.PEMDecoder
+import java.util.*
 import kotlin.time.Duration.Companion.seconds
 
 class ProviderRegistrationClient(
     private val ktseConfig: KtseConfig,
-    private val oidcTokenProvider: OidcTokenProvider,
+    private val privateKey: PrivateKey,
+    private val issuer: String,
 ) {
     private val logger = getKogger()
     private val serializer = JsonKerutaSerializer()
@@ -30,9 +35,10 @@ class ProviderRegistrationClient(
         registerToken: String,
         code: String,
         redirectUri: String,
+        userToken: String,
     ) {
-        val (userToken, serverToken) = try {
-            oidcTokenProvider.getTokens()
+        val serverToken = try {
+            createServerToken(userToken)
         } catch (e: Exception) {
             logger.severe("Failed to get OIDC tokens for ktse provider registration: ${e.message}")
             return
@@ -75,6 +81,19 @@ class ProviderRegistrationClient(
         } catch (e: Exception) {
             logger.severe("Failed to register provider in ktse: ${e.message}")
         }
+    }
+
+    private fun createServerToken(userToken: String): String {
+        val subject = JWT.decode(userToken).subject
+        val key = PEMDecoder.of()
+            .decode(privateKey.strKey, java.security.PrivateKey::class.java)
+        val algorithm = Auth0AlgorithmInitializer().initPrivateKey(key)
+        return JWT.create()
+            .withIssuer(issuer)
+            .withAudience(ktseConfig.providerAudience)
+            .withSubject(subject)
+            .withExpiresAt(Date(System.currentTimeMillis() + 3_600_000))
+            .sign(algorithm)
     }
 
     private fun parseType(text: String): String? {

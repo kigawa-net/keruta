@@ -111,6 +111,7 @@ class LoginCallbackRoute(
                 registerToken = oidcSession.registerToken,
                 code = code,
                 redirectUri = oidcSession.redirectUri,
+                userToken = tokenResponse.accessToken,
             )
 
             // フロントエンドにリダイレクト

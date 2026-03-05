@@ -8,7 +8,6 @@ import net.kigawa.keruta.ktcl.k8s.auth.OidcDiscoveryFetcher
 import net.kigawa.keruta.ktcl.k8s.auth.PkceGenerator
 import net.kigawa.keruta.ktcl.k8s.auth.RemoteConfigProvider
 import net.kigawa.keruta.ktcl.k8s.config.AppConfig
-import net.kigawa.keruta.ktcl.k8s.auth.OidcTokenProvider
 import net.kigawa.keruta.ktcl.k8s.login.LoginCallbackRoute
 import net.kigawa.keruta.ktcl.k8s.login.LoginRoute
 import net.kigawa.keruta.ktcl.k8s.login.ProviderRegistrationClient
@@ -30,8 +29,11 @@ class RouteModule(
 
     fun configure(application: Application) {
         val appConfig = AppConfig.load(application.environment.config)
-        val oidcTokenProvider = OidcTokenProvider(OidcTokenProvider.fromEnvironment())
-        val providerRegistrationClient = ProviderRegistrationClient(appConfig.ktse, oidcTokenProvider)
+        val providerRegistrationClient = ProviderRegistrationClient(
+            ktseConfig = appConfig.ktse,
+            privateKey = appConfig.auth.privateKey,
+            issuer = appConfig.keruta.ownIssuer.toStrUrl(),
+        )
         val loginCallbackRoute = LoginCallbackRoute(oidcDiscoveryFetcher, userTokenDao, providerRegistrationClient)
         val idpConfig = appConfig.idp
         val keycloakConfig = remoteConfigProvider.loadKeycloakConfig(idpConfig.issuer, idpConfig.clientId)
