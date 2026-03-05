@@ -1,11 +1,16 @@
 plugins {
     id("jvm")
-    id("ktor-server")
     kotlin("plugin.serialization")
     id("io.ktor.plugin") version Version.KTOR
+    id("com.gradleup.shadow")
     application
 }
 
+tasks.shadowJar {
+    archiveFileName = "ktcl-k8s.jar"
+    mergeServiceFiles()
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
 application {
     mainClass.set("net.kigawa.keruta.ktcl.k8s.Main")
 }
