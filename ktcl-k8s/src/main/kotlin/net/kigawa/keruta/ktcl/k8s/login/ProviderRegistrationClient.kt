@@ -14,6 +14,7 @@ import net.kigawa.keruta.ktcl.k8s.config.KtseConfig
 import net.kigawa.keruta.ktcp.base.auth.key.Auth0AlgorithmInitializer
 import net.kigawa.keruta.ktcp.base.auth.key.JavaPrivateKeyInitializer
 import net.kigawa.keruta.ktcp.model.auth.key.KerutaPrivateKey
+import net.kigawa.keruta.ktcp.model.msg.client.ClientMsgType
 import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
 import net.kigawa.keruta.ktcp.model.provider.complete.ServerProviderCompleteMsg
 import net.kigawa.keruta.ktcp.model.serialize.serialize
@@ -76,6 +77,13 @@ class ProviderRegistrationClient(
                     )
 
                     logger.info("Provider registration sent to ktse")
+                    withTimeout(30.seconds) {
+                        for (frame in incoming) {
+                            if (frame !is Frame.Text) continue
+                            val type = parseType(frame.readText()) ?: continue
+                            if (type == ClientMsgType.PROVIDER_IDP_ADDED.str) break
+                        }
+                    }
                 }
             }
         } catch (e: Exception) {

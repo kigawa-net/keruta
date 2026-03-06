@@ -58,7 +58,7 @@ class RouteModule(
         )
         val kerutaEndpoints = KerutaEndpoints(appConfig.keruta)
         val loginRoute = LoginRoute(
-            oidcDiscoveryFetcher, pkceGenerator, idpConfig, kerutaEndpoints, authenticationHelper
+            oidcDiscoveryFetcher, pkceGenerator, idpConfig, kerutaEndpoints
         )
         val tokenRoute = TokenRoute(oidcDiscoveryFetcher, idpConfig)
 
