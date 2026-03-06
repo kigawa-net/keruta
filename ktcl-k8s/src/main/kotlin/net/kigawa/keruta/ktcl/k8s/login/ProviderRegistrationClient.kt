@@ -15,7 +15,6 @@ import net.kigawa.keruta.ktcp.base.auth.key.Auth0AlgorithmInitializer
 import net.kigawa.keruta.ktcp.base.auth.key.JavaPrivateKeyInitializer
 import net.kigawa.keruta.ktcp.model.auth.key.KerutaPrivateKey
 import net.kigawa.keruta.ktcp.model.msg.client.ClientMsgType
-import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
 import net.kigawa.keruta.ktcp.model.provider.complete.ServerProviderCompleteMsg
 import net.kigawa.keruta.ktcp.model.serialize.serialize
 import net.kigawa.keruta.ktcp.usecase.JsonKerutaSerializer
@@ -55,14 +54,6 @@ class ProviderRegistrationClient(
                     port = ktseConfig.port,
                     path = "/ws/ktcp",
                 ) {
-                    withTimeout(30.seconds) {
-                        for (frame in incoming) {
-                            if (frame !is Frame.Text) continue
-                            val type = parseType(frame.readText()) ?: continue
-                            if (type == ServerMsgType.AUTH_SUCCESS.str) break
-                        }
-                    }
-
                     send(
                         serializer.serialize(
                             ServerProviderCompleteMsg(
