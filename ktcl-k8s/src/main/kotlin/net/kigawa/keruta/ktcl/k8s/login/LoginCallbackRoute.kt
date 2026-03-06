@@ -156,6 +156,7 @@ class LoginCallbackRoute(
         }
 
         return client.use { client ->
+            logger.info("Exchanging code for token: $code, redirectUri: $redirectUri, clientId: $clientId, codeVerifier: $codeVerifier")
             val response = client.submitForm(
                 url = tokenEndpoint,
                 formParameters = parameters {
@@ -167,7 +168,9 @@ class LoginCallbackRoute(
                 }
             )
 
-            response.body<TokenResponse>()
+            response.body<TokenResponse>().also {
+                logger.info("Token response: $it")
+            }
         }
     }
 }
