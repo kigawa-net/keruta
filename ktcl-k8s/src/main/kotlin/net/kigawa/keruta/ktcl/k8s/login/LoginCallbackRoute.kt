@@ -108,10 +108,8 @@ class LoginCallbackRoute(
 
             // ktse にプロバイダーを登録
             providerRegistrationClient.register(
-                registerToken = oidcSession.registerToken,
-                code = code,
-                redirectUri = oidcSession.redirectUri,
                 userToken = tokenResponse.accessToken,
+                oidcSession = oidcSession,
             )
 
             // フロントエンドにリダイレクト

@@ -11,7 +11,7 @@ import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.err.ok
 
 class Auth0UnverifiedTokenWithKey(
-    val unverifiedToken: Auth0UnverifiedToken, val algorithm: Algorithm,
+    override val unverifiedToken: Auth0UnverifiedToken, val algorithm: Algorithm,
 ): UnverifiedTokenWithKey {
     override fun verify(
         verifyValues: JwtVerifyValues,

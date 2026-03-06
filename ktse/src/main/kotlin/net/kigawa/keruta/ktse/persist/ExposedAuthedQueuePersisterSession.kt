@@ -14,12 +14,12 @@ class ExposedAuthedQueuePersisterSession(
 ): AuthedQueuePersisterSession {
 
     val dbPersister by session::dbPersister
-    val user by session::user
+    val verifyTables by session::verifyTables
     override fun createQueue(
         msg: ServerQueueCreateMsg,
     ): Res<PersistedQueue, KtcpErr> = dbPersister.execTransaction {
         val provider = when (
-            val res = it.provider.findByUserAndId(user, msg.providerId)
+            val res = it.provider.findByUserAndId(verifyTables.user, msg.providerId)
         ) {
             is Res.Err -> return@execTransaction res.convert()
             is Res.Ok -> res.value
@@ -27,7 +27,7 @@ class ExposedAuthedQueuePersisterSession(
         }
         val queue = when (
             val res = it.queue.createQueue(
-                QueueToCreate(msg), provider, user
+                QueueToCreate(msg), provider, verifyTables.user
             )
         ) {
             is Res.Err -> return@execTransaction res.convert()
@@ -37,12 +37,12 @@ class ExposedAuthedQueuePersisterSession(
     }
 
     override fun getQueues(): Res<List<PersistedQueue>, KtcpErr> = dbPersister.execTransaction {
-        it.queue.getAll(user)
+        it.queue.getAll(verifyTables.user)
     }
 
     override fun getQueue(
         input: ServerQueueShowMsg,
     ): Res<PersistedQueue, KtcpErr> = dbPersister.execTransaction {
-        it.queue.findByUserAndId(user, input.id)
+        it.queue.findByUserAndId(verifyTables.user, input.id)
     }
 }

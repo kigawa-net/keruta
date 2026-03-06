@@ -32,7 +32,7 @@ class SessionAuthenticator(
         }
         return Res.Ok(
             AuthenticatedSession(
-                persisterSession.auth(verifyTables.user, verifyTables.provider),
+                persisterSession.auth(verifyTables),
                 session
             )
         )

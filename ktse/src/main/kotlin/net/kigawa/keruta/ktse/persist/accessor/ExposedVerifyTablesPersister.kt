@@ -1,12 +1,17 @@
 package net.kigawa.keruta.ktse.persist.accessor
 
+import net.kigawa.keruta.ktcp.model.auth.jwt.VerifiedToken
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.server.auth.UnverifiedAuthTokens
 import net.kigawa.keruta.ktcp.server.auth.VerifiedAuthToken
 import net.kigawa.keruta.ktcp.server.auth.VerifyTablesPersister
+import net.kigawa.keruta.ktcp.server.persist.PersistedProvider
+import net.kigawa.keruta.ktcp.server.persist.PersistedUser
+import net.kigawa.keruta.ktcp.server.persist.PersistedUserIdp
 import net.kigawa.keruta.ktcp.server.persist.PersistedVerifyTables
 import net.kigawa.keruta.ktse.persist.db.DbPersister
 import net.kigawa.kodel.api.err.Res
+import net.kigawa.kodel.api.net.Url
 
 class ExposedVerifyTablesPersister(
     val dbPersister: DbPersister,
@@ -20,6 +25,23 @@ class ExposedVerifyTablesPersister(
             token.provider.issuer, token.provider.audience, providerName
         )
     }
+
+    override fun getUserTables(
+        issuer: Url, subject: String,
+    ): Res<Pair<PersistedUser, PersistedUserIdp>, KtcpErr> = dbPersister.execTransaction {
+        it.findUserTables(issuer, subject)
+    }
+
+    override fun saveProviderForUser(
+        user: PersistedUser, providerToken: VerifiedToken, providerAudience: String,
+        userAudience: String,
+        providerName: String,
+    ): Res<PersistedProvider, KtcpErr> = dbPersister.execTransaction {
+        it.insertProviderForUser(
+            user, providerToken.issuer, providerAudience,providerName,providerToken.subject
+        )
+    }
+
 
     override fun getVerifyTables(
         unverifiedTokens: UnverifiedAuthTokens,

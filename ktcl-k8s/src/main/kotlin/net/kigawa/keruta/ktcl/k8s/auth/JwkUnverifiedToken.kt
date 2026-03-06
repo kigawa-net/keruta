@@ -40,7 +40,7 @@ class JwkUnverifiedToken(
                 keyFactory.getKeySpec(privateKey, X509EncodedKeySpec::class.java).encoded
             ).let { keyFactory.generatePublic(it) }
 
-            JwkUnverifiedTokenWithKey(decodedJwt, publicKey as RSAPublicKey).ok()
+            JwkUnverifiedTokenWithKey(decodedJwt, publicKey as RSAPublicKey, this).ok()
         } catch (e: Exception) {
             VerifyErr("with_key_failed", e.message, e).err()
         }
@@ -49,7 +49,7 @@ class JwkUnverifiedToken(
     override suspend fun withOidcConfig(): Res<UnverifiedTokenWithOidc, KtcpErr> {
         return try {
             OidcDiscoveryFetcher().fetchByIssuer(URI(decodedJwt.issuer))
-            JwkOidcToken(decodedJwt, jwkProvider).ok()
+            JwkOidcToken(decodedJwt, jwkProvider, this).ok()
         } catch (e: Exception) {
             VerifyErr("oidc_discovery_failed", e.message, e).err()
         }
@@ -59,7 +59,7 @@ class JwkUnverifiedToken(
         return try {
             val jwk = jwkProvider.get(decodedJwt.keyId)
             val publicKey = jwk.publicKey as RSAPublicKey
-            JwkUnverifiedTokenWithKey(decodedJwt, publicKey).ok()
+            JwkUnverifiedTokenWithKey(decodedJwt, publicKey,this).ok()
         } catch (e: Exception) {
             VerifyErr("jwk_fetch_failed", e.message, e).err()
         }

@@ -7,10 +7,13 @@ import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
 @Serializable
 data class ServerProviderCompleteMsg(
     override val type: ServerMsgType = ServerMsgType.PROVIDER_COMPLETE,
-    val token: String,
-    val code: String,
-    val redirectUri: String,
-) : ServerMsg {
+    val registerToken: String,
+    val userToken: String,
+    val serverToken: String,
+    val userAudience: String,
+    val providerAudience: String,
+    val providerName: String,
+): ServerMsg {
     init {
         require(type == ServerMsgType.PROVIDER_COMPLETE) { "type must be PROVIDER_COMPLETE" }
     }

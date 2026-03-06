@@ -8,7 +8,6 @@ import net.kigawa.keruta.ktcp.model.auth.AuthToken
 import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifyValues
 import net.kigawa.keruta.ktcp.model.auth.jwt.UnverifiedToken
 import net.kigawa.keruta.ktcp.model.auth.jwt.VerifyErr
-import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifier as KtcpJwtVerifier
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.err.err
@@ -16,6 +15,7 @@ import net.kigawa.kodel.api.err.ok
 import net.kigawa.kodel.api.log.LoggerFactory
 import net.kigawa.kodel.api.net.Url
 import java.security.interfaces.RSAPublicKey
+import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifier as KtcpJwtVerifier
 
 class JwtVerifier(
     val jwkProvider: JwkProvider,
@@ -23,7 +23,7 @@ class JwtVerifier(
 ) : KtcpJwtVerifier {
     private val logger = LoggerFactory.get("JwtVerifier")
 
-    override fun createToken(): Res<AuthToken, KtcpErr> =
+    override fun createToken(jwtVerifyValues: JwtVerifyValues): Res<AuthToken, KtcpErr> =
         Res.Err(VerifyErr("not_supported", "Token creation is not supported in web JwtVerifier", null))
 
     override fun decodeUnverified(userToken: AuthToken): Res<UnverifiedToken, VerifyErr> {

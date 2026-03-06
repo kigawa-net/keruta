@@ -25,9 +25,7 @@ import net.kigawa.keruta.ktse.ReceiveUnknownArg
 import net.kigawa.keruta.ktse.WebsocketConnection
 import net.kigawa.keruta.ktse.auth.Auth0AuthTokenDecoder
 import net.kigawa.keruta.ktse.auth.KtseJwtVerifier
-import net.kigawa.keruta.ktse.auth.keruta.KerutaJsonProvider
 import net.kigawa.keruta.ktse.persist.ExposedPersisterSession
-import net.kigawa.keruta.ktse.persist.ProviderCompleteHandler
 import net.kigawa.keruta.ktse.persist.ProviderDeleteHandler
 import net.kigawa.keruta.ktse.persist.db.DbPersister
 import net.kigawa.keruta.ktse.websocket.entrypoint.ReceiveProviderCompleteEntrypoint
@@ -48,7 +46,6 @@ class KtorWebsocketModule(application: Application, val server: KerutaTaskServer
     val dbPersister = DbPersister(ktseConfig)
     val jwksProvider = JwksProvider()
     val oidcConfigProvider = OidcConfigProvider(httpClient)
-    val kerutaJsonProvider = KerutaJsonProvider(httpClient)
     private val javaPrivateKeyInitializer = JavaPrivateKeyInitializer()
     private val auth0AlgorithmInitializer = Auth0AlgorithmInitializer()
     val auth0JwtVerifier = Auth0JwtVerifier(
@@ -57,17 +54,14 @@ class KtorWebsocketModule(application: Application, val server: KerutaTaskServer
     val jwtVerifier = KtseJwtVerifier(
         auth0JwtVerifier = auth0JwtVerifier,
         jwtSecret = ktseConfig.jwtSecret,
-        issuer = ktseConfig.defaultProviderIdp.issuer.toStrUrl(),
-        audience = ktseConfig.defaultProviderIdp.audience,
     )
     val authTokenDecoder = Auth0AuthTokenDecoder(auth0JwtVerifier)
-    val providerCompleteHandler = ProviderCompleteHandler(dbPersister, kerutaJsonProvider, httpClient)
-    val providerDeleteHandler = ProviderDeleteHandler(dbPersister)
+    val providerDeleteHandler = ProviderDeleteHandler()
     val ktcpServer = KtcpServer(
         ReceiveProviderIssueTokenEntrypoint(),
-        ReceiveProviderCompleteEntrypoint(providerCompleteHandler),
+        ReceiveProviderCompleteEntrypoint(),
         ReceiveProviderDeleteEntrypoint(providerDeleteHandler),
-        jwtVerifier,
+        jwtVerifier,serializer
     )
 
     init {
@@ -84,7 +78,8 @@ class KtorWebsocketModule(application: Application, val server: KerutaTaskServer
         KtcpSession.startSession(
             WebsocketConnection(this@webSocket, ktcpServer),
             ExposedPersisterSession(dbPersister), authTokenDecoder, dbPersister.verifyTablesPersister,
-            ktseConfig.defaultUserIdp, ktseConfig.defaultProviderIdp
+            ktseConfig.defaultUserIdp, ktseConfig.defaultProviderIdp,
+            ktseConfig.jwtSecret
         ) { session ->
             consumeWs(session)
         }

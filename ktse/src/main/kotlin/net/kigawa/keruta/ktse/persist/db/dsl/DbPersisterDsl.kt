@@ -1,6 +1,8 @@
 package net.kigawa.keruta.ktse.persist.db.dsl
 
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
+import net.kigawa.keruta.ktcp.server.persist.PersistedUser
+import net.kigawa.keruta.ktcp.server.persist.PersistedUserIdp
 import net.kigawa.keruta.ktcp.server.persist.PersistedVerifyTables
 import net.kigawa.keruta.ktse.err.NoSingleRecordErr
 import net.kigawa.keruta.ktse.persist.db.table.ProviderTable
@@ -68,7 +70,7 @@ class DbPersisterDsl(val transaction: Transaction) {
 
 
     fun insertProviderForUser(
-        user: net.kigawa.keruta.ktcp.server.persist.PersistedUser,
+        user: PersistedUser,
         providerIssuer: Url,
         providerAudience: String,
         providerName: String,
@@ -94,9 +96,25 @@ class DbPersisterDsl(val transaction: Transaction) {
         return Res.Ok(provider)
     }
 
+    fun findUserTables(issuer: Url, subject: String): Res<Pair<PersistedUser, PersistedUserIdp>, KtcpErr> = UserTable.join(UserIdpTable, JoinType.INNER)
+        .join(
+            ProviderTable, JoinType.INNER, additionalConstraint = {
+                UserIdpTable.providerId eq ProviderTable.id and (UserTable.id eq ProviderTable.userId)
+            }
+        ).select(UserTable.fields + UserIdpTable.fields).where {
+            (UserIdpTable.issuer eq issuer.toStrUrl()) and (UserIdpTable.subject eq subject)
+        }.distinct().singleOrNull()
+        ?.let {
+            val idp = ExposedPersistedUserIdp(it)
+            Pair(
+                ExposedPersistedUser(it),
+                idp
+            )
+        }?.let { Res.Ok(it) }
+        ?: Res.Err(NoSingleRecordErr("", null))
+
     val task by lazy { DbTaskPersisterDsl(transaction) }
     val user by lazy { DbUserPersisterDsl() }
     val provider by lazy { DbProviderPersisterDsl(transaction) }
     val queue by lazy { DbQueuePersisterDsl(transaction) }
-    val providerAddToken by lazy { DbProviderAddTokenDsl(transaction) }
 }

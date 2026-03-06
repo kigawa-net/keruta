@@ -4,6 +4,7 @@ import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.kodel.api.err.Res
 
 interface AuthenticatedPersisterSession {
+    val verifyTables: PersistedVerifyTables
     val task: AuthedTaskPersisterSession
     val queue: AuthedQueuePersisterSession
     fun getProviders(): Res<List<PersistedProvider>, KtcpErr>

@@ -14,7 +14,6 @@ import net.kigawa.keruta.ktcl.k8s.config.KtseConfig
 import net.kigawa.keruta.ktcp.base.auth.key.Auth0AlgorithmInitializer
 import net.kigawa.keruta.ktcp.base.auth.key.JavaPrivateKeyInitializer
 import net.kigawa.keruta.ktcp.model.auth.key.KerutaPrivateKey
-import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestMsg
 import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
 import net.kigawa.keruta.ktcp.model.provider.complete.ServerProviderCompleteMsg
 import net.kigawa.keruta.ktcp.model.serialize.serialize
@@ -33,10 +32,8 @@ class ProviderRegistrationClient(
     private val serializer = JsonKerutaSerializer()
 
     suspend fun register(
-        registerToken: String,
-        code: String,
-        redirectUri: String,
         userToken: String,
+        oidcSession: OidcSession,
     ) {
         val serverToken = try {
             createServerToken(userToken)
@@ -57,11 +54,6 @@ class ProviderRegistrationClient(
                     port = ktseConfig.port,
                     path = "/ws/ktcp",
                 ) {
-                    send(serializer.serialize(ServerAuthRequestMsg(
-                        userToken = userToken,
-                        serverToken = serverToken,
-                    )))
-
                     withTimeout(30.seconds) {
                         for (frame in incoming) {
                             if (frame !is Frame.Text) continue
@@ -70,11 +62,18 @@ class ProviderRegistrationClient(
                         }
                     }
 
-                    send(serializer.serialize(ServerProviderCompleteMsg(
-                        token = registerToken,
-                        code = code,
-                        redirectUri = redirectUri,
-                    )))
+                    send(
+                        serializer.serialize(
+                            ServerProviderCompleteMsg(
+                                registerToken = oidcSession.registerToken,
+                                userToken = userToken,
+                                serverToken = serverToken,
+                                userAudience = oidcSession.clientId,
+                                providerAudience = ktseConfig.providerAudience,
+                                providerName = "keruta-k8s",
+                            )
+                        )
+                    )
 
                     logger.info("Provider registration sent to ktse")
                 }

@@ -6,14 +6,11 @@ import net.kigawa.keruta.ktcp.model.provider.deleted.ClientProviderDeletedMsg
 import net.kigawa.keruta.ktcp.model.serialize.serialize
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktcp.server.err.UnauthenticatedErr
-import net.kigawa.keruta.ktse.persist.db.DbPersister
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.getKogger
 import net.kigawa.kodel.api.log.traceignore.debug
 
-class ProviderDeleteHandler(
-    val dbPersister: DbPersister,
-) {
+class ProviderDeleteHandler {
     private val logger = getKogger()
 
     suspend fun handle(msg: ServerProviderDeleteMsg, ctx: ServerCtx): Res<Unit, KtcpErr> {

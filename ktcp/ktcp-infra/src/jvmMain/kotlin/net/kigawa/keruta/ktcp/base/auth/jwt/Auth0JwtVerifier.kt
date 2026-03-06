@@ -8,6 +8,7 @@ import net.kigawa.keruta.ktcp.base.auth.key.JavaPrivateKeyInitializer
 import net.kigawa.keruta.ktcp.base.auth.oidc.OidcConfigProvider
 import net.kigawa.keruta.ktcp.model.auth.AuthToken
 import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifier
+import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifyValues
 import net.kigawa.keruta.ktcp.model.auth.jwt.UnverifiedToken
 import net.kigawa.keruta.ktcp.model.auth.jwt.VerifyErr
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
@@ -21,7 +22,7 @@ class Auth0JwtVerifier(
     private val javaPrivateKeyInitializer: JavaPrivateKeyInitializer,
 ): JwtVerifier {
 
-    override fun createToken(): Res<AuthToken, KtcpErr> =
+    override fun createToken(jwtVerifyValues: JwtVerifyValues): Res<AuthToken, KtcpErr> =
         Res.Err(VerifyFailErr("Token creation is not supported in Auth0JwtVerifier", null))
 
     override fun decodeUnverified(

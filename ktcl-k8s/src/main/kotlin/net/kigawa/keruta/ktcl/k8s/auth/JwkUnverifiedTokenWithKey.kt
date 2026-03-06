@@ -3,10 +3,7 @@ package net.kigawa.keruta.ktcl.k8s.auth
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.interfaces.DecodedJWT
-import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifyValues
-import net.kigawa.keruta.ktcp.model.auth.jwt.UnverifiedTokenWithKey
-import net.kigawa.keruta.ktcp.model.auth.jwt.VerifiedToken
-import net.kigawa.keruta.ktcp.model.auth.jwt.VerifyErr
+import net.kigawa.keruta.ktcp.model.auth.jwt.*
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.err.err
@@ -16,6 +13,7 @@ import java.security.interfaces.RSAPublicKey
 class JwkUnverifiedTokenWithKey(
     private val decodedJwt: DecodedJWT,
     private val publicKey: RSAPublicKey,
+    override val unverifiedToken: UnverifiedToken,
 ) : UnverifiedTokenWithKey {
     override fun verify(verifyValues: JwtVerifyValues): Res<VerifiedToken, KtcpErr> {
         return try {

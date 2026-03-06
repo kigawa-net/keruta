@@ -28,7 +28,6 @@ class Auth0UnverifiedToken(
     val auth0AlgorithmInitializer: Auth0AlgorithmInitializer,
     val javaPrivateKeyInitializer: JavaPrivateKeyInitializer,
 ): UnverifiedToken {
-
     override val subject: String by decode::subject
     override val issuer: Url get() = Url.parse(decode.issuer)
     val keyId: String? get() = decode.keyId

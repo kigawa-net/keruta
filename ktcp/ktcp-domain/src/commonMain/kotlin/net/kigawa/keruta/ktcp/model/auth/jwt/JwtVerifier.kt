@@ -6,5 +6,5 @@ import net.kigawa.kodel.api.err.Res
 
 interface JwtVerifier {
     fun decodeUnverified(userToken: AuthToken): Res<UnverifiedToken, VerifyErr>
-    fun createToken(): Res<AuthToken, KtcpErr>
+    fun createToken(jwtVerifyValues: JwtVerifyValues): Res<AuthToken, KtcpErr>
 }

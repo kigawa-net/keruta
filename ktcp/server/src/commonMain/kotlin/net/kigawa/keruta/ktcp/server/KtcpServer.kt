@@ -6,6 +6,7 @@ import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifier
 import net.kigawa.keruta.ktcp.model.provider.add.ServerProviderIssueTokenEntrypoint
 import net.kigawa.keruta.ktcp.model.provider.complete.ServerProviderCompleteEntrypoint
 import net.kigawa.keruta.ktcp.model.provider.delete.ServerProviderDeleteEntrypoint
+import net.kigawa.keruta.ktcp.model.serialize.KerutaSerializer
 import net.kigawa.keruta.ktcp.server.auth.ReceiveAuthRequestEntrypoint
 import net.kigawa.keruta.ktcp.server.auth.success.SendAuthSuccessEntrypoint
 import net.kigawa.keruta.ktcp.server.provider.*
@@ -17,6 +18,7 @@ class KtcpServer(
     providerCompleteEntrypoint: ServerProviderCompleteEntrypoint<ServerCtx>,
     providerDeleteEntrypoint: ServerProviderDeleteEntrypoint<ServerCtx>,
     val jwtVerifier: JwtVerifier,
+    val serializer: KerutaSerializer
 ) {
 
     val ktcpServerEntrypoints = KtcpServerEntrypoints(

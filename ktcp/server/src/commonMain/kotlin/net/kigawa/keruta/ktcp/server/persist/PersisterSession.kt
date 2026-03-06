@@ -4,5 +4,5 @@ import net.kigawa.keruta.ktcp.server.auth.VerifyTablesPersister
 
 interface PersisterSession {
     val verifyTablesPersister: VerifyTablesPersister
-    fun auth(user: PersistedUser, provider: PersistedProvider): AuthenticatedPersisterSession
+    fun auth(persistedVerifyTables: PersistedVerifyTables): AuthenticatedPersisterSession
 }
