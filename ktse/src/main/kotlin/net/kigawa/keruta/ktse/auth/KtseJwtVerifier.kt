@@ -1,9 +1,10 @@
 package net.kigawa.keruta.ktse.auth
 
 import com.auth0.jwt.JWT
-import com.auth0.jwt.algorithms.Algorithm
 import net.kigawa.keruta.ktcp.base.auth.VerifyFailErr
 import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
+import net.kigawa.keruta.ktcp.base.auth.key.Auth0AlgorithmInitializer
+import net.kigawa.keruta.ktcp.base.auth.key.JavaPrivateKeyInitializer
 import net.kigawa.keruta.ktcp.model.auth.AuthToken
 import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifier
 import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifyValues
@@ -17,13 +18,17 @@ import java.util.*
 class KtseJwtVerifier(
     private val auth0JwtVerifier: Auth0JwtVerifier,
     private val jwtSecret: KerutaPrivateKey,
-) : JwtVerifier {
+    val auth0AlgorithmInitializer: Auth0AlgorithmInitializer,
+    val javaPrivateKeyInitializer: JavaPrivateKeyInitializer,
+): JwtVerifier {
 
     override fun decodeUnverified(userToken: AuthToken): Res<UnverifiedToken, VerifyErr> =
         auth0JwtVerifier.decodeUnverified(userToken)
 
     override fun createToken(jwtVerifyValues: JwtVerifyValues): Res<AuthToken, KtcpErr> = try {
-        val algorithm = Algorithm.HMAC256(jwtSecret.strKey)
+        val algorithm = auth0AlgorithmInitializer.initPrivateKey(
+            javaPrivateKeyInitializer.initialize(jwtSecret)
+        )
         val token = JWT.create()
             .withIssuer(jwtVerifyValues.issuer.toStrUrl())
             .withAudience(jwtVerifyValues.audience)
