@@ -26,7 +26,7 @@ class Auth0UnverifiedTokenWithKey(
             .let { Auth0VerifiedToken(it) }
             .ok()
     } catch (e: Exception) {
-        return Res.Err(VerifyFailErr("", e))
+        return Res.Err(VerifyFailErr("decoded: $unverifiedToken", e))
     }
 
 }

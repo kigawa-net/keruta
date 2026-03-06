@@ -54,12 +54,8 @@ class Auth0UnverifiedToken(
             Auth0UnverifiedTokenWithKey(this, it)
         }
 
-
-    val dump
-        get() = Dumper.dump(
-            this::class,
-            ::decode withStr { it.str },
-        )
-
-    override fun toString(): String = dump.str()
+    override fun toString(): String = Dumper.dump(
+        this::class,
+        ::decode withStr { it.str },
+    ).str()
 }
