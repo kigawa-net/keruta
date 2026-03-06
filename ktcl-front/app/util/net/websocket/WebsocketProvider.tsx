@@ -14,26 +14,39 @@ export function WebsocketProvider(
 
     useEffect(() => {
         const ws = Ws.connect(wsUrl)
-        ws.addEventListener("close", () => {
-            handleClose(setWebsocketState, ws)
-        })
-        ws.addEventListener("error", () => {
-            handleError(setWebsocketState, ws)
-        })
-        ws.addEventListener("open", () => {
-            handleOpen(setWebsocketState, ws)
-        })
-        setWebsocketState({state: "loaded", websocket: ws, set: setWebsocketState})
+        setWebsocketState(createWebsocketState(ws, setWebsocketState))
         return () => {
             if (ws.readyState === WebSocket.OPEN) ws.close()
         }
     }, [wsUrl]);
+    useEffect(() => {
+        if (WebsocketState.state === "loaded") return;
+        if (WebsocketState.state === "open") return;
+        const timeout = setTimeout(() => {
+            const ws = Ws.connect(wsUrl)
+            setWebsocketState(createWebsocketState(ws, setWebsocketState))
+        })
+        return () => clearTimeout(timeout)
+    }, [WebsocketState]);
     return <Context.Provider
         value={WebsocketState}
         {...parent}
     >
         {parent.children}
     </Context.Provider>;
+}
+
+function createWebsocketState(ws: WebSocket, setWebsocketState: Dispatch<SetStateAction<WebsocketState>>): WebsocketState {
+    ws.addEventListener("close", () => {
+        handleClose(setWebsocketState, ws)
+    })
+    ws.addEventListener("error", () => {
+        handleError(setWebsocketState, ws)
+    })
+    ws.addEventListener("open", () => {
+        handleOpen(setWebsocketState, ws)
+    })
+    return {state: "loaded", websocket: ws, set: setWebsocketState}
 }
 
 export function useWebsocketState() {
