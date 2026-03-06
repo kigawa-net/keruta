@@ -6,7 +6,6 @@ import net.kigawa.keruta.ktcp.base.auth.key.Auth0AlgorithmInitializer
 import net.kigawa.keruta.ktcp.base.auth.key.JavaPrivateKeyInitializer
 import net.kigawa.keruta.ktcp.base.auth.oidc.KtorUnverifiedTokenWithOidc
 import net.kigawa.keruta.ktcp.base.auth.oidc.OidcConfigProvider
-import net.kigawa.keruta.ktcp.base.auth.str
 import net.kigawa.keruta.ktcp.model.auth.AuthToken
 import net.kigawa.keruta.ktcp.model.auth.jwt.UnverifiedToken
 import net.kigawa.keruta.ktcp.model.auth.jwt.UnverifiedTokenWithKey
@@ -56,6 +55,6 @@ class Auth0UnverifiedToken(
 
     override fun toString(): String = Dumper.dump(
         this::class,
-        ::decode withStr { it.str },
+        ::decode withStr { "DecodedJWT(iss: ${it.issuer}, aud: ${it.audience}, sub: ${it.subject})" },
     ).str()
 }
