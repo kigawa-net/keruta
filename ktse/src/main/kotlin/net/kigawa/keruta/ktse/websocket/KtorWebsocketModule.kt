@@ -54,6 +54,8 @@ class KtorWebsocketModule(application: Application, val server: KerutaTaskServer
     val jwtVerifier = KtseJwtVerifier(
         auth0JwtVerifier = auth0JwtVerifier,
         jwtSecret = ktseConfig.jwtSecret,
+        auth0AlgorithmInitializer = auth0AlgorithmInitializer,
+        javaPrivateKeyInitializer = javaPrivateKeyInitializer,
     )
     val authTokenDecoder = Auth0AuthTokenDecoder(auth0JwtVerifier)
     val providerDeleteHandler = ProviderDeleteHandler()
