@@ -9,13 +9,8 @@ export default function WsStatus(
     const authedKtse = useAuthedKtseState()
     const isConnected = websocket.state == "open"
     return (
-        <div style={{
-            padding: '10px',
-            backgroundColor: isConnected ? '#d4edda' : '#f8d7da',
-            color: isConnected ? '#155724' : '#721c24',
-            borderRadius: '4px',
-        }}>
-            Status: {websocket.state}, {authedKtse.state}
+        <div className={`text-xs md:text-sm px-2 md:px-3 py-1 md:py-2 rounded ${isConnected ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+            <span className="hidden md:inline">Status: </span>{websocket.state}, <span className="hidden md:inline">{authedKtse.state}</span>
         </div>
     )
 }

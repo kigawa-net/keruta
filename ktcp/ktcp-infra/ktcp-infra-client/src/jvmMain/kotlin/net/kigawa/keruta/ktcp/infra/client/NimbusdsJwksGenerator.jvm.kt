@@ -6,11 +6,8 @@ import com.nimbusds.jose.jwk.KeyUse
 import com.nimbusds.jose.jwk.RSAKey
 import net.kigawa.keruta.ktcp.base.auth.key.JavaPrivateKeyInitializer
 import net.kigawa.keruta.ktcp.model.auth.key.KerutaPrivateKey
-import java.security.KeyFactory
-import java.security.KeyPair
 import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
-import java.security.spec.RSAPublicKeySpec
 import java.util.*
 
 
@@ -20,12 +17,8 @@ actual class NimbusdsJwksGenerator(
 ): NimbusdsJwksGeneratorBase() {
 
     actual override fun platformGenerate(key: KerutaPrivateKey): Map<String?, Any?> {
-        val privateKey = javaPrivateKeyInitializer.initialize(key)
+        val keyPair = javaPrivateKeyInitializer.initialize(key)
 
-        val kf = KeyFactory.getInstance("RSA")
-        val pubSpec = RSAPublicKeySpec(privateKey.modulus, privateKey.publicExponent)
-        val pubKey = kf.generatePublic(pubSpec)
-        val keyPair = KeyPair(pubKey, privateKey)
 
         // 2. NimbusのRSAKeyビルダーでJWKを作成
         val jwks = RSAKey.Builder(keyPair.public as RSAPublicKey)

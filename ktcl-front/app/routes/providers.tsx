@@ -64,17 +64,19 @@ export default function AboutRoute() {
     }
 
     return (
-        <div className="max-w-6xl mx-auto p-6">
-            <div className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-bold">プロバイダー一覧</h1>
+        <div className="max-w-6xl mx-auto p-3 md:p-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 md:mb-8">
+                <h1 className="text-2xl md:text-3xl font-bold">プロバイダー一覧</h1>
                 <Link
                     to="/provider/add"
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-center"
                 >
                     プロバイダーを追加
                 </Link>
             </div>
-            <div className="bg-white rounded-lg shadow">
+            
+            {/* デスクトップ: テーブル表示 */}
+            <div className="hidden md:block bg-white rounded-lg shadow overflow-x-auto">
                 <table className="w-full">
                     <thead className="bg-gray-50 border-b">
                     <tr>
@@ -129,6 +131,64 @@ export default function AboutRoute() {
                 </table>
                 {(!providers || providers.length === 0) && (
                     <div className="text-center py-12 text-gray-500">
+                        プロバイダーが登録されていません
+                    </div>
+                )}
+            </div>
+            
+            {/* モバイル: カード表示 */}
+            <div className="md:hidden space-y-4">
+                {providers?.map(p => (
+                    <div key={p.id} className="bg-white rounded-lg shadow border border-gray-200 p-4">
+                        <div className="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 className="text-base font-medium text-gray-900">{p.name}</h3>
+                                <p className="text-sm text-gray-500">ID: {p.id}</p>
+                            </div>
+                            <button
+                                onClick={() => handleDelete(p.id)}
+                                className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm"
+                            >
+                                削除
+                            </button>
+                        </div>
+                        <div className="space-y-2 text-sm">
+                            <div>
+                                <span className="text-gray-500">Issuer: </span>
+                                <span className="text-gray-900 break-all">{p.issuer}</span>
+                            </div>
+                            <div>
+                                <span className="text-gray-500">Audience: </span>
+                                <span className="text-gray-900">{p.audience}</span>
+                            </div>
+                            <div>
+                                <span className="text-gray-500">IDP: </span>
+                                {p.idps.length === 0 ? (
+                                    <span className="text-gray-400">なし</span>
+                                ) : (
+                                    <ul className="mt-1 space-y-1">
+                                        {p.idps.map((idp, i) => (
+                                            <li key={i}>
+                                                <a
+                                                    href={authEndpoints[idp.issuer]
+                                                        ? buildOidcLoginUrl(authEndpoints[idp.issuer], idp.audience)
+                                                        : idp.issuer}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-blue-600 hover:underline"
+                                                >
+                                                    {idp.issuer}
+                                                </a>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                ))}
+                {(!providers || providers.length === 0) && (
+                    <div className="text-center py-12 text-gray-500 bg-white rounded-lg shadow">
                         プロバイダーが登録されていません
                     </div>
                 )}

@@ -46,8 +46,8 @@ export function QueueTaskCreateForm({queueId, onTaskCreated}: QueueTaskCreateFor
     }, [formState, authedKtse]);
 
     return (
-        <div className="bg-white rounded-lg shadow p-6 mb-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">新しいタスクを作成</h2>
+        <div className="bg-white rounded-lg shadow p-4 md:p-6 mb-4 md:mb-6">
+            <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-4">新しいタスクを作成</h2>
             <form className="space-y-4" onSubmit={(event) => {
                 event.preventDefault();
                 setFormState("submitting");
@@ -69,7 +69,7 @@ export function QueueTaskCreateForm({queueId, onTaskCreated}: QueueTaskCreateFor
                 <div className="flex gap-4">
                     <button
                         type="submit"
-                        className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400"
+                        className="flex-1 md:flex-none px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400"
                         disabled={formState === "submitting"}
                     >
                         {formState === "submitting" ? "作成中..." : "タスクを作成"}
