@@ -48,7 +48,7 @@ class LoginCallbackRoute(
 
         val oidcSession = getValidatedOidcSession(call, state) ?: return@get
 
-        logger.info("Processing OIDC callback for issuer: ${oidcSession.issuer}")
+        logger.info("Processing OIDC callback for issuer: ${oidcSession.issuer}, clientId: ${oidcSession.clientId}, redirectUri: ${oidcSession.redirectUri}")
 
         processOidcCallback(call, code, oidcSession)
     }
