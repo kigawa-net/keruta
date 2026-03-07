@@ -20,26 +20,23 @@ class KerutaK8sClient(
         (0 until concurrentCount).map {
             launch {
                 while (isActive) {
-                    val tokenPair = userTokenDao.getFirstToken()
-                    if (tokenPair == null) {
-                        logger.warning { "No refresh token found in DB, retrying in 30s" }
-                        delay(30.seconds)
-                        continue
+                    userTokenDao.getRefreshTokens().forEach {
+                        val (userId, refreshToken) = it
+
+                        val tokenResponse = try {
+                            tokenRefresher.refresh(refreshToken)
+                        } catch (e: Exception) {
+                            logger.severe { "Token refresh failed for user $userId: ${e.message}" }
+                            delay(30.seconds)
+                            return@forEach
+                        }
+
+                        tokenResponse.refreshToken?.let { userTokenDao.saveOrUpdate(userId, it) }
+                        logger.info { "Access token refreshed for user $userId" }
+
+                        // TODO: accessTokenを使ってKTSEに接続しタスク受信ループを実行する
                     }
-                    val (userId, refreshToken) = tokenPair
 
-                    val tokenResponse = try {
-                        tokenRefresher.refresh(refreshToken)
-                    } catch (e: Exception) {
-                        logger.severe { "Token refresh failed for user $userId: ${e.message}" }
-                        delay(30.seconds)
-                        continue
-                    }
-
-                    tokenResponse.refreshToken?.let { userTokenDao.saveOrUpdate(userId, it) }
-                    logger.info { "Access token refreshed for user $userId" }
-
-                    // TODO: accessTokenを使ってKTSEに接続しタスク受信ループを実行する
                     delay(30.seconds)
                 }
             }

@@ -47,11 +47,10 @@ class UserTokenDao(
     /**
      * DBに保存されている最初のユーザーのrefresh tokenを取得する
      */
-    fun getFirstToken(): Pair<String, String>? {
+    fun getRefreshTokens(): List<Pair<String, String>> {
         return transaction(dbManager.db) {
             UserTokenTable.selectAll()
-                .firstOrNull()
-                ?.let { it[UserTokenTable.userId] to it[UserTokenTable.refreshToken] }
+                .map { it[UserTokenTable.userId] to it[UserTokenTable.refreshToken] }
         }
     }
 }
