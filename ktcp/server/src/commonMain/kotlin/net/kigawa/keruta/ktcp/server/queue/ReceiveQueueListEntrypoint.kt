@@ -25,7 +25,7 @@ class ReceiveQueueListEntrypoint: ServerQueueListEntrypoint<ServerCtx> {
             }
             ctx.server.clientEntrypoints.queueListed.access(
                 ClientQueueListedMsg(
-                queues = queues.map { ClientQueueListedMsg.Queue(it.name, it.id) }
+                queues = queues.map { ClientQueueListedMsg.Queue(it.name, it.id, it.providerId) }
             ), ctx)?.execute() ?: Res.Err(ResponseErr("", null))
         }
     }

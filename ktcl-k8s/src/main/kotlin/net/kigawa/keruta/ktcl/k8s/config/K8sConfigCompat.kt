@@ -9,7 +9,6 @@ data class K8sConfigCompat(
     val ktseHost: String,
     val ktsePort: Int,
     val ktseUseTls: Boolean,
-    val queueId: Long,
 
     // Kubernetes設定
     val k8sNamespace: String,
@@ -32,7 +31,6 @@ data class K8sConfigCompat(
                 ktseHost = System.getenv("KTSE_HOST") ?: "localhost",
                 ktsePort = System.getenv("KTSE_PORT")?.toInt() ?: 8080,
                 ktseUseTls = System.getenv("KTSE_USE_TLS")?.toBoolean() ?: false,
-                queueId = System.getenv("KERUTA_QUEUE_ID")?.toLongOrNull() ?: 1L,
                 k8sNamespace = getEnvOrProperty("K8S_NAMESPACE") ?: "default",
                 k8sJobTemplate = System.getenv("K8S_JOB_TEMPLATE") ?: "resources/job-template.yaml",
                 k8sUseInCluster = getEnvOrProperty("K8S_USE_IN_CLUSTER")?.toBoolean() ?: true,

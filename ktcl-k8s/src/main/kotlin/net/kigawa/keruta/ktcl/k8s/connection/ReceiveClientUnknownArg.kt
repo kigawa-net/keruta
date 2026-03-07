@@ -113,6 +113,11 @@ class ReceiveClientUnknownArg(
         return serializer.deserialize<ClientTaskMovedMsg>(text)
     }
 
+    override fun tryToQueueUpdated(): Res<ClientQueueUpdatedMsg, KtcpErr>? {
+        if (typeStr != ClientMsgType.QUEUE_UPDATED.str) return null
+        return serializer.deserialize<ClientQueueUpdatedMsg>(text)
+    }
+
     companion object {
         fun fromText(text: String, serializer: KerutaSerializer): ReceiveClientUnknownArg? {
             val jsonElement = Json.parseToJsonElement(text)

@@ -27,6 +27,7 @@ class ReceiveQueueShowEntrypoint: ServerQueueShowEntrypoint<ServerCtx> {
                 ClientQueueShowedMsg(
                     name = queues.name,
                     id = queues.id,
+                    setting = queues.setting,
                 ), ctx
             )?.execute() ?: Res.Err(ResponseErr("", null))
         }

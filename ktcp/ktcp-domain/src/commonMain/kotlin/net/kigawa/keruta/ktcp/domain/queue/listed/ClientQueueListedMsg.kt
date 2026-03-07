@@ -15,6 +15,6 @@ data class ClientQueueListedMsg(
 
     @Serializable
     class Queue(
-        val name: String, val id: Long,
+        val name: String, val id: Long, val providerId: Long,
     )
 }

@@ -21,6 +21,7 @@ class KerutaK8sClient(
     private val userTokenDao: UserTokenDao,
     private val tokenRefresher: TokenRefresher,
     private val providerTokenCreator: ProviderTokenCreator,
+    private val ktclIssuer: String,
 ) {
     private val logger = LoggerFactory.get("KerutaK8sClient")
     private val serializer = JsonKerutaSerializer()
@@ -89,8 +90,10 @@ class KerutaK8sClient(
         logger.info { "Authentication request sent for user $userId" }
 
 
-        // タスク受信ループを開始
-        val taskReceiver = TaskReceiver(connection, config, ktcpClient)
+        val apiClient = K8sClientFactory.createClient(config)
+        val templateLoader = JobTemplateLoader(config.k8sJobTemplate)
+        val jobExecutor = K8sJobExecutor(apiClient, config, templateLoader)
+        val taskReceiver = TaskReceiver(connection, ktcpClient, jobExecutor, ktclIssuer)
         return taskReceiver.startReceiving(ctx, userId)
     }
 
