@@ -49,7 +49,7 @@ class FlywayMigrator {
                 logger.info("  - ${migration.version}: ${migration.description} [${migration.state}]")
             }
 
-            val hasFailed = flyway.info().all().any { it.state.isFailed }
+            val hasFailed = info.all().any { it.state.isFailed }
             if (hasFailed) {
                 logger.warn("Found failed migrations, running repair before migrate...")
                 flyway.repair()
