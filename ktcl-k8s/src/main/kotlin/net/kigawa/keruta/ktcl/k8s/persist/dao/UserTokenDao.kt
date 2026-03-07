@@ -2,11 +2,11 @@ package net.kigawa.keruta.ktcl.k8s.persist.dao
 
 import net.kigawa.keruta.ktcl.k8s.persist.db.DbManager
 import net.kigawa.keruta.ktcl.k8s.persist.table.UserTokenTable
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
+
 
 /**
  * ユーザートークンDao（refresh token管理用）
@@ -19,7 +19,7 @@ class UserTokenDao(
      */
     fun saveOrUpdate(userId: String, refreshToken: String) {
         transaction(dbManager.db) {
-            val existing = UserTokenTable.select(UserTokenTable.userId eq userId).firstOrNull()
+            val existing = UserTokenTable.selectAll().where { UserTokenTable.userId eq userId }.firstOrNull()
             if (existing != null) {
                 UserTokenTable.update({ UserTokenTable.userId eq userId }) {
                     it[UserTokenTable.refreshToken] = refreshToken
@@ -38,7 +38,7 @@ class UserTokenDao(
      */
     fun get(userId: String): String? {
         return transaction(dbManager.db) {
-            UserTokenTable.select(UserTokenTable.userId eq userId)
+            UserTokenTable.selectAll().where { UserTokenTable.userId eq userId }
                 .firstOrNull()
                 ?.get(UserTokenTable.refreshToken)
         }
@@ -59,7 +59,7 @@ class UserTokenDao(
      */
     fun saveOrUpdateGithubToken(userId: String, githubToken: String) {
         transaction(dbManager.db) {
-            val existing = UserTokenTable.select(UserTokenTable.userId eq userId).firstOrNull()
+            val existing = UserTokenTable.selectAll().where { UserTokenTable.userId eq userId }.firstOrNull()
             if (existing != null) {
                 UserTokenTable.update({ UserTokenTable.userId eq userId }) {
                     it[UserTokenTable.githubToken] = githubToken
@@ -78,7 +78,7 @@ class UserTokenDao(
      */
     fun getGithubToken(userId: String): String? {
         return transaction(dbManager.db) {
-            UserTokenTable.select(UserTokenTable.userId eq userId)
+            UserTokenTable.selectAll().where { UserTokenTable.userId eq userId }
                 .firstOrNull()
                 ?.get(UserTokenTable.githubToken)
         }
