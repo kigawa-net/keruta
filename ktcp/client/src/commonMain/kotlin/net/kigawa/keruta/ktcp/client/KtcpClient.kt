@@ -9,7 +9,7 @@ import net.kigawa.keruta.ktcp.client.queue.SendQueueCreateEntrypoint
 import net.kigawa.keruta.ktcp.client.queue.SendQueueListEntrypoint
 import net.kigawa.keruta.ktcp.client.queue.SendQueueShowEntrypoint
 import net.kigawa.keruta.ktcp.client.task.*
-import net.kigawa.keruta.ktcp.model.KtcpServerEntrypoints
+import net.kigawa.keruta.ktcp.domain.KtcpServerEntrypoints
 
 class KtcpClient {
     @Suppress("unused")

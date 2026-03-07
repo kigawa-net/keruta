@@ -8,7 +8,7 @@ import net.kigawa.keruta.ktcl.k8s.connection.JvmWebSocketConnection
 import net.kigawa.keruta.ktcl.k8s.connection.ReceiveClientUnknownArg
 import net.kigawa.keruta.ktcp.client.ClientCtx
 import net.kigawa.keruta.ktcp.client.KtcpClient
-import net.kigawa.keruta.ktcp.model.task.list.ServerTaskListMsg
+import net.kigawa.keruta.ktcp.domain.task.list.ServerTaskListMsg
 import net.kigawa.kodel.api.err.unwrap
 import net.kigawa.kodel.api.log.LoggerFactory
 import kotlin.time.Duration.Companion.seconds
@@ -50,6 +50,7 @@ class TaskReceiver(
                 return@coroutineScope false
             } ?: return@coroutineScope false
         logger.info { "Received task list: $taskListed" }
+        val task = taskListed.tasks.firstOrNull { it.status != "completed" } ?: return@coroutineScope false
 
         return@coroutineScope true
     }

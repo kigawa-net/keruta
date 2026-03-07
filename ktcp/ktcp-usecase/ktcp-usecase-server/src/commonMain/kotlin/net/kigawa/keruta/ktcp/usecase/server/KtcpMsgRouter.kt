@@ -1,8 +1,8 @@
 package net.kigawa.keruta.ktcp.usecase.server
 
-import net.kigawa.keruta.ktcp.model.WebsocketPacket
-import net.kigawa.keruta.ktcp.model.msg.KtcpMsg
-import net.kigawa.keruta.ktcp.model.route.KtcpRoute
+import net.kigawa.keruta.ktcp.domain.WebsocketPacket
+import net.kigawa.keruta.ktcp.domain.msg.KtcpMsg
+import net.kigawa.keruta.ktcp.domain.route.KtcpRoute
 import net.kigawa.kodel.api.routing.RouteGroup
 
 class KtcpMsgRouter<out T: KtcpMsg>(

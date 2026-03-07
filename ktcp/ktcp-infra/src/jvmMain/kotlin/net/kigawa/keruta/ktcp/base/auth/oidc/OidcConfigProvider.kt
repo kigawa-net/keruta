@@ -1,11 +1,11 @@
 package net.kigawa.keruta.ktcp.base.auth.oidc
 
-import io.ktor.client.call.body
-import io.ktor.client.statement.bodyAsText
-import io.ktor.http.isSuccess
+import io.ktor.client.call.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
 import net.kigawa.keruta.ktcp.base.auth.VerifyFailErr
 import net.kigawa.keruta.ktcp.base.http.HttpClient
-import net.kigawa.keruta.ktcp.model.auth.jwt.VerifyErr
+import net.kigawa.keruta.ktcp.domain.auth.jwt.VerifyErr
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.getKogger
 import net.kigawa.kodel.api.log.traceignore.debug

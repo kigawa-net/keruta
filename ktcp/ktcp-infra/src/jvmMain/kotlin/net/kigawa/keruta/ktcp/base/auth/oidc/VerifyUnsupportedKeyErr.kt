@@ -1,6 +1,6 @@
 package net.kigawa.keruta.ktcp.base.auth.oidc
 
-import net.kigawa.keruta.ktcp.model.auth.jwt.VerifyErr
+import net.kigawa.keruta.ktcp.domain.auth.jwt.VerifyErr
 
 class VerifyUnsupportedKeyErr(
     message: String, cause: Exception?,

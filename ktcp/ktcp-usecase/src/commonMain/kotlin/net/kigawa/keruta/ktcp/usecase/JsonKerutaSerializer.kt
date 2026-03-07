@@ -5,10 +5,10 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
-import net.kigawa.keruta.ktcp.model.err.IllegalFormatDeserializeErr
-import net.kigawa.keruta.ktcp.model.err.InvalidTypeDeserializeErr
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.serialize.KerutaSerializer
+import net.kigawa.keruta.ktcp.domain.err.IllegalFormatDeserializeErr
+import net.kigawa.keruta.ktcp.domain.err.InvalidTypeDeserializeErr
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.serialize.KerutaSerializer
 import net.kigawa.kodel.api.err.Res
 
 class JsonKerutaSerializer: KerutaSerializer {

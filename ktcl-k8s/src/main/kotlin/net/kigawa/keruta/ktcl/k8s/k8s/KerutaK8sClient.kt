@@ -10,7 +10,7 @@ import net.kigawa.keruta.ktcl.k8s.task.TaskReceiver
 import net.kigawa.keruta.ktcp.client.ClientCtx
 import net.kigawa.keruta.ktcp.client.KtcpClient
 import net.kigawa.keruta.ktcp.client.KtcpSession
-import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestMsg
+import net.kigawa.keruta.ktcp.domain.auth.request.ServerAuthRequestMsg
 import net.kigawa.keruta.ktcp.usecase.JsonKerutaSerializer
 import net.kigawa.keruta.ktcp.usecase.client.ProviderTokenCreator
 import net.kigawa.kodel.api.log.LoggerFactory

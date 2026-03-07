@@ -1,9 +1,9 @@
 package net.kigawa.keruta.ktcl.claudecode.entrypoint
 
 import net.kigawa.keruta.ktcp.client.ClientCtx
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.provider.idp_added.ClientProviderIdpAddedEntrypoint
-import net.kigawa.keruta.ktcp.model.provider.idp_added.ClientProviderIdpAddedMsg
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.provider.idp_added.ClientProviderIdpAddedEntrypoint
+import net.kigawa.keruta.ktcp.domain.provider.idp_added.ClientProviderIdpAddedMsg
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.err.Res
 

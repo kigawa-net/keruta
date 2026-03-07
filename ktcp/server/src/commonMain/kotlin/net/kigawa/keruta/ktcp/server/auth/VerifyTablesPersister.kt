@@ -1,9 +1,9 @@
 package net.kigawa.keruta.ktcp.server.auth
 
-import net.kigawa.keruta.ktcp.model.KtclAudience
-import net.kigawa.keruta.ktcp.model.UserIssuer
-import net.kigawa.keruta.ktcp.model.auth.jwt.VerifiedToken
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.KtclAudience
+import net.kigawa.keruta.ktcp.domain.UserIssuer
+import net.kigawa.keruta.ktcp.domain.auth.jwt.VerifiedToken
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
 import net.kigawa.keruta.ktcp.server.persist.PersistedProvider
 import net.kigawa.keruta.ktcp.server.persist.PersistedUser
 import net.kigawa.keruta.ktcp.server.persist.PersistedUserIdp

@@ -11,9 +11,9 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import net.kigawa.keruta.ktcl.k8s.config.KtseConfig
-import net.kigawa.keruta.ktcp.model.msg.client.ClientMsgType
-import net.kigawa.keruta.ktcp.model.provider.complete.ServerProviderCompleteMsg
-import net.kigawa.keruta.ktcp.model.serialize.serialize
+import net.kigawa.keruta.ktcp.domain.msg.client.ClientMsgType
+import net.kigawa.keruta.ktcp.domain.provider.complete.ServerProviderCompleteMsg
+import net.kigawa.keruta.ktcp.domain.serialize.serialize
 import net.kigawa.keruta.ktcp.usecase.JsonKerutaSerializer
 import net.kigawa.keruta.ktcp.usecase.client.ProviderTokenCreator
 import net.kigawa.kodel.api.log.getKogger

@@ -1,8 +1,8 @@
 package net.kigawa.keruta.ktse.auth
 
-import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestMsg
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifier
+import net.kigawa.keruta.ktcp.domain.auth.jwt.JwtVerifier
+import net.kigawa.keruta.ktcp.domain.auth.request.ServerAuthRequestMsg
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
 import net.kigawa.keruta.ktcp.server.auth.UnverifiedAuthTokens
 import net.kigawa.keruta.ktcp.server.auth.jwt.AuthTokenDecoder
 import net.kigawa.kodel.api.err.Res

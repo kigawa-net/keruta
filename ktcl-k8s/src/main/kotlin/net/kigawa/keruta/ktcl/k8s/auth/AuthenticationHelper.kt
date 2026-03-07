@@ -5,7 +5,7 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.sessions.*
 import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
-import net.kigawa.keruta.ktcp.model.auth.key.PemKey
+import net.kigawa.keruta.ktcp.domain.auth.key.PemKey
 import net.kigawa.kodel.api.err.flatConvertOk
 import net.kigawa.kodel.api.err.unwrap
 import net.kigawa.kodel.api.log.LoggerFactory

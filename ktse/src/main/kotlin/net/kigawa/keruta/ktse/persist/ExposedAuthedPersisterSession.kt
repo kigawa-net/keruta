@@ -1,6 +1,6 @@
 package net.kigawa.keruta.ktse.persist
 
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
 import net.kigawa.keruta.ktcp.server.persist.AuthenticatedPersisterSession
 import net.kigawa.keruta.ktcp.server.persist.PersistedProvider
 import net.kigawa.keruta.ktcp.server.persist.PersistedVerifyTables

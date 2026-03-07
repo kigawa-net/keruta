@@ -7,14 +7,14 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import net.kigawa.keruta.ktcl.claudecode.connection.JvmWebSocketConnection
 import net.kigawa.keruta.ktcp.client.ClientCtx
-import net.kigawa.keruta.ktcp.model.KtcpClientEntrypoints
-import net.kigawa.keruta.ktcp.model.msg.client.ClientMsgType
-import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
-import net.kigawa.keruta.ktcp.model.serialize.KerutaSerializer
-import net.kigawa.keruta.ktcp.model.serialize.deserialize
-import net.kigawa.keruta.ktcp.model.task.created.ClientTaskCreatedMsg
-import net.kigawa.keruta.ktcp.model.task.listed.ClientTaskListedMsg
-import net.kigawa.keruta.ktcp.model.task.showed.ClientTaskShowedMsg
+import net.kigawa.keruta.ktcp.domain.KtcpClientEntrypoints
+import net.kigawa.keruta.ktcp.domain.msg.client.ClientMsgType
+import net.kigawa.keruta.ktcp.domain.msg.server.ServerMsgType
+import net.kigawa.keruta.ktcp.domain.serialize.KerutaSerializer
+import net.kigawa.keruta.ktcp.domain.serialize.deserialize
+import net.kigawa.keruta.ktcp.domain.task.created.ClientTaskCreatedMsg
+import net.kigawa.keruta.ktcp.domain.task.listed.ClientTaskListedMsg
+import net.kigawa.keruta.ktcp.domain.task.showed.ClientTaskShowedMsg
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.LoggerFactory
 

@@ -2,10 +2,10 @@ package net.kigawa.keruta.ktcl.claudecode.entrypoint
 
 import net.kigawa.keruta.ktcp.client.ClientCtx
 import net.kigawa.keruta.ktcp.client.KtcpClient
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.task.created.ClientTaskCreatedEntrypoint
-import net.kigawa.keruta.ktcp.model.task.created.ClientTaskCreatedMsg
-import net.kigawa.keruta.ktcp.model.task.show.ServerTaskShowMsg
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.task.created.ClientTaskCreatedEntrypoint
+import net.kigawa.keruta.ktcp.domain.task.created.ClientTaskCreatedMsg
+import net.kigawa.keruta.ktcp.domain.task.show.ServerTaskShowMsg
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.LoggerFactory

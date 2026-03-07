@@ -2,11 +2,11 @@ package net.kigawa.keruta.ktcp.usecase
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.serializer
-import net.kigawa.keruta.ktcp.model.err.IllegalFormatDeserializeErr
-import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
-import net.kigawa.keruta.ktcp.model.serialize.deserialize
-import net.kigawa.keruta.ktcp.model.serialize.serialize
-import net.kigawa.keruta.ktcp.model.task.create.ServerTaskCreateMsg
+import net.kigawa.keruta.ktcp.domain.err.IllegalFormatDeserializeErr
+import net.kigawa.keruta.ktcp.domain.msg.server.ServerMsgType
+import net.kigawa.keruta.ktcp.domain.serialize.deserialize
+import net.kigawa.keruta.ktcp.domain.serialize.serialize
+import net.kigawa.keruta.ktcp.domain.task.create.ServerTaskCreateMsg
 import net.kigawa.kodel.api.err.Res
 import kotlin.test.*
 

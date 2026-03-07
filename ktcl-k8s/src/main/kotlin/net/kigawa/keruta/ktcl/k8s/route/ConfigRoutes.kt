@@ -12,8 +12,8 @@ import net.kigawa.keruta.ktcl.k8s.dto.*
 import net.kigawa.keruta.ktcl.k8s.persist.dao.UserClaudeConfigDao
 import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
 import net.kigawa.keruta.ktcp.base.auth.key.JavaKeyPairInitializer
+import net.kigawa.keruta.ktcp.domain.auth.key.PemKey
 import net.kigawa.keruta.ktcp.infra.client.NimbusdsJwksGenerator
-import net.kigawa.keruta.ktcp.model.auth.key.PemKey
 import net.kigawa.keruta.ktcp.usecase.client.JwksJsonGenerator
 import net.kigawa.kodel.api.log.LoggerFactory
 

@@ -1,9 +1,9 @@
 package net.kigawa.keruta.ktse.persist
 
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.task.create.ServerTaskCreateMsg
-import net.kigawa.keruta.ktcp.model.task.list.ServerTaskListMsg
-import net.kigawa.keruta.ktcp.model.task.show.ServerTaskShowMsg
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.task.create.ServerTaskCreateMsg
+import net.kigawa.keruta.ktcp.domain.task.list.ServerTaskListMsg
+import net.kigawa.keruta.ktcp.domain.task.show.ServerTaskShowMsg
 import net.kigawa.keruta.ktcp.server.persist.AuthedTaskPersisterSession
 import net.kigawa.keruta.ktcp.server.persist.PersistedTask
 import net.kigawa.kodel.api.err.Res

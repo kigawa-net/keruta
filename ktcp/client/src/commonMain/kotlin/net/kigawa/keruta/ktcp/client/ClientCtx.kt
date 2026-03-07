@@ -1,6 +1,6 @@
 package net.kigawa.keruta.ktcp.client
 
-import net.kigawa.keruta.ktcp.model.serialize.KerutaSerializer
+import net.kigawa.keruta.ktcp.domain.serialize.KerutaSerializer
 
 class ClientCtx(
     val serializer: KerutaSerializer,

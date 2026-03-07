@@ -1,9 +1,9 @@
 package net.kigawa.keruta.ktse.persist
 
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.provider.delete.ServerProviderDeleteMsg
-import net.kigawa.keruta.ktcp.model.provider.deleted.ClientProviderDeletedMsg
-import net.kigawa.keruta.ktcp.model.serialize.serialize
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.provider.delete.ServerProviderDeleteMsg
+import net.kigawa.keruta.ktcp.domain.provider.deleted.ClientProviderDeletedMsg
+import net.kigawa.keruta.ktcp.domain.serialize.serialize
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktcp.server.err.UnauthenticatedErr
 import net.kigawa.kodel.api.err.Res

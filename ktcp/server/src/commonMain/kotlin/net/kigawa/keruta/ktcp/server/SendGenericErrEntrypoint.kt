@@ -1,8 +1,8 @@
 package net.kigawa.keruta.ktcp.server
 
-import net.kigawa.keruta.ktcp.model.err.ClientGenericErrEntrypoint
-import net.kigawa.keruta.ktcp.model.err.GenericErrMsg
-import net.kigawa.keruta.ktcp.model.serialize.serialize
+import net.kigawa.keruta.ktcp.domain.err.ClientGenericErrEntrypoint
+import net.kigawa.keruta.ktcp.domain.err.GenericErrMsg
+import net.kigawa.keruta.ktcp.domain.serialize.serialize
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.err.Res
 

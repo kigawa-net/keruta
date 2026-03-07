@@ -1,7 +1,7 @@
 package net.kigawa.keruta.ktse.persist.db.dsl
 
-import net.kigawa.keruta.ktcp.model.UserIssuer
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.UserIssuer
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
 import net.kigawa.keruta.ktcp.server.persist.PersistedUser
 import net.kigawa.keruta.ktcp.server.persist.PersistedUserIdp
 import net.kigawa.keruta.ktcp.server.persist.PersistedVerifyTables

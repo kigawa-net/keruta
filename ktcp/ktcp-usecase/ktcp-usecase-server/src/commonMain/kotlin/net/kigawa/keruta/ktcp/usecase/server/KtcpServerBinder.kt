@@ -1,6 +1,6 @@
 package net.kigawa.keruta.ktcp.usecase.server
 
-import net.kigawa.keruta.ktcp.model.server.KtcpServer
+import net.kigawa.keruta.ktcp.domain.server.KtcpServer
 import net.kigawa.keruta.ktcp.usecase.server.websocket.WebsocketServer
 
 class KtcpServerBinder(

@@ -1,8 +1,8 @@
 package net.kigawa.keruta.ktcp.server.provider
 
-import net.kigawa.keruta.ktcp.model.provider.idp_added.ClientProviderIdpAddedEntrypoint
-import net.kigawa.keruta.ktcp.model.provider.idp_added.ClientProviderIdpAddedMsg
-import net.kigawa.keruta.ktcp.model.serialize.serialize
+import net.kigawa.keruta.ktcp.domain.provider.idp_added.ClientProviderIdpAddedEntrypoint
+import net.kigawa.keruta.ktcp.domain.provider.idp_added.ClientProviderIdpAddedMsg
+import net.kigawa.keruta.ktcp.domain.serialize.serialize
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.err.Res

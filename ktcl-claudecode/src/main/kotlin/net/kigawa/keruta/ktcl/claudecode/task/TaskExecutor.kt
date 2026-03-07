@@ -4,8 +4,8 @@ import net.kigawa.keruta.ktcl.claudecode.claude.ClaudeCodeCliClient
 import net.kigawa.keruta.ktcl.claudecode.err.ClaudeApiErr
 import net.kigawa.keruta.ktcp.client.ClientCtx
 import net.kigawa.keruta.ktcp.client.KtcpClient
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.task.update.ServerTaskUpdateMsg
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.task.update.ServerTaskUpdateMsg
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.LoggerFactory
 

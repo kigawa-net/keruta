@@ -1,7 +1,7 @@
 package net.kigawa.keruta.ktcp.client.err
 
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.err.client.ClientErrCode
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.err.client.ClientErrCode
 
 class KtcpClientErr(val errCode: ClientErrCode, message: String?, cause: Exception?): KtcpErr(
     "$errCode: ${message ?: ""}", cause

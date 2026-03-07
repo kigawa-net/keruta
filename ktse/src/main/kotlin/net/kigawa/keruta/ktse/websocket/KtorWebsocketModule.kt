@@ -11,9 +11,9 @@ import net.kigawa.keruta.ktcp.base.auth.key.Auth0AlgorithmInitializer
 import net.kigawa.keruta.ktcp.base.auth.key.JavaKeyPairInitializer
 import net.kigawa.keruta.ktcp.base.auth.oidc.OidcConfigProvider
 import net.kigawa.keruta.ktcp.base.http.HttpClient
-import net.kigawa.keruta.ktcp.model.err.EntrypointNotFoundErr
-import net.kigawa.keruta.ktcp.model.err.GenericErrMsg
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.err.EntrypointNotFoundErr
+import net.kigawa.keruta.ktcp.domain.err.GenericErrMsg
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
 import net.kigawa.keruta.ktcp.server.KtcpServer
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktcp.server.err.ResponseErr

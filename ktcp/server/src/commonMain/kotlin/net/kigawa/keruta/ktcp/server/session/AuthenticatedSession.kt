@@ -1,8 +1,8 @@
 package net.kigawa.keruta.ktcp.server.session
 
-import net.kigawa.keruta.ktcp.model.auth.AuthToken
-import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifyValues
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.auth.AuthToken
+import net.kigawa.keruta.ktcp.domain.auth.jwt.JwtVerifyValues
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
 import net.kigawa.keruta.ktcp.server.persist.AuthenticatedPersisterSession
 import net.kigawa.kodel.api.err.Res
 

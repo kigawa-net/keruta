@@ -1,8 +1,8 @@
 package net.kigawa.keruta.ktcp.server.queue
 
-import net.kigawa.keruta.ktcp.model.queue.showed.ClientQueueShowedEntrypoint
-import net.kigawa.keruta.ktcp.model.queue.showed.ClientQueueShowedMsg
-import net.kigawa.keruta.ktcp.model.serialize.serialize
+import net.kigawa.keruta.ktcp.domain.queue.showed.ClientQueueShowedEntrypoint
+import net.kigawa.keruta.ktcp.domain.queue.showed.ClientQueueShowedMsg
+import net.kigawa.keruta.ktcp.domain.serialize.serialize
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.err.Res

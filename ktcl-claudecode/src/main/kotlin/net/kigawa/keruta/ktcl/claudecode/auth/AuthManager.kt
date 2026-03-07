@@ -3,8 +3,8 @@ package net.kigawa.keruta.ktcl.claudecode.auth
 import net.kigawa.keruta.ktcl.claudecode.config.ClaudeCodeConfig
 import net.kigawa.keruta.ktcp.client.ClientCtx
 import net.kigawa.keruta.ktcp.client.KtcpClient
-import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestMsg
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.auth.request.ServerAuthRequestMsg
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
 import net.kigawa.kodel.api.err.Res
 
 class AuthManager(

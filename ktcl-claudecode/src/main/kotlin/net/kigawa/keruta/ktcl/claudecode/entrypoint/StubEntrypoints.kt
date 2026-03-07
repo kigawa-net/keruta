@@ -1,21 +1,21 @@
 package net.kigawa.keruta.ktcl.claudecode.entrypoint
 
 import net.kigawa.keruta.ktcp.client.ClientCtx
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.provider.deleted.ClientProviderDeletedEntrypoint
-import net.kigawa.keruta.ktcp.model.provider.deleted.ClientProviderDeletedMsg
-import net.kigawa.keruta.ktcp.model.provider.listed.ClientProviderListedEntrypoint
-import net.kigawa.keruta.ktcp.model.provider.listed.ClientProviderListedMsg
-import net.kigawa.keruta.ktcp.model.queue.created.ClientQueueCreatedEntrypoint
-import net.kigawa.keruta.ktcp.model.queue.created.ClientQueueCreatedMsg
-import net.kigawa.keruta.ktcp.model.queue.listed.ClientQueueListedEntrypoint
-import net.kigawa.keruta.ktcp.model.queue.listed.ClientQueueListedMsg
-import net.kigawa.keruta.ktcp.model.queue.showed.ClientQueueShowedEntrypoint
-import net.kigawa.keruta.ktcp.model.queue.showed.ClientQueueShowedMsg
-import net.kigawa.keruta.ktcp.model.task.moved.ClientTaskMovedEntrypoint
-import net.kigawa.keruta.ktcp.model.task.moved.ClientTaskMovedMsg
-import net.kigawa.keruta.ktcp.model.task.updated.ClientTaskUpdatedEntrypoint
-import net.kigawa.keruta.ktcp.model.task.updated.ClientTaskUpdatedMsg
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.provider.deleted.ClientProviderDeletedEntrypoint
+import net.kigawa.keruta.ktcp.domain.provider.deleted.ClientProviderDeletedMsg
+import net.kigawa.keruta.ktcp.domain.provider.listed.ClientProviderListedEntrypoint
+import net.kigawa.keruta.ktcp.domain.provider.listed.ClientProviderListedMsg
+import net.kigawa.keruta.ktcp.domain.queue.created.ClientQueueCreatedEntrypoint
+import net.kigawa.keruta.ktcp.domain.queue.created.ClientQueueCreatedMsg
+import net.kigawa.keruta.ktcp.domain.queue.listed.ClientQueueListedEntrypoint
+import net.kigawa.keruta.ktcp.domain.queue.listed.ClientQueueListedMsg
+import net.kigawa.keruta.ktcp.domain.queue.showed.ClientQueueShowedEntrypoint
+import net.kigawa.keruta.ktcp.domain.queue.showed.ClientQueueShowedMsg
+import net.kigawa.keruta.ktcp.domain.task.moved.ClientTaskMovedEntrypoint
+import net.kigawa.keruta.ktcp.domain.task.moved.ClientTaskMovedMsg
+import net.kigawa.keruta.ktcp.domain.task.updated.ClientTaskUpdatedEntrypoint
+import net.kigawa.keruta.ktcp.domain.task.updated.ClientTaskUpdatedMsg
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.err.Res
 

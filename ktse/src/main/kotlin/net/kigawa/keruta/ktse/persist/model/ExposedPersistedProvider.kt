@@ -1,6 +1,6 @@
 package net.kigawa.keruta.ktse.persist.model
 
-import net.kigawa.keruta.ktcp.model.provider.listed.ClientProviderListedMsg
+import net.kigawa.keruta.ktcp.domain.provider.listed.ClientProviderListedMsg
 import net.kigawa.keruta.ktcp.server.persist.PersistedProvider
 import net.kigawa.keruta.ktse.persist.db.table.ProviderTable
 import net.kigawa.kodel.api.dump.Dumper

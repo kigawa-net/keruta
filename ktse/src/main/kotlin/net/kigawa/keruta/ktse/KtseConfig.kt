@@ -1,14 +1,13 @@
 package net.kigawa.keruta.ktse
 
 import io.ktor.server.application.*
-import net.kigawa.keruta.ktcp.model.auth.key.PemKey
+import net.kigawa.keruta.ktcp.domain.auth.key.PemKey
 import net.kigawa.keruta.ktcp.server.auth.ProviderIdpConfig
 import net.kigawa.keruta.ktcp.server.auth.UserIdpConfig
 import net.kigawa.kodel.api.net.Url
 
 class KtseConfig(environment: ApplicationEnvironment) {
 
-    val zkHost = environment.config.property("zk.host").getString()
     val defaultUserIdp = UserIdpConfig(
         environment.config.property("ktor.security.defaultIdp.issuer").getString()
             .let { Url.parse(it) },

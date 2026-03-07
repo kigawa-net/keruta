@@ -1,9 +1,9 @@
 package net.kigawa.keruta.ktcp.server.provider
 
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.provider.listed.ClientProviderListedMsg
-import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListEntrypoint
-import net.kigawa.keruta.ktcp.model.provider.list.ServerProviderListMsg
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.provider.list.ServerProviderListEntrypoint
+import net.kigawa.keruta.ktcp.domain.provider.list.ServerProviderListMsg
+import net.kigawa.keruta.ktcp.domain.provider.listed.ClientProviderListedMsg
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktcp.server.err.ResponseErr
 import net.kigawa.keruta.ktcp.server.err.UnauthenticatedErr

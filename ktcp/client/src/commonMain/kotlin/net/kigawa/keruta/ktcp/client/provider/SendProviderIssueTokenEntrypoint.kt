@@ -1,10 +1,10 @@
 package net.kigawa.keruta.ktcp.client.provider
 
 import net.kigawa.keruta.ktcp.client.ClientCtx
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.provider.add.ServerProviderIssueTokenEntrypoint
-import net.kigawa.keruta.ktcp.model.provider.add.ServerProviderIssueTokenMsg
-import net.kigawa.keruta.ktcp.model.serialize.serialize
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.provider.add.ServerProviderIssueTokenEntrypoint
+import net.kigawa.keruta.ktcp.domain.provider.add.ServerProviderIssueTokenMsg
+import net.kigawa.keruta.ktcp.domain.serialize.serialize
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.err.Res
 

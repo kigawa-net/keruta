@@ -11,8 +11,8 @@ import net.kigawa.keruta.ktcl.claudecode.task.TaskReceiver
 import net.kigawa.keruta.ktcp.client.ClientCtx
 import net.kigawa.keruta.ktcp.client.KtcpClient
 import net.kigawa.keruta.ktcp.client.KtcpSession
-import net.kigawa.keruta.ktcp.model.KtcpClientEntrypoints
-import net.kigawa.keruta.ktcp.model.task.list.ServerTaskListMsg
+import net.kigawa.keruta.ktcp.domain.KtcpClientEntrypoints
+import net.kigawa.keruta.ktcp.domain.task.list.ServerTaskListMsg
 import net.kigawa.keruta.ktcp.usecase.JsonKerutaSerializer
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.LoggerFactory as KodelLoggerFactory

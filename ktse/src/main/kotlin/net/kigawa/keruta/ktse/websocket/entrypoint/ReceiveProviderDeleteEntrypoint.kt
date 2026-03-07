@@ -1,8 +1,8 @@
 package net.kigawa.keruta.ktse.websocket.entrypoint
 
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.provider.delete.ServerProviderDeleteEntrypoint
-import net.kigawa.keruta.ktcp.model.provider.delete.ServerProviderDeleteMsg
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.provider.delete.ServerProviderDeleteEntrypoint
+import net.kigawa.keruta.ktcp.domain.provider.delete.ServerProviderDeleteMsg
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktse.persist.ProviderDeleteHandler
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred

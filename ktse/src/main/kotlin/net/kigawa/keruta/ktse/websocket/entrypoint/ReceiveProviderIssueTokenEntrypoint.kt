@@ -1,10 +1,10 @@
 package net.kigawa.keruta.ktse.websocket.entrypoint
 
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.provider.add.ServerProviderIssueTokenEntrypoint
-import net.kigawa.keruta.ktcp.model.provider.add.ServerProviderIssueTokenMsg
-import net.kigawa.keruta.ktcp.model.provider.add_token.ClientProviderAddTokenMsg
-import net.kigawa.keruta.ktcp.model.serialize.serialize
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.provider.add.ServerProviderIssueTokenEntrypoint
+import net.kigawa.keruta.ktcp.domain.provider.add.ServerProviderIssueTokenMsg
+import net.kigawa.keruta.ktcp.domain.provider.add_token.ClientProviderAddTokenMsg
+import net.kigawa.keruta.ktcp.domain.serialize.serialize
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktcp.server.err.UnauthenticatedErr
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred

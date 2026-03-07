@@ -1,9 +1,9 @@
 package net.kigawa.keruta.ktcp.server.task
 
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.task.move.ServerTaskMoveEntrypoint
-import net.kigawa.keruta.ktcp.model.task.move.ServerTaskMoveMsg
-import net.kigawa.keruta.ktcp.model.task.moved.ClientTaskMovedMsg
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.task.move.ServerTaskMoveEntrypoint
+import net.kigawa.keruta.ktcp.domain.task.move.ServerTaskMoveMsg
+import net.kigawa.keruta.ktcp.domain.task.moved.ClientTaskMovedMsg
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktcp.server.err.ResponseErr
 import net.kigawa.keruta.ktcp.server.err.UnauthenticatedErr

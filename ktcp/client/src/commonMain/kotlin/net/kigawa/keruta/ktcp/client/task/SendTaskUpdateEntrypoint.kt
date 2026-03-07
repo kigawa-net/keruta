@@ -1,10 +1,10 @@
 package net.kigawa.keruta.ktcp.client.task
 
 import net.kigawa.keruta.ktcp.client.ClientCtx
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.serialize.serialize
-import net.kigawa.keruta.ktcp.model.task.update.ServerTaskUpdateEntrypoint
-import net.kigawa.keruta.ktcp.model.task.update.ServerTaskUpdateMsg
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.serialize.serialize
+import net.kigawa.keruta.ktcp.domain.task.update.ServerTaskUpdateEntrypoint
+import net.kigawa.keruta.ktcp.domain.task.update.ServerTaskUpdateMsg
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.err.Res
 

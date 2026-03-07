@@ -1,9 +1,9 @@
 package net.kigawa.keruta.ktcp.server.queue
 
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
-import net.kigawa.keruta.ktcp.model.queue.show.ServerQueueShowEntrypoint
-import net.kigawa.keruta.ktcp.model.queue.show.ServerQueueShowMsg
-import net.kigawa.keruta.ktcp.model.queue.showed.ClientQueueShowedMsg
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.queue.show.ServerQueueShowEntrypoint
+import net.kigawa.keruta.ktcp.domain.queue.show.ServerQueueShowMsg
+import net.kigawa.keruta.ktcp.domain.queue.showed.ClientQueueShowedMsg
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktcp.server.err.ResponseErr
 import net.kigawa.keruta.ktcp.server.err.UnauthenticatedErr

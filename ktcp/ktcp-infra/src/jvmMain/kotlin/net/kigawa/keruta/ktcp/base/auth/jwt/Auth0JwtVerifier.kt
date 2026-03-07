@@ -6,12 +6,12 @@ import net.kigawa.keruta.ktcp.base.auth.jwks.JwksProvider
 import net.kigawa.keruta.ktcp.base.auth.key.Auth0AlgorithmInitializer
 import net.kigawa.keruta.ktcp.base.auth.key.JavaKeyPairInitializer
 import net.kigawa.keruta.ktcp.base.auth.oidc.OidcConfigProvider
-import net.kigawa.keruta.ktcp.model.auth.AuthToken
-import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifier
-import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifyValues
-import net.kigawa.keruta.ktcp.model.auth.jwt.UnverifiedToken
-import net.kigawa.keruta.ktcp.model.auth.jwt.VerifyErr
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.auth.AuthToken
+import net.kigawa.keruta.ktcp.domain.auth.jwt.JwtVerifier
+import net.kigawa.keruta.ktcp.domain.auth.jwt.JwtVerifyValues
+import net.kigawa.keruta.ktcp.domain.auth.jwt.UnverifiedToken
+import net.kigawa.keruta.ktcp.domain.auth.jwt.VerifyErr
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
 import net.kigawa.kodel.api.dump.Dumper
 import net.kigawa.kodel.api.err.Res
 

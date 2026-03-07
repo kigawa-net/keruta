@@ -1,6 +1,6 @@
 package net.kigawa.keruta.ktcl.claudecode.err
 
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
 
 sealed class ClaudeCodeErr(message: String, cause: Exception?) : KtcpErr(message, cause) {
     abstract override val code: String

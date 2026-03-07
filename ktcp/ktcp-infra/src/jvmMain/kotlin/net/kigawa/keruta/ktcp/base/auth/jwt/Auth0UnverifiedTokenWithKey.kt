@@ -3,10 +3,10 @@ package net.kigawa.keruta.ktcp.base.auth.jwt
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import net.kigawa.keruta.ktcp.base.auth.VerifyFailErr
-import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifyValues
-import net.kigawa.keruta.ktcp.model.auth.jwt.UnverifiedTokenWithKey
-import net.kigawa.keruta.ktcp.model.auth.jwt.VerifiedToken
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.auth.jwt.JwtVerifyValues
+import net.kigawa.keruta.ktcp.domain.auth.jwt.UnverifiedTokenWithKey
+import net.kigawa.keruta.ktcp.domain.auth.jwt.VerifiedToken
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.err.ok
 

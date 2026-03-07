@@ -1,6 +1,6 @@
 package net.kigawa.keruta.ktcp.server
 
-import net.kigawa.keruta.ktcp.model.serialize.KerutaSerializer
+import net.kigawa.keruta.ktcp.domain.serialize.KerutaSerializer
 import net.kigawa.keruta.ktcp.server.session.KtcpSession
 
 class ServerCtx(

@@ -5,7 +5,7 @@ import com.nimbusds.jose.jwk.JWKSet
 import com.nimbusds.jose.jwk.KeyUse
 import com.nimbusds.jose.jwk.RSAKey
 import net.kigawa.keruta.ktcp.base.auth.key.JavaKeyPairInitializer
-import net.kigawa.keruta.ktcp.model.auth.key.PemKey
+import net.kigawa.keruta.ktcp.domain.auth.key.PemKey
 import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
 import java.util.*

@@ -1,10 +1,10 @@
 package net.kigawa.keruta.ktcp.usecase.client
 
-import net.kigawa.keruta.ktcp.model.KtclAudience
-import net.kigawa.keruta.ktcp.model.KtclIssuer
-import net.kigawa.keruta.ktcp.model.UserSubject
-import net.kigawa.keruta.ktcp.model.auth.key.PemKey
-import net.kigawa.keruta.ktcp.model.client.CreatedProviderToken
+import net.kigawa.keruta.ktcp.domain.KtclAudience
+import net.kigawa.keruta.ktcp.domain.KtclIssuer
+import net.kigawa.keruta.ktcp.domain.UserSubject
+import net.kigawa.keruta.ktcp.domain.auth.key.PemKey
+import net.kigawa.keruta.ktcp.domain.client.CreatedProviderToken
 import net.kigawa.keruta.ktcp.usecase.JwtTokenCreator
 
 class ProviderTokenCreator(

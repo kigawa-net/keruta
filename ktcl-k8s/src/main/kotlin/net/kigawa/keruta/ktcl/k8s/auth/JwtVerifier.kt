@@ -5,16 +5,16 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.interfaces.DecodedJWT
 import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
-import net.kigawa.keruta.ktcp.model.auth.AuthToken
-import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifyValues
-import net.kigawa.keruta.ktcp.model.auth.jwt.UnverifiedToken
-import net.kigawa.keruta.ktcp.model.auth.jwt.VerifyErr
-import net.kigawa.keruta.ktcp.model.err.KtcpErr
+import net.kigawa.keruta.ktcp.domain.auth.AuthToken
+import net.kigawa.keruta.ktcp.domain.auth.jwt.JwtVerifyValues
+import net.kigawa.keruta.ktcp.domain.auth.jwt.UnverifiedToken
+import net.kigawa.keruta.ktcp.domain.auth.jwt.VerifyErr
+import net.kigawa.keruta.ktcp.domain.err.KtcpErr
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.LoggerFactory
 import net.kigawa.kodel.api.net.Url
 import java.security.interfaces.RSAPublicKey
-import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifier as KtcpJwtVerifier
+import net.kigawa.keruta.ktcp.domain.auth.jwt.JwtVerifier as KtcpJwtVerifier
 
 class JwtVerifier(
     val keycloakConfig: KeycloakConfig,
