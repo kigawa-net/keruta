@@ -4,6 +4,7 @@ import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.sessions.*
 import net.kigawa.keruta.ktcl.k8s.auth.AuthGuard
 import net.kigawa.keruta.ktcl.k8s.auth.AuthenticationHelper
 import net.kigawa.keruta.ktcl.k8s.auth.KeycloakConfig
@@ -83,6 +84,27 @@ class ConfigRoutes(
                 logger.info("GitHub token updated for user: ${user.userId}")
                 call.respondRedirect("/?success=github_token_saved")
             }
+        }
+
+        // フォームでのClaude Code APIキー保存
+        post("/config/claudecode") {
+            authGuard.requireAuth(call) { user ->
+                val params = call.receiveParameters()
+                val anthropicApiKey = params["anthropicApiKey"]?.trim() ?: ""
+                if (anthropicApiKey.isEmpty()) {
+                    call.respondRedirect("/?error=api_key_required")
+                    return@requireAuth
+                }
+                userClaudeConfigDao.saveOrUpdate(user.userId, anthropicApiKey)
+                logger.info("Claude Code API key updated for user: ${user.userId}")
+                call.respondRedirect("/?success=claude_key_saved")
+            }
+        }
+
+        // フォームでのログアウト
+        post("/config/logout") {
+            call.sessions.clear<net.kigawa.keruta.ktcl.k8s.auth.UserSession>()
+            call.respondRedirect("/login")
         }
 
         route("/api/config") {

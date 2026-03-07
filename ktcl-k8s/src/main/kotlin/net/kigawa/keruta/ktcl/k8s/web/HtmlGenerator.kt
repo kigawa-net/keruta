@@ -7,7 +7,12 @@ import kotlinx.html.stream.createHTML
  * kotlinx-htmlを使用したHTML生成クラス
  */
 object HtmlGenerator {
-    fun generateIndexHtml(hasGithubToken: Boolean = false): String {
+    fun generateIndexHtml(
+        hasGithubToken: Boolean = false,
+        hasClaudeToken: Boolean = false,
+        success: String? = null,
+        error: String? = null,
+    ): String {
         return createHTML().html {
             lang = "ja"
             head {
@@ -71,7 +76,6 @@ body {
     color: var(--color-primary);
     text-decoration: none;
     border-radius: 6px;
-    transition: background-color 0.15s;
 }
 
 .sidebar-link:hover {
@@ -132,40 +136,18 @@ label {
 }
 
 input[type="text"],
-input[type="password"],
-input[type="number"],
-select {
+input[type="password"] {
     width: 100%;
     padding: 10px 12px;
     border: 1px solid var(--color-border);
     border-radius: 6px;
     font-size: 14px;
-    transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-input:focus,
-select:focus {
+input:focus {
     outline: none;
     border-color: var(--color-primary);
     box-shadow: 0 0 0 3px rgba(10, 88, 202, 0.1);
-}
-
-.checkbox-group {
-    display: flex;
-    align-items: center;
-    margin-bottom: 16px;
-}
-
-.checkbox-group input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    margin-right: 8px;
-    accent-color: var(--color-primary);
-}
-
-.checkbox-group label {
-    margin-bottom: 0;
-    font-weight: 400;
 }
 
 button {
@@ -177,27 +159,16 @@ button {
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.15s, transform 0.1s;
 }
 
 button:hover {
     background: #0842a0;
 }
 
-button:active {
-    transform: scale(0.98);
-}
-
-button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
 .message {
     padding: 12px;
     border-radius: 6px;
     margin-bottom: 16px;
-    display: none;
     font-size: 14px;
 }
 
@@ -213,19 +184,6 @@ button:disabled {
     border: 1px solid #f5c2c7;
 }
 
-.section {
-    margin-top: 24px;
-}
-
-.login-screen,
-.config-screen {
-    display: none;
-}
-
-.active {
-    display: block;
-}
-
 .logout-btn {
     background: #dc3545;
 }
@@ -234,30 +192,9 @@ button:disabled {
     background: #bb2d3b;
 }
 
-.keycloak-btn {
-    background: #0d6efd;
-    width: 100%;
-    padding: 14px;
-    font-size: 16px;
-}
-
-.keycloak-btn:hover {
-    background: #0b5ed7;
-}
-
 @media (max-width: 768px) {
     .sidebar {
-        position: fixed;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        z-index: 100;
-        transform: translateX(-100%);
-        transition: transform 0.3s;
-    }
-
-    .sidebar.open {
-        transform: translateX(0);
+        display: none;
     }
 
     .main-content {
@@ -270,138 +207,75 @@ button:disabled {
             }
             body {
                 div("app-container") {
-                    // サイドバー
                     aside("sidebar") {
-                        id = "sidebar"
                         h1("sidebar-title") { +"Keruta" }
                         nav("sidebar-nav") {
                             a("/") {
-                                classes = setOf("sidebar-link", "active")
+                                classes = setOf("sidebar-link")
                                 +"設定"
                             }
                         }
                     }
 
-                    // メインコンテンツ
                     main("main-content") {
                         div("container") {
+                            h1 { +"設定管理" }
+                            p("subtitle") { +"Claude Code・GitHub Token の設定を変更できます" }
 
-                            // 設定画面
-                            div("config-screen") {
-                                id = "configScreen"
-                                h1 { +"設定管理" }
-                                p("subtitle") { +"Kubernetes、キュー、Claude Code の設定を変更できます" }
-                                div("message") {
-                                    id = "configMessage"
+                            if (success != null) {
+                                div("message success") {
+                                    +when (success) {
+                                        "github_token_saved" -> "GitHub Token を保存しました"
+                                        "claude_key_saved" -> "Claude Code APIキーを保存しました"
+                                        else -> "設定を保存しました"
+                                    }
                                 }
+                            }
 
-                                // Kubernetes設定
-                                div("card") {
-                                    h2("card-title") { +"Kubernetes設定" }
+                            if (error != null) {
+                                div("message error") {
+                                    +when (error) {
+                                        "token_required" -> "GitHub Token を入力してください"
+                                        "api_key_required" -> "Anthropic APIキーを入力してください"
+                                        else -> "エラーが発生しました"
+                                    }
+                                }
+                            }
+
+                            div("card") {
+                                h2("card-title") { +"GitHub Token設定" }
+                                p("subtitle") {
+                                    +(if (hasGithubToken) "Token設定済み" else "Token未設定")
+                                }
+                                form {
+                                    action = "/config/github"
+                                    method = FormMethod.post
                                     div("form-group") {
                                         label {
-                                            htmlFor = "namespace"
-                                            +"ネームスペース"
+                                            htmlFor = "githubToken"
+                                            +"GitHub Personal Access Token"
                                         }
-                                        input(InputType.text) {
-                                            id = "namespace"
-                                            placeholder = "default"
-                                        }
-                                    }
-
-                                    div("checkbox-group") {
-                                        input(InputType.checkBox) {
-                                            id = "useInCluster"
-                                        }
-                                        label {
-                                            htmlFor = "useInCluster"
-                                            +"In-Cluster認証を使用"
+                                        input(InputType.password) {
+                                            id = "githubToken"
+                                            name = "githubToken"
+                                            placeholder = "ghp_..."
                                         }
                                     }
-
-                                    div("form-group") {
-                                        label {
-                                            htmlFor = "kubeconfigPath"
-                                            +"Kubeconfigパス（In-Cluster無効時）"
-                                        }
-                                        input(InputType.text) {
-                                            id = "kubeconfigPath"
-                                            placeholder = "~/.kube/config"
-                                        }
-                                    }
-
-                                    div("form-group") {
-                                        label {
-                                            htmlFor = "jobTimeout"
-                                            +"Jobタイムアウト（秒）"
-                                        }
-                                        input(InputType.number) {
-                                            id = "jobTimeout"
-                                            placeholder = "600"
-                                        }
-                                    }
-
                                     button {
-                                        id = "updateK8sBtn"
-                                        +"Kubernetes設定を更新"
+                                        type = ButtonType.submit
+                                        +"GitHub Tokenを保存"
                                     }
                                 }
+                            }
 
-                                // キュー設定
-                                div("card") {
-                                    h2("card-title") { +"キュー設定" }
-                                    div("form-group") {
-                                        label {
-                                            htmlFor = "queueId"
-                                            +"キューID"
-                                        }
-                                        input(InputType.number) {
-                                            id = "queueId"
-                                            placeholder = "1"
-                                        }
-                                    }
-
-                                    button {
-                                        id = "updateQueueBtn"
-                                        +"キュー設定を更新"
-                                    }
+                            div("card") {
+                                h2("card-title") { +"Claude Code設定" }
+                                p("subtitle") {
+                                    +(if (hasClaudeToken) "APIキー設定済み" else "APIキー未設定")
                                 }
-
-                                // GitHub Token設定
-                                div("card") {
-                                    h2("card-title") { +"GitHub Token設定" }
-                                    p("subtitle") {
-                                        id = "githubTokenStatus"
-                                        +(if (hasGithubToken) "Token設定済み" else "Token未設定")
-                                    }
-                                    form {
-                                        action = "/config/github"
-                                        method = FormMethod.post
-                                        div("form-group") {
-                                            label {
-                                                htmlFor = "githubToken"
-                                                +"GitHub Personal Access Token"
-                                            }
-                                            input(InputType.password) {
-                                                id = "githubToken"
-                                                name = "githubToken"
-                                                placeholder = "ghp_..."
-                                            }
-                                        }
-                                        button {
-                                            type = ButtonType.submit
-                                            +"GitHub Tokenを保存"
-                                        }
-                                    }
-                                }
-
-                                // Claude Code設定
-                                div("card") {
-                                    h2("card-title") { +"Claude Code設定" }
-                                    p("subtitle") {
-                                        id = "claudeApiKeyStatus"
-                                        +"APIキー未設定"
-                                    }
+                                form {
+                                    action = "/config/claudecode"
+                                    method = FormMethod.post
                                     div("form-group") {
                                         label {
                                             htmlFor = "anthropicApiKey"
@@ -409,233 +283,29 @@ button:disabled {
                                         }
                                         input(InputType.password) {
                                             id = "anthropicApiKey"
+                                            name = "anthropicApiKey"
                                             placeholder = "sk-ant-..."
                                         }
                                     }
                                     button {
-                                        id = "updateClaudeCodeBtn"
-                                        +"Claude Code APIキーを更新"
+                                        type = ButtonType.submit
+                                        +"Claude Code APIキーを保存"
                                     }
                                 }
+                            }
 
-                                div("card") {
+                            div("card") {
+                                form {
+                                    action = "/config/logout"
+                                    method = FormMethod.post
                                     button {
-                                        id = "logoutBtn"
+                                        type = ButtonType.submit
                                         classes = setOf("logout-btn")
                                         +"ログアウト"
                                     }
                                 }
                             }
                         }
-                    }
-                }
-
-                script {
-                    unsafe {
-                        +"""
-        // Keycloak設定（環境変数から注入）
-        const KEYCLOAK_URL = '${"$"}{KEYCLOAK_URL}';
-        const KEYCLOAK_REALM = '${"$"}{KEYCLOAK_REALM}';
-        const KEYCLOAK_CLIENT_ID = '${"$"}{KEYCLOAK_CLIENT_ID}';
-
-        let token = null;
-
-        // 画面切り替え
-        function showLoginScreen() {
-            document.getElementById('loginScreen').classList.add('active');
-            document.getElementById('configScreen').classList.remove('active');
-        }
-
-        function showConfigScreen() {
-            document.getElementById('loginScreen').classList.remove('active');
-            document.getElementById('configScreen').classList.add('active');
-        }
-
-        // メッセージ表示
-        function showMessage(elementId, text, type) {
-            const el = document.getElementById(elementId);
-            el.textContent = text;
-            el.className = 'message ' + type;
-            el.style.display = 'block';
-            setTimeout(() => {
-                el.style.display = 'none';
-            }, 5000);
-        }
-
-        // Keycloakログイン
-        document.getElementById('keycloakLoginBtn').addEventListener('click', async () => {
-            const authUrl = KEYCLOAK_URL + 'realms/' + KEYCLOAK_REALM + '/protocol/openid-connect/auth';
-            const params = new URLSearchParams({
-                client_id: KEYCLOAK_CLIENT_ID,
-                redirect_uri: window.location.origin + '/login',
-                response_type: 'token',
-                scope: 'openid'
-            });
-
-            window.location.href = authUrl + '?' + params;
-        });
-
-        // URLからトークンを取得
-        function getTokenFromUrl() {
-            const hash = window.location.hash.substring(1);
-            const params = new URLSearchParams(hash);
-            return params.get('access_token');
-        }
-
-        // ログイン処理
-        async function login(accessToken) {
-            try {
-                const response = await fetch('/api/auth/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ token: accessToken })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    token = accessToken;
-                    await loadConfig();
-                    showConfigScreen();
-                } else {
-                    showMessage('loginMessage', 'ログインに失敗しました: ' + data.message, 'error');
-                }
-            } catch (error) {
-                showMessage('loginMessage', 'ログインエラー: ' + error.message, 'error');
-            }
-        }
-
-        // 設定読み込み
-        async function loadConfig() {
-            try {
-                const response = await fetch('/api/config', {
-                    headers: {
-                        'Authorization': 'Bearer ' + token
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error('設定の読み込みに失敗しました');
-                }
-
-                const data = await response.json();
-
-                document.getElementById('namespace').value = data.kubernetes.namespace;
-                document.getElementById('useInCluster').checked = data.kubernetes.useInCluster;
-                document.getElementById('kubeconfigPath').value = data.kubernetes.kubeconfigPath || '';
-                document.getElementById('jobTimeout').value = data.kubernetes.jobTimeout;
-                document.getElementById('queueId').value = data.queue.queueId;
-                document.getElementById('claudeApiKeyStatus').textContent = data.claudeCode.hasApiKey
-                    ? 'APIキー設定済み'
-                    : 'APIキー未設定';
-            } catch (error) {
-                showMessage('configMessage', '設定の読み込みエラー: ' + error.message, 'error');
-            }
-        }
-
-        // Kubernetes設定更新
-        document.getElementById('updateK8sBtn').addEventListener('click', async () => {
-            try {
-                const response = await fetch('/api/config/kubernetes', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + token
-                    },
-                    body: JSON.stringify({
-                        namespace: document.getElementById('namespace').value,
-                        useInCluster: document.getElementById('useInCluster').checked,
-                        kubeconfigPath: document.getElementById('kubeconfigPath').value || null,
-                        jobTimeout: parseInt(document.getElementById('jobTimeout').value)
-                    })
-                });
-
-                const data = await response.json();
-                showMessage('configMessage', data.message, 'success');
-            } catch (error) {
-                showMessage('configMessage', '更新エラー: ' + error.message, 'error');
-            }
-        });
-
-        // Claude Code設定更新
-        document.getElementById('updateClaudeCodeBtn').addEventListener('click', async () => {
-            try {
-                const anthropicApiKey = document.getElementById('anthropicApiKey').value.trim();
-                if (!anthropicApiKey) {
-                    showMessage('configMessage', 'Anthropic APIキーを入力してください', 'error');
-                    return;
-                }
-
-                const response = await fetch('/api/config/claudecode', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + token
-                    },
-                    body: JSON.stringify({
-                        anthropicApiKey: anthropicApiKey
-                    })
-                });
-
-                const data = await response.json();
-                if (!response.ok) {
-                    throw new Error(data.error || 'Claude Code設定の更新に失敗しました');
-                }
-
-                document.getElementById('anthropicApiKey').value = '';
-                document.getElementById('claudeApiKeyStatus').textContent = 'APIキー設定済み';
-                showMessage('configMessage', data.message, 'success');
-            } catch (error) {
-                showMessage('configMessage', '更新エラー: ' + error.message, 'error');
-            }
-        });
-
-        // キュー設定更新
-        document.getElementById('updateQueueBtn').addEventListener('click', async () => {
-            try {
-                const response = await fetch('/api/config/queue', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + token
-                    },
-                    body: JSON.stringify({
-                        queueId: parseInt(document.getElementById('queueId').value)
-                    })
-                });
-
-                const data = await response.json();
-                showMessage('configMessage', data.message, 'success');
-            } catch (error) {
-                showMessage('configMessage', '更新エラー: ' + error.message, 'error');
-            }
-        });
-
-        // ログアウト
-        document.getElementById('logoutBtn').addEventListener('click', async () => {
-            try {
-                await fetch('/api/auth/logout', { method: 'POST' });
-                token = null;
-                showLoginScreen();
-            } catch (error) {
-                console.error('Logout error:', error);
-            }
-        });
-
-        // 初期化
-        window.addEventListener('load', () => {
-            const accessToken = getTokenFromUrl();
-            if (accessToken) {
-                // URLからトークンを削除
-                window.history.replaceState({}, document.title, window.location.pathname);
-                login(accessToken);
-            } else {
-                showLoginScreen();
-            }
-        });
-                        """.trimIndent()
                     }
                 }
             }

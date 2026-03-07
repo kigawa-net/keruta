@@ -51,7 +51,7 @@ class RouteModule(
         val authConfig = appConfig.auth
         // 認証ヘルパーと静的ルートを初期化
         val authenticationHelper = AuthenticationHelper(auth0JwtVerifier, authConfig.privateKey)
-        val staticRoutes = StaticRoutes(authenticationHelper, userTokenDao)
+        val staticRoutes = StaticRoutes(authenticationHelper, userTokenDao, dbModule.userClaudeConfigDao)
         val configRoutes = ConfigRoutes(
             keycloakConfig, appConfig,
             authConfig.privateKey, dbModule.userClaudeConfigDao, userTokenDao,

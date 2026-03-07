@@ -6,6 +6,7 @@ import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import net.kigawa.keruta.ktcl.k8s.auth.AuthenticationHelper
 import net.kigawa.keruta.ktcl.k8s.auth.UserSession
+import net.kigawa.keruta.ktcl.k8s.persist.dao.UserClaudeConfigDao
 import net.kigawa.keruta.ktcl.k8s.persist.dao.UserTokenDao
 import net.kigawa.keruta.ktcl.k8s.web.HtmlGenerator
 import net.kigawa.kodel.api.log.getKogger
@@ -13,6 +14,7 @@ import net.kigawa.kodel.api.log.getKogger
 class StaticRoutes(
     private val authenticationHelper: AuthenticationHelper,
     private val userTokenDao: UserTokenDao,
+    private val userClaudeConfigDao: UserClaudeConfigDao,
 ) {
     private val logger = getKogger()
 
@@ -32,7 +34,13 @@ class StaticRoutes(
                 } else {
                     logger.fine("User authenticated: ${user.userId}")
                     val hasGithubToken = userTokenDao.getGithubToken(user.userId) != null
-                    call.respondText(HtmlGenerator.generateIndexHtml(hasGithubToken), ContentType.Text.Html)
+                    val hasClaudeToken = userClaudeConfigDao.get(user.userId) != null
+                    val success = call.request.queryParameters["success"]
+                    val error = call.request.queryParameters["error"]
+                    call.respondText(
+                        HtmlGenerator.generateIndexHtml(hasGithubToken, hasClaudeToken, success, error),
+                        ContentType.Text.Html
+                    )
                 }
             }
 
