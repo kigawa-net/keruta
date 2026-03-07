@@ -43,32 +43,6 @@ ktcl-front-mobile/
 └── build.gradle.kts
 ```
 
-## メッセージフロー
-
-### タスク作成
-
-```kotlin
-// 送信
-val msg = ServerTaskCreateMsg(
-    queueId = 1,
-    title = "タスクタイトル",
-    description = "タスク説明"
-)
-websocket.send(Json.encodeToString(msg))
-
-// 受信
-TaskReceiver → ClientTaskCreatedMsg → TaskRepository.addTask()
-```
-
-### タスク一覧取得
-
-```kotlin
-// 送信
-websocket.send(Json.encodeToString(ServerTaskListMsg(queueId = 1)))
-
-// 受信
-ClientTaskListedMsg → TaskRepository.updateTasks(tasks)
-```
 
 ## 設定
 
@@ -123,7 +97,7 @@ sdk.dir=/path/to/android/sdk
 
 ## 参考資料
 
-- [ktcl-front（React版）](/ktcl-front/)
-- [KTCP Protocol Documentation](/doc/architecture.md)
-- [Authentication Documentation](/doc/authentication.md)
+- [ktcl-front（React版）](../ktcl-front)
+- [KTCP Protocol Documentation](../doc/architecture.md)
+- [Authentication Documentation](../doc/authentication.md)
 - [Compose Multiplatform公式](https://www.jetbrains.com/lp/compose-multiplatform/)

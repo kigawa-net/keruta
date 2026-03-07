@@ -9,7 +9,7 @@ import {
 import {KtseApi} from "./KtseApi";
 import {MutableStateFlow} from "../../util/StateFlow";
 import {ClientQueueCreatedMsg, ServerQueueCreateMsg} from "../msg/queue";
-import {ServerTaskCreateMsg} from "../msg/task";
+import {ServerTaskCreateMsg, ServerTaskMoveMsg, ServerTaskUpdateMsg} from "../msg/task";
 
 export class AuthedKtseApi {
     readonly providerListed = new MutableStateFlow<ClientProviderListMsg>()
@@ -58,6 +58,14 @@ export class AuthedKtseApi {
             title: title,
             description: description,
         };
+        this.ktse.send(msg);
+    }
+    updateTask(taskId: number, status: string): void {
+        const msg: ServerTaskUpdateMsg = {type: "task_update", taskId, status};
+        this.ktse.send(msg);
+    }
+    moveTask(taskId: number, targetQueueId: number): void {
+        const msg: ServerTaskMoveMsg = {type: "task_move", taskId, targetQueueId};
         this.ktse.send(msg);
     }
 

@@ -1,10 +1,8 @@
 import {ReactNode, useEffect, useState} from "react";
 import {KeycloakProvider} from "../components/auth/Keycloak";
 import {UserProfileProvider} from "../components/user/UserProfile";
-import {ServiceProvider} from "../util/net/service/ServiceContext";
 
 import Config from "../Config";
-import {AppContentProvider} from "../components/app/AppContentContext";
 import {KtclApiProvider} from "../components/api/KtclApiProvider";
 import {WebsocketProvider} from "../util/net/websocket/WebsocketProvider";
 import {KtseApiProvider} from "../components/api/KtseApiProvider";
@@ -37,9 +35,7 @@ export function RootProviders({children}: RootProvidersProps) {
                     <WebsocketProvider wsUrl={Config.websocketUrl}>
                         <KtseApiProvider>
                             <AuthedKtseProvider>
-                                <ServiceProvider wsUrl={Config.websocketUrl}>
-                                    <AppContentProvider>{children}</AppContentProvider>
-                                </ServiceProvider>
+                                {children}
                             </AuthedKtseProvider>
                         </KtseApiProvider>
                     </WebsocketProvider>

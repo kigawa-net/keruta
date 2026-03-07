@@ -1,5 +1,5 @@
 // Task
-export {TaskService} from "./TaskService";
+
 export {filterTasks, sortTasks, isValidTransition, isTerminalStatus, canRetry} from "./TaskUtils";
 export type {
     Task, TaskStatus, CreateTaskInput, UpdateTaskInput, MoveTaskInput,

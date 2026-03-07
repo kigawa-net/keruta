@@ -9,7 +9,6 @@ export default [
             route("provider/add", "./routes/provider.add.tsx"),
             route("provider/complete", "./routes/provider.complete.tsx"),
             route("task", "./routes/task.tsx"),
-            route("task/create", "./routes/task.create.tsx"),
             route("queue/create", "./routes/queue.create.tsx"),
             route("queue/:queueId", "./routes/queue.$queueId.tsx"),
         ]),
