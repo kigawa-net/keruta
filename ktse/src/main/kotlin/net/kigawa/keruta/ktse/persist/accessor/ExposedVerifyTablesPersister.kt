@@ -1,5 +1,7 @@
 package net.kigawa.keruta.ktse.persist.accessor
 
+import net.kigawa.keruta.ktcp.model.KtclAudience
+import net.kigawa.keruta.ktcp.model.UserIssuer
 import net.kigawa.keruta.ktcp.model.auth.jwt.VerifiedToken
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.server.auth.UnverifiedAuthTokens
@@ -33,12 +35,13 @@ class ExposedVerifyTablesPersister(
     }
 
     override fun saveProviderForUser(
-        user: PersistedUser, providerToken: VerifiedToken, providerAudience: String,
+        user: PersistedUser, providerToken: VerifiedToken, ktclAudience: KtclAudience,
         userAudience: String,
-        providerName: String,
+        providerName: String, userIssuer: UserIssuer,
     ): Res<PersistedProvider, KtcpErr> = dbPersister.execTransaction {
         it.insertProviderForUser(
-            user, providerToken.issuer, providerAudience,providerName,providerToken.subject
+            user, providerToken.issuer, ktclAudience, providerName,
+            providerToken.subject, userIssuer
         )
     }
 

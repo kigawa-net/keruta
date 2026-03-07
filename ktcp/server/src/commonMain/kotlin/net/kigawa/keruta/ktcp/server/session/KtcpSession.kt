@@ -142,7 +142,7 @@ class KtcpSession private constructor(
         }
         persisterSession.verifyTablesPersister.saveProviderForUser(
             userTables.first, providerToken,input.providerAudience,
-            input.userAudience,input.providerName
+            input.userAudience,input.providerName, userToken.issuer
         )
 
 

@@ -1,5 +1,6 @@
 package net.kigawa.keruta.ktse.persist.db.dsl
 
+import net.kigawa.keruta.ktcp.model.UserIssuer
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.server.persist.PersistedUser
 import net.kigawa.keruta.ktcp.server.persist.PersistedUserIdp
@@ -75,6 +76,7 @@ class DbPersisterDsl(val transaction: Transaction) {
         providerAudience: String,
         providerName: String,
         userSubject: String,
+        userIssuer: UserIssuer,
     ): Res<ExposedPersistedProvider, KtcpErr> {
         val provider = ProviderTable.insert {
             it[ProviderTable.userId] = user.id
@@ -89,29 +91,30 @@ class DbPersisterDsl(val transaction: Transaction) {
         UserIdpTable.insert {
             it[UserIdpTable.userId] = user.id
             it[UserIdpTable.providerId] = provider.id
-            it[UserIdpTable.issuer] = providerIssuer.toStrUrl()
+            it[UserIdpTable.issuer] = userIssuer.toStrUrl()
             it[UserIdpTable.subject] = userSubject
             it[UserIdpTable.audience] = providerAudience
         }
         return Res.Ok(provider)
     }
 
-    fun findUserTables(issuer: Url, subject: String): Res<Pair<PersistedUser, PersistedUserIdp>, KtcpErr> = UserTable.join(UserIdpTable, JoinType.INNER)
-        .join(
-            ProviderTable, JoinType.INNER, additionalConstraint = {
-                UserIdpTable.providerId eq ProviderTable.id and (UserTable.id eq ProviderTable.userId)
-            }
-        ).select(UserTable.fields + UserIdpTable.fields).where {
-            (UserIdpTable.issuer eq issuer.toStrUrl()) and (UserIdpTable.subject eq subject)
-        }.distinct().singleOrNull()
-        ?.let {
-            val idp = ExposedPersistedUserIdp(it)
-            Pair(
-                ExposedPersistedUser(it),
-                idp
-            )
-        }?.let { Res.Ok(it) }
-        ?: Res.Err(NoSingleRecordErr("", null))
+    fun findUserTables(issuer: Url, subject: String): Res<Pair<PersistedUser, PersistedUserIdp>, KtcpErr> =
+        UserTable.join(UserIdpTable, JoinType.INNER)
+            .join(
+                ProviderTable, JoinType.INNER, additionalConstraint = {
+                    UserIdpTable.providerId eq ProviderTable.id and (UserTable.id eq ProviderTable.userId)
+                }
+            ).select(UserTable.fields + UserIdpTable.fields).where {
+                (UserIdpTable.issuer eq issuer.toStrUrl()) and (UserIdpTable.subject eq subject)
+            }.distinct().singleOrNull()
+            ?.let {
+                val idp = ExposedPersistedUserIdp(it)
+                Pair(
+                    ExposedPersistedUser(it),
+                    idp
+                )
+            }?.let { Res.Ok(it) }
+            ?: Res.Err(NoSingleRecordErr("", null))
 
     val task by lazy { DbTaskPersisterDsl(transaction) }
     val user by lazy { DbUserPersisterDsl() }

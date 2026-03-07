@@ -2,6 +2,7 @@ package net.kigawa.keruta.ktcl.k8s.task
 
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withTimeout
 import net.kigawa.keruta.ktcl.k8s.config.K8sConfig
 import net.kigawa.keruta.ktcl.k8s.connection.JvmWebSocketConnection
 import net.kigawa.keruta.ktcl.k8s.connection.ReceiveClientUnknownArg
@@ -10,6 +11,7 @@ import net.kigawa.keruta.ktcp.client.KtcpClient
 import net.kigawa.keruta.ktcp.model.task.list.ServerTaskListMsg
 import net.kigawa.kodel.api.err.unwrap
 import net.kigawa.kodel.api.log.LoggerFactory
+import kotlin.time.Duration.Companion.seconds
 
 class TaskReceiver(
     private val connection: JvmWebSocketConnection,
@@ -29,7 +31,9 @@ class TaskReceiver(
         logger.info { "Task list requested for user $userId, queue: ${config.queueId}" }
 
         val message = try {
-            connection.receive()
+            withTimeout(10.seconds) {
+                connection.receive()
+            }
         } catch (_: ClosedReceiveChannelException) {
             logger.info { "WebSocket connection closed" }
             return@coroutineScope false
