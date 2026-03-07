@@ -10,13 +10,10 @@ import net.kigawa.keruta.ktse.persist.db.table.QueueTable
 import net.kigawa.keruta.ktse.persist.db.table.QueueUserTable
 import net.kigawa.keruta.ktse.persist.model.ExposedPersistedQueue
 import net.kigawa.kodel.api.err.Res
-import org.jetbrains.exposed.sql.JoinType
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.*
 
 class DbQueuePersisterDsl(
-    val transaction: org.jetbrains.exposed.sql.Transaction,
+    val transaction: Transaction,
 ) {
     fun createQueue(
         queueToCreate: QueueToCreate, provider: PersistedProvider,
@@ -52,5 +49,23 @@ class DbQueuePersisterDsl(
             ?.let { Res.Ok(ExposedPersistedQueue(it)) }
             ?: Res.Err(NoSingleRecordErr("", null))
     }
+
+    fun updateQueue(user: PersistedUser, queueId: Long, name: String): Res<PersistedQueue, KtcpErr> =
+        transaction.run {
+            val owns = QueueUserTable.selectAll()
+                .where { QueueUserTable.userId eq user.id and (QueueUserTable.queueId eq queueId) }
+                .count() > 0
+            if (!owns) return Res.Err(NoSingleRecordErr("Queue not found or access denied", null))
+            QueueTable.update({ QueueTable.id eq queueId }) {
+                it[QueueTable.name] = name
+            }
+            QueueTable.join(
+                QueueUserTable, joinType = JoinType.INNER,
+            ).selectAll().where {
+                QueueUserTable.userId eq user.id and (QueueUserTable.queueId eq queueId)
+            }.singleOrNull()
+                ?.let { Res.Ok(ExposedPersistedQueue(it)) }
+                ?: Res.Err(NoSingleRecordErr("", null))
+        }
 
 }

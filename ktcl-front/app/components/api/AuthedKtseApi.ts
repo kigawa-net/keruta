@@ -8,12 +8,21 @@ import {
 } from "../msg/provider";
 import {KtseApi} from "./KtseApi";
 import {MutableStateFlow} from "../../util/StateFlow";
-import {ClientQueueCreatedMsg, ServerQueueCreateMsg} from "../msg/queue";
+import {
+    ClientQueueCreatedMsg,
+    ClientQueueShowedMsg,
+    ClientQueueUpdatedMsg,
+    ServerQueueCreateMsg,
+    ServerQueueShowMsg,
+    ServerQueueUpdateMsg
+} from "../msg/queue";
 import {ServerTaskCreateMsg, ServerTaskMoveMsg, ServerTaskUpdateMsg} from "../msg/task";
 
 export class AuthedKtseApi {
     readonly providerListed = new MutableStateFlow<ClientProviderListMsg>()
     readonly queueCreated = new MutableStateFlow<ClientQueueCreatedMsg>()
+    readonly queueShowed = new MutableStateFlow<ClientQueueShowedMsg>()
+    readonly queueUpdated = new MutableStateFlow<ClientQueueUpdatedMsg>()
     readonly providerIdpAdded = new MutableStateFlow<ClientProviderIdpAddedMsg>()
     readonly providerDeleted = new MutableStateFlow<ClientProviderDeletedMsg>()
     readonly providerTokenIssued = new MutableStateFlow<ClientProviderAddTokenMsg>()
@@ -23,6 +32,12 @@ export class AuthedKtseApi {
             switch (msg.type) {
                 case "queue_created":
                     this.queueCreated.call(msg);
+                    break;
+                case "queue_showed":
+                    this.queueShowed.call(msg);
+                    break;
+                case "queue_updated":
+                    this.queueUpdated.call(msg);
                     break;
                 case "provider_listed":
                     this.providerListed.call(msg);
@@ -49,6 +64,14 @@ export class AuthedKtseApi {
 
     createQueue(providerId: number, name: string): void {
         const msg: ServerQueueCreateMsg = {type: "queue_create", providerId, name};
+        this.ktse.send(msg);
+    }
+    showQueue(id: number): void {
+        const msg: ServerQueueShowMsg = {type: "queue_show", id};
+        this.ktse.send(msg);
+    }
+    updateQueue(queueId: number, name: string): void {
+        const msg: ServerQueueUpdateMsg = {type: "queue_update", queueId, name};
         this.ktse.send(msg);
     }
     createTask(queueId: number, title: string, description: string): void {

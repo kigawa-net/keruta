@@ -11,6 +11,7 @@ import net.kigawa.keruta.ktcp.domain.provider.list.ServerProviderListEntrypoint
 import net.kigawa.keruta.ktcp.domain.queue.create.ServerQueueCreateEntrypoint
 import net.kigawa.keruta.ktcp.domain.queue.list.ServerQueueListEntrypoint
 import net.kigawa.keruta.ktcp.domain.queue.show.ServerQueueShowEntrypoint
+import net.kigawa.keruta.ktcp.domain.queue.update.ServerQueueUpdateEntrypoint
 import net.kigawa.keruta.ktcp.domain.task.create.ServerTaskCreateEntrypoint
 import net.kigawa.keruta.ktcp.domain.task.list.ServerTaskListEntrypoint
 import net.kigawa.keruta.ktcp.domain.task.move.ServerTaskMoveEntrypoint
@@ -38,6 +39,7 @@ class KtcpServerEntrypoints<C>(
     queueCreateEntrypoint: ServerQueueCreateEntrypoint<C>,
     queueListEntrypoint: ServerQueueListEntrypoint<C>,
     queueShowEntrypoint: ServerQueueShowEntrypoint<C>,
+    queueUpdateEntrypoint: ServerQueueUpdateEntrypoint<C>,
     taskListEntrypoint: ServerTaskListEntrypoint<C>,
     taskShowEntrypoint: ServerTaskShowEntrypoint<C>,
 ): EntrypointGroupBase<ServerUnknownArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C>() {
@@ -128,6 +130,13 @@ class KtcpServerEntrypoints<C>(
     }
     val queueShow = add(queueShowEntrypoint) { input ->
         input.tryToQueueShow()?.whenErrOk(
+            { EntrypointDeferred { Res.Err(it) } }
+        ) {
+            this(it)
+        }
+    }
+    val queueUpdate = add(queueUpdateEntrypoint) { input ->
+        input.tryToQueueUpdate()?.whenErrOk(
             { EntrypointDeferred { Res.Err(it) } }
         ) {
             this(it)

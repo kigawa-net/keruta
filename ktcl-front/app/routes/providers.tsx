@@ -74,7 +74,7 @@ export default function AboutRoute() {
                     プロバイダーを追加
                 </Link>
             </div>
-            
+
             {/* デスクトップ: テーブル表示 */}
             <div className="hidden md:block bg-white rounded-lg shadow overflow-x-auto">
                 <table className="w-full">
@@ -135,7 +135,7 @@ export default function AboutRoute() {
                     </div>
                 )}
             </div>
-            
+
             {/* モバイル: カード表示 */}
             <div className="md:hidden space-y-4">
                 {providers?.map(p => (
@@ -171,7 +171,7 @@ export default function AboutRoute() {
                                             <li key={i}>
                                                 <a
                                                     href={authEndpoints[idp.issuer]
-                                                        ? buildOidcLoginUrl(authEndpoints[idp.issuer], idp.audience)
+                                                    ? buildOidcLoginUrl(authEndpoints[idp.issuer], idp.audience)
                                                         : idp.issuer}
                                                     target="_blank"
                                                     rel="noopener noreferrer"

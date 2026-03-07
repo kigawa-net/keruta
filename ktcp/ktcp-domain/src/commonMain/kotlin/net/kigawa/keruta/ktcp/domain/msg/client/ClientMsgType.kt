@@ -15,6 +15,7 @@ enum class ClientMsgType(
     QUEUE_CREATED("queue_created"),
     QUEUE_LISTED("queue_listed"),
     QUEUE_SHOWED("queue_showed"),
+    QUEUE_UPDATED("queue_updated"),
     TASK_CREATED("task_created"),
     TASK_UPDATED("task_updated"),
     TASK_MOVED("task_moved"),

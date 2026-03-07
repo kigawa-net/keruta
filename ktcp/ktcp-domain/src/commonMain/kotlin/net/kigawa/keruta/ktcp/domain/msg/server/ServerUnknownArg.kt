@@ -10,6 +10,7 @@ import net.kigawa.keruta.ktcp.domain.provider.list.ServerProviderListMsg
 import net.kigawa.keruta.ktcp.domain.queue.create.ServerQueueCreateMsg
 import net.kigawa.keruta.ktcp.domain.queue.list.ServerQueueListMsg
 import net.kigawa.keruta.ktcp.domain.queue.show.ServerQueueShowMsg
+import net.kigawa.keruta.ktcp.domain.queue.update.ServerQueueUpdateMsg
 import net.kigawa.keruta.ktcp.domain.task.create.ServerTaskCreateMsg
 import net.kigawa.keruta.ktcp.domain.task.list.ServerTaskListMsg
 import net.kigawa.keruta.ktcp.domain.task.move.ServerTaskMoveMsg
@@ -32,4 +33,5 @@ interface ServerUnknownArg {
     fun tryToTaskShow(): Res<ServerTaskShowMsg, KtcpErr>?
     fun tryToTaskUpdate(): Res<ServerTaskUpdateMsg, KtcpErr>?
     fun tryToTaskMove(): Res<ServerTaskMoveMsg, KtcpErr>?
+    fun tryToQueueUpdate(): Res<ServerQueueUpdateMsg, KtcpErr>?
 }

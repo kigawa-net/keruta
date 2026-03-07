@@ -18,6 +18,7 @@ import net.kigawa.keruta.ktcp.domain.provider.list.ServerProviderListMsg
 import net.kigawa.keruta.ktcp.domain.queue.create.ServerQueueCreateMsg
 import net.kigawa.keruta.ktcp.domain.queue.list.ServerQueueListMsg
 import net.kigawa.keruta.ktcp.domain.queue.show.ServerQueueShowMsg
+import net.kigawa.keruta.ktcp.domain.queue.update.ServerQueueUpdateMsg
 import net.kigawa.keruta.ktcp.domain.serialize.deserialize
 import net.kigawa.keruta.ktcp.domain.task.create.ServerTaskCreateMsg
 import net.kigawa.keruta.ktcp.domain.task.list.ServerTaskListMsg
@@ -104,6 +105,11 @@ class ReceiveUnknownArg(
 
     override fun tryToTaskMove(): Res<ServerTaskMoveMsg, KtcpErr>? {
         if (typeStr != ServerMsgType.TASK_MOVE.str) return null
+        return translate()
+    }
+
+    override fun tryToQueueUpdate(): Res<ServerQueueUpdateMsg, KtcpErr>? {
+        if (typeStr != ServerMsgType.QUEUE_UPDATE.str) return null
         return translate()
     }
 

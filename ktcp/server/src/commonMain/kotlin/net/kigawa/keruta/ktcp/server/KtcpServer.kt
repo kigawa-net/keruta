@@ -33,6 +33,7 @@ class KtcpServer(
         ReceiveQueueCreateEntrypoint(),
         ReceiveQueueListEntrypoint(),
         ReceiveQueueShowEntrypoint(),
+        ReceiveQueueUpdateEntrypoint(),
         ReceiveTaskListEntrypoint(),
         ReceiveTaskShowEntrypoint(),
     )
@@ -46,6 +47,7 @@ class KtcpServer(
         SendQueueCreatedEntrypoint(),
         SendQueueListedEntrypoint(),
         SendQueueShowedEntrypoint(),
+        SendQueueUpdatedEntrypoint(),
         SendTaskCreatedEntrypoint(),
         SendTaskUpdatedEntrypoint(),
         SendTaskMovedEntrypoint(),
