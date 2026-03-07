@@ -16,6 +16,7 @@ import net.kigawa.keruta.ktcp.domain.provider.listed.ClientProviderListedMsg
 import net.kigawa.keruta.ktcp.domain.queue.created.ClientQueueCreatedMsg
 import net.kigawa.keruta.ktcp.domain.queue.listed.ClientQueueListedMsg
 import net.kigawa.keruta.ktcp.domain.queue.showed.ClientQueueShowedMsg
+import net.kigawa.keruta.ktcp.domain.queue.updated.ClientQueueUpdatedMsg
 import net.kigawa.keruta.ktcp.domain.serialize.KerutaSerializer
 import net.kigawa.keruta.ktcp.domain.serialize.deserialize
 import net.kigawa.keruta.ktcp.domain.task.created.ClientTaskCreatedMsg
@@ -74,6 +75,11 @@ class ReceiveClientUnknownArg(
     override fun tryToQueueShowed(): Res<ClientQueueShowedMsg, KtcpErr>? {
         if (typeStr != ClientMsgType.QUEUE_SHOWED.str) return null
         return serializer.deserialize<ClientQueueShowedMsg>(text)
+    }
+
+    override fun tryToQueueUpdated(): Res<ClientQueueUpdatedMsg, KtcpErr>? {
+        if (typeStr != ClientMsgType.QUEUE_UPDATED.str) return null
+        return serializer.deserialize<ClientQueueUpdatedMsg>(text)
     }
 
     override fun tryToTaskCreated(): Res<ClientTaskCreatedMsg, KtcpErr>? {
