@@ -12,9 +12,14 @@ spec:
       initContainers:
       - name: git-clone
         image: alpine/git:latest
-        command: ["git", "clone", "$(GIT_REPO_URL)", "/workspace"]
+        command:
+        - sh
+        - -c
+        - "git clone $GIT_REPO_URL /workspace && cd /workspace && git checkout -b keruta-task-$TASK_ID"
         env:
         - name: GIT_REPO_URL
+          value: ""
+        - name: TASK_ID
           value: ""
         volumeMounts:
         - name: workspace
