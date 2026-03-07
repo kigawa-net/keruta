@@ -19,7 +19,7 @@ export function AppLayout({ isSidebarOpen, onToggleSidebar, children }: AppLayou
       {/* サイドバーオーバーレイ（モバイル用） */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          className="fixed inset-0 bg-black opacity-80 bg-opacity-50 z-40 md:hidden"
           onClick={onToggleSidebar}
         />
       )}
