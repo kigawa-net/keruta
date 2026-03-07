@@ -1,4 +1,3 @@
-import PrivateRoute from "../components/auth/PrivateRoute";
 import {useEffect, useState} from "react";
 
 import {useWebsocketReceive} from "../util/net/websocket/useWebsocketReceive";
@@ -45,31 +44,29 @@ export default function Page({params: {queueId}}: Route.ComponentProps) {
     const queueDisplayName = currentQueue?.name || `Queue ${queueId}`
 
     return (
-        <PrivateRoute>
-            <div className="h-full p-3 md:p-8">
-                <div className="max-w-6xl mx-auto">
-                    <div className="mb-6 md:mb-8">
-                        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
-                            タスク一覧 - {queueDisplayName}
-                        </h1>
-                        <p className="mt-2 text-gray-600 hidden sm:block">このキューに含まれるタスクの一覧を表示します</p>
-                    </div>
+        <div className="p-3 md:p-8">
+            <div className="max-w-6xl mx-auto">
+                <div className="mb-6 md:mb-8">
+                    <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+                        タスク一覧 - {queueDisplayName}
+                    </h1>
+                    <p className="mt-2 text-gray-600 hidden sm:block">このキューに含まれるタスクの一覧を表示します</p>
+                </div>
 
-                    <QueueTaskCreateForm
-                        queueId={queueId}
-                        onTaskCreated={() => loadTaskList(globalState, authedKtse, Number(queueId))}
+                <QueueTaskCreateForm
+                    queueId={queueId}
+                    onTaskCreated={() => loadTaskList(globalState, authedKtse, Number(queueId))}
+                />
+
+                <div className="mt-4 md:mt-6">
+                    <QueueTaskList
+                        tasks={tasks}
+                        queues={queues}
+                        currentQueueId={Number(queueId)}
                     />
-
-                    <div className="mt-4 md:mt-6">
-                        <QueueTaskList
-                            tasks={tasks}
-                            queues={queues}
-                            currentQueueId={Number(queueId)}
-                        />
-                    </div>
                 </div>
             </div>
-        </PrivateRoute>
+        </div>
     )
 }
 
