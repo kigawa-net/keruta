@@ -6,8 +6,8 @@
  */
 
 plugins {
-    // foojay-resolver disabled - use local JDK
-    // id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+    // foojay-resolver - auto-provision toolchains
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
 
 rootProject.name = "keruta"
