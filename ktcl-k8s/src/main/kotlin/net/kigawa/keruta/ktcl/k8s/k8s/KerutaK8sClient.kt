@@ -33,6 +33,7 @@ class KerutaK8sClient(
         (0 until concurrentCount).map {
             launch {
                 while (isActive) {
+                    var received = false
                     userTokenDao.getRefreshTokens().forEach {
                         try {
                             val (userId, refreshToken) = it
@@ -49,27 +50,27 @@ class KerutaK8sClient(
                             logger.info { "Access token refreshed for user $userId" }
 
                             // accessTokenを使ってKTSEに接続しタスク受信ループを実行する
-                            runTaskReceiver(userId, tokenResponse.accessToken)
+                            received = runTaskReceiver(userId, tokenResponse.accessToken) || received
                         } catch (e: Exception) {
                             if (e is CancellationException) throw e
                             logger.severe { "Failed to refresh token ${e.message}" }
                             e.printStackTrace()
                         }
                     }
-
-                    delay(30.seconds)
+                    if (received) delay(1.seconds)
+                    else delay(30.seconds)
                 }
             }
         }.joinAll()
     }
 
-    private suspend fun runTaskReceiver(userId: String, accessToken: String) {
+    private suspend fun runTaskReceiver(userId: String, accessToken: String): Boolean {
         val connectionManager = ConnectionManager(config)
         val connection = try {
             connectionManager.connect()
         } catch (e: Exception) {
             logger.severe { "Failed to connect to KTSE for user $userId: ${e.message}" }
-            return
+            return false
         }
 
         val session = KtcpSession(connection)
@@ -83,18 +84,19 @@ class KerutaK8sClient(
         ktcpClient.ktcpServerEntrypoints.authRequestEntrypoint.access(authMsg, ctx)?.execute()
             ?: run {
                 logger.severe { "Failed to send auth request for user $userId" }
-                return
+                return false
             }
 
         logger.info { "Authentication request sent for user $userId" }
+
 
         // タスクエグゼキューターとクライアントエントリポイントを作成
         val taskExecutor = TaskExecutorFactory(config, ktcpClient).create()
         val clientEntrypoints = ClientEntrypointsFactory(ktcpClient, config, taskExecutor).create()
 
         // タスク受信ループを開始
-        val taskReceiver = TaskReceiver(connection, clientEntrypoints)
-        taskReceiver.startReceiving(ctx)
+        val taskReceiver = TaskReceiver(connection, clientEntrypoints, config, ktcpClient)
+        return taskReceiver.startReceiving(ctx, userId)
     }
 
 }
