@@ -9,6 +9,7 @@ import kotlinx.serialization.json.jsonPrimitive
 import net.kigawa.keruta.ktcl.k8s.connection.JvmWebSocketConnection
 import net.kigawa.keruta.ktcl.k8s.connection.ReceiveClientUnknownArg
 import net.kigawa.keruta.ktcl.k8s.k8s.K8sJobExecutor
+import net.kigawa.keruta.ktcl.k8s.persist.dao.UserTokenDao
 import net.kigawa.keruta.ktcp.client.ClientCtx
 import net.kigawa.keruta.ktcp.client.KtcpClient
 import net.kigawa.keruta.ktcp.domain.provider.list.ServerProviderListMsg
@@ -24,6 +25,7 @@ class TaskReceiver(
     private val ktcpClient: KtcpClient,
     private val jobExecutor: K8sJobExecutor,
     private val ktclIssuer: String,
+    private val userTokenDao: UserTokenDao,
 ) {
     private val logger = LoggerFactory.get("TaskReceiver")
 
@@ -123,8 +125,13 @@ class TaskReceiver(
 
             val task = taskListed.tasks.firstOrNull { it.status != "completed" } ?: continue
 
+            val githubToken = userTokenDao.getGithubToken(userId) ?: run {
+                logger.severe { "GitHub token not found for user $userId, skipping queue ${queue.id}" }
+                continue
+            }
+
             // 7. K8s Job実行
-            jobExecutor.executeJob(task.id, task.title, task.description, gitRepoUrl)
+            jobExecutor.executeJob(task.id, task.title, task.description, gitRepoUrl, githubToken)
                 .unwrap {
                     it.printStackTrace()
                     null

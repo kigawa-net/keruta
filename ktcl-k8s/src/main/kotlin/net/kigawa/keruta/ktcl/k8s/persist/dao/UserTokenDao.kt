@@ -53,4 +53,34 @@ class UserTokenDao(
                 .map { it[UserTokenTable.userId] to it[UserTokenTable.refreshToken] }
         }
     }
+
+    /**
+     * ユーザーのgithub tokenを保存または更新する
+     */
+    fun saveOrUpdateGithubToken(userId: String, githubToken: String) {
+        transaction(dbManager.db) {
+            val existing = UserTokenTable.select(UserTokenTable.userId eq userId).firstOrNull()
+            if (existing != null) {
+                UserTokenTable.update({ UserTokenTable.userId eq userId }) {
+                    it[UserTokenTable.githubToken] = githubToken
+                }
+            } else {
+                UserTokenTable.insert {
+                    it[UserTokenTable.userId] = userId
+                    it[UserTokenTable.githubToken] = githubToken
+                }
+            }
+        }
+    }
+
+    /**
+     * ユーザーのgithub tokenを取得する
+     */
+    fun getGithubToken(userId: String): String? {
+        return transaction(dbManager.db) {
+            UserTokenTable.select(UserTokenTable.userId eq userId)
+                .firstOrNull()
+                ?.get(UserTokenTable.githubToken)
+        }
+    }
 }
