@@ -17,7 +17,7 @@
       <driver-ref>tidb</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://127.0.0.1:4000/keruta</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:4000/keruta</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" value="4000" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="true" />

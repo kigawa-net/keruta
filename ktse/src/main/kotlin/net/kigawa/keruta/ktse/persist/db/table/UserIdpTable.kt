@@ -10,5 +10,5 @@ object UserIdpTable: Table("user_idp") {
     val subject = varchar("subject", 50)
     val audience = varchar("audience", 50)
     val createdAt = datetime("created_at")
-    override val primaryKey = PrimaryKey(issuer, subject)
+    override val primaryKey = PrimaryKey(issuer, subject, providerId)
 }

@@ -60,7 +60,7 @@
       <AutoIntrospectionLevel>3</AutoIntrospectionLevel>
       <Current>1</Current>
       <LastIntrospectionLevel>3</LastIntrospectionLevel>
-      <LastIntrospectionLocalTimestamp>2026-03-07.08:23:52</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2026-03-07.09:49:48</LastIntrospectionLocalTimestamp>
       <CollationName>utf8mb4_bin</CollationName>
     </schema>
     <user id="17" parent="1" name="keruta"/>
@@ -173,7 +173,7 @@
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="40" parent="19" name="id">
-      <AutoIncrement>30002</AutoIncrement>
+      <AutoIncrement>0</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>bigint|0s</StoredType>
@@ -273,7 +273,7 @@
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="61" parent="21" name="id">
-      <AutoIncrement>30003</AutoIncrement>
+      <AutoIncrement>0</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int|0s</StoredType>
@@ -389,7 +389,7 @@ provider_id</ColNames>
       <Type>btree</Type>
     </index>
     <column id="85" parent="24" name="id">
-      <AutoIncrement>30008</AutoIncrement>
+      <AutoIncrement>0</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int|0s</StoredType>
