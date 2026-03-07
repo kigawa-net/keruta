@@ -7,6 +7,9 @@ DELETE FROM user_idp WHERE provider_id IS NULL OR subject IS NULL;
 -- Disable foreign key checks for table recreation
 SET FOREIGN_KEY_CHECKS = 0;
 
+-- Clean up any leftover table from a previous failed attempt
+DROP TABLE IF EXISTS user_idp_new;
+
 -- Create new table with desired primary key
 CREATE TABLE user_idp_new
 (
