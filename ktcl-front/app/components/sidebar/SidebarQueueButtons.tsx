@@ -7,7 +7,7 @@ import {useAuthedKtseState} from "../api/AuthedKtseProvider";
 
 type Queue = ClientQueueListedMsg["queues"][0]
 export default function SidebarQueueButtons(
-    {}: {},
+    {onClose}: { onClose: () => void },
 ) {
     const [queues, setQueues] = useState<Queue[]>([])
     const wsState = useWebsocketState()
@@ -31,6 +31,7 @@ export default function SidebarQueueButtons(
                 to={`/queue/${value.id}`}
                 className="sidebar-link block px-4 py-2 rounded transition-colors"
                 style={{color: '#0a58ca'}}
+                onClick={onClose}
             >
                 {value.name}
             </Link>
