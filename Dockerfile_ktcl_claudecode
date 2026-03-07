@@ -13,7 +13,7 @@ COPY ktcl-k8s /app/ktcl-k8s
 COPY settings.gradle.kts gradle.properties build.gradle.kts gradlew /app/
 RUN --mount=type=cache,target=/root/.gradle ./gradlew :ktcl-claudecode:build -x test
 
-FROM eclipse-temurin:25.0.2_10-jdk-noble
+FROM harbor.kigawa.net/library/dev-base:latest
 
 ENV JAVA_HOME=/opt/java/openjdk
 COPY --from=builder /app/ktcl-claudecode/build/libs/ktcl-claudecode-all.jar /app/app.jar
