@@ -2,8 +2,8 @@ package net.kigawa.keruta.ktcl.k8s.persist.dao
 
 import net.kigawa.keruta.ktcl.k8s.persist.db.DbManager
 import net.kigawa.keruta.ktcl.k8s.persist.table.UserClaudeConfigTable
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 
@@ -18,7 +18,7 @@ class UserClaudeConfigDao(
      */
     fun saveOrUpdate(userId: String, anthropicApiKey: String) {
         transaction(dbManager.db) {
-            val existing = UserClaudeConfigTable.select(UserClaudeConfigTable.userId eq userId).firstOrNull()
+            val existing = UserClaudeConfigTable.selectAll().where { UserClaudeConfigTable.userId eq userId }.firstOrNull()
             if (existing != null) {
                 UserClaudeConfigTable.update({ UserClaudeConfigTable.userId eq userId }) {
                     it[UserClaudeConfigTable.anthropicApiKey] = anthropicApiKey
@@ -37,7 +37,7 @@ class UserClaudeConfigDao(
      */
     fun get(userId: String): String? {
         return transaction(dbManager.db) {
-            UserClaudeConfigTable.select(UserClaudeConfigTable.userId eq userId)
+            UserClaudeConfigTable.selectAll().where { UserClaudeConfigTable.userId eq userId }
                 .firstOrNull()
                 ?.get(UserClaudeConfigTable.anthropicApiKey)
         }
