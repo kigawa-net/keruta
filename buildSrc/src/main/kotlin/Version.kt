@@ -15,7 +15,7 @@ object Version {
     // Database
     const val FLYWAY = "12.0.2"
     const val MYSQL_CONNECTOR = "9.6.0"
-    const val MARIADB_CONNECTOR = "3.5.5"
+    const val MARIADB_CONNECTOR = "3.5.7"
     const val EXPOSED = "0.60.0"
     const val HIKARI_CP = "7.0.2"
 
