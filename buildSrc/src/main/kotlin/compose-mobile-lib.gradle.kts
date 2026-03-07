@@ -53,7 +53,7 @@ kotlin {
         }
 
         androidMain.dependencies {
-            implementation("org.jetbrains.compose.ui:ui-tooling-preview:1.10.0")
+            implementation("org.jetbrains.compose.ui:ui-tooling-preview:1.10.2")
             implementation("io.ktor:ktor-client-okhttp:${Version.KTOR}")
             implementation("androidx.security:security-crypto:1.1.0")
             implementation("net.openid:appauth:0.11.1")
