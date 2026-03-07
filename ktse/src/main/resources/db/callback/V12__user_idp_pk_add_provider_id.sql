@@ -16,7 +16,7 @@ CREATE TABLE user_idp_new
     user_id     integer      NOT NULL,
     issuer      varchar(50)  NOT NULL,
     subject     varchar(50)  NOT NULL,
-    create_at   timestamp    NULL,
+    created_at  timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     audience    varchar(50)  NULL,
     provider_id bigint       NOT NULL,
     PRIMARY KEY (issuer, subject, provider_id)
@@ -24,7 +24,7 @@ CREATE TABLE user_idp_new
 
 -- Copy all data to new table
 INSERT INTO user_idp_new
-SELECT user_id, issuer, subject, create_at, audience, provider_id
+SELECT user_id, issuer, subject, created_at, audience, provider_id
 FROM user_idp;
 
 -- Drop original table and rename new one
