@@ -27,10 +27,7 @@ class LoginRoute(
         val issuer = call.queryParameters["issuer"]?.let { URI(it) } ?: idpConfig.issuer
         val clientId = call.queryParameters["clientId"] ?: idpConfig.clientId
         val registerToken = call.queryParameters["token"]
-        if (registerToken == null) {
-            call.respondText("Token required for login", ContentType.Text.Plain, HttpStatusCode.BadRequest)
-            return@get
-        }
+
 
         logger.info("Starting OIDC login flow for issuer: $issuer, clientId: $clientId")
 
@@ -51,7 +48,7 @@ class LoginRoute(
     }
 
     fun RoutingContext.saveSession(
-        pkce: Pkce, redirectUri: Url, issuer: URI, clientId: String, registerToken: String,
+        pkce: Pkce, redirectUri: Url, issuer: URI, clientId: String, registerToken: String?,
     ) {
         // セッションにOIDC情報を保存
         val oidcSession = OidcSession(

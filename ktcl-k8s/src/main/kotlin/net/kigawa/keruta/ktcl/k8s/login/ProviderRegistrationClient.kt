@@ -34,6 +34,7 @@ class ProviderRegistrationClient(
     suspend fun register(
         userToken: String,
         oidcSession: OidcSession,
+        registerToken: String,
     ) {
         val serverToken = try {
             createServerToken(userToken)
@@ -57,7 +58,7 @@ class ProviderRegistrationClient(
                     send(
                         serializer.serialize(
                             ServerProviderCompleteMsg(
-                                registerToken = oidcSession.registerToken,
+                                registerToken = registerToken,
                                 userToken = userToken,
                                 serverToken = serverToken,
                                 userAudience = oidcSession.clientId,

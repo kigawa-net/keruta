@@ -1,5 +1,7 @@
 package net.kigawa.keruta.ktcl.k8s.config
 
+import net.kigawa.keruta.ktcl.k8s.k8s.K8sSettings
+
 /**
  * アプリケーション全体の設定を保持するクラス
  */

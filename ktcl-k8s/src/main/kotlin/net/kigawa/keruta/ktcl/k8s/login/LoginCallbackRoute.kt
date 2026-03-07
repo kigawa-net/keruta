@@ -48,7 +48,9 @@ class LoginCallbackRoute(
 
         val oidcSession = getValidatedOidcSession(call, state) ?: return@get
 
-        logger.info("Processing OIDC callback for issuer: ${oidcSession.issuer}, clientId: ${oidcSession.clientId}, redirectUri: ${oidcSession.redirectUri}")
+        logger.info(
+            "Processing OIDC callback for issuer: ${oidcSession.issuer}, clientId: ${oidcSession.clientId}, redirectUri: ${oidcSession.redirectUri}"
+        )
 
         processOidcCallback(call, code, oidcSession)
     }
@@ -106,11 +108,14 @@ class LoginCallbackRoute(
 
             logger.info("Login successful for user: $userId, redirecting to home page")
 
-            // ktse にプロバイダーを登録
-            providerRegistrationClient.register(
-                userToken = tokenResponse.accessToken,
-                oidcSession = oidcSession,
-            )
+            oidcSession.registerToken?.let {
+                // ktse にプロバイダーを登録
+                providerRegistrationClient.register(
+                    userToken = tokenResponse.accessToken,
+                    oidcSession = oidcSession,
+                    registerToken = it,
+                )
+            }
 
             // フロントエンドにリダイレクト
             call.respondRedirect("/")
@@ -156,7 +161,9 @@ class LoginCallbackRoute(
         }
 
         return client.use { client ->
-            logger.info("Exchanging code for token: $code, redirectUri: $redirectUri, clientId: $clientId, codeVerifier: $codeVerifier")
+            logger.info(
+                "Exchanging code for token: $code, redirectUri: $redirectUri, clientId: $clientId, codeVerifier: $codeVerifier"
+            )
             val response = client.submitForm(
                 url = tokenEndpoint,
                 formParameters = parameters {
