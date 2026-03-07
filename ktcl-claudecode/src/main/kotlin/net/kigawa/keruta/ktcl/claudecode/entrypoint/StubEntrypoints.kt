@@ -8,10 +8,14 @@ import net.kigawa.keruta.ktcp.domain.provider.listed.ClientProviderListedEntrypo
 import net.kigawa.keruta.ktcp.domain.provider.listed.ClientProviderListedMsg
 import net.kigawa.keruta.ktcp.domain.queue.created.ClientQueueCreatedEntrypoint
 import net.kigawa.keruta.ktcp.domain.queue.created.ClientQueueCreatedMsg
+import net.kigawa.keruta.ktcp.domain.queue.deleted.ClientQueueDeletedEntrypoint
+import net.kigawa.keruta.ktcp.domain.queue.deleted.ClientQueueDeletedMsg
 import net.kigawa.keruta.ktcp.domain.queue.listed.ClientQueueListedEntrypoint
 import net.kigawa.keruta.ktcp.domain.queue.listed.ClientQueueListedMsg
 import net.kigawa.keruta.ktcp.domain.queue.showed.ClientQueueShowedEntrypoint
 import net.kigawa.keruta.ktcp.domain.queue.showed.ClientQueueShowedMsg
+import net.kigawa.keruta.ktcp.domain.queue.updated.ClientQueueUpdatedEntrypoint
+import net.kigawa.keruta.ktcp.domain.queue.updated.ClientQueueUpdatedMsg
 import net.kigawa.keruta.ktcp.domain.task.moved.ClientTaskMovedEntrypoint
 import net.kigawa.keruta.ktcp.domain.task.moved.ClientTaskMovedMsg
 import net.kigawa.keruta.ktcp.domain.task.updated.ClientTaskUpdatedEntrypoint
@@ -58,6 +62,24 @@ class ReceiveQueueListedEntrypoint : ClientQueueListedEntrypoint<ClientCtx> {
 class ReceiveQueueShowedEntrypoint : ClientQueueShowedEntrypoint<ClientCtx> {
     override fun access(
         input: ClientQueueShowedMsg,
+        ctx: ClientCtx,
+    ): EntrypointDeferred<Res<Unit, KtcpErr>> = EntrypointDeferred {
+        Res.Ok(Unit)
+    }
+}
+
+class ReceiveQueueUpdatedEntrypoint : ClientQueueUpdatedEntrypoint<ClientCtx> {
+    override fun access(
+        input: ClientQueueUpdatedMsg,
+        ctx: ClientCtx,
+    ): EntrypointDeferred<Res<Unit, KtcpErr>> = EntrypointDeferred {
+        Res.Ok(Unit)
+    }
+}
+
+class ReceiveQueueDeletedEntrypoint : ClientQueueDeletedEntrypoint<ClientCtx> {
+    override fun access(
+        input: ClientQueueDeletedMsg,
         ctx: ClientCtx,
     ): EntrypointDeferred<Res<Unit, KtcpErr>> = EntrypointDeferred {
         Res.Ok(Unit)

@@ -47,7 +47,7 @@ services:
     networks:
       - tidbnet
   init-tidb:
-    image: mysql:8.0
+    image: mysql:9.6
     depends_on:
       tidb:
         condition: service_started
@@ -116,7 +116,7 @@ services:
       ZOO_MY_ID: 3
       ZOO_SERVERS: server.1=zk-dev1:2888:3888;2181 server.2=zk-dev2:2888:3888;2181 server.3=zk-dev3:2888:3888;2181
   keycloak:
-    image: quay.io/keycloak/keycloak:24.0
+    image: quay.io/keycloak/keycloak:26.5
     command: start-dev --import-realm
     environment:
       - KEYCLOAK_ADMIN=admin

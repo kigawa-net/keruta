@@ -2,6 +2,7 @@ package net.kigawa.keruta.ktcl.k8s.web
 
 import kotlinx.html.*
 import kotlinx.html.stream.createHTML
+import net.kigawa.keruta.ktcl.k8s.dto.ProviderDto
 
 /**
  * kotlinx-htmlを使用したHTML生成クラス
@@ -123,6 +124,24 @@ h1 {
     border-bottom: 1px solid var(--color-border);
 }
 
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+th {
+    font-weight: 600;
+    color: var(--color-text-muted);
+    background: #f8f9fa;
+}
+
 .form-group {
     margin-bottom: 16px;
 }
@@ -214,6 +233,10 @@ button:hover {
                                 classes = setOf("sidebar-link")
                                 +"設定"
                             }
+                            a("/providers") {
+                                classes = setOf("sidebar-link")
+                                +"プロバイダー一覧"
+                            }
                         }
                     }
 
@@ -302,6 +325,92 @@ button:hover {
                                         type = ButtonType.submit
                                         classes = setOf("logout-btn")
                                         +"ログアウト"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun generateProvidersHtml(providers: List<ProviderDto>): String {
+        return createHTML().html {
+            lang = "ja"
+            head {
+                meta(charset = "UTF-8")
+                meta(name = "viewport", content = "width=device-width, initial-scale=1.0")
+                title { +"プロバイダー一覧 - ktcl-k8s" }
+                style {
+                    unsafe {
+                        +"""
+:root { --color-primary: #0a58ca; --color-bg: #ffffff; --color-bg-sidebar: #f8f9fa; --color-border: #dee2e6; --color-text: #212529; --color-text-muted: #6c757d; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--color-bg); color: var(--color-text); min-height: 100vh; }
+.app-container { display: flex; min-height: 100vh; }
+.sidebar { width: 256px; background: var(--color-bg-sidebar); border-right: 1px solid var(--color-border); padding: 24px 16px; flex-shrink: 0; }
+.sidebar-title { font-size: 24px; font-weight: 700; color: var(--color-primary); margin-bottom: 32px; }
+.sidebar-nav { display: flex; flex-direction: column; gap: 8px; }
+.sidebar-link { display: block; padding: 8px 16px; color: var(--color-primary); text-decoration: none; border-radius: 6px; }
+.sidebar-link:hover { background: rgba(10, 88, 202, 0.1); }
+.main-content { flex: 1; padding: 32px; overflow-y: auto; }
+.container { max-width: 800px; margin: 0 auto; }
+h1 { font-size: 28px; font-weight: 600; margin-bottom: 8px; color: var(--color-text); }
+.subtitle { color: var(--color-text-muted); margin-bottom: 32px; font-size: 14px; }
+.card { background: white; border: 1px solid var(--color-border); border-radius: 8px; padding: 24px; margin-bottom: 24px; }
+.card-title { font-size: 18px; font-weight: 600; color: var(--color-text); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--color-border); }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--color-border); }
+th { font-weight: 600; color: var(--color-text-muted); background: #f8f9fa; }
+@media (max-width: 768px) { .sidebar { display: none; } .main-content { padding: 16px; } }
+                        """.trimIndent()
+                    }
+                }
+            }
+            body {
+                div("app-container") {
+                    aside("sidebar") {
+                        h1("sidebar-title") { +"Keruta" }
+                        nav("sidebar-nav") {
+                            a("/") {
+                                classes = setOf("sidebar-link")
+                                +"設定"
+                            }
+                            a("/providers") {
+                                classes = setOf("sidebar-link")
+                                +"プロバイダー一覧"
+                            }
+                        }
+                    }
+                    main("main-content") {
+                        div("container") {
+                            h1 { +"プロバイダー一覧" }
+                            p("subtitle") { +"ktseに登録されているプロバイダーの一覧です" }
+                            div("card") {
+                                h2("card-title") { +"プロバイダー" }
+                                if (providers.isEmpty()) {
+                                    p { +"プロバイダーが登録されていません" }
+                                } else {
+                                    table {
+                                        thead {
+                                            tr {
+                                                th { +"ID" }
+                                                th { +"名前" }
+                                                th { +"Issuer" }
+                                                th { +"Audience" }
+                                            }
+                                        }
+                                        tbody {
+                                            for (p in providers) {
+                                                tr {
+                                                    td { +p.id.toString() }
+                                                    td { +p.name }
+                                                    td { +p.issuer }
+                                                    td { +p.audience }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }

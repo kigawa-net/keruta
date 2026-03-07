@@ -9,7 +9,7 @@ repositories {
 }
 
 val kotlinVersion = "2.3.0"
-val composeVersion = "1.10.0"
+val composeVersion = "1.10.2"
 fun pluginId(pluginName: String, version: String) = "$pluginName:$pluginName.gradle.plugin:$version"
 fun kotlinPluginId(pluginName: String, version: String = kotlinVersion) =
     pluginId("org.jetbrains.kotlin.$pluginName", version)
@@ -26,5 +26,5 @@ dependencies {
     implementation(pluginId("com.google.devtools.ksp", "2.2.20-2.0.4"))
     implementation("org.jetbrains.compose:compose-gradle-plugin:$composeVersion")
 // Source: https://mvnrepository.com/artifact/com.android.tools.build/gradle
-    implementation("com.android.tools.build:gradle:8.12.0")
+    implementation("com.android.tools.build:gradle:8.13.2")
 }

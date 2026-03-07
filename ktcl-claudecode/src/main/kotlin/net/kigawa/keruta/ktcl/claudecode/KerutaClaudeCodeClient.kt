@@ -59,6 +59,8 @@ class KerutaClaudeCodeClient(
             queueCreatedEntrypoint = ReceiveQueueCreatedEntrypoint(),
             queueListedEntrypoint = ReceiveQueueListedEntrypoint(),
             queueShowedEntrypoint = ReceiveQueueShowedEntrypoint(),
+            queueUpdatedEntrypoint = ReceiveQueueUpdatedEntrypoint(),
+            queueDeletedEntrypoint = ReceiveQueueDeletedEntrypoint(),
             taskCreatedEntrypoint = ReceiveTaskCreatedEntrypoint(ktcpClient, config.queueId),
             taskUpdatedEntrypoint = ReceiveTaskUpdatedEntrypoint(),
             taskMovedEntrypoint = ReceiveTaskMovedEntrypoint(),

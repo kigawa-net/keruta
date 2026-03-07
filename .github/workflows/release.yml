@@ -41,7 +41,7 @@ jobs:
       dockerRepository: harbor.kigawa.net/${{ inputs.harborProject }}
     steps:
       # checkout
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       # docker
       - name: Set up Docker Buildx
@@ -54,7 +54,7 @@ jobs:
 
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           # list of Docker images to use as base name for tags
           images: |
@@ -85,7 +85,7 @@ jobs:
 
       # argo
       - name: checkout manifest repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
         if: inputs.manifestFile != ''
         with:
           repository: ${{ inputs.repository }}

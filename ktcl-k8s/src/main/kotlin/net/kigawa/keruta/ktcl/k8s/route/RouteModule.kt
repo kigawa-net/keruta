@@ -10,6 +10,7 @@ import net.kigawa.keruta.ktcl.k8s.auth.RemoteConfigProvider
 import net.kigawa.keruta.ktcl.k8s.config.AppConfig
 import net.kigawa.keruta.ktcl.k8s.login.LoginCallbackRoute
 import net.kigawa.keruta.ktcl.k8s.login.LoginRoute
+import net.kigawa.keruta.ktcl.k8s.login.ProviderListClient
 import net.kigawa.keruta.ktcl.k8s.login.ProviderRegistrationClient
 import net.kigawa.keruta.ktcl.k8s.login.TokenRoute
 import net.kigawa.keruta.ktcl.k8s.persist.DbModule
@@ -51,11 +52,13 @@ class RouteModule(
         val authConfig = appConfig.auth
         // 認証ヘルパーと静的ルートを初期化
         val authenticationHelper = AuthenticationHelper(auth0JwtVerifier, authConfig.privateKey)
-        val staticRoutes = StaticRoutes(authenticationHelper, userTokenDao, dbModule.userClaudeConfigDao)
+        val providerListClient = ProviderListClient(appConfig.ktse, providerTokenCreator)
+        val staticRoutes = StaticRoutes(authenticationHelper, userTokenDao, dbModule.userClaudeConfigDao, providerListClient)
         val configRoutes = ConfigRoutes(
             keycloakConfig, appConfig,
             authConfig.privateKey, dbModule.userClaudeConfigDao, userTokenDao,
-            javaKeyPairInitializer, authenticationHelper, auth0JwtVerifier
+            javaKeyPairInitializer, authenticationHelper, auth0JwtVerifier,
+            providerListClient
         )
         val kerutaEndpoints = KerutaEndpoints(appConfig.keruta)
         val loginRoute = LoginRoute(

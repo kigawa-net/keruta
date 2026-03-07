@@ -10,6 +10,7 @@ import net.kigawa.keruta.ktcl.k8s.auth.AuthenticationHelper
 import net.kigawa.keruta.ktcl.k8s.auth.KeycloakConfig
 import net.kigawa.keruta.ktcl.k8s.config.AppConfig
 import net.kigawa.keruta.ktcl.k8s.dto.*
+import net.kigawa.keruta.ktcl.k8s.login.ProviderListClient
 import net.kigawa.keruta.ktcl.k8s.persist.dao.UserClaudeConfigDao
 import net.kigawa.keruta.ktcl.k8s.persist.dao.UserTokenDao
 import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
@@ -30,6 +31,7 @@ class ConfigRoutes(
     javaKeyPairInitializer: JavaKeyPairInitializer,
     authenticationHelper: AuthenticationHelper,
     auth0JwtVerifier: Auth0JwtVerifier,
+    private val providerListClient: ProviderListClient,
 ) {
     private val logger = LoggerFactory.get("ConfigRoutes")
     private val authGuard = AuthGuard(authenticationHelper)
@@ -190,6 +192,14 @@ class ConfigRoutes(
                     logger.info("Claude Code API key updated for user: ${user.userId}")
 
                     call.respond(mapOf("success" to true, "message" to "Claude Code API key updated"))
+                }
+            }
+        }
+        route("/api/providers") {
+            get {
+                authGuard.requireAuth(call) { user ->
+                    val providers = providerListClient.listProviders(user.token)
+                    call.respond(ProvidersResponse(providers))
                 }
             }
         }

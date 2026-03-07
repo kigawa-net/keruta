@@ -6,6 +6,7 @@ import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import net.kigawa.keruta.ktcl.k8s.auth.AuthenticationHelper
 import net.kigawa.keruta.ktcl.k8s.auth.UserSession
+import net.kigawa.keruta.ktcl.k8s.login.ProviderListClient
 import net.kigawa.keruta.ktcl.k8s.persist.dao.UserClaudeConfigDao
 import net.kigawa.keruta.ktcl.k8s.persist.dao.UserTokenDao
 import net.kigawa.keruta.ktcl.k8s.web.HtmlGenerator
@@ -15,6 +16,7 @@ class StaticRoutes(
     private val authenticationHelper: AuthenticationHelper,
     private val userTokenDao: UserTokenDao,
     private val userClaudeConfigDao: UserClaudeConfigDao,
+    private val providerListClient: ProviderListClient,
 ) {
     private val logger = getKogger()
 
@@ -41,6 +43,16 @@ class StaticRoutes(
                         HtmlGenerator.generateIndexHtml(hasGithubToken, hasClaudeToken, success, error),
                         ContentType.Text.Html
                     )
+                }
+            }
+
+            get("/providers") {
+                val user = authenticationHelper.getAuthenticatedUser(call)
+                if (user == null) {
+                    call.respondRedirect("/login")
+                } else {
+                    val providers = providerListClient.listProviders(user.token)
+                    call.respondText(HtmlGenerator.generateProvidersHtml(providers), ContentType.Text.Html)
                 }
             }
 

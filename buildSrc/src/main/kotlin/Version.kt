@@ -13,22 +13,22 @@ object Version {
     const val KOTLINX_HTML = "0.12.0"
 
     // Database
-    const val FLYWAY = "12.0.2"
+    const val FLYWAY = "12.0.3"
     const val MYSQL_CONNECTOR = "9.6.0"
-    const val MARIADB_CONNECTOR = "3.5.5"
-    const val EXPOSED = "0.60.0"
+    const val MARIADB_CONNECTOR = "3.5.7"
+    const val EXPOSED = "0.61.0"
     const val HIKARI_CP = "7.0.2"
 
     // Kubernetes
     const val KUBERNETES_CLIENT = "25.0.0"
 
     // Other
-    const val ZOOKEEPER = "3.9.4"
+    const val ZOOKEEPER = "3.9.5"
 
     // Testing
     const val JUNIT_JUPITER = "6.0.3"
     const val MOCKK = "1.14.9"
-    const val TESTCONTAINERS = "1.20.4"
+    const val TESTCONTAINERS = "1.21.4"
 
     // Mobile
     const val ACTIVITY_COMPOSE = "1.12.4"
