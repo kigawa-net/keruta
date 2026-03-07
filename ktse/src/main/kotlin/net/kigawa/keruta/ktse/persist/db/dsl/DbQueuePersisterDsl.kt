@@ -22,6 +22,7 @@ class DbQueuePersisterDsl(
         transaction.run {
             val queue = QueueTable.insert {
                 it[QueueTable.name] = queueToCreate.name
+                it[QueueTable.setting] = queueToCreate.setting
                 it[QueueTable.providerId] = provider.id
             }.resultedValues?.singleOrNull() ?: return Res.Err(NoSingleRecordErr("", null))
             QueueUserTable.insert {
