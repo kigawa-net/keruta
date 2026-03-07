@@ -9,12 +9,10 @@
     "prHourlyLimit": 0,
     "packageRules": [
         {
-            "matchUpdateTypes": [
-                "patch",
-                "major"
+            "matchPackageNames": [
+                "com.android.tools.build:gradle"
             ],
-            "automerge": true,
-            "automergeType": "pr"
+            "minimumReleaseAge": 365
         }
     ]
 }

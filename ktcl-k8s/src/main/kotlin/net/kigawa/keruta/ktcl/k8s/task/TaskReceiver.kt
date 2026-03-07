@@ -30,6 +30,13 @@ class TaskReceiver(
     private val logger = LoggerFactory.get("TaskReceiver")
 
     suspend fun startReceiving(ctx: ClientCtx, userId: String): Boolean = coroutineScope {
+        // 0. auth_success待ち
+        val authMsg = receiveMsg(ctx) ?: return@coroutineScope false
+        if (authMsg.tryToAuthSuccess() == null) {
+            logger.severe { "Expected auth_success but got different message for user $userId" }
+            return@coroutineScope false
+        }
+
         // 1. プロバイダー一覧取得
         ktcpClient.ktcpServerEntrypoints.providersRequestEntrypoint.access(ServerProviderListMsg(), ctx)?.execute()
             ?: run {

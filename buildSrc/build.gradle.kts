@@ -26,5 +26,5 @@ dependencies {
     implementation(pluginId("com.google.devtools.ksp", "2.2.20-2.0.4"))
     implementation("org.jetbrains.compose:compose-gradle-plugin:$composeVersion")
 // Source: https://mvnrepository.com/artifact/com.android.tools.build/gradle
-    implementation("com.android.tools.build:gradle:8.13.2")
+    implementation("com.android.tools.build:gradle:8.12.0")
 }
