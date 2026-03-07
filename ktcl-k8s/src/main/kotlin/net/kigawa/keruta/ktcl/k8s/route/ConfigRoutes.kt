@@ -13,6 +13,9 @@ import net.kigawa.keruta.ktcl.k8s.persist.dao.UserClaudeConfigDao
 import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
 import net.kigawa.keruta.ktcp.base.auth.key.JavaKeyPairInitializer
 import net.kigawa.keruta.ktcp.domain.auth.key.PemKey
+import net.kigawa.keruta.ktcp.domain.client.wellknown.KerutaWellKnownJson
+import net.kigawa.keruta.ktcp.domain.client.wellknown.ObjectPropertyJson
+import net.kigawa.keruta.ktcp.domain.client.wellknown.StringPropertyJson
 import net.kigawa.keruta.ktcp.infra.client.NimbusdsJwksGenerator
 import net.kigawa.keruta.ktcp.usecase.client.JwksJsonGenerator
 import net.kigawa.kodel.api.log.LoggerFactory
@@ -27,7 +30,7 @@ class ConfigRoutes(
 ) {
     private val logger = LoggerFactory.get("ConfigRoutes")
     private val authGuard = AuthGuard(authenticationHelper)
-    private val authRoute = AuthRoutes(keycloakConfig, authenticationHelper, auth0JwtVerifier )
+    private val authRoute = AuthRoutes(keycloakConfig, authenticationHelper, auth0JwtVerifier)
 
     private val jwksJsonGenerator: JwksJsonGenerator = NimbusdsJwksGenerator(javaKeyPairInitializer)
     fun configureConfigRoutes(
@@ -43,11 +46,18 @@ class ConfigRoutes(
                 val issuer = appConfig.keruta.ownIssuer
                 val loginEndpoint = issuer.plusPath("/login")
 
-                val response = WellKnownKerutaResponse(
-                    service = "keruta-ktcl-k8s",
+                val response = KerutaWellKnownJson(
                     version = "1.0.0",
                     issuer = issuer.toStrUrl(),
-                    login = loginEndpoint.toString()
+                    login = loginEndpoint.toString(),
+                    queueProperties = ObjectPropertyJson(
+                        listOf(
+                            ObjectPropertyJson.Field(
+                                "git-repo", "git repo url",
+                                StringPropertyJson(true)
+                            )
+                        )
+                    )
                 )
                 call.respond(response)
             }
