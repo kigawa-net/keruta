@@ -10,6 +10,7 @@ import net.kigawa.keruta.ktcp.domain.provider.deleted.ClientProviderDeletedEntry
 import net.kigawa.keruta.ktcp.domain.provider.idp_added.ClientProviderIdpAddedEntrypoint
 import net.kigawa.keruta.ktcp.domain.provider.listed.ClientProviderListedEntrypoint
 import net.kigawa.keruta.ktcp.domain.queue.created.ClientQueueCreatedEntrypoint
+import net.kigawa.keruta.ktcp.domain.queue.deleted.ClientQueueDeletedEntrypoint
 import net.kigawa.keruta.ktcp.domain.queue.listed.ClientQueueListedEntrypoint
 import net.kigawa.keruta.ktcp.domain.queue.showed.ClientQueueShowedEntrypoint
 import net.kigawa.keruta.ktcp.domain.queue.updated.ClientQueueUpdatedEntrypoint
@@ -39,6 +40,7 @@ class KtcpClientEntrypoints<C>(
     queueListedEntrypoint: ClientQueueListedEntrypoint<C>,
     queueShowedEntrypoint: ClientQueueShowedEntrypoint<C>,
     queueUpdatedEntrypoint: ClientQueueUpdatedEntrypoint<C>,
+    queueDeletedEntrypoint: ClientQueueDeletedEntrypoint<C>,
     taskCreatedEntrypoint: ClientTaskCreatedEntrypoint<C>,
     taskUpdatedEntrypoint: ClientTaskUpdatedEntrypoint<C>,
     taskMovedEntrypoint: ClientTaskMovedEntrypoint<C>,
@@ -122,6 +124,13 @@ class KtcpClientEntrypoints<C>(
     }
     val queueUpdated = add(queueUpdatedEntrypoint) { input ->
         input.tryToQueueUpdated()?.whenErrOk(
+            { EntrypointDeferred { Res.Err(it) } }
+        ) {
+            this(it)
+        }
+    }
+    val queueDeleted = add(queueDeletedEntrypoint) { input ->
+        input.tryToQueueDeleted()?.whenErrOk(
             { EntrypointDeferred { Res.Err(it) } }
         ) {
             this(it)

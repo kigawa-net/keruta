@@ -46,3 +46,13 @@ export interface ClientQueueUpdatedMsg {
     name: string;
     type: typeof ReceiveMsgTypes.queue_updated
 }
+
+export interface ServerQueueDeleteMsg {
+    type: typeof SendMsgTypes.queue_delete
+    queueId: number
+}
+
+export interface ClientQueueDeletedMsg {
+    id: number;
+    type: typeof ReceiveMsgTypes.queue_deleted
+}

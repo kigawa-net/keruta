@@ -23,6 +23,7 @@ enum class ServerMsgType(
     QUEUE_LIST("queue_list"),
     QUEUE_SHOW("queue_show"),
     QUEUE_UPDATE("queue_update"),
+    QUEUE_DELETE("queue_delete"),
     TASK_LIST("task_list"),
     TASK_SHOW("task_show"),
     ;

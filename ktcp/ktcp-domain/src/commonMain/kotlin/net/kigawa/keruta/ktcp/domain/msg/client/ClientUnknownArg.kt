@@ -8,6 +8,7 @@ import net.kigawa.keruta.ktcp.domain.provider.deleted.ClientProviderDeletedMsg
 import net.kigawa.keruta.ktcp.domain.provider.idp_added.ClientProviderIdpAddedMsg
 import net.kigawa.keruta.ktcp.domain.provider.listed.ClientProviderListedMsg
 import net.kigawa.keruta.ktcp.domain.queue.created.ClientQueueCreatedMsg
+import net.kigawa.keruta.ktcp.domain.queue.deleted.ClientQueueDeletedMsg
 import net.kigawa.keruta.ktcp.domain.queue.listed.ClientQueueListedMsg
 import net.kigawa.keruta.ktcp.domain.queue.showed.ClientQueueShowedMsg
 import net.kigawa.keruta.ktcp.domain.queue.updated.ClientQueueUpdatedMsg
@@ -34,5 +35,6 @@ interface ClientUnknownArg {
     fun tryToTaskUpdated(): Res<ClientTaskUpdatedMsg, KtcpErr>?
     fun tryToTaskMoved(): Res<ClientTaskMovedMsg, KtcpErr>?
     fun tryToQueueUpdated(): Res<ClientQueueUpdatedMsg, KtcpErr>?
+    fun tryToQueueDeleted(): Res<ClientQueueDeletedMsg, KtcpErr>?
 
 }

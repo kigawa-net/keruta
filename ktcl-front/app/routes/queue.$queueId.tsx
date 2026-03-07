@@ -1,9 +1,9 @@
 import {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 import {useWebsocketReceive} from "../util/net/websocket/useWebsocketReceive";
 import {ClientTaskListedMsg, ServerTaskListMsg} from "../components/msg/task";
-import {ClientQueueListedMsg, ServerQueueListMsg} from "../components/msg/queue";
+import {ClientQueueListedMsg, ServerQueueDeleteMsg, ServerQueueListMsg} from "../components/msg/queue";
 import {QueueTaskCreateForm} from "../components/task/QueueTaskCreateForm";
 import {QueueTaskList} from "../components/task/QueueTaskList";
 import {Route} from "../../.react-router/types/app/routes/+types/queue.$queueId";
@@ -18,6 +18,7 @@ type Queue = ClientQueueListedMsg["queues"][0]
 export default function Page({params: {queueId}}: Route.ComponentProps) {
     const globalState = useWebsocketState()
     const authedKtse = useAuthedKtseState()
+    const navigate = useNavigate()
     const [tasks, setTasks] = useState<Task[]>([])
     const [queues, setQueues] = useState<Queue[]>([])
 
@@ -33,6 +34,8 @@ export default function Page({params: {queueId}}: Route.ComponentProps) {
             loadTaskList(globalState, authedKtse, Number(queueId))
         } else if (msg.type === "task_moved") {
             loadTaskList(globalState, authedKtse, Number(queueId))
+        } else if (msg.type === "queue_deleted") {
+            navigate("/")
         }
     }, [globalState.state, authedKtse.state, queueId])
 
@@ -54,12 +57,23 @@ export default function Page({params: {queueId}}: Route.ComponentProps) {
                         </h1>
                         <p className="mt-2 text-gray-600 hidden sm:block">このキューに含まれるタスクの一覧を表示します</p>
                     </div>
-                    <Link
-                        to={`/queue/${queueId}/edit`}
-                        className="shrink-0 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
-                    >
-                        編集
-                    </Link>
+                    <div className="flex gap-2">
+                        <Link
+                            to={`/queue/${queueId}/edit`}
+                            className="shrink-0 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
+                        >
+                            編集
+                        </Link>
+                        <button
+                            onClick={() => {
+                                if (!confirm(`「${queueDisplayName}」を削除しますか？`)) return
+                                deleteQueue(globalState, authedKtse, Number(queueId))
+                            }}
+                            className="shrink-0 px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors"
+                        >
+                            削除
+                        </button>
+                    </div>
                 </div>
 
                 <QueueTaskCreateForm
@@ -77,6 +91,18 @@ export default function Page({params: {queueId}}: Route.ComponentProps) {
             </div>
         </div>
     )
+}
+
+function deleteQueue(globalState: WebsocketState, authedKtse: AuthedKtseState, queueId: number) {
+    if (globalState.state !== "open") return
+    if (authedKtse.state !== "loaded") return
+    if (!Number.isFinite(queueId)) return
+
+    const msg: ServerQueueDeleteMsg = {
+        type: "queue_delete",
+        queueId: queueId
+    }
+    globalState.websocket.send(JSON.stringify(msg))
 }
 
 function loadTaskList(globalState: WebsocketState, authedKtse: AuthedKtseState, queueId: number) {
