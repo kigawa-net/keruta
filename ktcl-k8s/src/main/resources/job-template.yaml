@@ -9,6 +9,16 @@ spec:
   template:
     spec:
       restartPolicy: Never
+      initContainers:
+      - name: git-clone
+        image: alpine/git:latest
+        command: ["git", "clone", "$(GIT_REPO_URL)", "/workspace"]
+        env:
+        - name: GIT_REPO_URL
+          value: ""
+        volumeMounts:
+        - name: workspace
+          mountPath: /workspace
       containers:
       - name: task-executor
         image: harbor.kigawa.net/library/keruta-executor:latest
@@ -19,6 +29,11 @@ spec:
           value: ""
         - name: TASK_DESCRIPTION
           value: ""
+        - name: GIT_REPO_URL
+          value: ""
+        volumeMounts:
+        - name: workspace
+          mountPath: /workspace
         resources:
           limits:
             memory: "512Mi"
@@ -26,3 +41,7 @@ spec:
           requests:
             memory: "256Mi"
             cpu: "250m"
+      volumes:
+      - name: workspace
+        persistentVolumeClaim:
+          claimName: keruta-task-template-pvc

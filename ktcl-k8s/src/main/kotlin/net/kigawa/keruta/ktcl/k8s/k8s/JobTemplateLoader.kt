@@ -8,17 +8,26 @@ import java.io.FileReader
 
 class JobTemplateLoader(private val templatePath: String) {
     fun loadTemplate(taskId: Long, title: String, description: String, gitRepoUrl: String): V1Job {
-        // 1. YAMLファイルを読み込み
         val templateFile = File(templatePath)
         val reader = FileReader(templateFile)
-
-        // 2. Kubernetes Java ClientのYaml.load()でV1Jobオブジェクトに変換
         val job = Yaml.load(reader) as V1Job
 
-        // 3. Job名を動的生成
-        job.metadata?.name("keruta-task-$taskId")
+        val jobName = "keruta-task-$taskId"
+        job.metadata?.name(jobName)
 
-        // 4. 環境変数を設定
+        // PVCクレーム名をtaskIdベースに設定
+        val pvcClaimName = "$jobName-pvc"
+        job.spec?.template?.spec?.volumes
+            ?.find { it.name == "workspace" }
+            ?.persistentVolumeClaim?.claimName(pvcClaimName)
+
+        // initコンテナにGIT_REPO_URLを設定
+        val initContainer = job.spec?.template?.spec?.initContainers?.find { it.name == "git-clone" }
+        initContainer?.env(
+            listOf(V1EnvVar().name("GIT_REPO_URL").value(gitRepoUrl))
+        )
+
+        // メインコンテナに環境変数を設定
         val container = job.spec?.template?.spec?.containers?.get(0)
         container?.env(
             listOf(
