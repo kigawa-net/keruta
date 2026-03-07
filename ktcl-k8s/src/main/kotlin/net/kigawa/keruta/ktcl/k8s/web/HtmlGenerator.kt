@@ -395,7 +395,6 @@ th { font-weight: 600; color: var(--color-text-muted); background: #f8f9fa; }
                                     table {
                                         thead {
                                             tr {
-                                                th { +"ID" }
                                                 th { +"名前" }
                                                 th { +"Issuer" }
                                                 th { +"Audience" }
@@ -404,9 +403,13 @@ th { font-weight: 600; color: var(--color-text-muted); background: #f8f9fa; }
                                         tbody {
                                             for (p in providers) {
                                                 tr {
-                                                    td { +p.id.toString() }
                                                     td { +p.name }
-                                                    td { +p.issuer }
+                                                    td {
+                                                        a {
+                                                            href = p.issuer
+                                                            +p.issuer
+                                                        }
+                                                    }
                                                     td { +p.audience }
                                                 }
                                             }
