@@ -11,22 +11,17 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import net.kigawa.keruta.ktcl.k8s.config.KtseConfig
-import net.kigawa.keruta.ktcp.base.auth.key.Auth0AlgorithmInitializer
-import net.kigawa.keruta.ktcp.base.auth.key.JavaPrivateKeyInitializer
-import net.kigawa.keruta.ktcp.model.auth.key.KerutaPrivateKey
 import net.kigawa.keruta.ktcp.model.msg.client.ClientMsgType
 import net.kigawa.keruta.ktcp.model.provider.complete.ServerProviderCompleteMsg
 import net.kigawa.keruta.ktcp.model.serialize.serialize
 import net.kigawa.keruta.ktcp.usecase.JsonKerutaSerializer
+import net.kigawa.keruta.ktcp.usecase.client.ProviderTokenCreator
 import net.kigawa.kodel.api.log.getKogger
-import java.util.*
 import kotlin.time.Duration.Companion.seconds
 
 class ProviderRegistrationClient(
     private val ktseConfig: KtseConfig,
-    private val privateKey: KerutaPrivateKey,
-    private val issuer: String,
-    private val javaPrivateKeyInitializer: JavaPrivateKeyInitializer,
+    private val providerTokenCreator: ProviderTokenCreator,
 ) {
     private val logger = getKogger()
     private val serializer = JsonKerutaSerializer()
@@ -37,7 +32,7 @@ class ProviderRegistrationClient(
         registerToken: String,
     ) {
         val serverToken = try {
-            createServerToken(userToken)
+            providerTokenCreator.create(JWT.decode(userToken).subject)
         } catch (e: Exception) {
             logger.severe("Failed to get OIDC tokens for ktse provider registration: ${e.message}")
             return
@@ -60,7 +55,7 @@ class ProviderRegistrationClient(
                             ServerProviderCompleteMsg(
                                 registerToken = registerToken,
                                 userToken = userToken,
-                                serverToken = serverToken,
+                                serverToken = serverToken.createdToken.rawToken,
                                 userAudience = oidcSession.clientId,
                                 providerAudience = ktseConfig.providerAudience,
                                 providerName = "keruta-k8s",
@@ -83,17 +78,6 @@ class ProviderRegistrationClient(
         }
     }
 
-    private fun createServerToken(userToken: String): String {
-        val subject = JWT.decode(userToken).subject
-        val key = javaPrivateKeyInitializer.initialize(privateKey)
-        val algorithm = Auth0AlgorithmInitializer().initPrivateKey(key)
-        return JWT.create()
-            .withIssuer(issuer)
-            .withAudience(ktseConfig.providerAudience)
-            .withSubject(subject)
-            .withExpiresAt(Date(System.currentTimeMillis() + 3_600_000))
-            .sign(algorithm)
-    }
 
     private fun parseType(text: String): String? {
         val jsonElement = Json.parseToJsonElement(text)

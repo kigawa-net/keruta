@@ -8,7 +8,7 @@ import kotlinx.coroutines.channels.consumeEach
 import net.kigawa.keruta.ktcp.base.auth.jwks.JwksProvider
 import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
 import net.kigawa.keruta.ktcp.base.auth.key.Auth0AlgorithmInitializer
-import net.kigawa.keruta.ktcp.base.auth.key.JavaPrivateKeyInitializer
+import net.kigawa.keruta.ktcp.base.auth.key.JavaKeyPairInitializer
 import net.kigawa.keruta.ktcp.base.auth.oidc.OidcConfigProvider
 import net.kigawa.keruta.ktcp.base.http.HttpClient
 import net.kigawa.keruta.ktcp.model.err.EntrypointNotFoundErr
@@ -46,16 +46,16 @@ class KtorWebsocketModule(application: Application, val server: KerutaTaskServer
     val dbPersister = DbPersister(ktseConfig)
     val jwksProvider = JwksProvider()
     val oidcConfigProvider = OidcConfigProvider(httpClient)
-    private val javaPrivateKeyInitializer = JavaPrivateKeyInitializer()
+    private val javaKeyPairInitializer = JavaKeyPairInitializer()
     private val auth0AlgorithmInitializer = Auth0AlgorithmInitializer()
     val auth0JwtVerifier = Auth0JwtVerifier(
-        oidcConfigProvider, jwksProvider, auth0AlgorithmInitializer, javaPrivateKeyInitializer
+        oidcConfigProvider, jwksProvider, auth0AlgorithmInitializer, javaKeyPairInitializer
     )
     val jwtVerifier = KtseJwtVerifier(
         auth0JwtVerifier = auth0JwtVerifier,
-        jwtSecret = ktseConfig.jwtSecret,
+        pemKey = ktseConfig.jwtSecret,
         auth0AlgorithmInitializer = auth0AlgorithmInitializer,
-        javaPrivateKeyInitializer = javaPrivateKeyInitializer,
+        javaKeyPairInitializer = javaKeyPairInitializer,
     )
     val authTokenDecoder = Auth0AuthTokenDecoder(auth0JwtVerifier)
     val providerDeleteHandler = ProviderDeleteHandler()

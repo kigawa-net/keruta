@@ -15,6 +15,7 @@ import net.kigawa.keruta.ktcl.k8s.auth.OidcDiscoveryFetcher
 import net.kigawa.keruta.ktcl.k8s.auth.RemoteConfigProvider
 import net.kigawa.keruta.ktcl.k8s.auth.UserSession
 import net.kigawa.keruta.ktcl.k8s.persist.dao.UserTokenDao
+import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
 import net.kigawa.kodel.api.log.getKogger
 import java.io.InvalidObjectException
 
@@ -22,10 +23,11 @@ class LoginCallbackRoute(
     private val oidcDiscoveryFetcher: OidcDiscoveryFetcher = OidcDiscoveryFetcher(),
     private val userTokenDao: UserTokenDao,
     private val providerRegistrationClient: ProviderRegistrationClient,
+    auth0JwtVerifier: Auth0JwtVerifier,
 ) {
     private val logger = getKogger()
     private val remoteConfigProvider = RemoteConfigProvider(oidcDiscoveryFetcher)
-    private val idTokenVerifier = IdTokenVerifier(remoteConfigProvider)
+    private val idTokenVerifier = IdTokenVerifier(remoteConfigProvider, auth0JwtVerifier)
 
     fun configure(route: Route) = route.get("/login/callback") {
         val code = call.parameters["code"]

@@ -1,18 +1,18 @@
 package net.kigawa.keruta.ktcl.k8s.k8s
 
+import com.auth0.jwt.JWT
 import kotlinx.coroutines.*
 import net.kigawa.keruta.ktcl.k8s.auth.TokenRefresher
 import net.kigawa.keruta.ktcl.k8s.config.K8sConfig
 import net.kigawa.keruta.ktcl.k8s.connection.ConnectionManager
-import net.kigawa.keruta.ktcl.k8s.entrypoint.ClientEntrypointsFactory
 import net.kigawa.keruta.ktcl.k8s.persist.dao.UserTokenDao
-import net.kigawa.keruta.ktcl.k8s.task.TaskExecutorFactory
 import net.kigawa.keruta.ktcl.k8s.task.TaskReceiver
 import net.kigawa.keruta.ktcp.client.ClientCtx
 import net.kigawa.keruta.ktcp.client.KtcpClient
 import net.kigawa.keruta.ktcp.client.KtcpSession
 import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestMsg
 import net.kigawa.keruta.ktcp.usecase.JsonKerutaSerializer
+import net.kigawa.keruta.ktcp.usecase.client.ProviderTokenCreator
 import net.kigawa.kodel.api.log.LoggerFactory
 import kotlin.time.Duration.Companion.seconds
 
@@ -20,12 +20,11 @@ class KerutaK8sClient(
     private val config: K8sConfig,
     private val userTokenDao: UserTokenDao,
     private val tokenRefresher: TokenRefresher,
+    private val providerTokenCreator: ProviderTokenCreator,
 ) {
     private val logger = LoggerFactory.get("KerutaK8sClient")
     private val serializer = JsonKerutaSerializer()
     private val ktcpClient = KtcpClient()
-    private val serverToken = System.getenv("KERUTA_SERVER_TOKEN")
-        ?: throw IllegalStateException("KERUTA_SERVER_TOKEN is required")
     private val concurrentCount = 1
 
     suspend fun start() = coroutineScope {
@@ -75,11 +74,11 @@ class KerutaK8sClient(
 
         val session = KtcpSession(connection)
         val ctx = ClientCtx(serializer, session)
-
+        val providerToken = providerTokenCreator.create(JWT.decode(accessToken).subject)
         // 認証
         val authMsg = ServerAuthRequestMsg(
             userToken = accessToken,
-            serverToken = serverToken
+            serverToken = providerToken.createdToken.rawToken
         )
         ktcpClient.ktcpServerEntrypoints.authRequestEntrypoint.access(authMsg, ctx)?.execute()
             ?: run {
@@ -90,12 +89,8 @@ class KerutaK8sClient(
         logger.info { "Authentication request sent for user $userId" }
 
 
-        // タスクエグゼキューターとクライアントエントリポイントを作成
-        val taskExecutor = TaskExecutorFactory(config, ktcpClient).create()
-        val clientEntrypoints = ClientEntrypointsFactory(ktcpClient, config, taskExecutor).create()
-
         // タスク受信ループを開始
-        val taskReceiver = TaskReceiver(connection, clientEntrypoints, config, ktcpClient)
+        val taskReceiver = TaskReceiver(connection, config, ktcpClient)
         return taskReceiver.startReceiving(ctx, userId)
     }
 

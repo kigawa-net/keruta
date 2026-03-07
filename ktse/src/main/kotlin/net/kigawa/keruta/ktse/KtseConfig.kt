@@ -1,7 +1,7 @@
 package net.kigawa.keruta.ktse
 
 import io.ktor.server.application.*
-import net.kigawa.keruta.ktcp.model.auth.key.KerutaPrivateKey
+import net.kigawa.keruta.ktcp.model.auth.key.PemKey
 import net.kigawa.keruta.ktcp.server.auth.ProviderIdpConfig
 import net.kigawa.keruta.ktcp.server.auth.UserIdpConfig
 import net.kigawa.kodel.api.net.Url
@@ -22,9 +22,9 @@ class KtseConfig(environment: ApplicationEnvironment) {
     )
 
 
-    val jwtSecret: KerutaPrivateKey =(
+    val jwtSecret: PemKey =(
         environment.config.propertyOrNull("ktor.security.jwtSecret")?.getString()
-            ?: System.getenv("KTSE_JWT_SECRET"))?.let { KerutaPrivateKey(it) }
+            ?: System.getenv("KTSE_JWT_SECRET"))
             ?: throw IllegalStateException("KTSE_JWT_SECRET not set")
 
     val dbConfig = Database(environment)

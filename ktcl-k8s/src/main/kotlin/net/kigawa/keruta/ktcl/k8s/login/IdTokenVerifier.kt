@@ -4,11 +4,13 @@ import net.kigawa.keruta.ktcl.k8s.auth.JwtVerifier
 import net.kigawa.keruta.ktcl.k8s.auth.KeycloakConfig
 import net.kigawa.keruta.ktcl.k8s.auth.OidcDiscoveryResponse
 import net.kigawa.keruta.ktcl.k8s.auth.RemoteConfigProvider
+import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
 import net.kigawa.kodel.api.log.LoggerFactory
 import java.net.URI
 
 class IdTokenVerifier(
     private val remoteConfigProvider: RemoteConfigProvider,
+    private val auth0JwtVerifier: Auth0JwtVerifier,
 ) {
     private val logger = LoggerFactory.get("IdTokenVerifier")
 
@@ -21,7 +23,7 @@ class IdTokenVerifier(
             issuer = URI(oidcSession.issuer),
             authorizationEndpoint = discoveryResponse.authorizationEndpoint,
         )
-        val jwtVerifier = JwtVerifier(jwkProvider, keycloakConfig)
+        val jwtVerifier = JwtVerifier(keycloakConfig, auth0JwtVerifier)
         val decodedJwt = jwtVerifier.verifyIdToken(
             idToken = idToken,
             jwkProvider = jwkProvider,

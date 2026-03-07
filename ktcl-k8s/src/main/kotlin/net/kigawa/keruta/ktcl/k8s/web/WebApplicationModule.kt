@@ -14,7 +14,10 @@ import net.kigawa.keruta.ktcl.k8s.k8s.K8sModule
 import net.kigawa.keruta.ktcl.k8s.persist.DbModule
 import net.kigawa.keruta.ktcl.k8s.route.RouteModule
 import net.kigawa.keruta.ktcl.k8s.serialize.SerializeModule
+import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtTokenCreator
+import net.kigawa.keruta.ktcp.base.auth.key.JavaKeyPairInitializer
 import net.kigawa.keruta.ktcp.base.http.HttpClient
+import net.kigawa.keruta.ktcp.usecase.client.ProviderTokenCreator
 import net.kigawa.kodel.api.log.LoggerFactory
 import net.kigawa.kodel.api.log.getKogger
 
@@ -34,12 +37,20 @@ class WebApplicationModule {
         val oidcDiscoveryFetcher = OidcDiscoveryFetcher()
         routeModule = RouteModule(httpClient, dbModule, oidcDiscoveryFetcher)
 
-        k8sModule.configure(application, dbModule.userTokenDao, appConfig.idp, oidcDiscoveryFetcher)
+        val javaKeyPairInitializer = JavaKeyPairInitializer()
+        val auth0JwtTokenCreator = Auth0JwtTokenCreator(javaKeyPairInitializer)
+        val providerTokenCreator = ProviderTokenCreator(
+            appConfig.auth.privateKey, appConfig.keruta.ownIssuer, appConfig.ktse.providerAudience,
+            auth0JwtTokenCreator
+        )
+        k8sModule.configure(
+            application, dbModule.userTokenDao, appConfig.idp, oidcDiscoveryFetcher, providerTokenCreator
+        )
         serializeModule.configure(application)
         configureCors(application)
         authModule.configure(application)
         configureErrorHandling(application)
-        routeModule.configure(application, appConfig)
+        routeModule.configure(application, appConfig, providerTokenCreator, javaKeyPairInitializer)
 
         logger.info("ktcl-k8s Web Module started successfully")
     }

@@ -4,37 +4,29 @@ import com.auth0.jwk.JwkProvider
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.interfaces.DecodedJWT
+import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
 import net.kigawa.keruta.ktcp.model.auth.AuthToken
 import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifyValues
 import net.kigawa.keruta.ktcp.model.auth.jwt.UnverifiedToken
 import net.kigawa.keruta.ktcp.model.auth.jwt.VerifyErr
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.kodel.api.err.Res
-import net.kigawa.kodel.api.err.err
-import net.kigawa.kodel.api.err.ok
 import net.kigawa.kodel.api.log.LoggerFactory
 import net.kigawa.kodel.api.net.Url
 import java.security.interfaces.RSAPublicKey
 import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifier as KtcpJwtVerifier
 
 class JwtVerifier(
-    val jwkProvider: JwkProvider,
     val keycloakConfig: KeycloakConfig,
-) : KtcpJwtVerifier {
+    private val auth0JwtVerifier: Auth0JwtVerifier,
+): KtcpJwtVerifier {
     private val logger = LoggerFactory.get("JwtVerifier")
 
     override fun createToken(jwtVerifyValues: JwtVerifyValues): Res<AuthToken, KtcpErr> =
         Res.Err(VerifyErr("not_supported", "Token creation is not supported in web JwtVerifier", null))
 
-    override fun decodeUnverified(userToken: AuthToken): Res<UnverifiedToken, VerifyErr> {
-        return try {
-            val jwt = JWT.decode(userToken)
-            JwkUnverifiedToken(jwt, jwkProvider).ok()
-        } catch (e: Exception) {
-            logger.severe("JWT decode failed: ${e.message}")
-            VerifyErr("decode_failed", e.message, e).err()
-        }
-    }
+    override fun decodeUnverified(userToken: AuthToken): Res<UnverifiedToken, VerifyErr> =
+        auth0JwtVerifier.decodeUnverified(userToken)
 
     fun verify(token: String): String? {
         val verifyValues = JwtVerifyValues(
@@ -48,11 +40,13 @@ class JwtVerifier(
                 logger.severe("JWT verification failed: ${unverified.err.message}")
                 null
             }
+
             is Res.Ok -> when (val verified = unverified.value.verifyWithJwks(verifyValues)) {
                 is Res.Err -> {
                     logger.severe("JWT verification failed: ${verified.err.message}")
                     null
                 }
+
                 is Res.Ok -> verified.value.subject
             }
         }

@@ -1,18 +1,17 @@
 package net.kigawa.keruta.ktcl.k8s.config
 
-import net.kigawa.keruta.ktcp.model.auth.key.KerutaPrivateKey
+import net.kigawa.keruta.ktcp.model.auth.key.PemKey
 
 data class AuthConfig(
-    val privateKey: KerutaPrivateKey,
+    val privateKey: PemKey,
 ) {
     companion object {
         fun load(): AuthConfig {
             return AuthConfig(
-                privateKey = KerutaPrivateKey(
-                    System.getenv("PRIVATE_KEY")
-                        ?: throw IllegalStateException("PRIVATE_KEY is required"),
+                privateKey = System.getenv("PRIVATE_KEY")
+                    ?: throw IllegalStateException("PRIVATE_KEY is required"),
+
                 )
-            )
         }
     }
 }

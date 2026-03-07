@@ -1,6 +1,5 @@
 package net.kigawa.keruta.ktcl.k8s.route
 
-import com.auth0.jwk.JwkProvider
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -11,18 +10,15 @@ import net.kigawa.keruta.ktcl.k8s.auth.JwtVerifier
 import net.kigawa.keruta.ktcl.k8s.auth.KeycloakConfig
 import net.kigawa.keruta.ktcl.k8s.auth.UserSession
 import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
-import net.kigawa.keruta.ktcp.model.auth.key.KerutaPrivateKey
 import net.kigawa.kodel.api.log.LoggerFactory
 
 class AuthRoutes(
-    jwkProvider: JwkProvider,
     keycloakConfig: KeycloakConfig,
+    private val authenticationHelper: AuthenticationHelper,
     auth0JwtVerifier: Auth0JwtVerifier,
-    privateKey: KerutaPrivateKey,
 ) {
     private val logger = LoggerFactory.get("AuthRoutes")
-    private val jwtVerifier = JwtVerifier(jwkProvider, keycloakConfig)
-    private val authenticationHelper = AuthenticationHelper(auth0JwtVerifier, privateKey)
+    private val jwtVerifier = JwtVerifier(keycloakConfig, auth0JwtVerifier)
 
     fun configure(route: Route) {
         route.route("/api/auth") {

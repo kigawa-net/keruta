@@ -16,9 +16,10 @@ import net.kigawa.keruta.ktcl.k8s.persist.DbModule
 import net.kigawa.keruta.ktcp.base.auth.jwks.JwksProvider
 import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
 import net.kigawa.keruta.ktcp.base.auth.key.Auth0AlgorithmInitializer
-import net.kigawa.keruta.ktcp.base.auth.key.JavaPrivateKeyInitializer
+import net.kigawa.keruta.ktcp.base.auth.key.JavaKeyPairInitializer
 import net.kigawa.keruta.ktcp.base.auth.oidc.OidcConfigProvider
 import net.kigawa.keruta.ktcp.base.http.HttpClient
+import net.kigawa.keruta.ktcp.usecase.client.ProviderTokenCreator
 
 class RouteModule(
     private val httpClient: HttpClient,
@@ -28,32 +29,33 @@ class RouteModule(
     private val remoteConfigProvider = RemoteConfigProvider(oidcDiscoveryFetcher)
     private val pkceGenerator = PkceGenerator()
     private val userTokenDao = dbModule.userTokenDao
-    private val javaPrivateKeyInitializer = JavaPrivateKeyInitializer()
     private val auth0AlgorithmInitializer = Auth0AlgorithmInitializer()
 
-    fun configure(application: Application, appConfig: AppConfig) {
+    fun configure(
+        application: Application, appConfig: AppConfig, providerTokenCreator: ProviderTokenCreator,
+        javaKeyPairInitializer: JavaKeyPairInitializer,
+    ) {
         val providerRegistrationClient = ProviderRegistrationClient(
-            ktseConfig = appConfig.ktse,
-            privateKey = appConfig.auth.privateKey,
-            issuer = appConfig.keruta.ownIssuer.toStrUrl(),
-            javaPrivateKeyInitializer = javaPrivateKeyInitializer,
+            appConfig.ktse, providerTokenCreator
         )
-        val loginCallbackRoute = LoginCallbackRoute(oidcDiscoveryFetcher, userTokenDao, providerRegistrationClient)
-        val idpConfig = appConfig.idp
-        val keycloakConfig = remoteConfigProvider.loadKeycloakConfig(idpConfig.issuer, idpConfig.clientId)
-        val jwkProvider = remoteConfigProvider.createJwkProvider(keycloakConfig.jwksUrl)
         val oidcConfigProvider = OidcConfigProvider(httpClient)
         val jwksProvider = JwksProvider()
         val auth0JwtVerifier = Auth0JwtVerifier(
-            oidcConfigProvider, jwksProvider, auth0AlgorithmInitializer, javaPrivateKeyInitializer
+            oidcConfigProvider, jwksProvider, auth0AlgorithmInitializer, javaKeyPairInitializer
         )
+        val loginCallbackRoute = LoginCallbackRoute(
+            oidcDiscoveryFetcher, userTokenDao, providerRegistrationClient, auth0JwtVerifier
+        )
+        val idpConfig = appConfig.idp
+        val keycloakConfig = remoteConfigProvider.loadKeycloakConfig(idpConfig.issuer, idpConfig.clientId)
         val authConfig = appConfig.auth
         // 認証ヘルパーと静的ルートを初期化
         val authenticationHelper = AuthenticationHelper(auth0JwtVerifier, authConfig.privateKey)
         val staticRoutes = StaticRoutes(authenticationHelper)
         val configRoutes = ConfigRoutes(
-            jwkProvider, keycloakConfig, appConfig, auth0JwtVerifier,
-            authConfig.privateKey, dbModule.userClaudeConfigDao, javaPrivateKeyInitializer
+            keycloakConfig, appConfig,
+            authConfig.privateKey, dbModule.userClaudeConfigDao, javaKeyPairInitializer,
+            authenticationHelper, auth0JwtVerifier
         )
         val kerutaEndpoints = KerutaEndpoints(appConfig.keruta)
         val loginRoute = LoginRoute(

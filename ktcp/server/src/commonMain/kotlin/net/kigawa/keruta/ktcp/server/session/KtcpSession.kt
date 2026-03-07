@@ -4,7 +4,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifyValues
-import net.kigawa.keruta.ktcp.model.auth.key.KerutaPrivateKey
+import net.kigawa.keruta.ktcp.model.auth.key.PemKey
 import net.kigawa.keruta.ktcp.model.auth.request.ServerAuthRequestMsg
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.keruta.ktcp.model.provider.complete.ServerProviderCompleteMsg
@@ -33,7 +33,7 @@ class KtcpSession private constructor(
     val verifyTablesPersister: VerifyTablesPersister,
     userIdpConfig: UserIdpConfig,
     providerIdpConfig: ProviderIdpConfig,
-    private val privateKey: KerutaPrivateKey,
+    private val pemKey: PemKey,
 ) {
     val server: KtcpServer by connection::server
     private val counterInDuration = CounterInDuration(30.minutes, 3)
@@ -48,12 +48,12 @@ class KtcpSession private constructor(
         suspend fun startSession(
             connection: KtcpConnection, persisterSession: PersisterSession, authTokenDecoder: AuthTokenDecoder,
             verifyTablesPersister: VerifyTablesPersister, userIdpConfig: UserIdpConfig,
-            providerIdpConfig: ProviderIdpConfig, privateKey: KerutaPrivateKey,
+            providerIdpConfig: ProviderIdpConfig, pemKey: PemKey,
             block: suspend (KtcpSession) -> Unit,
         ) {
             KtcpSession(
                 connection, persisterSession, authTokenDecoder, verifyTablesPersister, userIdpConfig,
-                providerIdpConfig, privateKey
+                providerIdpConfig, pemKey
             ).also {
                 coroutineScope {
 //                    launch {
@@ -103,7 +103,7 @@ class KtcpSession private constructor(
 
     suspend fun registerProvider(input: ServerProviderCompleteMsg): Res<Unit, KtcpErr> {
         val unverifiedRegisterToken = server.jwtVerifier.decodeUnverified(input.registerToken).flatConvertOk {
-            it.withKey(privateKey)
+            it.withKey(pemKey)
         }.unwrap {
             return Res.Err(it)
         }

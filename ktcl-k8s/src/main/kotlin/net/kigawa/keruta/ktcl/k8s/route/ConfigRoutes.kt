@@ -1,35 +1,35 @@
 package net.kigawa.keruta.ktcl.k8s.route
 
-import com.auth0.jwk.JwkProvider
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import net.kigawa.keruta.ktcl.k8s.auth.AuthGuard
+import net.kigawa.keruta.ktcl.k8s.auth.AuthenticationHelper
 import net.kigawa.keruta.ktcl.k8s.auth.KeycloakConfig
 import net.kigawa.keruta.ktcl.k8s.config.AppConfig
 import net.kigawa.keruta.ktcl.k8s.dto.*
 import net.kigawa.keruta.ktcl.k8s.persist.dao.UserClaudeConfigDao
 import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
-import net.kigawa.keruta.ktcp.base.auth.key.JavaPrivateKeyInitializer
+import net.kigawa.keruta.ktcp.base.auth.key.JavaKeyPairInitializer
 import net.kigawa.keruta.ktcp.infra.client.NimbusdsJwksGenerator
-import net.kigawa.keruta.ktcp.model.auth.key.KerutaPrivateKey
+import net.kigawa.keruta.ktcp.model.auth.key.PemKey
 import net.kigawa.keruta.ktcp.usecase.client.JwksJsonGenerator
 import net.kigawa.kodel.api.log.LoggerFactory
 
 class ConfigRoutes(
-    jwkProvider: JwkProvider,
     keycloakConfig: KeycloakConfig, val appConfig: AppConfig,
-    auth0JwtVerifier: Auth0JwtVerifier,
-    private val privateKey: KerutaPrivateKey,
+    private val privateKey: PemKey,
     private val userClaudeConfigDao: UserClaudeConfigDao,
-    javaPrivateKeyInitializer: JavaPrivateKeyInitializer,
+    javaKeyPairInitializer: JavaKeyPairInitializer,
+    authenticationHelper: AuthenticationHelper,
+    auth0JwtVerifier: Auth0JwtVerifier,
 ) {
     private val logger = LoggerFactory.get("ConfigRoutes")
-    private val authGuard = AuthGuard(auth0JwtVerifier, privateKey)
-    private val authRoute = AuthRoutes(jwkProvider, keycloakConfig, auth0JwtVerifier, privateKey)
+    private val authGuard = AuthGuard(authenticationHelper)
+    private val authRoute = AuthRoutes(keycloakConfig, authenticationHelper, auth0JwtVerifier )
 
-    private val jwksJsonGenerator: JwksJsonGenerator = NimbusdsJwksGenerator(javaPrivateKeyInitializer)
+    private val jwksJsonGenerator: JwksJsonGenerator = NimbusdsJwksGenerator(javaKeyPairInitializer)
     fun configureConfigRoutes(
         route: Route,
     ) = route.apply {

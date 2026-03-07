@@ -7,13 +7,12 @@ import net.kigawa.keruta.ktcl.k8s.connection.JvmWebSocketConnection
 import net.kigawa.keruta.ktcl.k8s.connection.ReceiveClientUnknownArg
 import net.kigawa.keruta.ktcp.client.ClientCtx
 import net.kigawa.keruta.ktcp.client.KtcpClient
-import net.kigawa.keruta.ktcp.model.KtcpClientEntrypoints
 import net.kigawa.keruta.ktcp.model.task.list.ServerTaskListMsg
+import net.kigawa.kodel.api.err.unwrap
 import net.kigawa.kodel.api.log.LoggerFactory
 
 class TaskReceiver(
     private val connection: JvmWebSocketConnection,
-    private val clientEntrypoints: KtcpClientEntrypoints<ClientCtx>,
     private val config: K8sConfig,
     private val ktcpClient: KtcpClient,
 ) {
@@ -41,14 +40,14 @@ class TaskReceiver(
             logger.info { "Failed to parse message type: $message" }
             return@coroutineScope false
         }
+        val taskListed = unknownArg.tryToTaskListed()
+            ?.unwrap {
+                it.printStackTrace()
+                return@coroutineScope false
+            } ?: return@coroutineScope false
+        logger.info { "Received task list: $taskListed" }
 
-        try {
-            clientEntrypoints.access(unknownArg, ctx)?.execute()
-            true
-        } catch (e: Exception) {
-            logger.info { "Failed to process message: ${e.message}" }
-            true
-        }
+        return@coroutineScope true
     }
 }
 

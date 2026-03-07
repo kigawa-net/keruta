@@ -4,22 +4,22 @@ import com.auth0.jwt.JWT
 import net.kigawa.keruta.ktcp.base.auth.VerifyFailErr
 import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
 import net.kigawa.keruta.ktcp.base.auth.key.Auth0AlgorithmInitializer
-import net.kigawa.keruta.ktcp.base.auth.key.JavaPrivateKeyInitializer
+import net.kigawa.keruta.ktcp.base.auth.key.JavaKeyPairInitializer
 import net.kigawa.keruta.ktcp.model.auth.AuthToken
 import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifier
 import net.kigawa.keruta.ktcp.model.auth.jwt.JwtVerifyValues
 import net.kigawa.keruta.ktcp.model.auth.jwt.UnverifiedToken
 import net.kigawa.keruta.ktcp.model.auth.jwt.VerifyErr
-import net.kigawa.keruta.ktcp.model.auth.key.KerutaPrivateKey
+import net.kigawa.keruta.ktcp.model.auth.key.PemKey
 import net.kigawa.keruta.ktcp.model.err.KtcpErr
 import net.kigawa.kodel.api.err.Res
 import java.util.*
 
 class KtseJwtVerifier(
     private val auth0JwtVerifier: Auth0JwtVerifier,
-    private val jwtSecret: KerutaPrivateKey,
+    private val pemKey: PemKey,
     val auth0AlgorithmInitializer: Auth0AlgorithmInitializer,
-    val javaPrivateKeyInitializer: JavaPrivateKeyInitializer,
+    val javaKeyPairInitializer: JavaKeyPairInitializer,
 ): JwtVerifier {
 
     override fun decodeUnverified(userToken: AuthToken): Res<UnverifiedToken, VerifyErr> =
@@ -27,7 +27,7 @@ class KtseJwtVerifier(
 
     override fun createToken(jwtVerifyValues: JwtVerifyValues): Res<AuthToken, KtcpErr> = try {
         val algorithm = auth0AlgorithmInitializer.initPrivateKey(
-            javaPrivateKeyInitializer.initialize(jwtSecret)
+            javaKeyPairInitializer.initialize(pemKey)
         )
         val token = JWT.create()
             .withIssuer(jwtVerifyValues.issuer.toStrUrl())
