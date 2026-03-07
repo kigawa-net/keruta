@@ -11,6 +11,7 @@ export default [
             route("task", "./routes/task.tsx"),
             route("queue/create", "./routes/queue.create.tsx"),
             route("queue/:queueId", "./routes/queue.$queueId.tsx"),
+            route("queue/:queueId/edit", "./routes/queue.$queueId.edit.tsx"),
         ]),
     ]),
     route(".well-known/jwks.json", "./routes/jwks.ts"),
