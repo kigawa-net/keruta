@@ -5,7 +5,13 @@ import {
     ClientProviderIdpAddedMsg,
     ClientProviderListMsg
 } from "./provider";
-import {ClientQueueCreatedMsg, ClientQueueListedMsg, ClientQueueShowedMsg, ClientQueueUpdatedMsg} from "./queue";
+import {
+    ClientQueueCreatedMsg,
+    ClientQueueDeletedMsg,
+    ClientQueueListedMsg,
+    ClientQueueShowedMsg,
+    ClientQueueUpdatedMsg
+} from "./queue";
 import {
     ClientTaskCreatedMsg,
     ClientTaskListedMsg,
@@ -24,6 +30,7 @@ export const ReceiveMsgTypes = {
     queue_listed: "queue_listed",
     queue_showed: "queue_showed",
     queue_updated: "queue_updated",
+    queue_deleted: "queue_deleted",
     task_showed: "task_showed",
     task_listed: "task_listed",
     task_created: "task_created",
@@ -41,6 +48,7 @@ export type ReceiveMsg =
     | ClientQueueListedMsg
     | ClientQueueShowedMsg
     | ClientQueueUpdatedMsg
+    | ClientQueueDeletedMsg
     | ClientTaskShowedMsg
     | ClientTaskListedMsg
     | ClientTaskCreatedMsg
@@ -58,6 +66,7 @@ export const SendMsgTypes = {
     queue_list: "queue_list",
     queue_show: "queue_show",
     queue_update: "queue_update",
+    queue_delete: "queue_delete",
     task_show: "task_show",
     task_list: "task_list",
     task_update: "task_update",

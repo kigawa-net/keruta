@@ -11,6 +11,7 @@ import net.kigawa.keruta.ktse.persist.db.table.QueueUserTable
 import net.kigawa.keruta.ktse.persist.model.ExposedPersistedQueue
 import net.kigawa.kodel.api.err.Res
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
 class DbQueuePersisterDsl(
     val transaction: Transaction,
@@ -68,5 +69,15 @@ class DbQueuePersisterDsl(
                 ?.let { Res.Ok(ExposedPersistedQueue(it)) }
                 ?: Res.Err(NoSingleRecordErr("", null))
         }
+
+    fun deleteQueue(user: PersistedUser, queueId: Long): Res<Unit, KtcpErr> = transaction.run {
+        val owns = QueueUserTable.selectAll()
+            .where { QueueUserTable.userId eq user.id and (QueueUserTable.queueId eq queueId) }
+            .count() > 0
+        if (!owns) return Res.Err(NoSingleRecordErr("Queue not found or access denied", null))
+        QueueUserTable.deleteWhere { QueueUserTable.queueId eq queueId }
+        QueueTable.deleteWhere { QueueTable.id eq queueId }
+        Res.Ok(Unit)
+    }
 
 }

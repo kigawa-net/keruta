@@ -2,6 +2,7 @@ package net.kigawa.keruta.ktse.persist
 
 import net.kigawa.keruta.ktcp.domain.err.KtcpErr
 import net.kigawa.keruta.ktcp.domain.queue.create.ServerQueueCreateMsg
+import net.kigawa.keruta.ktcp.domain.queue.delete.ServerQueueDeleteMsg
 import net.kigawa.keruta.ktcp.domain.queue.show.ServerQueueShowMsg
 import net.kigawa.keruta.ktcp.domain.queue.update.ServerQueueUpdateMsg
 import net.kigawa.keruta.ktcp.server.persist.AuthedQueuePersisterSession
@@ -51,5 +52,11 @@ class ExposedAuthedQueuePersisterSession(
         msg: ServerQueueUpdateMsg,
     ): Res<PersistedQueue, KtcpErr> = dbPersister.execTransaction {
         it.queue.updateQueue(verifyTables.user, msg.queueId, msg.name)
+    }
+
+    override fun deleteQueue(
+        msg: ServerQueueDeleteMsg,
+    ): Res<Unit, KtcpErr> = dbPersister.execTransaction {
+        it.queue.deleteQueue(verifyTables.user, msg.queueId)
     }
 }
