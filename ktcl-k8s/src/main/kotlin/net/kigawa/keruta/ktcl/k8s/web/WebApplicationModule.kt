@@ -6,6 +6,8 @@ import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 import net.kigawa.keruta.ktcl.k8s.auth.AuthModule
+import net.kigawa.keruta.ktcl.k8s.auth.OidcDiscoveryFetcher
+import net.kigawa.keruta.ktcl.k8s.config.AppConfig
 import net.kigawa.keruta.ktcl.k8s.config.CorsConfig
 import net.kigawa.keruta.ktcl.k8s.err.ErrorResponse
 import net.kigawa.keruta.ktcl.k8s.k8s.K8sModule
@@ -27,16 +29,17 @@ class WebApplicationModule {
 
     fun configure(application: Application) {
         logger.info("Starting ktcl-k8s Web Module")
+        val appConfig = AppConfig.load(application.environment.config)
+        dbModule = DbModule.create(appConfig)
+        val oidcDiscoveryFetcher = OidcDiscoveryFetcher()
+        routeModule = RouteModule(httpClient, dbModule, oidcDiscoveryFetcher)
 
-        dbModule = DbModule.create(application.environment.config)
-        routeModule = RouteModule(httpClient, dbModule)
-
-        k8sModule.configure(application)
+        k8sModule.configure(application, dbModule.userTokenDao, appConfig.idp, oidcDiscoveryFetcher)
         serializeModule.configure(application)
         configureCors(application)
         authModule.configure(application)
         configureErrorHandling(application)
-        routeModule.configure(application)
+        routeModule.configure(application, appConfig)
 
         logger.info("ktcl-k8s Web Module started successfully")
     }

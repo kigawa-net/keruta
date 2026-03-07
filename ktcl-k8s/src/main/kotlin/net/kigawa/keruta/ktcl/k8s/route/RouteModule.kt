@@ -23,16 +23,15 @@ import net.kigawa.keruta.ktcp.base.http.HttpClient
 class RouteModule(
     private val httpClient: HttpClient,
     private val dbModule: DbModule,
+    private val oidcDiscoveryFetcher: OidcDiscoveryFetcher,
 ) {
-    private val oidcDiscoveryFetcher = OidcDiscoveryFetcher()
     private val remoteConfigProvider = RemoteConfigProvider(oidcDiscoveryFetcher)
     private val pkceGenerator = PkceGenerator()
     private val userTokenDao = dbModule.userTokenDao
     private val javaPrivateKeyInitializer = JavaPrivateKeyInitializer()
     private val auth0AlgorithmInitializer = Auth0AlgorithmInitializer()
 
-    fun configure(application: Application) {
-        val appConfig = AppConfig.load(application.environment.config)
+    fun configure(application: Application, appConfig: AppConfig) {
         val providerRegistrationClient = ProviderRegistrationClient(
             ktseConfig = appConfig.ktse,
             privateKey = appConfig.auth.privateKey,

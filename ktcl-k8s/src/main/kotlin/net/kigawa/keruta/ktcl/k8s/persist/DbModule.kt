@@ -18,8 +18,7 @@ class DbModule(
         /**
          * ApplicationConfigからDbModuleを生成
          */
-        fun create(applicationConfig: io.ktor.server.config.ApplicationConfig): DbModule {
-            val appConfig = AppConfig.load(applicationConfig)
+        fun create(appConfig: AppConfig): DbModule {
             val dbManager = DbManager(appConfig.db)
             return DbModule(dbManager)
         }

@@ -4,6 +4,7 @@ import net.kigawa.keruta.ktcl.k8s.persist.db.DbManager
 import net.kigawa.keruta.ktcl.k8s.persist.table.UserTokenTable
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 
@@ -40,6 +41,17 @@ class UserTokenDao(
             UserTokenTable.select(UserTokenTable.userId eq userId)
                 .firstOrNull()
                 ?.get(UserTokenTable.refreshToken)
+        }
+    }
+
+    /**
+     * DBに保存されている最初のユーザーのrefresh tokenを取得する
+     */
+    fun getFirstToken(): Pair<String, String>? {
+        return transaction(dbManager.db) {
+            UserTokenTable.selectAll()
+                .firstOrNull()
+                ?.let { it[UserTokenTable.userId] to it[UserTokenTable.refreshToken] }
         }
     }
 }
