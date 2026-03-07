@@ -21,25 +21,30 @@ class JobTemplateLoader(private val templatePath: String) {
             ?.find { it.name == "workspace" }
             ?.persistentVolumeClaim?.claimName(pvcClaimName)
 
-        // initコンテナにGIT_REPO_URLとTASK_IDを設定
-        val initContainer = job.spec?.template?.spec?.initContainers?.find { it.name == "git-clone" }
-        initContainer?.env(
-            listOf(
-                V1EnvVar().name("GIT_REPO_URL").value(gitRepoUrl),
-                V1EnvVar().name("TASK_ID").value(taskId.toString()),
-            )
+        val taskEnv = listOf(
+            V1EnvVar().name("TASK_ID").value(taskId.toString()),
+            V1EnvVar().name("TASK_TITLE").value(title),
+            V1EnvVar().name("TASK_DESCRIPTION").value(description),
+            V1EnvVar().name("GIT_REPO_URL").value(gitRepoUrl),
         )
 
-        // メインコンテナに環境変数を設定
-        val container = job.spec?.template?.spec?.containers?.get(0)
-        container?.env(
-            listOf(
-                V1EnvVar().name("TASK_ID").value(taskId.toString()),
-                V1EnvVar().name("TASK_TITLE").value(title),
-                V1EnvVar().name("TASK_DESCRIPTION").value(description),
+        // git-clone initコンテナに環境変数を設定
+        job.spec?.template?.spec?.initContainers
+            ?.find { it.name == "git-clone" }
+            ?.env(listOf(
                 V1EnvVar().name("GIT_REPO_URL").value(gitRepoUrl),
-            )
-        )
+                V1EnvVar().name("TASK_ID").value(taskId.toString()),
+            ))
+
+        // task-executor initコンテナに環境変数を設定
+        job.spec?.template?.spec?.initContainers
+            ?.find { it.name == "task-executor" }
+            ?.env(taskEnv)
+
+        // git-push メインコンテナにTASK_IDを設定
+        job.spec?.template?.spec?.containers
+            ?.find { it.name == "git-push" }
+            ?.env(listOf(V1EnvVar().name("TASK_ID").value(taskId.toString())))
 
         return job
     }

@@ -24,7 +24,6 @@ spec:
         volumeMounts:
         - name: workspace
           mountPath: /workspace
-      containers:
       - name: task-executor
         image: harbor.kigawa.net/library/keruta-executor:latest
         env:
@@ -46,6 +45,19 @@ spec:
           requests:
             memory: "256Mi"
             cpu: "250m"
+      containers:
+      - name: git-push
+        image: alpine/git:latest
+        command:
+        - sh
+        - -c
+        - "cd /workspace && git add -A && git commit -m 'keruta-task-$TASK_ID' && git push origin keruta-task-$TASK_ID"
+        env:
+        - name: TASK_ID
+          value: ""
+        volumeMounts:
+        - name: workspace
+          mountPath: /workspace
       volumes:
       - name: workspace
         persistentVolumeClaim:
