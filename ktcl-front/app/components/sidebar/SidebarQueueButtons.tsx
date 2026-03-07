@@ -13,8 +13,11 @@ export default function SidebarQueueButtons(
     const wsState = useWebsocketState()
     const authedKtse = useAuthedKtseState()
     useWebsocketReceive(msg => {
-        if (msg.type != "queue_listed") return
-        setQueues(msg.queues)
+        if (msg.type === "queue_listed") {
+            setQueues(msg.queues)
+        } else if (msg.type === "queue_deleted") {
+            setQueues(prev => prev.filter(q => q.id !== msg.id))
+        }
     }, [])
 
     useEffect(() => {

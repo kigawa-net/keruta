@@ -8,5 +8,5 @@ class ExposedPersistedQueue(queue: ResultRow): PersistedQueue {
     override val id: Long = queue[QueueTable.id]
     override val name: String = queue[QueueTable.name]
     override val providerId: Long = queue[QueueTable.providerId]
-    override val setting: String = queue[QueueTable.setting]
+    override val setting: String = queue[QueueTable.setting] ?: ""
 }
