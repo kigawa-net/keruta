@@ -8,7 +8,9 @@ import net.kigawa.keruta.ktcl.k8s.auth.AuthGuard
 import net.kigawa.keruta.ktcl.k8s.auth.AuthenticationHelper
 import net.kigawa.keruta.ktcl.k8s.auth.KeycloakConfig
 import net.kigawa.keruta.ktcl.k8s.config.AppConfig
+import net.kigawa.keruta.ktcl.k8s.config.KtseConfig
 import net.kigawa.keruta.ktcl.k8s.dto.*
+import net.kigawa.keruta.ktcl.k8s.login.ProviderListClient
 import net.kigawa.keruta.ktcl.k8s.persist.dao.UserClaudeConfigDao
 import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
 import net.kigawa.keruta.ktcp.base.auth.key.JavaKeyPairInitializer
@@ -18,6 +20,7 @@ import net.kigawa.keruta.ktcp.domain.client.wellknown.ObjectPropertyJson
 import net.kigawa.keruta.ktcp.domain.client.wellknown.StringPropertyJson
 import net.kigawa.keruta.ktcp.infra.client.NimbusdsJwksGenerator
 import net.kigawa.keruta.ktcp.usecase.client.JwksJsonGenerator
+import net.kigawa.keruta.ktcp.usecase.client.ProviderTokenCreator
 import net.kigawa.kodel.api.log.LoggerFactory
 
 class ConfigRoutes(
@@ -27,10 +30,13 @@ class ConfigRoutes(
     javaKeyPairInitializer: JavaKeyPairInitializer,
     authenticationHelper: AuthenticationHelper,
     auth0JwtVerifier: Auth0JwtVerifier,
+    ktseConfig: KtseConfig,
+    providerTokenCreator: ProviderTokenCreator,
 ) {
     private val logger = LoggerFactory.get("ConfigRoutes")
     private val authGuard = AuthGuard(authenticationHelper)
     private val authRoute = AuthRoutes(keycloakConfig, authenticationHelper, auth0JwtVerifier)
+    private val providerListClient = ProviderListClient(ktseConfig, providerTokenCreator)
 
     private val jwksJsonGenerator: JwksJsonGenerator = NimbusdsJwksGenerator(javaKeyPairInitializer)
     fun configureConfigRoutes(
@@ -133,6 +139,14 @@ class ConfigRoutes(
                     logger.info("Claude Code API key updated for user: ${user.userId}")
 
                     call.respond(mapOf("success" to true, "message" to "Claude Code API key updated"))
+                }
+            }
+        }
+        route("/api/providers") {
+            get {
+                authGuard.requireAuth(call) { user ->
+                    val providers = providerListClient.listProviders(user.token)
+                    call.respond(ProvidersResponse(providers))
                 }
             }
         }

@@ -55,7 +55,8 @@ class RouteModule(
         val configRoutes = ConfigRoutes(
             keycloakConfig, appConfig,
             authConfig.privateKey, dbModule.userClaudeConfigDao, javaKeyPairInitializer,
-            authenticationHelper, auth0JwtVerifier
+            authenticationHelper, auth0JwtVerifier,
+            appConfig.ktse, providerTokenCreator
         )
         val kerutaEndpoints = KerutaEndpoints(appConfig.keruta)
         val loginRoute = LoginRoute(

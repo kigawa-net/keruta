@@ -119,6 +119,24 @@ h1 {
     border-bottom: 1px solid var(--color-border);
 }
 
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+th {
+    font-weight: 600;
+    color: var(--color-text-muted);
+    background: #f8f9fa;
+}
+
 .form-group {
     margin-bottom: 16px;
 }
@@ -275,9 +293,17 @@ button:disabled {
                         id = "sidebar"
                         h1("sidebar-title") { +"Keruta" }
                         nav("sidebar-nav") {
-                            a("/") {
-                                classes = setOf("sidebar-link", "active")
+                            a("#") {
+                                classes = setOf("sidebar-link")
+                                id = "navConfig"
+                                onClick = "showPage('config')"
                                 +"設定"
+                            }
+                            a("#") {
+                                classes = setOf("sidebar-link")
+                                id = "navProviders"
+                                onClick = "showPage('providers')"
+                                +"プロバイダー一覧"
                             }
                         }
                     }
@@ -298,6 +324,23 @@ button:disabled {
                                         id = "keycloakLoginBtn"
                                         classes = setOf("keycloak-btn")
                                         +"Keycloakでログイン"
+                                    }
+                                }
+                            }
+
+                            // プロバイダー一覧画面
+                            div("config-screen") {
+                                id = "providersScreen"
+                                h1 { +"プロバイダー一覧" }
+                                p("subtitle") { +"ktseに登録されているプロバイダーの一覧です" }
+                                div("message") {
+                                    id = "providersMessage"
+                                }
+                                div("card") {
+                                    h2("card-title") { +"プロバイダー" }
+                                    div {
+                                        id = "providersTableContainer"
+                                        +"読み込み中..."
                                     }
                                 }
                             }
@@ -432,11 +475,52 @@ button:disabled {
         function showLoginScreen() {
             document.getElementById('loginScreen').classList.add('active');
             document.getElementById('configScreen').classList.remove('active');
+            document.getElementById('providersScreen').classList.remove('active');
         }
 
         function showConfigScreen() {
             document.getElementById('loginScreen').classList.remove('active');
             document.getElementById('configScreen').classList.add('active');
+            document.getElementById('providersScreen').classList.remove('active');
+        }
+
+        function showPage(page) {
+            document.getElementById('configScreen').classList.remove('active');
+            document.getElementById('providersScreen').classList.remove('active');
+            if (page === 'config') {
+                document.getElementById('configScreen').classList.add('active');
+            } else if (page === 'providers') {
+                document.getElementById('providersScreen').classList.add('active');
+                loadProviders();
+            }
+        }
+
+        async function loadProviders() {
+            try {
+                const response = await fetch('/api/providers', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                if (!response.ok) throw new Error('プロバイダーの読み込みに失敗しました');
+                const data = await response.json();
+                const container = document.getElementById('providersTableContainer');
+                if (data.providers.length === 0) {
+                    container.textContent = 'プロバイダーが登録されていません';
+                    return;
+                }
+                const table = document.createElement('table');
+                table.innerHTML = '<thead><tr><th>ID</th><th>名前</th><th>Issuer</th><th>Audience</th></tr></thead>';
+                const tbody = document.createElement('tbody');
+                for (const p of data.providers) {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = '<td>' + p.id + '</td><td>' + p.name + '</td><td>' + p.issuer + '</td><td>' + p.audience + '</td>';
+                    tbody.appendChild(tr);
+                }
+                table.appendChild(tbody);
+                container.innerHTML = '';
+                container.appendChild(table);
+            } catch (error) {
+                showMessage('providersMessage', 'エラー: ' + error.message, 'error');
+            }
         }
 
         // メッセージ表示
@@ -486,7 +570,7 @@ button:disabled {
                 if (data.success) {
                     token = accessToken;
                     await loadConfig();
-                    showConfigScreen();
+                    showPage('config');
                 } else {
                     showMessage('loginMessage', 'ログインに失敗しました: ' + data.message, 'error');
                 }
