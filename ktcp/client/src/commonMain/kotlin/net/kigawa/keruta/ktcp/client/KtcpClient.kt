@@ -8,6 +8,7 @@ import net.kigawa.keruta.ktcp.client.provider.SendProviderListEntrypoint
 import net.kigawa.keruta.ktcp.client.queue.SendQueueCreateEntrypoint
 import net.kigawa.keruta.ktcp.client.queue.SendQueueListEntrypoint
 import net.kigawa.keruta.ktcp.client.queue.SendQueueShowEntrypoint
+import net.kigawa.keruta.ktcp.client.queue.SendQueueUpdateEntrypoint
 import net.kigawa.keruta.ktcp.client.task.*
 import net.kigawa.keruta.ktcp.domain.KtcpServerEntrypoints
 
@@ -25,6 +26,7 @@ class KtcpClient {
         SendQueueCreateEntrypoint(),
         SendQueueListEntrypoint(),
         SendQueueShowEntrypoint(),
+        SendQueueUpdateEntrypoint(),
         SendTaskListEntrypoint(),
         SendTaskShowEntrypoint(),
     )

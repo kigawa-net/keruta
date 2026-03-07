@@ -9,6 +9,7 @@ import net.kigawa.keruta.ktcl.k8s.config.K8sConfig
 import net.kigawa.keruta.ktcl.k8s.persist.dao.UserTokenDao
 import net.kigawa.keruta.ktcp.usecase.client.ProviderTokenCreator
 import net.kigawa.kodel.api.log.getKogger
+import net.kigawa.kodel.api.net.Url
 
 class K8sModule {
     private val config = K8sConfig.fromEnvironment()
@@ -20,9 +21,10 @@ class K8sModule {
         idpConfig: IdpConfig,
         oidcDiscoveryFetcher: OidcDiscoveryFetcher,
         providerTokenCreator: ProviderTokenCreator,
+        ktclIssuer: Url,
     ) {
         val tokenRefresher = TokenRefresher(oidcDiscoveryFetcher, idpConfig)
-        val client = KerutaK8sClient(config, userTokenDao, tokenRefresher,providerTokenCreator)
+        val client = KerutaK8sClient(config, userTokenDao, tokenRefresher, providerTokenCreator, ktclIssuer.toStrUrl())
         application.launch {
             logger.info("Starting K8s client in background")
             client.start()

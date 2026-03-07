@@ -44,7 +44,8 @@ class WebApplicationModule {
             auth0JwtTokenCreator
         )
         k8sModule.configure(
-            application, dbModule.userTokenDao, appConfig.idp, oidcDiscoveryFetcher, providerTokenCreator
+            application, dbModule.userTokenDao, appConfig.idp, oidcDiscoveryFetcher, providerTokenCreator,
+            appConfig.keruta.ownIssuer
         )
         serializeModule.configure(application)
         configureCors(application)

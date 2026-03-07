@@ -7,7 +7,7 @@ import java.io.File
 import java.io.FileReader
 
 class JobTemplateLoader(private val templatePath: String) {
-    fun loadTemplate(taskId: Long, title: String, description: String): V1Job {
+    fun loadTemplate(taskId: Long, title: String, description: String, gitRepoUrl: String): V1Job {
         // 1. YAMLファイルを読み込み
         val templateFile = File(templatePath)
         val reader = FileReader(templateFile)
@@ -24,7 +24,8 @@ class JobTemplateLoader(private val templatePath: String) {
             listOf(
                 V1EnvVar().name("TASK_ID").value(taskId.toString()),
                 V1EnvVar().name("TASK_TITLE").value(title),
-                V1EnvVar().name("TASK_DESCRIPTION").value(description)
+                V1EnvVar().name("TASK_DESCRIPTION").value(description),
+                V1EnvVar().name("GIT_REPO_URL").value(gitRepoUrl),
             )
         )
 
