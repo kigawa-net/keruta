@@ -77,6 +77,11 @@ class ReceiveClientUnknownArg(
         return serializer.deserialize<ClientQueueShowedMsg>(text)
     }
 
+    override fun tryToQueueUpdated(): Res<ClientQueueUpdatedMsg, KtcpErr>? {
+        if (typeStr != ClientMsgType.QUEUE_UPDATED.str) return null
+        return serializer.deserialize<ClientQueueUpdatedMsg>(text)
+    }
+
     override fun tryToTaskCreated(): Res<ClientTaskCreatedMsg, KtcpErr>? {
         if (typeStr != ClientMsgType.TASK_CREATED.str) return null
         return serializer.deserialize<ClientTaskCreatedMsg>(text)

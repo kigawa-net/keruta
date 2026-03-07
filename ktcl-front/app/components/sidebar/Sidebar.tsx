@@ -7,6 +7,9 @@ interface SidebarProps {
 }
 
 export default function Sidebar({isOpen, onClose}: SidebarProps) {
+    const handleNavClose = () => {
+        if (window.innerWidth < 768) onClose()
+    }
     return (
         <aside
             className={`
@@ -24,18 +27,18 @@ export default function Sidebar({isOpen, onClose}: SidebarProps) {
                                 to="/queue/create"
                                 className="sidebar-link block px-4 py-2 rounded transition-colors"
                                 style={{color: '#0a58ca'}}
-                                onClick={onClose}
+                                onClick={handleNavClose}
                             >
                                 Create Queue
                             </Link>
                         </li>
-                        <SidebarQueueButtons onClose={onClose}/>
+                        <SidebarQueueButtons onClose={handleNavClose}/>
                         <li>
                             <Link
                                 to="/provider"
                                 className="sidebar-link block px-4 py-2 rounded transition-colors"
                                 style={{color: '#0a58ca'}}
-                                onClick={onClose}
+                                onClick={handleNavClose}
                             >
                                 Providers
                             </Link>
