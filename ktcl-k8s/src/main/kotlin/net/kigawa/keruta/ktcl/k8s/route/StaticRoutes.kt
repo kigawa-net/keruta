@@ -36,15 +36,6 @@ class StaticRoutes(
             get("/health") {
                 call.respondText("OK", ContentType.Text.Plain)
             }
-
-            get("/ready") {
-                call.respondText("OK", ContentType.Text.Plain)
-            }
-
-
-            get("/config") {
-                call.respondText(HtmlGenerator.generateIndexHtml(), ContentType.Text.Html)
-            }
         }
     }
 }
