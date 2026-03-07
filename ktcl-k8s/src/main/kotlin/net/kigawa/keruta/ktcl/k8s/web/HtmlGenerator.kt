@@ -7,7 +7,7 @@ import kotlinx.html.stream.createHTML
  * kotlinx-htmlを使用したHTML生成クラス
  */
 object HtmlGenerator {
-    fun generateIndexHtml(): String {
+    fun generateIndexHtml(hasGithubToken: Boolean = false): String {
         return createHTML().html {
             lang = "ja"
             head {
@@ -285,22 +285,6 @@ button:disabled {
                     // メインコンテンツ
                     main("main-content") {
                         div("container") {
-                            // ログイン画面
-                            div("login-screen") {
-                                id = "loginScreen"
-                                div("card") {
-                                    h1 { +"ktcl-k8s 設定管理" }
-                                    p("subtitle") { +"Keycloakで認証してください" }
-                                    div("message") {
-                                        id = "loginMessage"
-                                    }
-                                    button {
-                                        id = "keycloakLoginBtn"
-                                        classes = setOf("keycloak-btn")
-                                        +"Keycloakでログイン"
-                                    }
-                                }
-                            }
 
                             // 設定画面
                             div("config-screen") {
@@ -380,6 +364,34 @@ button:disabled {
                                     button {
                                         id = "updateQueueBtn"
                                         +"キュー設定を更新"
+                                    }
+                                }
+
+                                // GitHub Token設定
+                                div("card") {
+                                    h2("card-title") { +"GitHub Token設定" }
+                                    p("subtitle") {
+                                        id = "githubTokenStatus"
+                                        +(if (hasGithubToken) "Token設定済み" else "Token未設定")
+                                    }
+                                    form {
+                                        action = "/config/github"
+                                        method = FormMethod.post
+                                        div("form-group") {
+                                            label {
+                                                htmlFor = "githubToken"
+                                                +"GitHub Personal Access Token"
+                                            }
+                                            input(InputType.password) {
+                                                id = "githubToken"
+                                                name = "githubToken"
+                                                placeholder = "ghp_..."
+                                            }
+                                        }
+                                        button {
+                                            type = ButtonType.submit
+                                            +"GitHub Tokenを保存"
+                                        }
                                     }
                                 }
 

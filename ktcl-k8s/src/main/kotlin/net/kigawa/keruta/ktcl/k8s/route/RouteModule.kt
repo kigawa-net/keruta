@@ -51,11 +51,11 @@ class RouteModule(
         val authConfig = appConfig.auth
         // 認証ヘルパーと静的ルートを初期化
         val authenticationHelper = AuthenticationHelper(auth0JwtVerifier, authConfig.privateKey)
-        val staticRoutes = StaticRoutes(authenticationHelper)
+        val staticRoutes = StaticRoutes(authenticationHelper, userTokenDao)
         val configRoutes = ConfigRoutes(
             keycloakConfig, appConfig,
-            authConfig.privateKey, dbModule.userClaudeConfigDao, javaKeyPairInitializer,
-            authenticationHelper, auth0JwtVerifier
+            authConfig.privateKey, dbModule.userClaudeConfigDao, userTokenDao,
+            javaKeyPairInitializer, authenticationHelper, auth0JwtVerifier
         )
         val kerutaEndpoints = KerutaEndpoints(appConfig.keruta)
         val loginRoute = LoginRoute(

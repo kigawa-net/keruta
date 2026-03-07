@@ -10,6 +10,7 @@ import net.kigawa.keruta.ktcl.k8s.auth.KeycloakConfig
 import net.kigawa.keruta.ktcl.k8s.config.AppConfig
 import net.kigawa.keruta.ktcl.k8s.dto.*
 import net.kigawa.keruta.ktcl.k8s.persist.dao.UserClaudeConfigDao
+import net.kigawa.keruta.ktcl.k8s.persist.dao.UserTokenDao
 import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
 import net.kigawa.keruta.ktcp.base.auth.key.JavaKeyPairInitializer
 import net.kigawa.keruta.ktcp.domain.auth.key.PemKey
@@ -24,6 +25,7 @@ class ConfigRoutes(
     keycloakConfig: KeycloakConfig, val appConfig: AppConfig,
     private val privateKey: PemKey,
     private val userClaudeConfigDao: UserClaudeConfigDao,
+    private val userTokenDao: UserTokenDao,
     javaKeyPairInitializer: JavaKeyPairInitializer,
     authenticationHelper: AuthenticationHelper,
     auth0JwtVerifier: Auth0JwtVerifier,
@@ -68,11 +70,27 @@ class ConfigRoutes(
                 )
             }
         }
+        // フォームでのGitHub Token保存
+        post("/config/github") {
+            authGuard.requireAuth(call) { user ->
+                val params = call.receiveParameters()
+                val githubToken = params["githubToken"]?.trim() ?: ""
+                if (githubToken.isEmpty()) {
+                    call.respondRedirect("/?error=token_required")
+                    return@requireAuth
+                }
+                userTokenDao.saveOrUpdateGithubToken(user.userId, githubToken)
+                logger.info("GitHub token updated for user: ${user.userId}")
+                call.respondRedirect("/?success=github_token_saved")
+            }
+        }
+
         route("/api/config") {
             get {
                 authGuard.requireAuth(call) { user ->
                     val appConfig = appConfig
                     val hasApiKey = userClaudeConfigDao.get(user.userId) != null
+                    val hasGithubToken = userTokenDao.getGithubToken(user.userId) != null
                     val response = ConfigResponse(
                         kubernetes = KubernetesConfig(
                             namespace = appConfig.k8s.namespace,
@@ -86,6 +104,7 @@ class ConfigRoutes(
                         claudeCode = ClaudeCodeConfig(
                             hasApiKey = hasApiKey
                         ),
+                        hasGithubToken = hasGithubToken,
                     )
                     call.respond(response)
                 }
@@ -117,6 +136,22 @@ class ConfigRoutes(
 
                     logger.info("Queue config updated successfully")
                     call.respond(mapOf("success" to true, "message" to "Queue configuration updated"))
+                }
+            }
+
+            put("/github") {
+                authGuard.requireAuth(call) { user ->
+                    val request = call.receive<UpdateGithubTokenRequest>()
+                    val githubToken = request.githubToken.trim()
+                    if (githubToken.isEmpty()) {
+                        call.respond(HttpStatusCode.BadRequest, mapOf("error" to "githubToken is required"))
+                        return@requireAuth
+                    }
+
+                    userTokenDao.saveOrUpdateGithubToken(user.userId, githubToken)
+                    logger.info("GitHub token updated for user: ${user.userId}")
+
+                    call.respond(mapOf("success" to true, "message" to "GitHub token updated"))
                 }
             }
 

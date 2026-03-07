@@ -7,4 +7,5 @@ data class ConfigResponse(
     val kubernetes: KubernetesConfig,
     val queue: QueueConfig,
     val claudeCode: ClaudeCodeConfig,
+    val hasGithubToken: Boolean,
 )
