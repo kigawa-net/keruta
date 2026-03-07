@@ -21,7 +21,6 @@ export interface ClientProviderListMsg {
 
 export interface ServerProviderIssueTokenMsg {
     type: typeof SendMsgTypes.provider_issue_token
-    name: string
     issuer: string
 }
 

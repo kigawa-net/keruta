@@ -7,7 +7,6 @@ import net.kigawa.keruta.ktcp.model.msg.server.ServerMsgType
 @Serializable
 data class ServerProviderIssueTokenMsg(
     override val type: ServerMsgType = ServerMsgType.PROVIDER_ISSUE_TOKEN,
-    val name: String,
     val issuer: String,
 ) : ServerMsg {
     init {

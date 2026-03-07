@@ -1,18 +1,11 @@
 import {InputValue} from "../form/FormTextInput";
 
-export interface ValidationResult {
+interface ValidationResult {
     valid: boolean;
     error?: string;
 }
 
-export function validateName(name: string): ValidationResult {
-    if (name.trim() === "") {
-        return {valid: false, error: "名前を入力してください"};
-    }
-    return {valid: true};
-}
-
-export function validateIssuer(issuer: string): ValidationResult {
+function validateIssuer(issuer: string): ValidationResult {
     if (issuer.trim() === "") {
         return {valid: false, error: "Issuerを入力してください"};
     }
@@ -24,22 +17,14 @@ export function validateIssuer(issuer: string): ValidationResult {
     return {valid: true};
 }
 
-export interface ProviderFormValidation {
-    name: InputValue;
-    setName: (value: InputValue) => void;
+interface ProviderFormValidation {
     issuer: InputValue;
     setIssuer: (value: InputValue) => void;
 }
 
 export function validateProviderForm(
-    {name, setName, issuer, setIssuer}: ProviderFormValidation,
+    {issuer, setIssuer}: ProviderFormValidation,
 ): boolean {
-    const nameValidation = validateName(name.value);
-    if (!nameValidation.valid) {
-        setName({...name, error: nameValidation.error});
-        return false;
-    }
-
     const issuerValidation = validateIssuer(issuer.value);
     if (!issuerValidation.valid) {
         setIssuer({...issuer, error: issuerValidation.error});

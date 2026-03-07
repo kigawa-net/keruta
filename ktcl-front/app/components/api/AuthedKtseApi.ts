@@ -8,7 +8,7 @@ import {
 } from "../msg/provider";
 import {KtseApi} from "./KtseApi";
 import {MutableStateFlow} from "../../util/StateFlow";
-import {ClientQueueCreatedMsg, ServerQueueCreateMsg, ServerQueueListMsg} from "../msg/queue";
+import {ClientQueueCreatedMsg, ServerQueueCreateMsg} from "../msg/queue";
 import {ServerTaskCreateMsg} from "../msg/task";
 
 export class AuthedKtseApi {
@@ -51,12 +51,6 @@ export class AuthedKtseApi {
         const msg: ServerQueueCreateMsg = {type: "queue_create", providerId, name};
         this.ktse.send(msg);
     }
-
-    listQueues(): void {
-        const msg: ServerQueueListMsg = {type: "queue_list"};
-        this.ktse.send(msg);
-    }
-
     createTask(queueId: number, title: string, description: string): void {
         const msg: ServerTaskCreateMsg = {
             type: "task_create",
@@ -67,8 +61,8 @@ export class AuthedKtseApi {
         this.ktse.send(msg);
     }
 
-    providerIssuerToken(name: string, issuer: string): void {
-        const msg: ServerProviderIssueTokenMsg = {type: "provider_issue_token", name, issuer};
+    providerIssuerToken(issuer: string): void {
+        const msg: ServerProviderIssueTokenMsg = {type: "provider_issue_token", issuer};
         this.ktse.send(msg);
     }
 }

@@ -1,8 +1,6 @@
 object Version {
-    const val KOTLIN = "2.3.0"
     const val KTOR = "3.4.1"
     const val LOGBACK = "1.5.32"
-    const val FRITZ2 = "1.0-RC21"
 
     // Auth
     const val JAVA_JWT = "4.5.1"
@@ -12,6 +10,7 @@ object Version {
     const val KOTLINX_COROUTINES = "1.10.2"
     const val KOTLINX_SERIALIZATION = "1.10.0"
     const val KOTLINX_DATETIME = "0.7.1-0.6.x-compat"
+    const val KOTLINX_HTML = "0.12.0"
 
     // Database
     const val FLYWAY = "12.0.2"

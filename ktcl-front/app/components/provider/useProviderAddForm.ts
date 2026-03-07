@@ -10,14 +10,12 @@ type FormState = "inputting" | "fetching" | "submitting" | "redirecting";
 
 type KerutaJson = { login: string };
 
-export interface ProviderAddFormState {
+interface ProviderAddFormState {
     formState: FormState;
-    name: InputValue;
     issuer: InputValue;
     err: string | undefined;
     isDisabled: boolean;
     buttonLabel: string;
-    setName: (value: InputValue) => void;
     setIssuer: (value: InputValue) => void;
     handleSubmit: () => Promise<void>;
 }
@@ -25,7 +23,6 @@ export interface ProviderAddFormState {
 export function useProviderAddForm(): ProviderAddFormState {
     const authedKtse = useAuthedKtseState();
     const [formState, setFormState] = useState<FormState>("inputting");
-    const [name, setName] = useState<InputValue>({value: ""});
     const [issuer, setIssuer] = useState<InputValue>({value: ""});
     const [err, setErr] = useState<string>();
     const [kerutaJson, setKerutaJson] = useState<KerutaJson | undefined>(undefined);
@@ -52,7 +49,7 @@ export function useProviderAddForm(): ProviderAddFormState {
             return;
         }
 
-        const isValid = validateProviderForm({name, setName, issuer, setIssuer});
+        const isValid = validateProviderForm({issuer, setIssuer});
         if (!isValid) return;
 
         setFormState("fetching");
@@ -69,8 +66,8 @@ export function useProviderAddForm(): ProviderAddFormState {
 
         setKerutaJson(json);
         setFormState("submitting");
-        authedKtse.authedKtseApi.providerIssuerToken(name.value, issuerUrl.toStrUrl());
-    }, [authedKtse, name, issuer]);
+        authedKtse.authedKtseApi.providerIssuerToken(issuerUrl.toStrUrl());
+    }, [authedKtse, issuer]);
 
     const isDisabled = formState !== "inputting";
     const buttonLabel =
@@ -82,12 +79,10 @@ export function useProviderAddForm(): ProviderAddFormState {
 
     return {
         formState,
-        name,
         issuer,
         err,
         isDisabled,
         buttonLabel,
-        setName,
         setIssuer,
         handleSubmit,
     };

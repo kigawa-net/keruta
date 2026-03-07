@@ -5,7 +5,7 @@ import {ProviderAddFormActions} from "./ProviderAddFormActions";
 import {useProviderAddForm} from "./useProviderAddForm";
 
 export function ProviderAddForm() {
-    const {name, issuer, err, isDisabled, buttonLabel, setName, setIssuer, handleSubmit} = useProviderAddForm();
+    const {issuer, err, isDisabled, buttonLabel, setIssuer, handleSubmit} = useProviderAddForm();
 
     return (
         <form
@@ -15,7 +15,6 @@ export function ProviderAddForm() {
                 void handleSubmit();
             }}
         >
-            <FormTextInput label="名前" id="name" placeholder="プロバイダーの名前" value={name} onChange={setName}/>
             <FormTextInput
                 label="Issuer" id="issuer" placeholder="https://provider.example.com" value={issuer}
                 onChange={setIssuer}
