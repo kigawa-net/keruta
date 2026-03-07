@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
-import { Outlet } from "react-router";
+import {ReactNode} from "react";
+import {Outlet} from "react-router";
 import Sidebar from "../components/sidebar/Sidebar";
-import { Header } from "../components/Header";
+import {Header} from "../components/Header";
 
 interface AppLayoutProps {
   isSidebarOpen: boolean;
@@ -25,7 +25,7 @@ export function AppLayout({ isSidebarOpen, onToggleSidebar, children }: AppLayou
       )}
 
       {/* サイドバー */}
-      <Sidebar isOpen={isSidebarOpen} />
+      <Sidebar isOpen={isSidebarOpen} onClose={onToggleSidebar} />
 
       {/* メインコンテンツエリア */}
       <div className="flex-1 flex flex-col overflow-hidden">

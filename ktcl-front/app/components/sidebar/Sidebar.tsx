@@ -3,9 +3,10 @@ import SidebarQueueButtons from "./SidebarQueueButtons";
 
 interface SidebarProps {
     isOpen: boolean;
+    onClose: () => void;
 }
 
-export default function Sidebar({isOpen}: SidebarProps) {
+export default function Sidebar({isOpen, onClose}: SidebarProps) {
     return (
         <aside
             className={`
@@ -23,16 +24,18 @@ export default function Sidebar({isOpen}: SidebarProps) {
                                 to="/queue/create"
                                 className="sidebar-link block px-4 py-2 rounded transition-colors"
                                 style={{color: '#0a58ca'}}
+                                onClick={onClose}
                             >
                                 Create Queue
                             </Link>
                         </li>
-                        <SidebarQueueButtons/>
+                        <SidebarQueueButtons onClose={onClose}/>
                         <li>
                             <Link
                                 to="/provider"
                                 className="sidebar-link block px-4 py-2 rounded transition-colors"
                                 style={{color: '#0a58ca'}}
+                                onClick={onClose}
                             >
                                 Providers
                             </Link>

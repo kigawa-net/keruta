@@ -1,7 +1,7 @@
-import { useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { RootProviders } from "./RootProviders";
-import { AppLayout } from "./AppLayout";
+import {useLocation} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {RootProviders} from "./RootProviders";
+import {AppLayout} from "./AppLayout";
 
 /**
  * ルートレイアウトコンポーネント
@@ -10,7 +10,9 @@ import { AppLayout } from "./AppLayout";
 // noinspection JSUnusedGlobalSymbols
 export default function RootLayout() {
   const loc = useLocation();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(() =>
+    typeof window !== "undefined" && window.innerWidth >= 768
+  );
 
   useEffect(() => {
     console.log("layout rendered");
