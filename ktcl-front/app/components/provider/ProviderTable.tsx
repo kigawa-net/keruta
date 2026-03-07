@@ -1,21 +1,18 @@
 import {ClientProviderListMsg} from "../msg/provider";
-import {buildOidcLoginUrl} from "../../util/buildOidcLoginUrl";
 
 type Provider = ClientProviderListMsg["providers"][0]
 
 type Props = {
     providers: Provider[] | undefined
-    authEndpoints: Record<string, string>
     onDelete: (id: string) => void
 }
 
-export function ProviderTable({providers, authEndpoints, onDelete}: Props) {
+export function ProviderTable({providers, onDelete}: Props) {
     return (
         <div className="hidden md:block bg-white rounded-lg shadow overflow-x-auto">
             <table className="w-full">
                 <thead className="bg-gray-50 border-b">
                 <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">名前</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Issuer</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Audience</th>
@@ -26,9 +23,10 @@ export function ProviderTable({providers, authEndpoints, onDelete}: Props) {
                 <tbody className="bg-white divide-y divide-gray-200">
                 {providers?.map(p => (
                     <tr key={p.id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{p.id}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{p.name}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{p.issuer}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <a href={p.issuer} className={"text-blue-600 hover:underline "}>{p.issuer}</a>
+                        </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{p.audience}</td>
                         <td className="px-6 py-4 text-sm text-gray-500">
                             {p.idps.length === 0 ? (
@@ -37,16 +35,12 @@ export function ProviderTable({providers, authEndpoints, onDelete}: Props) {
                                 <ul className="space-y-1">
                                     {p.idps.map((idp, i) => (
                                         <li key={i} className="text-xs">
-                                            <a
-                                                href={authEndpoints[idp.issuer]
-                                                    ? buildOidcLoginUrl(authEndpoints[idp.issuer], idp.audience)
-                                                    : idp.issuer}
-                                                target="_blank"
+                                            <p
                                                 rel="noopener noreferrer"
-                                                className="text-blue-600 hover:underline font-medium"
+                                                className="font-medium"
                                             >
                                                 {idp.issuer}
-                                            </a>
+                                            </p>
                                         </li>
                                     ))}
                                 </ul>

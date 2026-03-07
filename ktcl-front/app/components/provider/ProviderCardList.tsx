@@ -1,15 +1,13 @@
 import {ClientProviderListMsg} from "../msg/provider";
-import {buildOidcLoginUrl} from "../../util/buildOidcLoginUrl";
 
 type Provider = ClientProviderListMsg["providers"][0]
 
 type Props = {
     providers: Provider[] | undefined
-    authEndpoints: Record<string, string>
     onDelete: (id: string) => void
 }
 
-export function ProviderCardList({providers, authEndpoints, onDelete}: Props) {
+export function ProviderCardList({providers, onDelete}: Props) {
     return (
         <div className="md:hidden space-y-4">
             {providers?.map(p => (
@@ -29,7 +27,8 @@ export function ProviderCardList({providers, authEndpoints, onDelete}: Props) {
                     <div className="space-y-2 text-sm">
                         <div>
                             <span className="text-gray-500">Issuer: </span>
-                            <span className="text-gray-900 break-all">{p.issuer}</span>
+                            <span className="text-gray-900 break-all"><a href={p.issuer}
+                                                                         className={"text-blue-600 hover:underline "}>{p.issuer}</a></span>
                         </div>
                         <div>
                             <span className="text-gray-500">Audience: </span>
@@ -43,16 +42,11 @@ export function ProviderCardList({providers, authEndpoints, onDelete}: Props) {
                                 <ul className="mt-1 space-y-1">
                                     {p.idps.map((idp, i) => (
                                         <li key={i}>
-                                            <a
-                                                href={authEndpoints[idp.issuer]
-                                                    ? buildOidcLoginUrl(authEndpoints[idp.issuer], idp.audience)
-                                                    : idp.issuer}
-                                                target="_blank"
+                                            <p
                                                 rel="noopener noreferrer"
-                                                className="text-blue-600 hover:underline"
                                             >
                                                 {idp.issuer}
-                                            </a>
+                                            </p>
                                         </li>
                                     ))}
                                 </ul>

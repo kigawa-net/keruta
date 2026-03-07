@@ -16,7 +16,6 @@ export default function AboutRoute() {
     const wsState = useWebsocketState()
     const authedKtse = useAuthedKtseState()
     const [providers, setProviders] = useState<Provider[]>()
-    const [authEndpoints, setAuthEndpoints] = useState<Record<string, string>>({})
     useWebsocketReceive(msg => {
         if (msg.type == "provider_listed") {
             setProviders(msg.providers)
@@ -30,10 +29,8 @@ export default function AboutRoute() {
         issuers.forEach(issuer => {
             fetch(`${issuer}/.well-known/openid-configuration`)
                 .then(res => res.json())
-                .then((data: { authorization_endpoint: string }) => {
-                    setAuthEndpoints(prev => ({...prev, [issuer]: data.authorization_endpoint}))
-                })
                 .catch(() => {
+                    console.error(`Failed to fetch auth endpoint for issuer: ${issuer}`)
                 })
         })
     }, [providers])
@@ -66,8 +63,8 @@ export default function AboutRoute() {
                     プロバイダーを追加
                 </Link>
             </div>
-            <ProviderTable providers={providers} authEndpoints={authEndpoints} onDelete={handleDelete}/>
-            <ProviderCardList providers={providers} authEndpoints={authEndpoints} onDelete={handleDelete}/>
+            <ProviderTable providers={providers} onDelete={handleDelete}/>
+            <ProviderCardList providers={providers} onDelete={handleDelete}/>
         </div>
     )
 }
