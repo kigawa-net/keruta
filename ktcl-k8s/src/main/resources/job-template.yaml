@@ -25,7 +25,7 @@ spec:
         - name: workspace
           mountPath: /workspace
       - name: task-executor
-        image: harbor.kigawa.net/library/keruta-executor:latest
+        image: harbor.kigawa.net/library/ktcl-claudecode:latest
         env:
         - name: TASK_ID
           value: ""
@@ -45,7 +45,6 @@ spec:
           requests:
             memory: "256Mi"
             cpu: "250m"
-      containers:
       - name: git-push
         image: alpine/git:latest
         command:
@@ -58,6 +57,30 @@ spec:
         volumeMounts:
         - name: workspace
           mountPath: /workspace
+      containers:
+      - name: github-pr
+        image: curlimages/curl:latest
+        command:
+        - sh
+        - -c
+        - |
+          REPO=$(echo "$GIT_REPO_URL" | sed 's|https://github.com/||;s|\.git$||')
+          curl -s -X POST \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/$REPO/pulls" \
+            -d "{\"title\":\"$TASK_TITLE\",\"head\":\"keruta-task-$TASK_ID\",\"base\":\"main\",\"body\":\"$TASK_DESCRIPTION\"}"
+        env:
+        - name: TASK_ID
+          value: ""
+        - name: TASK_TITLE
+          value: ""
+        - name: TASK_DESCRIPTION
+          value: ""
+        - name: GIT_REPO_URL
+          value: ""
+        - name: GITHUB_TOKEN
+          value: ""
       volumes:
       - name: workspace
         persistentVolumeClaim:

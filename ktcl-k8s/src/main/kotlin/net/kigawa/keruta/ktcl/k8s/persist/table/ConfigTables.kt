@@ -49,6 +49,7 @@ object UserTokenTable : Table("user_token") {
     val id = long("id").autoIncrement()
     val userId = varchar("user_id", 255).uniqueIndex()
     val refreshToken = text("refresh_token")
+    val githubToken = text("github_token").nullable()
     val createdAt = datetime("created_at")
     val updatedAt = datetime("updated_at")
 

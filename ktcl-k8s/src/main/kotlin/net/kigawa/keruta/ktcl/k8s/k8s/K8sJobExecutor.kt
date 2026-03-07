@@ -30,6 +30,7 @@ class K8sJobExecutor(
         title: String,
         description: String,
         gitRepoUrl: String,
+        githubToken: String,
     ): Res<String, K8sErr> = withContext(Dispatchers.IO) {
         try {
             val pvcName = "keruta-task-$taskId-pvc"
@@ -51,7 +52,7 @@ class K8sJobExecutor(
             logger.info { "Created PVC: $pvcName" }
 
             // 2. Job定義YAMLを読み込み
-            val job = templateLoader.loadTemplate(taskId, title, description, gitRepoUrl)
+            val job = templateLoader.loadTemplate(taskId, title, description, gitRepoUrl, githubToken)
 
             // 3. BatchV1Api.createNamespacedJob()でJob作成
             val createdJob = batchApi.createNamespacedJob(config.k8sNamespace, job).execute()

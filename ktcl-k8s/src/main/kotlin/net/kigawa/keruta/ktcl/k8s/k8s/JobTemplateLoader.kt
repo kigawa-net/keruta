@@ -7,7 +7,7 @@ import java.io.File
 import java.io.FileReader
 
 class JobTemplateLoader(private val templatePath: String) {
-    fun loadTemplate(taskId: Long, title: String, description: String, gitRepoUrl: String): V1Job {
+    fun loadTemplate(taskId: Long, title: String, description: String, gitRepoUrl: String, githubToken: String): V1Job {
         val templateFile = File(templatePath)
         val reader = FileReader(templateFile)
         val job = Yaml.load(reader) as V1Job
@@ -21,30 +21,37 @@ class JobTemplateLoader(private val templatePath: String) {
             ?.find { it.name == "workspace" }
             ?.persistentVolumeClaim?.claimName(pvcClaimName)
 
-        val taskEnv = listOf(
-            V1EnvVar().name("TASK_ID").value(taskId.toString()),
-            V1EnvVar().name("TASK_TITLE").value(title),
-            V1EnvVar().name("TASK_DESCRIPTION").value(description),
-            V1EnvVar().name("GIT_REPO_URL").value(gitRepoUrl),
-        )
+        val taskIdStr = taskId.toString()
 
-        // git-clone initコンテナに環境変数を設定
         job.spec?.template?.spec?.initContainers
             ?.find { it.name == "git-clone" }
             ?.env(listOf(
                 V1EnvVar().name("GIT_REPO_URL").value(gitRepoUrl),
-                V1EnvVar().name("TASK_ID").value(taskId.toString()),
+                V1EnvVar().name("TASK_ID").value(taskIdStr),
             ))
 
-        // task-executor initコンテナに環境変数を設定
         job.spec?.template?.spec?.initContainers
             ?.find { it.name == "task-executor" }
-            ?.env(taskEnv)
+            ?.env(listOf(
+                V1EnvVar().name("TASK_ID").value(taskIdStr),
+                V1EnvVar().name("TASK_TITLE").value(title),
+                V1EnvVar().name("TASK_DESCRIPTION").value(description),
+                V1EnvVar().name("GIT_REPO_URL").value(gitRepoUrl),
+            ))
 
-        // git-push メインコンテナにTASK_IDを設定
-        job.spec?.template?.spec?.containers
+        job.spec?.template?.spec?.initContainers
             ?.find { it.name == "git-push" }
-            ?.env(listOf(V1EnvVar().name("TASK_ID").value(taskId.toString())))
+            ?.env(listOf(V1EnvVar().name("TASK_ID").value(taskIdStr)))
+
+        job.spec?.template?.spec?.containers
+            ?.find { it.name == "github-pr" }
+            ?.env(listOf(
+                V1EnvVar().name("TASK_ID").value(taskIdStr),
+                V1EnvVar().name("TASK_TITLE").value(title),
+                V1EnvVar().name("TASK_DESCRIPTION").value(description),
+                V1EnvVar().name("GIT_REPO_URL").value(gitRepoUrl),
+                V1EnvVar().name("GITHUB_TOKEN").value(githubToken),
+            ))
 
         return job
     }
