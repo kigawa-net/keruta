@@ -47,7 +47,7 @@ services:
     networks:
       - tidbnet
   init-tidb:
-    image: mysql:8.4
+    image: mysql:9.6
     depends_on:
       tidb:
         condition: service_started
