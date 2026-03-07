@@ -62,18 +62,21 @@ export class AuthedKtseApi {
         this.ktse.send(res)
     }
 
-    createQueue(providerId: number, name: string): void {
-        const msg: ServerQueueCreateMsg = {type: "queue_create", providerId, name};
+    createQueue(providerId: number, name: string, setting: string): void {
+        const msg: ServerQueueCreateMsg = {type: "queue_create", providerId, name, setting};
         this.ktse.send(msg);
     }
+
     showQueue(id: number): void {
         const msg: ServerQueueShowMsg = {type: "queue_show", id};
         this.ktse.send(msg);
     }
+
     updateQueue(queueId: number, name: string): void {
         const msg: ServerQueueUpdateMsg = {type: "queue_update", queueId, name};
         this.ktse.send(msg);
     }
+
     createTask(queueId: number, title: string, description: string): void {
         const msg: ServerTaskCreateMsg = {
             type: "task_create",
@@ -83,10 +86,12 @@ export class AuthedKtseApi {
         };
         this.ktse.send(msg);
     }
+
     updateTask(taskId: number, status: string): void {
         const msg: ServerTaskUpdateMsg = {type: "task_update", taskId, status};
         this.ktse.send(msg);
     }
+
     moveTask(taskId: number, targetQueueId: number): void {
         const msg: ServerTaskMoveMsg = {type: "task_move", taskId, targetQueueId};
         this.ktse.send(msg);

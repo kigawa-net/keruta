@@ -11,6 +11,12 @@ export class ApiClient {
         return fetch(joinedEndpoint, init)
     }
 
+    async get<T>(endpoint: string): Promise<T> {
+        return this
+            .fetch(endpoint, {method: "GET"})
+            .then(value => value.json());
+    }
+
     async post<T>(endpoint: string, body: any): Promise<T> {
         return this
             .fetch(endpoint, {method: "POST", body: JSON.stringify(body)})

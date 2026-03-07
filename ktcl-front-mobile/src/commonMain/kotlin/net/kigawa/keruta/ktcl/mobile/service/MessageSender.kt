@@ -6,11 +6,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.serialization.json.Json
 import net.kigawa.keruta.ktcl.mobile.connection.MobileKtcpConnection
 import net.kigawa.keruta.ktcl.mobile.msg.provider.ServerProviderListMsg
-import net.kigawa.keruta.ktcl.mobile.msg.queue.ServerQueueCreateMsg
 import net.kigawa.keruta.ktcl.mobile.msg.queue.ServerQueueListMsg
 import net.kigawa.keruta.ktcl.mobile.msg.task.ServerTaskCreateMsg
 import net.kigawa.keruta.ktcl.mobile.msg.task.ServerTaskListMsg
 import net.kigawa.keruta.ktcl.mobile.util.log
+import net.kigawa.keruta.ktcp.domain.queue.create.ServerQueueCreateMsg
 
 class MessageSender {
     private val _connection = MutableStateFlow<MobileKtcpConnection?>(null)
@@ -32,8 +32,8 @@ class MessageSender {
         sendMessage(json.encodeToString(msg))
     }
 
-    suspend fun sendQueueCreate(providerId: Long, name: String) {
-        val msg = ServerQueueCreateMsg(providerId = providerId, name = name)
+    suspend fun sendQueueCreate(providerId: Long, name: String, setting: String) {
+        val msg = ServerQueueCreateMsg(providerId = providerId, name = name, setting = setting)
         sendMessage(json.encodeToString(msg))
     }
 

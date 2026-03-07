@@ -21,7 +21,7 @@ class QueueCreateViewModel(
     private val providerRepository: ProviderRepository,
     private val messageSender: MessageSender,
     private val authService: AuthService,
-) : BaseViewModel<QueueCreateViewState>(QueueCreateViewState()) {
+): BaseViewModel<QueueCreateViewState>(QueueCreateViewState()) {
 
     init {
         viewModelScope.launch {
@@ -104,7 +104,7 @@ class QueueCreateViewModel(
                     return@launch
                 }
 
-                messageSender.sendQueueCreate(providerId, name)
+                messageSender.sendQueueCreate(providerId, name, "")
                 updateState { it.copy(isLoading = false, isCreated = true) }
             } catch (e: Exception) {
                 updateState { it.copy(isLoading = false, errorMessage = e.message) }

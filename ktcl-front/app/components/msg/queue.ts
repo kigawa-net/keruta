@@ -4,6 +4,7 @@ export interface ServerQueueCreateMsg {
     type: typeof SendMsgTypes.queue_create
     providerId: number
     name: string
+    setting: string
 }
 
 export interface ServerQueueListMsg {
