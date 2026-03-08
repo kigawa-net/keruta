@@ -5,6 +5,7 @@ import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.forms.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -182,6 +183,10 @@ class LoginCallbackRoute(
                 }
             )
 
+            if (!response.status.isSuccess()) {
+                val errorBody = response.bodyAsText()
+                throw IllegalStateException("Token exchange failed (${response.status.value}): $errorBody")
+            }
             response.body<TokenResponse>().also {
                 logger.info("Token response: $it")
             }
