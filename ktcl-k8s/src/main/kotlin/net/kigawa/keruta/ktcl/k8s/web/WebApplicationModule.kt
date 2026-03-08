@@ -8,7 +8,6 @@ import io.ktor.server.response.*
 import net.kigawa.keruta.ktcl.k8s.auth.AuthModule
 import net.kigawa.keruta.ktcl.k8s.auth.OidcDiscoveryFetcher
 import net.kigawa.keruta.ktcl.k8s.config.AppConfig
-import net.kigawa.keruta.ktcl.k8s.config.CorsConfig
 import net.kigawa.keruta.ktcl.k8s.err.ErrorResponse
 import net.kigawa.keruta.ktcl.k8s.k8s.K8sModule
 import net.kigawa.keruta.ktcl.k8s.persist.DbModule
@@ -48,7 +47,7 @@ class WebApplicationModule {
             appConfig.keruta.ownIssuer
         )
         serializeModule.configure(application)
-        configureCors(application)
+        configureCors(application, appConfig)
         authModule.configure(application)
         configureErrorHandling(application)
         routeModule.configure(application, appConfig, providerTokenCreator, javaKeyPairInitializer)
@@ -56,8 +55,9 @@ class WebApplicationModule {
         logger.info("ktcl-k8s Web Module started successfully")
     }
 
-    private fun configureCors(application: Application) {
-        val corsConfig = CorsConfig.fromEnvironment()
+    private fun configureCors(application: Application, appConfig: AppConfig) {
+        val corsConfig = appConfig.cors
+        val ownIssuer = appConfig.keruta.ownIssuer.toStrUrl()
         application.install(CORS) {
             allowMethod(HttpMethod.Options)
             allowMethod(HttpMethod.Get)
@@ -69,7 +69,7 @@ class WebApplicationModule {
             allowCredentials = true
             val origins = corsConfig.allowedOrigins
             if (origins != null) {
-                origins.forEach { origin ->
+                (origins + ownIssuer).forEach { origin ->
                     val scheme = when {
                         origin.startsWith("https://") -> "https"
                         origin.startsWith("http://") -> "http"
