@@ -2,6 +2,8 @@ package net.kigawa.keruta.ktcl.k8s.persist.dao
 
 import net.kigawa.keruta.ktcl.k8s.persist.db.DbManager
 import net.kigawa.keruta.ktcl.k8s.persist.table.UserTokenTable
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -51,6 +53,15 @@ class UserTokenDao(
         return transaction(dbManager.db) {
             UserTokenTable.selectAll()
                 .map { it[UserTokenTable.userId] to it[UserTokenTable.refreshToken] }
+        }
+    }
+
+    /**
+     * ユーザーのrefresh tokenを削除する（期限切れ時など）
+     */
+    fun deleteRefreshToken(userId: String) {
+        transaction(dbManager.db) {
+            UserTokenTable.deleteWhere { UserTokenTable.userId eq userId }
         }
     }
 

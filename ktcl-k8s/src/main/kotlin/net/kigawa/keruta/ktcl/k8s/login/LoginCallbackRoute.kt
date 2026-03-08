@@ -11,6 +11,9 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import net.kigawa.keruta.ktcl.k8s.auth.OidcDiscoveryFetcher
 import net.kigawa.keruta.ktcl.k8s.auth.RemoteConfigProvider
 import net.kigawa.keruta.ktcl.k8s.auth.UserSession
@@ -110,17 +113,19 @@ class LoginCallbackRoute(
 
             logger.info("Login successful for user: $userId, redirecting to home page")
 
-            oidcSession.registerToken?.let {
-                // ktse にプロバイダーを登録
-                providerRegistrationClient.register(
-                    userToken = tokenResponse.accessToken,
-                    oidcSession = oidcSession,
-                    registerToken = it,
-                )
-            }
-
-            // フロントエンドにリダイレクト
+            // フロントエンドにリダイレクト（登録はバックグラウンドで実行）
             call.respondRedirect("/")
+
+            oidcSession.registerToken?.let {
+                // ktse にプロバイダーを登録（バックグラウンド）
+                CoroutineScope(Dispatchers.IO).launch {
+                    providerRegistrationClient.register(
+                        userToken = tokenResponse.accessToken,
+                        oidcSession = oidcSession,
+                        registerToken = it,
+                    )
+                }
+            }
         } catch (e: Exception) {
             logger.severe("Failed to process OIDC callback: ${e.message}")
             call.respond(

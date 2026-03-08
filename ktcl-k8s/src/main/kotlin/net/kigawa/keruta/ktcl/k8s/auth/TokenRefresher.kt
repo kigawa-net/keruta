@@ -5,6 +5,7 @@ import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.forms.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import net.kigawa.keruta.ktcl.k8s.config.IdpConfig
@@ -37,6 +38,10 @@ class TokenRefresher(
                     append("client_id", idpConfig.clientId)
                 }
             )
+            if (!response.status.isSuccess()) {
+                val errorBody = response.bodyAsText()
+                throw TokenRefreshException("Token refresh failed (${response.status.value}): $errorBody")
+            }
             response.body<TokenResponse>()
         }
     }

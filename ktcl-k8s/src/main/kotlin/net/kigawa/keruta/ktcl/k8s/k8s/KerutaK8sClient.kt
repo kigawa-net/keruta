@@ -2,6 +2,7 @@ package net.kigawa.keruta.ktcl.k8s.k8s
 
 import com.auth0.jwt.JWT
 import kotlinx.coroutines.*
+import net.kigawa.keruta.ktcl.k8s.auth.TokenRefreshException
 import net.kigawa.keruta.ktcl.k8s.auth.TokenRefresher
 import net.kigawa.keruta.ktcl.k8s.config.K8sConfig
 import net.kigawa.keruta.ktcl.k8s.connection.ConnectionManager
@@ -40,6 +41,10 @@ class KerutaK8sClient(
 
                             val tokenResponse = try {
                                 tokenRefresher.refresh(refreshToken)
+                            } catch (e: TokenRefreshException) {
+                                logger.severe { "Token refresh failed for user $userId (token expired or invalid): ${e.message}" }
+                                userTokenDao.deleteRefreshToken(userId)
+                                return@forEach
                             } catch (e: Exception) {
                                 logger.severe { "Token refresh failed for user $userId: ${e.message}" }
                                 delay(30.seconds)
