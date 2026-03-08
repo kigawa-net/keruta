@@ -14,7 +14,8 @@ import net.kigawa.keruta.ktcp.client.KtcpSession
 import net.kigawa.keruta.ktcp.domain.auth.request.ServerAuthRequestMsg
 import net.kigawa.keruta.ktcp.usecase.JsonKerutaSerializer
 import net.kigawa.keruta.ktcp.usecase.client.ProviderTokenCreator
-import net.kigawa.kodel.api.log.LoggerFactory
+import net.kigawa.kodel.api.log.getKogger
+import net.kigawa.kodel.api.log.traceignore.debug
 import kotlin.time.Duration.Companion.seconds
 
 class KerutaK8sClient(
@@ -24,18 +25,22 @@ class KerutaK8sClient(
     private val providerTokenCreator: ProviderTokenCreator,
     private val ktclIssuer: String,
 ) {
-    private val logger = LoggerFactory.get("KerutaK8sClient")
+    private val logger = getKogger()
     private val serializer = JsonKerutaSerializer()
     private val ktcpClient = KtcpClient()
     private val concurrentCount = 1
 
     suspend fun start() = coroutineScope {
-        logger.info { "Starting Keruta K8s Client" }
+        logger.debug { "Starting Keruta K8s Client" }
         (0 until concurrentCount).map {
+            logger.debug { "Starting worker thread ${it + 1} of $concurrentCount" }
             launch {
+                logger.debug { "Worker thread ${it + 1} of $concurrentCount started" }
                 while (isActive) {
+                    logger.debug { "Worker thread ${it + 1} of $concurrentCount is active" }
                     var received = false
                     userTokenDao.getRefreshTokens().forEach {
+                        logger.debug { "Refreshing token for user ${it.first}" }
                         try {
                             val (userId, refreshToken) = it
 

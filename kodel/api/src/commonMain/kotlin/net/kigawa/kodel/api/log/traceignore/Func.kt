@@ -11,7 +11,7 @@ fun Kogger.debug(msg: () -> String) = fine(msg)
 
 
 fun Kogger.warn(msg: String) =warning(msg)
-fun Kogger.warn(msg:()-> String) =warning(msg)
+fun Kogger.warn(msg:()-> String) = warning(msg)
 
 
 fun Kogger.error(msg: String, e: Throwable? = null) {
