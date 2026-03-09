@@ -34,9 +34,9 @@ class StaticRoutes(
                     logger.fine("User not authenticated, redirecting to /login")
                     call.respondRedirect("/login")
                 } else {
-                    logger.fine("User authenticated: ${user.userId}")
-                    val hasGithubToken = userTokenDao.getGithubToken(user.userId) != null
-                    val hasClaudeToken = userClaudeConfigDao.get(user.userId) != null
+                    logger.fine("User authenticated: ${user.userSubject}")
+                    val hasGithubToken = userTokenDao.getGithubToken(user.userSubject, user.userIssuer) != null
+                    val hasClaudeToken = userClaudeConfigDao.get(user.userSubject, user.userIssuer) != null
                     val success = call.request.queryParameters["success"]
                     val error = call.request.queryParameters["error"]
                     call.respondText(

@@ -24,7 +24,7 @@ class IdTokenVerifier(
             authorizationEndpoint = discoveryResponse.authorizationEndpoint,
         )
         val jwtVerifier = JwtVerifier(keycloakConfig, auth0JwtVerifier)
-        val decodedJwt = jwtVerifier.verifyIdToken(
+        val decodedIdToken = jwtVerifier.verifyIdToken(
             idToken = idToken,
             jwkProvider = jwkProvider,
             issuer = oidcSession.issuer,
@@ -32,17 +32,17 @@ class IdTokenVerifier(
             nonce = oidcSession.pkce.nonce,
         )
 
-        if (decodedJwt == null) {
+        if (decodedIdToken == null) {
             logger.warning("ID token verification failed")
             return null
         }
 
-        val userId = decodedJwt.subject
-        if (userId == null) {
+        val userSubject = decodedIdToken.subject
+        if (userSubject == null) {
             logger.warning("No subject found in ID token")
             return null
         }
 
-        return userId
+        return userSubject
     }
 }

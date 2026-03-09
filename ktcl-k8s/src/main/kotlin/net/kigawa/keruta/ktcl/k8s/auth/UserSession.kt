@@ -4,6 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserSession(
-    val userId: String,
+    val userSubject: String,
+    val userIssuer: String,
+    val userAudience: String,
     val token: String,
 )

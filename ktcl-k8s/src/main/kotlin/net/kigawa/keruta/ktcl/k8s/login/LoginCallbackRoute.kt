@@ -94,25 +94,27 @@ class LoginCallbackRoute(
                 return
             }
 
-            val userId = idTokenVerifier.verify(idToken, discoveryResponse, oidcSession)
-            if (userId == null) {
+            val userSubject = idTokenVerifier.verify(idToken, discoveryResponse, oidcSession)
+            if (userSubject == null) {
                 call.respond(HttpStatusCode.Unauthorized, mapOf("error" to "Invalid ID token"))
                 return
             }
 
-            saveUserSession(call, userId, tokenResponse.accessToken)
+            val userIssuer = oidcSession.issuer
+            val userAudience = oidcSession.clientId
+            saveUserSession(call, userSubject, userIssuer, userAudience, tokenResponse.accessToken)
 
             // refresh tokenをDBに保存
             val refreshToken = tokenResponse.refreshToken
             if (refreshToken != null) {
-                userTokenDao.saveOrUpdate(userId, refreshToken)
-                logger.info("Refresh token saved for user: $userId")
+                userTokenDao.saveOrUpdate(userSubject, userIssuer, userAudience, refreshToken)
+                logger.info("Refresh token saved for user: $userSubject (issuer: $userIssuer)")
             } else {
-                logger.warning("No refresh token received for user: $userId")
-                throw InvalidObjectException("Token was null for user: $userId")
+                logger.warning("No refresh token received for user: $userSubject")
+                throw InvalidObjectException("Token was null for user: $userSubject")
             }
 
-            logger.info("Login successful for user: $userId, redirecting to home page")
+            logger.info("Login successful for user: $userSubject (issuer: $userIssuer), redirecting to home page")
 
             // フロントエンドにリダイレクト（登録はバックグラウンドで実行）
             call.respondRedirect("/")
@@ -150,9 +152,17 @@ class LoginCallbackRoute(
         return oidcSession
     }
 
-    private fun saveUserSession(call: ApplicationCall, userId: String, accessToken: String) {
+    private fun saveUserSession(
+        call: ApplicationCall,
+        userSubject: String,
+        userIssuer: String,
+        userAudience: String,
+        accessToken: String,
+    ) {
         call.sessions.clear<OidcSession>()
-        call.sessions.set(UserSession(userId = userId, token = accessToken))
+        call.sessions.set(
+            UserSession(userSubject = userSubject, userIssuer = userIssuer, userAudience = userAudience, token = accessToken)
+        )
     }
 
     private suspend fun exchangeCodeForToken(

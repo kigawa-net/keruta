@@ -6,13 +6,8 @@ import net.kigawa.keruta.ktcl.k8s.KerutaEndpoints
 import net.kigawa.keruta.ktcl.k8s.auth.AuthenticationHelper
 import net.kigawa.keruta.ktcl.k8s.auth.OidcDiscoveryFetcher
 import net.kigawa.keruta.ktcl.k8s.auth.PkceGenerator
-import net.kigawa.keruta.ktcl.k8s.auth.RemoteConfigProvider
 import net.kigawa.keruta.ktcl.k8s.config.AppConfig
-import net.kigawa.keruta.ktcl.k8s.login.LoginCallbackRoute
-import net.kigawa.keruta.ktcl.k8s.login.LoginRoute
-import net.kigawa.keruta.ktcl.k8s.login.ProviderListClient
-import net.kigawa.keruta.ktcl.k8s.login.ProviderRegistrationClient
-import net.kigawa.keruta.ktcl.k8s.login.TokenRoute
+import net.kigawa.keruta.ktcl.k8s.login.*
 import net.kigawa.keruta.ktcl.k8s.persist.DbModule
 import net.kigawa.keruta.ktcp.base.auth.jwks.JwksProvider
 import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
@@ -27,7 +22,6 @@ class RouteModule(
     private val dbModule: DbModule,
     private val oidcDiscoveryFetcher: OidcDiscoveryFetcher,
 ) {
-    private val remoteConfigProvider = RemoteConfigProvider(oidcDiscoveryFetcher)
     private val pkceGenerator = PkceGenerator()
     private val userTokenDao = dbModule.userTokenDao
     private val auth0AlgorithmInitializer = Auth0AlgorithmInitializer()
@@ -48,16 +42,15 @@ class RouteModule(
             oidcDiscoveryFetcher, userTokenDao, providerRegistrationClient, auth0JwtVerifier
         )
         val idpConfig = appConfig.idp
-        val keycloakConfig = remoteConfigProvider.loadKeycloakConfig(idpConfig.issuer, idpConfig.clientId)
         val authConfig = appConfig.auth
         // 認証ヘルパーと静的ルートを初期化
         val authenticationHelper = AuthenticationHelper(auth0JwtVerifier, authConfig.privateKey)
         val providerListClient = ProviderListClient(appConfig.ktse, providerTokenCreator)
         val staticRoutes = StaticRoutes(authenticationHelper, userTokenDao, dbModule.userClaudeConfigDao, providerListClient)
         val configRoutes = ConfigRoutes(
-            keycloakConfig, appConfig,
+            appConfig,
             authConfig.privateKey, dbModule.userClaudeConfigDao, userTokenDao,
-            javaKeyPairInitializer, authenticationHelper, auth0JwtVerifier,
+            javaKeyPairInitializer, authenticationHelper,
             providerListClient
         )
         val kerutaEndpoints = KerutaEndpoints(appConfig.keruta)

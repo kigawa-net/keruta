@@ -29,18 +29,18 @@ class TaskReceiver(
 ) {
     private val logger = LoggerFactory.get("TaskReceiver")
 
-    suspend fun startReceiving(ctx: ClientCtx, userId: String): Boolean = coroutineScope {
+    suspend fun startReceiving(ctx: ClientCtx, userSubject: String, userIssuer: String): Boolean = coroutineScope {
         // 0. auth_success待ち
         val authMsg = receiveMsg(ctx) ?: return@coroutineScope false
         if (authMsg.tryToAuthSuccess() == null) {
-            logger.severe { "Expected auth_success but got different message for user $userId" }
+            logger.severe { "Expected auth_success but got different message for user $userSubject" }
             return@coroutineScope false
         }
 
         // 1. プロバイダー一覧取得
         ktcpClient.ktcpServerEntrypoints.providersRequestEntrypoint.access(ServerProviderListMsg(), ctx)?.execute()
             ?: run {
-                logger.severe { "Failed to send provider list request for user $userId" }
+                logger.severe { "Failed to send provider list request for user $userSubject" }
                 return@coroutineScope false
             }
 
@@ -68,7 +68,7 @@ class TaskReceiver(
         // 3. キュー一覧取得
         ktcpClient.ktcpServerEntrypoints.queueList.access(ServerQueueListMsg(), ctx)?.execute()
             ?: run {
-                logger.severe { "Failed to send queue list request for user $userId" }
+                logger.severe { "Failed to send queue list request for user $userSubject" }
                 return@coroutineScope false
             }
 
@@ -132,8 +132,8 @@ class TaskReceiver(
 
             val task = taskListed.tasks.firstOrNull { it.status != "completed" } ?: continue
 
-            val githubToken = userTokenDao.getGithubToken(userId) ?: run {
-                logger.severe { "GitHub token not found for user $userId, skipping queue ${queue.id}" }
+            val githubToken = userTokenDao.getGithubToken(userSubject, userIssuer) ?: run {
+                logger.severe { "GitHub token not found for user $userSubject (issuer: $userIssuer), skipping queue ${queue.id}" }
                 continue
             }
 

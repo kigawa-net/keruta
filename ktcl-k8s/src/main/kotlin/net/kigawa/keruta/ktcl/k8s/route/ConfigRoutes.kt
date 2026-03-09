@@ -7,13 +7,11 @@ import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import net.kigawa.keruta.ktcl.k8s.auth.AuthGuard
 import net.kigawa.keruta.ktcl.k8s.auth.AuthenticationHelper
-import net.kigawa.keruta.ktcl.k8s.auth.KeycloakConfig
 import net.kigawa.keruta.ktcl.k8s.config.AppConfig
 import net.kigawa.keruta.ktcl.k8s.dto.*
 import net.kigawa.keruta.ktcl.k8s.login.ProviderListClient
 import net.kigawa.keruta.ktcl.k8s.persist.dao.UserClaudeConfigDao
 import net.kigawa.keruta.ktcl.k8s.persist.dao.UserTokenDao
-import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
 import net.kigawa.keruta.ktcp.base.auth.key.JavaKeyPairInitializer
 import net.kigawa.keruta.ktcp.domain.auth.key.PemKey
 import net.kigawa.keruta.ktcp.domain.client.wellknown.KerutaWellKnownJson
@@ -24,18 +22,17 @@ import net.kigawa.keruta.ktcp.usecase.client.JwksJsonGenerator
 import net.kigawa.kodel.api.log.LoggerFactory
 
 class ConfigRoutes(
-    keycloakConfig: KeycloakConfig, val appConfig: AppConfig,
+    val appConfig: AppConfig,
     private val privateKey: PemKey,
     private val userClaudeConfigDao: UserClaudeConfigDao,
     private val userTokenDao: UserTokenDao,
     javaKeyPairInitializer: JavaKeyPairInitializer,
     authenticationHelper: AuthenticationHelper,
-    auth0JwtVerifier: Auth0JwtVerifier,
     private val providerListClient: ProviderListClient,
 ) {
     private val logger = LoggerFactory.get("ConfigRoutes")
     private val authGuard = AuthGuard(authenticationHelper)
-    private val authRoute = AuthRoutes(keycloakConfig, authenticationHelper, auth0JwtVerifier)
+    private val authRoute = AuthRoutes(authenticationHelper)
 
     private val jwksJsonGenerator: JwksJsonGenerator = NimbusdsJwksGenerator(javaKeyPairInitializer)
     fun configureConfigRoutes(
@@ -87,8 +84,8 @@ class ConfigRoutes(
                     call.respondRedirect("/?error=token_required")
                     return@requireAuth
                 }
-                userTokenDao.saveOrUpdateGithubToken(user.userId, githubToken)
-                logger.info("GitHub token updated for user: ${user.userId}")
+                userTokenDao.saveOrUpdateGithubToken(user.userSubject, user.userIssuer, user.userAudience, githubToken)
+                logger.info("GitHub token updated for user: ${user.userSubject}")
                 call.respondRedirect("/?success=github_token_saved")
             }
         }
@@ -102,8 +99,8 @@ class ConfigRoutes(
                     call.respondRedirect("/?error=api_key_required")
                     return@requireAuth
                 }
-                userClaudeConfigDao.saveOrUpdate(user.userId, anthropicApiKey)
-                logger.info("Claude Code API key updated for user: ${user.userId}")
+                userClaudeConfigDao.saveOrUpdate(user.userSubject, user.userIssuer, user.userAudience, anthropicApiKey)
+                logger.info("Claude Code API key updated for user: ${user.userSubject}")
                 call.respondRedirect("/?success=claude_key_saved")
             }
         }
@@ -118,8 +115,8 @@ class ConfigRoutes(
             get {
                 authGuard.requireAuth(call) { user ->
                     val appConfig = appConfig
-                    val hasApiKey = userClaudeConfigDao.get(user.userId) != null
-                    val hasGithubToken = userTokenDao.getGithubToken(user.userId) != null
+                    val hasApiKey = userClaudeConfigDao.get(user.userSubject, user.userIssuer) != null
+                    val hasGithubToken = userTokenDao.getGithubToken(user.userSubject, user.userIssuer) != null
                     val response = ConfigResponse(
                         kubernetes = KubernetesConfig(
                             namespace = appConfig.k8s.namespace,
@@ -177,8 +174,8 @@ class ConfigRoutes(
                         return@requireAuth
                     }
 
-                    userTokenDao.saveOrUpdateGithubToken(user.userId, githubToken)
-                    logger.info("GitHub token updated for user: ${user.userId}")
+                    userTokenDao.saveOrUpdateGithubToken(user.userSubject, user.userIssuer, user.userAudience, githubToken)
+                    logger.info("GitHub token updated for user: ${user.userSubject}")
 
                     call.respond(mapOf("success" to true, "message" to "GitHub token updated"))
                 }
@@ -193,8 +190,8 @@ class ConfigRoutes(
                         return@requireAuth
                     }
 
-                    userClaudeConfigDao.saveOrUpdate(user.userId, anthropicApiKey)
-                    logger.info("Claude Code API key updated for user: ${user.userId}")
+                    userClaudeConfigDao.saveOrUpdate(user.userSubject, user.userIssuer, user.userAudience, anthropicApiKey)
+                    logger.info("Claude Code API key updated for user: ${user.userSubject}")
 
                     call.respond(mapOf("success" to true, "message" to "Claude Code API key updated"))
                 }

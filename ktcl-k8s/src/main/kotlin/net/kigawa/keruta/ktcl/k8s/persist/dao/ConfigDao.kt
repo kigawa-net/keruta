@@ -12,20 +12,24 @@ import org.jetbrains.exposed.sql.update
  */
 class UserClaudeConfigDao(
     private val dbManager: DbManager,
+    private val userDao: UserDao,
 ) {
     /**
      * ユーザーのAnthropic APIキーを保存または更新する
      */
-    fun saveOrUpdate(userId: String, anthropicApiKey: String) {
+    fun saveOrUpdate(userId: String, userIssuer: String, userAudience: String, anthropicApiKey: String) {
+        val dbUserId = userDao.findOrCreate(userId, userIssuer, userAudience)
         transaction(dbManager.db) {
-            val existing = UserClaudeConfigTable.selectAll().where { UserClaudeConfigTable.userId eq userId }.firstOrNull()
+            val existing = UserClaudeConfigTable.selectAll()
+                .where { UserClaudeConfigTable.userId eq dbUserId }
+                .firstOrNull()
             if (existing != null) {
-                UserClaudeConfigTable.update({ UserClaudeConfigTable.userId eq userId }) {
+                UserClaudeConfigTable.update({ UserClaudeConfigTable.userId eq dbUserId }) {
                     it[UserClaudeConfigTable.anthropicApiKey] = anthropicApiKey
                 }
             } else {
                 UserClaudeConfigTable.insert {
-                    it[UserClaudeConfigTable.userId] = userId
+                    it[UserClaudeConfigTable.userId] = dbUserId
                     it[UserClaudeConfigTable.anthropicApiKey] = anthropicApiKey
                 }
             }
@@ -35,9 +39,11 @@ class UserClaudeConfigDao(
     /**
      * ユーザーのAnthropic APIキーを取得する
      */
-    fun get(userId: String): String? {
+    fun get(userId: String, userIssuer: String): String? {
+        val dbUserId = userDao.find(userId, userIssuer) ?: return null
         return transaction(dbManager.db) {
-            UserClaudeConfigTable.selectAll().where { UserClaudeConfigTable.userId eq userId }
+            UserClaudeConfigTable.selectAll()
+                .where { UserClaudeConfigTable.userId eq dbUserId }
                 .firstOrNull()
                 ?.get(UserClaudeConfigTable.anthropicApiKey)
         }

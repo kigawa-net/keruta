@@ -1,47 +1,20 @@
 package net.kigawa.keruta.ktcl.k8s.route
 
 import io.ktor.http.*
-import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import net.kigawa.keruta.ktcl.k8s.auth.AuthenticationHelper
-import net.kigawa.keruta.ktcl.k8s.auth.JwtVerifier
-import net.kigawa.keruta.ktcl.k8s.auth.KeycloakConfig
 import net.kigawa.keruta.ktcl.k8s.auth.UserSession
-import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
 import net.kigawa.kodel.api.log.LoggerFactory
 
 class AuthRoutes(
-    keycloakConfig: KeycloakConfig,
     private val authenticationHelper: AuthenticationHelper,
-    auth0JwtVerifier: Auth0JwtVerifier,
 ) {
     private val logger = LoggerFactory.get("AuthRoutes")
-    private val jwtVerifier = JwtVerifier(keycloakConfig, auth0JwtVerifier)
 
     fun configure(route: Route) {
         route.route("/api/auth") {
-            post("/login") {
-                val request = call.receive<LoginRequest>()
-                logger.info("Login attempt")
-
-                val userId = jwtVerifier.verify(request.token)
-                if (userId == null) {
-                    call.respond(
-                        HttpStatusCode.Unauthorized,
-                        LoginResponse(false, message = "Invalid token")
-                    )
-                    return@post
-                }
-
-                val session = UserSession(userId = userId, token = request.token)
-                call.sessions.set(session)
-
-                logger.info("Login successful: $userId")
-                call.respond(LoginResponse(success = true, userId = userId))
-            }
-
             post("/logout") {
                 call.sessions.clear<UserSession>()
                 logger.info("Logout successful")
@@ -55,7 +28,13 @@ class AuthRoutes(
                     return@get
                 }
 
-                call.respond(mapOf("userId" to user.userId))
+                call.respond(
+                    mapOf(
+                        "userSubject" to user.userSubject,
+                        "userIssuer" to user.userIssuer,
+                        "userAudience" to user.userAudience,
+                    )
+                )
             }
         }
     }

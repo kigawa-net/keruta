@@ -32,35 +32,35 @@ class KerutaK8sClient(
 
     suspend fun start() = coroutineScope {
         logger.debug { "Starting Keruta K8s Client" }
-        (0 until concurrentCount).map {
-            logger.debug { "Starting worker thread ${it + 1} of $concurrentCount" }
+        (0 until concurrentCount).map { workerNum ->
+            logger.debug { "Starting worker thread ${workerNum + 1} of $concurrentCount" }
             launch {
-                logger.debug { "Worker thread ${it + 1} of $concurrentCount started" }
+                logger.debug { "Worker thread ${workerNum + 1} of $concurrentCount started" }
                 while (isActive) {
-                    logger.debug { "Worker thread ${it + 1} of $concurrentCount is active" }
+                    logger.debug { "Worker thread ${workerNum + 1} of $concurrentCount is active" }
                     var received = false
                     userTokenDao.getRefreshTokens().forEach {
-                        logger.debug { "Refreshing token for user ${it.first}" }
+                        logger.debug { "Refreshing token for user ${it.userSubject}" }
                         try {
-                            val (userId, refreshToken) = it
-
                             val tokenResponse = try {
-                                tokenRefresher.refresh(refreshToken)
+                                tokenRefresher.refresh(it.refreshToken)
                             } catch (e: TokenRefreshException) {
-                                logger.severe { "Token refresh failed for user $userId (token expired or invalid): ${e.message}" }
-                                userTokenDao.deleteRefreshToken(userId)
+                                logger.severe { "Token refresh failed for user ${it.userSubject} (token expired or invalid): ${e.message}" }
+                                userTokenDao.deleteRefreshToken(it.userSubject, it.userIssuer)
                                 return@forEach
                             } catch (e: Exception) {
-                                logger.severe { "Token refresh failed for user $userId: ${e.message}" }
+                                logger.severe { "Token refresh failed for user ${it.userSubject}: ${e.message}" }
                                 delay(30.seconds)
                                 return@forEach
                             }
 
-                            tokenResponse.refreshToken?.let { userTokenDao.saveOrUpdate(userId, it) }
-                            logger.info { "Access token refreshed for user $userId" }
+                            tokenResponse.refreshToken?.let { token ->
+                                userTokenDao.saveOrUpdate(it.userSubject, it.userIssuer, it.userAudience, token)
+                            }
+                            logger.info { "Access token refreshed for user ${it.userSubject}" }
 
                             // accessTokenを使ってKTSEに接続しタスク受信ループを実行する
-                            received = runTaskReceiver(userId, tokenResponse.accessToken) || received
+                            received = runTaskReceiver(it.userSubject, it.userIssuer, tokenResponse.accessToken) || received
                         } catch (e: Exception) {
                             if (e is CancellationException) throw e
                             logger.severe { "Failed to refresh token ${e.message}" }
@@ -74,12 +74,12 @@ class KerutaK8sClient(
         }.joinAll()
     }
 
-    private suspend fun runTaskReceiver(userId: String, accessToken: String): Boolean {
+    private suspend fun runTaskReceiver(userSubject: String, userIssuer: String, accessToken: String): Boolean {
         val connectionManager = ConnectionManager(config)
         val connection = try {
             connectionManager.connect()
         } catch (e: Exception) {
-            logger.severe { "Failed to connect to KTSE for user $userId: ${e.message}" }
+            logger.severe { "Failed to connect to KTSE for user $userSubject: ${e.message}" }
             return false
         }
 
@@ -93,18 +93,18 @@ class KerutaK8sClient(
         )
         ktcpClient.ktcpServerEntrypoints.authRequestEntrypoint.access(authMsg, ctx)?.execute()
             ?: run {
-                logger.severe { "Failed to send auth request for user $userId" }
+                logger.severe { "Failed to send auth request for user $userSubject" }
                 return false
             }
 
-        logger.info { "Authentication request sent for user $userId" }
+        logger.info { "Authentication request sent for user $userSubject" }
 
 
         val apiClient = K8sClientFactory.createClient(config)
         val templateLoader = JobTemplateLoader(config.k8sJobTemplate)
         val jobExecutor = K8sJobExecutor(apiClient, config, templateLoader)
         val taskReceiver = TaskReceiver(connection, ktcpClient, jobExecutor, ktclIssuer, userTokenDao)
-        return taskReceiver.startReceiving(ctx, userId)
+        return taskReceiver.startReceiving(ctx, userSubject, userIssuer)
     }
 
 }
