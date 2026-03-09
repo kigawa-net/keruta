@@ -34,14 +34,14 @@ UPDATE user_token ut
 ALTER TABLE user_token MODIFY COLUMN user_id_fk BIGINT NOT NULL;
 ALTER TABLE user_token DROP INDEX IF EXISTS idx_user_subject_issuer;
 ALTER TABLE user_token ADD UNIQUE INDEX IF NOT EXISTS idx_user_token_user_id (user_id_fk);
-ALTER TABLE user_token ADD CONSTRAINT IF NOT EXISTS fk_user_token_user FOREIGN KEY (user_id_fk) REFERENCES keruta_user(id);
+ALTER TABLE user_token DROP FOREIGN KEY IF EXISTS fk_user_token_user;
+ALTER TABLE user_token ADD CONSTRAINT fk_user_token_user FOREIGN KEY (user_id_fk) REFERENCES keruta_user(id);
 ALTER TABLE user_token DROP COLUMN IF EXISTS user_subject;
 ALTER TABLE user_token DROP COLUMN IF EXISTS user_issuer;
 ALTER TABLE user_token DROP COLUMN IF EXISTS user_audience;
 ALTER TABLE user_token RENAME COLUMN user_id_fk TO user_id;
 
 -- 5. user_claude_configにuser_id_fkカラムを追加してFKを設定
--- user_idカラムはVARCHAR(255)のためuser_subject_tmpとしてバックアップ
 ALTER TABLE user_claude_config ADD COLUMN IF NOT EXISTS user_subject_tmp VARCHAR(255) NULL;
 
 UPDATE user_claude_config
@@ -58,7 +58,8 @@ UPDATE user_claude_config ucc
 ALTER TABLE user_claude_config MODIFY COLUMN user_id_fk BIGINT NOT NULL;
 ALTER TABLE user_claude_config DROP INDEX IF EXISTS idx_user_id_issuer;
 ALTER TABLE user_claude_config ADD UNIQUE INDEX IF NOT EXISTS idx_user_claude_config_user_id (user_id_fk);
-ALTER TABLE user_claude_config ADD CONSTRAINT IF NOT EXISTS fk_user_claude_config_user FOREIGN KEY (user_id_fk) REFERENCES keruta_user(id);
+ALTER TABLE user_claude_config DROP FOREIGN KEY IF EXISTS fk_user_claude_config_user;
+ALTER TABLE user_claude_config ADD CONSTRAINT fk_user_claude_config_user FOREIGN KEY (user_id_fk) REFERENCES keruta_user(id);
 ALTER TABLE user_claude_config DROP COLUMN IF EXISTS user_id;
 ALTER TABLE user_claude_config DROP COLUMN IF EXISTS user_issuer;
 ALTER TABLE user_claude_config DROP COLUMN IF EXISTS user_audience;
