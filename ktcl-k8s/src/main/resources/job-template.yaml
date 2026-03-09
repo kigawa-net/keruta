@@ -15,7 +15,7 @@ spec:
         command:
         - sh
         - -c
-        - "git clone $GIT_REPO_URL /workspace && cd /workspace && git checkout -b keruta-task-$TASK_ID"
+        - "if [ -d /workspace/.git ]; then cd /workspace && git pull; else git clone $GIT_REPO_URL /workspace; fi && cd /workspace && git checkout -b keruta-task-$TASK_ID"
         env:
         - name: GIT_REPO_URL
           value: ""

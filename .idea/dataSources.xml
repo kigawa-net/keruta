@@ -29,5 +29,21 @@
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="mariadb-k8s" uuid="5e003bb1-5a9b-47b0-91d6-de2319f2110a">
+      <driver-ref>mariadb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mariadb://localhost:3306</jdbc-url>
+      <jdbc-additional-properties>
+        <property name="com.intellij.clouds.kubernetes.db.host.port" value="3306" />
+        <property name="com.intellij.clouds.kubernetes.db.enabled" value="true" />
+        <property name="com.intellij.clouds.kubernetes.db.resource" value="mariadb-k8s" />
+        <property name="com.intellij.clouds.kubernetes.db.context" value="kubernetes-admin@kubernetes" />
+        <property name="com.intellij.clouds.kubernetes.db.resource.type" value="StatefulSet" />
+        <property name="com.intellij.clouds.kubernetes.db.namespace" value="kigawa-net-keruta-dev" />
+        <property name="com.intellij.clouds.kubernetes.db.container.port" value="3306" />
+      </jdbc-additional-properties>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

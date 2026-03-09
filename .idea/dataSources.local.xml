@@ -32,5 +32,22 @@
         </introspection-scope>
       </schema-mapping>
     </data-source>
+    <data-source name="mariadb-k8s" uuid="5e003bb1-5a9b-47b0-91d6-de2319f2110a">
+      <database-info product="MariaDB" version="10.11.16-MariaDB-ubu2204" jdbc-version="4.2" driver-name="MariaDB Connector/J" driver-version="3.5.7" dbms="MARIADB" exact-version="10.11.16" exact-driver-version="3.5">
+        <extra-name-characters>#@</extra-name-characters>
+        <identifier-quote-string>`</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>ktcl-k8s</user-name>
+      <schema-mapping>
+        <introspection-scope>
+          <node kind="schema">
+            <name qname="@" />
+            <name qname="ktcl_k8s" />
+          </node>
+        </introspection-scope>
+      </schema-mapping>
+    </data-source>
   </component>
 </project>
