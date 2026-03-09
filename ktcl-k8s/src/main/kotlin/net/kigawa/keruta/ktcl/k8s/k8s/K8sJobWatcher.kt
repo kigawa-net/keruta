@@ -20,8 +20,15 @@ class K8sJobWatcher(
     suspend fun watchJob(
         jobName: String,
         onStatusChange: suspend (JobStatus) -> Unit,
-    ): Res<JobStatus, K8sErr> = coroutineScope {
-        launch { logWatcher.watchLogs(jobName) }
+    ): Res<JobStatus, K8sErr> = supervisorScope {
+        launch {
+            try {
+                logWatcher.watchLogs(jobName)
+            } catch (e: Exception) {
+                if (e is CancellationException) throw e
+                logger.warning { "Log watch failed for $jobName: ${e.message}" }
+            }
+        }
         withContext(Dispatchers.IO) {
             val startTime = System.currentTimeMillis()
 
