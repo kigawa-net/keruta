@@ -32,3 +32,4 @@ jobs:
       harborProject: "library"
       repository: "kigawa-net/kigawa-net-k8s"
       dockerFile: './Dockerfile_ktcl_k8s'
+      gradleTask: ':ktcl-k8s:shadowJar -x test'
