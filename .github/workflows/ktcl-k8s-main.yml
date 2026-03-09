@@ -29,7 +29,7 @@ jobs:
       GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
     with:
       name: ktcl-k8s
-      manifestFile: ./keruta/dev/ktcl-k8s.yaml
+      manifestFile: ./keruta/main/ktcl-k8s.yaml
       harborProject: "library"
       repository: "kigawa-net/kigawa-net-k8s"
       dockerFile: './Dockerfile_ktcl_k8s'
