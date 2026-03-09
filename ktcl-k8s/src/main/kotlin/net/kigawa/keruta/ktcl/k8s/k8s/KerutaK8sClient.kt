@@ -101,7 +101,7 @@ class KerutaK8sClient(
 
 
         val apiClient = K8sClientFactory.createClient(config)
-        val templateLoader = JobTemplateLoader(config.k8sJobTemplate)
+        val templateLoader = JobTemplateLoader("job-template.yaml")
         val jobExecutor = K8sJobExecutor(apiClient, config, templateLoader)
         val taskReceiver = TaskReceiver(connection, ktcpClient, jobExecutor, ktclIssuer, userTokenDao)
         return taskReceiver.startReceiving(ctx, userSubject, userIssuer)

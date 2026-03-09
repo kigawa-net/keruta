@@ -12,7 +12,6 @@ data class K8sConfigCompat(
 
     // Kubernetes設定
     val k8sNamespace: String,
-    val k8sJobTemplate: String,
     val k8sUseInCluster: Boolean,
     val k8sKubeConfigPath: String?,
     val k8sJobTimeout: Long,
@@ -34,7 +33,6 @@ data class K8sConfigCompat(
                 ktsePort = System.getenv("KTSE_PORT")?.toInt() ?: 8080,
                 ktseUseTls = System.getenv("KTSE_USE_TLS")?.toBoolean() ?: false,
                 k8sNamespace = getEnvOrProperty("K8S_NAMESPACE") ?: "default",
-                k8sJobTemplate = System.getenv("K8S_JOB_TEMPLATE") ?: "resources/job-template.yaml",
                 k8sUseInCluster = getEnvOrProperty("K8S_USE_IN_CLUSTER")?.toBoolean() ?: true,
                 k8sKubeConfigPath = getEnvOrProperty("K8S_KUBECONFIG_PATH"),
                 k8sJobTimeout = getEnvOrProperty("K8S_JOB_TIMEOUT")?.toLongOrNull() ?: 600,

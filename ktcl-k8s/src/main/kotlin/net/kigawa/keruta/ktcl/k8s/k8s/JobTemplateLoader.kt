@@ -3,13 +3,14 @@ package net.kigawa.keruta.ktcl.k8s.k8s
 import io.kubernetes.client.openapi.models.V1EnvVar
 import io.kubernetes.client.openapi.models.V1Job
 import io.kubernetes.client.util.Yaml
-import java.io.File
-import java.io.FileReader
+import java.io.InputStreamReader
 
 class JobTemplateLoader(private val templatePath: String) {
     fun loadTemplate(taskId: Long, title: String, description: String, gitRepoUrl: String, githubToken: String): V1Job {
-        val templateFile = File(templatePath)
-        val reader = FileReader(templateFile)
+        val reader = InputStreamReader(
+            JobTemplateLoader::class.java.classLoader.getResourceAsStream(templatePath)
+                ?: error("Job template not found on classpath: $templatePath")
+        )
         val job = Yaml.load(reader) as V1Job
 
         val jobName = "keruta-task-$taskId"
