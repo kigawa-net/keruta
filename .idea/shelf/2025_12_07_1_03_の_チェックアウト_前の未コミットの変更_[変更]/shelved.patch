@@ -1,0 +1,14 @@
+Index: keruta-sdk/buildSrc/src/main/kotlin/publish.gradle.kts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import gradle.kotlin.dsl.accessors._9c04ceaef20eeb51aed3ad37a03c872b.publishing\nimport gradle.kotlin.dsl.accessors._9c04ceaef20eeb51aed3ad37a03c872b.signing\n\nplugins {\n    id(\"io.github.gradle-nexus.publish-plugin\")\n    `maven-publish`\n    signing\n}\n\nnexusPublishing {\n    // Configure maven central repository\n    // https://github.com/gradle-nexus/publish-plugin#publishing-to-maven-central-via-sonatype-ossrh\n    repositories {\n        sonatype()\n\n    }\n}\n\npublishing {\n    // Configure all publications\n    publications.withType<MavenPublication> {\n        pom {\n            name = \"renlin-router\"\n            description = \"routing library for renlin\"\n            url = \"https://github.com/Code-Sakura/renlin-router\"\n            properties = mapOf(\n            )\n            licenses {\n                license {\n                    name.set(\"MIT License\")\n                    url.set(\"http://www.opensource.org/licenses/mit-license.php\")\n                }\n            }\n            developers {\n                developer {\n                    id.set(\"net.kigawa\")\n                    name.set(\"kigawa\")\n                    email.set(\"contact@kigawa.net\")\n                }\n                developer {\n                    id.set(\"io.github.seizavl\")\n                    name.set(\"seizavl\")\n                    email.set(\"\")\n                }\n            }\n            scm {\n                connection.set(\"scm:git:https://github.com/Code-Sakura/renlin-router.git\")\n                developerConnection.set(\"scm:git:https://github.com/Code-Sakura/renlin-router.git\")\n                url.set(\"https://github.com/Code-Sakura/renlin-router\")\n            }\n        }\n    }\n}\n\nsigning {\n    if (project.hasProperty(\"mavenCentralUsername\") ||\n        System.getenv(\"ORG_GRADLE_PROJECT_mavenCentralUsername\") != null\n    ) {\n        useGpgCmd()\n    }\n}\n
+===================================================================
+diff --git a/keruta-sdk/buildSrc/src/main/kotlin/publish.gradle.kts b/keruta-sdk/buildSrc/src/main/kotlin/publish.gradle.kts
+--- a/keruta-sdk/buildSrc/src/main/kotlin/publish.gradle.kts	(revision ea55b89242e8bc4eb92a2cb439e6961d2c4a7a65)
++++ b/keruta-sdk/buildSrc/src/main/kotlin/publish.gradle.kts	(date 1765036738622)
+@@ -1,5 +1,3 @@
+-import gradle.kotlin.dsl.accessors._9c04ceaef20eeb51aed3ad37a03c872b.publishing
+-import gradle.kotlin.dsl.accessors._9c04ceaef20eeb51aed3ad37a03c872b.signing
+ 
+ plugins {
+     id("io.github.gradle-nexus.publish-plugin")

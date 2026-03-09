@@ -1,0 +1,71 @@
+@file:OptIn(ExperimentalWasmDsl::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
+
+plugins {
+    kotlin("multiplatform")
+}
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
+}
+fun KotlinJsTest.browserTest() {
+    val firefox = providers.gradleProperty("useFirefox")
+        .map { it.toBoolean() }
+        .getOrElse(true)
+    val chrome = providers.gradleProperty("useChrome")
+        .map { it.toBoolean() }
+        .getOrElse(true)
+    enabled = firefox || chrome
+    useKarma {
+        if (firefox) useFirefoxHeadless()
+        if (chrome) useChromeHeadlessNoSandbox()
+    }
+}
+kotlin {
+    compilerOptions {
+        freeCompilerArgs = listOf("-Xcontext-parameters")
+    }
+    jvm {}
+    js {
+        browser {
+            testTask {
+                browserTest()
+            }
+        }
+    }
+    wasmJs {
+        browser {
+            testTask {
+                enabled
+                browserTest()
+            }
+        }
+    }
+
+    // iOS targets for mobile support
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "KodelApi"
+            isStatic = true
+        }
+    }
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:${Version.KOTLINX_DATETIME}")
+            }
+        }
+        commonTest {
+            dependencies {
+                implementation(kotlin("test"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${Version.KOTLINX_COROUTINES}")
+            }
+        }
+    }
+}

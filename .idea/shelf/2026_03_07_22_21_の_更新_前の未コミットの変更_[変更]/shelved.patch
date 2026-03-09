@@ -1,0 +1,249 @@
+Index: ktse/src/main/kotlin/net/kigawa/keruta/ktse/auth/keruta/KerutaJson.kt
+===================================================================
+diff --git a/ktse/src/main/kotlin/net/kigawa/keruta/ktse/auth/keruta/KerutaJson.kt b/ktse/src/main/kotlin/net/kigawa/keruta/ktse/auth/keruta/KerutaJson.kt
+deleted file mode 100644
+--- a/ktse/src/main/kotlin/net/kigawa/keruta/ktse/auth/keruta/KerutaJson.kt	(revision a748a3d1ec8d0a72c8b19f90ad829ab9d0e46173)
++++ /dev/null	(revision a748a3d1ec8d0a72c8b19f90ad829ab9d0e46173)
+@@ -1,18 +0,0 @@
+-package net.kigawa.keruta.ktse.auth.keruta
+-
+-import kotlinx.serialization.ExperimentalSerializationApi
+-import kotlinx.serialization.SerialName
+-import kotlinx.serialization.Serializable
+-import kotlinx.serialization.json.JsonIgnoreUnknownKeys
+-
+-@OptIn(ExperimentalSerializationApi::class)
+-@Serializable
+-@JsonIgnoreUnknownKeys
+-data class KerutaJson(
+-    @SerialName("authorization_endpoint")
+-    val authorizationEndpoint: String,
+-    @SerialName("token_endpoint")
+-    val tokenEndpoint: String,
+-    @SerialName("audience")
+-    val audience: String,
+-)
+Index: ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/dto/WellKnownKerutaResponse.kt
+===================================================================
+diff --git a/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/dto/WellKnownKerutaResponse.kt b/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/dto/WellKnownKerutaResponse.kt
+deleted file mode 100644
+--- a/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/dto/WellKnownKerutaResponse.kt	(revision a748a3d1ec8d0a72c8b19f90ad829ab9d0e46173)
++++ /dev/null	(revision a748a3d1ec8d0a72c8b19f90ad829ab9d0e46173)
+@@ -1,11 +0,0 @@
+-package net.kigawa.keruta.ktcl.k8s.dto
+-
+-import kotlinx.serialization.Serializable
+-
+-@Serializable
+-data class WellKnownKerutaResponse(
+-    val service: String,
+-    val version: String,
+-    val issuer: String,
+-    val login: String
+-)
+Index: ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/wellknown/ObjectPropertyJson.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/wellknown/ObjectPropertyJson.kt b/ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/wellknown/ObjectPropertyJson.kt
+new file mode 100644
+--- /dev/null	(date 1772885624946)
++++ b/ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/wellknown/ObjectPropertyJson.kt	(date 1772885624946)
+@@ -0,0 +1,14 @@
++package net.kigawa.keruta.ktcp.domain.client.wellknown
++
++import kotlinx.serialization.Serializable
++
++@Serializable
++data class ObjectPropertyJson(
++    val fields: List<Field>,
++): KtclPropertyJson {
++    @Serializable
++    data class Field(
++        val fieldName: String,
++        val value: KtclPropertyJson,
++    )
++}
+Index: ktcp/ktcp-usecase/ktcp-usecase-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/client/ProviderTokenCreator.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcp.usecase.client\n\nimport net.kigawa.keruta.ktcp.domain.KtclAudience\nimport net.kigawa.keruta.ktcp.domain.KtclIssuer\nimport net.kigawa.keruta.ktcp.domain.UserSubject\nimport net.kigawa.keruta.ktcp.domain.auth.key.PemKey\nimport net.kigawa.keruta.ktcp.domain.client.CreatedProviderToken\nimport net.kigawa.keruta.ktcp.usecase.JwtTokenCreator\n\nclass ProviderTokenCreator(\n    private val privateKey: PemKey,\n    private val ktclIssuer: KtclIssuer,\n    private val ktclAudience: KtclAudience,\n    private val tokenCreator: JwtTokenCreator,\n) {\n    fun create(userSubject: UserSubject): CreatedProviderToken =\n        CreatedProviderToken(tokenCreator.create(privateKey, ktclIssuer, ktclAudience, userSubject))\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcp/ktcp-usecase/ktcp-usecase-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/client/ProviderTokenCreator.kt b/ktcp/ktcp-usecase/ktcp-usecase-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/client/ProviderTokenCreator.kt
+--- a/ktcp/ktcp-usecase/ktcp-usecase-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/client/ProviderTokenCreator.kt	(revision a748a3d1ec8d0a72c8b19f90ad829ab9d0e46173)
++++ b/ktcp/ktcp-usecase/ktcp-usecase-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/usecase/client/ProviderTokenCreator.kt	(date 1772884270959)
+@@ -4,7 +4,7 @@
+ import net.kigawa.keruta.ktcp.domain.KtclIssuer
+ import net.kigawa.keruta.ktcp.domain.UserSubject
+ import net.kigawa.keruta.ktcp.domain.auth.key.PemKey
+-import net.kigawa.keruta.ktcp.domain.client.CreatedProviderToken
++import net.kigawa.keruta.ktcp.domain.client.CreatedKtclToken
+ import net.kigawa.keruta.ktcp.usecase.JwtTokenCreator
+ 
+ class ProviderTokenCreator(
+@@ -13,7 +13,7 @@
+     private val ktclAudience: KtclAudience,
+     private val tokenCreator: JwtTokenCreator,
+ ) {
+-    fun create(userSubject: UserSubject): CreatedProviderToken =
+-        CreatedProviderToken(tokenCreator.create(privateKey, ktclIssuer, ktclAudience, userSubject))
++    fun create(userSubject: UserSubject): CreatedKtclToken =
++        CreatedKtclToken(tokenCreator.create(privateKey, ktclIssuer, ktclAudience, userSubject))
+ 
+ }
+Index: ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/wellknown/KtclPropertyJson.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/wellknown/KtclPropertyJson.kt b/ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/wellknown/KtclPropertyJson.kt
+new file mode 100644
+--- /dev/null	(date 1772885624916)
++++ b/ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/wellknown/KtclPropertyJson.kt	(date 1772885624916)
+@@ -0,0 +1,7 @@
++package net.kigawa.keruta.ktcp.domain.client.wellknown
++
++import kotlinx.serialization.Serializable
++
++@Serializable
++sealed interface KtclPropertyJson {
++}
+Index: ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/wellknown/NumberPropertyJson.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/wellknown/NumberPropertyJson.kt b/ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/wellknown/NumberPropertyJson.kt
+new file mode 100644
+--- /dev/null	(date 1772885624962)
++++ b/ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/wellknown/NumberPropertyJson.kt	(date 1772885624962)
+@@ -0,0 +1,6 @@
++package net.kigawa.keruta.ktcp.domain.client.wellknown
++
++import kotlinx.serialization.Serializable
++
++@Serializable
++class NumberPropertyJson: KtclPropertyJson
+Index: ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/wellknown/StringPropertyJson.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/wellknown/StringPropertyJson.kt b/ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/wellknown/StringPropertyJson.kt
+new file mode 100644
+--- /dev/null	(date 1772885625003)
++++ b/ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/wellknown/StringPropertyJson.kt	(date 1772885625003)
+@@ -0,0 +1,3 @@
++package net.kigawa.keruta.ktcp.domain.client.wellknown
++
++class StringPropertyJson: KtclPropertyJson
+Index: ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/wellknown/KerutaWellKnownJson.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/wellknown/KerutaWellKnownJson.kt b/ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/wellknown/KerutaWellKnownJson.kt
+new file mode 100644
+--- /dev/null	(date 1772885624929)
++++ b/ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/wellknown/KerutaWellKnownJson.kt	(date 1772885624929)
+@@ -0,0 +1,11 @@
++package net.kigawa.keruta.ktcp.domain.client.wellknown
++
++import kotlinx.serialization.Serializable
++
++@Serializable
++data class KerutaWellKnownJson(
++    val version: String,
++    val issuer: String,
++    val login: String,
++    val queueProperties: ObjectPropertyJson,
++)
+Index: ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/wellknown/ArrayPropertyJson.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/wellknown/ArrayPropertyJson.kt b/ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/wellknown/ArrayPropertyJson.kt
+new file mode 100644
+--- /dev/null	(date 1772885624981)
++++ b/ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/wellknown/ArrayPropertyJson.kt	(date 1772885624981)
+@@ -0,0 +1,5 @@
++package net.kigawa.keruta.ktcp.domain.client.wellknown
++
++data class ArrayPropertyJson(
++    val value: KtclPropertyJson,
++): KtclPropertyJson
+Index: ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/route/ConfigRoutes.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.k8s.route\n\nimport io.ktor.http.*\nimport io.ktor.server.request.*\nimport io.ktor.server.response.*\nimport io.ktor.server.routing.*\nimport net.kigawa.keruta.ktcl.k8s.auth.AuthGuard\nimport net.kigawa.keruta.ktcl.k8s.auth.AuthenticationHelper\nimport net.kigawa.keruta.ktcl.k8s.auth.KeycloakConfig\nimport net.kigawa.keruta.ktcl.k8s.config.AppConfig\nimport net.kigawa.keruta.ktcl.k8s.dto.*\nimport net.kigawa.keruta.ktcl.k8s.persist.dao.UserClaudeConfigDao\nimport net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier\nimport net.kigawa.keruta.ktcp.base.auth.key.JavaKeyPairInitializer\nimport net.kigawa.keruta.ktcp.domain.auth.key.PemKey\nimport net.kigawa.keruta.ktcp.infra.client.NimbusdsJwksGenerator\nimport net.kigawa.keruta.ktcp.usecase.client.JwksJsonGenerator\nimport net.kigawa.kodel.api.log.LoggerFactory\n\nclass ConfigRoutes(\n    keycloakConfig: KeycloakConfig, val appConfig: AppConfig,\n    private val privateKey: PemKey,\n    private val userClaudeConfigDao: UserClaudeConfigDao,\n    javaKeyPairInitializer: JavaKeyPairInitializer,\n    authenticationHelper: AuthenticationHelper,\n    auth0JwtVerifier: Auth0JwtVerifier,\n) {\n    private val logger = LoggerFactory.get(\"ConfigRoutes\")\n    private val authGuard = AuthGuard(authenticationHelper)\n    private val authRoute = AuthRoutes(keycloakConfig, authenticationHelper, auth0JwtVerifier )\n\n    private val jwksJsonGenerator: JwksJsonGenerator = NimbusdsJwksGenerator(javaKeyPairInitializer)\n    fun configureConfigRoutes(\n        route: Route,\n    ) = route.apply {\n        // 認証ルート\n        authRoute.configure(this)\n\n        route(\"/.well-known\") {\n            // .well-known エンドポイント（認証不要）\n            get(\"keruta.json\") {\n                val appConfig = appConfig\n                val issuer = appConfig.keruta.ownIssuer\n                val loginEndpoint = issuer.plusPath(\"/login\")\n\n                val response = WellKnownKerutaResponse(\n                    service = \"keruta-ktcl-k8s\",\n                    version = \"1.0.0\",\n                    issuer = issuer.toStrUrl(),\n                    login = loginEndpoint.toString()\n                )\n                call.respond(response)\n            }\n            get(\"jwks.json\") {\n                val jwksJson = jwksJsonGenerator.generate(privateKey)\n                call.respond(\n                    jwksJson\n                )\n            }\n        }\n        route(\"/api/config\") {\n            get {\n                authGuard.requireAuth(call) { user ->\n                    val appConfig = appConfig\n                    val hasApiKey = userClaudeConfigDao.get(user.userId) != null\n                    val response = ConfigResponse(\n                        kubernetes = KubernetesConfig(\n                            namespace = appConfig.k8s.namespace,\n                            useInCluster = appConfig.k8s.useInCluster,\n                            kubeconfigPath = appConfig.k8s.kubeConfigPath,\n                            jobTimeout = appConfig.k8s.jobTimeout\n                        ),\n                        queue = QueueConfig(\n                            queueId = appConfig.ktse.queueId\n                        ),\n                        claudeCode = ClaudeCodeConfig(\n                            hasApiKey = hasApiKey\n                        ),\n                    )\n                    call.respond(response)\n                }\n            }\n\n            put(\"/kubernetes\") {\n                authGuard.requireAuth(call) { _ ->\n                    val request = call.receive<UpdateKubernetesConfigRequest>()\n                    logger.info(\"Updating Kubernetes config: $request\")\n\n                    // 環境変数を更新（ランタイム設定）\n                    request.namespace?.let { System.setProperty(\"K8S_NAMESPACE\", it) }\n                    request.useInCluster?.let { System.setProperty(\"K8S_USE_IN_CLUSTER\", it.toString()) }\n                    request.kubeconfigPath?.let { System.setProperty(\"K8S_KUBECONFIG_PATH\", it) }\n                    request.jobTimeout?.let { System.setProperty(\"K8S_JOB_TIMEOUT\", it.toString()) }\n\n                    logger.info(\"Kubernetes config updated successfully\")\n                    call.respond(mapOf(\"success\" to true, \"message\" to \"Configuration updated\"))\n                }\n            }\n\n            put(\"/queue\") {\n                authGuard.requireAuth(call) { _ ->\n                    val request = call.receive<UpdateQueueConfigRequest>()\n                    logger.info(\"Updating Queue config: $request\")\n\n                    // 環境変数を更新（ランタイム設定）\n                    System.setProperty(\"KERUTA_QUEUE_ID\", request.queueId.toString())\n\n                    logger.info(\"Queue config updated successfully\")\n                    call.respond(mapOf(\"success\" to true, \"message\" to \"Queue configuration updated\"))\n                }\n            }\n\n            put(\"/claudecode\") {\n                authGuard.requireAuth(call) { user ->\n                    val request = call.receive<UpdateClaudeCodeConfigRequest>()\n                    val anthropicApiKey = request.anthropicApiKey.trim()\n                    if (anthropicApiKey.isEmpty()) {\n                        call.respond(HttpStatusCode.BadRequest, mapOf(\"error\" to \"anthropicApiKey is required\"))\n                        return@requireAuth\n                    }\n\n                    userClaudeConfigDao.saveOrUpdate(user.userId, anthropicApiKey)\n                    logger.info(\"Claude Code API key updated for user: ${user.userId}\")\n\n                    call.respond(mapOf(\"success\" to true, \"message\" to \"Claude Code API key updated\"))\n                }\n            }\n        }\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/route/ConfigRoutes.kt b/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/route/ConfigRoutes.kt
+--- a/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/route/ConfigRoutes.kt	(revision a748a3d1ec8d0a72c8b19f90ad829ab9d0e46173)
++++ b/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/route/ConfigRoutes.kt	(date 1772885624876)
+@@ -13,6 +13,7 @@
+ import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
+ import net.kigawa.keruta.ktcp.base.auth.key.JavaKeyPairInitializer
+ import net.kigawa.keruta.ktcp.domain.auth.key.PemKey
++import net.kigawa.keruta.ktcp.domain.client.wellknown.KerutaWellKnownJson
+ import net.kigawa.keruta.ktcp.infra.client.NimbusdsJwksGenerator
+ import net.kigawa.keruta.ktcp.usecase.client.JwksJsonGenerator
+ import net.kigawa.kodel.api.log.LoggerFactory
+@@ -43,8 +44,7 @@
+                 val issuer = appConfig.keruta.ownIssuer
+                 val loginEndpoint = issuer.plusPath("/login")
+ 
+-                val response = WellKnownKerutaResponse(
+-                    service = "keruta-ktcl-k8s",
++                val response = KerutaWellKnownJson(
+                     version = "1.0.0",
+                     issuer = issuer.toStrUrl(),
+                     login = loginEndpoint.toString()
+Index: .idea/dataSources.local.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"dataSourceStorageLocal\" created-in=\"IU-253.31033.145\">\n    <data-source name=\"@localhost\" uuid=\"4a6f03e4-94ad-4e5c-af79-d5fac89beb91\">\n      <database-info product=\"MySQL\" version=\"8.0.11-TiDB-v7.5.1\" jdbc-version=\"4.2\" driver-name=\"MySQL Connector/J\" driver-version=\"mysql-connector-j-9.5.0 (Revision: a7b3c94f50efbddb9f0dd69b3e0d1aaa25305cd6)\" dbms=\"TIDB\" exact-version=\"7.5.1\" exact-driver-version=\"9.5\">\n        <extra-name-characters>$</extra-name-characters>\n        <identifier-quote-string>`</identifier-quote-string>\n      </database-info>\n      <case-sensitivity plain-identifiers=\"mixed\" quoted-identifiers=\"mixed\" />\n      <secret-storage>master_key</secret-storage>\n      <user-name>root</user-name>\n      <schema-mapping>\n        <introspection-scope>\n          <node kind=\"schema\">\n            <name qname=\"keruta\" />\n            <name qname=\"@\" />\n          </node>\n        </introspection-scope>\n      </schema-mapping>\n    </data-source>\n    <data-source name=\"keruta-dev tidb\" uuid=\"8b53e589-b584-4f77-86a6-204679e06b96\">\n      <database-info product=\"MySQL\" version=\"8.0.11-TiDB-v8.5.2\" jdbc-version=\"4.2\" driver-name=\"MySQL Connector/J\" driver-version=\"mysql-connector-j-9.5.0 (Revision: a7b3c94f50efbddb9f0dd69b3e0d1aaa25305cd6)\" dbms=\"TIDB\" exact-version=\"8.5.2\" exact-driver-version=\"9.5\">\n        <extra-name-characters>$</extra-name-characters>\n        <identifier-quote-string>`</identifier-quote-string>\n        <jdbc-catalog-is-schema>true</jdbc-catalog-is-schema>\n      </database-info>\n      <case-sensitivity plain-identifiers=\"mixed\" quoted-identifiers=\"mixed\" />\n      <secret-storage>master_key</secret-storage>\n      <user-name>keruta</user-name>\n      <schema-mapping>\n        <introspection-scope>\n          <node kind=\"schema\" qname=\"@\" />\n        </introspection-scope>\n      </schema-mapping>\n    </data-source>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/dataSources.local.xml b/.idea/dataSources.local.xml
+--- a/.idea/dataSources.local.xml	(revision a748a3d1ec8d0a72c8b19f90ad829ab9d0e46173)
++++ b/.idea/dataSources.local.xml	(date 1772884160867)
+@@ -22,7 +22,6 @@
+       <database-info product="MySQL" version="8.0.11-TiDB-v8.5.2" jdbc-version="4.2" driver-name="MySQL Connector/J" driver-version="mysql-connector-j-9.5.0 (Revision: a7b3c94f50efbddb9f0dd69b3e0d1aaa25305cd6)" dbms="TIDB" exact-version="8.5.2" exact-driver-version="9.5">
+         <extra-name-characters>$</extra-name-characters>
+         <identifier-quote-string>`</identifier-quote-string>
+-        <jdbc-catalog-is-schema>true</jdbc-catalog-is-schema>
+       </database-info>
+       <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed" />
+       <secret-storage>master_key</secret-storage>
+@@ -34,4 +33,4 @@
+       </schema-mapping>
+     </data-source>
+   </component>
+-</project>
+\ No newline at end of file
++</project>
+Index: ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/CreatedProviderToken.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/CreatedProviderToken.kt b/ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/CreatedKtclToken.kt
+rename from ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/CreatedProviderToken.kt
+rename to ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/CreatedKtclToken.kt
+--- a/ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/CreatedProviderToken.kt	(revision a748a3d1ec8d0a72c8b19f90ad829ab9d0e46173)
++++ b/ktcp/ktcp-domain/ktcp-domain-client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/client/CreatedKtclToken.kt	(date 1772884270936)
+@@ -2,6 +2,6 @@
+ 
+ import net.kigawa.keruta.ktcp.domain.auth.jwt.CreatedToken
+ 
+-data class CreatedProviderToken(
++data class CreatedKtclToken(
+     val createdToken: CreatedToken,
+ )

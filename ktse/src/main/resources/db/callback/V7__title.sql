@@ -1,0 +1,19 @@
+SET @s = IF(
+    NOT EXISTS(SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS
+               WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'task' AND COLUMN_NAME = 'title'),
+    'ALTER TABLE task ADD title varchar(255) not null',
+    'SELECT 1'
+);
+PREPARE stmt FROM @s;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+SET @s = IF(
+    NOT EXISTS(SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS
+               WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'task' AND COLUMN_NAME = 'description'),
+    'ALTER TABLE task ADD description text not null',
+    'SELECT 1'
+);
+PREPARE stmt FROM @s;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;

@@ -1,0 +1,7 @@
+FROM harbor.kigawa.net/library/dev-base:latest
+
+ENV JAVA_HOME=/opt/java/openjdk
+WORKDIR /work
+COPY ktcl-claudecode/build/libs/ktcl-claudecode-all.jar /app/app.jar
+ENTRYPOINT ["java"]
+CMD ["-jar","/app/app.jar"]

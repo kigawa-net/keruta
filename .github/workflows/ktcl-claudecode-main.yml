@@ -1,0 +1,35 @@
+name: ktcl-claudecode-main
+on:
+  push:
+    paths-ignore:
+      - README.md
+      - Dockerfile_ktse
+      - Dockerfile_ktcl_front
+      - Dockerfile_ktcl_k8s
+      - .github/workflows/dev-ktcl-front.yml
+      - .github/workflows/dev-ktse.yml
+      - .github/workflows/renovate.yaml
+      - .github/renovate.json
+      - .idea/**
+      - ktcl-k8s/**
+      - ktcl-front/**
+      - ktcl-front-mobile/**
+      - ktcp/server/**
+      - ktse/**
+    branches:
+      - main
+
+jobs:
+
+  ktcl-claudecode:
+    uses: ./.github/workflows/release.yml
+    secrets:
+      HARBOR_PASS: ${{ secrets.HARBOR_PASS }}
+      GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+    with:
+      name: ktcl-claudecode
+      manifestFile: ""
+      harborProject: "library"
+      repository: "kigawa-net/kigawa-net-k8s"
+      dockerFile: './Dockerfile_ktcl_claudecode'
+      gradleTask: ':ktcl-claudecode:build -x test'

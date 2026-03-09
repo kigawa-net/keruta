@@ -1,0 +1,18 @@
+ktor:
+  deployment:
+    port: 8081
+  application:
+    modules:
+      - net.kigawa.keruta.ktcl.k8s.KtclK8sServer.module
+  logging:
+    level: DEBUG
+
+idp:
+  issuer: ${IDP_ISSUER:https://user.kigawa.net/realms/develop}
+  audience: ${IDP_AUDIENCE}
+keruta:
+  ownIssuer: ${KERUTA_K8S_OWN_ISSUER}
+db:
+  jdbcUrl: ${DB_JDBC_URL}
+  username: ${DB_USERNAME}
+  password: ${DB_PASSWORD}

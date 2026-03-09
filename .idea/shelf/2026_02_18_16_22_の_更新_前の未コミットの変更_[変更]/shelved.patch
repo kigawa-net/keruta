@@ -1,0 +1,976 @@
+Index: ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/service/AuthService.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.mobile.service\n\nimport kotlinx.coroutines.flow.MutableStateFlow\nimport kotlinx.coroutines.flow.StateFlow\nimport kotlinx.coroutines.flow.asStateFlow\nimport kotlinx.serialization.json.Json\nimport net.kigawa.keruta.ktcl.mobile.auth.AuthState\nimport net.kigawa.keruta.ktcl.mobile.auth.TokenPair\nimport net.kigawa.keruta.ktcl.mobile.msg.auth.ServerAuthenticateMsg\n\nclass AuthService(\n    private val messageSender: MessageSender,\n) {\n    private val _authState = MutableStateFlow<AuthState>(AuthState.Unauthenticated)\n    val authState: StateFlow<AuthState> = _authState.asStateFlow()\n\n    private val json = Json { ignoreUnknownKeys = true }\n\n    fun setAuthenticating() {\n        _authState.value = AuthState.Authenticating\n    }\n\n    fun setAuthenticated(tokens: TokenPair) {\n        _authState.value = AuthState.Authenticated(tokens)\n    }\n\n    fun setError(message: String) {\n        _authState.value = AuthState.Error(message)\n    }\n\n    fun logout() {\n        _authState.value = AuthState.Unauthenticated\n    }\n\n    suspend fun sendAuthentication(userToken: String, serverToken: String) {\n        val connection = messageSender.connection.value ?: return\n        val msg = ServerAuthenticateMsg(userToken = userToken, serverToken = serverToken)\n        connection.send(json.encodeToString(msg))\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/service/AuthService.kt b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/service/AuthService.kt
+--- a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/service/AuthService.kt	(revision 8e3a1d14fdd97fa8687761a0deb185748dd8f780)
++++ b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/service/AuthService.kt	(date 1771398382495)
+@@ -7,6 +7,7 @@
+ import net.kigawa.keruta.ktcl.mobile.auth.AuthState
+ import net.kigawa.keruta.ktcl.mobile.auth.TokenPair
+ import net.kigawa.keruta.ktcl.mobile.msg.auth.ServerAuthenticateMsg
++import net.kigawa.keruta.ktcl.mobile.msg.auth.ServerAuthRequestMsg
+ 
+ class AuthService(
+     private val messageSender: MessageSender,
+@@ -14,7 +15,10 @@
+     private val _authState = MutableStateFlow<AuthState>(AuthState.Unauthenticated)
+     val authState: StateFlow<AuthState> = _authState.asStateFlow()
+ 
+-    private val json = Json { ignoreUnknownKeys = true }
++    private val json = Json {
++        ignoreUnknownKeys = true
++        encodeDefaults = true
++    }
+ 
+     fun setAuthenticating() {
+         _authState.value = AuthState.Authenticating
+@@ -34,7 +38,7 @@
+ 
+     suspend fun sendAuthentication(userToken: String, serverToken: String) {
+         val connection = messageSender.connection.value ?: return
+-        val msg = ServerAuthenticateMsg(userToken = userToken, serverToken = serverToken)
++        val msg = ServerAuthRequestMsg(userToken = userToken, serverToken = serverToken)
+         connection.send(json.encodeToString(msg))
+     }
+ }
+Index: ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/service/MessageSender.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.mobile.service\n\nimport kotlinx.coroutines.flow.MutableStateFlow\nimport kotlinx.coroutines.flow.StateFlow\nimport kotlinx.coroutines.flow.asStateFlow\nimport kotlinx.serialization.json.Json\nimport net.kigawa.keruta.ktcl.mobile.connection.MobileKtcpConnection\nimport net.kigawa.keruta.ktcl.mobile.msg.provider.ServerProviderListMsg\nimport net.kigawa.keruta.ktcl.mobile.msg.queue.ServerQueueCreateMsg\nimport net.kigawa.keruta.ktcl.mobile.msg.queue.ServerQueueListMsg\nimport net.kigawa.keruta.ktcl.mobile.msg.task.ServerTaskCreateMsg\nimport net.kigawa.keruta.ktcl.mobile.msg.task.ServerTaskListMsg\n\nclass MessageSender {\n    private val _connection = MutableStateFlow<MobileKtcpConnection?>(null)\n    val connection: StateFlow<MobileKtcpConnection?> = _connection.asStateFlow()\n\n    private val json = Json { ignoreUnknownKeys = true }\n\n    fun setConnection(connection: MobileKtcpConnection?) {\n        _connection.value = connection\n    }\n\n    suspend fun sendQueueList() {\n        val msg = ServerQueueListMsg()\n        sendMessage(json.encodeToString(msg))\n    }\n\n    suspend fun sendQueueCreate(providerId: Long, name: String) {\n        val msg = ServerQueueCreateMsg(providerId = providerId, name = name)\n        sendMessage(json.encodeToString(msg))\n    }\n\n    suspend fun sendProviderList() {\n        val msg = ServerProviderListMsg()\n        sendMessage(json.encodeToString(msg))\n    }\n\n    suspend fun sendTaskList(queueId: Long) {\n        val msg = ServerTaskListMsg(queueId = queueId)\n        sendMessage(json.encodeToString(msg))\n    }\n\n    suspend fun sendTaskCreate(queueId: Long, title: String, description: String) {\n        val msg = ServerTaskCreateMsg(queueId = queueId, title = title, description = description)\n        sendMessage(json.encodeToString(msg))\n    }\n\n    private suspend fun sendMessage(message: String) {\n        _connection.value?.send(message)\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/service/MessageSender.kt b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/service/MessageSender.kt
+--- a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/service/MessageSender.kt	(revision 8e3a1d14fdd97fa8687761a0deb185748dd8f780)
++++ b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/service/MessageSender.kt	(date 1771397556899)
+@@ -15,7 +15,10 @@
+     private val _connection = MutableStateFlow<MobileKtcpConnection?>(null)
+     val connection: StateFlow<MobileKtcpConnection?> = _connection.asStateFlow()
+ 
+-    private val json = Json { ignoreUnknownKeys = true }
++    private val json = Json {
++        ignoreUnknownKeys = true
++        encodeDefaults = true
++    }
+ 
+     fun setConnection(connection: MobileKtcpConnection?) {
+         _connection.value = connection
+Index: ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/task/TaskReceiver.kt
+===================================================================
+diff --git a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/task/TaskReceiver.kt b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/task/TaskReceiver.kt
+deleted file mode 100644
+--- a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/task/TaskReceiver.kt	(revision 8e3a1d14fdd97fa8687761a0deb185748dd8f780)
++++ /dev/null	(revision 8e3a1d14fdd97fa8687761a0deb185748dd8f780)
+@@ -1,78 +0,0 @@
+-package net.kigawa.keruta.ktcl.mobile.task
+-
+-import kotlinx.coroutines.CoroutineScope
+-import kotlinx.coroutines.launch
+-import kotlinx.serialization.json.Json
+-import kotlinx.serialization.json.jsonObject
+-import kotlinx.serialization.json.jsonPrimitive
+-import net.kigawa.keruta.ktcl.mobile.connection.MobileKtcpConnection
+-import net.kigawa.keruta.ktcl.mobile.msg.queue.ClientQueueCreatedMsg
+-import net.kigawa.keruta.ktcl.mobile.msg.queue.ClientQueueListedMsg
+-import net.kigawa.keruta.ktcl.mobile.msg.task.ClientTaskCreatedMsg
+-import net.kigawa.keruta.ktcl.mobile.msg.task.ClientTaskListedMsg
+-import net.kigawa.keruta.ktcl.mobile.msg.task.ClientTaskMovedMsg
+-import net.kigawa.keruta.ktcl.mobile.msg.task.ClientTaskUpdatedMsg
+-import net.kigawa.keruta.ktcl.mobile.provider.ProviderRepository
+-import net.kigawa.keruta.ktcl.mobile.queue.QueueRepository
+-
+-class TaskReceiver(
+-    private val connection: MobileKtcpConnection,
+-    private val taskRepository: TaskRepository,
+-    private val queueRepository: QueueRepository,
+-    private val providerRepository: ProviderRepository,
+-    private val scope: CoroutineScope,
+-) {
+-    private val json = Json { ignoreUnknownKeys = true }
+-
+-    fun startReceiving() {
+-        scope.launch {
+-            while (true) {
+-                val message = connection.receive() ?: continue
+-                handleMessage(message)
+-            }
+-        }
+-    }
+-
+-    private fun handleMessage(message: String) {
+-        try {
+-            val jsonElement = json.parseToJsonElement(message)
+-            val type = jsonElement.jsonObject["type"]?.jsonPrimitive?.content
+-
+-            when (type) {
+-                "task_listed" -> {
+-                    val msg = json.decodeFromString<ClientTaskListedMsg>(message)
+-                    taskRepository.updateTasks(msg.tasks)
+-                }
+-                "task_created" -> {
+-                    val msg = json.decodeFromString<ClientTaskCreatedMsg>(message)
+-                    println("タスク作成成功: ID=${msg.id}")
+-                }
+-                "task_updated" -> {
+-                    val msg = json.decodeFromString<ClientTaskUpdatedMsg>(message)
+-                    taskRepository.updateTask(msg.id) { task ->
+-                        task.copy(status = msg.status)
+-                    }
+-                }
+-                "task_moved" -> {
+-                    val msg = json.decodeFromString<ClientTaskMovedMsg>(message)
+-                    taskRepository.removeTask(msg.taskId)
+-                }
+-                "queue_created" -> {
+-                    val msg = json.decodeFromString<ClientQueueCreatedMsg>(message)
+-                    println("キュー作成成功: ID=${msg.queueId}")
+-                }
+-                "queue_listed" -> {
+-                    val msg = json.decodeFromString<ClientQueueListedMsg>(message)
+-                    queueRepository.updateQueues(msg.queues)
+-                }
+-                "provider_listed" -> {
+-                    val msg = json.decodeFromString<net.kigawa.keruta.ktcl.mobile.msg.provider.ClientProviderListMsg>(message)
+-                    providerRepository.updateProviders(msg.providers)
+-                }
+-                else -> println("不明なメッセージタイプ: $type")
+-            }
+-        } catch (e: Exception) {
+-            println("メッセージ処理エラー: ${e.message}")
+-        }
+-    }
+-}
+Index: ktcl-front-mobile/src/iosMain/kotlin/net/kigawa/keruta/ktcl/mobile/connection/MobileWebSocketConnection.ios.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.mobile.connection\n\nimport io.ktor.client.plugins.websocket.DefaultClientWebSocketSession\nimport io.ktor.websocket.CloseReason\nimport io.ktor.websocket.Frame\nimport io.ktor.websocket.close\nimport io.ktor.websocket.readText\n\nactual class MobileWebSocketConnection(\n    private val session: DefaultClientWebSocketSession,\n) {\n    actual suspend fun send(msg: String) {\n        session.send(Frame.Text(msg))\n    }\n\n    actual suspend fun receive(): String? {\n        return when (val frame = session.incoming.receive()) {\n            is Frame.Text -> frame.readText()\n            else -> null\n        }\n    }\n\n    actual suspend fun close() {\n        session.close(CloseReason(CloseReason.Codes.NORMAL, \"Closed\"))\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front-mobile/src/iosMain/kotlin/net/kigawa/keruta/ktcl/mobile/connection/MobileWebSocketConnection.ios.kt b/ktcl-front-mobile/src/iosMain/kotlin/net/kigawa/keruta/ktcl/mobile/connection/MobileWebSocketConnection.ios.kt
+--- a/ktcl-front-mobile/src/iosMain/kotlin/net/kigawa/keruta/ktcl/mobile/connection/MobileWebSocketConnection.ios.kt	(revision 8e3a1d14fdd97fa8687761a0deb185748dd8f780)
++++ b/ktcl-front-mobile/src/iosMain/kotlin/net/kigawa/keruta/ktcl/mobile/connection/MobileWebSocketConnection.ios.kt	(date 1771396463325)
+@@ -4,20 +4,22 @@
+ import io.ktor.websocket.CloseReason
+ import io.ktor.websocket.Frame
+ import io.ktor.websocket.close
+-import io.ktor.websocket.readText
++import kotlinx.coroutines.flow.MutableSharedFlow
++import kotlinx.coroutines.flow.SharedFlow
++import kotlinx.coroutines.flow.asSharedFlow
+ 
+ actual class MobileWebSocketConnection(
+     private val session: DefaultClientWebSocketSession,
+ ) {
++    private val _messages = MutableSharedFlow<String>()
++    actual val messages: SharedFlow<String> = _messages.asSharedFlow()
++
+     actual suspend fun send(msg: String) {
+         session.send(Frame.Text(msg))
+     }
+ 
+-    actual suspend fun receive(): String? {
+-        return when (val frame = session.incoming.receive()) {
+-            is Frame.Text -> frame.readText()
+-            else -> null
+-        }
++    suspend fun onMessageReceived(text: String) {
++        _messages.emit(text)
+     }
+ 
+     actual suspend fun close() {
+Index: ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/ui/screen/QueueListScreen.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.mobile.ui.screen\n\nimport androidx.compose.foundation.clickable\nimport androidx.compose.foundation.layout.Arrangement\nimport androidx.compose.foundation.layout.Column\nimport androidx.compose.foundation.layout.PaddingValues\nimport androidx.compose.foundation.layout.Row\nimport androidx.compose.foundation.layout.Spacer\nimport androidx.compose.foundation.layout.fillMaxSize\nimport androidx.compose.foundation.layout.fillMaxWidth\nimport androidx.compose.foundation.layout.height\nimport androidx.compose.foundation.layout.padding\nimport androidx.compose.foundation.lazy.LazyColumn\nimport androidx.compose.foundation.lazy.items\nimport androidx.compose.material3.Card\nimport androidx.compose.material3.CardDefaults\nimport androidx.compose.material3.MaterialTheme\nimport androidx.compose.material3.Text\nimport androidx.compose.runtime.Composable\nimport androidx.compose.runtime.LaunchedEffect\nimport androidx.compose.runtime.collectAsState\nimport androidx.compose.runtime.getValue\nimport androidx.compose.ui.Alignment\nimport androidx.compose.ui.Modifier\nimport androidx.compose.ui.unit.dp\nimport net.kigawa.keruta.ktcl.mobile.msg.queue.Queue\nimport net.kigawa.keruta.ktcl.mobile.ui.components.ErrorMessage\nimport net.kigawa.keruta.ktcl.mobile.ui.components.LoadingIndicator\nimport net.kigawa.keruta.ktcl.mobile.ui.components.PrimaryButton\nimport net.kigawa.keruta.ktcl.mobile.viewmodel.QueueListViewModel\n\n@Composable\nfun QueueListScreen(\n    viewModel: QueueListViewModel,\n    onQueueClick: (Long) -> Unit,\n    onCreateQueueClick: () -> Unit,\n    modifier: Modifier = Modifier,\n) {\n    val state by viewModel.state.collectAsState()\n\n    LaunchedEffect(Unit) {\n        viewModel.loadQueues()\n    }\n\n    Column(\n        modifier = modifier\n            .fillMaxSize()\n            .padding(16.dp),\n    ) {\n        Row(\n            modifier = Modifier.fillMaxWidth(),\n            horizontalArrangement = Arrangement.SpaceBetween,\n            verticalAlignment = Alignment.CenterVertically,\n        ) {\n            Text(\n                text = \"キュー一覧\",\n                style = MaterialTheme.typography.headlineMedium,\n            )\n            PrimaryButton(\n                text = \"新規作成\",\n                onClick = onCreateQueueClick,\n            )\n        }\n\n        Spacer(modifier = Modifier.height(16.dp))\n\n        state.errorMessage?.let { error ->\n            ErrorMessage(message = error)\n            Spacer(modifier = Modifier.height(16.dp))\n        }\n\n        when {\n            state.isLoading -> {\n                LoadingIndicator()\n            }\n            state.queues.isEmpty() -> {\n                Column(\n                    modifier = Modifier.fillMaxSize(),\n                    horizontalAlignment = Alignment.CenterHorizontally,\n                    verticalArrangement = Arrangement.Center,\n                ) {\n                    Text(\n                        text = \"キューがありません\",\n                        style = MaterialTheme.typography.bodyLarge,\n                        color = MaterialTheme.colorScheme.onSurfaceVariant,\n                    )\n                }\n            }\n            else -> {\n                LazyColumn(\n                    contentPadding = PaddingValues(vertical = 8.dp),\n                    verticalArrangement = Arrangement.spacedBy(8.dp),\n                ) {\n                    items(state.queues) { queue ->\n                        QueueCard(\n                            queue = queue,\n                            onClick = { onQueueClick(queue.id) },\n                        )\n                    }\n                }\n            }\n        }\n    }\n}\n\n@Composable\nprivate fun QueueCard(\n    queue: Queue,\n    onClick: () -> Unit,\n    modifier: Modifier = Modifier,\n) {\n    Card(\n        modifier = modifier\n            .fillMaxWidth()\n            .clickable(onClick = onClick),\n        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),\n    ) {\n        Column(\n            modifier = Modifier.padding(16.dp),\n        ) {\n            Text(\n                text = queue.name,\n                style = MaterialTheme.typography.titleMedium,\n            )\n            Spacer(modifier = Modifier.height(4.dp))\n            Text(\n                text = \"ID: ${queue.id}\",\n                style = MaterialTheme.typography.bodySmall,\n                color = MaterialTheme.colorScheme.onSurfaceVariant,\n            )\n        }\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/ui/screen/QueueListScreen.kt b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/ui/screen/QueueListScreen.kt
+--- a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/ui/screen/QueueListScreen.kt	(revision 8e3a1d14fdd97fa8687761a0deb185748dd8f780)
++++ b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/ui/screen/QueueListScreen.kt	(date 1771395176516)
+@@ -39,6 +39,7 @@
+     val state by viewModel.state.collectAsState()
+ 
+     LaunchedEffect(Unit) {
++        println("=== QueueListScreen: LaunchedEffect triggered ===")
+         viewModel.loadQueues()
+     }
+ 
+Index: ktcl-front-mobile/src/androidMain/kotlin/net/kigawa/keruta/ktcl/mobile/connection/MobileWebSocketConnection.android.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.mobile.connection\n\nimport io.ktor.client.plugins.websocket.DefaultClientWebSocketSession\nimport io.ktor.websocket.CloseReason\nimport io.ktor.websocket.Frame\nimport io.ktor.websocket.close\nimport io.ktor.websocket.readText\n\nactual class MobileWebSocketConnection(\n    private val session: DefaultClientWebSocketSession,\n) {\n    actual suspend fun send(msg: String) {\n        session.send(Frame.Text(msg))\n    }\n\n    actual suspend fun receive(): String? {\n        return when (val frame = session.incoming.receive()) {\n            is Frame.Text -> frame.readText()\n            else -> null\n        }\n    }\n\n    actual suspend fun close() {\n        session.close(CloseReason(CloseReason.Codes.NORMAL, \"Closed\"))\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front-mobile/src/androidMain/kotlin/net/kigawa/keruta/ktcl/mobile/connection/MobileWebSocketConnection.android.kt b/ktcl-front-mobile/src/androidMain/kotlin/net/kigawa/keruta/ktcl/mobile/connection/MobileWebSocketConnection.android.kt
+--- a/ktcl-front-mobile/src/androidMain/kotlin/net/kigawa/keruta/ktcl/mobile/connection/MobileWebSocketConnection.android.kt	(revision 8e3a1d14fdd97fa8687761a0deb185748dd8f780)
++++ b/ktcl-front-mobile/src/androidMain/kotlin/net/kigawa/keruta/ktcl/mobile/connection/MobileWebSocketConnection.android.kt	(date 1771396540736)
+@@ -5,19 +5,22 @@
+ import io.ktor.websocket.Frame
+ import io.ktor.websocket.close
+ import io.ktor.websocket.readText
++import kotlinx.coroutines.flow.MutableSharedFlow
++import kotlinx.coroutines.flow.SharedFlow
++import kotlinx.coroutines.flow.asSharedFlow
+ 
+ actual class MobileWebSocketConnection(
+     private val session: DefaultClientWebSocketSession,
+ ) {
++    private val _messages = MutableSharedFlow<String>()
++    actual val messages: SharedFlow<String> = _messages.asSharedFlow()
++
+     actual suspend fun send(msg: String) {
+         session.send(Frame.Text(msg))
+     }
+ 
+-    actual suspend fun receive(): String? {
+-        return when (val frame = session.incoming.receive()) {
+-            is Frame.Text -> frame.readText()
+-            else -> null
+-        }
++    suspend fun onMessageReceived(text: String) {
++        _messages.emit(text)
+     }
+ 
+     actual suspend fun close() {
+Index: ktcl-front-mobile/src/androidMain/kotlin/net/kigawa/keruta/ktcl/mobile/connection/ConnectionManager.android.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.mobile.connection\n\nimport io.ktor.client.HttpClient\nimport io.ktor.client.engine.okhttp.OkHttp\nimport io.ktor.client.plugins.websocket.WebSockets\nimport io.ktor.client.plugins.websocket.webSocket\nimport net.kigawa.keruta.ktcl.mobile.config.MobileConfig\n\nactual class ConnectionManager actual constructor(\n    private val config: MobileConfig,\n) {\n    private val client = HttpClient(OkHttp) {\n        install(WebSockets)\n    }\n\n    actual suspend fun connect(): MobileKtcpConnection {\n        var connection: MobileWebSocketConnection? = null\n\n        client.webSocket(config.websocketUrl) {\n            connection = MobileWebSocketConnection(this)\n        }\n\n        return MobileKtcpConnection(\n            connection ?: throw IllegalStateException(\"WebSocket接続に失敗しました\"),\n        )\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front-mobile/src/androidMain/kotlin/net/kigawa/keruta/ktcl/mobile/connection/ConnectionManager.android.kt b/ktcl-front-mobile/src/androidMain/kotlin/net/kigawa/keruta/ktcl/mobile/connection/ConnectionManager.android.kt
+--- a/ktcl-front-mobile/src/androidMain/kotlin/net/kigawa/keruta/ktcl/mobile/connection/ConnectionManager.android.kt	(revision 8e3a1d14fdd97fa8687761a0deb185748dd8f780)
++++ b/ktcl-front-mobile/src/androidMain/kotlin/net/kigawa/keruta/ktcl/mobile/connection/ConnectionManager.android.kt	(date 1771396448545)
+@@ -3,7 +3,14 @@
+ import io.ktor.client.HttpClient
+ import io.ktor.client.engine.okhttp.OkHttp
+ import io.ktor.client.plugins.websocket.WebSockets
+-import io.ktor.client.plugins.websocket.webSocket
++import io.ktor.client.plugins.websocket.webSocketSession
++import io.ktor.websocket.Frame
++import io.ktor.websocket.readText
++import kotlinx.coroutines.CoroutineScope
++import kotlinx.coroutines.Dispatchers
++import kotlinx.coroutines.SupervisorJob
++import kotlinx.coroutines.cancel
++import kotlinx.coroutines.launch
+ import net.kigawa.keruta.ktcl.mobile.config.MobileConfig
+ 
+ actual class ConnectionManager actual constructor(
+@@ -13,15 +20,48 @@
+         install(WebSockets)
+     }
+ 
++    private var webSocketConnection: MobileWebSocketConnection? = null
++    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
++
+     actual suspend fun connect(): MobileKtcpConnection {
+-        var connection: MobileWebSocketConnection? = null
++        val session = client.webSocketSession(config.websocketUrl)
++        
++        webSocketConnection = MobileWebSocketConnection(session)
++
++        // メッセージ受信用の口を立ち上げる
++        scope.launch {
++            try {
++                println("=== ConnectionManager: starting message receiver ===")
++                while (true) {
++                    val frame = session.incoming.receive()
++                    when (frame) {
++                        is Frame.Text -> {
++                            val text = frame.readText()
++                            println("=== ConnectionManager: received: $text ===")
++                            webSocketConnection?.onMessageReceived(text)
++                        }
++                        is Frame.Close -> {
++                            println("=== ConnectionManager: connection closed ===")
++                            break
++                        }
++                        else -> {}
++                    }
++                }
++            } catch (e: Exception) {
++                println("=== ConnectionManager: error: ${e.message} ===")
++            }
++        }
+ 
+-        client.webSocket(config.websocketUrl) {
+-            connection = MobileWebSocketConnection(this)
+-        }
++        return MobileKtcpConnection(webSocketConnection!!)
++    }
+ 
+-        return MobileKtcpConnection(
+-            connection ?: throw IllegalStateException("WebSocket接続に失敗しました"),
+-        )
++    fun disconnect() {
++        scope.cancel()
++        webSocketConnection?.let { conn ->
++            CoroutineScope(Dispatchers.IO).launch {
++                conn.close()
++            }
++        }
++        webSocketConnection = null
+     }
+ }
+Index: ktcl-front-mobile/app/src/main/kotlin/net/kigawa/keruta/ktcl/mobile/app/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.mobile.app\n\nimport android.os.Bundle\nimport androidx.activity.ComponentActivity\nimport androidx.activity.compose.setContent\nimport androidx.activity.result.contract.ActivityResultContracts\nimport androidx.lifecycle.lifecycleScope\nimport kotlinx.coroutines.launch\nimport net.kigawa.keruta.ktcl.mobile.auth.TokenPair\nimport net.kigawa.keruta.ktcl.mobile.di.AndroidAppContainer\nimport net.kigawa.keruta.ktcl.mobile.navigation.Screen\nimport net.kigawa.keruta.ktcl.mobile.ui.App\n\nclass MainActivity : ComponentActivity() {\n    private lateinit var container: AndroidAppContainer\n\n    private val authLauncher = registerForActivityResult(\n        ActivityResultContracts.StartActivityForResult(),\n    ) { result ->\n        result.data?.let { intent ->\n            handleAuthorizationResponse(intent)\n        }\n    }\n\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n\n        container = AndroidAppContainer(this)\n        container.initialize()\n\n        setContent {\n            App(\n                container = container,\n                onLoginRequest = { startOidcLogin() },\n            )\n        }\n    }\n\n    private fun startOidcLogin() {\n        lifecycleScope.launch {\n            val intentResult = container.oidcAuthManager.getAuthorizationIntent()\n            intentResult.onSuccess { intent ->\n                authLauncher.launch(intent)\n            }.onFailure { error ->\n                container.authService.setError(error.message ?: \"認証エラー\")\n            }\n        }\n    }\n\n    private fun handleAuthorizationResponse(intent: android.content.Intent) {\n        val responseResult = container.oidcAuthManager.handleAuthorizationResponse(intent)\n\n        responseResult.onSuccess { response ->\n            lifecycleScope.launch {\n                val tokenResult = container.oidcAuthManager.exchangeToken(response)\n                tokenResult.onSuccess { accessToken ->\n                    container.secureStorage.saveUserToken(accessToken)\n                    val tokens = TokenPair(\n                        userToken = accessToken,\n                        serverToken = \"\",\n                    )\n                    container.authService.setAuthenticated(tokens)\n                    container.navigationController.navigateToRoot(Screen.QueueList)\n                }.onFailure { error ->\n                    container.authService.setError(error.message ?: \"トークン交換エラー\")\n                }\n            }\n        }.onFailure { error ->\n            container.authService.setError(error.message ?: \"認証レスポンスエラー\")\n        }\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front-mobile/app/src/main/kotlin/net/kigawa/keruta/ktcl/mobile/app/MainActivity.kt b/ktcl-front-mobile/app/src/main/kotlin/net/kigawa/keruta/ktcl/mobile/app/MainActivity.kt
+--- a/ktcl-front-mobile/app/src/main/kotlin/net/kigawa/keruta/ktcl/mobile/app/MainActivity.kt	(revision 8e3a1d14fdd97fa8687761a0deb185748dd8f780)
++++ b/ktcl-front-mobile/app/src/main/kotlin/net/kigawa/keruta/ktcl/mobile/app/MainActivity.kt	(date 1771392747182)
+@@ -48,24 +48,49 @@
+     }
+ 
+     private fun handleAuthorizationResponse(intent: android.content.Intent) {
++        println("=== handleAuthorizationResponse called ===")
+         val responseResult = container.oidcAuthManager.handleAuthorizationResponse(intent)
+ 
+         responseResult.onSuccess { response ->
++            println("=== handleAuthorizationResponse: response success ===")
+             lifecycleScope.launch {
+                 val tokenResult = container.oidcAuthManager.exchangeToken(response)
+                 tokenResult.onSuccess { accessToken ->
++                    println("=== handleAuthorizationResponse: got accessToken ===")
+                     container.secureStorage.saveUserToken(accessToken)
+-                    val tokens = TokenPair(
+-                        userToken = accessToken,
+-                        serverToken = "",
+-                    )
+-                    container.authService.setAuthenticated(tokens)
+-                    container.navigationController.navigateToRoot(Screen.QueueList)
++                    
++                    // サーバーからserverTokenを取得
++                    val serverTokenResult = container.tokenManager.getServerToken(accessToken)
++                    serverTokenResult.onSuccess { serverToken ->
++                        println("=== handleAuthorizationResponse: got serverToken ===")
++                        val tokens = TokenPair(
++                            userToken = accessToken,
++                            serverToken = serverToken,
++                        )
++                        container.authService.setAuthenticated(tokens)
++                        
++                        // WebSocketに接続
++                        container.connectWebSocket(
++                            onConnected = {
++                                println("=== handleAuthorizationResponse: WebSocket connected ===")
++                                container.navigationController.navigateToRoot(Screen.QueueList)
++                            },
++                            onError = { error ->
++                                println("=== handleAuthorizationResponse: WebSocket error: ${error.message} ===")
++                                container.authService.setError("WebSocket接続に失敗しました: ${error.message}")
++                            }
++                        )
++                    }.onFailure { error ->
++                        println("=== handleAuthorizationResponse: serverToken error: ${error.message} ===")
++                        container.authService.setError("サーバーtoken取得エラー: ${error.message}")
++                    }
+                 }.onFailure { error ->
++                    println("=== handleAuthorizationResponse: exchangeToken error: ${error.message} ===")
+                     container.authService.setError(error.message ?: "トークン交換エラー")
+                 }
+             }
+         }.onFailure { error ->
++            println("=== handleAuthorizationResponse: response error: ${error.message} ===")
+             container.authService.setError(error.message ?: "認証レスポンスエラー")
+         }
+     }
+Index: ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/ProviderListViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.mobile.viewmodel\n\nimport kotlinx.coroutines.launch\nimport net.kigawa.keruta.ktcl.mobile.msg.provider.Provider\nimport net.kigawa.keruta.ktcl.mobile.provider.ProviderRepository\nimport net.kigawa.keruta.ktcl.mobile.service.MessageSender\n\ndata class ProviderListViewState(\n    val providers: List<Provider> = emptyList(),\n    val isLoading: Boolean = false,\n    val errorMessage: String? = null,\n)\n\nclass ProviderListViewModel(\n    private val providerRepository: ProviderRepository,\n    private val messageSender: MessageSender,\n) : BaseViewModel<ProviderListViewState>(ProviderListViewState()) {\n\n    init {\n        viewModelScope.launch {\n            providerRepository.providers.collect { providers ->\n                updateState { it.copy(providers = providers, isLoading = false) }\n            }\n        }\n    }\n\n    fun loadProviders() {\n        viewModelScope.launch {\n            updateState { it.copy(isLoading = true, errorMessage = null) }\n            try {\n                messageSender.sendProviderList()\n            } catch (e: Exception) {\n                updateState { it.copy(isLoading = false, errorMessage = e.message) }\n            }\n        }\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/ProviderListViewModel.kt b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/ProviderListViewModel.kt
+--- a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/ProviderListViewModel.kt	(revision 8e3a1d14fdd97fa8687761a0deb185748dd8f780)
++++ b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/ProviderListViewModel.kt	(date 1771390902042)
+@@ -1,8 +1,11 @@
+ package net.kigawa.keruta.ktcl.mobile.viewmodel
+ 
++import kotlinx.coroutines.flow.first
+ import kotlinx.coroutines.launch
++import net.kigawa.keruta.ktcl.mobile.auth.AuthState
+ import net.kigawa.keruta.ktcl.mobile.msg.provider.Provider
+ import net.kigawa.keruta.ktcl.mobile.provider.ProviderRepository
++import net.kigawa.keruta.ktcl.mobile.service.AuthService
+ import net.kigawa.keruta.ktcl.mobile.service.MessageSender
+ 
+ data class ProviderListViewState(
+@@ -14,6 +17,7 @@
+ class ProviderListViewModel(
+     private val providerRepository: ProviderRepository,
+     private val messageSender: MessageSender,
++    private val authService: AuthService,
+ ) : BaseViewModel<ProviderListViewState>(ProviderListViewState()) {
+ 
+     init {
+@@ -28,6 +32,20 @@
+         viewModelScope.launch {
+             updateState { it.copy(isLoading = true, errorMessage = null) }
+             try {
++                // 接続が確立されるまで待つ
++                val connection = messageSender.connection.first { it != null }
++                if (connection == null) {
++                    updateState { it.copy(isLoading = false, errorMessage = "WebSocket接続に失敗しました") }
++                    return@launch
++                }
++                
++                // 認証が完了するまで待つ
++                val authState = authService.authState.first { it is AuthState.Authenticated }
++                if (authState !is AuthState.Authenticated) {
++                    updateState { it.copy(isLoading = false, errorMessage = "認証に失敗しました") }
++                    return@launch
++                }
++                
+                 messageSender.sendProviderList()
+             } catch (e: Exception) {
+                 updateState { it.copy(isLoading = false, errorMessage = e.message) }
+Index: ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/di/AppContainer.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.mobile.di\n\nimport io.ktor.client.HttpClient\nimport io.ktor.client.plugins.contentnegotiation.ContentNegotiation\nimport io.ktor.serialization.kotlinx.json.json\nimport kotlinx.serialization.json.Json\nimport net.kigawa.keruta.ktcl.mobile.auth.OidcAuthManager\nimport net.kigawa.keruta.ktcl.mobile.auth.TokenManager\nimport net.kigawa.keruta.ktcl.mobile.config.MobileConfig\nimport net.kigawa.keruta.ktcl.mobile.connection.ConnectionManager\nimport net.kigawa.keruta.ktcl.mobile.navigation.NavigationController\nimport net.kigawa.keruta.ktcl.mobile.navigation.Screen\nimport net.kigawa.keruta.ktcl.mobile.provider.ProviderRepository\nimport net.kigawa.keruta.ktcl.mobile.queue.QueueRepository\nimport net.kigawa.keruta.ktcl.mobile.service.AuthService\nimport net.kigawa.keruta.ktcl.mobile.service.MessageSender\nimport net.kigawa.keruta.ktcl.mobile.storage.SecureStorage\nimport net.kigawa.keruta.ktcl.mobile.task.TaskRepository\nimport net.kigawa.keruta.ktcl.mobile.viewmodel.AuthViewModel\nimport net.kigawa.keruta.ktcl.mobile.viewmodel.ProviderListViewModel\nimport net.kigawa.keruta.ktcl.mobile.viewmodel.QueueCreateViewModel\nimport net.kigawa.keruta.ktcl.mobile.viewmodel.QueueDetailViewModel\nimport net.kigawa.keruta.ktcl.mobile.viewmodel.QueueListViewModel\n\nopen class AppContainer(\n    val config: MobileConfig = MobileConfig.default(),\n) {\n    val json = Json {\n        ignoreUnknownKeys = true\n        isLenient = true\n    }\n\n    val httpClient by lazy {\n        HttpClient {\n            install(ContentNegotiation) {\n                json(json)\n            }\n        }\n    }\n\n    val secureStorage by lazy { SecureStorage() }\n\n    val oidcAuthManager by lazy { OidcAuthManager(config) }\n\n    val tokenManager by lazy {\n        TokenManager(oidcAuthManager, secureStorage, config, httpClient)\n    }\n\n    val connectionManager by lazy { ConnectionManager(config) }\n\n    val messageSender by lazy { MessageSender() }\n\n    val authService by lazy { AuthService(messageSender) }\n\n    val queueRepository by lazy { QueueRepository() }\n\n    val taskRepository by lazy { TaskRepository() }\n\n    val providerRepository by lazy { ProviderRepository() }\n\n    val navigationController by lazy { NavigationController(Screen.Login) }\n\n    fun createAuthViewModel(): AuthViewModel {\n        return AuthViewModel(authService)\n    }\n\n    fun createQueueListViewModel(): QueueListViewModel {\n        return QueueListViewModel(queueRepository, messageSender)\n    }\n\n    fun createQueueCreateViewModel(): QueueCreateViewModel {\n        return QueueCreateViewModel(providerRepository, messageSender)\n    }\n\n    fun createQueueDetailViewModel(): QueueDetailViewModel {\n        return QueueDetailViewModel(taskRepository, messageSender)\n    }\n\n    fun createProviderListViewModel(): ProviderListViewModel {\n        return ProviderListViewModel(providerRepository, messageSender)\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/di/AppContainer.kt b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/di/AppContainer.kt
+--- a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/di/AppContainer.kt	(revision 8e3a1d14fdd97fa8687761a0deb185748dd8f780)
++++ b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/di/AppContainer.kt	(date 1771395443918)
+@@ -3,7 +3,12 @@
+ import io.ktor.client.HttpClient
+ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+ import io.ktor.serialization.kotlinx.json.json
++import kotlinx.coroutines.CoroutineScope
++import kotlinx.coroutines.Dispatchers
++import kotlinx.coroutines.SupervisorJob
++import kotlinx.coroutines.launch
+ import kotlinx.serialization.json.Json
++import net.kigawa.keruta.ktcl.mobile.auth.AuthState
+ import net.kigawa.keruta.ktcl.mobile.auth.OidcAuthManager
+ import net.kigawa.keruta.ktcl.mobile.auth.TokenManager
+ import net.kigawa.keruta.ktcl.mobile.config.MobileConfig
+@@ -13,6 +18,7 @@
+ import net.kigawa.keruta.ktcl.mobile.provider.ProviderRepository
+ import net.kigawa.keruta.ktcl.mobile.queue.QueueRepository
+ import net.kigawa.keruta.ktcl.mobile.service.AuthService
++import net.kigawa.keruta.ktcl.mobile.service.MessageHandler
+ import net.kigawa.keruta.ktcl.mobile.service.MessageSender
+ import net.kigawa.keruta.ktcl.mobile.storage.SecureStorage
+ import net.kigawa.keruta.ktcl.mobile.task.TaskRepository
+@@ -58,25 +64,75 @@
+ 
+     val providerRepository by lazy { ProviderRepository() }
+ 
++    private val messageHandlerScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
++    val messageHandler by lazy {
++        MessageHandler(messageSender, queueRepository, taskRepository, providerRepository, messageHandlerScope)
++    }
++
+     val navigationController by lazy { NavigationController(Screen.Login) }
+ 
++    // WebSocket接続 состояние
++    private var _isWebSocketConnected = false
++    val isWebSocketConnected: Boolean get() = _isWebSocketConnected
++
++    /**
++     * WebSocketに接続し、messageSenderに設定する
++     * 接続後に自動て認証メッセージを送信する
++     */
++    fun connectWebSocket(onConnected: () -> Unit = {}, onError: (Throwable) -> Unit = {}) {
++        println("=== connectWebSocket called ===")
++        if (_isWebSocketConnected) {
++            println("=== connectWebSocket: already connected ===")
++            onConnected()
++            return
++        }
++        
++        CoroutineScope(Dispatchers.Main).launch {
++            try {
++                println("=== connectWebSocket: connecting... ===")
++                val connection = connectionManager.connect()
++                println("=== connectWebSocket: connected, setting connection ===")
++                messageSender.setConnection(connection)
++                _isWebSocketConnected = true
++                
++                // Start message handler to receive responses
++                messageHandler.start()
++                
++                // 認証メッセージを送信（トークンが设定されている场合）
++                val authState = authService.authState.value
++                println("=== connectWebSocket: authState = $authState ===")
++                if (authState is AuthState.Authenticated) {
++                    println("=== connectWebSocket: sending authentication ===")
++                    authService.sendAuthentication(authState.tokens.userToken, authState.tokens.serverToken)
++                }
++                
++                println("=== connectWebSocket: calling onConnected ===")
++                onConnected()
++            } catch (e: Exception) {
++                println("=== connectWebSocket: ERROR: ${e.message} ===")
++                _isWebSocketConnected = false
++                onError(e)
++            }
++        }
++    }
++
+     fun createAuthViewModel(): AuthViewModel {
+-        return AuthViewModel(authService)
++        return AuthViewModel(authService, this)
+     }
+ 
+     fun createQueueListViewModel(): QueueListViewModel {
+-        return QueueListViewModel(queueRepository, messageSender)
++        return QueueListViewModel(queueRepository, messageSender, authService)
+     }
+ 
+     fun createQueueCreateViewModel(): QueueCreateViewModel {
+-        return QueueCreateViewModel(providerRepository, messageSender)
++        return QueueCreateViewModel(providerRepository, messageSender, authService)
+     }
+ 
+     fun createQueueDetailViewModel(): QueueDetailViewModel {
+-        return QueueDetailViewModel(taskRepository, messageSender)
++        return QueueDetailViewModel(taskRepository, messageSender, authService)
+     }
+ 
+     fun createProviderListViewModel(): ProviderListViewModel {
+-        return ProviderListViewModel(providerRepository, messageSender)
++        return ProviderListViewModel(providerRepository, messageSender, authService)
+     }
+ }
+Index: .idea/deploymentTargetSelector.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/deploymentTargetSelector.xml b/.idea/deploymentTargetSelector.xml
+new file mode 100644
+--- /dev/null	(date 1771391177734)
++++ b/.idea/deploymentTargetSelector.xml	(date 1771391177734)
+@@ -0,0 +1,10 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="deploymentTargetSelector">
++    <selectionStates>
++      <SelectionState runConfigName="ktcl-front-mobile.app">
++        <option name="selectionMode" value="DROPDOWN" />
++      </SelectionState>
++    </selectionStates>
++  </component>
++</project>
+\ No newline at end of file
+Index: ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/connection/MobileWebSocketConnection.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.mobile.connection\n\nimport net.kigawa.keruta.ktcp.client.KtcpConnection\n\n@Suppress(\"EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING\")\nexpect class MobileWebSocketConnection {\n    suspend fun send(msg: String)\n    suspend fun receive(): String?\n    suspend fun close()\n}\n\nclass MobileKtcpConnection(\n    private val connection: MobileWebSocketConnection,\n) : KtcpConnection {\n    override suspend fun send(msg: String) = connection.send(msg)\n\n    suspend fun receive(): String? = connection.receive()\n\n    @Suppress(\"unused\")\n    suspend fun close() = connection.close()\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/connection/MobileWebSocketConnection.kt b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/connection/MobileWebSocketConnection.kt
+--- a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/connection/MobileWebSocketConnection.kt	(revision 8e3a1d14fdd97fa8687761a0deb185748dd8f780)
++++ b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/connection/MobileWebSocketConnection.kt	(date 1771395720683)
+@@ -1,20 +1,21 @@
+ package net.kigawa.keruta.ktcl.mobile.connection
+ 
++import kotlinx.coroutines.flow.SharedFlow
+ import net.kigawa.keruta.ktcp.client.KtcpConnection
+ 
+ @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
+ expect class MobileWebSocketConnection {
+     suspend fun send(msg: String)
+-    suspend fun receive(): String?
+     suspend fun close()
++    val messages: SharedFlow<String>
+ }
+ 
+ class MobileKtcpConnection(
+     private val connection: MobileWebSocketConnection,
+ ) : KtcpConnection {
+     override suspend fun send(msg: String) = connection.send(msg)
+-
+-    suspend fun receive(): String? = connection.receive()
++    
++    val messages: SharedFlow<String> = connection.messages
+ 
+     @Suppress("unused")
+     suspend fun close() = connection.close()
+Index: ktcl-front/app/components/form/FormProviderInput.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import FormErrMsg from \"./FormErrMsg\";\nimport {InputValue} from \"./FormTextInput\";\nimport {useEffect, useState} from \"react\";\nimport {ClientProviderListMsg, ServerProviderListMsg} from \"../../msg/provider\";\nimport useWsReceive from \"../websocket/useWsReceive\";\n\nimport {useKerutaTaskState} from \"../AppContext\";\nimport {useWsState} from \"../useServiceHooks\";\n\n\ntype Provider = ClientProviderListMsg[\"providers\"][0]\nexport default function FormProviderInput(\n    {\n        label,\n        id,\n        value,\n        onChange,\n    }: {\n        label: string,\n        id: string,\n        value: InputValue,\n        onChange: (value: InputValue) => void,\n    },\n) {\n    const [providers, setProviders] = useState<Provider[]>()\n    const wsState = useWsState()\n    const keruta = useKerutaTaskState()\n    useWsReceive(wsState, msg => {\n        if (msg.type != \"provider_listed\") return\n        setProviders(msg.providers)\n    }, [])\n    useEffect(() => {\n        if (wsState.state != \"open\") return\n        if (keruta.state != \"connected\") return;\n        if (keruta.auth.state != \"authenticated\") return;\n        const res: ServerProviderListMsg = {\n            type: \"provider_list\",\n        }\n        wsState.websocket.send(JSON.stringify(res))\n    }, [wsState.state, keruta.state == \"connected\" && keruta.auth.state]);\n    return (\n        <div>\n            <label htmlFor={id} className=\"block text-sm font-medium text-gray-700 mb-2\">\n                {label}\n            </label>\n            <select\n                id={id}\n                value={value.value}\n                onChange={\n                    (e) => onChange({value: e.target.value, error: undefined})\n                }\n                className={\n                    \"w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2\" +\n                    \" focus:ring-blue-500\"\n                }\n            >\n                <option value=\"\">--- 選択 ---</option>\n                {providers?.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}\n            </select>\n            <FormErrMsg err={value.error}/>\n        </div>\n    )\n}\n\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front/app/components/form/FormProviderInput.tsx b/ktcl-front/app/components/form/FormProviderInput.tsx
+--- a/ktcl-front/app/components/form/FormProviderInput.tsx	(revision 8e3a1d14fdd97fa8687761a0deb185748dd8f780)
++++ b/ktcl-front/app/components/form/FormProviderInput.tsx	(date 1771390741215)
+@@ -37,7 +37,7 @@
+             type: "provider_list",
+         }
+         wsState.websocket.send(JSON.stringify(res))
+-    }, [wsState.state, keruta.state == "connected" && keruta.auth.state]);
++    }, [wsState.state, keruta.state, keruta.auth.state]);
+     return (
+         <div>
+             <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-2">
+Index: ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/QueueCreateViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.mobile.viewmodel\n\nimport kotlinx.coroutines.launch\nimport net.kigawa.keruta.ktcl.mobile.msg.provider.Provider\nimport net.kigawa.keruta.ktcl.mobile.provider.ProviderRepository\nimport net.kigawa.keruta.ktcl.mobile.service.MessageSender\n\ndata class QueueCreateViewState(\n    val name: String = \"\",\n    val selectedProviderId: Long? = null,\n    val providers: List<Provider> = emptyList(),\n    val isLoading: Boolean = false,\n    val isCreated: Boolean = false,\n    val errorMessage: String? = null,\n)\n\nclass QueueCreateViewModel(\n    private val providerRepository: ProviderRepository,\n    private val messageSender: MessageSender,\n) : BaseViewModel<QueueCreateViewState>(QueueCreateViewState()) {\n\n    init {\n        viewModelScope.launch {\n            providerRepository.providers.collect { providers ->\n                updateState { it.copy(providers = providers) }\n            }\n        }\n    }\n\n    fun loadProviders() {\n        viewModelScope.launch {\n            updateState { it.copy(isLoading = true) }\n            try {\n                messageSender.sendProviderList()\n            } catch (e: Exception) {\n                updateState { it.copy(isLoading = false, errorMessage = e.message) }\n            }\n        }\n    }\n\n    fun setName(name: String) {\n        updateState { it.copy(name = name) }\n    }\n\n    fun setSelectedProvider(providerId: Long) {\n        updateState { it.copy(selectedProviderId = providerId) }\n    }\n\n    fun createQueue() {\n        val currentState = _state.value\n        val providerId = currentState.selectedProviderId\n        val name = currentState.name\n\n        if (providerId == null) {\n            updateState { it.copy(errorMessage = \"プロバイダーを選択してください\") }\n            return\n        }\n\n        if (name.isBlank()) {\n            updateState { it.copy(errorMessage = \"キュー名を入力してください\") }\n            return\n        }\n\n        viewModelScope.launch {\n            updateState { it.copy(isLoading = true, errorMessage = null) }\n            try {\n                messageSender.sendQueueCreate(providerId, name)\n                updateState { it.copy(isLoading = false, isCreated = true) }\n            } catch (e: Exception) {\n                updateState { it.copy(isLoading = false, errorMessage = e.message) }\n            }\n        }\n    }\n\n    fun resetCreatedState() {\n        updateState { it.copy(isCreated = false) }\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/QueueCreateViewModel.kt b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/QueueCreateViewModel.kt
+--- a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/QueueCreateViewModel.kt	(revision 8e3a1d14fdd97fa8687761a0deb185748dd8f780)
++++ b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/QueueCreateViewModel.kt	(date 1771390888516)
+@@ -1,8 +1,11 @@
+ package net.kigawa.keruta.ktcl.mobile.viewmodel
+ 
++import kotlinx.coroutines.flow.first
+ import kotlinx.coroutines.launch
++import net.kigawa.keruta.ktcl.mobile.auth.AuthState
+ import net.kigawa.keruta.ktcl.mobile.msg.provider.Provider
+ import net.kigawa.keruta.ktcl.mobile.provider.ProviderRepository
++import net.kigawa.keruta.ktcl.mobile.service.AuthService
+ import net.kigawa.keruta.ktcl.mobile.service.MessageSender
+ 
+ data class QueueCreateViewState(
+@@ -17,6 +20,7 @@
+ class QueueCreateViewModel(
+     private val providerRepository: ProviderRepository,
+     private val messageSender: MessageSender,
++    private val authService: AuthService,
+ ) : BaseViewModel<QueueCreateViewState>(QueueCreateViewState()) {
+ 
+     init {
+@@ -31,6 +35,20 @@
+         viewModelScope.launch {
+             updateState { it.copy(isLoading = true) }
+             try {
++                // 接続が確立されるまで待つ
++                val connection = messageSender.connection.first { it != null }
++                if (connection == null) {
++                    updateState { it.copy(isLoading = false, errorMessage = "WebSocket接続に失敗しました") }
++                    return@launch
++                }
++                
++                // 認証が完了するまで待つ
++                val authState = authService.authState.first { it is AuthState.Authenticated }
++                if (authState !is AuthState.Authenticated) {
++                    updateState { it.copy(isLoading = false, errorMessage = "認証に失敗しました") }
++                    return@launch
++                }
++                
+                 messageSender.sendProviderList()
+             } catch (e: Exception) {
+                 updateState { it.copy(isLoading = false, errorMessage = e.message) }
+@@ -64,6 +82,20 @@
+         viewModelScope.launch {
+             updateState { it.copy(isLoading = true, errorMessage = null) }
+             try {
++                // 接続が確立されるまで待つ
++                val connection = messageSender.connection.first { it != null }
++                if (connection == null) {
++                    updateState { it.copy(isLoading = false, errorMessage = "WebSocket接続に失敗しました") }
++                    return@launch
++                }
++                
++                // 認証が完了するまで待つ
++                val authState = authService.authState.first { it is AuthState.Authenticated }
++                if (authState !is AuthState.Authenticated) {
++                    updateState { it.copy(isLoading = false, errorMessage = "認証に失敗しました") }
++                    return@launch
++                }
++                
+                 messageSender.sendQueueCreate(providerId, name)
+                 updateState { it.copy(isLoading = false, isCreated = true) }
+             } catch (e: Exception) {
+Index: ktcl-front-mobile/app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\">\n\n    <uses-permission android:name=\"android.permission.INTERNET\" />\n\n    <application\n        android:allowBackup=\"true\"\n        android:label=\"Keruta Mobile\"\n        android:supportsRtl=\"true\">\n\n        <activity\n            android:name=\".MainActivity\"\n            android:exported=\"true\"\n            android:theme=\"@android:style/Theme.Material.Light.NoActionBar\">\n            <intent-filter>\n                <action android:name=\"android.intent.action.MAIN\" />\n                <category android:name=\"android.intent.category.LAUNCHER\" />\n            </intent-filter>\n\n            <!-- OAuth Redirect -->\n            <intent-filter>\n                <action android:name=\"android.intent.action.VIEW\" />\n                <category android:name=\"android.intent.category.DEFAULT\" />\n                <category android:name=\"android.intent.category.BROWSABLE\" />\n                <data\n                    android:scheme=\"net.kigawa.keruta.mobile\"\n                    android:host=\"oauth2redirect\" />\n            </intent-filter>\n        </activity>\n\n    </application>\n\n</manifest>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front-mobile/app/src/main/AndroidManifest.xml b/ktcl-front-mobile/app/src/main/AndroidManifest.xml
+--- a/ktcl-front-mobile/app/src/main/AndroidManifest.xml	(revision 8e3a1d14fdd97fa8687761a0deb185748dd8f780)
++++ b/ktcl-front-mobile/app/src/main/AndroidManifest.xml	(date 1771394699876)
+@@ -6,7 +6,8 @@
+     <application
+         android:allowBackup="true"
+         android:label="Keruta Mobile"
+-        android:supportsRtl="true">
++        android:supportsRtl="true"
++        android:usesCleartextTraffic="false">
+ 
+         <activity
+             android:name=".MainActivity"
+Index: ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/config/MobileConfig.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.mobile.config\n\ndata class MobileConfig(\n    val websocketUrl: String,\n    val keycloakUrl: String,\n    val keycloakRealm: String,\n    val keycloakClientId: String,\n    val apiBaseUrl: String,\n    val ktseAudience: String,\n) {\n    companion object {\n        fun default(): MobileConfig {\n            return MobileConfig(\n                websocketUrl = \"ws://localhost:8080/ws/ktcp\",\n                keycloakUrl = \"https://user.kigawa.net/\",\n                keycloakRealm = \"develop\",\n                keycloakClientId = \"keruta\",\n                apiBaseUrl = \"http://localhost:5173/\",\n                ktseAudience = \"keruta\",\n            )\n        }\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/config/MobileConfig.kt b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/config/MobileConfig.kt
+--- a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/config/MobileConfig.kt	(revision 8e3a1d14fdd97fa8687761a0deb185748dd8f780)
++++ b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/config/MobileConfig.kt	(date 1771394922366)
+@@ -11,11 +11,11 @@
+     companion object {
+         fun default(): MobileConfig {
+             return MobileConfig(
+-                websocketUrl = "ws://localhost:8080/ws/ktcp",
++                websocketUrl = "wss://ktse-dev.kigawa.net/ws/ktcp",
+                 keycloakUrl = "https://user.kigawa.net/",
+                 keycloakRealm = "develop",
+                 keycloakClientId = "keruta",
+-                apiBaseUrl = "http://localhost:5173/",
++                apiBaseUrl = "https://keruta-dev.kigawa.net/",
+                 ktseAudience = "keruta",
+             )
+         }
+Index: ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/AuthViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.mobile.viewmodel\n\nimport kotlinx.coroutines.launch\nimport net.kigawa.keruta.ktcl.mobile.auth.AuthState\nimport net.kigawa.keruta.ktcl.mobile.auth.TokenPair\nimport net.kigawa.keruta.ktcl.mobile.service.AuthService\n\ndata class AuthViewState(\n    val isLoading: Boolean = false,\n    val authState: AuthState = AuthState.Unauthenticated,\n    val errorMessage: String? = null,\n)\n\nclass AuthViewModel(\n    private val authService: AuthService,\n) : BaseViewModel<AuthViewState>(AuthViewState()) {\n\n    init {\n        viewModelScope.launch {\n            authService.authState.collect { authState ->\n                updateState { it.copy(authState = authState) }\n            }\n        }\n    }\n\n    fun startLogin() {\n        updateState { it.copy(isLoading = true, errorMessage = null) }\n        authService.setAuthenticating()\n    }\n\n    fun onLoginSuccess(tokens: TokenPair) {\n        updateState { it.copy(isLoading = false) }\n        authService.setAuthenticated(tokens)\n    }\n\n    fun onLoginError(message: String) {\n        updateState { it.copy(isLoading = false, errorMessage = message) }\n        authService.setError(message)\n    }\n\n    fun logout() {\n        authService.logout()\n        updateState { AuthViewState() }\n    }\n\n    fun clearError() {\n        updateState { it.copy(errorMessage = null) }\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/AuthViewModel.kt b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/AuthViewModel.kt
+--- a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/AuthViewModel.kt	(revision 8e3a1d14fdd97fa8687761a0deb185748dd8f780)
++++ b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/AuthViewModel.kt	(date 1771392676839)
+@@ -3,6 +3,7 @@
+ import kotlinx.coroutines.launch
+ import net.kigawa.keruta.ktcl.mobile.auth.AuthState
+ import net.kigawa.keruta.ktcl.mobile.auth.TokenPair
++import net.kigawa.keruta.ktcl.mobile.di.AppContainer
+ import net.kigawa.keruta.ktcl.mobile.service.AuthService
+ 
+ data class AuthViewState(
+@@ -13,12 +14,20 @@
+ 
+ class AuthViewModel(
+     private val authService: AuthService,
++    private val appContainer: AppContainer? = null,
+ ) : BaseViewModel<AuthViewState>(AuthViewState()) {
+ 
+     init {
+         viewModelScope.launch {
+             authService.authState.collect { authState ->
+-                updateState { it.copy(authState = authState) }
++                // 認証状態が変化したらisLoadingをfalseにする
++                val newIsLoading = when (authState) {
++                    is AuthState.Authenticated -> false
++                    is AuthState.Error -> false
++                    is AuthState.Unauthenticated -> false
++                    is AuthState.Authenticating -> true
++                }
++                updateState { it.copy(authState = authState, isLoading = newIsLoading) }
+             }
+         }
+     }
+@@ -31,6 +40,16 @@
+     fun onLoginSuccess(tokens: TokenPair) {
+         updateState { it.copy(isLoading = false) }
+         authService.setAuthenticated(tokens)
++        
++        // WebSocketに接続
++        appContainer?.connectWebSocket(
++            onConnected = {
++                // 接続成功時のコールバック（必要时）
++            },
++            onError = { error ->
++                updateState { it.copy(errorMessage = "WebSocket接続に失敗しました: ${error.message}") }
++            }
++        )
+     }
+ 
+     fun onLoginError(message: String) {
+Index: ktcl-front/app/components/sidebar/SidebarQueueButtons.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import { Link } from \"react-router-dom\";\nimport { useWsState } from \"../useServiceHooks\";\nimport { useKerutaTaskState } from \"../AppContext\";\nimport useWsReceive from \"../websocket/useWsReceive\";\nimport { ClientQueueListedMsg, ServerQueueListMsg } from \"../../msg/queue\";\nimport { useEffect, useState } from \"react\";\n\ntype Queue = ClientQueueListedMsg[\"queues\"][0]\nexport default function SidebarQueueButtons(\n    {}: {},\n) {\n    const [queues, setQueues] = useState<Queue[]>([])\n    const wsState = useWsState()\n    const keruta = useKerutaTaskState()\n    useWsReceive(wsState, msg => {\n        if (msg.type != \"queue_listed\") return\n        setQueues(msg.queues)\n    }, [])\n    useEffect(() => {\n        if (wsState.state != \"open\") return\n        if (keruta.state != \"connected\") return;\n        if (keruta.auth.state != \"authenticated\") return;\n        const msg: ServerQueueListMsg = {\n            type: \"queue_list\",\n        }\n        wsState.websocket.send(JSON.stringify(msg))\n    }, [wsState, keruta.state == \"connected\" && keruta.auth.state]);\n    return queues.map(value =>\n        <li key={value.id}>\n            <Link\n                to={`/queue/${value.id}`}\n                className=\"sidebar-link block px-4 py-2 rounded transition-colors\"\n                style={{color: '#0a58ca'}}\n            >\n                {value.name}\n            </Link>\n        </li>\n    )\n}\n\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front/app/components/sidebar/SidebarQueueButtons.tsx b/ktcl-front/app/components/sidebar/SidebarQueueButtons.tsx
+--- a/ktcl-front/app/components/sidebar/SidebarQueueButtons.tsx	(revision 8e3a1d14fdd97fa8687761a0deb185748dd8f780)
++++ b/ktcl-front/app/components/sidebar/SidebarQueueButtons.tsx	(date 1771390709607)
+@@ -24,7 +24,7 @@
+             type: "queue_list",
+         }
+         wsState.websocket.send(JSON.stringify(msg))
+-    }, [wsState, keruta.state == "connected" && keruta.auth.state]);
++    }, [wsState, keruta.state, keruta.auth.state]);
+     return queues.map(value =>
+         <li key={value.id}>
+             <Link
+Index: ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/auth/TokenManager.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.mobile.auth\n\nimport io.ktor.client.HttpClient\nimport io.ktor.client.request.post\nimport io.ktor.client.request.setBody\nimport io.ktor.client.statement.bodyAsText\nimport io.ktor.http.ContentType\nimport io.ktor.http.contentType\nimport kotlinx.serialization.Serializable\nimport kotlinx.serialization.json.Json\nimport net.kigawa.keruta.ktcl.mobile.config.MobileConfig\nimport net.kigawa.keruta.ktcl.mobile.storage.SecureStorage\n\n@Serializable\ndata class TokenPair(\n    val userToken: String,\n    val serverToken: String,\n)\n\n@Serializable\nprivate data class TokenRequest(\n    val token: String,\n)\n\n@Serializable\nprivate data class TokenResponse(\n    val token: String,\n)\n\nclass TokenManager(\n    private val oidcAuthManager: OidcAuthManager,\n    private val secureStorage: SecureStorage,\n    private val config: MobileConfig,\n    private val httpClient: HttpClient,\n) {\n    suspend fun authenticate(): Result<TokenPair> {\n        return try {\n            val userToken = oidcAuthManager.login().getOrThrow()\n\n            val serverToken = fetchServerToken(userToken).getOrThrow()\n\n            secureStorage.saveUserToken(userToken)\n            secureStorage.saveServerToken(serverToken)\n\n            Result.success(TokenPair(userToken, serverToken))\n        } catch (e: Exception) {\n            Result.failure(e)\n        }\n    }\n\n    suspend fun getStoredTokens(): Result<TokenPair?> {\n        return try {\n            val userToken = secureStorage.getUserToken()\n            val serverToken = secureStorage.getServerToken()\n\n            if (userToken != null && serverToken != null) {\n                Result.success(TokenPair(userToken, serverToken))\n            } else {\n                Result.success(null)\n            }\n        } catch (e: Exception) {\n            Result.failure(e)\n        }\n    }\n\n    suspend fun clearTokens() {\n        secureStorage.clearTokens()\n        oidcAuthManager.logout()\n    }\n\n    private suspend fun fetchServerToken(userToken: String): Result<String> {\n        return try {\n            val response = httpClient.post(\"${config.apiBaseUrl}api/token\") {\n                contentType(ContentType.Application.Json)\n                setBody(Json.encodeToString(TokenRequest.serializer(), TokenRequest(userToken)))\n            }\n\n            val tokenResponse = Json.decodeFromString<TokenResponse>(response.bodyAsText())\n            Result.success(tokenResponse.token)\n        } catch (e: Exception) {\n            Result.failure(e)\n        }\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/auth/TokenManager.kt b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/auth/TokenManager.kt
+--- a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/auth/TokenManager.kt	(revision 8e3a1d14fdd97fa8687761a0deb185748dd8f780)
++++ b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/auth/TokenManager.kt	(date 1771392168361)
+@@ -81,4 +81,9 @@
+             Result.failure(e)
+         }
+     }
++    
++    /**
++     * サーバートークンを取得する（publicバージョン）
++     */
++    suspend fun getServerToken(userToken: String): Result<String> = fetchServerToken(userToken)
+ }
+Index: ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/QueueDetailViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.mobile.viewmodel\n\nimport kotlinx.coroutines.launch\nimport net.kigawa.keruta.ktcl.mobile.msg.task.Task\nimport net.kigawa.keruta.ktcl.mobile.service.MessageSender\nimport net.kigawa.keruta.ktcl.mobile.task.TaskRepository\n\ndata class QueueDetailViewState(\n    val queueId: Long = 0,\n    val tasks: List<Task> = emptyList(),\n    val newTaskTitle: String = \"\",\n    val newTaskDescription: String = \"\",\n    val isLoading: Boolean = false,\n    val isCreatingTask: Boolean = false,\n    val errorMessage: String? = null,\n)\n\nclass QueueDetailViewModel(\n    private val taskRepository: TaskRepository,\n    private val messageSender: MessageSender,\n) : BaseViewModel<QueueDetailViewState>(QueueDetailViewState()) {\n\n    init {\n        viewModelScope.launch {\n            taskRepository.tasks.collect { tasks ->\n                updateState { it.copy(tasks = tasks, isLoading = false) }\n            }\n        }\n    }\n\n    fun setQueueId(queueId: Long) {\n        updateState { it.copy(queueId = queueId) }\n    }\n\n    fun loadTasks() {\n        val queueId = _state.value.queueId\n        if (queueId == 0L) return\n\n        viewModelScope.launch {\n            updateState { it.copy(isLoading = true, errorMessage = null) }\n            try {\n                messageSender.sendTaskList(queueId)\n            } catch (e: Exception) {\n                updateState { it.copy(isLoading = false, errorMessage = e.message) }\n            }\n        }\n    }\n\n    fun setNewTaskTitle(title: String) {\n        updateState { it.copy(newTaskTitle = title) }\n    }\n\n    fun setNewTaskDescription(description: String) {\n        updateState { it.copy(newTaskDescription = description) }\n    }\n\n    fun createTask() {\n        val currentState = _state.value\n        val queueId = currentState.queueId\n        val title = currentState.newTaskTitle\n        val description = currentState.newTaskDescription\n\n        if (title.isBlank()) {\n            updateState { it.copy(errorMessage = \"タイトルを入力してください\") }\n            return\n        }\n\n        viewModelScope.launch {\n            updateState { it.copy(isCreatingTask = true, errorMessage = null) }\n            try {\n                messageSender.sendTaskCreate(queueId, title, description)\n                updateState {\n                    it.copy(\n                        isCreatingTask = false,\n                        newTaskTitle = \"\",\n                        newTaskDescription = \"\",\n                    )\n                }\n            } catch (e: Exception) {\n                updateState { it.copy(isCreatingTask = false, errorMessage = e.message) }\n            }\n        }\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/QueueDetailViewModel.kt b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/QueueDetailViewModel.kt
+--- a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/QueueDetailViewModel.kt	(revision 8e3a1d14fdd97fa8687761a0deb185748dd8f780)
++++ b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/QueueDetailViewModel.kt	(date 1771390920411)
+@@ -1,7 +1,10 @@
+ package net.kigawa.keruta.ktcl.mobile.viewmodel
+ 
++import kotlinx.coroutines.flow.first
+ import kotlinx.coroutines.launch
++import net.kigawa.keruta.ktcl.mobile.auth.AuthState
+ import net.kigawa.keruta.ktcl.mobile.msg.task.Task
++import net.kigawa.keruta.ktcl.mobile.service.AuthService
+ import net.kigawa.keruta.ktcl.mobile.service.MessageSender
+ import net.kigawa.keruta.ktcl.mobile.task.TaskRepository
+ 
+@@ -18,6 +21,7 @@
+ class QueueDetailViewModel(
+     private val taskRepository: TaskRepository,
+     private val messageSender: MessageSender,
++    private val authService: AuthService,
+ ) : BaseViewModel<QueueDetailViewState>(QueueDetailViewState()) {
+ 
+     init {
+@@ -39,6 +43,20 @@
+         viewModelScope.launch {
+             updateState { it.copy(isLoading = true, errorMessage = null) }
+             try {
++                // 接続が確立されるまで待つ
++                val connection = messageSender.connection.first { it != null }
++                if (connection == null) {
++                    updateState { it.copy(isLoading = false, errorMessage = "WebSocket接続に失敗しました") }
++                    return@launch
++                }
++                
++                // 認証が完了するまで待つ
++                val authState = authService.authState.first { it is AuthState.Authenticated }
++                if (authState !is AuthState.Authenticated) {
++                    updateState { it.copy(isLoading = false, errorMessage = "認証に失敗しました") }
++                    return@launch
++                }
++                
+                 messageSender.sendTaskList(queueId)
+             } catch (e: Exception) {
+                 updateState { it.copy(isLoading = false, errorMessage = e.message) }
+@@ -68,6 +86,20 @@
+         viewModelScope.launch {
+             updateState { it.copy(isCreatingTask = true, errorMessage = null) }
+             try {
++                // 接続が確立されるまで待つ
++                val connection = messageSender.connection.first { it != null }
++                if (connection == null) {
++                    updateState { it.copy(isCreatingTask = false, errorMessage = "WebSocket接続に失敗しました") }
++                    return@launch
++                }
++                
++                // 認証が完了するまで待つ
++                val authState = authService.authState.first { it is AuthState.Authenticated }
++                if (authState !is AuthState.Authenticated) {
++                    updateState { it.copy(isCreatingTask = false, errorMessage = "認証に失敗しました") }
++                    return@launch
++                }
++                
+                 messageSender.sendTaskCreate(queueId, title, description)
+                 updateState {
+                     it.copy(
+Index: ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/QueueListViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.mobile.viewmodel\n\nimport kotlinx.coroutines.launch\nimport net.kigawa.keruta.ktcl.mobile.msg.queue.Queue\nimport net.kigawa.keruta.ktcl.mobile.queue.QueueRepository\nimport net.kigawa.keruta.ktcl.mobile.service.MessageSender\n\ndata class QueueListViewState(\n    val queues: List<Queue> = emptyList(),\n    val isLoading: Boolean = false,\n    val errorMessage: String? = null,\n)\n\nclass QueueListViewModel(\n    private val queueRepository: QueueRepository,\n    private val messageSender: MessageSender,\n) : BaseViewModel<QueueListViewState>(QueueListViewState()) {\n\n    init {\n        viewModelScope.launch {\n            queueRepository.queues.collect { queues ->\n                updateState { it.copy(queues = queues, isLoading = false) }\n            }\n        }\n    }\n\n    fun loadQueues() {\n        viewModelScope.launch {\n            updateState { it.copy(isLoading = true, errorMessage = null) }\n            try {\n                messageSender.sendQueueList()\n            } catch (e: Exception) {\n                updateState { it.copy(isLoading = false, errorMessage = e.message) }\n            }\n        }\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/QueueListViewModel.kt b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/QueueListViewModel.kt
+--- a/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/QueueListViewModel.kt	(revision 8e3a1d14fdd97fa8687761a0deb185748dd8f780)
++++ b/ktcl-front-mobile/src/commonMain/kotlin/net/kigawa/keruta/ktcl/mobile/viewmodel/QueueListViewModel.kt	(date 1771395153651)
+@@ -1,8 +1,11 @@
+ package net.kigawa.keruta.ktcl.mobile.viewmodel
+ 
++import kotlinx.coroutines.flow.first
+ import kotlinx.coroutines.launch
++import net.kigawa.keruta.ktcl.mobile.auth.AuthState
+ import net.kigawa.keruta.ktcl.mobile.msg.queue.Queue
+ import net.kigawa.keruta.ktcl.mobile.queue.QueueRepository
++import net.kigawa.keruta.ktcl.mobile.service.AuthService
+ import net.kigawa.keruta.ktcl.mobile.service.MessageSender
+ 
+ data class QueueListViewState(
+@@ -14,6 +17,7 @@
+ class QueueListViewModel(
+     private val queueRepository: QueueRepository,
+     private val messageSender: MessageSender,
++    private val authService: AuthService,
+ ) : BaseViewModel<QueueListViewState>(QueueListViewState()) {
+ 
+     init {
+@@ -25,11 +29,35 @@
+     }
+ 
+     fun loadQueues() {
++        println("=== loadQueues called ===")
+         viewModelScope.launch {
+             updateState { it.copy(isLoading = true, errorMessage = null) }
+             try {
++                // 接続が確立されるまで待つ
++                println("=== loadQueues: waiting for connection ===")
++                val connection = messageSender.connection.first { it != null }
++                if (connection == null) {
++                    println("=== loadQueues: connection is null ===")
++                    updateState { it.copy(isLoading = false, errorMessage = "WebSocket接続に失敗しました") }
++                    return@launch
++                }
++                
++                println("=== loadQueues: connection exists ===")
++                
++                // 認証が完了するまで待つ
++                println("=== loadQueues: waiting for auth ===")
++                val authState = authService.authState.first { it is AuthState.Authenticated }
++                if (authState !is AuthState.Authenticated) {
++                    println("=== loadQueues: auth failed ===")
++                    updateState { it.copy(isLoading = false, errorMessage = "認証に失敗しました") }
++                    return@launch
++                }
++                
++                println("=== loadQueues: sending queue list request ===")
+                 messageSender.sendQueueList()
++                println("=== loadQueues: request sent ===")
+             } catch (e: Exception) {
++                println("=== loadQueues: error: ${e.message} ===")
+                 updateState { it.copy(isLoading = false, errorMessage = e.message) }
+             }
+         }

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ktcl-web-js-dev">
+    <output-path>$PROJECT_DIR$/ktcl-web/build/libs</output-path>
+    <root id="archive" name="ktcl-web-js-dev.jar">
+      <element id="module-output" name="keruta.ktcl-web.jsMain" />
+    </root>
+  </artifact>
+</component>

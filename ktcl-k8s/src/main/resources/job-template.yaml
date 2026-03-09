@@ -1,0 +1,87 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: keruta-task-template
+  namespace: default
+spec:
+  ttlSecondsAfterFinished: 3600  # 1時間後に自動削除
+  backoffLimit: 0  # リトライなし
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+      - name: git-clone
+        image: alpine/git:latest
+        command:
+        - sh
+        - -c
+        - "git clone $GIT_REPO_URL /workspace && cd /workspace && git checkout -b keruta-task-$TASK_ID"
+        env:
+        - name: GIT_REPO_URL
+          value: ""
+        - name: TASK_ID
+          value: ""
+        volumeMounts:
+        - name: workspace
+          mountPath: /workspace
+      - name: task-executor
+        image: harbor.kigawa.net/library/ktcl-claudecode:latest
+        env:
+        - name: TASK_ID
+          value: ""
+        - name: TASK_TITLE
+          value: ""
+        - name: TASK_DESCRIPTION
+          value: ""
+        - name: GIT_REPO_URL
+          value: ""
+        volumeMounts:
+        - name: workspace
+          mountPath: /workspace
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+      - name: git-push
+        image: alpine/git:latest
+        command:
+        - sh
+        - -c
+        - "cd /workspace && git add -A && git commit -m 'keruta-task-$TASK_ID' && git push origin keruta-task-$TASK_ID"
+        env:
+        - name: TASK_ID
+          value: ""
+        volumeMounts:
+        - name: workspace
+          mountPath: /workspace
+      containers:
+      - name: github-pr
+        image: curlimages/curl:latest
+        command:
+        - sh
+        - -c
+        - |
+          REPO=$(echo "$GIT_REPO_URL" | sed 's|https://github.com/||;s|\.git$||')
+          curl -s -X POST \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/$REPO/pulls" \
+            -d "{\"title\":\"$TASK_TITLE\",\"head\":\"keruta-task-$TASK_ID\",\"base\":\"main\",\"body\":\"$TASK_DESCRIPTION\"}"
+        env:
+        - name: TASK_ID
+          value: ""
+        - name: TASK_TITLE
+          value: ""
+        - name: TASK_DESCRIPTION
+          value: ""
+        - name: GIT_REPO_URL
+          value: ""
+        - name: GITHUB_TOKEN
+          value: ""
+      volumes:
+      - name: workspace
+        persistentVolumeClaim:
+          claimName: keruta-task-template-pvc

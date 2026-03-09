@@ -1,0 +1,30 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="local ktcl-k8s " type="KtorApplicationConfigurationType" factoryName="Ktor">
+    <envs>
+      <env name="PRIVATE_KEY" value="-----BEGIN PRIVATE KEY----- MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCqty29xgORiFkg h8HbyDqlf8TgHEmNNB3Kd5Aqp0GjJya4DAUVHsj37EB9wpaPQZtBHEx4lTbyDLig yBmoERKCczdesM6bL7qIvAJTxfDiGgayL9rOE+0IzugApt7VZSzYf5S8ntaG6TzZ kbRm/NIHdbpr4akB2hqV2xBLvPM5QlqJLvlLiqxL9NRJvfeUOs49sHn6HYWB4pFR aascvEz7B2Yckso5qeMTCjb0s1YOnfDptoUFqmn/oN+JMLootW8vnan8LVYjdyZh EIAfSkSIuf7t2B9DESfMFUyZTJ/iOjPeq+CiUkMICTF9Wbr400wo7mKSeTmsU8jW 2TlZTEsVAgMBAAECggEAC1vJwtUwepfoWjY+K0nswQM5zbGEIU2E5+pBoNzlDJ53 wIooMmoMdBZ3igaO7vQuCMyBuAoxkDRRen0l291a7mwNFJNOA9xOnHdp7jn+14Rk yqlNdSW1QT9HB3gS3n7vV25RrqUg3/QX1OARcULEFLP8Fd57WMCywSLEuE1Xn4kT GPt9uEnVhUGAYi5L0AZJwFIicD0Avd6P2LE3nLYo4IbBQeRc3uX0e7TFBETpbPZX +3hgW3Lkiqa8ZaC/jvL5P8zhGUIGmWV2ylMVF+xz6J7OQ8ptCHZJPyBqZqGl1Vbd VsFlWEo14MDxI08yQ6JyThkdAY0+1AJH+VUhv2Eh8QKBgQDv2rANDkbGK6zT4OL4 YvXyEdo0JxrvTLF6Eq/n/sjolAPD9pgSu2vqlAQ0q6UNZc8DR0M6bF5x93+m+y4i MlX2U7K/3ONKYwYP6dG6l9Lz9syge+v4Dfry4fpAiynjsDov7tn4RCal3G4R2v5F VE+yfF5c4mRbGlgMJO8mrqMWDQKBgQC2NQ0iFpouzWmTK8mmFTrGeM+fmPrWnnBd xNAcxQUs/+nm+dK//ZeCN7xvAwy3c08IxNyvFtw/GKPYZck5Xu55qjaJmMepcsQm W+TzrIm61CrnDgwo6qAK+NyFQcRr4eFUXGNh4mElhhY+D1wo5AZRscNbZKA40fg3 LzFewK8PKQKBgQCy4LljQz5tFK1z5sfezo711XKSaoef5+aET+N4dX+IVLrqLsID VluJOpJYZZpWf5L/sunkbGWTQS2mbrVdM4UAjDNG+4lXNLqUq6CKNChTYcAB/+lf ua1p7jYgZKj88bSzgsJ0cP8Ru28rSdNQCSzWxAHr67tEZkU76V+hzaQ7EQKBgB8n AODUJnZcDnHoKajotkzauPzbhf+NxT5y+PYCRXlFI/OmwP6sV+wepWwBhHoVD+06 41RYPz3Wc6T6+iWB8poAnSR3Z6O0CI9aZNG4rS+xOMiaYT/ZpZVaqTFrZi7fxsvK o/9HWj61JzZjH+mp2t662uDUWoR8ecjNm85MeWHJAoGBAIG841sDy/r4RN+eSeTs 9OUQ95YpXjgB3fiIgVGtgSHdto+Yju1E/bfgovoeYG6DlZNiQ/ghlWR5qa2sTyg2 5OCe8rV/qfdFq5QmGXQ6oj+EVDOLt7Su+fM4zMvW0nVL2m0LTiQjTm5eL6x44Rp1 oNDaRe+MYYLM2MjskOffeqSy -----END PRIVATE KEY-----" />
+    </envs>
+    <option name="envFilePaths">
+      <option value="$PROJECT_DIR$/ktcl-k8s/.env.example" />
+    </option>
+    <option name="MAIN_CLASS_NAME" value="net.kigawa.keruta.ktcl.k8s.Main" />
+    <module name="keruta.ktcl-k8s.main" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="net.kigawa.keruta.ktcl.k8s.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <option name="alternativeJrePath" />
+    <option name="alternativeJrePathEnabled" value="false" />
+    <option name="includeProvidedScope" value="false" />
+    <option name="mainClass" value="net.kigawa.keruta.ktcl.k8s.Main" />
+    <option name="passParentEnvs" value="true" />
+    <option name="programParameters" value="" />
+    <option name="shortenCommandLine" />
+    <option name="vmParameters" />
+    <option name="workingDirectory" value="$PROJECT_DIR$" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

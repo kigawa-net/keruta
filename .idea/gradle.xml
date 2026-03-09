@@ -4,30 +4,49 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT">
+            <builds>
+              <build path="$PROJECT_DIR$/buildSrc" name="buildSrc">
+                <projects>
+                  <project path="$PROJECT_DIR$/buildSrc" />
+                </projects>
+              </build>
+            </builds>
+          </compositeBuild>
+        </compositeConfiguration>
+        <option name="testRunner" value="CHOOSE_PER_TEST" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/keruta-api" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/keruta-api" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/keruta-executor" />
-        <option name="gradleJvm" value="jbr-21" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/keruta-executor" />
+            <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/kodel" />
+            <option value="$PROJECT_DIR$/kodel/api" />
+            <option value="$PROJECT_DIR$/kodel/core" />
+            <option value="$PROJECT_DIR$/kodel/coroutine" />
+            <option value="$PROJECT_DIR$/ktcl" />
+            <option value="$PROJECT_DIR$/ktcl-claudecode" />
+            <option value="$PROJECT_DIR$/ktcl-front-mobile" />
+            <option value="$PROJECT_DIR$/ktcl-front-mobile/app" />
+            <option value="$PROJECT_DIR$/ktcl-k8s" />
+            <option value="$PROJECT_DIR$/ktcp" />
+            <option value="$PROJECT_DIR$/ktcp/client" />
+            <option value="$PROJECT_DIR$/ktcp/ktcp-domain" />
+            <option value="$PROJECT_DIR$/ktcp/ktcp-domain/ktcp-domain-client" />
+            <option value="$PROJECT_DIR$/ktcp/ktcp-domain/ktcp-domain-server" />
+            <option value="$PROJECT_DIR$/ktcp/ktcp-infra" />
+            <option value="$PROJECT_DIR$/ktcp/ktcp-infra/ktcp-infra-client" />
+            <option value="$PROJECT_DIR$/ktcp/ktcp-infra/ktcp-infra-server" />
+            <option value="$PROJECT_DIR$/ktcp/ktcp-usecase" />
+            <option value="$PROJECT_DIR$/ktcp/ktcp-usecase/ktcp-usecase-client" />
+            <option value="$PROJECT_DIR$/ktcp/ktcp-usecase/ktcp-usecase-server" />
+            <option value="$PROJECT_DIR$/ktcp/server" />
+            <option value="$PROJECT_DIR$/ktse" />
           </set>
         </option>
       </GradleProjectSettings>
     </option>
+    <option name="parallelModelFetch" value="true" />
   </component>
 </project>

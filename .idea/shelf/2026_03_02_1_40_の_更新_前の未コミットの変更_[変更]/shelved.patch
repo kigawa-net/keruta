@@ -1,0 +1,783 @@
+Index: .idea/runConfigurations/local_ktse_.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/runConfigurations/local_ktse_.xml b/.idea/runConfigurations/local_ktse_.xml
+deleted file mode 100644
+--- a/.idea/runConfigurations/local_ktse_.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ /dev/null	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
+@@ -1,21 +0,0 @@
+-<component name="ProjectRunConfigurationManager">
+-  <configuration default="false" name="local ktse " type="KtorApplicationConfigurationType" factoryName="Ktor">
+-    <option name="envFilePaths">
+-      <option value="$PROJECT_DIR$/ktse/.env.example" />
+-    </option>
+-    <option name="MAIN_CLASS_NAME" value="io.ktor.server.netty.EngineMain" />
+-    <module name="keruta.ktse.main" />
+-    <option name="alternativeJrePath" />
+-    <option name="alternativeJrePathEnabled" value="false" />
+-    <option name="includeProvidedScope" value="false" />
+-    <option name="mainClass" value="io.ktor.server.netty.EngineMain" />
+-    <option name="passParentEnvs" value="true" />
+-    <option name="programParameters" value="" />
+-    <option name="shortenCommandLine" />
+-    <option name="vmParameters" />
+-    <option name="workingDirectory" value="$PROJECT_DIR$" />
+-    <method v="2">
+-      <option name="Make" enabled="true" />
+-    </method>
+-  </configuration>
+-</component>
+\ No newline at end of file
+Index: .idea/runConfigurations/keruta__jsBrowserDevelopmentRun_.xml
+===================================================================
+diff --git a/.idea/runConfigurations/keruta__jsBrowserDevelopmentRun_.xml b/.idea/runConfigurations/keruta__jsBrowserDevelopmentRun_.xml
+deleted file mode 100644
+--- a/.idea/runConfigurations/keruta__jsBrowserDevelopmentRun_.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ /dev/null	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
+@@ -1,27 +0,0 @@
+-<component name="ProjectRunConfigurationManager">
+-  <configuration default="false" name="keruta [jsBrowserDevelopmentRun]" type="GradleRunConfiguration" factoryName="Gradle">
+-    <ExternalSystemSettings>
+-      <option name="executionName" />
+-      <option name="externalProjectPath" value="$PROJECT_DIR$" />
+-      <option name="externalSystemIdString" value="GRADLE" />
+-      <option name="scriptParameters" value="" />
+-      <option name="taskDescriptions">
+-        <list />
+-      </option>
+-      <option name="taskNames">
+-        <list>
+-          <option value="jsBrowserDevelopmentRun" />
+-        </list>
+-      </option>
+-      <option name="vmOptions" />
+-    </ExternalSystemSettings>
+-    <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+-    <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+-    <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
+-    <DebugAllEnabled>false</DebugAllEnabled>
+-    <RunAsTest>false</RunAsTest>
+-    <GradleProfilingDisabled>false</GradleProfilingDisabled>
+-    <GradleCoverageDisabled>false</GradleCoverageDisabled>
+-    <method v="2" />
+-  </configuration>
+-</component>
+Index: .idea/runConfigurations/dev_local.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/runConfigurations/dev_local.xml b/.idea/runConfigurations/dev_local.xml
+deleted file mode 100644
+--- a/.idea/runConfigurations/dev_local.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ /dev/null	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
+@@ -1,9 +0,0 @@
+-<component name="ProjectRunConfigurationManager">
+-  <configuration default="false" name="dev local" type="CompoundRunConfigurationType">
+-    <toRun name="dev" type="docker-deploy" />
+-    <toRun name="local ktcl-k8s " type="KtorApplicationConfigurationType" />
+-    <toRun name="local ktse " type="KtorApplicationConfigurationType" />
+-    <toRun name="local ktcl-front" type="js.build_tools.npm" />
+-    <method v="2" />
+-  </configuration>
+-</component>
+\ No newline at end of file
+Index: .idea/runConfigurations/keruta__test_.xml
+===================================================================
+diff --git a/.idea/runConfigurations/keruta__test_.xml b/.idea/runConfigurations/keruta__test_.xml
+deleted file mode 100644
+--- a/.idea/runConfigurations/keruta__test_.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ /dev/null	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
+@@ -1,27 +0,0 @@
+-<component name="ProjectRunConfigurationManager">
+-  <configuration default="false" name="keruta [test]" type="GradleRunConfiguration" factoryName="Gradle">
+-    <ExternalSystemSettings>
+-      <option name="executionName" />
+-      <option name="externalProjectPath" value="$PROJECT_DIR$" />
+-      <option name="externalSystemIdString" value="GRADLE" />
+-      <option name="scriptParameters" value="" />
+-      <option name="taskDescriptions">
+-        <list />
+-      </option>
+-      <option name="taskNames">
+-        <list>
+-          <option value="test" />
+-        </list>
+-      </option>
+-      <option name="vmOptions" />
+-    </ExternalSystemSettings>
+-    <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+-    <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+-    <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
+-    <DebugAllEnabled>false</DebugAllEnabled>
+-    <RunAsTest>false</RunAsTest>
+-    <GradleProfilingDisabled>false</GradleProfilingDisabled>
+-    <GradleCoverageDisabled>false</GradleCoverageDisabled>
+-    <method v="2" />
+-  </configuration>
+-</component>
+Index: .idea/runConfigurations/keruta__build_.xml
+===================================================================
+diff --git a/.idea/runConfigurations/keruta__build_.xml b/.idea/runConfigurations/keruta__build_.xml
+deleted file mode 100644
+--- a/.idea/runConfigurations/keruta__build_.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ /dev/null	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
+@@ -1,27 +0,0 @@
+-<component name="ProjectRunConfigurationManager">
+-  <configuration default="false" name="keruta [build]" type="GradleRunConfiguration" factoryName="Gradle">
+-    <ExternalSystemSettings>
+-      <option name="executionName" />
+-      <option name="externalProjectPath" value="$PROJECT_DIR$" />
+-      <option name="externalSystemIdString" value="GRADLE" />
+-      <option name="scriptParameters" value="-PuseChrome=false -PuseFirefox=false" />
+-      <option name="taskDescriptions">
+-        <list />
+-      </option>
+-      <option name="taskNames">
+-        <list>
+-          <option value="build" />
+-        </list>
+-      </option>
+-      <option name="vmOptions" />
+-    </ExternalSystemSettings>
+-    <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+-    <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+-    <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
+-    <DebugAllEnabled>false</DebugAllEnabled>
+-    <RunAsTest>false</RunAsTest>
+-    <GradleProfilingDisabled>false</GradleProfilingDisabled>
+-    <GradleCoverageDisabled>false</GradleCoverageDisabled>
+-    <method v="2" />
+-  </configuration>
+-</component>
+Index: .idea/runConfigurations/local_ktcl_k8s_.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/runConfigurations/local_ktcl_k8s_.xml b/.idea/runConfigurations/local_ktcl_k8s_.xml
+deleted file mode 100644
+--- a/.idea/runConfigurations/local_ktcl_k8s_.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ /dev/null	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
+@@ -1,27 +0,0 @@
+-<component name="ProjectRunConfigurationManager">
+-  <configuration default="false" name="local ktcl-k8s " type="KtorApplicationConfigurationType" factoryName="Ktor">
+-    <option name="envFilePaths">
+-      <option value="$PROJECT_DIR$/ktcl-k8s/.env.example" />
+-    </option>
+-    <option name="MAIN_CLASS_NAME" value="net.kigawa.keruta.ktcl.k8s.Main" />
+-    <module name="keruta.ktcl-k8s.main" />
+-    <extension name="coverage">
+-      <pattern>
+-        <option name="PATTERN" value="net.kigawa.keruta.ktcl.k8s.*" />
+-        <option name="ENABLED" value="true" />
+-      </pattern>
+-    </extension>
+-    <option name="alternativeJrePath" />
+-    <option name="alternativeJrePathEnabled" value="false" />
+-    <option name="includeProvidedScope" value="false" />
+-    <option name="mainClass" value="net.kigawa.keruta.ktcl.k8s.Main" />
+-    <option name="passParentEnvs" value="true" />
+-    <option name="programParameters" value="" />
+-    <option name="shortenCommandLine" />
+-    <option name="vmParameters" />
+-    <option name="workingDirectory" value="$PROJECT_DIR$" />
+-    <method v="2">
+-      <option name="Make" enabled="true" />
+-    </method>
+-  </configuration>
+-</component>
+\ No newline at end of file
+Index: .idea/runConfigurations/test2.xml
+===================================================================
+diff --git a/.idea/runConfigurations/test2.xml b/.idea/runConfigurations/test2.xml
+deleted file mode 100644
+--- a/.idea/runConfigurations/test2.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ /dev/null	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
+@@ -1,17 +0,0 @@
+-<component name="ProjectRunConfigurationManager">
+-  <configuration default="false" name="test docker" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
+-    <deployment type="docker-compose.yml">
+-      <settings>
+-        <option name="services">
+-          <list>
+-            <option value="test" />
+-          </list>
+-        </option>
+-        <option name="sourceFilePath" value="compose.test.yml" />
+-        <option name="upAttachDependencies" value="true" />
+-        <option name="upDetach" value="false" />
+-      </settings>
+-    </deployment>
+-    <method v="2" />
+-  </configuration>
+-</component>
+\ No newline at end of file
+Index: .idea/runConfigurations/keruta__allTests_.xml
+===================================================================
+diff --git a/.idea/runConfigurations/keruta__allTests_.xml b/.idea/runConfigurations/keruta__allTests_.xml
+deleted file mode 100644
+--- a/.idea/runConfigurations/keruta__allTests_.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ /dev/null	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
+@@ -1,27 +0,0 @@
+-<component name="ProjectRunConfigurationManager">
+-  <configuration default="false" name="keruta [allTests]" type="GradleRunConfiguration" factoryName="Gradle">
+-    <ExternalSystemSettings>
+-      <option name="executionName" />
+-      <option name="externalProjectPath" value="$PROJECT_DIR$" />
+-      <option name="externalSystemIdString" value="GRADLE" />
+-      <option name="scriptParameters" value="-PuseChrome=false -PuseFirefox=false" />
+-      <option name="taskDescriptions">
+-        <list />
+-      </option>
+-      <option name="taskNames">
+-        <list>
+-          <option value="allTests" />
+-        </list>
+-      </option>
+-      <option name="vmOptions" />
+-    </ExternalSystemSettings>
+-    <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+-    <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+-    <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
+-    <DebugAllEnabled>false</DebugAllEnabled>
+-    <RunAsTest>false</RunAsTest>
+-    <GradleProfilingDisabled>false</GradleProfilingDisabled>
+-    <GradleCoverageDisabled>false</GradleCoverageDisabled>
+-    <method v="2" />
+-  </configuration>
+-</component>
+Index: .idea/runConfigurations/test.xml
+===================================================================
+diff --git a/.idea/runConfigurations/test.xml b/.idea/runConfigurations/test.xml
+deleted file mode 100644
+--- a/.idea/runConfigurations/test.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ /dev/null	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
+@@ -1,8 +0,0 @@
+-<component name="ProjectRunConfigurationManager">
+-  <configuration default="false" name="test" type="CompoundRunConfigurationType">
+-    <toRun name="keruta [allTests]" type="GradleRunConfiguration" />
+-    <toRun name="keruta [test]" type="GradleRunConfiguration" />
+-    <toRun name="build" type="js.build_tools.npm" />
+-    <method v="2" />
+-  </configuration>
+-</component>
+Index: .idea/runConfigurations/local_ktcl_front.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/runConfigurations/local_ktcl_front.xml b/.idea/runConfigurations/local_ktcl_front.xml
+deleted file mode 100644
+--- a/.idea/runConfigurations/local_ktcl_front.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ /dev/null	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
+@@ -1,25 +0,0 @@
+-<component name="ProjectRunConfigurationManager">
+-  <configuration default="false" name="local ktcl-front" type="js.build_tools.npm">
+-    <package-json value="$PROJECT_DIR$/ktcl-front/package.json" />
+-    <command value="run" />
+-    <scripts>
+-      <script value="dev" />
+-    </scripts>
+-    <node-interpreter value="project" />
+-    <envs>
+-      <env name="KTSE_AUD" value="keruta" />
+-      <env name="OWN_ISSUER" value="http://localhost:5173/" />
+-      <env name="PRIVATE_KEY" value="LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUpRd0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQ1Mwd2dna3BBZ0VBQW9JQ0FRQytwUVVBOHFSZ2l2TkoKemVnSksvWFl2eGZaMlE0QnE0bEVkQnhOZlF4ZW9FSzREZER1VTlTOWZTT2VWVzIxRFBXNkZOVnlGTGpyTVBtQgpNSDJhNjBCSkhuWjBOZnNlRjk0TWNYQjJpTDlOdnhMVS9SQjM1NGxQMUFpbTZIazJGOGRvNmQxK3hvbGhIOEExCm5uRTQ4cE4ySzJTRXBJZ2h6akYyRkJBcENTUjRHbk5IQ2NFbGo1dlNkNHZBUkd4UUVkSjl2TTNvSThnaU1yaHAKRUs3Q1JZYk1LQkQrZ2V4L00wZHUwU0VpS3VRaSs1di95em1yK1JXT1I5aHBZaDI0VjQwNkhNRjNoU3JaM2tEcwoyZE5Jc0JjVXBOaG12ZXppaGtOazZ1bEVoTEZNMUc3Z3d2SVdmdFd3cGkwNDEzbURzRGs2Y1J4M3FPWG9zZGhzCmJndHVhbHYzTDBDb0pEaUxCVDF5RFVCN1ExNzRtV1gxa25HNXNqNDFMVTBFREZTYkN5NjdoUVVhYU9UZW82VzgKeVlHWjgvSTJMVlVwdHp2OVBrbktuc1h0eUwyN3ZTVlFYNkJ4UU9kc3hzVG1QQzNMVE56eHlGNTFyZUVWSnhsYQpLQlRtZElwVTNDaVo0VU9McWQrbDFXSUFwUkVHTDNiR205MnhYa1QrUEd2UVZuMVB4K2xucHhNUlArRVlZTlVVCjVDUWVyZE5ieVpwL2NqOTJTOEFsL2taUzBhcTVHMzFkTDFXc0FOSVAwaDBvK0tCNXRhVG1YWmNMVU5MbGlGTXAKSDdoc1BSbUNUWXQ2bnE0NFlMb2ZtSi9nZ3dmWEMyUDc2bnUvSng4NjR2SWZxZWIwNnA2dFpQYnRVYW1NMGFwUQo1ZmlrUjF6SlVZc0dDUzRDeDh2bmNlY2VyYkxQbVFJREFRQUJBb0lDQUFmdGNsaUhIbnNtRlZ2alJaazBYdm9MCkVvcjBVSXIvZkVXN1VIalBsaFIzdnlVcWx1bEMxV1ltbTdUd0dnL1BxTndGYW9MejlnOWxUSlREajArTTVZZG4KZzhHMzdtMVg0bEVHWlJOYXd2Tm1KUVVldTZ1ZXdQVEZEVEhpbVhWblFQdFMrK3NlQnArczFqTEI3VXBJSlFZTgpPU0RKRU9Ed3FKbDA3VjlGZDVoTkhQQWpsQ2krTzJWWERsbkVXL1FxNmprTFlUZThYWUhBTmU5UmhTWXVoYlBSCmg5NWd5UFN1VFZQQUpoWnhnenNxQWJpZDZ1bFBWNUdyR1daNEc0MWJOUDZwVnQ2dXJBNHpUMDdDRFR3RGd0d3cKc1hwNVBwamFBQzFad0RHTUZTMkJQbXRCMUFHeWpHc3NIU3MwK08yM0pkNjd6aC9JTWZ6dWdLQ2IrcS8yQTlwVgpzZTBRV1prbXZuTkZLaUdrb3pWSnZPdk9zNDB4dWh1Rm83VUUzTFpyVDlNTUxXVFllLy9NMm8yaDA4MmhoZUN4CmlvdytGTUJjcmhIZk8rUTI0V3doVjZjL0FXUDRQZ2NKRmE1WGxseUhBL1R6NTgrVW9lVm9xTSs0ZGtYVDgzQ00KTGZMcXhHOFdDRjhRMURHcEcxV2F6WU1CNkVlZWUrZ2w2MkhvZ2kyZDQ1M3ErOHo1blBPWC9uYnkrQ1JvZGl1cwppODhyMzJrL0t4V3FQREJBdlN0RVB6RDcreVNhdnc3RHk1Qzc0QnRXZXl4TkQyd3BiNWFDcXVkM2tYV3JhYVVLCk52cHRjWDJ4L1F0aFJ6ME0rZHhCelY3b3NYdHhheHdFNysyc1J6d0FkWEJZTmN4SlZYVi93UVRZSzV3K1hMcVoKSi8zV1NQZHcvQjNYVVlMa3JWV1JBb0lCQVFEdzhFSTRvdVVHSFJIT0tqaUUzMTZhZHBrZ2dNa0pvS0JNVjJkQQp6c3RISVdXZzZlYXJmUGhhSlNmK2hzNTM4a0pMSXBoQmJ2c0t0RE1IT0E5ckJDRnpoUjZtNkMvNDhJcnZuajJHCjQ0aFdzU0lDNE5BNmNXV2prZTlRc3dkaW9sY0NEdk1TcldOck1vdUFlWWtrSkdSazJFd0ovTkNSWFhrM1IvZ0sKbnVxanlVSWpuVnNwdmRxVG42aytjdjM2SDl6bGJnSXlZcHUwUnNwMUZFNDNKc3VlWFdxdi9vZVBac0ZlZ1FVTQpUNkN5SXVkQklCbVVpMVlrRVlOTGlCMEkvQkNDUjdxaXhEcjJyMUFGVHVSZ0g5YnZQRlIvM2dNZHJWbGVQNDczClJkcUc4N1RSemYzMzRJMlVIempCTlpvMEZ4TWkxaFpHWkk3c0FMNGQvZ09aZWg3cEFvSUJBUURLaitnMG9TTFgKek5BbGw1T0lZbnJoVGkzZ0s3cy9tWm5kbFdMQUtIQTdsS2VDMU5RdGJQSUtDNkJJdWJFcnRLZ29aTEpOZzRuNAp0UmwzdVVIUEZWUDNTVUVieUt0SEJIY2YyYW9RaXhKZlF2ZGlFSERtNkZWREF4NEZncUxndkdpVjI5RFk2UVFxCkE0MDA0dGpoaVREVWhjQjRsd3RpWFdFbzlYQ3ZkMGxmVE5JQlVONDV2em1vWlM1ejluMGpndEs2MzhIRGprT0MKUVl2NlQycnZuMXBqM3dpN2xPb0FLM2FEcEd0MldFMjJIU0c1ay9wRENvWnlqQUttV1p5aHpRZklZOWYrRlE0ZwpGamFSUmhpclcvWGJBVCt5QU9CL2ZRYTNuTi8wT2VUYW8wWmJZdmtob0Y1MktLSmw5MzM3UGhNNUV4WVp4S3o3Ck1OYUpHdDUycnAweEFvSUJBUUNwUHR3RmxNZDBKKzlkOXVLRTA3Tk1wWXFpL2xRNTR3ODNFUjZDczhDdlVwSmwKR21qaWhZS2ZNQUtNRkgzc1c4eWRvc3Q1QzFCbEVIZlgxbFZlUXlTTVZUSlc1RHJ1ajJuSk1FcmYrZXpIbU4zZgpUN1IxbVRwZ1VCN2ZmU0x1OGtKVU85UWJocGlUc0ltMTBhbTRMYWduL3BoTFc3L1duT2FOSW96bVNRTmgwZm9YCnNtMWJRUFhOUlJaSnU5VVVZbFYxQkhXZWx3M3c4Tmsrck9qVWJQZ1RZbU9UQlNTTVl3M3FLSTgzT3FnUytkbWcKTWNCR1RDcFNZOHJxdjg1RmhXckRXVWVORm5LazNqbER3VXREQ3BxY3FyQmdzYjlXbFhKMWRnZ2pRbnBpMmNabQpxbUNBUXNpeEI4MkNTdmpySmxwVzJqUURkcGUreURiRU1xNnNuTkFoQW9JQkFHOFdMcTAyTldxTnV4VHlwSWttCklPZVF2VjN6L2JPcVpCUitDWE1DZWxKaWV0OG9JdGhxcCs1VVkrbWVWSWg0Z2NQdFBVOS9OTm85VHlNMmFOM04KZjRmZEY2VEtEd3hhYVk0QkMrQVl0TkdqWXhIWG5HTTF4UlNFRUNITGU5R3Q0ZGxWZkpxSVo2MDIxMmpLZzFCawpzVy9Mamp0VDhuMVdZcU5Zdnh5cldZUzNGM0I3VGZQemFBWnV2dVAvcUs4aDNybDNYc2NGTFFheE5iZm5kK2pECnhvbUExa1F4TFljOFRybHhJVEg4eVZsM2JuaGNxK0c2VXZOY3oxTTFUODM0S0MyQWZBS3V2MWxmZFR1RWFxRUgKUkxSL1lkUVg0UVpwcFpacXBQTkdFTGpLMUJub0ZHS1psVlJOZ29wVENUY1EydS94Qkt6TERHYVJhUVkxd3d6cApRL0VDZ2dFQkFPQ1J5SDVCdVkrMVVSTWRIeHZiYS9YV1JPRXVyVFQzWkZyMysvYjdHWXFFTzQwYmViWStYNWxqCmEvZGRFQnNtSlJnYlNvU2p3R0NCM3VDNXRkQ1hxRUN4ckdEMVVGcld5UWRnVU1kdmgySkxlMU5YcnlPR0Q0RzAKaGJ2Qmt3Y3E3elVMM2RkODdEU25PTE85YzQvWFJXbzBRZG9Ib2svOVFITXQ0U3BCengxNkorbGFrZFZ6VEJhTgpKeTlTQXpaR2QwZHNtZi9jYzRna1pTbFhmTFVQUFg0U2s4cFpKME1jYnllR1NTckNJTVp1TSt4MXo5RXlLUmpvCkdMUUdVWkJvR2NNOEF0TGxzTzJlRUVTR2c2SFpGcWVjZzdRc080TWRkK1hJblNYZlZXeDAwNEF1Y3FqVzVsN0sKcHpqOVlMVitOVmN2a25TOVhLZWFOSjJaVUZFOENkMD0KLS0tLS1FTkQgUFJJVkFURSBLRVktLS0tLQo=" />
+-      <env name="USER_ISSUER" value="https://localhost:8082/realms/develop" />
+-      <env name="VITE_KEYCLOAK_CLIENT_ID" value="keruta" />
+-      <env name="VITE_KEYCLOAK_REALM" value="develop" />
+-      <env name="VITE_KEYCLOAK_URL" value="http://localhost:8082/" />
+-      <env name="VITE_WEBSOCKET_URL" value="ws://localhost:8080/ws/ktcp" />
+-      <env name="VITE_KEYCLOAK_CHECK_LOGIN_IFRAME" value="false" />
+-    </envs>
+-    <EXTENSION ID="com.intellij.javascript.debugger.execution.StartBrowserRunConfigurationExtension">
+-      <browser with-js-debugger="true" />
+-    </EXTENSION>
+-    <method v="2" />
+-  </configuration>
+-</component>
+\ No newline at end of file
+Index: .idea/runConfigurations/dev.xml
+===================================================================
+diff --git a/.idea/runConfigurations/dev.xml b/.idea/runConfigurations/dev.xml
+deleted file mode 100644
+--- a/.idea/runConfigurations/dev.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ /dev/null	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
+@@ -1,11 +0,0 @@
+-<component name="ProjectRunConfigurationManager">
+-  <configuration default="false" name="dev" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
+-    <deployment type="docker-compose.yml">
+-      <settings>
+-        <option name="sourceFilePath" value="compose.dev.yml" />
+-        <option name="upDetach" value="false" />
+-      </settings>
+-    </deployment>
+-    <method v="2" />
+-  </configuration>
+-</component>
+\ No newline at end of file
+Index: .idea/artifacts/core_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"core-jvm-dev\">\n    <output-path>$PROJECT_DIR$/kodel/core/build/libs</output-path>\n    <root id=\"archive\" name=\"core-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.kodel.core.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/core_jvm_dev.xml b/.idea/artifacts/core_jvm_dev.xml
+--- a/.idea/artifacts/core_jvm_dev.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ b/.idea/artifacts/core_jvm_dev.xml	(date 1772158621819)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="core-jvm-dev">
+     <output-path>$PROJECT_DIR$/kodel/core/build/libs</output-path>
+-    <root id="archive" name="core-jvm-dev.jar">
+-      <element id="module-output" name="keruta.kodel.core.jvmMain" />
+-    </root>
++    <root id="archive" name="core-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/coroutine_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"coroutine-jvm-dev\">\n    <output-path>$PROJECT_DIR$/kodel/coroutine/build/libs</output-path>\n    <root id=\"archive\" name=\"coroutine-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.kodel.coroutine.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/coroutine_jvm_dev.xml b/.idea/artifacts/coroutine_jvm_dev.xml
+--- a/.idea/artifacts/coroutine_jvm_dev.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ b/.idea/artifacts/coroutine_jvm_dev.xml	(date 1772158623186)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="coroutine-jvm-dev">
+     <output-path>$PROJECT_DIR$/kodel/coroutine/build/libs</output-path>
+-    <root id="archive" name="coroutine-jvm-dev.jar">
+-      <element id="module-output" name="keruta.kodel.coroutine.jvmMain" />
+-    </root>
++    <root id="archive" name="coroutine-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/core_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"core-js-dev\">\n    <output-path>$PROJECT_DIR$/kodel/core/build/libs</output-path>\n    <root id=\"archive\" name=\"core-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.kodel.core.jsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/core_js_dev.xml b/.idea/artifacts/core_js_dev.xml
+--- a/.idea/artifacts/core_js_dev.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ b/.idea/artifacts/core_js_dev.xml	(date 1772158621396)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="core-js-dev">
+     <output-path>$PROJECT_DIR$/kodel/core/build/libs</output-path>
+-    <root id="archive" name="core-js-dev.jar">
+-      <element id="module-output" name="keruta.kodel.core.jsMain" />
+-    </root>
++    <root id="archive" name="core-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/server_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"server-js-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/server/build/libs</output-path>\n    <root id=\"archive\" name=\"server-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.server.jsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/server_js_dev.xml b/.idea/artifacts/server_js_dev.xml
+--- a/.idea/artifacts/server_js_dev.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ b/.idea/artifacts/server_js_dev.xml	(date 1772158627010)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="server-js-dev">
+     <output-path>$PROJECT_DIR$/ktcp/server/build/libs</output-path>
+-    <root id="archive" name="server-js-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.server.jsMain" />
+-    </root>
++    <root id="archive" name="server-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcl_front_mobile_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcl-front-mobile-dev\">\n    <output-path>$PROJECT_DIR$/ktcl-front-mobile/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcl-front-mobile-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcl-front-mobile.androidMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcl_front_mobile_dev.xml b/.idea/artifacts/ktcl_front_mobile_dev.xml
+--- a/.idea/artifacts/ktcl_front_mobile_dev.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ b/.idea/artifacts/ktcl_front_mobile_dev.xml	(date 1772158625053)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcl-front-mobile-dev">
+     <output-path>$PROJECT_DIR$/ktcl-front-mobile/build/libs</output-path>
+-    <root id="archive" name="ktcl-front-mobile-dev.jar">
+-      <element id="module-output" name="keruta.ktcl-front-mobile.androidMain" />
+-    </root>
++    <root id="archive" name="ktcl-front-mobile-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/model_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"model-jvm-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/model/build/libs</output-path>\n    <root id=\"archive\" name=\"model-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.model.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/model_jvm_dev.xml b/.idea/artifacts/model_jvm_dev.xml
+--- a/.idea/artifacts/model_jvm_dev.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ b/.idea/artifacts/model_jvm_dev.xml	(date 1772158626665)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="model-jvm-dev">
+     <output-path>$PROJECT_DIR$/ktcp/model/build/libs</output-path>
+-    <root id="archive" name="model-jvm-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.model.jvmMain" />
+-    </root>
++    <root id="archive" name="model-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcl_front_mobile_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcl-front-mobile-jvm-dev\">\n    <output-path>$PROJECT_DIR$/ktcl-front-mobile/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcl-front-mobile-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcl-front-mobile.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcl_front_mobile_jvm_dev.xml b/.idea/artifacts/ktcl_front_mobile_jvm_dev.xml
+--- a/.idea/artifacts/ktcl_front_mobile_jvm_dev.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ b/.idea/artifacts/ktcl_front_mobile_jvm_dev.xml	(date 1772158625887)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcl-front-mobile-jvm-dev">
+     <output-path>$PROJECT_DIR$/ktcl-front-mobile/build/libs</output-path>
+-    <root id="archive" name="ktcl-front-mobile-jvm-dev.jar">
+-      <element id="module-output" name="keruta.ktcl-front-mobile.jvmMain" />
+-    </root>
++    <root id="archive" name="ktcl-front-mobile-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/base_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"base-js-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/base/build/libs</output-path>\n    <root id=\"archive\" name=\"base-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.base.jsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/base_js_dev.xml b/.idea/artifacts/base_js_dev.xml
+--- a/.idea/artifacts/base_js_dev.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ b/.idea/artifacts/base_js_dev.xml	(date 1772158619962)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="base-js-dev">
+     <output-path>$PROJECT_DIR$/ktcp/base/build/libs</output-path>
+-    <root id="archive" name="base-js-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.base.jsMain" />
+-    </root>
++    <root id="archive" name="base-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/keruta_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"keruta-js-dev\">\n    <output-path>$PROJECT_DIR$/build/libs</output-path>\n    <root id=\"archive\" name=\"keruta-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.jsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/keruta_js_dev.xml b/.idea/artifacts/keruta_js_dev.xml
+--- a/.idea/artifacts/keruta_js_dev.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ b/.idea/artifacts/keruta_js_dev.xml	(date 1772158623875)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="keruta-js-dev">
+     <output-path>$PROJECT_DIR$/build/libs</output-path>
+-    <root id="archive" name="keruta-js-dev.jar">
+-      <element id="module-output" name="keruta.jsMain" />
+-    </root>
++    <root id="archive" name="keruta-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/server_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"server-jvm-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/server/build/libs</output-path>\n    <root id=\"archive\" name=\"server-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.server.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/server_jvm_dev.xml b/.idea/artifacts/server_jvm_dev.xml
+--- a/.idea/artifacts/server_jvm_dev.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ b/.idea/artifacts/server_jvm_dev.xml	(date 1772158627214)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="server-jvm-dev">
+     <output-path>$PROJECT_DIR$/ktcp/server/build/libs</output-path>
+-    <root id="archive" name="server-jvm-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.server.jvmMain" />
+-    </root>
++    <root id="archive" name="server-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/base_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"base-jvm-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/base/build/libs</output-path>\n    <root id=\"archive\" name=\"base-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.base.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/base_jvm_dev.xml b/.idea/artifacts/base_jvm_dev.xml
+--- a/.idea/artifacts/base_jvm_dev.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ b/.idea/artifacts/base_jvm_dev.xml	(date 1772158620621)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="base-jvm-dev">
+     <output-path>$PROJECT_DIR$/ktcp/base/build/libs</output-path>
+-    <root id="archive" name="base-jvm-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.base.jvmMain" />
+-    </root>
++    <root id="archive" name="base-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/api_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"api-js-dev\">\n    <output-path>$PROJECT_DIR$/kodel/api/build/libs</output-path>\n    <root id=\"archive\" name=\"api-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.kodel.api.jsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/api_js_dev.xml b/.idea/artifacts/api_js_dev.xml
+--- a/.idea/artifacts/api_js_dev.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ b/.idea/artifacts/api_js_dev.xml	(date 1772158617761)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="api-js-dev">
+     <output-path>$PROJECT_DIR$/kodel/api/build/libs</output-path>
+-    <root id="archive" name="api-js-dev.jar">
+-      <element id="module-output" name="keruta.kodel.api.jsMain" />
+-    </root>
++    <root id="archive" name="api-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/model_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"model-js-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/model/build/libs</output-path>\n    <root id=\"archive\" name=\"model-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.model.jsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/model_js_dev.xml b/.idea/artifacts/model_js_dev.xml
+--- a/.idea/artifacts/model_js_dev.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ b/.idea/artifacts/model_js_dev.xml	(date 1772158626243)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="model-js-dev">
+     <output-path>$PROJECT_DIR$/ktcp/model/build/libs</output-path>
+-    <root id="archive" name="model-js-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.model.jsMain" />
+-    </root>
++    <root id="archive" name="model-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/core_wasm_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"core-wasm-js-dev\">\n    <output-path>$PROJECT_DIR$/kodel/core/build/libs</output-path>\n    <root id=\"archive\" name=\"core-wasm-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.kodel.core.wasmJsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/core_wasm_js_dev.xml b/.idea/artifacts/core_wasm_js_dev.xml
+--- a/.idea/artifacts/core_wasm_js_dev.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ b/.idea/artifacts/core_wasm_js_dev.xml	(date 1772158622097)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="core-wasm-js-dev">
+     <output-path>$PROJECT_DIR$/kodel/core/build/libs</output-path>
+-    <root id="archive" name="core-wasm-js-dev.jar">
+-      <element id="module-output" name="keruta.kodel.core.wasmJsMain" />
+-    </root>
++    <root id="archive" name="core-wasm-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/ktcl_front_mobile_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"ktcl-front-mobile-js-dev\">\n    <output-path>$PROJECT_DIR$/ktcl-front-mobile/build/libs</output-path>\n    <root id=\"archive\" name=\"ktcl-front-mobile-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcl-front-mobile.jsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/ktcl_front_mobile_js_dev.xml b/.idea/artifacts/ktcl_front_mobile_js_dev.xml
+--- a/.idea/artifacts/ktcl_front_mobile_js_dev.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ b/.idea/artifacts/ktcl_front_mobile_js_dev.xml	(date 1772158625409)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="ktcl-front-mobile-js-dev">
+     <output-path>$PROJECT_DIR$/ktcl-front-mobile/build/libs</output-path>
+-    <root id="archive" name="ktcl-front-mobile-js-dev.jar">
+-      <element id="module-output" name="keruta.ktcl-front-mobile.jsMain" />
+-    </root>
++    <root id="archive" name="ktcl-front-mobile-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/coroutine_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"coroutine-js-dev\">\n    <output-path>$PROJECT_DIR$/kodel/coroutine/build/libs</output-path>\n    <root id=\"archive\" name=\"coroutine-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.kodel.coroutine.jsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/coroutine_js_dev.xml b/.idea/artifacts/coroutine_js_dev.xml
+--- a/.idea/artifacts/coroutine_js_dev.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ b/.idea/artifacts/coroutine_js_dev.xml	(date 1772158622697)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="coroutine-js-dev">
+     <output-path>$PROJECT_DIR$/kodel/coroutine/build/libs</output-path>
+-    <root id="archive" name="coroutine-js-dev.jar">
+-      <element id="module-output" name="keruta.kodel.coroutine.jsMain" />
+-    </root>
++    <root id="archive" name="coroutine-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/api_wasm_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"api-wasm-js-dev\">\n    <output-path>$PROJECT_DIR$/kodel/api/build/libs</output-path>\n    <root id=\"archive\" name=\"api-wasm-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.kodel.api.wasmJsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/api_wasm_js_dev.xml b/.idea/artifacts/api_wasm_js_dev.xml
+--- a/.idea/artifacts/api_wasm_js_dev.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ b/.idea/artifacts/api_wasm_js_dev.xml	(date 1772158618350)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="api-wasm-js-dev">
+     <output-path>$PROJECT_DIR$/kodel/api/build/libs</output-path>
+-    <root id="archive" name="api-wasm-js-dev.jar">
+-      <element id="module-output" name="keruta.kodel.api.wasmJsMain" />
+-    </root>
++    <root id="archive" name="api-wasm-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/client_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"client-jvm-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/client/build/libs</output-path>\n    <root id=\"archive\" name=\"client-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.client.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/client_jvm_dev.xml b/.idea/artifacts/client_jvm_dev.xml
+--- a/.idea/artifacts/client_jvm_dev.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ b/.idea/artifacts/client_jvm_dev.xml	(date 1772158621174)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="client-jvm-dev">
+     <output-path>$PROJECT_DIR$/ktcp/client/build/libs</output-path>
+-    <root id="archive" name="client-jvm-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.client.jvmMain" />
+-    </root>
++    <root id="archive" name="client-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/keruta_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"keruta-jvm-dev\">\n    <output-path>$PROJECT_DIR$/build/libs</output-path>\n    <root id=\"archive\" name=\"keruta-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/keruta_jvm_dev.xml b/.idea/artifacts/keruta_jvm_dev.xml
+--- a/.idea/artifacts/keruta_jvm_dev.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ b/.idea/artifacts/keruta_jvm_dev.xml	(date 1772158624754)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="keruta-jvm-dev">
+     <output-path>$PROJECT_DIR$/build/libs</output-path>
+-    <root id="archive" name="keruta-jvm-dev.jar">
+-      <element id="module-output" name="keruta.jvmMain" />
+-    </root>
++    <root id="archive" name="keruta-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/client_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"client-js-dev\">\n    <output-path>$PROJECT_DIR$/ktcp/client/build/libs</output-path>\n    <root id=\"archive\" name=\"client-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.ktcp.client.jsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/client_js_dev.xml b/.idea/artifacts/client_js_dev.xml
+--- a/.idea/artifacts/client_js_dev.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ b/.idea/artifacts/client_js_dev.xml	(date 1772158621011)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="client-js-dev">
+     <output-path>$PROJECT_DIR$/ktcp/client/build/libs</output-path>
+-    <root id="archive" name="client-js-dev.jar">
+-      <element id="module-output" name="keruta.ktcp.client.jsMain" />
+-    </root>
++    <root id="archive" name="client-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/coroutine_wasm_js_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"coroutine-wasm-js-dev\">\n    <output-path>$PROJECT_DIR$/kodel/coroutine/build/libs</output-path>\n    <root id=\"archive\" name=\"coroutine-wasm-js-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.kodel.coroutine.wasmJsMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/coroutine_wasm_js_dev.xml b/.idea/artifacts/coroutine_wasm_js_dev.xml
+--- a/.idea/artifacts/coroutine_wasm_js_dev.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ b/.idea/artifacts/coroutine_wasm_js_dev.xml	(date 1772158623419)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="coroutine-wasm-js-dev">
+     <output-path>$PROJECT_DIR$/kodel/coroutine/build/libs</output-path>
+-    <root id="archive" name="coroutine-wasm-js-dev.jar">
+-      <element id="module-output" name="keruta.kodel.coroutine.wasmJsMain" />
+-    </root>
++    <root id="archive" name="coroutine-wasm-js-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file
+Index: .idea/artifacts/api_jvm_dev.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ArtifactManager\">\n  <artifact type=\"jar\" name=\"api-jvm-dev\">\n    <output-path>$PROJECT_DIR$/kodel/api/build/libs</output-path>\n    <root id=\"archive\" name=\"api-jvm-dev.jar\">\n      <element id=\"module-output\" name=\"keruta.kodel.api.jvmMain\" />\n    </root>\n  </artifact>\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/artifacts/api_jvm_dev.xml b/.idea/artifacts/api_jvm_dev.xml
+--- a/.idea/artifacts/api_jvm_dev.xml	(revision b9647fe59a9df76220f92b199109d26f68a85d82)
++++ b/.idea/artifacts/api_jvm_dev.xml	(date 1772158618061)
+@@ -1,8 +1,6 @@
+ <component name="ArtifactManager">
+   <artifact type="jar" name="api-jvm-dev">
+     <output-path>$PROJECT_DIR$/kodel/api/build/libs</output-path>
+-    <root id="archive" name="api-jvm-dev.jar">
+-      <element id="module-output" name="keruta.kodel.api.jvmMain" />
+-    </root>
++    <root id="archive" name="api-jvm-dev.jar" />
+   </artifact>
+ </component>
+\ No newline at end of file

@@ -1,0 +1,20 @@
+ktor:
+  application:
+    modules:
+      - net.kigawa.keruta.ktse.KerutaTaskServer.module
+  deployment:
+    port: 8080
+  security:
+    defaultIdp:
+      issuer: https://user.kigawa.net/realms/develop
+      audience: keruta
+    defaultProvider:
+      issuer: https://user.kigawa.net/realms/develop
+      audience: keruta
+      name: keruta-provider
+zk:
+  host: localhost
+db:
+  jdbcUrl: jdbc:mysql://localhost:3306/keruta_test
+  username: keruta
+  password: keruta

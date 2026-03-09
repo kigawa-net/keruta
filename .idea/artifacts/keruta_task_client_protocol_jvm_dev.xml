@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="keruta-task-client-protocol-jvm-dev">
+    <output-path>$PROJECT_DIR$/keruta-task-client-protocol/build/libs</output-path>
+    <root id="archive" name="keruta-task-client-protocol-jvm-dev.jar" />
+  </artifact>
+</component>

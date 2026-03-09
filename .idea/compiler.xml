@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="1.6">
+    <bytecodeTargetLevel target="21">
+      <module name="keruta-api" target="21" />
       <module name="keruta-api.api" target="21" />
       <module name="keruta-api.api.main" target="21" />
       <module name="keruta-api.api.test" target="21" />
@@ -17,6 +18,9 @@
       <module name="keruta-api.core.usecase" target="21" />
       <module name="keruta-api.core.usecase.main" target="21" />
       <module name="keruta-api.core.usecase.test" target="21" />
+      <module name="keruta-api.generated-api" target="21" />
+      <module name="keruta-api.generated-api.main" target="21" />
+      <module name="keruta-api.generated-api.test" target="21" />
       <module name="keruta-api.infra" target="21" />
       <module name="keruta-api.infra.app" target="21" />
       <module name="keruta-api.infra.app.main" target="21" />
@@ -34,6 +38,77 @@
       <module name="keruta-api.infra.test" target="21" />
       <module name="keruta-api.main" target="21" />
       <module name="keruta-api.test" target="21" />
+      <module name="keruta-sdk" target="21" />
+      <module name="keruta-sdk.buildSrc" target="21" />
+      <module name="keruta-sdk.buildSrc.main" target="21" />
+      <module name="keruta-sdk.buildSrc.test" target="21" />
+      <module name="keruta-sdk.client" target="21" />
+      <module name="keruta-sdk.client.infrastructure" target="21" />
+      <module name="keruta-sdk.client.infrastructure.main" target="21" />
+      <module name="keruta-sdk.client.infrastructure.test" target="21" />
+      <module name="keruta-sdk.client.main" target="21" />
+      <module name="keruta-sdk.client.model" target="21" />
+      <module name="keruta-sdk.client.model.main" target="21" />
+      <module name="keruta-sdk.client.model.test" target="21" />
+      <module name="keruta-sdk.client.test" target="21" />
+      <module name="keruta-sdk.common" target="21" />
+      <module name="keruta-sdk.common.infrastructure" target="21" />
+      <module name="keruta-sdk.common.infrastructure.main" target="21" />
+      <module name="keruta-sdk.common.infrastructure.test" target="21" />
+      <module name="keruta-sdk.common.main" target="21" />
+      <module name="keruta-sdk.common.model" target="21" />
+      <module name="keruta-sdk.common.model.main" target="21" />
+      <module name="keruta-sdk.common.model.test" target="21" />
+      <module name="keruta-sdk.common.test" target="21" />
+      <module name="keruta-sdk.main" target="21" />
+      <module name="keruta-sdk.server" target="21" />
+      <module name="keruta-sdk.server.infrastructure" target="21" />
+      <module name="keruta-sdk.server.infrastructure.main" target="21" />
+      <module name="keruta-sdk.server.infrastructure.test" target="21" />
+      <module name="keruta-sdk.server.main" target="21" />
+      <module name="keruta-sdk.server.model" target="21" />
+      <module name="keruta-sdk.server.model.main" target="21" />
+      <module name="keruta-sdk.server.model.test" target="21" />
+      <module name="keruta-sdk.server.test" target="21" />
+      <module name="keruta-sdk.test" target="21" />
+      <module name="keruta.keruta-task-client-protocol.client" target="21" />
+      <module name="keruta.keruta-task-client-protocol.main" target="21" />
+      <module name="keruta.keruta-task-client-protocol.server" target="21" />
+      <module name="keruta.keruta-task-client-protocol.test" target="21" />
+      <module name="keruta.keruta-task-server" target="21" />
+      <module name="keruta.keruta-task-server.main" target="21" />
+      <module name="keruta.keruta-task-server.model" target="21" />
+      <module name="keruta.keruta-task-server.server" target="21" />
+      <module name="keruta.keruta-task-server.test" target="21" />
+      <module name="keruta.kodel.api.main" target="21" />
+      <module name="keruta.kodel.api.test" target="21" />
+      <module name="keruta.kodel.core.main" target="21" />
+      <module name="keruta.kodel.core.test" target="21" />
+      <module name="keruta.kodel.main" target="21" />
+      <module name="keruta.kodel.test" target="21" />
+      <module name="keruta.ktcl-web" target="23" />
+      <module name="keruta.ktcl-web.main" target="23" />
+      <module name="keruta.ktcl-web.test" target="23" />
+      <module name="keruta.ktcp.base" target="25" />
+      <module name="keruta.ktcp.base.jvmMain" target="25" />
+      <module name="keruta.ktcp.base.jvmTest" target="25" />
+      <module name="keruta.ktcp.infra" target="25" />
+      <module name="keruta.ktcp.model" target="25" />
+      <module name="keruta.ktcp.model.jvmMain" target="25" />
+      <module name="keruta.ktcp.model.jvmTest" target="25" />
+      <module name="keruta.ktcp.model.server" target="25" />
+      <module name="keruta.ktcp.model.server.jvmMain" target="25" />
+      <module name="keruta.ktcp.model.server.jvmTest" target="25" />
+      <module name="keruta.ktcp.usecase" target="25" />
+      <module name="keruta.ktcp.usecase.jvmMain" target="25" />
+      <module name="keruta.ktcp.usecase.jvmTest" target="25" />
+      <module name="keruta.ktcp.usecase.server" target="25" />
+      <module name="keruta.ktcp.usecase.server.jvmMain" target="25" />
+      <module name="keruta.ktcp.usecase.server.jvmTest" target="25" />
+      <module name="keruta.main" target="21" />
+      <module name="keruta.test" target="21" />
+      <module name="net.kigawa.keruta-api.main" target="21" />
+      <module name="net.kigawa.keruta-api.test" target="21" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -55,6 +130,7 @@
       <module name="keruta-executor.test" options="-parameters" />
       <module name="net.kigawa.keruta-api.main" options="-parameters" />
       <module name="net.kigawa.keruta-api.test" options="-parameters" />
+      <module name="net.kigawa.keruta.keruta-executor.test" options="-parameters" />
     </option>
   </component>
 </project>
