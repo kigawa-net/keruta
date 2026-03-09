@@ -18,6 +18,7 @@ import net.kigawa.keruta.ktcp.domain.queue.show.ServerQueueShowMsg
 import net.kigawa.keruta.ktcp.domain.task.list.ServerTaskListMsg
 import net.kigawa.kodel.api.err.unwrap
 import net.kigawa.kodel.api.log.LoggerFactory
+import net.kigawa.kodel.api.log.traceignore.debug
 import kotlin.time.Duration.Companion.seconds
 
 class TaskReceiver(
@@ -136,6 +137,7 @@ class TaskReceiver(
                 logger.severe { "GitHub token not found for user $userSubject (issuer: $userIssuer), skipping queue ${queue.id}" }
                 continue
             }
+            logger.debug { "Executing task ${task.id} for queue ${queue.id}" }
 
             // 7. K8s Job実行
             jobExecutor.executeJob(task.id, task.title, task.description, gitRepoUrl, githubToken)
@@ -143,7 +145,7 @@ class TaskReceiver(
                     it.printStackTrace()
                     null
                 } ?: continue
-
+            logger.debug { "Task ${task.id} executed for queue ${queue.id}" }
             executed = true
         }
 
