@@ -61,6 +61,7 @@ class K8sJobExecutor(
 
             // 2. Job定義YAMLを読み込み
             val job = templateLoader.loadTemplate(taskId, title, description, gitRepoUrl, githubToken)
+            job.metadata?.namespace(config.k8sNamespace)
 
             // 3. BatchV1Api.createNamespacedJob()でJob作成
             val jobName = try {
