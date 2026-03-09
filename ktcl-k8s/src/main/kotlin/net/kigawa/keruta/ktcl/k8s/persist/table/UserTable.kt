@@ -6,7 +6,7 @@ import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 /**
  * ユーザーテーブル（userSubject + userIssuer でユーザーを一意識別）
  */
-object UserTable : Table("user") {
+object UserTable : Table("keruta_user") {
     val id = long("id").autoIncrement()
     val userSubject = varchar("user_subject", 255)
     val userIssuer = varchar("user_issuer", 512)

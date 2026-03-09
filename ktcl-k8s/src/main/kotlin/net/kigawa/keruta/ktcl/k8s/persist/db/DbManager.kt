@@ -23,6 +23,11 @@ class DbManager(
     init {
         val migrator = FlywayMigrator()
 
+        migrator.repair(
+            jdbcUrl = dbConfig.jdbcUrl,
+            username = dbConfig.username,
+            password = dbConfig.password,
+        )
         migrator.migrate(
             jdbcUrl = dbConfig.jdbcUrl,
             username = dbConfig.username,
