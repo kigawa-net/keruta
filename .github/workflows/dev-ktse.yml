@@ -33,3 +33,4 @@ jobs:
       harborProject: "library"
       repository: "kigawa-net/kigawa-net-k8s"
       dockerFile: './Dockerfile_ktse'
+      gradleTask: ':ktse:shadowJar -x test'

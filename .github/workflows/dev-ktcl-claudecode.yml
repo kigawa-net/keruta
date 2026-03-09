@@ -31,4 +31,5 @@ jobs:
       manifestFile: ""
       harborProject: "library"
       repository: "kigawa-net/kigawa-net-k8s"
-      dockerFile: './Dockerfile_ktcl_k8s'
+      dockerFile: './Dockerfile_ktcl_claudecode'
+      gradleTask: ':ktcl-claudecode:build -x test'

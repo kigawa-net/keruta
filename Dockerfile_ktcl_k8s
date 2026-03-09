@@ -1,22 +1,7 @@
-FROM eclipse-temurin:25.0.2_10-jdk-noble AS builder
-
-ENV JAVA_HOME=/opt/java/openjdk
-WORKDIR /app
-COPY settings.gradle.kts gradle.properties build.gradle.kts gradlew /app/
-COPY buildSrc /app/buildSrc
-COPY gradle /app/gradle
-COPY kodel /app/kodel
-RUN --mount=type=cache,target=/root/.gradle ./gradlew compileKotlinJvm -x allTests
-COPY ktcp /app/ktcp
-RUN --mount=type=cache,target=/root/.gradle ./gradlew :ktcp:client:compileKotlinJvm :ktcp:ktcp-infra:ktcp-infra-client:compileKotlinJvm -x allTests
-COPY ktcl /app/ktcl
-COPY ktcl-k8s /app/ktcl-k8s
-RUN --mount=type=cache,target=/root/.gradle ./gradlew :ktcl-k8s:shadowJar -x test
-
 FROM eclipse-temurin:25.0.2_10-jdk-noble
 
 ENV JAVA_HOME=/opt/java/openjdk
-COPY --from=builder /app/ktcl-k8s/build/libs/ktcl-k8s.jar /app/app.jar
+COPY ktcl-k8s/build/libs/ktcl-k8s.jar /app/app.jar
 WORKDIR /work
 ENTRYPOINT ["java"]
 CMD ["-jar","/app/app.jar"]

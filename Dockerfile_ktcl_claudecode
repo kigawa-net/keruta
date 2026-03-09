@@ -1,22 +1,7 @@
-FROM eclipse-temurin:25.0.2_10-jdk-noble AS builder
-
-ENV JAVA_HOME=/opt/java/openjdk
-WORKDIR /app
-COPY buildSrc /app/buildSrc
-COPY gradle /app/gradle
-COPY kodel /app/kodel
-COPY ktcp /app/ktcp
-COPY ktse /app/ktse
-COPY ktcl /app/ktcl
-COPY ktcl-claudecode /app/ktcl-claudecode
-COPY ktcl-k8s /app/ktcl-k8s
-COPY settings.gradle.kts gradle.properties build.gradle.kts gradlew /app/
-RUN --mount=type=cache,target=/root/.gradle ./gradlew :ktcl-claudecode:build -x test
-
 FROM harbor.kigawa.net/library/dev-base:latest
 
 ENV JAVA_HOME=/opt/java/openjdk
 WORKDIR /work
+COPY ktcl-claudecode/build/libs/ktcl-claudecode-all.jar /app/app.jar
 ENTRYPOINT ["java"]
-COPY --from=builder /app/ktcl-claudecode/build/libs/ktcl-claudecode-all.jar /app/app.jar
 CMD ["-jar","/app/app.jar"]
