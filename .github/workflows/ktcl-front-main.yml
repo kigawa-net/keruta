@@ -1,4 +1,4 @@
-name: dev-ktcl-front
+name: ktcl-front-main
 on:
   push:
     paths-ignore:
