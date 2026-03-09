@@ -3,6 +3,7 @@ package net.kigawa.keruta.ktcl.k8s.persist.dao
 import net.kigawa.keruta.ktcl.k8s.persist.db.DbManager
 import net.kigawa.keruta.ktcl.k8s.persist.table.UserTable
 import net.kigawa.keruta.ktcl.k8s.persist.table.UserTokenTable
+import net.kigawa.kodel.api.log.getKogger
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
@@ -18,6 +19,7 @@ class UserTokenDao(
     private val dbManager: DbManager,
     private val userDao: UserDao,
 ) {
+    val logger = getKogger()
     /**
      * ユーザーのrefresh tokenを保存または更新する
      */
@@ -106,7 +108,11 @@ class UserTokenDao(
      * ユーザーのgithub tokenを取得する
      */
     fun getGithubToken(userSubject: String, userIssuer: String): String? {
-        val userId = userDao.find(userSubject, userIssuer) ?: return null
+        val userId = userDao.find(userSubject, userIssuer)
+        if (userId == null) {
+            logger.warning { "User not found: $userSubject" }
+            return null
+        }
         return transaction(dbManager.db) {
             UserTokenTable.selectAll()
                 .where { UserTokenTable.userId eq userId }
