@@ -56,7 +56,9 @@ export function useProviderAddForm(initialIssuer: string = ""): ProviderAddFormS
         const issuerUrl = Url.parse(issuer.value.replace(/\/$/, ""));
         let json: KerutaJson;
         try {
-            const res = await fetch(issuerUrl.plusPath(".well-known/keruta.json").toStrUrl());
+            const res = await fetch(
+                issuerUrl.plusPath(".well-known/keruta.json").toStrUrl(), {mode: "cors"}
+            );
             json = await res.json();
         } catch {
             setErr("keruta.jsonの取得に失敗しました");
