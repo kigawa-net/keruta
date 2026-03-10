@@ -6,6 +6,7 @@ export interface ProviderPreset {
 
 function loadPresets(): ProviderPreset[] {
     const raw = import.meta.env.VITE_PROVIDER_PRESETS;
+    console.log("VITE_PROVIDER_PRESETS:", raw);
     if (!raw) return [];
     try {
         return JSON.parse(raw) as ProviderPreset[];

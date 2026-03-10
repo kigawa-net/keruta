@@ -4,6 +4,7 @@ import {PROVIDER_PRESETS} from "./ProviderPresets";
 
 export function ProviderPresetSection() {
     return (
+        PROVIDER_PRESETS.length === 0 ? undefined :
         <div className="mb-6 md:mb-8">
             <h2 className="text-lg font-semibold mb-3 text-gray-700">プリセットから追加</h2>
             <div className="flex flex-wrap gap-3">
