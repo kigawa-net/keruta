@@ -20,10 +20,10 @@ interface ProviderAddFormState {
     handleSubmit: () => Promise<void>;
 }
 
-export function useProviderAddForm(): ProviderAddFormState {
+export function useProviderAddForm(initialIssuer: string = ""): ProviderAddFormState {
     const authedKtse = useAuthedKtseState();
     const [formState, setFormState] = useState<FormState>("inputting");
-    const [issuer, setIssuer] = useState<InputValue>({value: ""});
+    const [issuer, setIssuer] = useState<InputValue>({value: initialIssuer});
     const [err, setErr] = useState<string>();
     const [kerutaJson, setKerutaJson] = useState<KerutaJson | undefined>(undefined);
 

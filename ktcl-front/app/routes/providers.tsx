@@ -8,6 +8,7 @@ import {useWebsocketState} from "../util/net/websocket/WebsocketProvider";
 import {useAuthedKtseState} from "../components/api/AuthedKtseProvider";
 import {ProviderTable} from "../components/provider/ProviderTable";
 import {ProviderCardList} from "../components/provider/ProviderCardList";
+import {ProviderPresetSection} from "../components/provider/ProviderPresetSection";
 
 type Provider = ClientProviderListMsg["providers"][0]
 
@@ -63,6 +64,7 @@ export default function AboutRoute() {
                     プロバイダーを追加
                 </Link>
             </div>
+            <ProviderPresetSection/>
             <ProviderTable providers={providers} onDelete={handleDelete}/>
             <ProviderCardList providers={providers} onDelete={handleDelete}/>
         </div>
