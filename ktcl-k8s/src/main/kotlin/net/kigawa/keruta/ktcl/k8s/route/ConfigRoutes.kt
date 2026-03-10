@@ -49,7 +49,6 @@ class ConfigRoutes(
                 call.respond(HttpStatusCode.NoContent)
             }
             get("keruta.json") {
-                call.response.headers.append(HttpHeaders.AccessControlAllowOrigin, "*")
                 val appConfig = appConfig
                 val issuer = appConfig.keruta.ownIssuer
                 val loginEndpoint = issuer.plusPath("/login")
@@ -70,7 +69,6 @@ class ConfigRoutes(
                 call.respond(response)
             }
             get("jwks.json") {
-                call.response.headers.append(HttpHeaders.AccessControlAllowOrigin, "*")
                 val jwksJson = jwksJsonGenerator.generate(privateKey)
                 call.respond(jwksJson)
             }
