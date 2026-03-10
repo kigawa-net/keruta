@@ -32,7 +32,7 @@ jobs:
       harborProject: "private"
       repository: "kigawa-net/kigawa-net-k8s"
       dockerFile: './Dockerfile_ktcl_front'
-      buildArgs: |
+      buildArgs: >
         {
           "VITE_WEBSOCKET_URL": "wss://ktse-dev.kigawa.net/ws/ktcp",
           "VITE_USER_ISSUER": "https://user.kigawa.net/realms/develop",

@@ -33,7 +33,7 @@ jobs:
       repository: "kigawa-net/kigawa-net-k8s"
       dockerFile: './Dockerfile_ktcl_front'
       yamlPath: '[0].spec.template.spec.containers[0].image'
-      buildArgs: |
+      buildArgs: >
         {
           "VITE_WEBSOCKET_URL": "wss://ktse.kigawa.net/ws/ktcp",
           "VITE_USER_ISSUER": "https://user.kigawa.net/realms/kigawa-net",
