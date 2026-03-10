@@ -4,6 +4,7 @@ import {loadPresets} from "./ProviderPresets";
 
 export function ProviderPresetSection() {
     const presets = loadPresets();
+    console.debug("Loaded presets:", presets);
     return (
         presets.length === 0 ? undefined :
             <div className="mb-6 md:mb-8">
