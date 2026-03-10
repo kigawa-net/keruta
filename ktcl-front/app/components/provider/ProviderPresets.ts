@@ -4,7 +4,7 @@ export interface ProviderPreset {
     description: string;
 }
 
-function loadPresets(): ProviderPreset[] {
+export function loadPresets(): ProviderPreset[] {
     const raw = import.meta.env.VITE_PROVIDER_PRESETS;
     console.log("VITE_PROVIDER_PRESETS:", raw);
     if (!raw) return [];
@@ -16,4 +16,3 @@ function loadPresets(): ProviderPreset[] {
     }
 }
 
-export const PROVIDER_PRESETS: ProviderPreset[] = loadPresets();
