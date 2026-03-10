@@ -40,12 +40,12 @@ jobs:
           "VITE_KEYCLOAK_URL": "https://user.kigawa.net/",
           "VITE_KEYCLOAK_REALM": "develop",
           "VITE_KEYCLOAK_CLIENT_ID": "keruta",
-          "VITE_PROVIDER_PRESETS": "[
-            {
-              \"name\": \"ktcl-k8s\",
-              \"issuer\": \"https://ktcl-k8s-dev.kigawa.net\",
-              \"description\": \"ktcl-k8s\"
-            }
+          "VITE_PROVIDER_PRESETS": "[\
+            {\
+              \"name\": \"ktcl-k8s\",\
+              \"issuer\": \"https://ktcl-k8s-dev.kigawa.net\",\
+              \"description\": \"ktcl-k8s\"\
+            }\
           ]"
         }
 
