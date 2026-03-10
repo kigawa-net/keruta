@@ -42,9 +42,9 @@ jobs:
           "VITE_KEYCLOAK_CLIENT_ID": "keruta",
           "VITE_PROVIDER_PRESETS": "[
             {
-              "name":"ktcl-k8s",
-              "issuer":"https://ktcl-k8s-dev.kigawa.net",
-              "description":"ktcl-k8s"
+              \"name\": \"ktcl-k8s\",
+              \"issuer\": \"https://ktcl-k8s-dev.kigawa.net\",
+              \"description\": \"ktcl-k8s\"
             }
           ]"
         }
