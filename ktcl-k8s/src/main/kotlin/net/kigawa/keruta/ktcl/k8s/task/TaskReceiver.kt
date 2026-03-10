@@ -17,7 +17,7 @@ import net.kigawa.keruta.ktcp.domain.queue.list.ServerQueueListMsg
 import net.kigawa.keruta.ktcp.domain.queue.show.ServerQueueShowMsg
 import net.kigawa.keruta.ktcp.domain.task.list.ServerTaskListMsg
 import net.kigawa.kodel.api.err.unwrap
-import net.kigawa.kodel.api.log.LoggerFactory
+import net.kigawa.kodel.api.log.getKogger
 import net.kigawa.kodel.api.log.traceignore.debug
 import kotlin.time.Duration.Companion.seconds
 
@@ -28,7 +28,7 @@ class TaskReceiver(
     private val ktclIssuer: String,
     private val userTokenDao: UserTokenDao,
 ) {
-    private val logger = LoggerFactory.get("TaskReceiver")
+    private val logger = getKogger()
 
     suspend fun startReceiving(ctx: ClientCtx, userSubject: String, userIssuer: String): Boolean = coroutineScope {
         // 0. auth_success待ち

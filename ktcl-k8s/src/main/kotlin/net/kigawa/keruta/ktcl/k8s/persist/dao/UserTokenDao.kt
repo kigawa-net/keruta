@@ -111,6 +111,7 @@ class UserTokenDao(
     fun getGithubToken(userSubject: String, userIssuer: String): String? {
         logger.debug { "Getting github token for user $userSubject" }
         val userId = userDao.find(userSubject, userIssuer)
+        logger.debug { "User ID: $userId" }
         if (userId == null) {
             logger.warning { "User not found: $userSubject" }
             return null
@@ -119,6 +120,7 @@ class UserTokenDao(
             UserTokenTable.selectAll()
                 .where { UserTokenTable.userId eq userId }
                 .firstOrNull()
+                .also { logger.debug { "Found user token: $it" } }
                 ?.get(UserTokenTable.githubToken)
         }
     }
