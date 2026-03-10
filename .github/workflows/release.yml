@@ -90,7 +90,7 @@ jobs:
         id: build-args
         run: |
           echo "args<<EOF" >> $GITHUB_OUTPUT
-          echo '${{ inputs.buildArgs }}' | tr -d '\n' | jq -r 'to_entries | map("\(.key)=\(.value)") | join("\n")' \
+          echo '${{ inputs.buildArgs }}' | tr -d '\n' | jq -r 'to_entries | map("\"\(.key)=\(.value)\"") | join("\n")' \
             | tee -a $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
         shell: bash
