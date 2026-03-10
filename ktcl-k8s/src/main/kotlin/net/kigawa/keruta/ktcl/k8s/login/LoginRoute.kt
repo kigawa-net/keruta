@@ -68,7 +68,7 @@ class LoginRoute(
             parameters.append("client_id", clientId)
             parameters.append("redirect_uri", redirectUri.toString())
             parameters.append("response_type", "code")
-            parameters.append("scope", "openid profile email")
+            parameters.append("scope", "openid profile email offline_access")
             parameters.append("state", pkce.state)
             parameters.append("nonce", pkce.nonce)
             parameters.append("code_challenge", pkce.codeChallenge)
