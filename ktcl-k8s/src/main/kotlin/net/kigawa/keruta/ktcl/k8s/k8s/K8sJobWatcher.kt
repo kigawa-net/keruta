@@ -8,7 +8,6 @@ import net.kigawa.keruta.ktcl.k8s.err.K8sErr
 import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.LoggerFactory
 
-
 class K8sJobWatcher(
     apiClient: ApiClient,
     private val config: K8sConfig,
@@ -29,44 +28,39 @@ class K8sJobWatcher(
                 logger.warning { "Log watch failed for $jobName: ${e.message}" }
             }
         }
-        withContext(Dispatchers.IO) {
-            val startTime = System.currentTimeMillis()
+        pollUntilComplete(jobName, onStatusChange)
+    }
 
-            try {
-                while (isActive) {
-                    // Job状態を取得
-                    val job = batchApi.readNamespacedJobStatus(jobName, config.k8sNamespace).execute()
-
-                    // ステータスチェック
-                    val status = when {
-                        job.status?.succeeded == 1 -> JobStatus.SUCCEEDED
-                        job.status?.failed == 1 -> JobStatus.FAILED
-                        else -> {
-                            // タイムアウトチェック
-                            val elapsedSeconds = (System.currentTimeMillis() - startTime) / 1000
-                            if (elapsedSeconds > config.k8sJobTimeout) {
-                                JobStatus.TIMEOUT
-                            } else {
-                                null
-                            }
-                        }
-                    }
-
-                    if (status != null) {
-                        logger.info { "Job $jobName finished with status: $status" }
-                        onStatusChange(status)
-                        return@withContext Res.Ok(status)
-                    }
-
-                    // 5秒待機
-                    delay(5000)
+    private suspend fun pollUntilComplete(
+        jobName: String,
+        onStatusChange: suspend (JobStatus) -> Unit,
+    ): Res<JobStatus, K8sErr> = withContext(Dispatchers.IO) {
+        val startTime = System.currentTimeMillis()
+        try {
+            while (isActive) {
+                val status = checkJobStatus(jobName, startTime)
+                if (status != null) {
+                    logger.info { "Job $jobName finished with status: $status" }
+                    onStatusChange(status)
+                    return@withContext Res.Ok(status)
                 }
-
-                Res.Err(K8sErr.JobWatchErr("Watch cancelled", null))
-            } catch (e: Exception) {
-                logger.info { "Failed to watch Job: $jobName - ${e.message}" }
-                Res.Err(K8sErr.JobWatchErr("Watch failed: ${e.message}", e))
+                delay(5000)
             }
+            Res.Err(K8sErr.JobWatchErr("Watch cancelled", null))
+        } catch (e: Exception) {
+            logger.info { "Failed to watch Job: $jobName - ${e.message}" }
+            Res.Err(K8sErr.JobWatchErr("Watch failed: ${e.message}", e))
+        }
+    }
+
+    private fun checkJobStatus(jobName: String, startTime: Long): JobStatus? {
+        val job = batchApi.readNamespacedJobStatus(jobName, config.k8sNamespace).execute()
+        val elapsed = (System.currentTimeMillis() - startTime) / 1000
+        return when {
+            job.status?.succeeded == 1 -> JobStatus.SUCCEEDED
+            job.status?.failed == 1 -> JobStatus.FAILED
+            elapsed > config.k8sJobTimeout -> JobStatus.TIMEOUT
+            else -> null
         }
     }
 }
