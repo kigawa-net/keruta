@@ -30,7 +30,7 @@ docker-compose -f compose.test.yml up -d mysql   # DB起動
 マルチモジュール構成。依存性バージョンは `buildSrc/src/main/kotlin/Version.kt` で一元管理。
 
 - **kodel** - 共通ライブラリ（Res型、EntrypointDeferred、Kogger）
-- **ktcp** - WebSocketプロトコル（model/client/server、Kotlin Multiplatform対応）
+- **ktcp-sdk** - WebSocketプロトコル（model/client/server、Kotlin Multiplatform対応）
 - **ktse** - KtorタスクサーバーWS（Exposed/Flyway/MySQL、二重トークン認証）
 - **ktcl-k8s** - KTCPでタスク受信しKubernetes Jobとして実行
 - **ktcl-front** - React+TypeScript+Vite+Keycloak.js

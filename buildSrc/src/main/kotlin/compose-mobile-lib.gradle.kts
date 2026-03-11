@@ -48,7 +48,7 @@ kotlin {
             implementation("io.ktor:ktor-client-core:${Version.KTOR}")
             implementation("io.ktor:ktor-client-content-negotiation:${Version.KTOR}")
             implementation("io.ktor:ktor-serialization-kotlinx-json:${Version.KTOR}")
-            implementation(project(":ktcp:client"))
+            implementation(project(":ktcp-sdk:client"))
             implementation(project(":kodel:api"))
         }
 

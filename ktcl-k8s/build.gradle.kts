@@ -17,8 +17,8 @@ application {
 
 dependencies {
     // KTCP統合
-    implementation(project(":ktcp:client"))
-    implementation(project(":ktcp:ktcp-infra:ktcp-infra-client"))
+    implementation(project(":ktcp-sdk:client"))
+    implementation(project(":ktcp-sdk:ktcp-infra:ktcp-infra-client"))
     implementation(project(":kodel:api"))
 
     // Ktor WebSocket Client
