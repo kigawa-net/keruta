@@ -1,6 +1,7 @@
 package net.kigawa.keruta.ktcl.k8s.route
 
 import io.ktor.http.*
+import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -42,11 +43,10 @@ class ConfigRoutes(
         authRoute.configure(this)
 
         route("/.well-known") {
-            // .well-known エンドポイント（認証不要・CORS全許可）
-            options("{...}") {
-                call.response.headers.append(HttpHeaders.AccessControlAllowOrigin, "*")
-                call.response.headers.append(HttpHeaders.AccessControlAllowMethods, "GET, OPTIONS")
-                call.respond(HttpStatusCode.NoContent)
+            install(CORS) {
+                anyHost()
+                allowMethod(HttpMethod.Get)
+                allowHeader(HttpHeaders.ContentType)
             }
             get("keruta.json") {
                 val appConfig = appConfig
