@@ -60,7 +60,9 @@ class KerutaK8sClient(
                             logger.info { "Access token refreshed for user ${it.userSubject}" }
 
                             // accessTokenを使ってKTSEに接続しタスク受信ループを実行する
-                            received = runTaskReceiver(it.userSubject, it.userIssuer, tokenResponse.accessToken) || received
+                            received = runTaskReceiver(
+                                it.userSubject, it.userIssuer, tokenResponse.accessToken
+                            ) || received
                         } catch (e: Exception) {
                             if (e is CancellationException) throw e
                             logger.severe { "Failed to refresh token ${e.message}" }
@@ -75,35 +77,41 @@ class KerutaK8sClient(
     }
 
     private suspend fun runTaskReceiver(userSubject: String, userIssuer: String, accessToken: String): Boolean {
+        logger.debug { "Running task receiver for user $userSubject" }
         val connectionManager = ConnectionManager(config)
+        logger.debug { "Connecting to KTSE for user $userSubject" }
         val connection = try {
             connectionManager.connect()
         } catch (e: Exception) {
             logger.severe { "Failed to connect to KTSE for user $userSubject: ${e.message}" }
             return false
         }
-
+        logger.debug { "Connected to KTSE for user $userSubject" }
         val session = KtcpSession(connection)
+        logger.debug { "Created KTSE session for user $userSubject" }
         val ctx = ClientCtx(serializer, session)
+        logger.debug { "Creating provider token for user $userSubject" }
         val providerToken = providerTokenCreator.create(JWT.decode(accessToken).subject)
-        // 認証
+        logger.debug { "Provider token created for user $userSubject" }
         val authMsg = ServerAuthRequestMsg(
             userToken = accessToken,
             serverToken = providerToken.createdToken.rawToken
         )
+        logger.debug { "Sending authentication request for user $userSubject" }
         ktcpClient.ktcpServerEntrypoints.authRequestEntrypoint.access(authMsg, ctx)?.execute()
             ?: run {
                 logger.severe { "Failed to send auth request for user $userSubject" }
                 return false
             }
-
-        logger.info { "Authentication request sent for user $userSubject" }
-
-
+        logger.debug { "Authentication request sent for user $userSubject" }
         val apiClient = K8sClientFactory.createClient(config)
+        logger.debug { "Kubernetes API client created for user $userSubject" }
         val templateLoader = JobTemplateLoader("job-template.yaml")
+        logger.debug { "Job template loader created for user $userSubject" }
         val jobExecutor = K8sJobExecutor(apiClient, config, templateLoader)
+        logger.debug { "Job executor created for user $userSubject" }
         val taskReceiver = TaskReceiver(connection, ktcpClient, jobExecutor, ktclIssuer, userTokenDao)
+        logger.debug { "Starting task receiver for user $userSubject" }
         return taskReceiver.startReceiving(ctx, userSubject, userIssuer)
     }
 

@@ -32,20 +32,23 @@ class TaskReceiver(
     private val logger = getKogger()
 
     suspend fun startReceiving(ctx: ClientCtx, userSubject: String, userIssuer: String): Boolean = coroutineScope {
+        logger.debug { "Starting task receiver for user $userSubject" }
         if (!waitForAuthSuccess(ctx, userSubject)) return@coroutineScope false
-
+        logger.debug { "Auth success received for user $userSubject" }
         val myProviderIds = fetchMatchingProviderIds(ctx, userSubject) ?: return@coroutineScope false
+        logger.debug { "Providers matched for user $userSubject: $myProviderIds" }
         if (myProviderIds.isEmpty()) {
             logger.info { "No providers matched ktclIssuer: $ktclIssuer" }
             return@coroutineScope false
         }
-
+        logger.debug { "Providers matched: $myProviderIds" }
         val myQueues = fetchMyQueues(ctx, userSubject, myProviderIds) ?: return@coroutineScope false
+        logger.debug { "Queues found for providers: $myProviderIds" }
         if (myQueues.isEmpty()) {
             logger.info { "No queues found for providers: $myProviderIds" }
             return@coroutineScope false
         }
-
+        logger.debug { "Queues found: $myQueues" }
         myQueues.map { processQueue(ctx, userSubject, userIssuer, it) }.any { it }
     }
 
