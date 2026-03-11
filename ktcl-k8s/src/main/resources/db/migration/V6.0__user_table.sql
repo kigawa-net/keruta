@@ -74,7 +74,20 @@ ALTER TABLE user_token MODIFY COLUMN user_id_fk BIGINT NOT NULL;
 ALTER TABLE user_token DROP INDEX IF EXISTS idx_user_subject_issuer;
 ALTER TABLE user_token ADD UNIQUE INDEX IF NOT EXISTS idx_user_token_user_id (user_id_fk);
 ALTER TABLE user_token DROP FOREIGN KEY IF EXISTS fk_user_token_user;
-ALTER TABLE user_token ADD CONSTRAINT IF NOT EXISTS fk_user_token_user FOREIGN KEY (user_id_fk) REFERENCES keruta_user(id);
+
+DROP PROCEDURE IF EXISTS migrate_v6_step3b;
+CREATE PROCEDURE migrate_v6_step3b()
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.TABLE_CONSTRAINTS
+        WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'user_token' AND CONSTRAINT_NAME = 'fk_user_token_user'
+    ) THEN
+        ALTER TABLE user_token ADD CONSTRAINT fk_user_token_user FOREIGN KEY (user_id_fk) REFERENCES keruta_user(id);
+    END IF;
+END;
+CALL migrate_v6_step3b();
+DROP PROCEDURE IF EXISTS migrate_v6_step3b;
+
 ALTER TABLE user_token DROP COLUMN IF EXISTS user_subject;
 ALTER TABLE user_token DROP COLUMN IF EXISTS user_issuer;
 ALTER TABLE user_token DROP COLUMN IF EXISTS user_audience;
@@ -143,7 +156,20 @@ ALTER TABLE user_claude_config MODIFY COLUMN user_id_fk BIGINT NOT NULL;
 ALTER TABLE user_claude_config DROP INDEX IF EXISTS idx_user_id_issuer;
 ALTER TABLE user_claude_config ADD UNIQUE INDEX IF NOT EXISTS idx_user_claude_config_user_id (user_id_fk);
 ALTER TABLE user_claude_config DROP FOREIGN KEY IF EXISTS fk_user_claude_config_user;
-ALTER TABLE user_claude_config ADD CONSTRAINT IF NOT EXISTS fk_user_claude_config_user FOREIGN KEY (user_id_fk) REFERENCES keruta_user(id);
+
+DROP PROCEDURE IF EXISTS migrate_v6_step6b;
+CREATE PROCEDURE migrate_v6_step6b()
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.TABLE_CONSTRAINTS
+        WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'user_claude_config' AND CONSTRAINT_NAME = 'fk_user_claude_config_user'
+    ) THEN
+        ALTER TABLE user_claude_config ADD CONSTRAINT fk_user_claude_config_user FOREIGN KEY (user_id_fk) REFERENCES keruta_user(id);
+    END IF;
+END;
+CALL migrate_v6_step6b();
+DROP PROCEDURE IF EXISTS migrate_v6_step6b;
+
 ALTER TABLE user_claude_config DROP COLUMN IF EXISTS user_id;
 ALTER TABLE user_claude_config DROP COLUMN IF EXISTS user_issuer;
 ALTER TABLE user_claude_config DROP COLUMN IF EXISTS user_audience;

@@ -32,6 +32,7 @@ jobs:
       harborProject: "private"
       repository: "kigawa-net/kigawa-net-k8s"
       dockerFile: './Dockerfile_ktcl_front'
+      yamlPath: '[0].spec.template.spec.containers[0].image'
       buildArgs: >
         {
           "VITE_WEBSOCKET_URL": "wss://ktse-dev.kigawa.net/ws/ktcp",
