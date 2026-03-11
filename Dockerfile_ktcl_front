@@ -16,6 +16,7 @@ ARG VITE_USER_CLIENT_ID
 ARG VITE_KEYCLOAK_URL
 ARG VITE_KEYCLOAK_REALM
 ARG VITE_KEYCLOAK_CLIENT_ID
+ARG VITE_PROVIDER_PRESETS
 
 COPY ktcl-front /app/
 COPY --from=development-dependencies-env /app/node_modules /app/node_modules

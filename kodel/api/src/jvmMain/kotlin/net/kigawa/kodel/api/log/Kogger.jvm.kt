@@ -29,11 +29,3 @@ fun <T: Any> KClass<T>.getKogger(): Kogger {
 fun <T: Any> T.getKogger(): Kogger {
     return LoggerFactory.get(this::class)
 }
-
-actual fun Kogger.fine(msg: () -> String) = fine { msg() }
-
-
-actual fun Kogger.warning(msg: () -> String) = warning { msg() }
-
-
-actual fun Kogger.severe(msg: () -> String) = severe { msg() }

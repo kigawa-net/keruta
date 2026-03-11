@@ -29,6 +29,10 @@ on:
         required: false
         type: string
         default: ''
+      yamlPath:
+        required: false
+        type: string
+        default: '.spec.template.spec.containers[0].image'
     secrets:
       HARBOR_PASS:
         required: true
@@ -86,7 +90,8 @@ jobs:
         id: build-args
         run: |
           echo "args<<EOF" >> $GITHUB_OUTPUT
-          echo '${{ inputs.buildArgs }}' | jq -r 'to_entries | map("\(.key)=\(.value)") | join("\n")' >> $GITHUB_OUTPUT
+          echo '${{ inputs.buildArgs }}' | tr -d '\n' | jq -r 'to_entries | map("\(.key)=\(.value)") | join("\n")' \
+            | tee -a $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
         shell: bash
 
@@ -112,7 +117,7 @@ jobs:
       - name: Update YAML File
         if: inputs.manifestFile != ''
         run: |
-          yq -i '.spec.template.spec.containers[0].image = "harbor.kigawa.net/${{ inputs.harborProject }}/${{ inputs.name }}:${{ github.ref_name }}-${{ github.sha }}"' \
+          yq -i '${{ inputs.yamlPath }} = "harbor.kigawa.net/${{ inputs.harborProject }}/${{ inputs.name }}:${{ github.ref_name }}-${{ github.sha }}"' \
           ${{ inputs.manifestFile }}
 
       - name: push
@@ -121,5 +126,5 @@ jobs:
           git config user.name githubActions
           git config user.email bot@kigawa.net
           git add .
-          git commit --author=. -m "update rev"
+          git commit --author=. -m "update by githubActions"
           git push

@@ -4,8 +4,12 @@ import FormErrMsg from "../form/FormErrMsg";
 import {ProviderAddFormActions} from "./ProviderAddFormActions";
 import {useProviderAddForm} from "./useProviderAddForm";
 
-export function ProviderAddForm() {
-    const {issuer, err, isDisabled, buttonLabel, setIssuer, handleSubmit} = useProviderAddForm();
+interface ProviderAddFormProps {
+    initialIssuer?: string;
+}
+
+export function ProviderAddForm({initialIssuer = ""}: ProviderAddFormProps) {
+    const {issuer, err, isDisabled, buttonLabel, setIssuer, handleSubmit} = useProviderAddForm(initialIssuer);
 
     return (
         <form

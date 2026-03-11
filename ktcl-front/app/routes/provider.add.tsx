@@ -1,8 +1,11 @@
-import {Link} from "react-router";
+import {Link, useSearchParams} from "react-router";
 import {ProviderAddForm} from "../components/provider/ProviderAddForm";
 
 // noinspection JSUnusedGlobalSymbols
 export default function ProviderAddRoute() {
+    const [searchParams] = useSearchParams();
+    const initialIssuer = searchParams.get("issuer") ?? "";
+
     return (
         <div className="max-w-2xl mx-auto p-3 md:p-6">
             <div className="flex items-center gap-2 md:gap-4 mb-6 md:mb-8">
@@ -10,7 +13,7 @@ export default function ProviderAddRoute() {
                 <h1 className="text-2xl md:text-3xl font-bold">プロバイダーを追加</h1>
             </div>
             <div className="bg-white rounded-lg shadow p-4 md:p-6">
-                <ProviderAddForm/>
+                <ProviderAddForm initialIssuer={initialIssuer}/>
             </div>
         </div>
     )

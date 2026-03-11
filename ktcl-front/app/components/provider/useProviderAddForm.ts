@@ -20,10 +20,10 @@ interface ProviderAddFormState {
     handleSubmit: () => Promise<void>;
 }
 
-export function useProviderAddForm(): ProviderAddFormState {
+export function useProviderAddForm(initialIssuer: string = ""): ProviderAddFormState {
     const authedKtse = useAuthedKtseState();
     const [formState, setFormState] = useState<FormState>("inputting");
-    const [issuer, setIssuer] = useState<InputValue>({value: ""});
+    const [issuer, setIssuer] = useState<InputValue>({value: initialIssuer});
     const [err, setErr] = useState<string>();
     const [kerutaJson, setKerutaJson] = useState<KerutaJson | undefined>(undefined);
 
@@ -56,7 +56,9 @@ export function useProviderAddForm(): ProviderAddFormState {
         const issuerUrl = Url.parse(issuer.value.replace(/\/$/, ""));
         let json: KerutaJson;
         try {
-            const res = await fetch(issuerUrl.plusPath(".well-known/keruta.json").toStrUrl());
+            const res = await fetch(
+                issuerUrl.plusPath(".well-known/keruta.json").toStrUrl(), {mode: "cors"}
+            );
             json = await res.json();
         } catch {
             setErr("keruta.jsonの取得に失敗しました");

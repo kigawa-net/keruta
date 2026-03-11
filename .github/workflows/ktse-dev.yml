@@ -34,3 +34,4 @@ jobs:
       repository: "kigawa-net/kigawa-net-k8s"
       dockerFile: './Dockerfile_ktse'
       gradleTask: ':ktse:shadowJar -x test'
+      yamlPath: 'select(documentIndex == 0).spec.template.spec.containers[0].image'
