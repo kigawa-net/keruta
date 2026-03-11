@@ -104,40 +104,44 @@ class TaskReceiver(
         userIssuer: String,
         queue: ClientQueueListedMsg.Queue,
     ): Boolean {
+        logger.debug { "Processing queue ${queue.id}" }
         ktcpClient.ktcpServerEntrypoints.queueShow.access(ServerQueueShowMsg(id = queue.id), ctx)?.execute()
             ?: run {
                 logger.severe { "Failed to send queue_show for queue ${queue.id}" }
                 return false
             }
-
+        logger.debug { "Sent queue_show for queue ${queue.id}" }
         val queueShowedMsg = receiveMsg(ctx) ?: return false
+        logger.debug { "Received queue_show for queue ${queue.id}" }
         val queueShowed = queueShowedMsg.tryToQueueShowed()
             ?.unwrap { it.printStackTrace(); return false }
             ?: return false
-
+        logger.debug { "Parsed queue_show for queue ${queue.id}" }
         val gitRepoUrl = try {
             Json.parseToJsonElement(queueShowed.setting).jsonObject["git-repo"]?.jsonPrimitive?.content
         } catch (_: Exception) {
             null
         }
+        logger.debug { "git-repo for queue ${queue.id}: $gitRepoUrl" }
         if (gitRepoUrl == null) {
             logger.info { "git-repo not found in queue ${queue.id} setting, skipping" }
             return false
         }
-
+        logger.debug { "git-repo found for queue ${queue.id}: $gitRepoUrl" }
         ktcpClient.ktcpServerEntrypoints.taskList.access(ServerTaskListMsg(queueId = queue.id), ctx)?.execute()
             ?: run {
                 logger.severe { "Failed to send task_list for queue ${queue.id}" }
                 return false
             }
-
+        logger.debug { "Sent task_list for queue ${queue.id}" }
         val taskListedMsg = receiveMsg(ctx) ?: return false
+        logger.debug { "Received task_list for queue ${queue.id}" }
         val taskListed = taskListedMsg.tryToTaskListed()
             ?.unwrap { it.printStackTrace(); return false }
             ?: return false
-
+        logger.debug { "Parsed task_list for queue ${queue.id}" }
         val task = taskListed.tasks.firstOrNull { it.status != "completed" } ?: return false
-
+        logger.debug { "Found task ${task.id} for queue ${queue.id}" }
         val githubToken = userTokenDao.getGithubToken(userSubject, userIssuer) ?: run {
             logger.severe { "GitHub token not found for user $userSubject (issuer: $userIssuer), skipping queue ${queue.id}" }
             return false
