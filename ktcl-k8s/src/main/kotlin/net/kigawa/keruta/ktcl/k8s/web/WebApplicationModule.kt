@@ -46,17 +46,11 @@ class WebApplicationModule {
             appConfig.keruta.ownIssuer
         )
         serializeModule.configure(application)
-        configureCors(application, appConfig)
         authModule.configure(application)
         configureErrorHandling(application)
         routeModule.configure(application, appConfig, providerTokenCreator, javaKeyPairInitializer)
 
         logger.info("ktcl-k8s Web Module started successfully")
-    }
-
-    private fun configureCors(application: Application, appConfig: AppConfig) {
-        val corsConfig = appConfig.cors
-        val ownIssuer = appConfig.keruta.ownIssuer.toStrUrl()
     }
 
 

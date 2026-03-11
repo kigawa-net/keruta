@@ -120,7 +120,6 @@ class UserTokenDao(
             UserTokenTable.selectAll()
                 .where { UserTokenTable.userId eq userId }
                 .firstOrNull()
-                .also { logger.debug { "Found user token: $it" } }
                 ?.get(UserTokenTable.githubToken)
         }
     }

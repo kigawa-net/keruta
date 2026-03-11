@@ -42,7 +42,6 @@ class UserDao(
             UserTable.selectAll()
                 .where { (UserTable.userSubject eq userSubject) and (UserTable.userIssuer eq userIssuer) }
                 .firstOrNull()
-                .also { logger.debug { "Found user $it" } }
                 ?.get(UserTable.id)
         }
     }

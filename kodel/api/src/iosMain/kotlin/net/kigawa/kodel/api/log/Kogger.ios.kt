@@ -44,8 +44,3 @@ actual fun Kogger.addHandler(handler: LoggerHandler) {
     addHandler(handler)
 }
 
-actual fun Kogger.fine(msg: () -> String) = fine(msg)
-
-actual fun Kogger.warning(msg: () -> String) = warning(msg)
-
-actual fun Kogger.severe(msg: () -> String) = severe(msg)
