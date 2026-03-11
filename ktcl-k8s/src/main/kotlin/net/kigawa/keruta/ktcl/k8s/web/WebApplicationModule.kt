@@ -2,7 +2,6 @@ package net.kigawa.keruta.ktcl.k8s.web
 
 import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 import net.kigawa.keruta.ktcl.k8s.auth.AuthModule
@@ -58,30 +57,6 @@ class WebApplicationModule {
     private fun configureCors(application: Application, appConfig: AppConfig) {
         val corsConfig = appConfig.cors
         val ownIssuer = appConfig.keruta.ownIssuer.toStrUrl()
-        application.install(CORS) {
-            allowMethod(HttpMethod.Options)
-            allowMethod(HttpMethod.Get)
-            allowMethod(HttpMethod.Post)
-            allowMethod(HttpMethod.Put)
-            allowMethod(HttpMethod.Delete)
-            allowHeader(HttpHeaders.Authorization)
-            allowHeader(HttpHeaders.ContentType)
-            allowCredentials = true
-            val origins = corsConfig.allowedOrigins
-            if (origins != null) {
-                (origins + ownIssuer).forEach { origin ->
-                    val scheme = when {
-                        origin.startsWith("https://") -> "https"
-                        origin.startsWith("http://") -> "http"
-                        else -> "http"
-                    }
-                    val hostWithPort = origin.removePrefix("https://").removePrefix("http://")
-                    allowHost(hostWithPort, schemes = listOf(scheme))
-                }
-            } else {
-                anyHost()
-            }
-        }
     }
 
 
