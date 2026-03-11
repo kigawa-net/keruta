@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS keruta_user (
     UNIQUE INDEX idx_user_subject_issuer (user_subject, user_issuer)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 2. user_tokenの既存ユーザーをkeruta_userテーブルに移行（user_subjectカラムが存在する場合のみ）
+-- 2. user_tokenの既存ユーザーをkeruta_userに移行（user_subjectが存在する場合のみ）
 DROP PROCEDURE IF EXISTS migrate_v6_step1;
 CREATE PROCEDURE migrate_v6_step1()
 BEGIN
@@ -28,7 +28,7 @@ END;
 CALL migrate_v6_step1();
 DROP PROCEDURE IF EXISTS migrate_v6_step1;
 
--- 3. user_claude_configの既存ユーザーをkeruta_userテーブルに移行
+-- 3. user_claude_configの既存ユーザーをkeruta_userに移行
 DROP PROCEDURE IF EXISTS migrate_v6_step2;
 CREATE PROCEDURE migrate_v6_step2()
 BEGIN
@@ -56,7 +56,6 @@ ALTER TABLE user_token ADD COLUMN IF NOT EXISTS user_id_fk BIGINT NULL;
 DROP PROCEDURE IF EXISTS migrate_v6_step3;
 CREATE PROCEDURE migrate_v6_step3()
 BEGIN
-    -- user_subjectが存在する場合のみJOINしてuser_id_fkを更新
     IF EXISTS (
         SELECT 1 FROM information_schema.COLUMNS
         WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'user_token' AND COLUMN_NAME = 'user_subject'
@@ -75,10 +74,14 @@ ALTER TABLE user_token DROP INDEX IF EXISTS idx_user_subject_issuer;
 ALTER TABLE user_token ADD UNIQUE INDEX IF NOT EXISTS idx_user_token_user_id (user_id_fk);
 ALTER TABLE user_token DROP FOREIGN KEY IF EXISTS fk_user_token_user;
 
+-- user_idが既に存在しない場合のみuser_id_fkにFKを追加（存在する場合はstep4aで対応）
 DROP PROCEDURE IF EXISTS migrate_v6_step3b;
 CREATE PROCEDURE migrate_v6_step3b()
 BEGIN
     IF NOT EXISTS (
+        SELECT 1 FROM information_schema.COLUMNS
+        WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'user_token' AND COLUMN_NAME = 'user_id'
+    ) AND NOT EXISTS (
         SELECT 1 FROM information_schema.TABLE_CONSTRAINTS
         WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'user_token' AND CONSTRAINT_NAME = 'fk_user_token_user'
     ) THEN
@@ -92,7 +95,7 @@ ALTER TABLE user_token DROP COLUMN IF EXISTS user_subject;
 ALTER TABLE user_token DROP COLUMN IF EXISTS user_issuer;
 ALTER TABLE user_token DROP COLUMN IF EXISTS user_audience;
 
--- user_id_fk を user_id にリネーム（user_idが既に存在する場合はuser_id_fkを削除）
+-- user_id_fk を user_id にリネーム。user_idが既に存在する場合はuser_id_fkを削除（FK先に削除）
 DROP PROCEDURE IF EXISTS migrate_v6_step4;
 CREATE PROCEDURE migrate_v6_step4()
 BEGIN
@@ -110,11 +113,32 @@ BEGIN
     IF has_user_id = 0 AND has_user_id_fk = 1 THEN
         ALTER TABLE user_token RENAME COLUMN user_id_fk TO user_id;
     ELSEIF has_user_id = 1 AND has_user_id_fk = 1 THEN
+        -- user_id_fkにFKがある場合は先に削除してからカラムを削除
+        IF EXISTS (
+            SELECT 1 FROM information_schema.TABLE_CONSTRAINTS
+            WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'user_token' AND CONSTRAINT_NAME = 'fk_user_token_user'
+        ) THEN
+            ALTER TABLE user_token DROP FOREIGN KEY fk_user_token_user;
+        END IF;
         ALTER TABLE user_token DROP COLUMN user_id_fk;
     END IF;
 END;
 CALL migrate_v6_step4();
 DROP PROCEDURE IF EXISTS migrate_v6_step4;
+
+-- user_idにFKがなければ追加
+DROP PROCEDURE IF EXISTS migrate_v6_step4a;
+CREATE PROCEDURE migrate_v6_step4a()
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.TABLE_CONSTRAINTS
+        WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'user_token' AND CONSTRAINT_NAME = 'fk_user_token_user'
+    ) THEN
+        ALTER TABLE user_token ADD CONSTRAINT fk_user_token_user FOREIGN KEY (user_id) REFERENCES keruta_user(id);
+    END IF;
+END;
+CALL migrate_v6_step4a();
+DROP PROCEDURE IF EXISTS migrate_v6_step4a;
 
 -- 5. user_claude_configにuser_id_fkカラムを追加してFKを設定
 ALTER TABLE user_claude_config ADD COLUMN IF NOT EXISTS user_subject_tmp VARCHAR(255) NULL;
@@ -157,10 +181,14 @@ ALTER TABLE user_claude_config DROP INDEX IF EXISTS idx_user_id_issuer;
 ALTER TABLE user_claude_config ADD UNIQUE INDEX IF NOT EXISTS idx_user_claude_config_user_id (user_id_fk);
 ALTER TABLE user_claude_config DROP FOREIGN KEY IF EXISTS fk_user_claude_config_user;
 
+-- user_idが既に存在しない場合のみuser_id_fkにFKを追加
 DROP PROCEDURE IF EXISTS migrate_v6_step6b;
 CREATE PROCEDURE migrate_v6_step6b()
 BEGIN
     IF NOT EXISTS (
+        SELECT 1 FROM information_schema.COLUMNS
+        WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'user_claude_config' AND COLUMN_NAME = 'user_id'
+    ) AND NOT EXISTS (
         SELECT 1 FROM information_schema.TABLE_CONSTRAINTS
         WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'user_claude_config' AND CONSTRAINT_NAME = 'fk_user_claude_config_user'
     ) THEN
@@ -175,7 +203,7 @@ ALTER TABLE user_claude_config DROP COLUMN IF EXISTS user_issuer;
 ALTER TABLE user_claude_config DROP COLUMN IF EXISTS user_audience;
 ALTER TABLE user_claude_config DROP COLUMN IF EXISTS user_subject_tmp;
 
--- user_id_fk を user_id にリネーム（user_idが既に存在する場合はuser_id_fkを削除）
+-- user_id_fk を user_id にリネーム。user_idが既に存在する場合はuser_id_fkを削除
 DROP PROCEDURE IF EXISTS migrate_v6_step7;
 CREATE PROCEDURE migrate_v6_step7()
 BEGIN
@@ -193,8 +221,28 @@ BEGIN
     IF has_user_id = 0 AND has_user_id_fk = 1 THEN
         ALTER TABLE user_claude_config RENAME COLUMN user_id_fk TO user_id;
     ELSEIF has_user_id = 1 AND has_user_id_fk = 1 THEN
+        IF EXISTS (
+            SELECT 1 FROM information_schema.TABLE_CONSTRAINTS
+            WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'user_claude_config' AND CONSTRAINT_NAME = 'fk_user_claude_config_user'
+        ) THEN
+            ALTER TABLE user_claude_config DROP FOREIGN KEY fk_user_claude_config_user;
+        END IF;
         ALTER TABLE user_claude_config DROP COLUMN user_id_fk;
     END IF;
 END;
 CALL migrate_v6_step7();
 DROP PROCEDURE IF EXISTS migrate_v6_step7;
+
+-- user_idにFKがなければ追加
+DROP PROCEDURE IF EXISTS migrate_v6_step7a;
+CREATE PROCEDURE migrate_v6_step7a()
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.TABLE_CONSTRAINTS
+        WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'user_claude_config' AND CONSTRAINT_NAME = 'fk_user_claude_config_user'
+    ) THEN
+        ALTER TABLE user_claude_config ADD CONSTRAINT fk_user_claude_config_user FOREIGN KEY (user_id) REFERENCES keruta_user(id);
+    END IF;
+END;
+CALL migrate_v6_step7a();
+DROP PROCEDURE IF EXISTS migrate_v6_step7a;
