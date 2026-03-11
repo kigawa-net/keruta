@@ -15,7 +15,17 @@ spec:
         command:
         - sh
         - -c
-        - "if [ -d /workspace/.git ]; then cd /workspace && git pull; else git clone $GIT_REPO_URL /workspace; fi && cd /workspace && git checkout -b keruta-task-$TASK_ID"
+        - |
+          if [ -d /workspace/.git ]; then
+            cd /workspace
+            git fetch --all
+            git reset --hard origin/$(git remote show origin | grep 'HEAD branch' | awk '{print $NF}')
+          else
+            rm -rf /workspace/* /workspace/.[!.]* 2>/dev/null || true
+            git clone $GIT_REPO_URL /workspace
+          fi
+          cd /workspace
+          git checkout -B keruta-task-$TASK_ID
         env:
         - name: GIT_REPO_URL
           value: ""
@@ -50,7 +60,11 @@ spec:
         command:
         - sh
         - -c
-        - "cd /workspace && git add -A && git commit -m 'keruta-task-$TASK_ID' && git push origin keruta-task-$TASK_ID"
+        - |
+          cd /workspace
+          git add -A
+          git commit -m "keruta-task-$TASK_ID"
+          git push origin keruta-task-$TASK_ID
         env:
         - name: TASK_ID
           value: ""
