@@ -16,24 +16,13 @@ class ClaudeCodeCliClient {
     suspend fun sendMessage(prompt: String): Res<String, ClaudeApiErr> = withContext(Dispatchers.IO) {
         try {
             val processBuilder = ProcessBuilder(
-                "claude",
-                "code"
+                "claude", "--allow-dangerously-skip-permissions", "-p", prompt
             )
+            processBuilder.directory(java.io.File("/workspace"))
 
-            // 環境変数を渡す（必要に応じて）
-            val env = processBuilder.environment()
-            // env["ANTHROPIC_API_KEY"] は既に環境変数に設定されていると想定
-
-            // プロセス開始
             val process = processBuilder.start()
+            process.outputStream.close()
 
-            // stdin に書き込む
-            process.outputStream.bufferedWriter(StandardCharsets.UTF_8).use { writer ->
-                writer.write(prompt)
-                writer.flush()
-            }
-
-            // 結果を読む
             val result = StringBuilder()
             BufferedReader(InputStreamReader(process.inputStream, StandardCharsets.UTF_8)).use { reader ->
                 reader.forEachLine { line ->
@@ -41,7 +30,6 @@ class ClaudeCodeCliClient {
                 }
             }
 
-            // エラー出力を読む
             val errorOutput = StringBuilder()
             BufferedReader(InputStreamReader(process.errorStream, StandardCharsets.UTF_8)).use { err ->
                 err.forEachLine { line ->
@@ -49,8 +37,7 @@ class ClaudeCodeCliClient {
                 }
             }
 
-            // タイムアウト付きで終了を待つ（30秒）
-            val finished = process.waitFor(30, TimeUnit.SECONDS)
+            val finished = process.waitFor(10, TimeUnit.MINUTES)
 
             if (!finished) {
                 process.destroyForcibly()
@@ -64,12 +51,7 @@ class ClaudeCodeCliClient {
                 )
             }
 
-            val output = result.toString()
-            if (output.isBlank()) {
-                return@withContext Res.Err(ClaudeApiErr("No response from Claude Code CLI", null))
-            }
-
-            Res.Ok(output)
+            Res.Ok(result.toString())
         } catch (e: Exception) {
             Res.Err(ClaudeApiErr("Claude Code CLI execution failed: ${e.message}", e))
         }

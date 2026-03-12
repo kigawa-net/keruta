@@ -13,7 +13,7 @@ interface QueueTaskListProps {
 export function QueueTaskList({tasks, queues, currentQueueId}: QueueTaskListProps) {
     const [showCompleted, setShowCompleted] = useState(false);
 
-    const filteredTasks = showCompleted ? tasks : tasks.filter((task) => task.status === "pending");
+    const filteredTasks = showCompleted ? tasks : tasks.filter((task) => task.status !== "completed");
     const authedKtse = useAuthedKtseState()
     const handleCompleteTask = useCallback((taskId: number) => {
         if (authedKtse.state !== "loaded") return
