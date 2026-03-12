@@ -1,6 +1,7 @@
 FROM harbor.kigawa.net/library/dev-base:latest
 
-RUN curl -fsSL https://claude.ai/install.sh | bash
+RUN curl -fsSL https://claude.ai/install.sh | bash && \
+    ln -sf /root/.claude/local/claude /usr/local/bin/claude
 
 ENV JAVA_HOME=/opt/java/openjdk
 WORKDIR /work

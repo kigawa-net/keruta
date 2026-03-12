@@ -12,11 +12,12 @@ import java.util.concurrent.TimeUnit
 
 class ClaudeCodeCliClient {
     private val json = Json { ignoreUnknownKeys = true }
+    private val claudePath = System.getenv("CLAUDE_CLI_PATH") ?: "claude"
 
     suspend fun sendMessage(prompt: String): Res<String, ClaudeApiErr> = withContext(Dispatchers.IO) {
         try {
             val processBuilder = ProcessBuilder(
-                "claude", "--allow-dangerously-skip-permissions", "-p", prompt
+                claudePath, "--allow-dangerously-skip-permissions", "-p", prompt
             )
             processBuilder.directory(java.io.File("/workspace"))
 
