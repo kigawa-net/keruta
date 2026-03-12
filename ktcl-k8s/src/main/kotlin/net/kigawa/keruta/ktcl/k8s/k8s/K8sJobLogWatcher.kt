@@ -41,6 +41,8 @@ class K8sJobLogWatcher(
     }
 
     private fun waitForContainerToRun(podName: String, containerName: String): Boolean {
+        var lastPodPhase: String? = null
+        var lastWaitingReason: String? = null
         repeat(60) {
             try {
                 val pod = coreApi.readNamespacedPod(podName, config.k8sNamespace).execute()
@@ -49,13 +51,18 @@ class K8sJobLogWatcher(
                     (pod.status?.containerStatuses ?: emptyList())
                 val status = allStatuses.find { it.name == containerName }
                 val waitingReason = status?.state?.waiting?.reason
+                lastPodPhase = podPhase
+                lastWaitingReason = waitingReason
                 when {
                     status?.state?.running != null || status?.state?.terminated != null -> return true
                     waitingReason in UNRECOVERABLE_WAITING_REASONS -> {
                         logger.warning { "[$podName/$containerName] container stuck: $waitingReason" }
                         return false
                     }
-                    podPhase == "Failed" || podPhase == "Succeeded" -> return false
+                    podPhase == "Failed" || podPhase == "Succeeded" -> {
+                        logger.info { "[$podName/$containerName] pod phase=$podPhase, waitingReason=$waitingReason, skipping" }
+                        return false
+                    }
                     else -> Thread.sleep(2000)
                 }
             } catch (e: Exception) {
@@ -63,6 +70,7 @@ class K8sJobLogWatcher(
                 return false
             }
         }
+        logger.warning { "[$podName/$containerName] timed out waiting: podPhase=$lastPodPhase, waitingReason=$lastWaitingReason" }
         return false
     }
 
