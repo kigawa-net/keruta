@@ -10,6 +10,11 @@ data class K8sConfigCompat(
     val ktsePort: Int,
     val ktseUseTls: Boolean,
 
+    // task-executorコンテナ向けKTSE接続設定（K8s内部DNSで解決可能なホスト名）
+    val taskExecutorKtseHost: String,
+    val taskExecutorKtsePort: Int,
+    val taskExecutorKtseUseTls: Boolean,
+
     // Kubernetes設定
     val k8sNamespace: String,
     val k8sUseInCluster: Boolean,
@@ -32,6 +37,12 @@ data class K8sConfigCompat(
                 ktseHost = System.getenv("KTSE_HOST") ?: "localhost",
                 ktsePort = System.getenv("KTSE_PORT")?.toInt() ?: 8080,
                 ktseUseTls = System.getenv("KTSE_USE_TLS")?.toBoolean() ?: false,
+                taskExecutorKtseHost = System.getenv("TASK_EXECUTOR_KTSE_HOST")
+                    ?: System.getenv("KTSE_HOST") ?: "localhost",
+                taskExecutorKtsePort = System.getenv("TASK_EXECUTOR_KTSE_PORT")?.toInt()
+                    ?: System.getenv("KTSE_PORT")?.toInt() ?: 8080,
+                taskExecutorKtseUseTls = System.getenv("TASK_EXECUTOR_KTSE_USE_TLS")?.toBoolean()
+                    ?: System.getenv("KTSE_USE_TLS")?.toBoolean() ?: false,
                 k8sNamespace = getEnvOrProperty("K8S_NAMESPACE") ?: "default",
                 k8sUseInCluster = getEnvOrProperty("K8S_USE_IN_CLUSTER")?.toBoolean() ?: true,
                 k8sKubeConfigPath = getEnvOrProperty("K8S_KUBECONFIG_PATH"),

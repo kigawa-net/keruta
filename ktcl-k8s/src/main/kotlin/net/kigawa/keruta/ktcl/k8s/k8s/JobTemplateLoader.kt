@@ -52,9 +52,9 @@ class JobTemplateLoader(private val templatePath: String) {
                 V1EnvVar().name("KERUTA_USER_TOKEN").value(userToken),
                 V1EnvVar().name("KERUTA_SERVER_TOKEN").value(serverToken),
                 V1EnvVar().name("KERUTA_QUEUE_ID").value(queueId.toString()),
-                V1EnvVar().name("KTSE_HOST").value(config.ktseHost),
-                V1EnvVar().name("KTSE_PORT").value(config.ktsePort.toString()),
-                V1EnvVar().name("KTSE_USE_TLS").value(config.ktseUseTls.toString()),
+                V1EnvVar().name("KTSE_HOST").value(config.taskExecutorKtseHost),
+                V1EnvVar().name("KTSE_PORT").value(config.taskExecutorKtsePort.toString()),
+                V1EnvVar().name("KTSE_USE_TLS").value(config.taskExecutorKtseUseTls.toString()),
             ))
 
         job.spec?.template?.spec?.initContainers
