@@ -30,19 +30,19 @@
             <option value="$PROJECT_DIR$/ktcl-front-mobile" />
             <option value="$PROJECT_DIR$/ktcl-front-mobile/app" />
             <option value="$PROJECT_DIR$/ktcl-k8s" />
-            <option value="$PROJECT_DIR$/ktcp" />
-            <option value="$PROJECT_DIR$/ktcp/client" />
-            <option value="$PROJECT_DIR$/ktcp/ktcp-domain" />
-            <option value="$PROJECT_DIR$/ktcp/ktcp-domain/ktcp-domain-client" />
-            <option value="$PROJECT_DIR$/ktcp/ktcp-domain/ktcp-domain-server" />
-            <option value="$PROJECT_DIR$/ktcp/ktcp-infra" />
-            <option value="$PROJECT_DIR$/ktcp/ktcp-infra/ktcp-infra-client" />
-            <option value="$PROJECT_DIR$/ktcp/ktcp-infra/ktcp-infra-server" />
-            <option value="$PROJECT_DIR$/ktcp/ktcp-usecase" />
-            <option value="$PROJECT_DIR$/ktcp/ktcp-usecase/ktcp-usecase-client" />
-            <option value="$PROJECT_DIR$/ktcp/ktcp-usecase/ktcp-usecase-server" />
-            <option value="$PROJECT_DIR$/ktcp/server" />
+            <option value="$PROJECT_DIR$/ktcp-sdk" />
+            <option value="$PROJECT_DIR$/ktcp-sdk/client" />
+            <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-domain" />
+            <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-domain/ktcp-domain-client" />
+            <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-domain/ktcp-domain-server" />
+            <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-infra" />
+            <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-infra/ktcp-infra-client" />
+            <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-infra/ktcp-infra-server" />
+            <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-usecase" />
+            <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-usecase/ktcp-usecase-client" />
+            <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-usecase/ktcp-usecase-server" />
             <option value="$PROJECT_DIR$/ktse" />
+            <option value="$PROJECT_DIR$/ktse-sdk" />
           </set>
         </option>
       </GradleProjectSettings>

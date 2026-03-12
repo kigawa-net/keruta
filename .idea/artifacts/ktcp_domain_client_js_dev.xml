@@ -1,8 +1,8 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="ktcp-domain-client-js-dev">
-    <output-path>$PROJECT_DIR$/ktcp/ktcp-domain/ktcp-domain-client/build/libs</output-path>
+    <output-path>$PROJECT_DIR$/ktcp-sdk/ktcp-domain/ktcp-domain-client/build/libs</output-path>
     <root id="archive" name="ktcp-domain-client-js-dev.jar">
-      <element id="module-output" name="keruta.ktcp.ktcp-domain.ktcp-domain-client.jsMain" />
+      <element id="module-output" name="keruta.ktcp-sdk.ktcp-domain.ktcp-domain-client.jsMain" />
     </root>
   </artifact>
 </component>
