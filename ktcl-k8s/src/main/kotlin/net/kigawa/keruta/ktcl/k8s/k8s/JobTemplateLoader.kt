@@ -3,10 +3,21 @@ package net.kigawa.keruta.ktcl.k8s.k8s
 import io.kubernetes.client.openapi.models.V1EnvVar
 import io.kubernetes.client.openapi.models.V1Job
 import io.kubernetes.client.util.Yaml
+import net.kigawa.keruta.ktcl.k8s.config.K8sConfig
 import java.io.InputStreamReader
 
 class JobTemplateLoader(private val templatePath: String) {
-    fun loadTemplate(taskId: Long, title: String, description: String, gitRepoUrl: String, githubToken: String): V1Job {
+    fun loadTemplate(
+        taskId: Long,
+        title: String,
+        description: String,
+        gitRepoUrl: String,
+        githubToken: String,
+        userToken: String,
+        serverToken: String,
+        queueId: Long,
+        config: K8sConfig,
+    ): V1Job {
         val reader = InputStreamReader(
             JobTemplateLoader::class.java.classLoader.getResourceAsStream(templatePath)
                 ?: error("Job template not found on classpath: $templatePath")
@@ -38,6 +49,12 @@ class JobTemplateLoader(private val templatePath: String) {
                 V1EnvVar().name("TASK_TITLE").value(title),
                 V1EnvVar().name("TASK_DESCRIPTION").value(description),
                 V1EnvVar().name("GIT_REPO_URL").value(gitRepoUrl),
+                V1EnvVar().name("KERUTA_USER_TOKEN").value(userToken),
+                V1EnvVar().name("KERUTA_SERVER_TOKEN").value(serverToken),
+                V1EnvVar().name("KERUTA_QUEUE_ID").value(queueId.toString()),
+                V1EnvVar().name("KTSE_HOST").value(config.ktseHost),
+                V1EnvVar().name("KTSE_PORT").value(config.ktsePort.toString()),
+                V1EnvVar().name("KTSE_USE_TLS").value(config.ktseUseTls.toString()),
             ))
 
         job.spec?.template?.spec?.initContainers

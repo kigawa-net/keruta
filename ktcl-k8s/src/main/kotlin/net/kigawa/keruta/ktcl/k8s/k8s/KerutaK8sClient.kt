@@ -112,7 +112,7 @@ class KerutaK8sClient(
         logger.debug { "Job executor created for user $userSubject" }
         val taskReceiver = TaskReceiver(connection, ktcpClient, jobExecutor, ktclIssuer, userTokenDao)
         logger.debug { "Starting task receiver for user $userSubject" }
-        return taskReceiver.startReceiving(ctx, userSubject, userIssuer)
+        return taskReceiver.startReceiving(ctx, userSubject, userIssuer, accessToken, providerToken.createdToken.rawToken)
     }
 
 }

@@ -31,7 +31,13 @@ class TaskReceiver(
 ) {
     private val logger = getKogger()
 
-    suspend fun startReceiving(ctx: ClientCtx, userSubject: String, userIssuer: String): Boolean = coroutineScope {
+    suspend fun startReceiving(
+        ctx: ClientCtx,
+        userSubject: String,
+        userIssuer: String,
+        userToken: String,
+        serverToken: String,
+    ): Boolean = coroutineScope {
         logger.debug { "Starting task receiver for user $userSubject" }
         if (!waitForAuthSuccess(ctx, userSubject)) return@coroutineScope false
         logger.debug { "Auth success received for user $userSubject" }
@@ -49,7 +55,7 @@ class TaskReceiver(
             return@coroutineScope false
         }
         logger.debug { "Queues found: $myQueues" }
-        myQueues.map { processQueue(ctx, userSubject, userIssuer, it) }.any { it }
+        myQueues.map { processQueue(ctx, userSubject, userIssuer, it, userToken, serverToken) }.any { it }
     }
 
     private suspend fun waitForAuthSuccess(ctx: ClientCtx, userSubject: String): Boolean {
@@ -106,6 +112,8 @@ class TaskReceiver(
         userSubject: String,
         userIssuer: String,
         queue: ClientQueueListedMsg.Queue,
+        userToken: String,
+        serverToken: String,
     ): Boolean {
         logger.debug { "Processing queue ${queue.id}" }
         ktcpClient.ktcpServerEntrypoints.queueShow.access(ServerQueueShowMsg(id = queue.id), ctx)?.execute()
@@ -151,7 +159,7 @@ class TaskReceiver(
         }
         logger.debug { "Executing task ${task.id} for queue ${queue.id}" }
 
-        jobExecutor.executeJob(task.id, task.title, task.description, gitRepoUrl, githubToken)
+        jobExecutor.executeJob(task.id, task.title, task.description, gitRepoUrl, githubToken, userToken, serverToken, queue.id)
             .unwrap { it.printStackTrace(); return false }
         logger.debug { "Task ${task.id} executed for queue ${queue.id}" }
         return true
