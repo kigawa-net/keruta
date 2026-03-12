@@ -26,7 +26,30 @@ class K8sJobLogWatcher(
 
         for (containerName in initContainerNames + containerNames) {
             if (!currentCoroutineContext().isActive) break
-            streamContainerLogs(podName, containerName)
+            if (hasContainerRun(podName, containerName)) {
+                streamContainerLogs(podName, containerName)
+            } else {
+                logger.info { "[$podName/$containerName] skipping logs: container did not run" }
+            }
+        }
+    }
+
+    private fun hasContainerRun(podName: String, containerName: String): Boolean {
+        return try {
+            val pod = coreApi.readNamespacedPod(podName, config.k8sNamespace).execute()
+            val podPhase = pod.status?.phase
+            val allStatuses = (pod.status?.initContainerStatuses ?: emptyList()) +
+                (pod.status?.containerStatuses ?: emptyList())
+            val status = allStatuses.find { it.name == containerName }
+            when {
+                status?.state?.running != null -> true
+                status?.state?.terminated != null -> true
+                podPhase == "Failed" || podPhase == "Succeeded" -> false
+                else -> true
+            }
+        } catch (e: Exception) {
+            logger.warning { "Failed to check status for $containerName: ${e.message}" }
+            true
         }
     }
 

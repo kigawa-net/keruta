@@ -21,7 +21,7 @@ spec:
             git fetch --all
             git reset --hard origin/$(git remote show origin | grep 'HEAD branch' | awk '{print $NF}')
           else
-            rm -rf /workspace/* /workspace/.[!.]* 2>/dev/null || true
+            find /workspace -mindepth 1 -delete
             git clone $GIT_REPO_URL /workspace
           fi
           cd /workspace
