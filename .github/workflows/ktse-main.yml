@@ -17,7 +17,7 @@ on:
       - ktcl-front-mobile/**
       - ktcl-claudecode/**
       - ktcp-sdk/client/**
-      - ktcl/**
+      - ktcl-sdk/**
     branches:
       - main
 

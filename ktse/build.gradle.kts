@@ -33,7 +33,7 @@ tasks.shadowJar {
 }
 
 dependencies {
-    implementation(project(":ktcp-sdk:server"))
+    implementation(project(":ktse-sdk"))
     implementation(project(":ktcp-sdk:ktcp-infra"))
     // https://mvnrepository.com/artifact/com.auth0/java-jwt
     implementation("com.auth0:java-jwt:${Version.JAVA_JWT}")

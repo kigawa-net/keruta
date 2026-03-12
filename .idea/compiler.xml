@@ -89,6 +89,9 @@
       <module name="keruta.ktcl-web" target="23" />
       <module name="keruta.ktcl-web.main" target="23" />
       <module name="keruta.ktcl-web.test" target="23" />
+      <module name="keruta.ktcp-sdk.server" target="25" />
+      <module name="keruta.ktcp-sdk.server.jvmMain" target="25" />
+      <module name="keruta.ktcp-sdk.server.jvmTest" target="25" />
       <module name="keruta.ktcp.base" target="25" />
       <module name="keruta.ktcp.base.jvmMain" target="25" />
       <module name="keruta.ktcp.base.jvmTest" target="25" />

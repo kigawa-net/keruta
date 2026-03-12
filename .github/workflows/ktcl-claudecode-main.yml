@@ -14,7 +14,7 @@ on:
       - ktcl-k8s/**
       - ktcl-front/**
       - ktcl-front-mobile/**
-      - ktcp-sdk/server/**
+      - ktse-sdk/**
       - ktse/**
     branches:
       - main
