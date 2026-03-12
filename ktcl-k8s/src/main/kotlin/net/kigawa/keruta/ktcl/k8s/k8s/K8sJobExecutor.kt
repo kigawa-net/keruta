@@ -83,8 +83,12 @@ class K8sJobExecutor(
                 createdJob.metadata?.name
             } catch (e: ApiException) {
                 if (e.code == 409) {
-                    logger.info { "Job already exists, skipping: keruta-task-$taskId" }
-                    "keruta-task-$taskId"
+                    logger.info { "Job already exists, deleting and recreating: keruta-task-$taskId" }
+                    batchApi.deleteNamespacedJob("keruta-task-$taskId", config.k8sNamespace)
+                        .propagationPolicy("Foreground")
+                        .execute()
+                    val createdJob = batchApi.createNamespacedJob(config.k8sNamespace, job).execute()
+                    createdJob.metadata?.name
                 } else {
                     throw e
                 }
