@@ -27,7 +27,7 @@ class K8sJobLogWatcher(
 
         for (containerName in initContainerNames + containerNames) {
             if (!currentCoroutineContext().isActive) break
-            if (hasContainerRun(podName, containerName)) {
+            if (waitForContainerToRun(podName, containerName)) {
                 streamContainerLogs(podName, containerName)
             } else {
                 logger.info { "[$podName/$containerName] skipping logs: container did not run" }
@@ -35,17 +35,25 @@ class K8sJobLogWatcher(
         }
     }
 
-    private fun hasContainerRun(podName: String, containerName: String): Boolean {
-        return try {
-            val pod = coreApi.readNamespacedPod(podName, config.k8sNamespace).execute()
-            val allStatuses = (pod.status?.initContainerStatuses ?: emptyList()) +
-                (pod.status?.containerStatuses ?: emptyList())
-            val status = allStatuses.find { it.name == containerName }
-            status?.state?.running != null || status?.state?.terminated != null
-        } catch (e: Exception) {
-            logger.warning { "Failed to check status for $containerName: ${e.message}" }
-            false
+    private fun waitForContainerToRun(podName: String, containerName: String): Boolean {
+        repeat(60) {
+            try {
+                val pod = coreApi.readNamespacedPod(podName, config.k8sNamespace).execute()
+                val podPhase = pod.status?.phase
+                val allStatuses = (pod.status?.initContainerStatuses ?: emptyList()) +
+                    (pod.status?.containerStatuses ?: emptyList())
+                val status = allStatuses.find { it.name == containerName }
+                when {
+                    status?.state?.running != null || status?.state?.terminated != null -> return true
+                    podPhase == "Failed" || podPhase == "Succeeded" -> return false
+                    else -> Thread.sleep(2000)
+                }
+            } catch (e: Exception) {
+                logger.warning { "Failed to check status for $containerName: ${e.message}" }
+                return false
+            }
         }
+        return false
     }
 
     private suspend fun waitForPod(jobName: String): String? {
