@@ -10,6 +10,11 @@ import net.kigawa.kodel.api.log.getKogger
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
+private val UNRECOVERABLE_WAITING_REASONS = setOf(
+    "ImagePullBackOff", "ErrImagePull", "InvalidImageName",
+    "CreateContainerConfigError", "CreateContainerError",
+)
+
 class K8sJobLogWatcher(
     apiClient: ApiClient,
     private val config: K8sConfig,
@@ -43,8 +48,13 @@ class K8sJobLogWatcher(
                 val allStatuses = (pod.status?.initContainerStatuses ?: emptyList()) +
                     (pod.status?.containerStatuses ?: emptyList())
                 val status = allStatuses.find { it.name == containerName }
+                val waitingReason = status?.state?.waiting?.reason
                 when {
                     status?.state?.running != null || status?.state?.terminated != null -> return true
+                    waitingReason in UNRECOVERABLE_WAITING_REASONS -> {
+                        logger.warning { "[$podName/$containerName] container stuck: $waitingReason" }
+                        return false
+                    }
                     podPhase == "Failed" || podPhase == "Succeeded" -> return false
                     else -> Thread.sleep(2000)
                 }
