@@ -11,6 +11,7 @@ import io.kubernetes.client.openapi.models.V1PersistentVolumeClaimSpec
 import io.kubernetes.client.openapi.models.V1VolumeResourceRequirements
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import net.kigawa.keruta.ktcl.k8s.config.K8sConfig
 import net.kigawa.keruta.ktcl.k8s.err.K8sErr
@@ -87,12 +88,28 @@ class K8sJobExecutor(
                     batchApi.deleteNamespacedJob("keruta-task-$taskId", config.k8sNamespace)
                         .propagationPolicy("Foreground")
                         .execute()
+                    waitForJobDeletion("keruta-task-$taskId")
                     val createdJob = batchApi.createNamespacedJob(config.k8sNamespace, job).execute()
                     createdJob.metadata?.name
                 } else {
                     throw e
                 }
             }
+        }
+    }
+
+    private suspend fun waitForJobDeletion(jobName: String) {
+        withContext(Dispatchers.IO) {
+            repeat(30) {
+                try {
+                    batchApi.readNamespacedJobStatus(jobName, config.k8sNamespace).execute()
+                    delay(2000)
+                } catch (e: ApiException) {
+                    if (e.code == 404) return@withContext
+                    throw e
+                }
+            }
+            logger.warning { "Timed out waiting for job deletion: $jobName" }
         }
     }
 

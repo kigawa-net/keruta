@@ -2,6 +2,7 @@ package net.kigawa.keruta.ktcl.k8s.k8s
 
 import io.kubernetes.client.PodLogs
 import io.kubernetes.client.openapi.ApiClient
+import io.kubernetes.client.openapi.ApiException
 import io.kubernetes.client.openapi.apis.CoreV1Api
 import kotlinx.coroutines.*
 import net.kigawa.keruta.ktcl.k8s.config.K8sConfig
@@ -37,19 +38,13 @@ class K8sJobLogWatcher(
     private fun hasContainerRun(podName: String, containerName: String): Boolean {
         return try {
             val pod = coreApi.readNamespacedPod(podName, config.k8sNamespace).execute()
-            val podPhase = pod.status?.phase
             val allStatuses = (pod.status?.initContainerStatuses ?: emptyList()) +
                 (pod.status?.containerStatuses ?: emptyList())
             val status = allStatuses.find { it.name == containerName }
-            when {
-                status?.state?.running != null -> true
-                status?.state?.terminated != null -> true
-                podPhase == "Failed" || podPhase == "Succeeded" -> false
-                else -> true
-            }
+            status?.state?.running != null || status?.state?.terminated != null
         } catch (e: Exception) {
             logger.warning { "Failed to check status for $containerName: ${e.message}" }
-            true
+            false
         }
     }
 
@@ -80,6 +75,12 @@ class K8sJobLogWatcher(
                     }
                 }
                 return
+            } catch (e: ApiException) {
+                if (e.code == 400) {
+                    logger.warning { "[$podName/$containerName] logs unavailable (400), skipping" }
+                    return
+                }
+                Thread.sleep(2000)
             } catch (e: Exception) {
                 e.printStackTrace()
                 Thread.sleep(2000)
