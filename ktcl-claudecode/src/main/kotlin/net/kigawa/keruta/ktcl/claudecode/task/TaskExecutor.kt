@@ -41,7 +41,7 @@ class TaskExecutor(
                 Res.Ok(Unit)
             }
             is Res.Err -> {
-                logger.info { "Task failed: id=$taskId" }
+                logger.info { "Task failed: id=$taskId, error=${result.err}" }
                 updateStatus(taskId, "failed", ctx)
                 Res.Err(ClaudeApiErr("Task execution failed", result.err as? Exception))
             }

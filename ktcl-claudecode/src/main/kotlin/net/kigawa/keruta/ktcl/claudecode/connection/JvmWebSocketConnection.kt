@@ -1,8 +1,7 @@
 package net.kigawa.keruta.ktcl.claudecode.connection
 
-import io.ktor.client.plugins.websocket.DefaultClientWebSocketSession
-import io.ktor.websocket.Frame
-import io.ktor.websocket.readText
+import io.ktor.client.plugins.websocket.*
+import io.ktor.websocket.*
 import net.kigawa.keruta.ktcp.client.KtcpConnection
 
 class JvmWebSocketConnection(
@@ -17,5 +16,9 @@ class JvmWebSocketConnection(
             is Frame.Text -> frame.readText()
             else -> null
         }
+    }
+
+    suspend fun close() {
+        session.close()
     }
 }

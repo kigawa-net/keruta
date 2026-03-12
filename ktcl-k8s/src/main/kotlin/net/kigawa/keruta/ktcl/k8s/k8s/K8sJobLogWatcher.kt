@@ -43,7 +43,8 @@ class K8sJobLogWatcher(
     private fun waitForContainerToRun(podName: String, containerName: String): Boolean {
         var lastPodPhase: String? = null
         var lastWaitingReason: String? = null
-        repeat(60) {
+        val maxIterations = (config.k8sJobTimeout / 2).toInt().coerceAtLeast(60)
+        repeat(maxIterations) {
             try {
                 val pod = coreApi.readNamespacedPod(podName, config.k8sNamespace).execute()
                 val podPhase = pod.status?.phase
