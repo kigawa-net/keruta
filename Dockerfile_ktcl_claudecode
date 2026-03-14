@@ -5,6 +5,8 @@ RUN curl -fsSL https://claude.ai/install.sh | bash && \
     CLAUDE_BIN=$(find /root -name "claude" -type f 2>/dev/null | head -1) && \
     [ -n "$CLAUDE_BIN" ] && ln -sf "$CLAUDE_BIN" /usr/local/bin/claude || echo "claude not found"
 
+ENV PATH="/root/.local/bin:${PATH}"
+
 ENV JAVA_HOME=/opt/java/openjdk
 WORKDIR /work
 COPY ktcl-claudecode/build/libs/ktcl-claudecode-all.jar /app/app.jar
