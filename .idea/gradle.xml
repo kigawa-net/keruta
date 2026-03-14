@@ -36,12 +36,11 @@
             <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-domain/ktcp-domain-client" />
             <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-domain/ktcp-domain-server" />
             <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-infra-client" />
-            <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-infra-server" />
             <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-usecase" />
             <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-usecase/ktcp-usecase-client" />
-            <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-usecase/ktcp-usecase-server" />
             <option value="$PROJECT_DIR$/ktse" />
             <option value="$PROJECT_DIR$/ktse-sdk" />
+            <option value="$PROJECT_DIR$/ktse-sdk/ktse-sdk-usecase" />
           </set>
         </option>
       </GradleProjectSettings>

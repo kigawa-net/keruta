@@ -5,7 +5,7 @@ plugins {
 kotlin {
     sourceSets["commonMain"].dependencies {
         api(project(":ktcp-sdk:ktcp-domain"))
-        api(project(":ktcp-sdk:ktcp-usecase:ktcp-usecase-server"))
+        api(project(":ktse-sdk:ktse-sdk-usecase"))
         api(project(":ktcp-sdk"))
         api(project(":kodel:coroutine"))
         // https://mvnrepository.com/artifact/com.auth0/java-jwt

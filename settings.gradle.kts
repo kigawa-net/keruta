@@ -19,11 +19,11 @@ includesIfExists("kodel", "kodel:api", "kodel:coroutine", "kodel:core")
 includesIfExists(
     "ktcp-sdk",
     "ktcp-sdk:ktcp-domain", "ktcp-sdk:ktcp-domain:ktcp-domain-server", "ktcp-sdk:ktcp-domain:ktcp-domain-client",
-    "ktcp-sdk:ktcp-usecase", "ktcp-sdk:ktcp-usecase:ktcp-usecase-server", "ktcp-sdk:ktcp-usecase:ktcp-usecase-client",
+    "ktcp-sdk:ktcp-usecase", "ktcp-sdk:ktcp-usecase:ktcp-usecase-client",
     "ktcp-sdk:ktcp-infra-client",
     "ktcp-sdk:client",
 )
-includesIfExists("ktse-sdk", "ktse-sdk")
+includesIfExists("ktse-sdk", "ktse-sdk", "ktse-sdk:ktse-sdk-usecase")
 includesIfExists("ktse", "ktse")
 includesIfExists("ktcl-claudecode", "ktcl-claudecode")
 includesIfExists("ktcl-k8s", "ktcl-k8s")
