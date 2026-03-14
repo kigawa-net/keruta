@@ -37,7 +37,7 @@ class K8sJobExecutor(
         userToken: String,
         serverToken: String,
         queueId: Long,
-    ): Res<String, K8sErr> = coroutineScope {
+    ): Res<Unit, K8sErr> = coroutineScope {
         try {
             createPvcIfNotExists("keruta-task-$taskId-pvc")
 
@@ -46,7 +46,6 @@ class K8sJobExecutor(
 
             logger.info { "Kubernetes Job ready: $jobName" }
             watchAndLog(jobName)
-            Res.Ok(jobName)
         } catch (e: Exception) {
             logger.info { "Failed to create Kubernetes Job: ${e.message}" }
             Res.Err(K8sErr.JobCreateErr("Failed to create Job: ${e.message}", e))
@@ -119,13 +118,20 @@ class K8sJobExecutor(
         }
     }
 
-    private suspend fun watchAndLog(jobName: String) {
+    private suspend fun watchAndLog(jobName: String): Res<Unit, K8sErr> {
         val watchResult = jobWatcher.watchJob(jobName) { status ->
             logger.info { "Job $jobName status changed: $status" }
         }
-        when (watchResult) {
-            is Res.Ok -> logger.info { "Job $jobName completed with status: ${watchResult.value}" }
-            is Res.Err -> logger.warning { "Job $jobName watch error: ${watchResult.err}" }
+        return when (watchResult) {
+            is Res.Ok -> {
+                logger.info { "Job $jobName completed with status: ${watchResult.value}" }
+                if (watchResult.value == JobStatus.SUCCEEDED) Res.Ok(Unit)
+                else Res.Err(K8sErr.JobWatchErr("Job completed with non-success status: ${watchResult.value}", null))
+            }
+            is Res.Err -> {
+                logger.warning { "Job $jobName watch error: ${watchResult.err}" }
+                Res.Err(watchResult.err)
+            }
         }
     }
 }

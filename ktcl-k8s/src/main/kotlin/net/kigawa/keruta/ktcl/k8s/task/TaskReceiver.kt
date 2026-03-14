@@ -17,6 +17,8 @@ import net.kigawa.keruta.ktcp.domain.queue.list.ServerQueueListMsg
 import net.kigawa.keruta.ktcp.domain.queue.listed.ClientQueueListedMsg
 import net.kigawa.keruta.ktcp.domain.queue.show.ServerQueueShowMsg
 import net.kigawa.keruta.ktcp.domain.task.list.ServerTaskListMsg
+import net.kigawa.keruta.ktcp.domain.task.update.ServerTaskUpdateMsg
+import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.err.unwrap
 import net.kigawa.kodel.api.log.getKogger
 import net.kigawa.kodel.api.log.traceignore.debug
@@ -159,8 +161,16 @@ class TaskReceiver(
         }
         logger.debug { "Executing task ${task.id} for queue ${queue.id}" }
 
-        jobExecutor.executeJob(task.id, task.title, task.description, gitRepoUrl, githubToken, userToken, serverToken, queue.id)
-            .unwrap { it.printStackTrace(); return false }
+        val jobResult = jobExecutor.executeJob(task.id, task.title, task.description, gitRepoUrl, githubToken, userToken, serverToken, queue.id)
+        if (jobResult is Res.Err) {
+            jobResult.err.printStackTrace()
+            logger.warning { "Job failed for task ${task.id}, updating status to failed" }
+            ktcpClient.ktcpServerEntrypoints.taskUpdateEntrypoint.access(
+                ServerTaskUpdateMsg(taskId = task.id, status = "failed"),
+                ctx
+            )?.execute()
+            return false
+        }
         logger.debug { "Task ${task.id} executed for queue ${queue.id}" }
         return true
     }
