@@ -20,7 +20,7 @@ includesIfExists(
     "ktcp-sdk",
     "ktcp-sdk:ktcp-domain", "ktcp-sdk:ktcp-domain:ktcp-domain-server", "ktcp-sdk:ktcp-domain:ktcp-domain-client",
     "ktcp-sdk:ktcp-usecase", "ktcp-sdk:ktcp-usecase:ktcp-usecase-server", "ktcp-sdk:ktcp-usecase:ktcp-usecase-client",
-    "ktcp-sdk:ktcp-infra-server","ktcp-sdk:ktcp-infra-client",
+    "ktcp-sdk:ktcp-infra-client",
     "ktcp-sdk:client",
 )
 includesIfExists("ktse-sdk", "ktse-sdk")

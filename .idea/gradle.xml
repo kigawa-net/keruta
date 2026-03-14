@@ -35,9 +35,8 @@
             <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-domain" />
             <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-domain/ktcp-domain-client" />
             <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-domain/ktcp-domain-server" />
-            <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-infra" />
-            <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-infra/ktcp-infra-client" />
-            <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-infra/ktcp-infra-server" />
+            <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-infra-client" />
+            <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-infra-server" />
             <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-usecase" />
             <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-usecase/ktcp-usecase-client" />
             <option value="$PROJECT_DIR$/ktcp-sdk/ktcp-usecase/ktcp-usecase-server" />
