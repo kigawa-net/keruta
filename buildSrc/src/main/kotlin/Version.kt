@@ -31,6 +31,6 @@ object Version {
     const val TESTCONTAINERS = "1.21.4"
 
     // Mobile
-    const val ACTIVITY_COMPOSE = "1.12.4"
+    const val ACTIVITY_COMPOSE = "1.13.0"
     const val APP_AUTH = "0.11.1"
 }
