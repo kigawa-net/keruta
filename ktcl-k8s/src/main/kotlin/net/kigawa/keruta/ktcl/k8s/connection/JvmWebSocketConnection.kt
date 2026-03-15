@@ -17,4 +17,8 @@ class JvmWebSocketConnection(
             else -> null
         }
     }
+
+    suspend fun close() {
+        session.close()
+    }
 }

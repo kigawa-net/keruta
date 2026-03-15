@@ -1,9 +1,8 @@
 package net.kigawa.keruta.ktcl.k8s.connection
 
-import io.ktor.client.HttpClient
-import io.ktor.client.plugins.websocket.WebSockets
-import io.ktor.client.plugins.websocket.webSocketSession
-import io.ktor.http.HttpMethod
+import io.ktor.client.*
+import io.ktor.client.plugins.websocket.*
+import io.ktor.http.*
 import net.kigawa.keruta.ktcl.k8s.config.K8sConfig
 
 class ConnectionManager(
@@ -22,4 +21,5 @@ class ConnectionManager(
         )
         return JvmWebSocketConnection(session)
     }
+
 }
