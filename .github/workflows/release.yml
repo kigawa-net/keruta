@@ -53,7 +53,7 @@ jobs:
       - uses: actions/checkout@v6
 
       # gradle pre-build
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         if: inputs.gradleTask != ''
         with:
           distribution: temurin
