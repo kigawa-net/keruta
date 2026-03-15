@@ -16,7 +16,7 @@ object Version {
     const val FLYWAY = "12.1.0"
     const val MYSQL_CONNECTOR = "9.6.0"
     const val MARIADB_CONNECTOR = "3.5.7"
-    const val EXPOSED = "0.61.0"
+    const val EXPOSED = "1.1.1"
     const val HIKARI_CP = "7.0.2"
 
     // Kubernetes
