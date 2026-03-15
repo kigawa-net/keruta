@@ -70,10 +70,13 @@ spec:
           cd /workspace
           git config user.email "keruta-bot@kigawa.net"
           git config user.name "Keruta Bot"
-          git add -A
-          git diff --cached --quiet && echo "No changes to commit" && exit 0
-          git commit -m "keruta-task-$TASK_ID"
           REPO_URL=$(echo "$GIT_REPO_URL" | sed "s|https://|https://$GITHUB_TOKEN@|")
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit, pushing branch only"
+          else
+            git commit -m "keruta-task-$TASK_ID"
+          fi
           git push "$REPO_URL" keruta-task-$TASK_ID
         env:
         - name: TASK_ID
@@ -93,11 +96,17 @@ spec:
         - -c
         - |
           REPO=$(echo "$GIT_REPO_URL" | sed 's|https://github.com/||;s|\.git$||')
-          curl -s -X POST \
+          BASE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+            "https://api.github.com/repos/$REPO" | grep '"default_branch"' | sed 's/.*"default_branch": *"\([^"]*\)".*/\1/')
+          BASE=${BASE:-develop}
+          RESULT=$(curl -s -X POST \
             -H "Authorization: token $GITHUB_TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/$REPO/pulls" \
-            -d "{\"title\":\"$TASK_TITLE\",\"head\":\"keruta-task-$TASK_ID\",\"base\":\"main\",\"body\":\"$TASK_DESCRIPTION\"}"
+            -d "{\"title\":\"$TASK_TITLE\",\"head\":\"keruta-task-$TASK_ID\",\"base\":\"$BASE\",\"body\":\"$TASK_DESCRIPTION\"}")
+          echo "$RESULT"
+          echo "$RESULT" | grep -q '"already exists"' && echo "PR already exists, skipping" && exit 0
+          echo "$RESULT" | grep -q '"html_url"' || (echo "PR creation may have failed" && exit 0)
         env:
         - name: TASK_ID
           value: ""
