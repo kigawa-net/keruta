@@ -17,6 +17,7 @@ import net.kigawa.keruta.ktcp.domain.err.KtcpErr
 import net.kigawa.keruta.ktcp.server.KtcpServer
 import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.keruta.ktcp.server.err.ResponseErr
+import net.kigawa.keruta.ktcp.server.err.UnauthenticatedErr
 import net.kigawa.keruta.ktcp.server.session.KtcpSession
 import net.kigawa.keruta.ktcp.usecase.JsonKerutaSerializer
 import net.kigawa.keruta.ktse.KerutaTaskServer
@@ -36,6 +37,7 @@ import net.kigawa.kodel.api.err.convertErr
 import net.kigawa.kodel.api.log.getKogger
 import net.kigawa.kodel.api.log.traceignore.debug
 import net.kigawa.kodel.api.log.traceignore.error
+import net.kigawa.kodel.api.log.traceignore.warn
 import kotlin.time.Duration.Companion.seconds
 
 class KtorWebsocketModule(application: Application, val server: KerutaTaskServer) {
@@ -102,11 +104,15 @@ class KtorWebsocketModule(application: Application, val server: KerutaTaskServer
         )
     ) {
         is Res.Err<*, KtcpErr> -> {
-            logger.error("Failed to receive message", res.err)
+            if (res.err.cause is UnauthenticatedErr) {
+                logger.warn("Received message from unauthenticated client: ${res.err.cause?.message}")
+            } else {
+                logger.error("Failed to receive message", res.err)
+            }
             ktcpServer.clientEntrypoints.genericError.access(
                 GenericErrMsg(errorCode = res.err.code, errorMessage = res.err.message ?: "empty message"),
                 ServerCtx(session, serializer, ktcpServer)
-            )
+            )?.execute()
         }
 
         is Res.Ok<*, *> -> {
