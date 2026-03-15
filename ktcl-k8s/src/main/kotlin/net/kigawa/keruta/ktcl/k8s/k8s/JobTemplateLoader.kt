@@ -65,7 +65,11 @@ class JobTemplateLoader(private val templatePath: String) {
 
         job.spec?.template?.spec?.initContainers
             ?.find { it.name == "git-push" }
-            ?.env(listOf(V1EnvVar().name("TASK_ID").value(taskIdStr)))
+            ?.env(listOf(
+                V1EnvVar().name("TASK_ID").value(taskIdStr),
+                V1EnvVar().name("GIT_REPO_URL").value(gitRepoUrl),
+                V1EnvVar().name("GITHUB_TOKEN").value(githubToken),
+            ))
 
         job.spec?.template?.spec?.containers
             ?.find { it.name == "github-pr" }
