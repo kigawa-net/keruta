@@ -23,7 +23,7 @@ kotlin {
 
 
 application {
-    mainClass.set("net.kigawa.keruta.ktse.Main.main")
+    mainClass.set("net.kigawa.keruta.ktse.Main")
 }
 
 tasks.shadowJar {
