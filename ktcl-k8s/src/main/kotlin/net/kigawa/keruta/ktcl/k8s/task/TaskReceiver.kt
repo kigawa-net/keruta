@@ -2,7 +2,7 @@ package net.kigawa.keruta.ktcl.k8s.task
 
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -185,11 +185,14 @@ class TaskReceiver(
 
     private suspend fun receiveMsg(ctx: ClientCtx): ReceiveClientUnknownArg? {
         val text = try {
-            withTimeout(10.seconds) { connection.receive() }
+            withTimeoutOrNull(30.seconds) { connection.receive() }
         } catch (_: ClosedReceiveChannelException) {
             logger.info { "WebSocket connection closed" }
             return null
-        } ?: return null
+        } ?: run {
+            logger.warning { "WebSocket receive timed out" }
+            return null
+        }
         return ReceiveClientUnknownArg.fromText(text, ctx.serializer)
     }
 }
