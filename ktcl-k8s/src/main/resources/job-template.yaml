@@ -22,7 +22,7 @@ spec:
 
             branch=$(git remote show origin | grep 'HEAD branch' | awk '{print $NF}')
 
-            if ! git pull --rebase origin "$branch"; then
+            if ! git pull --rebase origin "keruta-task-$TASK_ID"; then
               git rebase --abort 2>/dev/null
               git reset --hard "origin/$branch"
             fi
