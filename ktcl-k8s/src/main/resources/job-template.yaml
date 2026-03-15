@@ -19,7 +19,13 @@ spec:
           if [ -d /workspace/.git ]; then
             cd /workspace
             git fetch --all
-            git reset --hard origin/$(git remote show origin | grep 'HEAD branch' | awk '{print $NF}')
+
+            branch=$(git remote show origin | grep 'HEAD branch' | awk '{print $NF}')
+
+            if ! git pull --rebase origin "$branch"; then
+              git rebase --abort 2>/dev/null
+              git reset --hard "origin/$branch"
+            fi
           else
             find /workspace -mindepth 1 -delete
             git clone $GIT_REPO_URL /workspace
@@ -62,11 +68,19 @@ spec:
         - -c
         - |
           cd /workspace
+          git config user.email "keruta-bot@kigawa.net"
+          git config user.name "Keruta Bot"
           git add -A
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
           git commit -m "keruta-task-$TASK_ID"
-          git push origin keruta-task-$TASK_ID
+          REPO_URL=$(echo "$GIT_REPO_URL" | sed "s|https://|https://$GITHUB_TOKEN@|")
+          git push "$REPO_URL" keruta-task-$TASK_ID
         env:
         - name: TASK_ID
+          value: ""
+        - name: GIT_REPO_URL
+          value: ""
+        - name: GITHUB_TOKEN
           value: ""
         volumeMounts:
         - name: workspace
