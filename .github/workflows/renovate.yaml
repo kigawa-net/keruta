@@ -3,7 +3,6 @@ on:
   workflow_dispatch:
   workflow_call:
   schedule:
-    - cron: '0 18 * * *'
     - cron: '0 19 * * *'
 
 # Adding these as env variables makes it easy to re-use them in different steps and in bash.

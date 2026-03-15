@@ -15,7 +15,7 @@ class ClaudeCodeCliClient {
     suspend fun sendMessage(prompt: String): Res<String, ClaudeApiErr> = withContext(Dispatchers.IO) {
         try {
             val processBuilder = ProcessBuilder(
-                claudePath, "--allow-dangerously-skip-permissions", "-p", prompt
+                claudePath, "--dangerously-skip-permissions", "-p", prompt
             )
             processBuilder.directory(java.io.File("/workspace"))
 
