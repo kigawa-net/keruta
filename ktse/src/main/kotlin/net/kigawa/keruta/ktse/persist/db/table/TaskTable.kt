@@ -11,5 +11,6 @@ object TaskTable: Table("task") {
     val title = varchar("title", 255)
     val description = text("description")
     val status = varchar("status", 20).default("pending")
+    val log = text("log").nullable()
     override val primaryKey = PrimaryKey(id)
 }

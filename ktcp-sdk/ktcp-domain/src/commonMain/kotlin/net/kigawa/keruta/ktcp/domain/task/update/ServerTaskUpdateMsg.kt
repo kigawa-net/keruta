@@ -10,6 +10,7 @@ data class ServerTaskUpdateMsg(
     override val type: ServerMsgType = ServerMsgType.TASK_UPDATE,
     val taskId: Long,
     val status: String,
+    val log: String? = null,
 ): ServerMsg {
     init {
         require(type == ServerMsgType.TASK_UPDATE)

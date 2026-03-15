@@ -7,4 +7,5 @@ interface PersistedTask {
     val title: String
     val description: String
     val status: String
+    val log: String?
 }

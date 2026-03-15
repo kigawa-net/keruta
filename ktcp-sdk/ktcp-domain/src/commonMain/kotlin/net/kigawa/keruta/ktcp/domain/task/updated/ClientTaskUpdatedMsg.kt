@@ -9,6 +9,7 @@ data class ClientTaskUpdatedMsg(
     override val type: ClientMsgType = ClientMsgType.TASK_UPDATED,
     val id: Long,
     val status: String,
+    val log: String? = null,
 ): ClientMsg {
     init {
         require(type == ClientMsgType.TASK_UPDATED) { "type must be TASK_UPDATED" }

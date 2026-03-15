@@ -50,8 +50,9 @@ class ExposedAuthedTaskPersisterSession(
     override fun updateTaskStatus(
         taskId: Long,
         status: String,
+        log: String?,
     ): Res<PersistedTask, KtcpErr> = dbPersister.execTransaction {
-        it.task.updateStatus(verifyTables.user, taskId, status)
+        it.task.updateStatus(verifyTables.user, taskId, status, log)
     }
 
     override fun moveTask(

@@ -16,6 +16,7 @@ interface TaskCardProps {
  */
 export function TaskCard({task, queues, currentQueueId, onComplete, onMove}: TaskCardProps) {
     const [showMoveModal, setShowMoveModal] = useState(false);
+    const [showLog, setShowLog] = useState(false);
 
     return (
         <div className="bg-white rounded-lg shadow border border-gray-200 p-4">
@@ -26,6 +27,22 @@ export function TaskCard({task, queues, currentQueueId, onComplete, onMove}: Tas
                 </div>
                 <TaskStatusBadge status={task.status}/>
             </div>
+
+            {task.log && (
+                <div className="mt-2">
+                    <button
+                        onClick={() => setShowLog(!showLog)}
+                        className="text-xs text-blue-600 hover:underline"
+                    >
+                        {showLog ? "ログを隠す" : "ログを表示"}
+                    </button>
+                    {showLog && (
+                        <pre className="mt-2 text-xs text-gray-700 whitespace-pre-wrap break-all max-h-48 overflow-y-auto font-mono bg-gray-50 rounded p-2">
+                            {task.log}
+                        </pre>
+                    )}
+                </div>
+            )}
 
             {task.status !== "completed" && (
                 <div className="flex gap-2 mt-3">

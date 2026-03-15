@@ -43,10 +43,17 @@ class DbTaskPersisterDsl(val transaction: Transaction) {
                 ?: Res.Err(NoSingleRecordErr("", null))
         }
 
-    fun updateStatus(user: PersistedUser, taskId: Long, status: String): Res<PersistedTask, KtcpErr> =
+    fun updateStatus(user: PersistedUser, taskId: Long, status: String, log: String? = null): Res<PersistedTask, KtcpErr> =
         transaction.run {
+            val appendedLog = if (log != null) {
+                val existingLog = TaskTable.selectAll()
+                    .where { TaskTable.userId eq user.id and (TaskTable.id eq taskId) }
+                    .singleOrNull()?.get(TaskTable.log)
+                if (existingLog != null) "$existingLog\n$log" else log
+            } else null
             TaskTable.update({ TaskTable.userId eq user.id and (TaskTable.id eq taskId) }) {
                 it[TaskTable.status] = status
+                if (appendedLog != null) it[TaskTable.log] = appendedLog
             }
             TaskTable.selectAll().where {
                 TaskTable.userId eq user.id and (TaskTable.id eq taskId)

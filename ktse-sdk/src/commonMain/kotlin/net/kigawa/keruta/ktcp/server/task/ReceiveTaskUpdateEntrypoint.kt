@@ -17,7 +17,7 @@ class ReceiveTaskUpdateEntrypoint: ServerTaskUpdateEntrypoint<ServerCtx> {
         val session = ctx.session.authenticated()
             ?: return@EntrypointDeferred Res.Err(UnauthenticatedErr("", null))
         val task = when (
-            val res = session.persisterSession.task.updateTaskStatus(input.taskId, input.status)
+            val res = session.persisterSession.task.updateTaskStatus(input.taskId, input.status, input.log)
         ) {
             is Res.Err -> return@EntrypointDeferred res.convert()
             is Res.Ok -> res.value
@@ -26,6 +26,7 @@ class ReceiveTaskUpdateEntrypoint: ServerTaskUpdateEntrypoint<ServerCtx> {
             ClientTaskUpdatedMsg(
                 id = task.id,
                 status = task.status,
+                log = task.log,
             ), ctx
         )?.execute() ?: Res.Err(ResponseErr("", null))
     }
