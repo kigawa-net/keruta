@@ -42,8 +42,8 @@ class WebApplicationModule {
             auth0JwtTokenCreator
         )
         k8sModule.configure(
-            application, dbModule.userTokenDao, appConfig.idp, oidcDiscoveryFetcher, providerTokenCreator,
-            appConfig.keruta.ownIssuer
+            application, dbModule.userTokenDao, dbModule.userClaudeConfigDao, appConfig.idp, oidcDiscoveryFetcher,
+            providerTokenCreator, appConfig.keruta.ownIssuer
         )
         serializeModule.configure(application)
         authModule.configure(application)

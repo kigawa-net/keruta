@@ -2,7 +2,6 @@ package net.kigawa.keruta.ktcl.claudecode.claude
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.Json
 import net.kigawa.keruta.ktcl.claudecode.err.ClaudeApiErr
 import net.kigawa.kodel.api.err.Res
 import java.io.BufferedReader
@@ -11,7 +10,6 @@ import java.nio.charset.StandardCharsets
 import java.util.concurrent.TimeUnit
 
 class ClaudeCodeCliClient {
-    private val json = Json { ignoreUnknownKeys = true }
     private val claudePath = System.getenv("CLAUDE_CLI_PATH") ?: "claude"
 
     suspend fun sendMessage(prompt: String): Res<String, ClaudeApiErr> = withContext(Dispatchers.IO) {
@@ -48,7 +46,7 @@ class ClaudeCodeCliClient {
             val exitCode = process.exitValue()
             if (exitCode != 0) {
                 return@withContext Res.Err(
-                    ClaudeApiErr("Claude Code CLI failed (exit code: $exitCode): $errorOutput", null)
+                    ClaudeApiErr("Claude Code CLI failed (exit code: $exitCode)\nstdout: $result\nstderr: $errorOutput", null)
                 )
             }
 

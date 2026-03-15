@@ -37,11 +37,12 @@ class K8sJobExecutor(
         userToken: String,
         serverToken: String,
         queueId: Long,
+        anthropicApiKey: String?,
     ): Res<Unit, K8sErr> = coroutineScope {
         try {
             createPvcIfNotExists("keruta-task-$taskId-pvc")
 
-            val jobName = createJob(taskId, title, description, gitRepoUrl, githubToken, userToken, serverToken, queueId)
+            val jobName = createJob(taskId, title, description, gitRepoUrl, githubToken, userToken, serverToken, queueId, anthropicApiKey)
                 ?: return@coroutineScope Res.Err(K8sErr.JobCreateErr("Job name is null", null))
 
             logger.info { "Kubernetes Job ready: $jobName" }
@@ -80,8 +81,9 @@ class K8sJobExecutor(
         userToken: String,
         serverToken: String,
         queueId: Long,
+        anthropicApiKey: String?,
     ): String? {
-        val job = templateLoader.loadTemplate(taskId, title, description, gitRepoUrl, githubToken, userToken, serverToken, queueId, config)
+        val job = templateLoader.loadTemplate(taskId, title, description, gitRepoUrl, githubToken, userToken, serverToken, queueId, config, anthropicApiKey)
         job.metadata?.namespace(config.k8sNamespace)
         return withContext(Dispatchers.IO) {
             try {
