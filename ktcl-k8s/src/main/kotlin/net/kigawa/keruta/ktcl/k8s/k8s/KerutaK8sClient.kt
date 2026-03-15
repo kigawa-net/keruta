@@ -6,6 +6,7 @@ import net.kigawa.keruta.ktcl.k8s.auth.TokenRefreshException
 import net.kigawa.keruta.ktcl.k8s.auth.TokenRefresher
 import net.kigawa.keruta.ktcl.k8s.config.K8sConfig
 import net.kigawa.keruta.ktcl.k8s.connection.ConnectionManager
+import net.kigawa.keruta.ktcl.k8s.persist.dao.UserClaudeConfigDao
 import net.kigawa.keruta.ktcl.k8s.persist.dao.UserTokenDao
 import net.kigawa.keruta.ktcl.k8s.task.TaskReceiver
 import net.kigawa.keruta.ktcp.client.ClientCtx
@@ -21,6 +22,7 @@ import kotlin.time.Duration.Companion.seconds
 class KerutaK8sClient(
     private val config: K8sConfig,
     private val userTokenDao: UserTokenDao,
+    private val userClaudeConfigDao: UserClaudeConfigDao,
     private val tokenRefresher: TokenRefresher,
     private val providerTokenCreator: ProviderTokenCreator,
     private val ktclIssuer: String,
@@ -110,7 +112,7 @@ class KerutaK8sClient(
         logger.debug { "Job template loader created for user $userSubject" }
         val jobExecutor = K8sJobExecutor(apiClient, config, templateLoader)
         logger.debug { "Job executor created for user $userSubject" }
-        val taskReceiver = TaskReceiver(connection, ktcpClient, jobExecutor, ktclIssuer, userTokenDao)
+        val taskReceiver = TaskReceiver(connection, ktcpClient, jobExecutor, ktclIssuer, userTokenDao, userClaudeConfigDao)
         logger.debug { "Starting task receiver for user $userSubject" }
         return taskReceiver.startReceiving(ctx, userSubject, userIssuer, accessToken, providerToken.createdToken.rawToken)
     }

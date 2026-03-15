@@ -9,6 +9,7 @@ import kotlinx.serialization.json.jsonPrimitive
 import net.kigawa.keruta.ktcl.k8s.connection.JvmWebSocketConnection
 import net.kigawa.keruta.ktcl.k8s.connection.ReceiveClientUnknownArg
 import net.kigawa.keruta.ktcl.k8s.k8s.K8sJobExecutor
+import net.kigawa.keruta.ktcl.k8s.persist.dao.UserClaudeConfigDao
 import net.kigawa.keruta.ktcl.k8s.persist.dao.UserTokenDao
 import net.kigawa.keruta.ktcp.client.ClientCtx
 import net.kigawa.keruta.ktcp.client.KtcpClient
@@ -30,6 +31,7 @@ class TaskReceiver(
     private val jobExecutor: K8sJobExecutor,
     private val ktclIssuer: String,
     private val userTokenDao: UserTokenDao,
+    private val userClaudeConfigDao: UserClaudeConfigDao,
 ) {
     private val logger = getKogger()
 
@@ -161,7 +163,13 @@ class TaskReceiver(
         }
         logger.debug { "Executing task ${task.id} for queue ${queue.id}" }
 
-        val jobResult = jobExecutor.executeJob(task.id, task.title, task.description, gitRepoUrl, githubToken, userToken, serverToken, queue.id)
+        val anthropicApiKey = userClaudeConfigDao.get(userSubject, userIssuer)
+        if (anthropicApiKey == null) {
+            logger.severe { "Anthropic API key not found for user $userSubject, skipping task ${task.id}" }
+            return false
+        }
+
+        val jobResult = jobExecutor.executeJob(task.id, task.title, task.description, gitRepoUrl, githubToken, userToken, serverToken, queue.id, anthropicApiKey)
         if (jobResult is Res.Err) {
             jobResult.err.printStackTrace()
             logger.warning { "Job failed for task ${task.id}, updating status to failed" }
