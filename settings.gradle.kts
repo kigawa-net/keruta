@@ -14,7 +14,42 @@ rootProject.name = "keruta"
 fun Settings.includesIfExists(dir: String, vararg includes: String) {
     if (file(dir).exists()) this.include(*includes)
 }
+@DslMarker
+annotation class IncludeDslMarker
 
+@IncludeDslMarker
+class IncludeDsl(
+    private val prefix: List<String>,
+    private val settings: Settings,
+) {
+    fun includeIfExists(vararg name: String): Boolean = if (
+        file(path(name).joinToString(separator = "/")).exists()
+    ) {
+        include(*name)
+        true
+    } else false
+
+
+    fun include(vararg name: String) = settings.include(path(name).joinToString(separator = ":"))
+
+    private fun path(name: Array<out String>) = (prefix + name).let { pathName ->
+        var name: String? = null
+        pathName.map {
+            name = if (name == null) it
+            else "$name-$it"
+            name
+        }
+    }
+
+    fun group(name: String, block: IncludeDsl.() -> Unit) = IncludeDsl(prefix + name, settings).block()
+    fun includeIfExistsAndGroup(name: String, block: IncludeDsl.() -> Unit) =
+        if (includeIfExists(name)) group(name, block)
+        else Unit
+}
+
+fun Settings.includeDsl(block: IncludeDsl.() -> Unit) {
+    IncludeDsl(emptyList(), this).block()
+}
 includesIfExists("kodel", "kodel:api", "kodel:coroutine", "kodel:core")
 includesIfExists(
     "ktcp-sdk",
@@ -29,3 +64,10 @@ includesIfExists("ktcl-claudecode", "ktcl-claudecode")
 includesIfExists("ktcl-k8s", "ktcl-k8s")
 includesIfExists("ktcl-sdk", "ktcl-sdk")
 includesIfExists("ktcl-front-mobile", "ktcl-front-mobile", "ktcl-front-mobile:app")
+
+includeDsl {
+    includeIfExistsAndGroup("kicp") {
+        includeIfExists("domain")
+        includeIfExists("usecase")
+    }
+}

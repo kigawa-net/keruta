@@ -1,21 +1,8 @@
 name: ktcl-claudecode-dev
 on:
   push:
-    paths-ignore:
-      - README.md
-      - Dockerfile_ktse
-      - Dockerfile_ktcl_front
-      - Dockerfile_ktcl_k8s
-      - .github/workflows/dev-ktcl-front.yml
-      - .github/workflows/dev-ktse.yml
-      - .github/workflows/renovate.yaml
-      - .github/renovate.json
-      - .idea/**
-      - ktcl-k8s/**
-      - ktcl-front/**
-      - ktcl-front-mobile/**
-      - ktse-sdk/**
-      - ktse/**
+    paths:
+      - 'ktcl-claudecode/**'
     branches:
       - develop
 

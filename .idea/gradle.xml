@@ -21,6 +21,9 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/kicp" />
+            <option value="$PROJECT_DIR$/kicp/kicp-domain" />
+            <option value="$PROJECT_DIR$/kicp/kicp-usecase" />
             <option value="$PROJECT_DIR$/kodel" />
             <option value="$PROJECT_DIR$/kodel/api" />
             <option value="$PROJECT_DIR$/kodel/core" />
