@@ -70,4 +70,8 @@ includeDsl {
         includeIfExists("domain")
         includeIfExists("usecase")
     }
+    includeIfExistsAndGroup("kicl") {
+        includeIfExists("domain")
+        includeIfExists("usecase")
+    }
 }

@@ -21,6 +21,9 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/kicl" />
+            <option value="$PROJECT_DIR$/kicl/kicl-domain" />
+            <option value="$PROJECT_DIR$/kicl/kicl-usecase" />
             <option value="$PROJECT_DIR$/kicp" />
             <option value="$PROJECT_DIR$/kicp/kicp-domain" />
             <option value="$PROJECT_DIR$/kicp/kicp-usecase" />
