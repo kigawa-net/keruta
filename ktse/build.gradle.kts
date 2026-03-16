@@ -23,7 +23,7 @@ kotlin {
 
 
 application {
-    mainClass.set("io.ktor.server.netty.EngineMain")
+    mainClass.set("net.kigawa.keruta.ktse.Main")
 }
 
 tasks.shadowJar {
@@ -33,8 +33,7 @@ tasks.shadowJar {
 }
 
 dependencies {
-    implementation(project(":ktcp:server"))
-    implementation(project(":ktcp:ktcp-infra"))
+    implementation(project(":ktse-sdk"))
     // https://mvnrepository.com/artifact/com.auth0/java-jwt
     implementation("com.auth0:java-jwt:${Version.JAVA_JWT}")
     implementation("com.auth0:jwks-rsa:${Version.JWKS_RSA}")

@@ -8,7 +8,6 @@ on:
       - develop
   pull_request:
     branches:
-      - main
       - develop
 
 jobs:
@@ -31,7 +30,7 @@ jobs:
           --health-retries 10
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 25
@@ -50,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: npm

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ktcp-sdk-js-dev">
+    <output-path>$PROJECT_DIR$/ktcp-sdk/build/libs</output-path>
+    <root id="archive" name="ktcp-sdk-js-dev.jar">
+      <element id="module-output" name="keruta.ktcp-sdk.jsMain" />
+    </root>
+  </artifact>
+</component>

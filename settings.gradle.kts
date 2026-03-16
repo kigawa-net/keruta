@@ -17,14 +17,15 @@ fun Settings.includesIfExists(dir: String, vararg includes: String) {
 
 includesIfExists("kodel", "kodel:api", "kodel:coroutine", "kodel:core")
 includesIfExists(
-    "ktcp",
-    "ktcp:ktcp-domain", "ktcp:ktcp-domain:ktcp-domain-server", "ktcp:ktcp-domain:ktcp-domain-client",
-    "ktcp:ktcp-usecase", "ktcp:ktcp-usecase:ktcp-usecase-server", "ktcp:ktcp-usecase:ktcp-usecase-client",
-    "ktcp:ktcp-infra", "ktcp:ktcp-infra:ktcp-infra-server","ktcp:ktcp-infra:ktcp-infra-client",
-    "ktcp:client", "ktcp:server",
+    "ktcp-sdk",
+    "ktcp-sdk:ktcp-domain", "ktcp-sdk:ktcp-domain:ktcp-domain-server", "ktcp-sdk:ktcp-domain:ktcp-domain-client",
+    "ktcp-sdk:ktcp-usecase", "ktcp-sdk:ktcp-usecase:ktcp-usecase-client",
+    "ktcp-sdk:ktcp-infra-client",
+    "ktcp-sdk:client",
 )
+includesIfExists("ktse-sdk", "ktse-sdk", "ktse-sdk:ktse-sdk-usecase")
 includesIfExists("ktse", "ktse")
 includesIfExists("ktcl-claudecode", "ktcl-claudecode")
 includesIfExists("ktcl-k8s", "ktcl-k8s")
-includesIfExists("ktcl", "ktcl")
+includesIfExists("ktcl-sdk", "ktcl-sdk")
 includesIfExists("ktcl-front-mobile", "ktcl-front-mobile", "ktcl-front-mobile:app")

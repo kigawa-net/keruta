@@ -11,6 +11,7 @@ import io.kubernetes.client.openapi.models.V1PersistentVolumeClaimSpec
 import io.kubernetes.client.openapi.models.V1VolumeResourceRequirements
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import net.kigawa.keruta.ktcl.k8s.config.K8sConfig
 import net.kigawa.keruta.ktcl.k8s.err.K8sErr
@@ -33,16 +34,19 @@ class K8sJobExecutor(
         description: String,
         gitRepoUrl: String,
         githubToken: String,
-    ): Res<String, K8sErr> = coroutineScope {
+        userToken: String,
+        serverToken: String,
+        queueId: Long,
+        anthropicApiKey: String?,
+    ): Res<Unit, K8sErr> = coroutineScope {
         try {
             createPvcIfNotExists("keruta-task-$taskId-pvc")
 
-            val jobName = createJob(taskId, title, description, gitRepoUrl, githubToken)
+            val jobName = createJob(taskId, title, description, gitRepoUrl, githubToken, userToken, serverToken, queueId, anthropicApiKey)
                 ?: return@coroutineScope Res.Err(K8sErr.JobCreateErr("Job name is null", null))
 
             logger.info { "Kubernetes Job ready: $jobName" }
             watchAndLog(jobName)
-            Res.Ok(jobName)
         } catch (e: Exception) {
             logger.info { "Failed to create Kubernetes Job: ${e.message}" }
             Res.Err(K8sErr.JobCreateErr("Failed to create Job: ${e.message}", e))
@@ -74,8 +78,12 @@ class K8sJobExecutor(
         description: String,
         gitRepoUrl: String,
         githubToken: String,
+        userToken: String,
+        serverToken: String,
+        queueId: Long,
+        anthropicApiKey: String?,
     ): String? {
-        val job = templateLoader.loadTemplate(taskId, title, description, gitRepoUrl, githubToken)
+        val job = templateLoader.loadTemplate(taskId, title, description, gitRepoUrl, githubToken, userToken, serverToken, queueId, config, anthropicApiKey)
         job.metadata?.namespace(config.k8sNamespace)
         return withContext(Dispatchers.IO) {
             try {
@@ -83,8 +91,13 @@ class K8sJobExecutor(
                 createdJob.metadata?.name
             } catch (e: ApiException) {
                 if (e.code == 409) {
-                    logger.info { "Job already exists, skipping: keruta-task-$taskId" }
-                    "keruta-task-$taskId"
+                    logger.info { "Job already exists, deleting and recreating: keruta-task-$taskId" }
+                    batchApi.deleteNamespacedJob("keruta-task-$taskId", config.k8sNamespace)
+                        .propagationPolicy("Foreground")
+                        .execute()
+                    waitForJobDeletion("keruta-task-$taskId")
+                    val createdJob = batchApi.createNamespacedJob(config.k8sNamespace, job).execute()
+                    createdJob.metadata?.name
                 } else {
                     throw e
                 }
@@ -92,13 +105,35 @@ class K8sJobExecutor(
         }
     }
 
-    private suspend fun watchAndLog(jobName: String) {
+    private suspend fun waitForJobDeletion(jobName: String) {
+        withContext(Dispatchers.IO) {
+            repeat(30) {
+                try {
+                    batchApi.readNamespacedJobStatus(jobName, config.k8sNamespace).execute()
+                    delay(2000)
+                } catch (e: ApiException) {
+                    if (e.code == 404) return@withContext
+                    throw e
+                }
+            }
+            logger.warning { "Timed out waiting for job deletion: $jobName" }
+        }
+    }
+
+    private suspend fun watchAndLog(jobName: String): Res<Unit, K8sErr> {
         val watchResult = jobWatcher.watchJob(jobName) { status ->
             logger.info { "Job $jobName status changed: $status" }
         }
-        when (watchResult) {
-            is Res.Ok -> logger.info { "Job $jobName completed with status: ${watchResult.value}" }
-            is Res.Err -> logger.warning { "Job $jobName watch error: ${watchResult.err}" }
+        return when (watchResult) {
+            is Res.Ok -> {
+                logger.info { "Job $jobName completed with status: ${watchResult.value}" }
+                if (watchResult.value == JobStatus.SUCCEEDED) Res.Ok(Unit)
+                else Res.Err(K8sErr.JobWatchErr("Job completed with non-success status: ${watchResult.value}", null))
+            }
+            is Res.Err -> {
+                logger.warning { "Job $jobName watch error: ${watchResult.err}" }
+                Res.Err(watchResult.err)
+            }
         }
     }
 }

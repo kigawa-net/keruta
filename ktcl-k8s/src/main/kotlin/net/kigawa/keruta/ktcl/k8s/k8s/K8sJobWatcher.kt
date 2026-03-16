@@ -1,6 +1,7 @@
 package net.kigawa.keruta.ktcl.k8s.k8s
 
 import io.kubernetes.client.openapi.ApiClient
+import io.kubernetes.client.openapi.ApiException
 import io.kubernetes.client.openapi.apis.BatchV1Api
 import kotlinx.coroutines.*
 import net.kigawa.keruta.ktcl.k8s.config.K8sConfig
@@ -54,7 +55,15 @@ class K8sJobWatcher(
     }
 
     private fun checkJobStatus(jobName: String, startTime: Long): JobStatus? {
-        val job = batchApi.readNamespacedJobStatus(jobName, config.k8sNamespace).execute()
+        val job = try {
+            batchApi.readNamespacedJobStatus(jobName, config.k8sNamespace).execute()
+        } catch (e: ApiException) {
+            if (e.code in 500..599) {
+                logger.warning { "Transient K8s API error (${e.code}) watching $jobName, will retry: ${e.message}" }
+                return null
+            }
+            throw e
+        }
         val elapsed = (System.currentTimeMillis() - startTime) / 1000
         return when {
             job.status?.succeeded == 1 -> JobStatus.SUCCEEDED

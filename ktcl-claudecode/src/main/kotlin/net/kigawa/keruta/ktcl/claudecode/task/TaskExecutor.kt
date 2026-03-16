@@ -37,12 +37,12 @@ class TaskExecutor(
         return when (val result = claudeClient.sendMessage(prompt)) {
             is Res.Ok -> {
                 logger.info { "Task completed: id=$taskId" }
-                updateStatus(taskId, "completed", ctx)
+                updateStatus(taskId, "completed", ctx, result.value)
                 Res.Ok(Unit)
             }
             is Res.Err -> {
-                logger.info { "Task failed: id=$taskId" }
-                updateStatus(taskId, "failed", ctx)
+                logger.info { "Task failed: id=$taskId, error=${result.err}" }
+                updateStatus(taskId, "failed", ctx, result.err.message)
                 Res.Err(ClaudeApiErr("Task execution failed", result.err as? Exception))
             }
         }
@@ -52,11 +52,13 @@ class TaskExecutor(
         taskId: Long,
         status: String,
         ctx: ClientCtx,
+        log: String? = null,
     ): Res<Unit, KtcpErr> {
         return ktcpClient.ktcpServerEntrypoints.taskUpdateEntrypoint.access(
             ServerTaskUpdateMsg(
                 taskId = taskId,
-                status = status
+                status = status,
+                log = log,
             ),
             ctx
         )?.execute() ?: Res.Err(ClaudeApiErr("TaskUpdate entrypoint not found", null))

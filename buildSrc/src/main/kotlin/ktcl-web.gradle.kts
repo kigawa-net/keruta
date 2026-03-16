@@ -7,7 +7,7 @@ plugins {
 kotlin {
 }
 dependencies {
-    api(project(":ktcp:client"))
+    api(project(":ktcp-sdk:client"))
     implementation("io.ktor:ktor-server-cors:${Version.KTOR}")
     // Testing
     testImplementation("io.ktor:ktor-server-test-host")

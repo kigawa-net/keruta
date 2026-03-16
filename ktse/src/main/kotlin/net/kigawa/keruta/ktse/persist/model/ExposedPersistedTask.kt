@@ -10,5 +10,6 @@ class ExposedPersistedTask(queue: ResultRow): PersistedTask {
     override val title: String = queue[TaskTable.title]
     override val description: String = queue[TaskTable.description]
     override val status: String = queue[TaskTable.status]
+    override val log: String? = queue[TaskTable.log]
 
 }

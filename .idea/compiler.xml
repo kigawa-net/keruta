@@ -89,16 +89,67 @@
       <module name="keruta.ktcl-web" target="23" />
       <module name="keruta.ktcl-web.main" target="23" />
       <module name="keruta.ktcl-web.test" target="23" />
+      <module name="keruta.ktcp-sdk.ktcp-infra" target="25" />
+      <module name="keruta.ktcp-sdk.ktcp-infra-server" target="25" />
+      <module name="keruta.ktcp-sdk.ktcp-infra-server.jvmMain" target="25" />
+      <module name="keruta.ktcp-sdk.ktcp-infra-server.jvmTest" target="25" />
+      <module name="keruta.ktcp-sdk.ktcp-infra.jvmMain" target="25" />
+      <module name="keruta.ktcp-sdk.ktcp-infra.jvmTest" target="25" />
+      <module name="keruta.ktcp-sdk.ktcp-infra.ktcp-infra-client" target="25" />
+      <module name="keruta.ktcp-sdk.ktcp-infra.ktcp-infra-client.jvmMain" target="25" />
+      <module name="keruta.ktcp-sdk.ktcp-infra.ktcp-infra-client.jvmTest" target="25" />
+      <module name="keruta.ktcp-sdk.ktcp-infra.ktcp-infra-server" target="25" />
+      <module name="keruta.ktcp-sdk.ktcp-infra.ktcp-infra-server.jvmMain" target="25" />
+      <module name="keruta.ktcp-sdk.ktcp-infra.ktcp-infra-server.jvmTest" target="25" />
+      <module name="keruta.ktcp-sdk.ktcp-usecase.ktcp-usecase-server" target="25" />
+      <module name="keruta.ktcp-sdk.ktcp-usecase.ktcp-usecase-server.jvmMain" target="25" />
+      <module name="keruta.ktcp-sdk.ktcp-usecase.ktcp-usecase-server.jvmTest" target="25" />
+      <module name="keruta.ktcp-sdk.server" target="25" />
+      <module name="keruta.ktcp-sdk.server.jvmMain" target="25" />
+      <module name="keruta.ktcp-sdk.server.jvmTest" target="25" />
       <module name="keruta.ktcp.base" target="25" />
       <module name="keruta.ktcp.base.jvmMain" target="25" />
       <module name="keruta.ktcp.base.jvmTest" target="25" />
+      <module name="keruta.ktcp.client" target="25" />
+      <module name="keruta.ktcp.client.jvmMain" target="25" />
+      <module name="keruta.ktcp.client.jvmTest" target="25" />
       <module name="keruta.ktcp.infra" target="25" />
+      <module name="keruta.ktcp.ktcp-domain" target="25" />
+      <module name="keruta.ktcp.ktcp-domain.jvmMain" target="25" />
+      <module name="keruta.ktcp.ktcp-domain.jvmTest" target="25" />
+      <module name="keruta.ktcp.ktcp-domain.ktcp-domain-client" target="25" />
+      <module name="keruta.ktcp.ktcp-domain.ktcp-domain-client.jvmMain" target="25" />
+      <module name="keruta.ktcp.ktcp-domain.ktcp-domain-client.jvmTest" target="25" />
+      <module name="keruta.ktcp.ktcp-domain.ktcp-domain-server" target="25" />
+      <module name="keruta.ktcp.ktcp-domain.ktcp-domain-server.jvmMain" target="25" />
+      <module name="keruta.ktcp.ktcp-domain.ktcp-domain-server.jvmTest" target="25" />
+      <module name="keruta.ktcp.ktcp-infra" target="25" />
+      <module name="keruta.ktcp.ktcp-infra.jvmMain" target="25" />
+      <module name="keruta.ktcp.ktcp-infra.jvmTest" target="25" />
+      <module name="keruta.ktcp.ktcp-infra.ktcp-infra-client" target="25" />
+      <module name="keruta.ktcp.ktcp-infra.ktcp-infra-client.jvmMain" target="25" />
+      <module name="keruta.ktcp.ktcp-infra.ktcp-infra-client.jvmTest" target="25" />
+      <module name="keruta.ktcp.ktcp-infra.ktcp-infra-server" target="25" />
+      <module name="keruta.ktcp.ktcp-infra.ktcp-infra-server.jvmMain" target="25" />
+      <module name="keruta.ktcp.ktcp-infra.ktcp-infra-server.jvmTest" target="25" />
+      <module name="keruta.ktcp.ktcp-usecase" target="25" />
+      <module name="keruta.ktcp.ktcp-usecase.jvmMain" target="25" />
+      <module name="keruta.ktcp.ktcp-usecase.jvmTest" target="25" />
+      <module name="keruta.ktcp.ktcp-usecase.ktcp-usecase-client" target="25" />
+      <module name="keruta.ktcp.ktcp-usecase.ktcp-usecase-client.jvmMain" target="25" />
+      <module name="keruta.ktcp.ktcp-usecase.ktcp-usecase-client.jvmTest" target="25" />
+      <module name="keruta.ktcp.ktcp-usecase.ktcp-usecase-server" target="25" />
+      <module name="keruta.ktcp.ktcp-usecase.ktcp-usecase-server.jvmMain" target="25" />
+      <module name="keruta.ktcp.ktcp-usecase.ktcp-usecase-server.jvmTest" target="25" />
       <module name="keruta.ktcp.model" target="25" />
       <module name="keruta.ktcp.model.jvmMain" target="25" />
       <module name="keruta.ktcp.model.jvmTest" target="25" />
       <module name="keruta.ktcp.model.server" target="25" />
       <module name="keruta.ktcp.model.server.jvmMain" target="25" />
       <module name="keruta.ktcp.model.server.jvmTest" target="25" />
+      <module name="keruta.ktcp.server" target="25" />
+      <module name="keruta.ktcp.server.jvmMain" target="25" />
+      <module name="keruta.ktcp.server.jvmTest" target="25" />
       <module name="keruta.ktcp.usecase" target="25" />
       <module name="keruta.ktcp.usecase.jvmMain" target="25" />
       <module name="keruta.ktcp.usecase.jvmTest" target="25" />

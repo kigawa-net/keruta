@@ -13,11 +13,11 @@ interface QueueTaskListProps {
 export function QueueTaskList({tasks, queues, currentQueueId}: QueueTaskListProps) {
     const [showCompleted, setShowCompleted] = useState(false);
 
-    const filteredTasks = showCompleted ? tasks : tasks.filter((task) => task.status === "pending");
+    const filteredTasks = showCompleted ? tasks : tasks.filter((task) => task.status !== "completed");
     const authedKtse = useAuthedKtseState()
-    const handleCompleteTask = useCallback((taskId: number) => {
+    const handleStatusChange = useCallback((taskId: number, status: string) => {
         if (authedKtse.state !== "loaded") return
-        authedKtse.authedKtseApi.updateTask(taskId, "completed")
+        authedKtse.authedKtseApi.updateTask(taskId, status)
     }, [authedKtse]);
     const handleMoveTask = useCallback((taskId: number, targetQueueId: number) => {
         if (authedKtse.state !== "loaded") return
@@ -32,7 +32,7 @@ export function QueueTaskList({tasks, queues, currentQueueId}: QueueTaskListProp
                 queues={queues}
                 currentQueueId={currentQueueId}
                 showCompleted={showCompleted}
-                onCompleteTask={handleCompleteTask}
+                onStatusChange={handleStatusChange}
                 onMoveTask={handleMoveTask}
             />
         </div>

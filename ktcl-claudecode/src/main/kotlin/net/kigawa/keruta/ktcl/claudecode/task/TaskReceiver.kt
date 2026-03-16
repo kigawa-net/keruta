@@ -27,7 +27,7 @@ class TaskReceiver(
 
     suspend fun startReceiving(ctx: ClientCtx) = coroutineScope {
         while (isActive) {
-            val message = connection.receive() ?: continue
+            val message = connection.receive() ?: break
 
             try {
                 // JSONから型を判別

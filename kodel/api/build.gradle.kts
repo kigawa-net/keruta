@@ -58,7 +58,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:${Version.KOTLINX_DATETIME}")
+                api("org.jetbrains.kotlinx:kotlinx-datetime:${Version.KOTLINX_DATETIME}")
             }
         }
         commonTest {
