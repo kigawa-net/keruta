@@ -19,9 +19,7 @@ spec:
           if [ -d /workspace/.git ]; then
             cd /workspace
             git fetch --all
-
             branch=$(git remote show origin | grep 'HEAD branch' | awk '{print $NF}')
-
             if ! git pull --rebase origin "keruta-task-$TASK_ID"; then
               git rebase --abort 2>/dev/null
               git reset --hard "origin/$branch"
@@ -29,9 +27,9 @@ spec:
           else
             find /workspace -mindepth 1 -delete
             git clone $GIT_REPO_URL /workspace
+            git checkout -B keruta-task-$TASK_ID
           fi
           cd /workspace
-          git checkout -B keruta-task-$TASK_ID
           chmod -R a+w /workspace
         env:
         - name: GIT_REPO_URL
