@@ -23,16 +23,25 @@ export default function Sidebar({isOpen, onClose}: SidebarProps) {
                 <nav>
                     <ul className="space-y-2">
                         <li>
-                            <Link
-                                to="/queue/create"
-                                className="sidebar-link block px-4 py-2 rounded transition-colors"
-                                style={{color: '#0a58ca'}}
-                                onClick={handleNavClose}
-                            >
-                                Create Queue
-                            </Link>
+                            <details>
+                                <summary className="sidebar-link block px-4 py-2 rounded transition-colors cursor-pointer" style={{color: '#0a58ca'}}>
+                                    Queue
+                                </summary>
+                                <ul className="space-y-1 pl-4">
+                                    <li>
+                                        <Link
+                                            to="/queue/create"
+                                            className="sidebar-link block px-4 py-2 rounded transition-colors"
+                                            style={{color: '#0a58ca'}}
+                                            onClick={handleNavClose}
+                                        >
+                                            Create Queue
+                                        </Link>
+                                    </li>
+                                    <SidebarQueueButtons onClose={handleNavClose}/>
+                                </ul>
+                            </details>
                         </li>
-                        <SidebarQueueButtons onClose={handleNavClose}/>
                         <li>
                             <Link
                                 to="/provider"
