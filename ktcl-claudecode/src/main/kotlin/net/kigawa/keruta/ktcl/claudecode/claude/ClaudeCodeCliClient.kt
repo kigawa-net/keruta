@@ -23,25 +23,30 @@ class ClaudeCodeCliClient {
             process.outputStream.close()
 
             val result = StringBuilder()
-            BufferedReader(InputStreamReader(process.inputStream, StandardCharsets.UTF_8)).use { reader ->
-                reader.forEachLine { line ->
-                    result.appendLine(line)
-                }
-            }
-
             val errorOutput = StringBuilder()
-            BufferedReader(InputStreamReader(process.errorStream, StandardCharsets.UTF_8)).use { err ->
-                err.forEachLine { line ->
-                    errorOutput.appendLine(line)
+
+            val stdoutThread = Thread {
+                BufferedReader(InputStreamReader(process.inputStream, StandardCharsets.UTF_8)).use { reader ->
+                    reader.forEachLine { line -> result.appendLine(line) }
                 }
             }
+            val stderrThread = Thread {
+                BufferedReader(InputStreamReader(process.errorStream, StandardCharsets.UTF_8)).use { err ->
+                    err.forEachLine { line -> errorOutput.appendLine(line) }
+                }
+            }
+            stdoutThread.start()
+            stderrThread.start()
 
             val finished = process.waitFor(10, TimeUnit.MINUTES)
-
             if (!finished) {
                 process.destroyForcibly()
+                stdoutThread.join()
+                stderrThread.join()
                 return@withContext Res.Err(ClaudeApiErr("Claude Code CLI execution timeout", null))
             }
+            stdoutThread.join()
+            stderrThread.join()
 
             val exitCode = process.exitValue()
             if (exitCode != 0) {

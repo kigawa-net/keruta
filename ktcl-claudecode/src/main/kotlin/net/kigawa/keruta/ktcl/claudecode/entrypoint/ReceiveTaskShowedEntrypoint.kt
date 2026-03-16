@@ -11,6 +11,7 @@ import net.kigawa.kodel.api.log.LoggerFactory
 
 class ReceiveTaskShowedEntrypoint(
     private val taskExecutor: TaskExecutor,
+    private val taskId: Long,
 ) : ClientTaskShowedEntrypoint<ClientCtx> {
     private val logger = LoggerFactory.get("ReceiveTaskShowedEntrypoint")
 
@@ -20,7 +21,10 @@ class ReceiveTaskShowedEntrypoint(
     ): EntrypointDeferred<Res<Unit, KtcpErr>> = EntrypointDeferred {
         logger.info { "Task showed: id=${input.id}, title=${input.title}" }
 
-        // ClientTaskShowedMsgにはstatusフィールドがないため、常に実行
+        if (input.id != taskId) {
+            logger.info { "Task ${input.id} is not the assigned task $taskId, skipping" }
+            return@EntrypointDeferred Res.Ok(Unit)
+        }
         taskExecutor.executeTask(input.id, input.title, input.description, ctx)
     }
 }

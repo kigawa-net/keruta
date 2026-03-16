@@ -135,8 +135,8 @@ class KerutaClaudeCodeClient(
             taskCreatedEntrypoint = ReceiveTaskCreatedEntrypoint(ktcpClient, config.queueId),
             taskUpdatedEntrypoint = ReceiveTaskUpdatedEntrypoint(),
             taskMovedEntrypoint = ReceiveTaskMovedEntrypoint(),
-            taskListedEntrypoint = ReceiveTaskListedEntrypoint(taskExecutor, connection),
-            taskShowedEntrypoint = ReceiveTaskShowedEntrypoint(taskExecutor)
+            taskListedEntrypoint = ReceiveTaskListedEntrypoint(taskExecutor, connection, config.taskId),
+            taskShowedEntrypoint = ReceiveTaskShowedEntrypoint(taskExecutor, config.taskId)
         )
 
         // 起動時に既存のpendingタスクを確認
