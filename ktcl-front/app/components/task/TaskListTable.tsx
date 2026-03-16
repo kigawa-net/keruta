@@ -7,11 +7,11 @@ interface TaskListTableProps {
     queues: { id: number; name: string }[];
     currentQueueId: number;
     showCompleted: boolean;
-    onCompleteTask: (taskId: number) => void;
+    onStatusChange: (taskId: number, status: string) => void;
     onMoveTask: (taskId: number, targetQueueId: number) => void;
 }
 
-export function TaskListTable({tasks, queues, currentQueueId, showCompleted, onCompleteTask, onMoveTask}: TaskListTableProps) {
+export function TaskListTable({tasks, queues, currentQueueId, showCompleted, onStatusChange, onMoveTask}: TaskListTableProps) {
     return (
         <>
             {/* デスクトップ: テーブル表示 */}
@@ -47,7 +47,7 @@ export function TaskListTable({tasks, queues, currentQueueId, showCompleted, onC
                                 task={task}
                                 queues={queues}
                                 currentQueueId={currentQueueId}
-                                onComplete={onCompleteTask}
+                                onStatusChange={onStatusChange}
                                 onMove={onMoveTask}
                             />
                         ))
@@ -68,7 +68,7 @@ export function TaskListTable({tasks, queues, currentQueueId, showCompleted, onC
                             task={task}
                             queues={queues}
                             currentQueueId={currentQueueId}
-                            onComplete={onCompleteTask}
+                            onStatusChange={onStatusChange}
                             onMove={onMoveTask}
                         />
                     ))
