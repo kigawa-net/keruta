@@ -105,7 +105,7 @@ spec:
             "https://api.github.com/repos/$REPO/pulls" \
             -d "{\"title\":\"$TASK_TITLE\",\"head\":\"keruta-task-$TASK_ID\",\"base\":\"$BASE\",\"body\":\"$TASK_DESCRIPTION\"}")
           echo "$RESULT"
-          echo "$RESULT" | grep -q '"already exists"' && echo "PR already exists, skipping" && exit 0
+          echo "$RESULT" | grep -q 'pull request already exists' && echo "PR already exists, skipping" && exit 0
           echo "$RESULT" | grep -q '"No commits between' && echo "No changes, skipping PR" && exit 0
           echo "$RESULT" | grep -q '"html_url"' && echo "PR created successfully" && exit 0
           echo "PR creation failed" && exit 1
