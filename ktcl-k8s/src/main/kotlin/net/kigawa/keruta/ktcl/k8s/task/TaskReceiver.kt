@@ -155,7 +155,7 @@ class TaskReceiver(
             ?.unwrap { it.printStackTrace(); return false }
             ?: return false
         logger.debug { "Parsed task_list for queue ${queue.id}" }
-        val task = taskListed.tasks.firstOrNull { it.status.isBlank() } ?: return false
+        val task = taskListed.tasks.firstOrNull { it.status.isBlank() || it.status == "pending" } ?: return false
         logger.debug { "Found task ${task.id} for queue ${queue.id}" }
         val githubToken = userTokenDao.getGithubToken(userSubject, userIssuer) ?: run {
             logger.severe { "GitHub token not found for user $userSubject (issuer: $userIssuer), skipping queue ${queue.id}" }
