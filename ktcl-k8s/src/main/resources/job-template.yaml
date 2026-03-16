@@ -91,23 +91,31 @@ spec:
           mountPath: /workspace
       containers:
       - name: github-pr
-        image: curlimages/curl:latest
+        image: alpine/curl:latest
         command:
         - sh
         - -c
         - |
+          apk add --no-cache jq > /dev/null 2>&1
           REPO=$(echo "$GIT_REPO_URL" | sed 's|https://github.com/||;s|\.git$||')
           BASE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
-            "https://api.github.com/repos/$REPO" | grep '"default_branch"' | sed 's/.*"default_branch": *"\([^"]*\)".*/\1/')
+            "https://api.github.com/repos/$REPO" | jq -r '.default_branch // "develop"')
           BASE=${BASE:-develop}
+          BODY=$(jq -n \
+            --arg title "$TASK_TITLE" \
+            --arg head "keruta-task-$TASK_ID" \
+            --arg base "$BASE" \
+            --arg body "$TASK_DESCRIPTION" \
+            '{title: $title, head: $head, base: $base, body: $body}')
           RESULT=$(curl -s -X POST \
             -H "Authorization: token $GITHUB_TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
+            -H "Content-Type: application/json" \
             "https://api.github.com/repos/$REPO/pulls" \
-            -d "{\"title\":\"$TASK_TITLE\",\"head\":\"keruta-task-$TASK_ID\",\"base\":\"$BASE\",\"body\":\"$TASK_DESCRIPTION\"}")
+            -d "$BODY")
           echo "$RESULT"
           echo "$RESULT" | grep -q 'pull request already exists' && echo "PR already exists, skipping" && exit 0
-          echo "$RESULT" | grep -q '"No commits between' && echo "No changes, skipping PR" && exit 0
+          echo "$RESULT" | grep -q 'No commits between' && echo "No changes, skipping PR" && exit 0
           echo "$RESULT" | grep -q '"html_url"' && echo "PR created successfully" && exit 0
           echo "PR creation failed" && exit 1
         env:
