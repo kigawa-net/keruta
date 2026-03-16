@@ -32,6 +32,7 @@ spec:
           fi
           cd /workspace
           git checkout -B keruta-task-$TASK_ID
+          chmod -R a+w /workspace
         env:
         - name: GIT_REPO_URL
           value: ""

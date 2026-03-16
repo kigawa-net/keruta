@@ -155,7 +155,7 @@ class TaskReceiver(
             ?.unwrap { it.printStackTrace(); return false }
             ?: return false
         logger.debug { "Parsed task_list for queue ${queue.id}" }
-        val task = taskListed.tasks.firstOrNull { it.status != "completed" } ?: return false
+        val task = taskListed.tasks.firstOrNull { it.status.isBlank() } ?: return false
         logger.debug { "Found task ${task.id} for queue ${queue.id}" }
         val githubToken = userTokenDao.getGithubToken(userSubject, userIssuer) ?: run {
             logger.severe { "GitHub token not found for user $userSubject (issuer: $userIssuer), skipping queue ${queue.id}" }
@@ -168,6 +168,11 @@ class TaskReceiver(
             logger.severe { "Anthropic API key not found for user $userSubject, skipping task ${task.id}" }
             return false
         }
+
+        ktcpClient.ktcpServerEntrypoints.taskUpdateEntrypoint.access(
+            ServerTaskUpdateMsg(taskId = task.id, status = "running"),
+            ctx
+        )?.execute()
 
         val jobResult = jobExecutor.executeJob(task.id, task.title, task.description, gitRepoUrl, githubToken, userToken, serverToken, queue.id, anthropicApiKey)
         if (jobResult is Res.Err) {
