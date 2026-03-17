@@ -1,6 +1,8 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="kicl-usecase-js-dev">
     <output-path>$PROJECT_DIR$/kicl/kicl-usecase/build/libs</output-path>
-    <root id="archive" name="kicl-usecase-js-dev.jar" />
+    <root id="archive" name="kicl-usecase-js-dev.jar">
+      <element id="module-output" name="keruta.kicl.kicl-usecase.jsMain" />
+    </root>
   </artifact>
 </component>

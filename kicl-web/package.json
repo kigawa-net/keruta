@@ -18,6 +18,8 @@
         "@react-router/serve": "^7.13.0",
         "@tailwindcss/oxide-linux-x64-gnu": "^4.2.1",
         "isbot": "^5",
+        "keruta-kicl-kicl-domain": "file:../kicl/kicl-domain/build/dist/js/productionLibrary",
+        "keruta-kicl-kicl-usecase": "file:../kicl/kicl-usecase/build/dist/js/productionLibrary",
         "react": "^19.2.0",
         "react-dom": "^19.2.0",
         "react-router": "^7.11.0"

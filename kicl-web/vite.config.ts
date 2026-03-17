@@ -10,4 +10,16 @@ export default defineConfig({
         reactRouter(),
         tsconfigPaths()
     ],
+    optimizeDeps: {
+        include: [
+            "keruta-kicl-kicl-domain",
+            "keruta-kicl-kicl-usecase",
+        ],
+    },
+    ssr: {
+        noExternal: [
+            "keruta-kicl-kicl-domain",
+            "keruta-kicl-kicl-usecase",
+        ],
+    },
 })
