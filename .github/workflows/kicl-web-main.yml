@@ -4,6 +4,8 @@ on:
     paths:
       - 'kicl-web/**'
       - 'kicl/**'
+      - Dockerfile_kicl_web
+      - .github/workflows/kicl-web-main.yml
     branches:
       - main
 
