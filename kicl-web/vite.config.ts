@@ -17,7 +17,7 @@ export default defineConfig({
         ],
     },
     ssr: {
-        noExternal: [
+        external: [
             "keruta-kicl-kicl-domain",
             "keruta-kicl-kicl-usecase",
         ],

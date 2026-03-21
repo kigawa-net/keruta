@@ -7,8 +7,12 @@ kotlin {
     js {
         binaries.library()
         generateTypeScriptDefinitions()
+        compilerOptions {
+            moduleKind = org.jetbrains.kotlin.gradle.dsl.JsModuleKind.MODULE_ES
+        }
         compilations["main"].packageJson {
-            customField("types", "keruta-kicl-kicl-domain.d.ts")
+            customField("type", "module")
+            customField("types", "keruta-kicl-kicl-domain.d.mts")
         }
     }
     sourceSets["commonMain"].dependencies {

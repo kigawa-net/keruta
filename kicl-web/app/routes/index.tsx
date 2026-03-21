@@ -1,7 +1,7 @@
-import * as kiclDomain from "keruta-kicl-kicl-domain";
+import {KiclDomain} from "keruta-kicl-kicl-domain";
 
 export default function Index() {
-    const version = kiclDomain.net.kigawa.keruta.kicl.domain.KiclDomain.VERSION;
+    const version = KiclDomain.getInstance().VERSION;
     return (
         <div>
             <h1>kicl</h1>
