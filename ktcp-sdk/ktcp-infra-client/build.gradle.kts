@@ -8,7 +8,7 @@ kotlin {
         api(project(":ktcp-sdk:ktcp-usecase:ktcp-usecase-client"))
         api(project(":ktcp-sdk"))
 // Source: https://mvnrepository.com/artifact/com.nimbusds/nimbus-jose-jwt
-        implementation("com.nimbusds:nimbus-jose-jwt:10.8")
+        implementation("com.nimbusds:nimbus-jose-jwt:10.9")
     }
     sourceSets["commonTest"].dependencies {
     }
