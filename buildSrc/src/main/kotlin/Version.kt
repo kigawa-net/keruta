@@ -1,5 +1,5 @@
 object Version {
-    const val KTOR = "3.4.2"
+    const val KTOR = "3.4.3"
     const val LOGBACK = "1.5.32"
 
     // Auth
