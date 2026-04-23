@@ -130,7 +130,7 @@ services:
     networks:
       - tidbnet
   init-tidb:
-    image: mysql:9.6
+    image: mysql:9.7
     depends_on:
       - tidb
     networks:
