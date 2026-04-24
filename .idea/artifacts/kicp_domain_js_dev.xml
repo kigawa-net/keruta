@@ -1,8 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="kicp-domain-js-dev">
     <output-path>$PROJECT_DIR$/kicp/kicp-domain/build/libs</output-path>
-    <root id="archive" name="kicp-domain-js-dev.jar">
-      <element id="module-output" name="keruta.kicp.kicp-domain.jsMain" />
-    </root>
+    <root id="archive" name="kicp-domain-js-dev.jar" />
   </artifact>
 </component>
