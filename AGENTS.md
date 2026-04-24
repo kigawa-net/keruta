@@ -1,6 +1,7 @@
 # AGENTS.md
 
 This file provides guidance for AI agents working with this codebase.
+日本語で話す。
 
 ## 開発コマンド
 
