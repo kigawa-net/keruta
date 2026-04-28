@@ -4,7 +4,7 @@ plugins {
 }
 kotlin {
     sourceSets["commonMain"].dependencies {
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
     }
     sourceSets["commonTest"].dependencies {
     }
