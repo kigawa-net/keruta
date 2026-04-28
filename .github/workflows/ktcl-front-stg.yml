@@ -1,0 +1,37 @@
+name: ktcl-front-stg
+on:
+  push:
+    paths:
+      - 'ktcl-front/**'
+    branches:
+      - staging
+
+jobs:
+  ktcl-front:
+    uses: ./.github/workflows/release.yml
+    secrets:
+      HARBOR_PASS: ${{ secrets.HARBOR_PASS }}
+      GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+    with:
+      name: ktcl-front
+      manifestFile: ./keruta/stg/ktcl-front.yaml
+      harborProject: "private"
+      repository: "kigawa-net/kigawa-net-k8s"
+      dockerFile: './Dockerfile_ktcl_front'
+      yamlPath: 'select(documentIndex == 0).spec.template.spec.containers[0].image'
+      buildArgs: >
+        {
+          "VITE_WEBSOCKET_URL": "wss://ktse-stg.kigawa.net/ws/ktcp",
+          "VITE_USER_ISSUER": "https://user.kigawa.net/realms/develop",
+          "VITE_USER_CLIENT_ID": "keruta",
+          "VITE_KEYCLOAK_URL": "https://user.kigawa.net/",
+          "VITE_KEYCLOAK_REALM": "develop",
+          "VITE_KEYCLOAK_CLIENT_ID": "keruta",
+          "VITE_PROVIDER_PRESETS": "[
+            {
+              \"name\": \"ktcl-k8s\",
+              \"issuer\": \"https://ktcl-k8s-stg.kigawa.net\",
+              \"description\": \"ktcl-k8s\"
+            }
+          ]"
+        }

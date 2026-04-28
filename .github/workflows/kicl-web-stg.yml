@@ -1,0 +1,25 @@
+name: kicl-web-stg
+on:
+  push:
+    paths:
+      - 'kicl-web/**'
+      - 'kicl/**'
+      - Dockerfile_kicl_web
+      - .github/workflows/kicl-web-stg.yml
+    branches:
+      - staging
+
+jobs:
+  kicl-web:
+    uses: ./.github/workflows/release.yml
+    secrets:
+      HARBOR_PASS: ${{ secrets.HARBOR_PASS }}
+      GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+    with:
+      name: kicl-web
+      manifestFile: ./keruta/stg/kicl-web.yaml
+      harborProject: "private"
+      repository: "kigawa-net/kigawa-net-k8s"
+      dockerFile: './Dockerfile_kicl_web'
+      yamlPath: 'select(documentIndex == 0).spec.template.spec.containers[0].image'
+      gradleTask: ':kicl:kicl-domain:jsBrowserProductionLibraryDistribution :kicl:kicl-usecase:jsBrowserProductionLibraryDistribution'
