@@ -1,0 +1,59 @@
+name: build-check.yml
+on:
+  workflow_call:
+    inputs:
+      dockerFile:
+        description: 'Path to Dockerfile'
+        required: true
+        type: string
+      gradleTask:
+        description: 'Gradle task to run before Docker build'
+        required: false
+        type: string
+        default: ''
+      buildArgs:
+        description: 'Docker build arguments (JSON format)'
+        required: false
+        type: string
+        default: '{}'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-java@v5
+        if: inputs.gradleTask != ''
+        with:
+          distribution: temurin
+          java-version: 25
+
+      - uses: gradle/actions/setup-gradle@v6
+        if: inputs.gradleTask != ''
+
+      - name: Build with Gradle
+        if: inputs.gradleTask != ''
+        run: ./gradlew ${{ inputs.gradleTask }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Parse build args
+        id: build-args
+        run: |
+          echo "args<<EOF" >> $GITHUB_OUTPUT
+          echo '${{ inputs.buildArgs }}' | tr -d '\n' | jq -r 'to_entries | map("\(.key)=\(.value)") | join("\n")' \
+            | tee -a $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v7
+        with:
+          context: ./
+          file: ${{ inputs.dockerFile }}
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: ${{ steps.build-args.outputs.args }}

@@ -1,0 +1,18 @@
+name: ktse-check
+on:
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - 'ktse/**'
+      - 'Dockerfile_ktse'
+      - 'buildSrc/**'
+      - '.github/workflows/ktse-check.yml'
+      - '.github/workflows/build-check.yml'
+
+jobs:
+  ktse:
+    uses: ./.github/workflows/build-check.yml
+    with:
+      dockerFile: './Dockerfile_ktse'
+      gradleTask: ':ktse:shadowJar -x test'

@@ -1,0 +1,19 @@
+name: kicl-web-check
+on:
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - 'kicl-web/**'
+      - 'kicl/**'
+      - 'Dockerfile_kicl_web'
+      - 'buildSrc/**'
+      - '.github/workflows/kicl-web-check.yml'
+      - '.github/workflows/build-check.yml'
+
+jobs:
+  kicl-web:
+    uses: ./.github/workflows/build-check.yml
+    with:
+      dockerFile: './Dockerfile_kicl_web'
+      gradleTask: ':kicl:kicl-domain:jsBrowserProductionLibraryDistribution :kicl:kicl-usecase:jsBrowserProductionLibraryDistribution'

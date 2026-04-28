@@ -1,0 +1,26 @@
+name: ktcl-front-check
+on:
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - 'ktcl-front/**'
+      - 'Dockerfile_ktcl_front'
+      - '.github/workflows/ktcl-front-check.yml'
+      - '.github/workflows/build-check.yml'
+
+jobs:
+  ktcl-front:
+    uses: ./.github/workflows/build-check.yml
+    with:
+      dockerFile: './Dockerfile_ktcl_front'
+      buildArgs: >
+        {
+          "VITE_WEBSOCKET_URL": "ws://localhost:8080/ws/ktcp",
+          "VITE_USER_ISSUER": "https://example.com",
+          "VITE_USER_CLIENT_ID": "test",
+          "VITE_KEYCLOAK_URL": "https://example.com/",
+          "VITE_KEYCLOAK_REALM": "test",
+          "VITE_KEYCLOAK_CLIENT_ID": "test",
+          "VITE_PROVIDER_PRESETS": "[]"
+        }
