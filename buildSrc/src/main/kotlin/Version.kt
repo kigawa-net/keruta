@@ -8,7 +8,7 @@ object Version {
 
     // Kotlinx
     const val KOTLINX_COROUTINES = "1.10.2"
-    const val KOTLINX_SERIALIZATION = "1.11.0"
+    const val KOTLINX_SERIALIZATION = "1.10.0"
     const val KOTLINX_DATETIME = "0.7.1-0.6.x-compat"
     const val KOTLINX_HTML = "0.12.0"
 
