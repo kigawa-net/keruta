@@ -1,0 +1,22 @@
+name: ktse-stg
+on:
+  push:
+    paths:
+      - 'ktse/**'
+    branches:
+      - staging
+
+jobs:
+  ktse:
+    uses: ./.github/workflows/release.yml
+    secrets:
+      HARBOR_PASS: ${{ secrets.HARBOR_PASS }}
+      GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+    with:
+      name: ktse
+      manifestFile: ./keruta/stg/ktse.yaml
+      harborProject: "library"
+      repository: "kigawa-net/kigawa-net-k8s"
+      dockerFile: './Dockerfile_ktse'
+      gradleTask: ':ktse:shadowJar -x test'
+      yamlPath: 'select(documentIndex == 0).spec.template.spec.containers[0].image'
