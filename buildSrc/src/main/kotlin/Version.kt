@@ -3,7 +3,7 @@ object Version {
     const val LOGBACK = "1.5.32"
 
     // Auth
-    const val JAVA_JWT = "4.5.1"
+    const val JAVA_JWT = "4.5.2"
     const val JWKS_RSA = "0.23.1"
 
     // Kotlinx
