@@ -129,6 +129,139 @@ CIでは以下の順序でビルドされます：
 3. Harbor Registryへのプッシュ
 4. kigawa-net-k8s マニフェスト更新（自動デプロイ）
 
+## 機能一覧
+
+### ルーティング
+
+React Router v7 のファイルベースルーティングを採用。`app/routes.tsx` でルート定義。
+
+| パス | コンポーネント | 説明 |
+|------|---------------|------|
+| `/` | `routes/index.tsx` | ホーム画面。KMP共有ロジックからバージョン情報を取得して表示。 |
+| `/settings` | `routes/settings.tsx` | 設定画面。接続設定と表示設定をlocalStorageに保存。 |
+
+### ホーム画面（`/`）
+
+Kotlin Multiplatformの `kicl-domain` モジュールからエクスポートされたJSライブラリを使用。
+
+```tsx
+import {KiclDomain} from "keruta-kicl-kicl-domain";
+
+export default function Index() {
+    const version = KiclDomain.getInstance().VERSION;
+    return (
+        <div>
+            <h1>kicl</h1>
+            <p>version: {version}</p>
+        </div>
+    );
+}
+```
+
+- `KiclDomain` オブジェクト（Kotlin `object` → JS Singleton）から `VERSION` 定数を取得
+- KMP共有ロジックが正常にビルド・インテグレートされていることを検証する役割
+
+### 設定画面（`/settings`）
+
+ユーザーがアプリケーションの設定を管理できる画面。`localStorage` に設定を永続化。
+
+#### 設定項目
+
+| 分類 | 項目 | 説明 |
+|------|------|------|
+| **接続設定** | IDサーバー Issuer URL | 自作IDサーバーのOIDC Issuer URL |
+| | OIDCプロバイダー URL | 外部OIDCプロバイダーのURL |
+| | タスクサーバー URL | KTSE（Ktorタスクサーバー）のURL |
+| **表示設定** | 言語 | 日本語（ja）またはEnglish（en） |
+
+#### 型定義（`types/settings.ts`）
+
+```typescript
+export type Language = 'ja' | 'en';
+
+export interface AppSettings {
+    ownIssuerUrl: string;
+    userIssuerUrl: string;
+    ktseUrl: string;
+    language: Language;
+}
+
+export const SETTINGS_STORAGE_KEY = 'kicl-settings';
+```
+
+#### データフロー
+
+```
+clientLoader → localStorageから設定読み込み → フォームに反映
+     ↓
+user submits form
+     ↓
+clientAction → formData取得 → localStorageに保存 → 成功メッセージ表示
+```
+
+- **`clientLoader`**: `localStorage` から設定を読み込み、デフォルト値とマージして返す
+- **`clientAction`**: フォーム送信を受け付け、`localStorage` に保存。保存完了後に成功メッセージを表示
+- **`HydrateFallback`**: ハイドレーション中のローディング状態を表示
+
+### ナビゲーション（`components/Nav.tsx`）
+
+全画面共通のナビゲーションバー。`root.tsx` の `Layout` 関数で各ページに挿入。
+
+- ブランド名「kicl」を表示
+- ホーム（`/`）と設定（`/settings`）へのリンク
+- `NavLink` の `isActive` プロパティでアクティブリンクを青色・太字で強調表示
+
+### ルートレイアウト（`root.tsx`）
+
+```tsx
+export function Layout({children}: { children: React.ReactNode }) {
+    return (
+        <html lang="ja">
+            <head>
+                <Meta/>
+                <Links/>
+                <title>kicl</title>
+            </head>
+            <body className="min-h-screen min-w-screen">
+                <Nav/>
+                {children}
+                <ScrollRestoration/>
+                <Scripts/>
+            </body>
+        </html>
+    );
+}
+```
+
+- 言語属性 `lang="ja"` を設定
+- `ScrollRestoration` でページ遷移時のスクロール位置を復元
+- Tailwind CSS のユーティリティクラスで最小画面サイズを保証
+
+## 共有ロジック（kicl）
+
+### kicl-domain
+
+Kotlin Multiplatform のドメイン層。現在はバージョン情報のみ提供。
+
+```kotlin
+@JsExport
+object KiclDomain {
+    const val VERSION = "0.0.1"
+}
+```
+
+- `@JsExport` アノテーションによりJSからアクセス可能
+- `object` 宣言によりシングルトンとしてエクスポート（JS側では `getInstance()` でアクセス）
+
+### kicl-usecase
+
+ユースケース層。現在はスケルトンのみ（実装ファイルなし）。
+
+今後は以下の機能を配置予定:
+- タスク管理のユースケース
+- 認証関連のユースケース
+- 設定管理のユースケース
+
 ## 既存のktcl-frontとの比較
 
 | 項目 | ktcl-front | kicl-web |
@@ -136,11 +269,14 @@ CIでは以下の順序でビルドされます：
 | フレームワーク | React + Vite | React Router v7 (SSR) |
 | 認証 | Keycloak.js | 未実装（今後の予定） |
 | 共有ロジック | なし | Kotlin Multiplatform (kicl-domain, kicl-usecase) |
+| 設定管理 | なし | localStorageベースの実装済み |
+| SSR | なし（SPA） | 対応（React Router v7） |
 | ステータス | AGENTS.mdに記載あり（本番運用中） | 新規開発中 |
 
 ## 今後の展望
 
 - Kotlin Multiplatformを活用したクロスプラットフォーム対応（今後Web以外のプラットフォームも検討）
-- 共有ロジックの拡充（現在は基本構造のみ）
-- 認証フローの実装
+- 共有ロジックの拡充（kicl-usecaseの実装）
+- 認証フローの実装（Keycloak.jsまたはKMP共有認証ロジック）
+- タスク管理画面の実装
 - ktcl-frontからの移行検討
