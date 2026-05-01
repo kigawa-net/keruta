@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Kubernetes recent kubectl debug parameters templates">
+    <option name="templates">
+      <list>
+        <KubectlDebugRecentParametersTemplate>
+          <option name="executable" value="/bin/sh" />
+          <option name="image" value="ubuntu" />
+          <option name="name" value="ubuntu  -- /bin/sh" />
+        </KubectlDebugRecentParametersTemplate>
+      </list>
+    </option>
+  </component>
+</project>

@@ -5,6 +5,7 @@ plugins {
 }
 
 repositories {
+    google()
     mavenCentral()
     gradlePluginPortal()
 }
@@ -25,7 +26,8 @@ kotlin {
     compilerOptions {
         freeCompilerArgs = listOf("-Xcontext-parameters")
     }
-    jvm {}
+    jvm {
+    }
     js {
         browser {
             testTask {
@@ -37,6 +39,15 @@ kotlin {
                 browserTest()
             }
         }
+    }
+
+    // iOS targets for mobile support
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { _ ->
+
     }
     sourceSets {
         commonMain {}

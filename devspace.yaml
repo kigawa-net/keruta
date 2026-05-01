@@ -1,0 +1,72 @@
+version: v1beta11
+
+images:
+  ktse:
+    image: harbor.kigawa.net/library/ktse
+    dockerfile: ./Dockerfile_ktse
+  ktcl-k8s:
+    image: harbor.kigawa.net/library/ktcl-k8s
+    dockerfile: ./Dockerfile_ktcl_k8s
+  ktcl-front:
+    image: harbor.kigawa.net/private/ktcl-front
+    dockerfile: ./Dockerfile_ktcl_front
+    context: ./ktcl-front
+
+deployments:
+  - name: ktse
+    helm:
+      componentChart: true
+      values:
+        containers:
+          - image: image(ktse):dev
+            name: ktse
+            ports:
+              - containerPort: 8080
+            env:
+              - name: ZK_HOST
+                value: zookeeper
+              - name: DB_JDBC_URL
+                value: jdbc:mysql://mysql:3306/keruta?useSSL=false&allowPublicKeyRetrieval=true
+              - name: DB_USERNAME
+                value: root
+              - name: DB_PASSWORD
+                value: password
+              - name: IDP_0_ISSUER
+                value: https://user.kigawa.net/realms/develop
+              - name: IDP_0_AUDIENCE
+                value: keruta
+              - name: PROVIDER_0_ISSUER
+                value: https://user.kigawa.net/realms/develop
+              - name: PROVIDER_0_AUDIENCE
+                value: keruta
+              - name: PROVIDER_0_NAME
+                value: develop
+
+  - name: ktcl-k8s
+    helm:
+      componentChart: true
+      values:
+        containers:
+          - image: image(ktcl-k8s):dev
+            name: ktcl-k8s
+            ports:
+              - containerPort: 8081
+            env:
+              - name: IDP_ISSUER
+                value: https://user.kigawa.net/realms/develop
+              - name: IDP_AUDIENCE
+                value: keruta
+              - name: KERUTA_K8S_OWN_ISSUER
+                value: https://ktcl.kigawa.net/develop
+              - name: KTCL_K8S_WEB_MODE
+                value: "true"
+
+  - name: ktcl-front
+    helm:
+      componentChart: true
+      values:
+        containers:
+          - image: image(ktcl-front):dev
+            name: ktcl-front
+            ports:
+              - containerPort: 80

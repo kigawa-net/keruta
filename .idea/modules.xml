@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/keruta.iml" filepath="$PROJECT_DIR$/.idea/modules/keruta.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kodel/coroutine/keruta.kodel.coroutine.jvmMain.iml" filepath="$PROJECT_DIR$/.idea/modules/kodel/coroutine/keruta.kodel.coroutine.jvmMain.iml" />
       <module fileurl="file://$PROJECT_DIR$/ktcl-front/ktcl-front.iml" filepath="$PROJECT_DIR$/ktcl-front/ktcl-front.iml" />
     </modules>
   </component>

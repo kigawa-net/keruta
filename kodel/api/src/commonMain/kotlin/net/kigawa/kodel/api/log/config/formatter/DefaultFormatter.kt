@@ -29,7 +29,7 @@ object DefaultFormatter: LoggerFormatter {
                 char(':')
                 second()
             })
-            "${lvStr}[${className}#${method}]$datetime: ${message}\n"
+            "${lvStr}[${className} #${method}]$datetime: ${message}\n"
         }
     }
 

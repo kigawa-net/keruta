@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     kotlin("jvm")
 }
@@ -9,6 +11,7 @@ repositories {
 }
 kotlin {
     compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_25)
         freeCompilerArgs = listOf("-Xcontext-parameters")
     }
 }

@@ -1,0 +1,17 @@
+Index: ktse/src/main/kotlin/net/kigawa/keruta/ktse/websocket/entrypoint/ReceiveProviderRegisterTokenEntrypoint.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktse.websocket.entrypoint\n\nimport net.kigawa.keruta.ktcp.model.err.KtcpErr\nimport net.kigawa.keruta.ktcp.model.provider.add.ServerProviderAddMsg\nimport net.kigawa.keruta.ktcp.model.provider.add.ServerProviderRegisterTokenEntrypoint\nimport net.kigawa.keruta.ktcp.model.provider.add_token.ClientProviderAddTokenMsg\nimport net.kigawa.keruta.ktcp.model.serialize.serialize\nimport net.kigawa.keruta.ktcp.server.ServerCtx\nimport net.kigawa.keruta.ktcp.server.err.UnauthenticatedErr\nimport net.kigawa.kodel.api.entrypoint.EntrypointDeferred\nimport net.kigawa.kodel.api.err.Res\nimport net.kigawa.kodel.api.log.getKogger\nimport net.kigawa.kodel.api.log.traceignore.debug\n\nclass ReceiveProviderRegisterTokenEntrypoint: ServerProviderRegisterTokenEntrypoint<ServerCtx> {\n    private val logger = getKogger()\n    override fun access(\n        input: ServerProviderAddMsg, ctx: ServerCtx,\n    ): EntrypointDeferred<Res<Unit, KtcpErr>> = EntrypointDeferred {\n        val authed = ctx.session.authenticated()\n            ?: return@EntrypointDeferred Res.Err(UnauthenticatedErr(\"\", null))\n        val token = when (val res = authed.createProviderRegisterToken()) {\n            is Res.Err -> return@EntrypointDeferred res.convert()\n            is Res.Ok -> res.value\n        }\n\n        logger.debug { \"Created provider add token: $token\" }\n\n        ctx.connection.send(\n            ctx.serializer.serialize(ClientProviderAddTokenMsg(token = token))\n        )\n        Res.Ok(Unit)\n    }\n\n}\n
+===================================================================
+diff --git a/ktse/src/main/kotlin/net/kigawa/keruta/ktse/websocket/entrypoint/ReceiveProviderRegisterTokenEntrypoint.kt b/ktse/src/main/kotlin/net/kigawa/keruta/ktse/websocket/entrypoint/ReceiveProviderRegisterTokenEntrypoint.kt
+--- a/ktse/src/main/kotlin/net/kigawa/keruta/ktse/websocket/entrypoint/ReceiveProviderRegisterTokenEntrypoint.kt	(revision ead41cde8e754c81e09f8989fc49e5a7a25417de)
++++ b/ktse/src/main/kotlin/net/kigawa/keruta/ktse/websocket/entrypoint/ReceiveProviderRegisterTokenEntrypoint.kt	(date 1772358035320)
+@@ -4,7 +4,7 @@
+ import net.kigawa.keruta.ktcp.model.provider.add.ServerProviderAddMsg
+ import net.kigawa.keruta.ktcp.model.provider.add.ServerProviderRegisterTokenEntrypoint
+ import net.kigawa.keruta.ktcp.model.provider.add_token.ClientProviderAddTokenMsg
+-import net.kigawa.keruta.ktcp.model.serialize.serialize
++import net.kigawa.keruta.ktcp.usecase.serialize
+ import net.kigawa.keruta.ktcp.server.ServerCtx
+ import net.kigawa.keruta.ktcp.server.err.UnauthenticatedErr
+ import net.kigawa.kodel.api.entrypoint.EntrypointDeferred

@@ -17,3 +17,4 @@ expect var Kogger.logLevel: LogLevel
 expect fun Kogger.removeAllHandlers()
 
 expect fun Kogger.addHandler(handler: LoggerHandler)
+

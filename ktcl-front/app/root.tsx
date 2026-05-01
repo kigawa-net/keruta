@@ -2,6 +2,7 @@ import {Links, Meta, Scripts, ScrollRestoration} from "react-router-dom";
 
 import {Outlet} from "react-router";
 import {Route} from "../.react-router/types/app/+types/root";
+import "./index.css";
 import "./App.css";
 // noinspection JSUnusedGlobalSymbols
 export const links: Route.LinksFunction = () => [];

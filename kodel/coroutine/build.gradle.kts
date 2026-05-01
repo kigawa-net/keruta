@@ -21,10 +21,23 @@ kotlin {
     wasmJs {
         browser()
     }
+
+    // iOS targets for mobile support
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "KodelCoroutine"
+            isStatic = true
+        }
+    }
     sourceSets {
         commonMain {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+                api(project(":kodel:api"))
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Version.KOTLINX_COROUTINES}")
             }
         }
         commonTest {

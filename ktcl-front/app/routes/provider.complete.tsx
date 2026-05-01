@@ -1,0 +1,80 @@
+// noinspection JSUnusedGlobalSymbols
+import {useNavigate, useSearchParams} from "react-router";
+import {useEffect, useState} from "react";
+import {useWebsocketReceive} from "../util/net/websocket/useWebsocketReceive";
+import {ServerProviderCompleteMsg} from "../components/msg/provider";
+import {useWebsocketState} from "../util/net/websocket/WebsocketProvider";
+import {useAuthedKtseState} from "../components/api/AuthedKtseProvider";
+
+
+type Status = "processing" | "success" | "error"
+
+// noinspection JSUnusedGlobalSymbols
+export default function ProviderCompleteRoute() {
+    const [searchParams] = useSearchParams()
+    const wsState = useWebsocketState()
+    const authedKtse = useAuthedKtseState()
+    const navigate = useNavigate()
+    const [status, setStatus] = useState<Status>("processing")
+    const [errMsg, setErrMsg] = useState<string>()
+
+    const code = searchParams.get("code")
+    const token = searchParams.get("state")
+
+    useEffect(() => {
+        if (!code || !token) {
+            setStatus("error")
+            setErrMsg("無効なコールバックパラメータです")
+            return
+        }
+        if (wsState.state != "open") return
+        if (authedKtse.state != "loaded") return
+
+        const redirectUri = `${window.location.origin}/provider/complete`
+        const msg: ServerProviderCompleteMsg = {
+            type: "provider_complete",
+            token,
+            code,
+            redirectUri,
+        }
+        wsState.websocket.send(JSON.stringify(msg))
+    }, [wsState.state, authedKtse.state])
+
+    useWebsocketReceive(msg => {
+        if (msg.type != "provider_idp_added") return
+        setStatus("success")
+        setTimeout(() => navigate("/provider"), 1500)
+    }, [])
+
+    return (
+        <div className="max-w-lg mx-auto p-6 mt-16 text-center">
+            {status == "processing" && (
+                <div>
+                    <div className="text-4xl mb-4">⏳</div>
+                    <h1 className="text-2xl font-bold mb-2">プロバイダーを登録中...</h1>
+                    <p className="text-gray-500">しばらくお待ちください</p>
+                </div>
+            )}
+            {status == "success" && (
+                <div>
+                    <div className="text-4xl mb-4">✓</div>
+                    <h1 className="text-2xl font-bold mb-2 text-green-600">登録完了</h1>
+                    <p className="text-gray-500">プロバイダー一覧に移動します...</p>
+                </div>
+            )}
+            {status == "error" && (
+                <div>
+                    <div className="text-4xl mb-4">✗</div>
+                    <h1 className="text-2xl font-bold mb-2 text-red-600">エラー</h1>
+                    <p className="text-gray-500 mb-4">{errMsg ?? "プロバイダーの登録に失敗しました"}</p>
+                    <button
+                        onClick={() => navigate("/provider")}
+                        className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                        プロバイダー一覧に戻る
+                    </button>
+                </div>
+            )}
+        </div>
+    )
+}

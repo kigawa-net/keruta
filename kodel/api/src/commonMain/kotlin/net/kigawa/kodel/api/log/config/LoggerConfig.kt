@@ -16,9 +16,7 @@ data class LoggerConfig(
 
     private fun configureLevel(kogger: Kogger) {
         if (level == null) return
-        kogger.also {
-            println(it)
-        }.logLevel = level
+        kogger.logLevel = level
     }
 
     fun configureHandlers(kogger: Kogger) {

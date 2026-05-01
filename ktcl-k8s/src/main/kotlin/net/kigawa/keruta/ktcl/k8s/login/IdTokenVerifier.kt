@@ -1,0 +1,48 @@
+package net.kigawa.keruta.ktcl.k8s.login
+
+import net.kigawa.keruta.ktcl.k8s.auth.JwtVerifier
+import net.kigawa.keruta.ktcl.k8s.auth.KeycloakConfig
+import net.kigawa.keruta.ktcl.k8s.auth.OidcDiscoveryResponse
+import net.kigawa.keruta.ktcl.k8s.auth.RemoteConfigProvider
+import net.kigawa.keruta.ktcp.base.auth.jwt.Auth0JwtVerifier
+import net.kigawa.kodel.api.log.LoggerFactory
+import java.net.URI
+
+class IdTokenVerifier(
+    private val remoteConfigProvider: RemoteConfigProvider,
+    private val auth0JwtVerifier: Auth0JwtVerifier,
+) {
+    private val logger = LoggerFactory.get("IdTokenVerifier")
+
+    fun verify(idToken: String, discoveryResponse: OidcDiscoveryResponse, oidcSession: OidcSession): String? {
+        val jwkProvider = remoteConfigProvider.createJwkProvider(discoveryResponse.jwksUri)
+
+        val keycloakConfig = KeycloakConfig(
+            audience = oidcSession.clientId,
+            jwksUrl = discoveryResponse.jwksUri,
+            issuer = URI(oidcSession.issuer),
+            authorizationEndpoint = discoveryResponse.authorizationEndpoint,
+        )
+        val jwtVerifier = JwtVerifier(keycloakConfig, auth0JwtVerifier)
+        val decodedIdToken = jwtVerifier.verifyIdToken(
+            idToken = idToken,
+            jwkProvider = jwkProvider,
+            issuer = oidcSession.issuer,
+            clientId = oidcSession.clientId,
+            nonce = oidcSession.pkce.nonce,
+        )
+
+        if (decodedIdToken == null) {
+            logger.warning("ID token verification failed")
+            return null
+        }
+
+        val userSubject = decodedIdToken.subject
+        if (userSubject == null) {
+            logger.warning("No subject found in ID token")
+            return null
+        }
+
+        return userSubject
+    }
+}

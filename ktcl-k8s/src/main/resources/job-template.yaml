@@ -1,0 +1,133 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: keruta-task-template
+  namespace: default
+spec:
+  ttlSecondsAfterFinished: 3600  # 1時間後に自動削除
+  backoffLimit: 0  # リトライなし
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+      - name: git-clone
+        image: alpine/git:latest
+        command:
+        - sh
+        - -c
+        - |
+          if [ -d /workspace/.git ]; then
+            cd /workspace
+            git fetch --all
+            branch=$(git remote show origin | grep 'HEAD branch' | awk '{print $NF}')
+            if ! git pull --rebase origin "keruta-task-$TASK_ID"; then
+              git rebase --abort 2>/dev/null
+              git reset --hard "origin/$branch"
+            fi
+          else
+            find /workspace -mindepth 1 -delete
+            git clone $GIT_REPO_URL /workspace
+            git checkout -B keruta-task-$TASK_ID
+          fi
+          cd /workspace
+          chmod -R a+w /workspace
+        env:
+        - name: GIT_REPO_URL
+          value: ""
+        - name: TASK_ID
+          value: ""
+        volumeMounts:
+        - name: workspace
+          mountPath: /workspace
+      - name: task-executor
+        image: harbor.kigawa.net/library/ktcl-claudecode:latest
+        env:
+        - name: TASK_ID
+          value: ""
+        - name: TASK_TITLE
+          value: ""
+        - name: TASK_DESCRIPTION
+          value: ""
+        - name: GIT_REPO_URL
+          value: ""
+        volumeMounts:
+        - name: workspace
+          mountPath: /workspace
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+      - name: git-push
+        image: alpine/git:latest
+        command:
+        - sh
+        - -c
+        - |
+          cd /workspace
+          git config user.email "keruta-bot@kigawa.net"
+          git config user.name "Keruta Bot"
+          REPO_URL=$(echo "$GIT_REPO_URL" | sed "s|https://|https://$GITHUB_TOKEN@|")
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit, pushing branch only"
+          else
+            git commit -m "keruta-task-$TASK_ID"
+          fi
+          git push "$REPO_URL" keruta-task-$TASK_ID
+        env:
+        - name: TASK_ID
+          value: ""
+        - name: GIT_REPO_URL
+          value: ""
+        - name: GITHUB_TOKEN
+          value: ""
+        volumeMounts:
+        - name: workspace
+          mountPath: /workspace
+      containers:
+      - name: github-pr
+        image: alpine/curl:latest
+        command:
+        - sh
+        - -c
+        - |
+          apk add --no-cache jq > /dev/null 2>&1
+          REPO=$(echo "$GIT_REPO_URL" | sed 's|https://github.com/||;s|\.git$||')
+          BASE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+            "https://api.github.com/repos/$REPO" | jq -r '.default_branch // "develop"')
+          BASE=${BASE:-develop}
+          BODY=$(jq -n \
+            --arg title "$TASK_TITLE" \
+            --arg head "keruta-task-$TASK_ID" \
+            --arg base "$BASE" \
+            --arg body "$TASK_DESCRIPTION" \
+            '{title: $title, head: $head, base: $base, body: $body}')
+          RESULT=$(curl -s -X POST \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Content-Type: application/json" \
+            "https://api.github.com/repos/$REPO/pulls" \
+            -d "$BODY")
+          echo "$RESULT"
+          echo "$RESULT" | grep -q 'pull request already exists' && echo "PR already exists, skipping" && exit 0
+          echo "$RESULT" | grep -q 'No commits between' && echo "No changes, skipping PR" && exit 0
+          echo "$RESULT" | grep -q '"html_url"' && echo "PR created successfully" && exit 0
+          echo "PR creation failed" && exit 1
+        env:
+        - name: TASK_ID
+          value: ""
+        - name: TASK_TITLE
+          value: ""
+        - name: TASK_DESCRIPTION
+          value: ""
+        - name: GIT_REPO_URL
+          value: ""
+        - name: GITHUB_TOKEN
+          value: ""
+      volumes:
+      - name: workspace
+        persistentVolumeClaim:
+          claimName: keruta-task-template-pvc

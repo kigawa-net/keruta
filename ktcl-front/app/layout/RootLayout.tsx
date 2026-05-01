@@ -1,41 +1,31 @@
-import {Outlet} from "react-router";
-import {Link, useLocation} from "react-router-dom";
-import AuthButton from "../components/AuthButton";
-import {useEffect} from "react";
-import {KeycloakProvider} from "../components/Keycloak";
-import {UserProfileProvider} from "../components/UserProfile";
+import {useLocation} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {RootProviders} from "./RootProviders";
+import {AppLayout} from "./AppLayout";
 
-
+/**
+ * ルートレイアウトコンポーネント
+ * Provider設定とレイアウト構造を管理
+ */
 // noinspection JSUnusedGlobalSymbols
-export default function Layout() {
-    const loc = useLocation()
-    useEffect(() => {
-        console.log("layout rendered")
-    }, [loc]);
-    return (
-        <KeycloakProvider>
-            <UserProfileProvider>
-                <nav>
-                    <ul>
-                        <li>
-                            <Link to="/">Home</Link>
-                        </li>
-                        <li>
-                            <Link to="/about">About</Link>
-                        </li>
-                        <li>
-                            <Link to="/contact">Contact</Link>
-                        </li>
-                        <li>
-                            <Link to="/websocket">WebSocket Demo</Link>
-                        </li>
-                    </ul>
-                    <AuthButton/>
-                </nav>
-                <Outlet/>
-            </UserProfileProvider>
-        </KeycloakProvider>
-    );
+export default function RootLayout() {
+  const loc = useLocation();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    setIsSidebarOpen(window.innerWidth >= 768);
+  }, []);
+
+  useEffect(() => {
+    console.log("layout rendered");
+  }, [loc]);
+
+  return (
+    <RootProviders>
+      <AppLayout
+        isSidebarOpen={isSidebarOpen}
+        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+      />
+    </RootProviders>
+  );
 }
-
-

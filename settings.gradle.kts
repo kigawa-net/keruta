@@ -6,17 +6,26 @@
  */
 
 plugins {
-    // Apply the foojay-resolver plugin to allow automatic download of JDKs
+    // foojay-resolver - auto-provision toolchains
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
 
 rootProject.name = "keruta"
+fun Settings.includesIfExists(dir: String, vararg includes: String) {
+    if (file(dir).exists()) this.include(*includes)
+}
 
-include("kodel:api")
-include("kodel:coroutine")
-include("kodel:core")
-include("ktcp:model")
-include("ktcp:client")
-include("ktcp:server")
-include("ktse")
-include("ktcl-web")
+includesIfExists("kodel", "kodel:api", "kodel:coroutine", "kodel:core")
+includesIfExists(
+    "ktcp-sdk",
+    "ktcp-sdk:ktcp-domain", "ktcp-sdk:ktcp-domain:ktcp-domain-server", "ktcp-sdk:ktcp-domain:ktcp-domain-client",
+    "ktcp-sdk:ktcp-usecase", "ktcp-sdk:ktcp-usecase:ktcp-usecase-client",
+    "ktcp-sdk:ktcp-infra-client",
+    "ktcp-sdk:client",
+)
+includesIfExists("ktse-sdk", "ktse-sdk", "ktse-sdk:ktse-sdk-usecase")
+includesIfExists("ktse", "ktse")
+includesIfExists("ktcl-claudecode", "ktcl-claudecode")
+includesIfExists("ktcl-k8s", "ktcl-k8s")
+includesIfExists("ktcl-sdk", "ktcl-sdk")
+includesIfExists("ktcl-front-mobile", "ktcl-front-mobile", "ktcl-front-mobile:app")

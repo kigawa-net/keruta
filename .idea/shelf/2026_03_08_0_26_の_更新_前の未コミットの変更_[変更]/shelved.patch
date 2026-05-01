@@ -1,0 +1,332 @@
+Index: ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/config/K8sConfigCompat.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.k8s.config\n\n/**\n * 旧K8sConfigとの互換性のためのデータクラス\n * 既存のコードを変更せずに使えるように、古いフィールド名を保持\n */\ndata class K8sConfigCompat(\n    // KTSE接続設定\n    val ktseHost: String,\n    val ktsePort: Int,\n    val ktseUseTls: Boolean,\n    val queueId: Long,\n\n    // Kubernetes設定\n    val k8sNamespace: String,\n    val k8sJobTemplate: String,\n    val k8sUseInCluster: Boolean,\n    val k8sKubeConfigPath: String?,\n    val k8sJobTimeout: Long,\n\n    // Webモード設定\n    val webMode: Boolean,\n    val webPort: Int,\n) {\n    companion object {\n\n        /**\n         * 環境変数から直接読み込む（既存コードとの互換性のため）\n         */\n        fun fromEnvironment(): K8sConfigCompat {\n            return K8sConfigCompat(\n                ktseHost = System.getenv(\"KTSE_HOST\") ?: \"localhost\",\n                ktsePort = System.getenv(\"KTSE_PORT\")?.toInt() ?: 8080,\n                ktseUseTls = System.getenv(\"KTSE_USE_TLS\")?.toBoolean() ?: false,\n                queueId = System.getenv(\"KERUTA_QUEUE_ID\")?.toLongOrNull() ?: 1L,\n                k8sNamespace = getEnvOrProperty(\"K8S_NAMESPACE\") ?: \"default\",\n                k8sJobTemplate = System.getenv(\"K8S_JOB_TEMPLATE\") ?: \"resources/job-template.yaml\",\n                k8sUseInCluster = getEnvOrProperty(\"K8S_USE_IN_CLUSTER\")?.toBoolean() ?: true,\n                k8sKubeConfigPath = getEnvOrProperty(\"K8S_KUBECONFIG_PATH\"),\n                k8sJobTimeout = getEnvOrProperty(\"K8S_JOB_TIMEOUT\")?.toLongOrNull() ?: 600,\n                webMode = System.getenv(\"KTCL_K8S_WEB_MODE\")?.toBoolean() ?: false,\n                webPort = System.getenv(\"KTCL_K8S_WEB_PORT\")?.toInt() ?: 8081,\n            )\n        }\n\n        private fun getEnvOrProperty(name: String): String? =\n            System.getenv(name) ?: System.getProperty(name)\n    }\n}\n\n/**\n * 後方互換性のために、旧K8sConfig名でエイリアスを作成\n */\ntypealias K8sConfig = K8sConfigCompat\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/config/K8sConfigCompat.kt b/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/config/K8sConfigCompat.kt
+--- a/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/config/K8sConfigCompat.kt	(revision ef31b23c33881f8c94e10707023c11b1dd5e3605)
++++ b/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/config/K8sConfigCompat.kt	(date 1772897058278)
+@@ -9,7 +9,6 @@
+     val ktseHost: String,
+     val ktsePort: Int,
+     val ktseUseTls: Boolean,
+-    val queueId: Long,
+ 
+     // Kubernetes設定
+     val k8sNamespace: String,
+@@ -32,7 +31,6 @@
+                 ktseHost = System.getenv("KTSE_HOST") ?: "localhost",
+                 ktsePort = System.getenv("KTSE_PORT")?.toInt() ?: 8080,
+                 ktseUseTls = System.getenv("KTSE_USE_TLS")?.toBoolean() ?: false,
+-                queueId = System.getenv("KERUTA_QUEUE_ID")?.toLongOrNull() ?: 1L,
+                 k8sNamespace = getEnvOrProperty("K8S_NAMESPACE") ?: "default",
+                 k8sJobTemplate = System.getenv("K8S_JOB_TEMPLATE") ?: "resources/job-template.yaml",
+                 k8sUseInCluster = getEnvOrProperty("K8S_USE_IN_CLUSTER")?.toBoolean() ?: true,
+Index: ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/task/TaskReceiver.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.k8s.task\n\nimport kotlinx.coroutines.channels.ClosedReceiveChannelException\nimport kotlinx.coroutines.coroutineScope\nimport kotlinx.coroutines.withTimeout\nimport net.kigawa.keruta.ktcl.k8s.config.K8sConfig\nimport net.kigawa.keruta.ktcl.k8s.connection.JvmWebSocketConnection\nimport net.kigawa.keruta.ktcl.k8s.connection.ReceiveClientUnknownArg\nimport net.kigawa.keruta.ktcp.client.ClientCtx\nimport net.kigawa.keruta.ktcp.client.KtcpClient\nimport net.kigawa.keruta.ktcp.domain.task.list.ServerTaskListMsg\nimport net.kigawa.kodel.api.err.unwrap\nimport net.kigawa.kodel.api.log.LoggerFactory\nimport kotlin.time.Duration.Companion.seconds\n\nclass TaskReceiver(\n    private val connection: JvmWebSocketConnection,\n    private val config: K8sConfig,\n    private val ktcpClient: KtcpClient,\n) {\n    private val logger = LoggerFactory.get(\"TaskReceiver\")\n\n    suspend fun startReceiving(ctx: ClientCtx, userId: String): Boolean = coroutineScope {\n        val taskListMsg = ServerTaskListMsg(queueId = config.queueId)\n        ktcpClient.ktcpServerEntrypoints.taskList.access(taskListMsg, ctx)?.execute()\n            ?: run {\n                logger.severe { \"Failed to send task list request for user $userId\" }\n                return@coroutineScope false\n            }\n\n        logger.info { \"Task list requested for user $userId, queue: ${config.queueId}\" }\n\n        val message = try {\n            withTimeout(10.seconds) {\n                connection.receive()\n            }\n        } catch (_: ClosedReceiveChannelException) {\n            logger.info { \"WebSocket connection closed\" }\n            return@coroutineScope false\n        } ?: return@coroutineScope false\n\n        val unknownArg = ReceiveClientUnknownArg.fromText(message, ctx.serializer)\n        if (unknownArg == null) {\n            logger.info { \"Failed to parse message type: $message\" }\n            return@coroutineScope false\n        }\n        val taskListed = unknownArg.tryToTaskListed()\n            ?.unwrap {\n                it.printStackTrace()\n                return@coroutineScope false\n            } ?: return@coroutineScope false\n        logger.info { \"Received task list: $taskListed\" }\n        val task = taskListed.tasks.firstOrNull { it.status != \"completed\" } ?: return@coroutineScope false\n\n        return@coroutineScope true\n    }\n}\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/task/TaskReceiver.kt b/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/task/TaskReceiver.kt
+--- a/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/task/TaskReceiver.kt	(revision ef31b23c33881f8c94e10707023c11b1dd5e3605)
++++ b/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/task/TaskReceiver.kt	(date 1772897058195)
+@@ -3,11 +3,16 @@
+ import kotlinx.coroutines.channels.ClosedReceiveChannelException
+ import kotlinx.coroutines.coroutineScope
+ import kotlinx.coroutines.withTimeout
++import kotlinx.serialization.json.Json
++import kotlinx.serialization.json.jsonObject
++import kotlinx.serialization.json.jsonPrimitive
+ import net.kigawa.keruta.ktcl.k8s.config.K8sConfig
+ import net.kigawa.keruta.ktcl.k8s.connection.JvmWebSocketConnection
+ import net.kigawa.keruta.ktcl.k8s.connection.ReceiveClientUnknownArg
++import net.kigawa.keruta.ktcl.k8s.k8s.K8sJobExecutor
+ import net.kigawa.keruta.ktcp.client.ClientCtx
+ import net.kigawa.keruta.ktcp.client.KtcpClient
++import net.kigawa.keruta.ktcp.domain.queue.show.ServerQueueShowMsg
+ import net.kigawa.keruta.ktcp.domain.task.list.ServerTaskListMsg
+ import net.kigawa.kodel.api.err.unwrap
+ import net.kigawa.kodel.api.log.LoggerFactory
+@@ -17,18 +22,57 @@
+     private val connection: JvmWebSocketConnection,
+     private val config: K8sConfig,
+     private val ktcpClient: KtcpClient,
++    private val jobExecutor: K8sJobExecutor,
+ ) {
+     private val logger = LoggerFactory.get("TaskReceiver")
+ 
+     suspend fun startReceiving(ctx: ClientCtx, userId: String): Boolean = coroutineScope {
+-        val taskListMsg = ServerTaskListMsg(queueId = config.queueId)
++        // todo queue 一覧を取得して自分のプロバイダーのキューでタスクを実行する
++        // キューの設定を取得
++        val queueShowMsg = ServerQueueShowMsg(id = )
++        ktcpClient.ktcpServerEntrypoints.queueShow.access(queueShowMsg, ctx)?.execute()
++            ?: run {
++                logger.severe { "Failed to send queue show request for user $userId" }
++                return@coroutineScope false
++            }
++
++        val queueShowedMessage = try {
++            withTimeout(10.seconds) { connection.receive() }
++        } catch (_: ClosedReceiveChannelException) {
++            logger.info { "WebSocket connection closed while waiting for queue_showed" }
++            return@coroutineScope false
++        } ?: return@coroutineScope false
++
++        val queueShowedArg = ReceiveClientUnknownArg.fromText(queueShowedMessage, ctx.serializer)
++        val queueShowed = queueShowedArg?.tryToQueueShowed()
++            ?.unwrap {
++                it.printStackTrace()
++                return@coroutineScope false
++            } ?: run {
++            logger.severe { "Failed to parse queue_showed message" }
++            return@coroutineScope false
++        }
++
++        val gitRepoUrl = try {
++            Json.parseToJsonElement(queueShowed.setting).jsonObject["git-repo"]?.jsonPrimitive?.content
++        } catch (_: Exception) {
++            null
++        } ?: run {
++            logger.severe { "git-repo not found in queue setting: ${queueShowed.setting}" }
++            return@coroutineScope false
++        }
++
++        logger.info { "Queue setting loaded, git-repo: $gitRepoUrl" }
++
++        // タスク一覧を取得
++        val taskListMsg = ServerTaskListMsg(queueId = )
+         ktcpClient.ktcpServerEntrypoints.taskList.access(taskListMsg, ctx)?.execute()
+             ?: run {
+                 logger.severe { "Failed to send task list request for user $userId" }
+                 return@coroutineScope false
+             }
+ 
+-        logger.info { "Task list requested for user $userId, queue: ${config.queueId}" }
++        logger.info { "Task list requested for user $userId, queue: ${}" }
+ 
+         val message = try {
+             withTimeout(10.seconds) {
+@@ -52,6 +96,12 @@
+         logger.info { "Received task list: $taskListed" }
+         val task = taskListed.tasks.firstOrNull { it.status != "completed" } ?: return@coroutineScope false
+ 
++        jobExecutor.executeJob(task.id, task.title, task.description, gitRepoUrl)
++            .unwrap {
++                it.printStackTrace()
++                return@coroutineScope false
++            }
++
+         return@coroutineScope true
+     }
+ }
+Index: ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/k8s/JobTemplateLoader.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.k8s.k8s\n\nimport io.kubernetes.client.openapi.models.V1EnvVar\nimport io.kubernetes.client.openapi.models.V1Job\nimport io.kubernetes.client.util.Yaml\nimport java.io.File\nimport java.io.FileReader\n\nclass JobTemplateLoader(private val templatePath: String) {\n    fun loadTemplate(taskId: Long, title: String, description: String): V1Job {\n        // 1. YAMLファイルを読み込み\n        val templateFile = File(templatePath)\n        val reader = FileReader(templateFile)\n\n        // 2. Kubernetes Java ClientのYaml.load()でV1Jobオブジェクトに変換\n        val job = Yaml.load(reader) as V1Job\n\n        // 3. Job名を動的生成\n        job.metadata?.name(\"keruta-task-$taskId\")\n\n        // 4. 環境変数を設定\n        val container = job.spec?.template?.spec?.containers?.get(0)\n        container?.env(\n            listOf(\n                V1EnvVar().name(\"TASK_ID\").value(taskId.toString()),\n                V1EnvVar().name(\"TASK_TITLE\").value(title),\n                V1EnvVar().name(\"TASK_DESCRIPTION\").value(description)\n            )\n        )\n\n        return job\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/k8s/JobTemplateLoader.kt b/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/k8s/JobTemplateLoader.kt
+--- a/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/k8s/JobTemplateLoader.kt	(revision ef31b23c33881f8c94e10707023c11b1dd5e3605)
++++ b/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/k8s/JobTemplateLoader.kt	(date 1772896119351)
+@@ -7,7 +7,7 @@
+ import java.io.FileReader
+ 
+ class JobTemplateLoader(private val templatePath: String) {
+-    fun loadTemplate(taskId: Long, title: String, description: String): V1Job {
++    fun loadTemplate(taskId: Long, title: String, description: String, gitRepoUrl: String): V1Job {
+         // 1. YAMLファイルを読み込み
+         val templateFile = File(templatePath)
+         val reader = FileReader(templateFile)
+@@ -24,7 +24,8 @@
+             listOf(
+                 V1EnvVar().name("TASK_ID").value(taskId.toString()),
+                 V1EnvVar().name("TASK_TITLE").value(title),
+-                V1EnvVar().name("TASK_DESCRIPTION").value(description)
++                V1EnvVar().name("TASK_DESCRIPTION").value(description),
++                V1EnvVar().name("GIT_REPO_URL").value(gitRepoUrl),
+             )
+         )
+ 
+Index: ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/k8s/KerutaK8sClient.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.k8s.k8s\n\nimport com.auth0.jwt.JWT\nimport kotlinx.coroutines.*\nimport net.kigawa.keruta.ktcl.k8s.auth.TokenRefresher\nimport net.kigawa.keruta.ktcl.k8s.config.K8sConfig\nimport net.kigawa.keruta.ktcl.k8s.connection.ConnectionManager\nimport net.kigawa.keruta.ktcl.k8s.persist.dao.UserTokenDao\nimport net.kigawa.keruta.ktcl.k8s.task.TaskReceiver\nimport net.kigawa.keruta.ktcp.client.ClientCtx\nimport net.kigawa.keruta.ktcp.client.KtcpClient\nimport net.kigawa.keruta.ktcp.client.KtcpSession\nimport net.kigawa.keruta.ktcp.domain.auth.request.ServerAuthRequestMsg\nimport net.kigawa.keruta.ktcp.usecase.JsonKerutaSerializer\nimport net.kigawa.keruta.ktcp.usecase.client.ProviderTokenCreator\nimport net.kigawa.kodel.api.log.LoggerFactory\nimport kotlin.time.Duration.Companion.seconds\n\nclass KerutaK8sClient(\n    private val config: K8sConfig,\n    private val userTokenDao: UserTokenDao,\n    private val tokenRefresher: TokenRefresher,\n    private val providerTokenCreator: ProviderTokenCreator,\n) {\n    private val logger = LoggerFactory.get(\"KerutaK8sClient\")\n    private val serializer = JsonKerutaSerializer()\n    private val ktcpClient = KtcpClient()\n    private val concurrentCount = 1\n\n    suspend fun start() = coroutineScope {\n        logger.info { \"Starting Keruta K8s Client\" }\n        (0 until concurrentCount).map {\n            launch {\n                while (isActive) {\n                    var received = false\n                    userTokenDao.getRefreshTokens().forEach {\n                        try {\n                            val (userId, refreshToken) = it\n\n                            val tokenResponse = try {\n                                tokenRefresher.refresh(refreshToken)\n                            } catch (e: Exception) {\n                                logger.severe { \"Token refresh failed for user $userId: ${e.message}\" }\n                                delay(30.seconds)\n                                return@forEach\n                            }\n\n                            tokenResponse.refreshToken?.let { userTokenDao.saveOrUpdate(userId, it) }\n                            logger.info { \"Access token refreshed for user $userId\" }\n\n                            // accessTokenを使ってKTSEに接続しタスク受信ループを実行する\n                            received = runTaskReceiver(userId, tokenResponse.accessToken) || received\n                        } catch (e: Exception) {\n                            if (e is CancellationException) throw e\n                            logger.severe { \"Failed to refresh token ${e.message}\" }\n                            e.printStackTrace()\n                        }\n                    }\n                    if (received) delay(1.seconds)\n                    else delay(30.seconds)\n                }\n            }\n        }.joinAll()\n    }\n\n    private suspend fun runTaskReceiver(userId: String, accessToken: String): Boolean {\n        val connectionManager = ConnectionManager(config)\n        val connection = try {\n            connectionManager.connect()\n        } catch (e: Exception) {\n            logger.severe { \"Failed to connect to KTSE for user $userId: ${e.message}\" }\n            return false\n        }\n\n        val session = KtcpSession(connection)\n        val ctx = ClientCtx(serializer, session)\n        val providerToken = providerTokenCreator.create(JWT.decode(accessToken).subject)\n        // 認証\n        val authMsg = ServerAuthRequestMsg(\n            userToken = accessToken,\n            serverToken = providerToken.createdToken.rawToken\n        )\n        ktcpClient.ktcpServerEntrypoints.authRequestEntrypoint.access(authMsg, ctx)?.execute()\n            ?: run {\n                logger.severe { \"Failed to send auth request for user $userId\" }\n                return false\n            }\n\n        logger.info { \"Authentication request sent for user $userId\" }\n\n\n        // タスク受信ループを開始\n        val taskReceiver = TaskReceiver(connection, config, ktcpClient)\n        return taskReceiver.startReceiving(ctx, userId)\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/k8s/KerutaK8sClient.kt b/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/k8s/KerutaK8sClient.kt
+--- a/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/k8s/KerutaK8sClient.kt	(revision ef31b23c33881f8c94e10707023c11b1dd5e3605)
++++ b/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/k8s/KerutaK8sClient.kt	(date 1772896700600)
+@@ -88,9 +88,11 @@
+ 
+         logger.info { "Authentication request sent for user $userId" }
+ 
+-
+-        // タスク受信ループを開始
+-        val taskReceiver = TaskReceiver(connection, config, ktcpClient)
++        
++        val apiClient = K8sClientFactory.createClient(config)
++        val templateLoader = JobTemplateLoader(config.k8sJobTemplate)
++        val jobExecutor = K8sJobExecutor(apiClient, config, templateLoader)
++        val taskReceiver = TaskReceiver(connection, config, ktcpClient, jobExecutor)
+         return taskReceiver.startReceiving(ctx, userId)
+     }
+ 
+Index: ktse/src/main/kotlin/net/kigawa/keruta/ktse/persist/model/ExposedPersistedQueue.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktse.persist.model\n\nimport net.kigawa.keruta.ktcp.server.persist.PersistedQueue\nimport net.kigawa.keruta.ktse.persist.db.table.QueueTable\nimport org.jetbrains.exposed.sql.ResultRow\n\nclass ExposedPersistedQueue(queue: ResultRow): PersistedQueue {\n    override val id: Long = queue[QueueTable.id]\n    override val name: String = queue[QueueTable.name]\n    val setting: String = queue[QueueTable.setting]\n    val providerId: Long = queue[QueueTable.providerId]\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktse/src/main/kotlin/net/kigawa/keruta/ktse/persist/model/ExposedPersistedQueue.kt b/ktse/src/main/kotlin/net/kigawa/keruta/ktse/persist/model/ExposedPersistedQueue.kt
+--- a/ktse/src/main/kotlin/net/kigawa/keruta/ktse/persist/model/ExposedPersistedQueue.kt	(revision ef31b23c33881f8c94e10707023c11b1dd5e3605)
++++ b/ktse/src/main/kotlin/net/kigawa/keruta/ktse/persist/model/ExposedPersistedQueue.kt	(date 1772896017491)
+@@ -7,6 +7,6 @@
+ class ExposedPersistedQueue(queue: ResultRow): PersistedQueue {
+     override val id: Long = queue[QueueTable.id]
+     override val name: String = queue[QueueTable.name]
+-    val setting: String = queue[QueueTable.setting]
++    override val setting: String = queue[QueueTable.setting]
+     val providerId: Long = queue[QueueTable.providerId]
+ }
+Index: ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/queue/ReceiveQueueShowEntrypoint.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcp.server.queue\n\nimport net.kigawa.keruta.ktcp.domain.err.KtcpErr\nimport net.kigawa.keruta.ktcp.domain.queue.show.ServerQueueShowEntrypoint\nimport net.kigawa.keruta.ktcp.domain.queue.show.ServerQueueShowMsg\nimport net.kigawa.keruta.ktcp.domain.queue.showed.ClientQueueShowedMsg\nimport net.kigawa.keruta.ktcp.server.ServerCtx\nimport net.kigawa.keruta.ktcp.server.err.ResponseErr\nimport net.kigawa.keruta.ktcp.server.err.UnauthenticatedErr\nimport net.kigawa.kodel.api.entrypoint.EntrypointDeferred\nimport net.kigawa.kodel.api.err.Res\n\nclass ReceiveQueueShowEntrypoint: ServerQueueShowEntrypoint<ServerCtx> {\n    override fun access(\n        input: ServerQueueShowMsg, ctx: ServerCtx,\n    ): EntrypointDeferred<Res<Unit, KtcpErr>> {\n        return EntrypointDeferred {\n            val session = ctx.session.authenticated()\n                ?: return@EntrypointDeferred Res.Err(UnauthenticatedErr(\"\", null))\n            val queues = when (\n                val res = session.persisterSession.queue.getQueue(input)\n            ) {\n                is Res.Ok -> res.value\n                is Res.Err -> return@EntrypointDeferred res.convert()\n            }\n            ctx.server.clientEntrypoints.queueShowed.access(\n                ClientQueueShowedMsg(\n                    name = queues.name,\n                    id = queues.id,\n                ), ctx\n            )?.execute() ?: Res.Err(ResponseErr(\"\", null))\n        }\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/queue/ReceiveQueueShowEntrypoint.kt b/ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/queue/ReceiveQueueShowEntrypoint.kt
+--- a/ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/queue/ReceiveQueueShowEntrypoint.kt	(revision ef31b23c33881f8c94e10707023c11b1dd5e3605)
++++ b/ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/queue/ReceiveQueueShowEntrypoint.kt	(date 1772896025993)
+@@ -27,6 +27,7 @@
+                 ClientQueueShowedMsg(
+                     name = queues.name,
+                     id = queues.id,
++                    setting = queues.setting,
+                 ), ctx
+             )?.execute() ?: Res.Err(ResponseErr("", null))
+         }
+Index: ktcp/ktcp-domain/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/queue/showed/ClientQueueShowedMsg.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcp.domain.queue.showed\n\nimport kotlinx.serialization.Serializable\nimport net.kigawa.keruta.ktcp.domain.msg.client.ClientMsg\nimport net.kigawa.keruta.ktcp.domain.msg.client.ClientMsgType\n\n@Serializable\ndata class ClientQueueShowedMsg(\n    override val type: ClientMsgType = ClientMsgType.QUEUE_SHOWED,\n    val name: String, val id: Long,\n): ClientMsg {\n    init {\n        require(type == ClientMsgType.QUEUE_SHOWED) { \"type must be QUEUE_SHOWED\" }\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcp/ktcp-domain/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/queue/showed/ClientQueueShowedMsg.kt b/ktcp/ktcp-domain/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/queue/showed/ClientQueueShowedMsg.kt
+--- a/ktcp/ktcp-domain/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/queue/showed/ClientQueueShowedMsg.kt	(revision ef31b23c33881f8c94e10707023c11b1dd5e3605)
++++ b/ktcp/ktcp-domain/src/commonMain/kotlin/net/kigawa/keruta/ktcp/domain/queue/showed/ClientQueueShowedMsg.kt	(date 1772895989356)
+@@ -7,7 +7,9 @@
+ @Serializable
+ data class ClientQueueShowedMsg(
+     override val type: ClientMsgType = ClientMsgType.QUEUE_SHOWED,
+-    val name: String, val id: Long,
++    val name: String,
++    val id: Long,
++    val setting: String,
+ ): ClientMsg {
+     init {
+         require(type == ClientMsgType.QUEUE_SHOWED) { "type must be QUEUE_SHOWED" }
+Index: ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/connection/ReceiveClientUnknownArg.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.k8s.connection\n\nimport kotlinx.serialization.json.Json\nimport kotlinx.serialization.json.JsonObject\nimport kotlinx.serialization.json.jsonPrimitive\nimport net.kigawa.keruta.ktcp.domain.auth.sccess.ClientAuthSuccessMsg\nimport net.kigawa.keruta.ktcp.domain.err.GenericErrMsg\nimport net.kigawa.keruta.ktcp.domain.err.KtcpErr\nimport net.kigawa.keruta.ktcp.domain.msg.client.ClientMsgType\nimport net.kigawa.keruta.ktcp.domain.msg.client.ClientUnknownArg\nimport net.kigawa.keruta.ktcp.domain.msg.server.ServerMsgType\nimport net.kigawa.keruta.ktcp.domain.provider.add_token.ClientProviderAddTokenMsg\nimport net.kigawa.keruta.ktcp.domain.provider.deleted.ClientProviderDeletedMsg\nimport net.kigawa.keruta.ktcp.domain.provider.idp_added.ClientProviderIdpAddedMsg\nimport net.kigawa.keruta.ktcp.domain.provider.listed.ClientProviderListedMsg\nimport net.kigawa.keruta.ktcp.domain.queue.created.ClientQueueCreatedMsg\nimport net.kigawa.keruta.ktcp.domain.queue.listed.ClientQueueListedMsg\nimport net.kigawa.keruta.ktcp.domain.queue.showed.ClientQueueShowedMsg\nimport net.kigawa.keruta.ktcp.domain.serialize.KerutaSerializer\nimport net.kigawa.keruta.ktcp.domain.serialize.deserialize\nimport net.kigawa.keruta.ktcp.domain.task.created.ClientTaskCreatedMsg\nimport net.kigawa.keruta.ktcp.domain.task.listed.ClientTaskListedMsg\nimport net.kigawa.keruta.ktcp.domain.task.moved.ClientTaskMovedMsg\nimport net.kigawa.keruta.ktcp.domain.task.showed.ClientTaskShowedMsg\nimport net.kigawa.keruta.ktcp.domain.task.updated.ClientTaskUpdatedMsg\nimport net.kigawa.kodel.api.err.Res\n\nclass ReceiveClientUnknownArg(\n    private val typeStr: String,\n    private val serializer: KerutaSerializer,\n    private val text: String,\n): ClientUnknownArg {\n\n    override fun tryToGenericError(): Res<GenericErrMsg, KtcpErr>? {\n        if (typeStr != ClientMsgType.GENERIC_ERROR.str) return null\n        return serializer.deserialize<GenericErrMsg>(text)\n    }\n\n    override fun tryToAuthSuccess(): Res<ClientAuthSuccessMsg, KtcpErr>? {\n        if (typeStr != ServerMsgType.AUTH_SUCCESS.str) return null\n        return serializer.deserialize<ClientAuthSuccessMsg>(text)\n    }\n\n    override fun tryToProviderList(): Res<ClientProviderListedMsg, KtcpErr>? {\n        if (typeStr != ClientMsgType.PROVIDER_LISTED.str) return null\n        return serializer.deserialize<ClientProviderListedMsg>(text)\n    }\n\n    override fun tryToProviderAddToken(): Res<ClientProviderAddTokenMsg, KtcpErr>? {\n        if (typeStr != ClientMsgType.PROVIDER_ADD_TOKEN_ISSUED.str) return null\n        return serializer.deserialize<ClientProviderAddTokenMsg>(text)\n    }\n\n    override fun tryToProviderIdpAdded(): Res<ClientProviderIdpAddedMsg, KtcpErr>? {\n        if (typeStr != ClientMsgType.PROVIDER_IDP_ADDED.str) return null\n        return serializer.deserialize<ClientProviderIdpAddedMsg>(text)\n    }\n\n    override fun tryToProviderDeleted(): Res<ClientProviderDeletedMsg, KtcpErr>? {\n        if (typeStr != ClientMsgType.PROVIDER_DELETED.str) return null\n        return serializer.deserialize<ClientProviderDeletedMsg>(text)\n    }\n\n    override fun tryToQueueCreated(): Res<ClientQueueCreatedMsg, KtcpErr>? {\n        if (typeStr != ClientMsgType.QUEUE_CREATED.str) return null\n        return serializer.deserialize<ClientQueueCreatedMsg>(text)\n    }\n\n    override fun tryToQueueListed(): Res<ClientQueueListedMsg, KtcpErr>? {\n        if (typeStr != ClientMsgType.QUEUE_LISTED.str) return null\n        return serializer.deserialize<ClientQueueListedMsg>(text)\n    }\n\n    override fun tryToQueueShowed(): Res<ClientQueueShowedMsg, KtcpErr>? {\n        if (typeStr != ClientMsgType.QUEUE_SHOWED.str) return null\n        return serializer.deserialize<ClientQueueShowedMsg>(text)\n    }\n\n    override fun tryToTaskCreated(): Res<ClientTaskCreatedMsg, KtcpErr>? {\n        if (typeStr != ClientMsgType.TASK_CREATED.str) return null\n        return serializer.deserialize<ClientTaskCreatedMsg>(text)\n    }\n\n    override fun tryToTaskShowed(): Res<ClientTaskShowedMsg, KtcpErr>? {\n        if (typeStr != ClientMsgType.TASK_SHOWED.str) return null\n        return serializer.deserialize<ClientTaskShowedMsg>(text)\n    }\n\n    override fun tryToTaskListed(): Res<ClientTaskListedMsg, KtcpErr>? {\n        if (typeStr != ClientMsgType.TASK_LISTED.str) return null\n        return serializer.deserialize<ClientTaskListedMsg>(text)\n    }\n\n    override fun tryToTaskUpdated(): Res<ClientTaskUpdatedMsg, KtcpErr>? {\n        if (typeStr != ClientMsgType.TASK_UPDATED.str) return null\n        return serializer.deserialize<ClientTaskUpdatedMsg>(text)\n    }\n\n    override fun tryToTaskMoved(): Res<ClientTaskMovedMsg, KtcpErr>? {\n        if (typeStr != ClientMsgType.TASK_MOVED.str) return null\n        return serializer.deserialize<ClientTaskMovedMsg>(text)\n    }\n\n    companion object {\n        fun fromText(text: String, serializer: KerutaSerializer): ReceiveClientUnknownArg? {\n            val jsonElement = Json.parseToJsonElement(text)\n            val typeStr = (jsonElement as? JsonObject)?.get(\"type\")?.jsonPrimitive?.content ?: return null\n            return ReceiveClientUnknownArg(typeStr, serializer, text)\n        }\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/connection/ReceiveClientUnknownArg.kt b/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/connection/ReceiveClientUnknownArg.kt
+--- a/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/connection/ReceiveClientUnknownArg.kt	(revision ef31b23c33881f8c94e10707023c11b1dd5e3605)
++++ b/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/connection/ReceiveClientUnknownArg.kt	(date 1772896066895)
+@@ -16,6 +16,7 @@
+ import net.kigawa.keruta.ktcp.domain.queue.created.ClientQueueCreatedMsg
+ import net.kigawa.keruta.ktcp.domain.queue.listed.ClientQueueListedMsg
+ import net.kigawa.keruta.ktcp.domain.queue.showed.ClientQueueShowedMsg
++import net.kigawa.keruta.ktcp.domain.queue.updated.ClientQueueUpdatedMsg
+ import net.kigawa.keruta.ktcp.domain.serialize.KerutaSerializer
+ import net.kigawa.keruta.ktcp.domain.serialize.deserialize
+ import net.kigawa.keruta.ktcp.domain.task.created.ClientTaskCreatedMsg
+@@ -101,6 +102,11 @@
+         return serializer.deserialize<ClientTaskMovedMsg>(text)
+     }
+ 
++    override fun tryToQueueUpdated(): Res<ClientQueueUpdatedMsg, KtcpErr>? {
++        if (typeStr != ClientMsgType.QUEUE_UPDATED.str) return null
++        return serializer.deserialize<ClientQueueUpdatedMsg>(text)
++    }
++
+     companion object {
+         fun fromText(text: String, serializer: KerutaSerializer): ReceiveClientUnknownArg? {
+             val jsonElement = Json.parseToJsonElement(text)
+Index: ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/persist/PersistedQueue.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcp.server.persist\n\ninterface PersistedQueue {\n    val name: String\n    val id: Long\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/persist/PersistedQueue.kt b/ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/persist/PersistedQueue.kt
+--- a/ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/persist/PersistedQueue.kt	(revision ef31b23c33881f8c94e10707023c11b1dd5e3605)
++++ b/ktcp/server/src/commonMain/kotlin/net/kigawa/keruta/ktcp/server/persist/PersistedQueue.kt	(date 1772895978409)
+@@ -3,4 +3,5 @@
+ interface PersistedQueue {
+     val name: String
+     val id: Long
++    val setting: String
+ }
+Index: ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/k8s/K8sJobExecutor.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcl.k8s.k8s\n\nimport io.kubernetes.client.openapi.ApiClient\nimport io.kubernetes.client.openapi.apis.BatchV1Api\nimport kotlinx.coroutines.Dispatchers\nimport kotlinx.coroutines.withContext\nimport net.kigawa.keruta.ktcl.k8s.config.K8sConfig\nimport net.kigawa.keruta.ktcl.k8s.err.K8sErr\nimport net.kigawa.kodel.api.err.Res\nimport net.kigawa.kodel.api.log.LoggerFactory\n\nclass K8sJobExecutor(\n    apiClient: ApiClient,\n    private val config: K8sConfig,\n    private val templateLoader: JobTemplateLoader,\n) {\n    private val logger = LoggerFactory.get(\"K8sJobExecutor\")\n    private val batchApi = BatchV1Api(apiClient)\n\n    suspend fun executeJob(\n        taskId: Long,\n        title: String,\n        description: String,\n    ): Res<String, K8sErr> = withContext(Dispatchers.IO) {\n        try {\n            // 1. Job定義YAMLを読み込み\n            val job = templateLoader.loadTemplate(taskId, title, description)\n\n            // 2. BatchV1Api.createNamespacedJob()でJob作成\n            val createdJob = batchApi.createNamespacedJob(config.k8sNamespace, job).execute()\n\n            val jobName = createdJob.metadata?.name ?: return@withContext Res.Err(\n                K8sErr.JobCreateErr(\"Job name is null\", null)\n            )\n\n            logger.info { \"Created Kubernetes Job: $jobName\" }\n            Res.Ok(jobName)\n        } catch (e: Exception) {\n            logger.info { \"Failed to create Kubernetes Job: ${e.message}\" }\n            Res.Err(K8sErr.JobCreateErr(\"Failed to create Job: ${e.message}\", e))\n        }\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/k8s/K8sJobExecutor.kt b/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/k8s/K8sJobExecutor.kt
+--- a/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/k8s/K8sJobExecutor.kt	(revision ef31b23c33881f8c94e10707023c11b1dd5e3605)
++++ b/ktcl-k8s/src/main/kotlin/net/kigawa/keruta/ktcl/k8s/k8s/K8sJobExecutor.kt	(date 1772896550743)
+@@ -21,10 +21,11 @@
+         taskId: Long,
+         title: String,
+         description: String,
++        gitRepoUrl: String,
+     ): Res<String, K8sErr> = withContext(Dispatchers.IO) {
+         try {
+             // 1. Job定義YAMLを読み込み
+-            val job = templateLoader.loadTemplate(taskId, title, description)
++            val job = templateLoader.loadTemplate(taskId, title, description, gitRepoUrl)
+ 
+             // 2. BatchV1Api.createNamespacedJob()でJob作成
+             val createdJob = batchApi.createNamespacedJob(config.k8sNamespace, job).execute()
+Index: ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/KtcpClient.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package net.kigawa.keruta.ktcp.client\n\nimport net.kigawa.keruta.ktcp.client.auth.SendAuthRequestEntrypoint\nimport net.kigawa.keruta.ktcp.client.provider.SendProviderCompleteEntrypoint\nimport net.kigawa.keruta.ktcp.client.provider.SendProviderDeleteEntrypoint\nimport net.kigawa.keruta.ktcp.client.provider.SendProviderIssueTokenEntrypoint\nimport net.kigawa.keruta.ktcp.client.provider.SendProviderListEntrypoint\nimport net.kigawa.keruta.ktcp.client.queue.SendQueueCreateEntrypoint\nimport net.kigawa.keruta.ktcp.client.queue.SendQueueListEntrypoint\nimport net.kigawa.keruta.ktcp.client.queue.SendQueueShowEntrypoint\nimport net.kigawa.keruta.ktcp.client.task.*\nimport net.kigawa.keruta.ktcp.domain.KtcpServerEntrypoints\n\nclass KtcpClient {\n    @Suppress(\"unused\")\n    val ktcpServerEntrypoints = KtcpServerEntrypoints(\n        SendAuthRequestEntrypoint(),\n        SendTaskCreateEntrypoint(),\n        SendTaskUpdateEntrypoint(),\n        SendTaskMoveEntrypoint(),\n        SendProviderListEntrypoint(),\n        SendProviderIssueTokenEntrypoint(),\n        SendProviderCompleteEntrypoint(),\n        SendProviderDeleteEntrypoint(),\n        SendQueueCreateEntrypoint(),\n        SendQueueListEntrypoint(),\n        SendQueueShowEntrypoint(),\n        SendTaskListEntrypoint(),\n        SendTaskShowEntrypoint(),\n    )\n\n    @Suppress(\"unused\")\n    fun startConnection(): ClientConnection {\n        return ClientConnection()\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/KtcpClient.kt b/ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/KtcpClient.kt
+--- a/ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/KtcpClient.kt	(revision ef31b23c33881f8c94e10707023c11b1dd5e3605)
++++ b/ktcp/client/src/commonMain/kotlin/net/kigawa/keruta/ktcp/client/KtcpClient.kt	(date 1772896874599)
+@@ -8,6 +8,7 @@
+ import net.kigawa.keruta.ktcp.client.queue.SendQueueCreateEntrypoint
+ import net.kigawa.keruta.ktcp.client.queue.SendQueueListEntrypoint
+ import net.kigawa.keruta.ktcp.client.queue.SendQueueShowEntrypoint
++import net.kigawa.keruta.ktcp.client.queue.SendQueueUpdateEntrypoint
+ import net.kigawa.keruta.ktcp.client.task.*
+ import net.kigawa.keruta.ktcp.domain.KtcpServerEntrypoints
+ 
+@@ -25,6 +26,7 @@
+         SendQueueCreateEntrypoint(),
+         SendQueueListEntrypoint(),
+         SendQueueShowEntrypoint(),
++        SendQueueUpdateEntrypoint(),
+         SendTaskListEntrypoint(),
+         SendTaskShowEntrypoint(),
+     )

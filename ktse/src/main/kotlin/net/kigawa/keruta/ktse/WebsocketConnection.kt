@@ -2,14 +2,18 @@ package net.kigawa.keruta.ktse
 
 import io.ktor.server.websocket.*
 import io.ktor.websocket.*
-import kotlinx.serialization.Serializable
 import net.kigawa.keruta.ktcp.server.KtcpConnection
-import net.kigawa.keruta.ktcp.model.serialize.MsgSerializer
+import net.kigawa.keruta.ktcp.server.KtcpServer
+import net.kigawa.kodel.api.log.getKogger
+import net.kigawa.kodel.api.log.traceignore.debug
 
 class WebsocketConnection(
     val session: DefaultWebSocketServerSession,
+    override val server: KtcpServer,
 ): KtcpConnection {
-    override suspend fun send(serializer: MsgSerializer, msg: @Serializable Any) {
-        session.send(serializer.serialize(msg))
+    val logger = getKogger()
+    override suspend fun send(msg: String) {
+        logger.debug("send: $msg")
+        session.send(msg)
     }
 }

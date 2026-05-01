@@ -5,9 +5,16 @@ ktor:
   deployment:
     port: 8080
   security:
-    keycloak:
-      realm: develop
-      issuer: https://user.kigawa.net/realms/develop
-      jwkUrl: https://user.kigawa.net/realms/develop/protocol/openid-connect/certs
-      clientId: ${OIDC_CLIENT_ID}
-      clientSecret: ${OIDC_CLIENT_SECRET}
+    defaultIdp:
+      issuer: ${IDP_0_ISSUER}
+      audience: ${IDP_0_AUDIENCE}
+    defaultProvider:
+      issuer: ${PROVIDER_0_ISSUER}
+      audience: ${PROVIDER_0_AUDIENCE}
+      name: ${PROVIDER_0_NAME}
+zk:
+  host: ${ZK_HOST}
+db:
+  jdbcUrl: ${DB_JDBC_URL}
+  username: ${DB_USERNAME}
+  password: ${DB_PASSWORD}
