@@ -123,9 +123,11 @@ net.kigawa.keruta.{module}.{layer}.{feature}
 - **ktcp** - WebSocketプロトコル（model/client/server、Kotlin Multiplatform対応）
 - **ktse** - KtorタスクサーバーWS（Exposed/Flyway/MySQL、二重トークン認証）
 - **ktcl-k8s** - KTCPでタスク受信しKubernetes Jobとして実行
-- **ktcl-front** - React+TypeScript+Vite+Keycloak.js
+- **ktcl-front** - React+TypeScript+Vite+Keycloak.js（既存フロントエンド）
+- **kicl** - Kotlin Multiplatformモジュール（domain/usecase）- JSライブラリ出力
+- **kicl-web** - React Router v7 + Kotlin Multiplatform共有ロジック（次世代フロントエンド）
 - **ktcl-claudecode** - Claude Code統合
-- 詳細ドキュメント: `doc/` 配下参照
+- 詳細ドキュメント: `doc/` 配下参照（特に `doc/kicl-web.md`）
 
 ### Entrypoint Groupパターン（メッセージルーティング）
 
