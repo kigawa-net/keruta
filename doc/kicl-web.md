@@ -2,7 +2,7 @@
 
 ## 概要
 
-`kicl-web` は、Kotlin Multiplatform (KMP) で共有ロジックを管理する新しいフロントエンドアプリケーションです。React Router v7 をベースにサー�バーサイドレンダリング (SSR) 対応のモダンなWebアプリケーションとして構築されています。
+`kicl-web` は、Kotlin Multiplatform (KMP) で共有ロジックを管理する新しいフロントエンドアプリケーションです。React Router v7 をベースにサーバーサイドレンダリング (SSR) 対応のモダンなWebアプリケーションとして構築されています。
 
 ## アーキテクチャ
 
