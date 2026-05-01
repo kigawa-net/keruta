@@ -1,0 +1,43 @@
+package net.kigawa.keruta.kise
+
+import io.ktor.server.application.*
+
+/**
+ * Kise 設定
+ */
+class KiseConfig(
+    environment: ApplicationEnvironment,
+) {
+    val issuer: String = environment.config.propertyOrNull("kise.issuer")?.getString()
+        ?: "https://id.kigawa.net"
+
+    val audience: String = environment.config.propertyOrNull("kise.audience")?.getString()
+        ?: "keruta"
+
+    val tokenExpiresInMs: Long = environment.config.propertyOrNull("kise.token.expiresInMs")?.getString()?.toLongOrNull()
+        ?: 3_600_000
+
+    val sessionTimeoutMs: Long = environment.config.propertyOrNull("kise.session.timeoutMs")?.getString()?.toLongOrNull()
+        ?: 3_600_000
+
+    val maxSessionsPerUser: Int = environment.config.propertyOrNull("kise.session.maxPerUser")?.getString()?.toIntOrNull()
+        ?: 10
+
+    val databaseUrl: String = environment.config.propertyOrNull("kise.database.url")?.getString()
+        ?: "jdbc:mysql://localhost:3306/keruta"
+
+    val databaseUser: String = environment.config.propertyOrNull("kise.database.user")?.getString()
+        ?: "keruta"
+
+    val databasePassword: String = environment.config.propertyOrNull("kise.database.password")?.getString()
+        ?: ""
+
+    val defaultUserIdpIssuer: String = environment.config.propertyOrNull("kise.default.userIdp.issuer")?.getString()
+        ?: "https://example.auth0.com/"
+
+    val defaultProviderIssuer: String = environment.config.propertyOrNull("kise.default.provider.issuer")?.getString()
+        ?: "https://example.auth0.com/"
+
+    val jwtSecret: String = environment.config.propertyOrNull("kise.jwt.secret")?.getString()
+        ?: ""
+}

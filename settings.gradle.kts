@@ -65,6 +65,8 @@ includesIfExists("ktcl-k8s", "ktcl-k8s")
 includesIfExists("ktcl-sdk", "ktcl-sdk")
 includesIfExists("ktcl-front-mobile", "ktcl-front-mobile", "ktcl-front-mobile:app")
 
+includesIfExists("kise", "kise", "kise:domain", "kise:usecase")
+
 includeDsl {
     includeIfExistsAndGroup("kicp") {
         includeIfExists("domain")
