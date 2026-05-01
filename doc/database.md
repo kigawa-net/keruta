@@ -14,7 +14,7 @@ AuthenticatedPersisterSession（インターフェース）
 
 DbPersisterSession（KTSE実装）
   └── DbAuthenticatedPersisterSession
-      ├── タスク作成（TODO: 未実装）
+      ├── createTask(task)
       └── プロバイダー取得
 ```
 
@@ -137,7 +137,7 @@ DbPersister.execTransaction {
 
 エラー型: `NoSingleRecordErr`、`MultipleRecordErr`、`BackendErr`
 
-## 未実装機能
+## 実装済み機能
 
 - `DbAuthenticatedPersisterSession.createTask()` — タスク作成の永続化
 - タスク状態管理（pending / running / completed）
