@@ -31,6 +31,12 @@
 2. [flows.md](flows.md) — 実際の処理フロー
 3. [authentication.md](authentication.md) — 認証の詳細
 4. [database.md](database.md) — データモデル
+5. [convention.md](convention.md) — ドキュメント作成規約
+
+## リポジトリ規約
+
+リポジトリ全体の開発規約はルートの [CONVENTION.md](../CONVENTION.md) を参照。
+ブランチ戦略、コミットメッセージ、PRルール、CI/CDフローなどを記載。
 
 ## モジュール構成詳細
 

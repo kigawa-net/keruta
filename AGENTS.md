@@ -3,6 +3,8 @@
 This file provides guidance for AI agents working with this codebase.
 日本語で話す。
 
+リポジトリ全体の規約は [CONVENTION.md](CONVENTION.md) を参照。
+
 ## 開発コマンド
 
 ### ビルド
