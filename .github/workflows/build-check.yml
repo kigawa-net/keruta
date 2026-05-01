@@ -1,4 +1,4 @@
-name: build-check.yml
+name: build-check
 on:
   workflow_call:
     inputs:
@@ -31,6 +31,19 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v6
         if: inputs.gradleTask != ''
+        with:
+          enable-configuration-cache: true
+
+      - name: Gradle cache
+        if: inputs.gradleTask != ''
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
 
       - name: Build with Gradle
         if: inputs.gradleTask != ''

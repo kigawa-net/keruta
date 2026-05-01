@@ -12,6 +12,7 @@
 | [development.md](development.md) | ローカル開発環境セットアップ、IntelliJ設定、トラブルシューティング |
 | [flows.md](flows.md) | 各機能の処理フロー詳細（WS ルーティング、認証、K8s ジョブ実行、KICP） |
 | [kicp.md](kicp.md) | KICP（クロスドメインIDフェデレーション）プロトコル仕様、ユースケース |
+| [kicl-web.md](kicl-web.md) | kicl-web（次世代フロントエンド）アーキテクチャ、技術スタック、ビルド手順 |
 
 ## 概要
 
@@ -20,6 +21,7 @@
 - **ktse** — タスクサーバー（Ktor + Exposed + MySQL、WebSocket経由でKTCPプロトコルを提供）
 - **ktcl-k8s** — K8sクライアント（KTCPでタスク受信 → Kubernetes Jobとして実行）
 - **ktcl-front** — フロントエンド（React + TypeScript + Keycloak.js）
+- **kicl-web** — 次世代フロントエンド（React Router v7 + Kotlin Multiplatform共有ロジック）
 - **kicp** — クロスドメインIDフェデレーションプロトコル
 
 ## 読み始めるなら
@@ -35,6 +37,7 @@
 - **ktcp** — WebSocketプロトコル（model/client/server、Kotlin Multiplatform対応）
 - **ktse** — KtorタスクサーバーWS（Exposed/Flyway/MySQL、二重トークン認証）
 - **ktcl-k8s** — KTCPでタスク受信しKubernetes Jobとして実行
-- **ktcl-front** — React+TypeScript+Vite+Keycloak.js
+- **ktcl-front** — React+TypeScript+Vite+Keycloak.js（既存フロントエンド）
+- **kicl-web** — React Router v7 + Kotlin Multiplatform共有ロジック（次世代フロントエンド）
+- **kicl** — Kotlin Multiplatformモジュール（domain/usecase）
 - **ktcl-claudecode** — Claude Code統合
-- **ktcl-web** — （廃止）ウェブインターフェース
