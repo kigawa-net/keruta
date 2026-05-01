@@ -1,10 +1,10 @@
 object Version {
-    const val KTOR = "3.4.1"
+    const val KTOR = "3.4.3"
     const val LOGBACK = "1.5.32"
 
     // Auth
-    const val JAVA_JWT = "4.5.1"
-    const val JWKS_RSA = "0.23.0"
+    const val JAVA_JWT = "4.5.2"
+    const val JWKS_RSA = "0.23.1"
 
     // Kotlinx
     const val KOTLINX_COROUTINES = "1.10.2"
@@ -13,14 +13,14 @@ object Version {
     const val KOTLINX_HTML = "0.12.0"
 
     // Database
-    const val FLYWAY = "12.1.0"
-    const val MYSQL_CONNECTOR = "9.6.0"
-    const val MARIADB_CONNECTOR = "3.5.7"
+    const val FLYWAY = "12.5.0"
+    const val MYSQL_CONNECTOR = "9.7.0"
+    const val MARIADB_CONNECTOR = "3.5.8"
     const val EXPOSED = "0.61.0"
     const val HIKARI_CP = "7.0.2"
 
     // Kubernetes
-    const val KUBERNETES_CLIENT = "25.0.0"
+    const val KUBERNETES_CLIENT = "26.0.0"
 
     // Other
     const val ZOOKEEPER = "3.9.5"

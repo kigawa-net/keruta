@@ -1,0 +1,18 @@
+name: ktcl-claudecode-check
+on:
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - 'ktcl-claudecode/**'
+      - 'Dockerfile_ktcl_claudecode'
+      - 'buildSrc/**'
+      - '.github/workflows/ktcl-claudecode-check.yml'
+      - '.github/workflows/build-check.yml'
+
+jobs:
+  ktcl-claudecode:
+    uses: ./.github/workflows/build-check.yml
+    with:
+      dockerFile: './Dockerfile_ktcl_claudecode'
+      gradleTask: ':ktcl-claudecode:build -x test'

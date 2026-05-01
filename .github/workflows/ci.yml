@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       mysql:
-        image: mysql:9.6
+        image: mysql:9.7
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: keruta_test
@@ -45,10 +45,22 @@ jobs:
         with:
           distribution: temurin
           java-version: 25
-      - uses: gradle/actions/setup-gradle@v5
+      - uses: gradle/actions/setup-gradle@v6
+        with:
+          # 設定キャッシュで高速化
+          enable-configuration-cache: true
+      - name: Gradle cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
       - run: ./gradlew test allTests
         env:
-          GRADLE_OPTS: -Dorg.gradle.daemon=false
+          GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.caching=true
           CHROME_BIN: /usr/bin/google-chrome
           FIREFOX_BIN: /usr/bin/firefox
           ANDROID_HOME: /usr/local/lib/android/sdk
@@ -56,6 +68,7 @@ jobs:
           TEST_DB_USERNAME: keruta
           TEST_DB_PASSWORD: keruta
 
+  # ktcl-front と kicl-web は並列実行
   ktcl-front:
     runs-on: ubuntu-latest
     steps:
@@ -81,3 +94,27 @@ jobs:
           VITE_KEYCLOAK_URL: https://user.kigawa.net/
           VITE_KEYCLOAK_REALM: develop
           VITE_KEYCLOAK_CLIENT_ID: keruta
+
+  kicl-web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: kicl-web/package-lock.json
+      - name: Setup Gradle for KMP build
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          enable-configuration-cache: true
+      - name: Build KMP modules
+        run: |
+          ./gradlew :kicl:kicl-domain:jsBrowserProductionLibraryDistribution \
+                    :kicl:kicl-usecase:jsBrowserProductionLibraryDistribution
+      - run: npm ci
+        working-directory: kicl-web
+      - run: npm run build
+        working-directory: kicl-web
+        env:
+          NODE_ENV: production

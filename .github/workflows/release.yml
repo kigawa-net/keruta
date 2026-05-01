@@ -58,8 +58,20 @@ jobs:
         with:
           distribution: temurin
           java-version: 25
-      - uses: gradle/actions/setup-gradle@v5
+      - uses: gradle/actions/setup-gradle@v6
         if: inputs.gradleTask != ''
+        with:
+          enable-configuration-cache: true
+      - name: Gradle cache
+        if: inputs.gradleTask != ''
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
       - name: Build with Gradle
         if: inputs.gradleTask != ''
         run: ./gradlew ${{ inputs.gradleTask }}
@@ -67,7 +79,7 @@ jobs:
       # docker
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
-      - uses: docker/login-action@v3
+      - uses: docker/login-action@v4
         with:
           registry: harbor.kigawa.net
           username: ${{ env.harborUser }}
@@ -95,7 +107,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
         shell: bash
 
-      - uses: docker/build-push-action@v5
+      - uses: docker/build-push-action@v7
         with:
           context: ${{ env.dir }}
           file: ${{ env.dockerFile }}

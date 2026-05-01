@@ -1,0 +1,22 @@
+name: ktcl-k8s-stg
+on:
+  push:
+    paths:
+      - 'ktcl-k8s/**'
+    branches:
+      - staging
+
+jobs:
+  ktcl-k8s:
+    uses: ./.github/workflows/release.yml
+    secrets:
+      HARBOR_PASS: ${{ secrets.HARBOR_PASS }}
+      GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+    with:
+      name: ktcl-k8s
+      manifestFile: ./keruta/stg/ktcl-k8s.yaml
+      harborProject: "library"
+      repository: "kigawa-net/kigawa-net-k8s"
+      dockerFile: './Dockerfile_ktcl_k8s'
+      gradleTask: ':ktcl-k8s:shadowJar -x test'
+      yamlPath: 'select(documentIndex == 0).spec.template.spec.containers[0].image'

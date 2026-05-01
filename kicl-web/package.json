@@ -1,0 +1,48 @@
+{
+    "name": "kicl-web",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "build": "react-router build",
+        "dev": "react-router dev",
+        "start": "react-router-serve ./build/server/index.js",
+        "typecheck": "react-router typegen && tsc",
+        "test": "vitest",
+        "test:run": "vitest run",
+        "test:coverage": "vitest run --coverage"
+    },
+    "dependencies": {
+        "@react-router/dev": "^7.11.0",
+        "@react-router/node": "^7.11.0",
+        "@react-router/serve": "^7.13.0",
+        "isbot": "^5",
+        "keruta-kicl-kicl-domain": "file:../kicl/kicl-domain/build/dist/js/productionLibrary",
+        "keruta-kicl-kicl-usecase": "file:../kicl/kicl-usecase/build/dist/js/productionLibrary",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0",
+        "react-router": "^7.11.0"
+    },
+    "devDependencies": {
+        "@tailwindcss/oxide-linux-x64-gnu": "^4.2.1",
+        "@eslint/js": "^10.0.0",
+        "@tailwindcss/vite": "^4.1.13",
+        "@testing-library/dom": "^10.4.1",
+        "@testing-library/jest-dom": "^6.9.1",
+        "@testing-library/react": "^16.3.2",
+        "@types/node": "^24.10.1",
+        "@types/react": "^19.2.5",
+        "@types/react-dom": "^19.2.3",
+        "@vitejs/plugin-react": "^6.0.0",
+        "eslint": "^10.0.0",
+        "eslint-plugin-react-hooks": "^7.0.1",
+        "eslint-plugin-react-refresh": "^0.5.0",
+        "globals": "^17.0.0",
+        "jsdom": "^29.0.0",
+        "typescript": "~6.0.0",
+        "typescript-eslint": "^8.46.4",
+        "vite": "^8.0.0",
+        "vite-tsconfig-paths": "^6.0.0",
+        "vitest": "^4.0.0"
+    }
+}
