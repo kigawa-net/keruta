@@ -1,0 +1,27 @@
+name: kise-check
+on:
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - 'kise/**'
+      - 'buildSrc/**'
+      - '.github/workflows/kise-check.yml'
+
+jobs:
+  kise:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 25
+          cache: 'gradle'
+
+      - name: Build kise modules
+        run: |
+          ./gradlew :kise:domain:compileKotlinJvm \
+                     :kise:usecase:compileKotlinJvm \
+                     :kise:compileKotlinJvm
