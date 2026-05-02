@@ -11,10 +11,12 @@ data class Session(
     val userId: Long,
     val token: String,
     val expiresAt: Long,
-    val createdAt: Long = System.currentTimeMillis(),
-    val updatedAt: Long = System.currentTimeMillis(),
+    val createdAt: Long = 0,
+    val updatedAt: Long = 0,
 ) {
-    fun isExpired(): Boolean = System.currentTimeMillis() > expiresAt
+    // Note: isExpired() はプラットフォーム固有の実装が必要
+    // commonMainでは比較のみ可能
+    fun isExpired(currentTime: Long): Boolean = currentTime > expiresAt
 }
 
 /**

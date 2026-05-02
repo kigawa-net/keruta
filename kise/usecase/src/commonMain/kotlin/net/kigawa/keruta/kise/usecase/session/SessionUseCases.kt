@@ -20,7 +20,8 @@ class VerifySessionUseCase(
         val session = sessionRepository.getByToken(token)
             ?: return Res.Err(SessionNotFoundErr("Session not found"))
 
-        if (session.isExpired()) {
+        val currentTime = System.currentTimeMillis()
+        if (session.isExpired(currentTime)) {
             sessionRepository.deleteByToken(token)
             return Res.Err(SessionExpiredErr("Session has expired"))
         }
@@ -42,7 +43,8 @@ class RefreshSessionUseCase(
         val session = sessionRepository.getByToken(token)
             ?: return Res.Err(SessionNotFoundErr("Session not found"))
 
-        if (session.isExpired()) {
+        val currentTime = System.currentTimeMillis()
+        if (session.isExpired(currentTime)) {
             sessionRepository.deleteByToken(token)
             return Res.Err(SessionExpiredErr("Session has expired"))
         }
@@ -50,12 +52,12 @@ class RefreshSessionUseCase(
         // 有効期限を延長（元の有効期限から1時間）
         val newExpiresAt = maxOf(
             session.expiresAt,
-            System.currentTimeMillis()
+            currentTime
         ) + 3_600_000
 
         val updatedSession = session.copy(
             expiresAt = newExpiresAt,
-            updatedAt = System.currentTimeMillis(),
+            updatedAt = currentTime,
         )
 
         // 更新（簡易実装）

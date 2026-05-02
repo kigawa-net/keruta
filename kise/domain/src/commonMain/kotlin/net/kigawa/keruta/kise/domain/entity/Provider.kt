@@ -13,7 +13,7 @@ data class Provider(
     val issuer: String,
     val audience: String,
     val setting: String = "{}",
-    val createdAt: Long = System.currentTimeMillis(),
+    val createdAt: Long = 0,
 )
 
 /**
