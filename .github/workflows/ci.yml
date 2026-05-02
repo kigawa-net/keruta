@@ -46,9 +46,6 @@ jobs:
           distribution: temurin
           java-version: 25
       - uses: gradle/actions/setup-gradle@v6
-        with:
-          # 設定キャッシュで高速化
-          enable-configuration-cache: true
       - name: Gradle cache
         uses: actions/cache@v4
         with:
@@ -106,8 +103,6 @@ jobs:
           cache-dependency-path: kicl-web/package-lock.json
       - name: Setup Gradle for KMP build
         uses: gradle/actions/setup-gradle@v6
-        with:
-          enable-configuration-cache: true
       - name: Build KMP modules
         run: |
           ./gradlew :kicl:kicl-domain:jsBrowserProductionLibraryDistribution \
