@@ -1,0 +1,46 @@
+name: kise-check
+on:
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - 'kise/**'
+      - 'buildSrc/**'
+      - '.github/workflows/kise-check.yml'
+      - '.github/workflows/build-check.yml'
+
+jobs:
+  kise:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 25
+
+      - uses: gradle/actions/setup-gradle@v6
+        with:
+          enable-configuration-cache: true
+
+      - name: Gradle cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
+      - name: Build kise modules
+        run: |
+          ./gradlew :kise:domain:compileKotlinJvm \
+                     :kise:usecase:compileKotlinJvm \
+                     :kise:compileKotlinJvm
+
+      - name: Run tests
+        run: |
+          ./gradlew :kise:domain:jvmTest \
+                     :kise:usecase:jvmTest
