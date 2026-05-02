@@ -3,6 +3,7 @@ plugins {
     id("serialize")
 }
 kotlin {
+    jvm()
     sourceSets["commonMain"].dependencies {
         api(project(":kise:domain"))
         api(project(":kodel:api"))
