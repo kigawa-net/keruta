@@ -2,6 +2,22 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## 規約の遵守（必須）
+
+**本リポジトリで作業を行う際は、以下の規約を必ず遵守すること。**
+
+1. [CONVENTION.md](CONVENTION.md) — リポジトリ全体の規約（ブランチ戦略、コミットメッセージ、PRルール、コードスタイル等）
+2. [AGENTS.md](AGENTS.md) — AIエージェント向け開発ガイド
+3. [doc/convention.md](doc/convention.md) — ドキュメント作成規約
+4. [doc/README.md](doc/README.md) — 技術ドキュメントのインデックス
+
+特に以下の点は厳守:
+- コミットメッセージは Conventional Commits 形式（`type(scope): 説明`）
+- コミット前に `./gradlew ktlintFormat && ./gradlew ktlintCheck` を実行
+- 新機能追加時はテストとドキュメントをセットで作成
+- ドキュメント作成時は `doc/README.md` の一覧に追加
+- 日本語で応答する
+
 * ユーザーには日本語で応答する
 * 大きなファイルは細分化する
 

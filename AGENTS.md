@@ -3,7 +3,24 @@
 This file provides guidance for AI agents working with this codebase.
 日本語で話す。
 
-リポジトリ全体の規約は [CONVENTION.md](CONVENTION.md) を参照。
+## 規約の遵守（必須）
+
+本エージェントが作業を行う際は、以下の規約を必ず遵守すること。
+
+| ファイル | 内容 |
+|----------|------|
+| [CONVENTION.md](CONVENTION.md) | リポジトリ全体の規約（ブランチ戦略、コミットメッセージ、PRルール、コードスタイル、CI/CD、デプロイフロー） |
+| [doc/convention.md](doc/convention.md) | ドキュメント作成規約（ファイル命名、構成、記法、更新ルール） |
+| [doc/README.md](doc/README.md) | 技術ドキュメントのインデックス |
+
+### 必須アクション
+
+- **コミットメッセージ**: Conventional Commits 形式（例: `fix(kicl-web): ナビゲーション修正`）
+- **コミット前**: `./gradlew ktlintFormat && ./gradlew ktlintCheck` を必ず実行
+- **テスト**: 新機能追加時はテストをセットで実装、CI通過を確認
+- **ドキュメント**: 新機能・変更時は関連ドキュメントを更新、`doc/README.md` の一覧に追加
+- **ブランチ**: 作業は機能別ブランチで行い、`develop` へPR作成
+- **言語**: 応答、コメント、ドキュメントは日本語を使用
 
 ## 開発コマンド
 
