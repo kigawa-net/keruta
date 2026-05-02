@@ -38,6 +38,9 @@ class KiseConfig(
     val defaultProviderIssuer: String = environment.config.propertyOrNull("kise.default.provider.issuer")?.getString()
         ?: "https://example.auth0.com/"
 
-    val jwtSecret: String = environment.config.propertyOrNull("kise.jwt.secret")?.getString()
+    val jwtPublicKey: String = environment.config.propertyOrNull("kise.jwt.publicKey")?.getString()
+        ?: ""
+
+    val jwtPrivateKey: String = environment.config.propertyOrNull("kise.jwt.privateKey")?.getString()
         ?: ""
 }
