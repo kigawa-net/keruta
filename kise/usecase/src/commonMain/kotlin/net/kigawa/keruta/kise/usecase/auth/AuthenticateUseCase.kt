@@ -82,7 +82,7 @@ class AuthenticateUseCase(
     /**
      * セッションを作成し、JWTトークンを発行する
      */
-    private suspend fun createSession(userId: Long, issuer: String, subject: String): Res<AuthResult, KiseErr> {
+    private suspend fun createSession(userId: Long, issuer: String, subject: String, currentTime: Long): Res<AuthResult, KiseErr> {
         // セッション数の制限を確認（最大10セッション/ユーザー）
         val sessionCount = sessionRepository.countByUserId(userId)
         if (sessionCount >= 10) {
@@ -92,7 +92,7 @@ class AuthenticateUseCase(
 
         // JWTトークンの生成
         val token = generateToken(userId, issuer, subject)
-        val expiresAt = System.currentTimeMillis() + 3_600_000 // 1時間
+        val expiresAt = currentTime + 3_600_000 // 1時間
 
         val session = sessionRepository.create(
             Session(

@@ -16,11 +16,10 @@ class VerifySessionUseCase(
     /**
      * トークンからセッションを検証する
      */
-    suspend fun execute(token: String): Res<Session, KiseErr> {
+    suspend fun execute(token: String, currentTime: Long): Res<Session, KiseErr> {
         val session = sessionRepository.getByToken(token)
             ?: return Res.Err(SessionNotFoundErr("Session not found"))
 
-        val currentTime = System.currentTimeMillis()
         if (session.isExpired(currentTime)) {
             sessionRepository.deleteByToken(token)
             return Res.Err(SessionExpiredErr("Session has expired"))
@@ -39,11 +38,10 @@ class RefreshSessionUseCase(
     /**
      * セッションを更新する（有効期限を延長）
      */
-    suspend fun execute(token: String): Res<Session, KiseErr> {
+    suspend fun execute(token: String, currentTime: Long): Res<Session, KiseErr> {
         val session = sessionRepository.getByToken(token)
             ?: return Res.Err(SessionNotFoundErr("Session not found"))
 
-        val currentTime = System.currentTimeMillis()
         if (session.isExpired(currentTime)) {
             sessionRepository.deleteByToken(token)
             return Res.Err(SessionExpiredErr("Session has expired"))
