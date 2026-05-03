@@ -17,5 +17,12 @@ kotlin {
         implementation("com.auth0:java-jwt:4.5.2")
         api(project(":ktcp-sdk:ktcp-domain:ktcp-domain-server"))
         api(project(":ktcp-sdk:ktcp-domain"))
+        // Database
+        implementation("org.jetbrains.exposed:exposed-core:0.61.0")
+        implementation("org.jetbrains.exposed:exposed-dao:0.61.0")
+        implementation("org.jetbrains.exposed:exposed-jdbc:0.61.0")
+        implementation("org.jetbrains.exposed:exposed-kotlin-datetime:0.61.0")
+        implementation("com.mysql:mysql-connector-j:9.7.0")
+        implementation("com.zaxxer:HikariCP:7.0.2")
     }
 }
