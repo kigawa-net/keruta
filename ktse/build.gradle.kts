@@ -77,11 +77,11 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.junit.jupiter:junit-jupiter:${Version.JUNIT_JUPITER}")
     testImplementation("io.mockk:mockk:${Version.MOCKK}")
-    // Testcontainers for integration testing
+    // Testcontainers for integration testing (2.x uses new artifact IDs)
     testImplementation("org.testcontainers:testcontainers:${Version.TESTCONTAINERS}")
-    testImplementation("org.testcontainers:junit-jupiter:${Version.TESTCONTAINERS}")
-    testImplementation("org.testcontainers:mysql:${Version.TESTCONTAINERS}")
-    testImplementation("org.testcontainers:kafka:${Version.TESTCONTAINERS}")
+    testImplementation("org.testcontainers:testcontainers-junit-jupiter:${Version.TESTCONTAINERS}")
+    testImplementation("org.testcontainers:testcontainers-mysql:${Version.TESTCONTAINERS}")
+    testImplementation("org.testcontainers:testcontainers-kafka:${Version.TESTCONTAINERS}")
     // Ktor client for WebSocket testing
     testImplementation("io.ktor:ktor-client-cio:${Version.KTOR}")
     testImplementation("io.ktor:ktor-client-websockets:${Version.KTOR}")
