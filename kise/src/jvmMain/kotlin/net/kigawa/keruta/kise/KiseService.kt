@@ -2,7 +2,6 @@ package net.kigawa.keruta.kise
 
 import net.kigawa.keruta.kise.domain.entity.AuthResult
 import net.kigawa.keruta.kise.domain.entity.Session
-import net.kigawa.keruta.kise.domain.entity.UserIdp
 import net.kigawa.keruta.kise.domain.error.KiseErr
 import net.kigawa.keruta.kise.domain.repository.ProviderRepository
 import net.kigawa.keruta.kise.domain.repository.SessionRepository
@@ -17,7 +16,6 @@ import net.kigawa.keruta.kise.usecase.session.LogoutUseCase
 import net.kigawa.keruta.kise.usecase.session.RefreshSessionUseCase
 import net.kigawa.keruta.kise.usecase.session.VerifySessionUseCase
 import net.kigawa.kodel.api.err.Res
-import kotlin.random.Random
 
 /**
  * Kise 認証サービス
@@ -52,19 +50,9 @@ class KiseService(config: KiseConfig) {
     private val logoutUseCase = LogoutUseCase(sessionRepository)
 
     /**
-     * 認証リクエストの入力
-     */
-    data class AuthInput(
-        val userToken: String,
-        val providerToken: String,
-        val defaultUserIdpIssuer: String,
-        val defaultProviderIssuer: String,
-    )
-
-    /**
      * 認証を実行する
      */
-    suspend fun authenticate(input: AuthInput): Res<AuthResult, KiseErr> {
+    suspend fun authenticate(input: AuthenticateUseCase.AuthInput): Res<AuthResult, KiseErr> {
         // Note: 実際のJWT検証は ktcp-sdk の Auth0JwtVerifier を使用するため、
         // ここでは stub 実装を提供します
         return authenticateUseCase.execute(input)

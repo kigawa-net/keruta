@@ -3,9 +3,12 @@ package net.kigawa.keruta.kise.persist.repository
 import net.kigawa.keruta.kise.domain.entity.Session
 import net.kigawa.keruta.kise.domain.repository.SessionRepository
 import net.kigawa.keruta.kise.persist.table.SessionTable
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.less
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 
 /**
  * Exposed を使用したセッションリポジトリ実装
@@ -29,7 +32,10 @@ class ExposedSessionRepository : SessionRepository {
     }
 
     override suspend fun getByToken(token: String): Session? {
-        val row = SessionTable.select { SessionTable.token eq token }.firstOrNull() ?: return null
+        val row = SessionTable
+            .selectAll()
+            .where { SessionTable.token eq token }
+            .firstOrNull() ?: return null
 
         return Session(
             id = row[SessionTable.id],
@@ -42,7 +48,9 @@ class ExposedSessionRepository : SessionRepository {
     }
 
     override suspend fun getByUserId(userId: Long): List<Session> {
-        return SessionTable.select { SessionTable.userId eq userId }
+        return SessionTable
+            .selectAll()
+            .where { SessionTable.userId eq userId }
             .map { row ->
                 Session(
                     id = row[SessionTable.id],
@@ -67,6 +75,10 @@ class ExposedSessionRepository : SessionRepository {
     }
 
     override suspend fun countByUserId(userId: Long): Int {
-        return SessionTable.select { SessionTable.userId eq userId }.count().toInt()
+        return SessionTable
+            .selectAll()
+            .where { SessionTable.userId eq userId }
+            .count()
+            .toInt()
     }
 }

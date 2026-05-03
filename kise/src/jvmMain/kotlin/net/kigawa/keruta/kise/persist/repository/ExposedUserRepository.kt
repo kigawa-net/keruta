@@ -5,8 +5,10 @@ import net.kigawa.keruta.kise.domain.entity.UserIdp
 import net.kigawa.keruta.kise.domain.repository.UserRepository
 import net.kigawa.keruta.kise.persist.table.UserIdpTable
 import net.kigawa.keruta.kise.persist.table.UserTable
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 
 /**
  * Exposed を使用したユーザーリポジトリ実装
@@ -21,7 +23,10 @@ class ExposedUserRepository : UserRepository {
     }
 
     override suspend fun getById(id: Long): User? {
-        val row = UserTable.select { UserTable.id eq id }.firstOrNull() ?: return null
+        val row = UserTable
+            .selectAll()
+            .where { UserTable.id eq id }
+            .firstOrNull() ?: return null
         return User(
             id = row[UserTable.id],
             createdAt = row[UserTable.createdAt]
@@ -29,11 +34,14 @@ class ExposedUserRepository : UserRepository {
     }
 
     override suspend fun getUserIdp(userId: Long, issuer: String, subject: String): UserIdp? {
-        val row = UserIdpTable.select {
-            (UserIdpTable.userId eq userId) and
-                (UserIdpTable.issuer eq issuer) and
-                (UserIdpTable.subject eq subject)
-        }.firstOrNull() ?: return null
+        val row = UserIdpTable
+            .selectAll()
+            .where {
+                (UserIdpTable.userId eq userId) and
+                    (UserIdpTable.issuer eq issuer) and
+                    (UserIdpTable.subject eq subject)
+            }
+            .firstOrNull() ?: return null
 
         return UserIdp(
             userId = row[UserIdpTable.userId],
@@ -46,9 +54,12 @@ class ExposedUserRepository : UserRepository {
     }
 
     override suspend fun getUserIdpByIdentity(issuer: String, subject: String): UserIdp? {
-        val row = UserIdpTable.select {
-            (UserIdpTable.issuer eq issuer) and (UserIdpTable.subject eq subject)
-        }.firstOrNull() ?: return null
+        val row = UserIdpTable
+            .selectAll()
+            .where {
+                (UserIdpTable.issuer eq issuer) and (UserIdpTable.subject eq subject)
+            }
+            .firstOrNull() ?: return null
 
         return UserIdp(
             userId = row[UserIdpTable.userId],

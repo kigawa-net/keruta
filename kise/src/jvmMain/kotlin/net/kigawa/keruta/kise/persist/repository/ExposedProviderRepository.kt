@@ -3,25 +3,34 @@ package net.kigawa.keruta.kise.persist.repository
 import net.kigawa.keruta.kise.domain.entity.Provider
 import net.kigawa.keruta.kise.domain.repository.ProviderRepository
 import net.kigawa.keruta.kise.persist.table.ProviderTable
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 
 /**
  * Exposed を使用したプロバイダーリポジトリ実装
  */
 class ExposedProviderRepository : ProviderRepository {
     override suspend fun getById(id: Long): Provider? {
-        val row = ProviderTable.select { ProviderTable.id eq id }.firstOrNull() ?: return null
+        val row = ProviderTable
+            .selectAll()
+            .where { ProviderTable.id eq id }
+            .firstOrNull() ?: return null
         return rowToProvider(row)
     }
 
     override suspend fun getByIssuer(issuer: String): Provider? {
-        val row = ProviderTable.select { ProviderTable.issuer eq issuer }.firstOrNull() ?: return null
+        val row = ProviderTable
+            .selectAll()
+            .where { ProviderTable.issuer eq issuer }
+            .firstOrNull() ?: return null
         return rowToProvider(row)
     }
 
     override suspend fun getByUserId(userId: Long): List<Provider> {
-        return ProviderTable.select { ProviderTable.userId eq userId }
+        return ProviderTable
+            .selectAll()
+            .where { ProviderTable.userId eq userId }
             .map { rowToProvider(it) }
     }
 
