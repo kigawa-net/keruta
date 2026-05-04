@@ -61,7 +61,7 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
         if: inputs.gradleTask != ''
         with:
-          enable-configuration-cache: true
+          cache-disabled: false
       - name: Gradle cache
         if: inputs.gradleTask != ''
         uses: actions/cache@v5
