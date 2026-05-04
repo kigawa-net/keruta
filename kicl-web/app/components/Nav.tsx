@@ -9,6 +9,7 @@ export function Nav() {
             <div className="max-w-4xl mx-auto flex items-center gap-6">
                 <span className="font-bold text-gray-900">kicl</span>
                 <NavLink to="/" className={linkClass} end>ホーム</NavLink>
+                <NavLink to="/account" className={linkClass}>アカウント</NavLink>
                 <NavLink to="/settings" className={linkClass}>設定</NavLink>
             </div>
         </nav>
