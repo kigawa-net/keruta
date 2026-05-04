@@ -3,9 +3,10 @@ package net.kigawa.keruta.kise.persist.repository
 import net.kigawa.keruta.kise.domain.entity.Provider
 import net.kigawa.keruta.kise.domain.repository.ProviderRepository
 import net.kigawa.keruta.kise.persist.table.ProviderTable
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.jdbc.insert
+import org.jetbrains.exposed.v1.jdbc.selectAll
+import org.jetbrains.exposed.v1.core.ResultRow
 
 /**
  * Exposed を使用したプロバイダーリポジトリ実装
@@ -51,7 +52,7 @@ class ExposedProviderRepository : ProviderRepository {
         )
     }
 
-    private fun rowToProvider(row: org.jetbrains.exposed.sql.ResultRow): Provider {
+    private fun rowToProvider(row: ResultRow): Provider {
         return Provider(
             id = row[ProviderTable.id],
             userId = row[ProviderTable.userId],

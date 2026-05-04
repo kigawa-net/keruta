@@ -1,6 +1,6 @@
 package net.kigawa.keruta.kise.persist.table
 
-import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.v1.core.Table
 
 /**
  * ユーザーテーブル

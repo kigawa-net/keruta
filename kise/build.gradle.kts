@@ -18,10 +18,14 @@ kotlin {
         api(project(":ktcp-sdk:ktcp-domain:ktcp-domain-server"))
         api(project(":ktcp-sdk:ktcp-domain"))
         // Database
-        implementation("org.jetbrains.exposed:exposed-core:0.61.0")
-        implementation("org.jetbrains.exposed:exposed-dao:0.61.0")
-        implementation("org.jetbrains.exposed:exposed-jdbc:0.61.0")
-        implementation("org.jetbrains.exposed:exposed-kotlin-datetime:0.61.0")
+        implementation("org.jetbrains.exposed:exposed-core:${Version.EXPOSED}")
+        implementation("org.jetbrains.exposed:exposed-dao:${Version.EXPOSED}")
+        implementation("org.jetbrains.exposed:exposed-jdbc:${Version.EXPOSED}")
+        implementation("org.jetbrains.exposed:exposed-kotlin-datetime:${Version.EXPOSED}")
+        // Auth dependencies - for Auth0JwtVerifier in ktcp-sdk/src/jvmMain
+        api(project(":ktcp-sdk"))
+        // For UnverifiedAuthTokens, AuthTokenDecoder interface
+        api(project(":ktse-sdk"))
         implementation("com.mysql:mysql-connector-j:9.7.0")
         implementation("com.zaxxer:HikariCP:7.0.2")
     }

@@ -5,10 +5,10 @@ import net.kigawa.keruta.kise.domain.entity.UserIdp
 import net.kigawa.keruta.kise.domain.repository.UserRepository
 import net.kigawa.keruta.kise.persist.table.UserIdpTable
 import net.kigawa.keruta.kise.persist.table.UserTable
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.core.and
+import org.jetbrains.exposed.v1.jdbc.insert
+import org.jetbrains.exposed.v1.jdbc.selectAll
 
 /**
  * Exposed を使用したユーザーリポジトリ実装
