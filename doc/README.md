@@ -8,11 +8,12 @@
 |---|---|
 | [architecture.md](architecture.md) | コアアーキテクチャパターン（Entrypoint、Res\<T,E\>、シリアライゼーション、エラー階層） |
 | [authentication.md](authentication.md) | 二重トークン認証フロー（OIDC + プロバイダーJWT）、JWT検証設定、セッション管理 |
+| [ci-convention.md](ci-convention.md) | CI（GitHub Actions）作成・運用規約（ワークフロー命名、トリガー、可重用ワークフロー） |
 | [convention.md](convention.md) | ドキュメント作成規約（ファイル命名、構成、記法、更新ルール） |
 | [database.md](database.md) | DBスキーマ、Flywayマイグレーション、HikariCP設定、永続化抽象化 |
 | [development.md](development.md) | ローカル開発環境セットアップ、IntelliJ設定、トラブルシューティング |
 | [flows.md](flows.md) | 各機能の処理フロー詳細（WS ルーティング、認証、K8s ジョブ実行、KICP） |
-| [kicp.md](kicp.md) | KICP（クロスドメインIDフェデレーション）プロトコル仕様、ユースケース |
+| [kicp.md](kicp.md) | KICP（クロスドメインIDフェデレーションプロトコル）仕様、ユースケース |
 | [kicl-web.md](kicl-web.md) | kicl-web（次世代フロントエンド）アーキテクチャ、技術スタック、ビルド手順 |
 
 ## 概要
