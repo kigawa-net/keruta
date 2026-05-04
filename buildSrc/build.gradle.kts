@@ -8,7 +8,7 @@ repositories {
     gradlePluginPortal()
 }
 
-val kotlinVersion = "2.3.0"
+val kotlinVersion = "2.3.20"
 val composeVersion = "1.10.3"
 fun pluginId(pluginName: String, version: String) = "$pluginName:$pluginName.gradle.plugin:$version"
 fun kotlinPluginId(pluginName: String, version: String = kotlinVersion) =
