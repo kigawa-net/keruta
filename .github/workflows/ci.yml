@@ -6,15 +6,9 @@ on:
     branches:
       - main
       - develop
-    paths-ignore:
-      - 'doc/**'
-      - '*.md'
   pull_request:
     branches:
       - develop
-    paths-ignore:
-      - 'doc/**'
-      - '*.md'
 
 # 並列実行 + 重複起動防止
 concurrency:
@@ -64,6 +58,14 @@ jobs:
           TEST_DB_JDBC_URL: jdbc:mysql://localhost:3306/keruta_test
           TEST_DB_USERNAME: keruta
           TEST_DB_PASSWORD: keruta
+
+  # ドキュメント関連のチェック
+  doc-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Check doc/ filename conventions
+        run: bash scripts/check-doc-filenames.sh
 
   # ktcl-front と kicl-web は並列実行
   ktcl-front:
