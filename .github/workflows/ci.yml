@@ -67,6 +67,14 @@ jobs:
       - name: Check doc/ filename conventions
         run: bash scripts/check-doc-filenames.sh
 
+  # ブランチ名規約チェック
+  branch-naming-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Check branch naming convention
+        run: bash scripts/check-branch-naming.sh ${{ github.head_ref || github.ref_name }}
+
   # ktcl-front と kicl-web は並列実行
   ktcl-front:
     runs-on: ubuntu-latest
