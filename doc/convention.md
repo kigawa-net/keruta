@@ -11,7 +11,7 @@
 
 ## ファイル命名規則
 
-- 小文字スネークケース（`snake_case`）
+- 小文字ケバブケース（`kebab-case`、ハイフン区切り）
 - 拡張子は `.md`
 - 例: `kicl-web.md`, `database.md`, `processing-flows.md`
 
