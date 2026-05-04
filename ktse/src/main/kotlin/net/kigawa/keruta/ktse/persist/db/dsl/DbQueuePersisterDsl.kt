@@ -10,11 +10,18 @@ import net.kigawa.keruta.ktse.persist.db.table.QueueTable
 import net.kigawa.keruta.ktse.persist.db.table.QueueUserTable
 import net.kigawa.keruta.ktse.persist.model.ExposedPersistedQueue
 import net.kigawa.kodel.api.err.Res
-import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.v1.core.and
+import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.core.JoinType
+import org.jetbrains.exposed.v1.jdbc.JdbcTransaction
+import org.jetbrains.exposed.v1.jdbc.deleteWhere
+import org.jetbrains.exposed.v1.jdbc.insert
+import org.jetbrains.exposed.v1.jdbc.selectAll
+import org.jetbrains.exposed.v1.jdbc.update
 
+@Suppress("DEPRECATION")
 class DbQueuePersisterDsl(
-    val transaction: Transaction,
+    private val transaction: JdbcTransaction,
 ) {
     fun createQueue(
         queueToCreate: QueueToCreate, provider: PersistedProvider,
