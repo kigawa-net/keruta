@@ -3,7 +3,7 @@ package net.kigawa.keruta.kise.persist
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import net.kigawa.keruta.kise.KiseConfig
-import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.v1.jdbc.Database
 
 /**
  * データベース接続管理
