@@ -43,4 +43,11 @@ class KiseConfig(
 
     val jwtPrivateKey: String = environment.config.propertyOrNull("kise.jwt.privateKey")?.getString()
         ?: ""
+
+    // OIDC設定
+    val oidcClientId: String = environment.config.propertyOrNull("kise.oidc.clientId")?.getString()
+        ?: "kise-client"
+
+    val oidcRedirectUri: String = environment.config.propertyOrNull("kise.oidc.redirectUri")?.getString()
+        ?: "http://localhost:8080/callback"
 }
