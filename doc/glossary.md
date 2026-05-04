@@ -10,7 +10,7 @@ keruta プロジェクトで使用される主要な用語を定義する。
 |------|------|
 | keruta | 本プロジェクト全体の名称 |
 | kodel | 共通ライブラリ。Res型、EntrypointDeferred、Kogger などを提供 |
-| ktcp | WebSocket プロトコル。Kotlin Multiplatform 対応 |
+| ktcp | Keruta Task Client Protocol。WebSocket + HTTP を用いた本プロジェクト独自のタスク管理プロトコル。Kotlin Multiplatform 対応 |
 | ktse | Ktor タスクサーバー。Exposed/Flyway/MySQL を使用、二重トークン認証を実装 |
 | ktcl-k8s | KTCP でタスクを受信し、Kubernetes Job として実行するクライアント |
 | ktcl-front | 既存フロントエンド。React + Keycloak.js を使用 |
@@ -18,7 +18,7 @@ keruta プロジェクトで使用される主要な用語を定義する。
 | kicl | Kotlin Multiplatform モジュール。domain/usecase 層を含む |
 | ktcl-claudecode | Claude Code 統合モジュール |
 | kise | Keruta ID Server（計画中）。統合認証基盤として機能 |
-| kicp | Kigawa Identity Cross-domain Protocol。異なるドメイン間の ID フェデレーションプロトコル |
+| kicp | Keruta ID Client Protocol（Kigawa Identity Cross-domain Protocol）。分散型ID（Decentralized Identity）を利用したクロスドメインIDフェデレーションプロトコル |
 
 ---
 
@@ -42,7 +42,10 @@ keruta プロジェクトで使用される主要な用語を定義する。
 
 | 用語 | 説明 |
 |------|------|
-| KTCP | 本プロジェクト独自の WebSocket プロトコル。Kotlin Multiplatform 対応 |
+| KTCP | Keruta Task Client Protocol。WebSocket + HTTP を用いた本プロジェクト独自のタスク管理プロトコル。Kotlin Multiplatform 対応 |
+| IdP Client | Identity Provider Client。OIDC 等の認証プロバイダーと通信するクライアント |
+| KTCP Client | KTCP プロトコルを使用してタスクサーバー（ktse）と通信するクライアント（例: ktcl-k8s） |
+| KICP Client | KICP プロトコルを使用してクロスドメイン ID フェデレーションを行うクライアント（例: clientA、clientB） |
 | WebSocket | 全二重通信を提供するプロトコル。KTCP の基盤 |
 | ClientMsg | クライアントから送信されるメッセージの sealed インターフェース。ポリモーフィックシリアライズに対応 |
 | ServerMsg | サーバーから送信されるメッセージの sealed インターフェース。ポリモーフィックシリアライズに対応 |
