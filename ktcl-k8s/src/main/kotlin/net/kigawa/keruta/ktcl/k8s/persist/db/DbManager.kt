@@ -3,7 +3,7 @@ package net.kigawa.keruta.ktcl.k8s.persist.db
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import net.kigawa.keruta.ktcl.k8s.config.DbConfig
-import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.v1.jdbc.Database
 
 /**
  * データベース接続を管理するクラス

@@ -1,7 +1,7 @@
 package net.kigawa.keruta.ktse.persist.db.table
 
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.kotlin.datetime.datetime
+import org.jetbrains.exposed.v1.core.Table
+import org.jetbrains.exposed.v1.datetime.datetime
 
 object UserIdpTable: Table("user_idp") {
     val userId = long("user_id").references(UserTable.id)
