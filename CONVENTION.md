@@ -188,11 +188,26 @@ type(scope): 説明
 | `*-dev.yml` | `develop` push | dev環境デプロイ |
 | `*-main.yml` | `main` push | 本番環境デプロイ |
 
+詳細なワークフロー作成・運用規約は [`doc/ci-convention.md`](doc/ci-convention.md) を参照。
+
 ### 6-3. Renovate
 
 - 毎晩19:00実行
 - PRは `develop` へ自動マージ（CI通過後）
 - `renovate-merge.yml` により自動化
+
+### 6-4. ワークフロー作成・更新規約
+
+新規ワークフロー作成時や既存ワークフロー更新時は以下の規約に従う：
+
+1. **ファイル命名**: モジュール単体チェックは `{module}-check.yml`、デプロイは `{module}-{env}.yml`
+2. **再利用**: 共通処理（Dockerビルド等）は `build-check.yml` 等の可重用ワークフローを使用
+3. **トリガー**: `push`（主要ブランチ）、`pull_request`（develop）、`workflow_call`（可重用）を適切に設定
+4. **パスフィルタ**: モジュール単体チェックには `paths` を設定し、関連ファイル変更時のみ実行
+5. **キャッシュ**: Gradle、Node.js、Dockerの各キャッシュを有効化
+6. **コミットメッセージ**: `ci:` プレフィックスを使用（Conventional Commits）
+
+詳細は [`doc/ci-convention.md`](doc/ci-convention.md) を参照。
 
 ## 7. バージョニング
 
