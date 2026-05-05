@@ -21,17 +21,15 @@ class UserDao(
     /**
      * ユーザーを検索し、存在しなければ作成してIDを返す
      */
-    fun findOrCreate(userSubject: String, userIssuer: String, userAudience: String): Long {
-        return transaction(dbManager.db) {
-            val existing = UserTable.selectAll()
-                .where { (UserTable.userSubject eq userSubject) and (UserTable.userIssuer eq userIssuer) }
-                .firstOrNull()
-            existing?.get(UserTable.id) ?: UserTable.insert {
-                it[UserTable.userSubject] = userSubject
-                it[UserTable.userIssuer] = userIssuer
-                it[UserTable.userAudience] = userAudience
-            }[UserTable.id]
-        }
+    fun findOrCreate(userSubject: String, userIssuer: String, userAudience: String): Long = transaction(dbManager.db) {
+        val existing = UserTable.selectAll()
+            .where { (UserTable.userSubject eq userSubject) and (UserTable.userIssuer eq userIssuer) }
+            .firstOrNull()
+        existing?.get(UserTable.id) ?: UserTable.insert {
+            it[UserTable.userSubject] = userSubject
+            it[UserTable.userIssuer] = userIssuer
+            it[UserTable.userAudience] = userAudience
+        }[UserTable.id]
     }
 
     /**

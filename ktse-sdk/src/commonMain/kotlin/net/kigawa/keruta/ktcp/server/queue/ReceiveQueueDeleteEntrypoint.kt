@@ -12,7 +12,8 @@ import net.kigawa.kodel.api.err.Res
 
 class ReceiveQueueDeleteEntrypoint : ServerQueueDeleteEntrypoint<ServerCtx> {
     override fun access(
-        input: ServerQueueDeleteMsg, ctx: ServerCtx,
+        input: ServerQueueDeleteMsg,
+        ctx: ServerCtx,
     ): EntrypointDeferred<Res<Unit, KtcpErr>> {
         return EntrypointDeferred {
             val session = ctx.session.authenticated()
@@ -22,7 +23,8 @@ class ReceiveQueueDeleteEntrypoint : ServerQueueDeleteEntrypoint<ServerCtx> {
                 is Res.Ok -> Unit
             }
             ctx.server.clientEntrypoints.queueDeleted.access(
-                ClientQueueDeletedMsg(id = input.queueId), ctx
+                ClientQueueDeletedMsg(id = input.queueId),
+                ctx,
             )?.execute() ?: Res.Err(ResponseErr("", null))
         }
     }

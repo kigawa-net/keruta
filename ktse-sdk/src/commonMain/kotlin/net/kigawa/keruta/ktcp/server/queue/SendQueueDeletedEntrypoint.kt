@@ -9,11 +9,10 @@ import net.kigawa.kodel.api.err.Res
 
 class SendQueueDeletedEntrypoint : ClientQueueDeletedEntrypoint<ServerCtx> {
     override fun access(
-        input: ClientQueueDeletedMsg, ctx: ServerCtx,
-    ): EntrypointDeferred<Res<Unit, Nothing>> {
-        return EntrypointDeferred {
-            ctx.connection.send(ctx.serializer.serialize(input))
-            Res.Ok(Unit)
-        }
+        input: ClientQueueDeletedMsg,
+        ctx: ServerCtx,
+    ): EntrypointDeferred<Res<Unit, Nothing>> = EntrypointDeferred {
+        ctx.connection.send(ctx.serializer.serialize(input))
+        Res.Ok(Unit)
     }
 }

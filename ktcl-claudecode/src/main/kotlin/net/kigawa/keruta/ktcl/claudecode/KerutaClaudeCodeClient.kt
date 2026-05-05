@@ -31,22 +31,19 @@ class KerutaClaudeCodeClient(
             level = LogLevel.INFO
             handler(::StdHandler) {
                 level = LogLevel.DEBUG
-                formatter = object: LoggerFormatter {
+                formatter = object : LoggerFormatter {
 
                     val MAX_PACKAGE_SECTION_LENGTH = 40
 
-                    override fun format(row: LogRow): String {
-                        return row.run {
-                            val lvStr = level.name.padEnd(8)
-                            val className = formatClassName(sourceClassName)
-                            val method = sourceMethodName
-                                .take(15)
-                                .padEnd(15)
+                    override fun format(row: LogRow): String = row.run {
+                        val lvStr = level.name.padEnd(8)
+                        val className = formatClassName(sourceClassName)
+                        val method = sourceMethodName
+                            .take(15)
+                            .padEnd(15)
 
-                            "${lvStr}[${className} #${method}]: ${message}\n"
-                        }
+                        "$lvStr[$className #$method]: ${message}\n"
                     }
-
 
                     private fun formatClassName(className: String): String {
                         val packageSections = className
@@ -136,14 +133,14 @@ class KerutaClaudeCodeClient(
             taskUpdatedEntrypoint = ReceiveTaskUpdatedEntrypoint(),
             taskMovedEntrypoint = ReceiveTaskMovedEntrypoint(),
             taskListedEntrypoint = ReceiveTaskListedEntrypoint(taskExecutor, connection, config.taskId),
-            taskShowedEntrypoint = ReceiveTaskShowedEntrypoint(taskExecutor, config.taskId)
+            taskShowedEntrypoint = ReceiveTaskShowedEntrypoint(taskExecutor, config.taskId),
         )
 
         // 起動時に既存のpendingタスクを確認
         logger.info { "Requesting task list for queue ${config.queueId}" }
         ktcpClient.ktcpServerEntrypoints.taskList.access(
             ServerTaskListMsg(queueId = config.queueId),
-            ctx
+            ctx,
         )?.execute()
 
         // メッセージ受信ループ

@@ -12,7 +12,7 @@ class ServerAuthRequestMsgTest {
         val msg = ServerAuthRequestMsg(
             userToken = "user-token-123",
             type = ServerMsgType.AUTH_REQUEST,
-            serverToken = "server-token-456"
+            serverToken = "server-token-456",
         )
 
         // Assert
@@ -26,7 +26,7 @@ class ServerAuthRequestMsgTest {
         // Arrange & Act
         val msg = ServerAuthRequestMsg(
             userToken = "user-token-123",
-            serverToken = "server-token-456"
+            serverToken = "server-token-456",
         )
 
         // Assert
@@ -40,7 +40,7 @@ class ServerAuthRequestMsgTest {
             ServerAuthRequestMsg(
                 userToken = "user-token-123",
                 type = ServerMsgType.TASK_CREATE,
-                serverToken = "server-token-456"
+                serverToken = "server-token-456",
             )
         }
     }
@@ -52,7 +52,7 @@ class ServerAuthRequestMsgTest {
             ServerAuthRequestMsg(
                 userToken = "user-token-123",
                 type = ServerMsgType.GENERIC_ERROR,
-                serverToken = "server-token-456"
+                serverToken = "server-token-456",
             )
         }
     }

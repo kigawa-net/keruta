@@ -121,17 +121,11 @@ actual class OidcAuthManager actual constructor(
         authSession = null
     }
 
-    actual suspend fun refreshToken(): Result<String> {
-        return Result.failure(NotImplementedError("リフレッシュトークン未実装"))
-    }
+    actual suspend fun refreshToken(): Result<String> = Result.failure(NotImplementedError("リフレッシュトークン未実装"))
 
-    actual fun isAuthenticated(): Boolean {
-        return accessToken != null
-    }
+    actual fun isAuthenticated(): Boolean = accessToken != null
 
-    actual fun getAccessToken(): String? {
-        return accessToken
-    }
+    actual fun getAccessToken(): String? = accessToken
 }
 
 private class PresentationContextProvider :
@@ -140,7 +134,5 @@ private class PresentationContextProvider :
 
     override fun presentationAnchorForWebAuthenticationSession(
         session: ASWebAuthenticationSession,
-    ): ASPresentationAnchor {
-        return UIApplication.sharedApplication.keyWindow ?: UIWindow()
-    }
+    ): ASPresentationAnchor = UIApplication.sharedApplication.keyWindow ?: UIWindow()
 }

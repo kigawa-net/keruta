@@ -17,9 +17,8 @@ class ConnectionManager(
             method = HttpMethod.Get,
             host = config.ktseHost,
             port = config.ktsePort,
-            path = "/ws/ktcp"
+            path = "/ws/ktcp",
         )
         return JvmWebSocketConnection(session)
     }
-
 }

@@ -18,7 +18,7 @@ class KtcpServer(
     providerCompleteEntrypoint: ServerProviderCompleteEntrypoint<ServerCtx>,
     providerDeleteEntrypoint: ServerProviderDeleteEntrypoint<ServerCtx>,
     val jwtVerifier: JwtVerifier,
-    val serializer: KerutaSerializer
+    val serializer: KerutaSerializer,
 ) {
 
     val ktcpServerEntrypoints = KtcpServerEntrypoints(

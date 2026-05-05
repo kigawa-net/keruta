@@ -10,6 +10,8 @@ import net.kigawa.kodel.api.err.Res
 interface ServerProviderDeleteEntrypoint<C> : Entrypoint<ServerProviderDeleteMsg, EntrypointDeferred<Res<Unit, KtcpErr>>, C> {
     override val info: EntrypointInfo
         get() = EntrypointInfo(
-            ServerMsgType.PROVIDER_DELETE.str, emptyList(), "プロバイダー削除メッセージ処理"
+            ServerMsgType.PROVIDER_DELETE.str,
+            emptyList(),
+            "プロバイダー削除メッセージ処理",
         )
 }

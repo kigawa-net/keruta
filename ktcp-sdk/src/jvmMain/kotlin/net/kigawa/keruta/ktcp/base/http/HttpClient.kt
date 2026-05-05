@@ -18,5 +18,4 @@ class HttpClient {
         urlString: String,
         block: HttpRequestBuilder.() -> Unit = {},
     ) = client.get(urlString, block)
-
 }

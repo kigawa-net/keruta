@@ -10,6 +10,8 @@ import net.kigawa.kodel.api.err.Res
 interface ServerProviderCompleteEntrypoint<C> : Entrypoint<ServerProviderCompleteMsg, EntrypointDeferred<Res<Unit, KtcpErr>>, C> {
     override val info: EntrypointInfo
         get() = EntrypointInfo(
-            ServerMsgType.PROVIDER_COMPLETE.str, emptyList(), "プロバイダー完了メッセージ処理"
+            ServerMsgType.PROVIDER_COMPLETE.str,
+            emptyList(),
+            "プロバイダー完了メッセージ処理",
         )
 }

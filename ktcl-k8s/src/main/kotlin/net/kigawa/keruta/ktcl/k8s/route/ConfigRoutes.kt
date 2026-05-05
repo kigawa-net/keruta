@@ -60,11 +60,12 @@ class ConfigRoutes(
                     queueProperties = ObjectPropertyJson(
                         listOf(
                             ObjectPropertyJson.Field(
-                                "git-repo", "git repo url",
-                                StringPropertyJson(true)
-                            )
-                        )
-                    )
+                                "git-repo",
+                                "git repo url",
+                                StringPropertyJson(true),
+                            ),
+                        ),
+                    ),
                 )
                 call.respond(response)
             }
@@ -120,13 +121,13 @@ class ConfigRoutes(
                             namespace = appConfig.k8s.namespace,
                             useInCluster = appConfig.k8s.useInCluster,
                             kubeconfigPath = appConfig.k8s.kubeConfigPath,
-                            jobTimeout = appConfig.k8s.jobTimeout
+                            jobTimeout = appConfig.k8s.jobTimeout,
                         ),
                         queue = QueueConfig(
-                            queueId = appConfig.ktse.queueId
+                            queueId = appConfig.ktse.queueId,
                         ),
                         claudeCode = ClaudeCodeConfig(
-                            hasApiKey = hasApiKey
+                            hasApiKey = hasApiKey,
                         ),
                         hasGithubToken = hasGithubToken,
                     )
@@ -204,5 +205,4 @@ class ConfigRoutes(
             }
         }
     }
-
 }

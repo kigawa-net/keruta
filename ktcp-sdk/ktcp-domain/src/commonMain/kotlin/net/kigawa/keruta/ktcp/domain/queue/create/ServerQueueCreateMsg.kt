@@ -10,7 +10,7 @@ data class ServerQueueCreateMsg(
     val providerId: Long,
     val name: String,
     val setting: String,
-): ServerMsg {
+) : ServerMsg {
     init {
         require(type == ServerMsgType.QUEUE_CREATE) { "type must be QUEUE_CREATE" }
     }

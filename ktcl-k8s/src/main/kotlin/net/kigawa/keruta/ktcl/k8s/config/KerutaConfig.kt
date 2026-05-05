@@ -6,13 +6,11 @@ import net.kigawa.kodel.api.net.Url
  * Keruta自身の設定
  */
 data class KerutaConfig(
-    val ownIssuer: Url
+    val ownIssuer: Url,
 ) {
     companion object {
-        fun load(config: io.ktor.server.config.ApplicationConfig): KerutaConfig {
-            return KerutaConfig(
-                ownIssuer = Url.parse(config.property("keruta.ownIssuer").getString())
-            )
-        }
+        fun load(config: io.ktor.server.config.ApplicationConfig): KerutaConfig = KerutaConfig(
+            ownIssuer = Url.parse(config.property("keruta.ownIssuer").getString()),
+        )
     }
 }

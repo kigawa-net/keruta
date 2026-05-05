@@ -19,20 +19,15 @@ data class AppConfig(
         /**
          * ApplicationConfig と環境変数から設定を読み込む
          */
-        fun load(applicationConfig: io.ktor.server.config.ApplicationConfig): AppConfig {
-            return AppConfig(
-                server = ServerConfig.load(applicationConfig),
-                idp = IdpConfig.load(applicationConfig),
-                keruta = KerutaConfig.load(applicationConfig),
-                ktse = KtseConfig.fromEnvironment(),
-                k8s = K8sSettings.fromEnvironment(),
-                cors = CorsConfig.fromEnvironment(),
-                auth = AuthConfig.load(),
-                db = DbConfig.load(applicationConfig)
-            )
-        }
+        fun load(applicationConfig: io.ktor.server.config.ApplicationConfig): AppConfig = AppConfig(
+            server = ServerConfig.load(applicationConfig),
+            idp = IdpConfig.load(applicationConfig),
+            keruta = KerutaConfig.load(applicationConfig),
+            ktse = KtseConfig.fromEnvironment(),
+            k8s = K8sSettings.fromEnvironment(),
+            cors = CorsConfig.fromEnvironment(),
+            auth = AuthConfig.load(),
+            db = DbConfig.load(applicationConfig),
+        )
     }
 }
-
-
-

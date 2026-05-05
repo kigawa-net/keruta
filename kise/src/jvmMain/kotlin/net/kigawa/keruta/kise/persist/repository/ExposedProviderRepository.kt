@@ -3,10 +3,10 @@ package net.kigawa.keruta.kise.persist.repository
 import net.kigawa.keruta.kise.domain.entity.Provider
 import net.kigawa.keruta.kise.domain.repository.ProviderRepository
 import net.kigawa.keruta.kise.persist.table.ProviderTable
+import org.jetbrains.exposed.v1.core.ResultRow
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.selectAll
-import org.jetbrains.exposed.v1.core.ResultRow
 
 /**
  * Exposed を使用したプロバイダーリポジトリ実装
@@ -28,12 +28,10 @@ class ExposedProviderRepository : ProviderRepository {
         return rowToProvider(row)
     }
 
-    override suspend fun getByUserId(userId: Long): List<Provider> {
-        return ProviderTable
-            .selectAll()
-            .where { ProviderTable.userId eq userId }
-            .map { rowToProvider(it) }
-    }
+    override suspend fun getByUserId(userId: Long): List<Provider> = ProviderTable
+        .selectAll()
+        .where { ProviderTable.userId eq userId }
+        .map { rowToProvider(it) }
 
     override suspend fun create(provider: Provider): Provider {
         val now = System.currentTimeMillis()
@@ -48,19 +46,17 @@ class ExposedProviderRepository : ProviderRepository {
 
         return provider.copy(
             id = id,
-            createdAt = now
+            createdAt = now,
         )
     }
 
-    private fun rowToProvider(row: ResultRow): Provider {
-        return Provider(
-            id = row[ProviderTable.id],
-            userId = row[ProviderTable.userId],
-            name = row[ProviderTable.name],
-            issuer = row[ProviderTable.issuer],
-            audience = row[ProviderTable.audience],
-            setting = row[ProviderTable.setting],
-            createdAt = row[ProviderTable.createdAt]
-        )
-    }
+    private fun rowToProvider(row: ResultRow): Provider = Provider(
+        id = row[ProviderTable.id],
+        userId = row[ProviderTable.userId],
+        name = row[ProviderTable.name],
+        issuer = row[ProviderTable.issuer],
+        audience = row[ProviderTable.audience],
+        setting = row[ProviderTable.setting],
+        createdAt = row[ProviderTable.createdAt],
+    )
 }

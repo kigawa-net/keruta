@@ -11,14 +11,15 @@ import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.net.Url
 
 class KtorUnverifiedTokenWithOidc(
-    val unverifiedToken: Auth0UnverifiedToken, val oidcConf: OidcConf,
+    val unverifiedToken: Auth0UnverifiedToken,
+    val oidcConf: OidcConf,
     val jwksProvider: JwksProvider,
-): UnverifiedTokenWithOidc {
+) : UnverifiedTokenWithOidc {
     val keyId by unverifiedToken::keyId
     override fun useJwks(): Res<UnverifiedTokenWithKey, KtcpErr> = when (
         val res = jwksProvider.algorithmByUrl(
             Url.parse(oidcConf.jwksUri),
-            keyId ?: return Res.Err(VerifyFailErr("", null))
+            keyId ?: return Res.Err(VerifyFailErr("", null)),
         )
     ) {
         is Res.Err -> return res.convert()

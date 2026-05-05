@@ -7,10 +7,9 @@ import net.kigawa.keruta.ktcp.domain.msg.server.ServerMsgType
 @Serializable
 data class ServerTaskShowMsg(
     override val type: ServerMsgType = ServerMsgType.TASK_SHOW,
-    val queueId: Long, val id: Long,
-): ServerMsg {
-
-
+    val queueId: Long,
+    val id: Long,
+) : ServerMsg {
 
     init {
         require(type == ServerMsgType.TASK_SHOW) { "type must be TASK_SHOW" }

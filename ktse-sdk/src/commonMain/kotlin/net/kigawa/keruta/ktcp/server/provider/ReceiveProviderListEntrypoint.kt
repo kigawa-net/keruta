@@ -12,12 +12,13 @@ import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.LoggerFactory
 import net.kigawa.kodel.api.log.traceignore.debug
 
-class ReceiveProviderListEntrypoint: ServerProviderListEntrypoint<ServerCtx> {
+class ReceiveProviderListEntrypoint : ServerProviderListEntrypoint<ServerCtx> {
     override fun access(
-        input: ServerProviderListMsg, ctx: ServerCtx,
+        input: ServerProviderListMsg,
+        ctx: ServerCtx,
     ): EntrypointDeferred<Res<Unit, KtcpErr>> {
         val logger = LoggerFactory.get(
-            "net.kigawa.keruta.ktcp.server.provider.ReceiveProvidersRequestEntrypoint"
+            "net.kigawa.keruta.ktcp.server.provider.ReceiveProvidersRequestEntrypoint",
         )
         return EntrypointDeferred {
             val authed = ctx.session.authenticated()
@@ -28,12 +29,12 @@ class ReceiveProviderListEntrypoint: ServerProviderListEntrypoint<ServerCtx> {
                     logger.debug("providers: ${res.value.map { it.name }}")
                     ctx.server.clientEntrypoints.providerList.access(
                         ClientProviderListedMsg(
-                            providers = res.value.map { it.asProviderListProvider() }
-                        ), ctx
+                            providers = res.value.map { it.asProviderListProvider() },
+                        ),
+                        ctx,
                     )?.execute() ?: Res.Err(ResponseErr("", null))
                 }
             }
         }
     }
-
 }

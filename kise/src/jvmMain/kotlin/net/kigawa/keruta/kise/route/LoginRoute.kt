@@ -46,7 +46,7 @@ class LoginRoute(
             logger.severe("Failed to start OIDC login flow: ${e.message}")
             call.respond(
                 HttpStatusCode.InternalServerError,
-                mapOf("error" to "Failed to start login flow", "message" to e.message)
+                mapOf("error" to "Failed to start login flow", "message" to e.message),
             )
         }
     }

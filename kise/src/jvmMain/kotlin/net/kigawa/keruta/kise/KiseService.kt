@@ -34,7 +34,7 @@ class KiseService(config: KiseConfig) {
         privateKeyPem = config.jwtPrivateKey,
         issuer = config.issuer,
         audience = config.audience,
-        expiresInMs = config.tokenExpiresInMs
+        expiresInMs = config.tokenExpiresInMs,
     )
 
     // ユースケース
@@ -42,7 +42,7 @@ class KiseService(config: KiseConfig) {
         userRepository = userRepository,
         providerRepository = providerRepository,
         sessionRepository = sessionRepository,
-        jwtIssuer = jwtIssuer
+        jwtIssuer = jwtIssuer,
     )
 
     private val verifySessionUseCase = VerifySessionUseCase(sessionRepository)
@@ -61,21 +61,15 @@ class KiseService(config: KiseConfig) {
     /**
      * セッションを検証する
      */
-    suspend fun verifySession(token: String, currentTime: Long): Res<Session, KiseErr> {
-        return verifySessionUseCase.execute(token, currentTime)
-    }
+    suspend fun verifySession(token: String, currentTime: Long): Res<Session, KiseErr> = verifySessionUseCase.execute(token, currentTime)
 
     /**
      * セッションを更新する
      */
-    suspend fun refreshSession(token: String, currentTime: Long): Res<Session, KiseErr> {
-        return refreshSessionUseCase.execute(token, currentTime)
-    }
+    suspend fun refreshSession(token: String, currentTime: Long): Res<Session, KiseErr> = refreshSessionUseCase.execute(token, currentTime)
 
     /**
      * ログアウト（セッション削除）
      */
-    suspend fun logout(token: String): Res<Unit, KiseErr> {
-        return logoutUseCase.execute(token)
-    }
+    suspend fun logout(token: String): Res<Unit, KiseErr> = logoutUseCase.execute(token)
 }

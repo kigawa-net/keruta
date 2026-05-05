@@ -18,7 +18,6 @@ import net.kigawa.keruta.kise.oidc.OidcDiscoveryFetcher
 import net.kigawa.keruta.kise.oidc.model.OidcSession
 import net.kigawa.keruta.kise.oidc.model.TokenResponse
 import net.kigawa.kodel.api.log.LoggerFactory
-import java.io.InvalidObjectException
 
 class CallbackRoute(
     private val oidcDiscoveryFetcher: OidcDiscoveryFetcher,
@@ -49,7 +48,7 @@ class CallbackRoute(
         val oidcSession = getValidatedOidcSession(call, state) ?: return@get
 
         logger.info(
-            "Processing OIDC callback for issuer: ${oidcSession.issuer}, clientId: ${oidcSession.clientId}"
+            "Processing OIDC callback for issuer: ${oidcSession.issuer}, clientId: ${oidcSession.clientId}",
         )
 
         processOidcCallback(call, code, oidcSession)
@@ -64,7 +63,7 @@ class CallbackRoute(
             if (discoveryResponse.tokenEndpoint == null) {
                 call.respond(
                     HttpStatusCode.InternalServerError,
-                    mapOf("error" to "Token endpoint not found in OIDC discovery")
+                    mapOf("error" to "Token endpoint not found in OIDC discovery"),
                 )
                 return
             }
@@ -75,7 +74,7 @@ class CallbackRoute(
                 code = code,
                 redirectUri = oidcSession.redirectUri,
                 clientId = oidcSession.clientId,
-                codeVerifier = oidcSession.pkce.codeVerifier
+                codeVerifier = oidcSession.pkce.codeVerifier,
             )
 
             val idToken = tokenResponse.idToken
@@ -83,7 +82,7 @@ class CallbackRoute(
                 logger.warning("No ID token received from token endpoint")
                 call.respond(
                     HttpStatusCode.InternalServerError,
-                    mapOf("error" to "No ID token received")
+                    mapOf("error" to "No ID token received"),
                 )
                 return
             }
@@ -98,12 +97,11 @@ class CallbackRoute(
 
             // フロントエンドにリダイレクト
             call.respondRedirect("/")
-
         } catch (e: Exception) {
             logger.severe("Failed to process OIDC callback: ${e.message}")
             call.respond(
                 HttpStatusCode.InternalServerError,
-                mapOf("error" to "Failed to complete login", "message" to e.message)
+                mapOf("error" to "Failed to complete login", "message" to e.message),
             )
         }
     }
@@ -137,7 +135,7 @@ class CallbackRoute(
 
         return client.use { client ->
             logger.info(
-                "Exchanging code for token: $code, redirectUri: $redirectUri, clientId: $clientId"
+                "Exchanging code for token: $code, redirectUri: $redirectUri, clientId: $clientId",
             )
             val response = client.submitForm(
                 url = tokenEndpoint,
@@ -147,7 +145,7 @@ class CallbackRoute(
                     append("redirect_uri", redirectUri)
                     append("client_id", clientId)
                     append("code_verifier", codeVerifier)
-                }
+                },
             )
 
             if (!response.status.isSuccess()) {

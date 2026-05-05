@@ -5,4 +5,4 @@ import kotlinx.serialization.Serializable
 @Serializable
 class StringPropertyJson(
     val nullable: Boolean,
-): KtclPropertyJson
+) : KtclPropertyJson

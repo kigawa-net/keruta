@@ -30,7 +30,5 @@ class KtcpClient {
     )
 
     @Suppress("unused")
-    fun startConnection(): ClientConnection {
-        return ClientConnection()
-    }
+    fun startConnection(): ClientConnection = ClientConnection()
 }

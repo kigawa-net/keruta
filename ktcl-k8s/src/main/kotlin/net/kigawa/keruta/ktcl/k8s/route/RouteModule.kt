@@ -27,19 +27,28 @@ class RouteModule(
     private val auth0AlgorithmInitializer = Auth0AlgorithmInitializer()
 
     fun configure(
-        application: Application, appConfig: AppConfig, providerTokenCreator: ProviderTokenCreator,
+        application: Application,
+        appConfig: AppConfig,
+        providerTokenCreator: ProviderTokenCreator,
         javaKeyPairInitializer: JavaKeyPairInitializer,
     ) {
         val providerRegistrationClient = ProviderRegistrationClient(
-            appConfig.ktse, providerTokenCreator
+            appConfig.ktse,
+            providerTokenCreator,
         )
         val oidcConfigProvider = OidcConfigProvider(httpClient)
         val jwksProvider = JwksProvider()
         val auth0JwtVerifier = Auth0JwtVerifier(
-            oidcConfigProvider, jwksProvider, auth0AlgorithmInitializer, javaKeyPairInitializer
+            oidcConfigProvider,
+            jwksProvider,
+            auth0AlgorithmInitializer,
+            javaKeyPairInitializer,
         )
         val loginCallbackRoute = LoginCallbackRoute(
-            oidcDiscoveryFetcher, userTokenDao, providerRegistrationClient, auth0JwtVerifier
+            oidcDiscoveryFetcher,
+            userTokenDao,
+            providerRegistrationClient,
+            auth0JwtVerifier,
         )
         val idpConfig = appConfig.idp
         val authConfig = appConfig.auth
@@ -49,13 +58,19 @@ class RouteModule(
         val staticRoutes = StaticRoutes(authenticationHelper, userTokenDao, dbModule.userClaudeConfigDao, providerListClient)
         val configRoutes = ConfigRoutes(
             appConfig,
-            authConfig.privateKey, dbModule.userClaudeConfigDao, userTokenDao,
-            javaKeyPairInitializer, authenticationHelper,
-            providerListClient
+            authConfig.privateKey,
+            dbModule.userClaudeConfigDao,
+            userTokenDao,
+            javaKeyPairInitializer,
+            authenticationHelper,
+            providerListClient,
         )
         val kerutaEndpoints = KerutaEndpoints(appConfig.keruta)
         val loginRoute = LoginRoute(
-            oidcDiscoveryFetcher, pkceGenerator, idpConfig, kerutaEndpoints
+            oidcDiscoveryFetcher,
+            pkceGenerator,
+            idpConfig,
+            kerutaEndpoints,
         )
         val tokenRoute = TokenRoute(oidcDiscoveryFetcher, idpConfig)
 

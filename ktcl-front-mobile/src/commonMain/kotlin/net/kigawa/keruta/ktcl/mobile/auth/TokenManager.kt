@@ -33,34 +33,30 @@ class TokenManager(
     private val config: MobileConfig,
     private val httpClient: HttpClient,
 ) {
-    suspend fun authenticate(): Result<TokenPair> {
-        return try {
-            val userToken = oidcAuthManager.login().getOrThrow()
+    suspend fun authenticate(): Result<TokenPair> = try {
+        val userToken = oidcAuthManager.login().getOrThrow()
 
-            val serverToken = fetchServerToken(userToken).getOrThrow()
+        val serverToken = fetchServerToken(userToken).getOrThrow()
 
-            secureStorage.saveUserToken(userToken)
-            secureStorage.saveServerToken(serverToken)
+        secureStorage.saveUserToken(userToken)
+        secureStorage.saveServerToken(serverToken)
 
-            Result.success(TokenPair(userToken, serverToken))
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+        Result.success(TokenPair(userToken, serverToken))
+    } catch (e: Exception) {
+        Result.failure(e)
     }
 
-    suspend fun getStoredTokens(): Result<TokenPair?> {
-        return try {
-            val userToken = secureStorage.getUserToken()
-            val serverToken = secureStorage.getServerToken()
+    suspend fun getStoredTokens(): Result<TokenPair?> = try {
+        val userToken = secureStorage.getUserToken()
+        val serverToken = secureStorage.getServerToken()
 
-            if (userToken != null && serverToken != null) {
-                Result.success(TokenPair(userToken, serverToken))
-            } else {
-                Result.success(null)
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
+        if (userToken != null && serverToken != null) {
+            Result.success(TokenPair(userToken, serverToken))
+        } else {
+            Result.success(null)
         }
+    } catch (e: Exception) {
+        Result.failure(e)
     }
 
     suspend fun clearTokens() {
@@ -68,18 +64,16 @@ class TokenManager(
         oidcAuthManager.logout()
     }
 
-    private suspend fun fetchServerToken(userToken: String): Result<String> {
-        return try {
-            val response = httpClient.post("${config.apiBaseUrl}api/token") {
-                contentType(ContentType.Application.Json)
-                setBody(Json.encodeToString(TokenRequest.serializer(), TokenRequest(userToken)))
-            }
-
-            val tokenResponse = Json.decodeFromString<TokenResponse>(response.bodyAsText())
-            Result.success(tokenResponse.token)
-        } catch (e: Exception) {
-            Result.failure(e)
+    private suspend fun fetchServerToken(userToken: String): Result<String> = try {
+        val response = httpClient.post("${config.apiBaseUrl}api/token") {
+            contentType(ContentType.Application.Json)
+            setBody(Json.encodeToString(TokenRequest.serializer(), TokenRequest(userToken)))
         }
+
+        val tokenResponse = Json.decodeFromString<TokenResponse>(response.bodyAsText())
+        Result.success(tokenResponse.token)
+    } catch (e: Exception) {
+        Result.failure(e)
     }
 
     /**

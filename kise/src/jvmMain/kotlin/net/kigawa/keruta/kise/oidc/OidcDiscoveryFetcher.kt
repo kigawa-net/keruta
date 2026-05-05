@@ -40,11 +40,9 @@ class OidcDiscoveryFetcher {
         }
     }
 
-    private fun createHttpClient(): HttpClient {
-        return HttpClient(CIO) {
-            install(ContentNegotiation) {
-                json()
-            }
+    private fun createHttpClient(): HttpClient = HttpClient(CIO) {
+        install(ContentNegotiation) {
+            json()
         }
     }
 }

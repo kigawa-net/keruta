@@ -73,7 +73,7 @@ class AuthenticateUseCase(
                 issuer = issuer,
                 subject = subject,
                 audience = audience,
-            )
+            ),
         )
 
         return Res.Ok(Pair(userIdp, user.id))
@@ -99,7 +99,7 @@ class AuthenticateUseCase(
                 userId = userId,
                 token = token,
                 expiresAt = expiresAt,
-            )
+            ),
         )
 
         // ユーザーの取得

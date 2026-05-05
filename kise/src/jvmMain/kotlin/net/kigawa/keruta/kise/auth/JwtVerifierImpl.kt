@@ -20,14 +20,13 @@ class JwtVerifierImpl(
     private val pemKey: PemKey,
     val auth0AlgorithmInitializer: Auth0AlgorithmInitializer,
     val javaKeyPairInitializer: JavaKeyPairInitializer,
-): JwtVerifier {
+) : JwtVerifier {
 
-    override fun decodeUnverified(userToken: AuthToken): Res<UnverifiedToken, VerifyErr> =
-        auth0JwtVerifier.decodeUnverified(userToken)
+    override fun decodeUnverified(userToken: AuthToken): Res<UnverifiedToken, VerifyErr> = auth0JwtVerifier.decodeUnverified(userToken)
 
     override fun createToken(jwtVerifyValues: JwtVerifyValues): Res<AuthToken, KtcpErr> = try {
         val algorithm = auth0AlgorithmInitializer.initPrivateKey(
-            javaKeyPairInitializer.initialize(pemKey)
+            javaKeyPairInitializer.initialize(pemKey),
         )
         val token = JWT.create()
             .withIssuer(jwtVerifyValues.issuer.toStrUrl())

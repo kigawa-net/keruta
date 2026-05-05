@@ -9,7 +9,7 @@ data class ServerQueueUpdateMsg(
     override val type: ServerMsgType = ServerMsgType.QUEUE_UPDATE,
     val queueId: Long,
     val name: String,
-): ServerMsg {
+) : ServerMsg {
     init {
         require(type == ServerMsgType.QUEUE_UPDATE) { "type must be QUEUE_UPDATE" }
     }

@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UpdateQueueConfigRequest(
-    val queueId: Long
+    val queueId: Long,
 )

@@ -7,5 +7,5 @@ data class UpdateKubernetesConfigRequest(
     val namespace: String? = null,
     val useInCluster: Boolean? = null,
     val kubeconfigPath: String? = null,
-    val jobTimeout: Long? = null
+    val jobTimeout: Long? = null,
 )

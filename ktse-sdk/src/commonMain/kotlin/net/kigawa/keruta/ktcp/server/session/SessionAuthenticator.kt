@@ -14,7 +14,8 @@ import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.err.flatConvertOk
 
 class SessionAuthenticator(
-    val session: KtcpSession, val userIdpConfig: UserIdpConfig,
+    val session: KtcpSession,
+    val userIdpConfig: UserIdpConfig,
     val providerIdpConfig: ProviderIdpConfig,
 ) {
     val persisterSession: PersisterSession by session::persisterSession
@@ -24,7 +25,7 @@ class SessionAuthenticator(
     suspend fun authenticate(authRequestMsg: ServerAuthRequestMsg): Res<AuthenticatedSession, KtcpErr> {
         val verifyTables = when (
             val res = auth(
-                authRequestMsg
+                authRequestMsg,
             )
         ) {
             is Res.Err -> return res.convert()
@@ -33,8 +34,8 @@ class SessionAuthenticator(
         return Res.Ok(
             AuthenticatedSession(
                 persisterSession.auth(verifyTables),
-                session
-            )
+                session,
+            ),
         )
     }
 
@@ -49,7 +50,7 @@ class SessionAuthenticator(
         }
         return when (
             val res = verifyTablesPersister.getVerifyTables(
-                unverifiedTokens
+                unverifiedTokens,
             )
         ) {
             is Res.Err -> res.convert()
@@ -63,23 +64,24 @@ class SessionAuthenticator(
     ): Res<PersistedVerifyTables, KtcpErr> = unverifiedToken.verify(
         JwtVerifyValues(userIdpConfig.issuer, userIdpConfig.audience, unverifiedToken.subject),
         JwtVerifyValues(
-            providerIdpConfig.issuer, providerIdpConfig.audience, unverifiedToken.subject
+            providerIdpConfig.issuer,
+            providerIdpConfig.audience,
+            unverifiedToken.subject,
         ),
     ).flatConvertOk {
         persisterSession.verifyTablesPersister.createVerifyTables(it, providerIdpConfig.name)
     }
 
-
     private suspend fun verifyWithTable(
-        unverifiedToken: UnverifiedAuthTokens, tables: PersistedVerifyTables,
+        unverifiedToken: UnverifiedAuthTokens,
+        tables: PersistedVerifyTables,
     ): Res<PersistedVerifyTables, KtcpErr> = when (
         val res = unverifiedToken.verify(
             JwtVerifyValues(tables.userIdp.issuer, tables.userIdp.audience, tables.userIdp.subject),
-            JwtVerifyValues(tables.provider.issuer, tables.provider.audience, tables.userIdp.subject)
+            JwtVerifyValues(tables.provider.issuer, tables.provider.audience, tables.userIdp.subject),
         )
     ) {
         is Res.Err -> res.convert()
         is Res.Ok -> Res.Ok(tables)
     }
-
 }

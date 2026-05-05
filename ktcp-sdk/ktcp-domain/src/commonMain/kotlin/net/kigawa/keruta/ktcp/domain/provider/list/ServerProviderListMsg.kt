@@ -7,7 +7,7 @@ import net.kigawa.keruta.ktcp.domain.msg.server.ServerMsgType
 @Serializable
 data class ServerProviderListMsg(
     override val type: ServerMsgType = ServerMsgType.PROVIDER_LIST,
-): ServerMsg {
+) : ServerMsg {
     init {
         require(type == ServerMsgType.PROVIDER_LIST) { "type must be PROVIDER_REQUEST" }
     }

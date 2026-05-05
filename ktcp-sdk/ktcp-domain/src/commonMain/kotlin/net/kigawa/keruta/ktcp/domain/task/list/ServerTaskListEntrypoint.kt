@@ -7,10 +7,11 @@ import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.entrypoint.EntrypointInfo
 import net.kigawa.kodel.api.err.Res
 
-interface ServerTaskListEntrypoint<C>: Entrypoint<ServerTaskListMsg, EntrypointDeferred<Res<Unit, KtcpErr>>, C> {
+interface ServerTaskListEntrypoint<C> : Entrypoint<ServerTaskListMsg, EntrypointDeferred<Res<Unit, KtcpErr>>, C> {
     override val info: EntrypointInfo
         get() = EntrypointInfo(
-            ServerMsgType.TASK_LIST.str, emptyList(),
-            "タスク一覧要求メッセージ処理"
+            ServerMsgType.TASK_LIST.str,
+            emptyList(),
+            "タスク一覧要求メッセージ処理",
         )
 }

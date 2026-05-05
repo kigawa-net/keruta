@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class QueueConfig(
-    val queueId: Long
+    val queueId: Long,
 )

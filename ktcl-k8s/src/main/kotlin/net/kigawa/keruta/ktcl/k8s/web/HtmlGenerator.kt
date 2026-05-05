@@ -13,16 +13,15 @@ object HtmlGenerator {
         hasClaudeToken: Boolean = false,
         success: String? = null,
         error: String? = null,
-    ): String {
-        return createHTML().html {
-            lang = "ja"
-            head {
-                meta(charset = "UTF-8")
-                meta(name = "viewport", content = "width=device-width, initial-scale=1.0")
-                title { +"ktcl-k8s 設定管理" }
-                style {
-                    unsafe {
-                        +"""
+    ): String = createHTML().html {
+        lang = "ja"
+        head {
+            meta(charset = "UTF-8")
+            meta(name = "viewport", content = "width=device-width, initial-scale=1.0")
+            title { +"ktcl-k8s 設定管理" }
+            style {
+                unsafe {
+                    +"""
 :root {
     --color-primary: #0a58ca;
     --color-bg: #ffffff;
@@ -220,112 +219,111 @@ button:hover {
         padding: 16px;
     }
 }
-                        """.trimIndent()
-                    }
+                    """.trimIndent()
                 }
             }
-            body {
-                div("app-container") {
-                    aside("sidebar") {
-                        h1("sidebar-title") { +"Keruta" }
-                        nav("sidebar-nav") {
-                            a("/") {
-                                classes = setOf("sidebar-link")
-                                +"設定"
-                            }
-                            a("/providers") {
-                                classes = setOf("sidebar-link")
-                                +"プロバイダー一覧"
-                            }
+        }
+        body {
+            div("app-container") {
+                aside("sidebar") {
+                    h1("sidebar-title") { +"Keruta" }
+                    nav("sidebar-nav") {
+                        a("/") {
+                            classes = setOf("sidebar-link")
+                            +"設定"
+                        }
+                        a("/providers") {
+                            classes = setOf("sidebar-link")
+                            +"プロバイダー一覧"
                         }
                     }
+                }
 
-                    main("main-content") {
-                        div("container") {
-                            h1 { +"設定管理" }
-                            p("subtitle") { +"Claude Code・GitHub Token の設定を変更できます" }
+                main("main-content") {
+                    div("container") {
+                        h1 { +"設定管理" }
+                        p("subtitle") { +"Claude Code・GitHub Token の設定を変更できます" }
 
-                            if (success != null) {
-                                div("message success") {
-                                    +when (success) {
-                                        "github_token_saved" -> "GitHub Token を保存しました"
-                                        "claude_key_saved" -> "Claude Code APIキーを保存しました"
-                                        else -> "設定を保存しました"
-                                    }
+                        if (success != null) {
+                            div("message success") {
+                                +when (success) {
+                                    "github_token_saved" -> "GitHub Token を保存しました"
+                                    "claude_key_saved" -> "Claude Code APIキーを保存しました"
+                                    else -> "設定を保存しました"
                                 }
                             }
+                        }
 
-                            if (error != null) {
-                                div("message error") {
-                                    +when (error) {
-                                        "token_required" -> "GitHub Token を入力してください"
-                                        "api_key_required" -> "Anthropic APIキーを入力してください"
-                                        else -> "エラーが発生しました"
-                                    }
+                        if (error != null) {
+                            div("message error") {
+                                +when (error) {
+                                    "token_required" -> "GitHub Token を入力してください"
+                                    "api_key_required" -> "Anthropic APIキーを入力してください"
+                                    else -> "エラーが発生しました"
                                 }
                             }
+                        }
 
-                            div("card") {
-                                h2("card-title") { +"GitHub Token設定" }
-                                p("subtitle") {
-                                    +(if (hasGithubToken) "Token設定済み" else "Token未設定")
+                        div("card") {
+                            h2("card-title") { +"GitHub Token設定" }
+                            p("subtitle") {
+                                +(if (hasGithubToken) "Token設定済み" else "Token未設定")
+                            }
+                            form {
+                                action = "/config/github"
+                                method = FormMethod.post
+                                div("form-group") {
+                                    label {
+                                        htmlFor = "githubToken"
+                                        +"GitHub Personal Access Token"
+                                    }
+                                    input(InputType.password) {
+                                        id = "githubToken"
+                                        name = "githubToken"
+                                        placeholder = "ghp_..."
+                                    }
                                 }
-                                form {
-                                    action = "/config/github"
-                                    method = FormMethod.post
-                                    div("form-group") {
-                                        label {
-                                            htmlFor = "githubToken"
-                                            +"GitHub Personal Access Token"
-                                        }
-                                        input(InputType.password) {
-                                            id = "githubToken"
-                                            name = "githubToken"
-                                            placeholder = "ghp_..."
-                                        }
-                                    }
-                                    button {
-                                        type = ButtonType.submit
-                                        +"GitHub Tokenを保存"
-                                    }
+                                button {
+                                    type = ButtonType.submit
+                                    +"GitHub Tokenを保存"
                                 }
                             }
+                        }
 
-                            div("card") {
-                                h2("card-title") { +"Claude Code設定" }
-                                p("subtitle") {
-                                    +(if (hasClaudeToken) "APIキー設定済み" else "APIキー未設定")
+                        div("card") {
+                            h2("card-title") { +"Claude Code設定" }
+                            p("subtitle") {
+                                +(if (hasClaudeToken) "APIキー設定済み" else "APIキー未設定")
+                            }
+                            form {
+                                action = "/config/claudecode"
+                                method = FormMethod.post
+                                div("form-group") {
+                                    label {
+                                        htmlFor = "anthropicApiKey"
+                                        +"Anthropic APIキー"
+                                    }
+                                    input(InputType.password) {
+                                        id = "anthropicApiKey"
+                                        name = "anthropicApiKey"
+                                        placeholder = "sk-ant-..."
+                                    }
                                 }
-                                form {
-                                    action = "/config/claudecode"
-                                    method = FormMethod.post
-                                    div("form-group") {
-                                        label {
-                                            htmlFor = "anthropicApiKey"
-                                            +"Anthropic APIキー"
-                                        }
-                                        input(InputType.password) {
-                                            id = "anthropicApiKey"
-                                            name = "anthropicApiKey"
-                                            placeholder = "sk-ant-..."
-                                        }
-                                    }
-                                    button {
-                                        type = ButtonType.submit
-                                        +"Claude Code APIキーを保存"
-                                    }
+                                button {
+                                    type = ButtonType.submit
+                                    +"Claude Code APIキーを保存"
                                 }
                             }
+                        }
 
-                            div("card") {
-                                form {
-                                    action = "/config/logout"
-                                    method = FormMethod.post
-                                    button {
-                                        type = ButtonType.submit
-                                        classes = setOf("logout-btn")
-                                        +"ログアウト"
-                                    }
+                        div("card") {
+                            form {
+                                action = "/config/logout"
+                                method = FormMethod.post
+                                button {
+                                    type = ButtonType.submit
+                                    classes = setOf("logout-btn")
+                                    +"ログアウト"
                                 }
                             }
                         }
@@ -335,16 +333,15 @@ button:hover {
         }
     }
 
-    fun generateProvidersHtml(providers: List<ProviderDto>): String {
-        return createHTML().html {
-            lang = "ja"
-            head {
-                meta(charset = "UTF-8")
-                meta(name = "viewport", content = "width=device-width, initial-scale=1.0")
-                title { +"プロバイダー一覧 - ktcl-k8s" }
-                style {
-                    unsafe {
-                        +"""
+    fun generateProvidersHtml(providers: List<ProviderDto>): String = createHTML().html {
+        lang = "ja"
+        head {
+            meta(charset = "UTF-8")
+            meta(name = "viewport", content = "width=device-width, initial-scale=1.0")
+            title { +"プロバイダー一覧 - ktcl-k8s" }
+            style {
+                unsafe {
+                    +"""
 :root { --color-primary: #0a58ca; --color-bg: #ffffff; --color-bg-sidebar: #f8f9fa; --color-border: #dee2e6; --color-text: #212529; --color-text-muted: #6c757d; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--color-bg); color: var(--color-text); min-height: 100vh; }
@@ -364,54 +361,53 @@ table { width: 100%; border-collapse: collapse; font-size: 14px; }
 th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--color-border); }
 th { font-weight: 600; color: var(--color-text-muted); background: #f8f9fa; }
 @media (max-width: 768px) { .sidebar { display: none; } .main-content { padding: 16px; } }
-                        """.trimIndent()
-                    }
+                    """.trimIndent()
                 }
             }
-            body {
-                div("app-container") {
-                    aside("sidebar") {
-                        h1("sidebar-title") { +"Keruta" }
-                        nav("sidebar-nav") {
-                            a("/") {
-                                classes = setOf("sidebar-link")
-                                +"設定"
-                            }
-                            a("/providers") {
-                                classes = setOf("sidebar-link")
-                                +"プロバイダー一覧"
-                            }
+        }
+        body {
+            div("app-container") {
+                aside("sidebar") {
+                    h1("sidebar-title") { +"Keruta" }
+                    nav("sidebar-nav") {
+                        a("/") {
+                            classes = setOf("sidebar-link")
+                            +"設定"
+                        }
+                        a("/providers") {
+                            classes = setOf("sidebar-link")
+                            +"プロバイダー一覧"
                         }
                     }
-                    main("main-content") {
-                        div("container") {
-                            h1 { +"プロバイダー一覧" }
-                            p("subtitle") { +"ktseに登録されているプロバイダーの一覧です" }
-                            div("card") {
-                                h2("card-title") { +"プロバイダー" }
-                                if (providers.isEmpty()) {
-                                    p { +"プロバイダーが登録されていません" }
-                                } else {
-                                    table {
-                                        thead {
-                                            tr {
-                                                th { +"名前" }
-                                                th { +"Issuer" }
-                                                th { +"Audience" }
-                                            }
+                }
+                main("main-content") {
+                    div("container") {
+                        h1 { +"プロバイダー一覧" }
+                        p("subtitle") { +"ktseに登録されているプロバイダーの一覧です" }
+                        div("card") {
+                            h2("card-title") { +"プロバイダー" }
+                            if (providers.isEmpty()) {
+                                p { +"プロバイダーが登録されていません" }
+                            } else {
+                                table {
+                                    thead {
+                                        tr {
+                                            th { +"名前" }
+                                            th { +"Issuer" }
+                                            th { +"Audience" }
                                         }
-                                        tbody {
-                                            for (p in providers) {
-                                                tr {
-                                                    td { +p.name }
-                                                    td {
-                                                        a {
-                                                            href = p.issuer
-                                                            +p.issuer
-                                                        }
+                                    }
+                                    tbody {
+                                        for (p in providers) {
+                                            tr {
+                                                td { +p.name }
+                                                td {
+                                                    a {
+                                                        href = p.issuer
+                                                        +p.issuer
                                                     }
-                                                    td { +p.audience }
                                                 }
+                                                td { +p.audience }
                                             }
                                         }
                                     }

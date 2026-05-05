@@ -5,8 +5,8 @@ import net.kigawa.keruta.kise.domain.entity.UserIdp
 import net.kigawa.keruta.kise.domain.repository.UserRepository
 import net.kigawa.keruta.kise.persist.table.UserIdpTable
 import net.kigawa.keruta.kise.persist.table.UserTable
-import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.core.and
+import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.selectAll
 
@@ -29,7 +29,7 @@ class ExposedUserRepository : UserRepository {
             .firstOrNull() ?: return null
         return User(
             id = row[UserTable.id],
-            createdAt = row[UserTable.createdAt]
+            createdAt = row[UserTable.createdAt],
         )
     }
 
@@ -49,7 +49,7 @@ class ExposedUserRepository : UserRepository {
             issuer = row[UserIdpTable.issuer],
             subject = row[UserIdpTable.subject],
             audience = row[UserIdpTable.audience],
-            createdAt = row[UserIdpTable.createdAt]
+            createdAt = row[UserIdpTable.createdAt],
         )
     }
 
@@ -67,7 +67,7 @@ class ExposedUserRepository : UserRepository {
             issuer = row[UserIdpTable.issuer],
             subject = row[UserIdpTable.subject],
             audience = row[UserIdpTable.audience],
-            createdAt = row[UserIdpTable.createdAt]
+            createdAt = row[UserIdpTable.createdAt],
         )
     }
 
