@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 plugins {
     kotlin("multiplatform")
+    id("ktlint")
 }
 
 repositories {

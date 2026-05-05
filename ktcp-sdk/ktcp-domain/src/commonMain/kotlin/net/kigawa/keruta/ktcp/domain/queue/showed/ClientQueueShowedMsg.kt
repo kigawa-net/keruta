@@ -10,9 +10,8 @@ data class ClientQueueShowedMsg(
     val name: String,
     val id: Long,
     val setting: String,
-): ClientMsg {
+) : ClientMsg {
     init {
         require(type == ClientMsgType.QUEUE_SHOWED) { "type must be QUEUE_SHOWED" }
     }
-
 }

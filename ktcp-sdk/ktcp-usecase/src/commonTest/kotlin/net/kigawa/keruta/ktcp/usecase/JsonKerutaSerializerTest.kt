@@ -20,7 +20,7 @@ class JsonKerutaSerializerTest {
             type = ServerMsgType.TASK_CREATE,
             title = "test-task",
             description = "test description",
-            queueId = 123
+            queueId = 123,
         )
 
         // Act
@@ -106,7 +106,7 @@ class JsonKerutaSerializerTest {
             type = ServerMsgType.TASK_CREATE,
             title = "round-trip-task",
             description = "round trip description",
-            queueId = 456L
+            queueId = 456L,
         )
 
         // Act
@@ -133,7 +133,7 @@ class JsonKerutaSerializerTest {
             type = ServerMsgType.TASK_CREATE,
             title = "inline-test",
             description = "inline test description",
-            queueId = 789L
+            queueId = 789L,
         )
 
         // Act

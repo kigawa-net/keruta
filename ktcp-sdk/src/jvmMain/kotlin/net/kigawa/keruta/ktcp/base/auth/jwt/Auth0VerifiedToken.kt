@@ -6,7 +6,7 @@ import net.kigawa.kodel.api.net.Url
 
 class Auth0VerifiedToken(
     val verified: DecodedJWT,
-): VerifiedToken {
+) : VerifiedToken {
     override val audience: String
         get() = verified.audience.first()
     override val issuer: Url

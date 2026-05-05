@@ -13,7 +13,7 @@ data class ServerProviderCompleteMsg(
     val userAudience: String,
     val providerAudience: String,
     val providerName: String,
-): ServerMsg {
+) : ServerMsg {
     init {
         require(type == ServerMsgType.PROVIDER_COMPLETE) { "type must be PROVIDER_COMPLETE" }
     }

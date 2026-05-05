@@ -17,36 +17,34 @@ class IdTokenVerifier {
         idToken: String,
         discoveryResponse: OidcDiscoveryResponse,
         oidcSession: OidcSession,
-    ): String? {
-        return         try {
-            // JWKSエンドポイントから公開鍵を取得
-            val jwkProvider: JwkProvider = JwkProviderBuilder(discoveryResponse.jwksUri)
-                .cached(10, 24, TimeUnit.HOURS)
-                .build()
+    ): String? = try {
+        // JWKSエンドポイントから公開鍵を取得
+        val jwkProvider: JwkProvider = JwkProviderBuilder(discoveryResponse.jwksUri)
+            .cached(10, 24, TimeUnit.HOURS)
+            .build()
 
-            val decodedJWT: DecodedJWT = JWT.decode(idToken)
-            val jwk = jwkProvider.get(decodedJWT.keyId)
+        val decodedJWT: DecodedJWT = JWT.decode(idToken)
+        val jwk = jwkProvider.get(decodedJWT.keyId)
 
-            val algorithm = when (jwk.algorithm) {
-                "RS256" -> Algorithm.RSA256(jwk.publicKey as java.security.interfaces.RSAPublicKey, null)
-                "RS384" -> Algorithm.RSA384(jwk.publicKey as java.security.interfaces.RSAPublicKey, null)
-                "RS512" -> Algorithm.RSA512(jwk.publicKey as java.security.interfaces.RSAPublicKey, null)
-                else -> throw IllegalArgumentException("Unsupported algorithm: ${jwk.algorithm}")
-            }
-
-            val verifier = JWT.require(algorithm)
-                .withIssuer(oidcSession.issuer)
-                .withAudience(oidcSession.clientId)
-                .withClaim("nonce", oidcSession.pkce.nonce)
-                .build()
-
-            val verifiedJWT = verifier.verify(idToken)
-
-            // ユーザーのsubject（ユニークID）を返す
-            verifiedJWT.subject
-        } catch (e: Exception) {
-            logger.severe("Failed to verify ID token: ${e.message}")
-            null
+        val algorithm = when (jwk.algorithm) {
+            "RS256" -> Algorithm.RSA256(jwk.publicKey as java.security.interfaces.RSAPublicKey, null)
+            "RS384" -> Algorithm.RSA384(jwk.publicKey as java.security.interfaces.RSAPublicKey, null)
+            "RS512" -> Algorithm.RSA512(jwk.publicKey as java.security.interfaces.RSAPublicKey, null)
+            else -> throw IllegalArgumentException("Unsupported algorithm: ${jwk.algorithm}")
         }
+
+        val verifier = JWT.require(algorithm)
+            .withIssuer(oidcSession.issuer)
+            .withAudience(oidcSession.clientId)
+            .withClaim("nonce", oidcSession.pkce.nonce)
+            .build()
+
+        val verifiedJWT = verifier.verify(idToken)
+
+        // ユーザーのsubject（ユニークID）を返す
+        verifiedJWT.subject
+    } catch (e: Exception) {
+        logger.severe("Failed to verify ID token: ${e.message}")
+        null
     }
 }

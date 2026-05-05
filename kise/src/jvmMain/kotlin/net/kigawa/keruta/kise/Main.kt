@@ -1,12 +1,12 @@
 package net.kigawa.keruta.kise
 
+import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import io.ktor.server.websocket.*
-import io.ktor.serialization.kotlinx.json.*
 import net.kigawa.keruta.kise.oidc.IdTokenVerifier
 import net.kigawa.keruta.kise.oidc.OidcDiscoveryFetcher
 import net.kigawa.keruta.kise.oidc.PkceGenerator

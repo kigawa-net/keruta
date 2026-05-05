@@ -11,8 +11,11 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 
 private val UNRECOVERABLE_WAITING_REASONS = setOf(
-    "ImagePullBackOff", "ErrImagePull", "InvalidImageName",
-    "CreateContainerConfigError", "CreateContainerError",
+    "ImagePullBackOff",
+    "ErrImagePull",
+    "InvalidImageName",
+    "CreateContainerConfigError",
+    "CreateContainerError",
 )
 
 class K8sJobLogWatcher(
@@ -94,7 +97,9 @@ class K8sJobLogWatcher(
         repeat(30) {
             try {
                 val stream = podLogs.streamNamespacedPodLog(
-                    config.k8sNamespace, podName, containerName
+                    config.k8sNamespace,
+                    podName,
+                    containerName,
                 )
                 BufferedReader(InputStreamReader(stream)).use { reader ->
                     reader.lineSequence().forEach { line ->

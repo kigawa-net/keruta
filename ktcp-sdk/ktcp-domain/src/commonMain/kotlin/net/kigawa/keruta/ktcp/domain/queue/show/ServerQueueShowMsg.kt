@@ -8,7 +8,7 @@ import net.kigawa.keruta.ktcp.domain.msg.server.ServerMsgType
 data class ServerQueueShowMsg(
     override val type: ServerMsgType = ServerMsgType.QUEUE_SHOW,
     val id: Long,
-): ServerMsg {
+) : ServerMsg {
 
     init {
         require(type == ServerMsgType.QUEUE_SHOW) { "type must be QUEUE_SHOW" }

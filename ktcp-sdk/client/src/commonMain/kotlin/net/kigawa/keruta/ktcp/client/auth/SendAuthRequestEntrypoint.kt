@@ -8,9 +8,10 @@ import net.kigawa.keruta.ktcp.domain.serialize.serialize
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.err.Res
 
-class SendAuthRequestEntrypoint: ServerAuthRequestEntrypoint<ClientCtx> {
+class SendAuthRequestEntrypoint : ServerAuthRequestEntrypoint<ClientCtx> {
     override fun access(
-        input: ServerAuthRequestMsg, ctx: ClientCtx,
+        input: ServerAuthRequestMsg,
+        ctx: ClientCtx,
     ): EntrypointDeferred<Res<Unit, KtcpClientErr>> = EntrypointDeferred {
         ctx.connection.send(ctx.serializer.serialize(input))
         Res.Ok(Unit)

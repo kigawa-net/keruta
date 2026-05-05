@@ -15,7 +15,10 @@ class ClaudeCodeCliClient {
     suspend fun sendMessage(prompt: String): Res<String, ClaudeApiErr> = withContext(Dispatchers.IO) {
         try {
             val processBuilder = ProcessBuilder(
-                claudePath, "--dangerously-skip-permissions", "-p", prompt
+                claudePath,
+                "--dangerously-skip-permissions",
+                "-p",
+                prompt,
             )
             processBuilder.directory(java.io.File("/workspace"))
 
@@ -51,7 +54,7 @@ class ClaudeCodeCliClient {
             val exitCode = process.exitValue()
             if (exitCode != 0) {
                 return@withContext Res.Err(
-                    ClaudeApiErr("Claude Code CLI failed (exit code: $exitCode)\nstdout: $result\nstderr: $errorOutput", null)
+                    ClaudeApiErr("Claude Code CLI failed (exit code: $exitCode)\nstdout: $result\nstderr: $errorOutput", null),
                 )
             }
 

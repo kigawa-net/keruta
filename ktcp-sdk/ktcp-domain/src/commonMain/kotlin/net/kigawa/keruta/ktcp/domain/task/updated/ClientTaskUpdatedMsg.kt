@@ -10,7 +10,7 @@ data class ClientTaskUpdatedMsg(
     val id: Long,
     val status: String,
     val log: String? = null,
-): ClientMsg {
+) : ClientMsg {
     init {
         require(type == ClientMsgType.TASK_UPDATED) { "type must be TASK_UPDATED" }
     }

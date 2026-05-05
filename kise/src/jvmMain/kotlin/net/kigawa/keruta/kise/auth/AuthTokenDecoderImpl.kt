@@ -9,7 +9,7 @@ import net.kigawa.kodel.api.err.Res
 
 class AuthTokenDecoderImpl(
     val jwtVerifier: JwtVerifier,
-): AuthTokenDecoder {
+) : AuthTokenDecoder {
     override fun decodeAuthRequestMsg(authRequestMsg: ServerAuthRequestMsg): Res<UnverifiedAuthTokens, KtcpErr> {
         val unverifiedUserToken = when (
             val res = jwtVerifier.decodeUnverified(authRequestMsg.userToken)
@@ -19,7 +19,7 @@ class AuthTokenDecoderImpl(
         }
         val unverifiedProviderToken = when (
             val res = jwtVerifier.decodeUnverified(
-                authRequestMsg.serverToken
+                authRequestMsg.serverToken,
             )
         ) {
             is Res.Err -> return res.convert()
@@ -27,8 +27,9 @@ class AuthTokenDecoderImpl(
         }
         return Res.Ok(
             UnverifiedAuthTokens(
-                unverifiedUserToken, unverifiedProviderToken
-            )
+                unverifiedUserToken,
+                unverifiedProviderToken,
+            ),
         )
     }
 }

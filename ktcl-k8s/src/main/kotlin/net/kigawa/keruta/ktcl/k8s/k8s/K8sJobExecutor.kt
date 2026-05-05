@@ -66,8 +66,11 @@ class K8sJobExecutor(
                 coreApi.createNamespacedPersistentVolumeClaim(config.k8sNamespace, pvc).execute()
                 logger.info { "Created PVC: $pvcName" }
             } catch (e: ApiException) {
-                if (e.code == 409) logger.info { "PVC already exists, reusing: $pvcName" }
-                else throw e
+                if (e.code == 409) {
+                    logger.info { "PVC already exists, reusing: $pvcName" }
+                } else {
+                    throw e
+                }
             }
         }
     }
@@ -127,8 +130,11 @@ class K8sJobExecutor(
         return when (watchResult) {
             is Res.Ok -> {
                 logger.info { "Job $jobName completed with status: ${watchResult.value}" }
-                if (watchResult.value == JobStatus.SUCCEEDED) Res.Ok(Unit)
-                else Res.Err(K8sErr.JobWatchErr("Job completed with non-success status: ${watchResult.value}", null))
+                if (watchResult.value == JobStatus.SUCCEEDED) {
+                    Res.Ok(Unit)
+                } else {
+                    Res.Err(K8sErr.JobWatchErr("Job completed with non-success status: ${watchResult.value}", null))
+                }
             }
             is Res.Err -> {
                 logger.warning { "Job $jobName watch error: ${watchResult.err}" }

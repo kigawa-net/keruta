@@ -11,27 +11,23 @@ import net.kigawa.keruta.ktcp.domain.err.KtcpErr
 import net.kigawa.keruta.ktcp.domain.serialize.KerutaSerializer
 import net.kigawa.kodel.api.err.Res
 
-class JsonKerutaSerializer: KerutaSerializer {
+class JsonKerutaSerializer : KerutaSerializer {
     val json = Json { encodeDefaults = true }
     override val serializersModule: SerializersModule
         get() = json.serializersModule
 
-    override fun <T> serialize(serializer: SerializationStrategy<T>, value: T): String {
-        return json.encodeToString(serializer, value)
-    }
+    override fun <T> serialize(serializer: SerializationStrategy<T>, value: T): String = json.encodeToString(serializer, value)
 
-
-    override fun <T> deserialize(deserializer: DeserializationStrategy<T>, str: String): Res<T, KtcpErr> {
-        return try {
-            Res.Ok(json.decodeFromString(deserializer, str))
-        } catch (e: SerializationException) {
-            Res.Err(
-                IllegalFormatDeserializeErr(
-                    "", e
-                )
-            )
-        } catch (e: IllegalArgumentException) {
-            Res.Err(InvalidTypeDeserializeErr("", e))
-        }
+    override fun <T> deserialize(deserializer: DeserializationStrategy<T>, str: String): Res<T, KtcpErr> = try {
+        Res.Ok(json.decodeFromString(deserializer, str))
+    } catch (e: SerializationException) {
+        Res.Err(
+            IllegalFormatDeserializeErr(
+                "",
+                e,
+            ),
+        )
+    } catch (e: IllegalArgumentException) {
+        Res.Err(InvalidTypeDeserializeErr("", e))
     }
 }

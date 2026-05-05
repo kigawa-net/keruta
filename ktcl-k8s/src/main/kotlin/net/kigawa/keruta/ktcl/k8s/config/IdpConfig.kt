@@ -11,12 +11,10 @@ data class IdpConfig(
     val issuer: URI,
 ) {
     companion object {
-        fun load(config: io.ktor.server.config.ApplicationConfig): IdpConfig {
-            return IdpConfig(
-                issuer = URI(config.property("idp.issuer").getString()),
-                strIssuer = config.property("idp.issuer").getString(),
-                clientId = config.propertyOrNull("idp.audience")?.getString() ?: throw IllegalStateException("idp.audience is required"),
-            )
-        }
+        fun load(config: io.ktor.server.config.ApplicationConfig): IdpConfig = IdpConfig(
+            issuer = URI(config.property("idp.issuer").getString()),
+            strIssuer = config.property("idp.issuer").getString(),
+            clientId = config.propertyOrNull("idp.audience")?.getString() ?: throw IllegalStateException("idp.audience is required"),
+        )
     }
 }

@@ -10,11 +10,7 @@ import kotlinx.coroutines.flow.SharedFlow
 actual class MobileWebSocketConnection {
     actual val messages: SharedFlow<String> = MutableSharedFlow()
 
-    actual suspend fun send(msg: String) {
-        throw NotImplementedError("JVMターゲットではMobileWebSocketConnectionは使用できません")
-    }
+    actual suspend fun send(msg: String): Unit = throw NotImplementedError("JVMターゲットではMobileWebSocketConnectionは使用できません")
 
-    actual suspend fun close() {
-        throw NotImplementedError("JVMターゲットではMobileWebSocketConnectionは使用できません")
-    }
+    actual suspend fun close(): Unit = throw NotImplementedError("JVMターゲットではMobileWebSocketConnectionは使用できません")
 }

@@ -14,12 +14,10 @@ data class DbConfig(
         /**
          * ApplicationConfig と環境変数から設定を読み込む
          */
-        fun load(applicationConfig: ApplicationConfig): DbConfig {
-            return DbConfig(
-                jdbcUrl = applicationConfig.property("db.jdbcUrl").getString(),
-                username = applicationConfig.property("db.username").getString(),
-                password = applicationConfig.property("db.password").getString()
-            )
-        }
+        fun load(applicationConfig: ApplicationConfig): DbConfig = DbConfig(
+            jdbcUrl = applicationConfig.property("db.jdbcUrl").getString(),
+            username = applicationConfig.property("db.username").getString(),
+            password = applicationConfig.property("db.password").getString(),
+        )
     }
 }

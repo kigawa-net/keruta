@@ -3,10 +3,6 @@ package net.kigawa.keruta.kise.route
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
-import net.kigawa.keruta.kise.KiseConfig
-import net.kigawa.keruta.kise.oidc.IdTokenVerifier
-import net.kigawa.keruta.kise.oidc.OidcDiscoveryFetcher
-import net.kigawa.keruta.kise.oidc.PkceGenerator
 import net.kigawa.kodel.api.log.getKogger
 import kotlin.test.Test
 import kotlin.test.assertTrue

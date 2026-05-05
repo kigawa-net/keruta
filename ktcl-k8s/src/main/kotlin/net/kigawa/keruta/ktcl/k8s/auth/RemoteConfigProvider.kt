@@ -8,7 +8,6 @@ import java.net.URI
 import java.net.URL
 import java.util.concurrent.TimeUnit
 
-
 class RemoteConfigProvider(
     val oidcDiscoveryFetcher: OidcDiscoveryFetcher,
 ) {
@@ -37,5 +36,3 @@ class RemoteConfigProvider(
             .build()
     }
 }
-
-

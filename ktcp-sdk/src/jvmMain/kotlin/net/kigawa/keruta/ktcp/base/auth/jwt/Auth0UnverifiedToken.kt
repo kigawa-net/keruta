@@ -26,7 +26,7 @@ class Auth0UnverifiedToken(
     val jwksProvider: JwksProvider,
     val auth0AlgorithmInitializer: Auth0AlgorithmInitializer,
     val javaKeyPairInitializer: JavaKeyPairInitializer,
-): UnverifiedToken {
+) : UnverifiedToken {
     override val subject: String by decode::subject
     override val issuer: Url get() = Url.parse(decode.issuer)
     val keyId: String? get() = decode.keyId
@@ -37,18 +37,17 @@ class Auth0UnverifiedToken(
         .let { Auth0UnverifiedTokenWithKey(this, it) }
         .ok()
 
-    override suspend fun withOidcConfig(): Res<UnverifiedTokenWithOidc, KtcpErr> {
-        return when (val res = oidcConfigProvider.get(issuer)) {
-            is Res.Err -> res.convert()
-            is Res.Ok -> Res.Ok(
-                KtorUnverifiedTokenWithOidc(this, res.value, jwksProvider)
-            )
-        }
+    override suspend fun withOidcConfig(): Res<UnverifiedTokenWithOidc, KtcpErr> = when (val res = oidcConfigProvider.get(issuer)) {
+        is Res.Err -> res.convert()
+        is Res.Ok -> Res.Ok(
+            KtorUnverifiedTokenWithOidc(this, res.value, jwksProvider),
+        )
     }
 
     override fun withJwks(): Res<UnverifiedTokenWithKey, KtcpErr> = jwksProvider
         .algorithmByIssuer(
-            issuer, keyId
+            issuer,
+            keyId,
         ).convertOk {
             Auth0UnverifiedTokenWithKey(this, it)
         }

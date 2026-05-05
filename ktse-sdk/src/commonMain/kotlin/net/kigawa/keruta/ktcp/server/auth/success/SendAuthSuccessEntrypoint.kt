@@ -9,17 +9,16 @@ import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.LoggerFactory
 import net.kigawa.kodel.api.log.traceignore.debug
 
-class SendAuthSuccessEntrypoint: ClientAuthSuccessEntrypoint<ServerCtx> {
+class SendAuthSuccessEntrypoint : ClientAuthSuccessEntrypoint<ServerCtx> {
     val logger = LoggerFactory.get("net.kigawa.keruta.ktcp.server.auth.success.AuthSuccessSendEntrypoint")
     override fun access(
-        input: ClientAuthSuccessMsg, ctx: ServerCtx,
-    ): EntrypointDeferred<Res<Unit, Nothing>> {
-        return EntrypointDeferred {
-            ctx.connection.send(
-                ctx.serializer.serialize(input)
-                    .also { logger.debug("send auth success message: $it") }
-            )
-            Res.Ok(Unit)
-        }
+        input: ClientAuthSuccessMsg,
+        ctx: ServerCtx,
+    ): EntrypointDeferred<Res<Unit, Nothing>> = EntrypointDeferred {
+        ctx.connection.send(
+            ctx.serializer.serialize(input)
+                .also { logger.debug("send auth success message: $it") },
+        )
+        Res.Ok(Unit)
     }
 }

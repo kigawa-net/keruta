@@ -37,7 +37,7 @@ tasks.register<Exec>("iosSimulatorBuild") {
         "-configuration", "Debug",
         "-destination", "platform=iOS Simulator,name=$iosSimulatorName",
         "-derivedDataPath", "build",
-        "build"
+        "build",
     )
 }
 

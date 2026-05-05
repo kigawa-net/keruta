@@ -14,7 +14,7 @@ class ServerTaskCreateMsgTest {
             type = ServerMsgType.TASK_CREATE,
             title = "test-task",
             description = "test description",
-            queueId = 1
+            queueId = 1,
         )
 
         // Assert
@@ -29,7 +29,7 @@ class ServerTaskCreateMsgTest {
         val msg = ServerTaskCreateMsg(
             title = "test-task",
             description = "test description",
-            queueId = 1
+            queueId = 1,
         )
 
         // Assert
@@ -44,7 +44,7 @@ class ServerTaskCreateMsgTest {
                 type = ServerMsgType.AUTH_REQUEST,
                 title = "test-task",
                 description = "test description",
-                queueId = 1
+                queueId = 1,
             )
         }
     }
@@ -57,7 +57,7 @@ class ServerTaskCreateMsgTest {
                 type = ServerMsgType.GENERIC_ERROR,
                 title = "test-task",
                 description = "test description",
-                queueId = 1
+                queueId = 1,
             )
         }
     }

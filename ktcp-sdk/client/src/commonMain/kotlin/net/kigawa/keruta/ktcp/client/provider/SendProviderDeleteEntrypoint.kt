@@ -10,7 +10,8 @@ import net.kigawa.kodel.api.err.Res
 
 class SendProviderDeleteEntrypoint : ServerProviderDeleteEntrypoint<ClientCtx> {
     override fun access(
-        input: ServerProviderDeleteMsg, ctx: ClientCtx,
+        input: ServerProviderDeleteMsg,
+        ctx: ClientCtx,
     ): EntrypointDeferred<Res<Unit, KtcpClientErr>> = EntrypointDeferred {
         ctx.connection.send(ctx.serializer.serialize(input))
         Res.Ok(Unit)

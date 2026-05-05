@@ -10,6 +10,8 @@ import net.kigawa.kodel.api.err.Res
 interface ServerProviderIssueTokenEntrypoint<C> : Entrypoint<ServerProviderIssueTokenMsg, EntrypointDeferred<Res<Unit, KtcpErr>>, C> {
     override val info: EntrypointInfo
         get() = EntrypointInfo(
-            ServerMsgType.PROVIDER_ISSUE_TOKEN.str, emptyList(), "プロバイダートークン登録メッセージ処理"
+            ServerMsgType.PROVIDER_ISSUE_TOKEN.str,
+            emptyList(),
+            "プロバイダートークン登録メッセージ処理",
         )
 }

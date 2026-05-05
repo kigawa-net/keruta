@@ -7,5 +7,5 @@ data class KubernetesConfig(
     val namespace: String,
     val useInCluster: Boolean,
     val kubeconfigPath: String?,
-    val jobTimeout: Long
+    val jobTimeout: Long,
 )

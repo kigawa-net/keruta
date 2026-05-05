@@ -13,7 +13,7 @@ data class QueueListViewState(
 
 class QueueListViewModel(
     private val queueRepository: QueueRepository,
-): BaseViewModel<QueueListViewState>(QueueListViewState(isLoading = true)) {
+) : BaseViewModel<QueueListViewState>(QueueListViewState(isLoading = true)) {
 
     init {
         viewModelScope.launch {
@@ -31,5 +31,4 @@ class QueueListViewModel(
             }
         }
     }
-
 }

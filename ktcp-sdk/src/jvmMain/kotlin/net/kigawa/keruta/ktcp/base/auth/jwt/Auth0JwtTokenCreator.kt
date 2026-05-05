@@ -13,10 +13,12 @@ import java.util.*
 
 class Auth0JwtTokenCreator(
     private val javaKeyPairInitializer: JavaKeyPairInitializer,
-): JwtTokenCreator {
+) : JwtTokenCreator {
     override fun create(
-        pemKey: PemKey, issuer: Issuer,
-        audience: Audience, subject: Subject,
+        pemKey: PemKey,
+        issuer: Issuer,
+        audience: Audience,
+        subject: Subject,
     ): CreatedToken {
         val key = javaKeyPairInitializer.initialize(pemKey)
         val algorithm = Auth0AlgorithmInitializer().initPrivateKey(key)

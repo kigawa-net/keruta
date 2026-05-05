@@ -50,7 +50,7 @@ class RefreshSessionUseCase(
         // 有効期限を延長（元の有効期限から1時間）
         val newExpiresAt = maxOf(
             session.expiresAt,
-            currentTime
+            currentTime,
         ) + 3_600_000
 
         val updatedSession = session.copy(

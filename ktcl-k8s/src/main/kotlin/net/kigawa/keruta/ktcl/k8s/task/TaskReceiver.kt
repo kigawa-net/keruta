@@ -80,7 +80,10 @@ class TaskReceiver(
 
         val providerListedMsg = receiveMsg(ctx) ?: return null
         val providerListed = providerListedMsg.tryToProviderList()
-            ?.unwrap { it.printStackTrace(); return null }
+            ?.unwrap {
+                it.printStackTrace()
+                return null
+            }
             ?: run {
                 logger.severe { "Failed to parse provider_listed message" }
                 return null
@@ -102,7 +105,10 @@ class TaskReceiver(
 
         val queueListedMsg = receiveMsg(ctx) ?: return null
         val queueListed = queueListedMsg.tryToQueueListed()
-            ?.unwrap { it.printStackTrace(); return null }
+            ?.unwrap {
+                it.printStackTrace()
+                return null
+            }
             ?: run {
                 logger.severe { "Failed to parse queue_listed message" }
                 return null
@@ -129,7 +135,10 @@ class TaskReceiver(
         val queueShowedMsg = receiveMsg(ctx) ?: return false
         logger.debug { "Received queue_show for queue ${queue.id}" }
         val queueShowed = queueShowedMsg.tryToQueueShowed()
-            ?.unwrap { it.printStackTrace(); return false }
+            ?.unwrap {
+                it.printStackTrace()
+                return false
+            }
             ?: return false
         logger.debug { "Parsed queue_show for queue ${queue.id}" }
         val gitRepoUrl = try {
@@ -152,7 +161,10 @@ class TaskReceiver(
         val taskListedMsg = receiveMsg(ctx) ?: return false
         logger.debug { "Received task_list for queue ${queue.id}" }
         val taskListed = taskListedMsg.tryToTaskListed()
-            ?.unwrap { it.printStackTrace(); return false }
+            ?.unwrap {
+                it.printStackTrace()
+                return false
+            }
             ?: return false
         logger.debug { "Parsed task_list for queue ${queue.id}" }
         val task = taskListed.tasks.firstOrNull { it.status.isBlank() || it.status == "pending" } ?: return false
@@ -171,7 +183,7 @@ class TaskReceiver(
 
         ktcpClient.ktcpServerEntrypoints.taskUpdateEntrypoint.access(
             ServerTaskUpdateMsg(taskId = task.id, status = "running"),
-            ctx
+            ctx,
         )?.execute()
 
         val jobResult = jobExecutor.executeJob(task.id, task.title, task.description, gitRepoUrl, githubToken, userToken, serverToken, queue.id, anthropicApiKey)
@@ -180,7 +192,7 @@ class TaskReceiver(
             logger.warning { "Job failed for task ${task.id}, updating status to failed" }
             ktcpClient.ktcpServerEntrypoints.taskUpdateEntrypoint.access(
                 ServerTaskUpdateMsg(taskId = task.id, status = "failed"),
-                ctx
+                ctx,
             )?.execute()
             return false
         }

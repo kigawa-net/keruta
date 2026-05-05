@@ -9,7 +9,7 @@ import net.kigawa.keruta.ktcl.mobile.di.IosAppContainer
 import net.kigawa.keruta.ktcl.mobile.navigation.Screen
 import net.kigawa.keruta.ktcl.mobile.ui.App
 
-fun MainViewController() = ComposeUIViewController {
+fun mainViewController() = ComposeUIViewController {
     val container = IosAppContainer()
     container.initialize()
 

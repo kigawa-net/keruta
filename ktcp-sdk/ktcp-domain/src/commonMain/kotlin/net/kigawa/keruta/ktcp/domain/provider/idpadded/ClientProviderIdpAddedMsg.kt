@@ -1,4 +1,4 @@
-package net.kigawa.keruta.ktcp.domain.provider.idp_added
+package net.kigawa.keruta.ktcp.domain.provider.idpadded
 
 import kotlinx.serialization.Serializable
 import net.kigawa.keruta.ktcp.domain.msg.client.ClientMsg

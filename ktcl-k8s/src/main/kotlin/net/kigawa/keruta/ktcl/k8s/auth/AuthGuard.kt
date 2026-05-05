@@ -12,5 +12,4 @@ class AuthGuard(
         logger.fine("Checking authentication for request: ${call.request.local.uri}")
         authenticationHelper.requireAuth(call, block)
     }
-
 }

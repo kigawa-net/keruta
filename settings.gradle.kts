@@ -14,6 +14,7 @@ rootProject.name = "keruta"
 fun Settings.includesIfExists(dir: String, vararg includes: String) {
     if (file(dir).exists()) this.include(*includes)
 }
+
 @DslMarker
 annotation class IncludeDslMarker
 
@@ -27,24 +28,30 @@ class IncludeDsl(
     ) {
         include(*name)
         true
-    } else false
-
+    } else {
+        false
+    }
 
     fun include(vararg name: String) = settings.include(path(name).joinToString(separator = ":"))
 
     private fun path(name: Array<out String>) = (prefix + name).let { pathName ->
         var name: String? = null
         pathName.map {
-            name = if (name == null) it
-            else "$name-$it"
+            name = if (name == null) {
+                it
+            } else {
+                "$name-$it"
+            }
             name
         }
     }
 
     fun group(name: String, block: IncludeDsl.() -> Unit) = IncludeDsl(prefix + name, settings).block()
-    fun includeIfExistsAndGroup(name: String, block: IncludeDsl.() -> Unit) =
-        if (includeIfExists(name)) group(name, block)
-        else Unit
+    fun includeIfExistsAndGroup(name: String, block: IncludeDsl.() -> Unit) = if (includeIfExists(name)) {
+        group(name, block)
+    } else {
+        Unit
+    }
 }
 
 fun Settings.includeDsl(block: IncludeDsl.() -> Unit) {
@@ -53,8 +60,11 @@ fun Settings.includeDsl(block: IncludeDsl.() -> Unit) {
 includesIfExists("kodel", "kodel:api", "kodel:coroutine", "kodel:core")
 includesIfExists(
     "ktcp-sdk",
-    "ktcp-sdk:ktcp-domain", "ktcp-sdk:ktcp-domain:ktcp-domain-server", "ktcp-sdk:ktcp-domain:ktcp-domain-client",
-    "ktcp-sdk:ktcp-usecase", "ktcp-sdk:ktcp-usecase:ktcp-usecase-client",
+    "ktcp-sdk:ktcp-domain",
+    "ktcp-sdk:ktcp-domain:ktcp-domain-server",
+    "ktcp-sdk:ktcp-domain:ktcp-domain-client",
+    "ktcp-sdk:ktcp-usecase",
+    "ktcp-sdk:ktcp-usecase:ktcp-usecase-client",
     "ktcp-sdk:ktcp-infra-client",
     "ktcp-sdk:client",
 )

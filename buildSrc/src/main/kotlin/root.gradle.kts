@@ -1,5 +1,6 @@
 plugins {
     id("kmp")
+    id("ktlint")
 }
 allprojects {
     group = "net.kigawa.keruta"

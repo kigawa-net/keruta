@@ -3,9 +3,9 @@ package net.kigawa.keruta.kise.persist.repository
 import net.kigawa.keruta.kise.domain.entity.Session
 import net.kigawa.keruta.kise.domain.repository.SessionRepository
 import net.kigawa.keruta.kise.persist.table.SessionTable
+import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.core.less
-import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.jdbc.deleteWhere
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.selectAll
@@ -27,7 +27,7 @@ class ExposedSessionRepository : SessionRepository {
         return session.copy(
             id = id,
             createdAt = now,
-            updatedAt = now
+            updatedAt = now,
         )
     }
 
@@ -43,25 +43,23 @@ class ExposedSessionRepository : SessionRepository {
             token = row[SessionTable.token],
             expiresAt = row[SessionTable.expiresAt],
             createdAt = row[SessionTable.createdAt],
-            updatedAt = row[SessionTable.updatedAt]
+            updatedAt = row[SessionTable.updatedAt],
         )
     }
 
-    override suspend fun getByUserId(userId: Long): List<Session> {
-        return SessionTable
-            .selectAll()
-            .where { SessionTable.userId eq userId }
-            .map { row ->
-                Session(
-                    id = row[SessionTable.id],
-                    userId = row[SessionTable.userId],
-                    token = row[SessionTable.token],
-                    expiresAt = row[SessionTable.expiresAt],
-                    createdAt = row[SessionTable.createdAt],
-                    updatedAt = row[SessionTable.updatedAt]
-                )
-            }
-    }
+    override suspend fun getByUserId(userId: Long): List<Session> = SessionTable
+        .selectAll()
+        .where { SessionTable.userId eq userId }
+        .map { row ->
+            Session(
+                id = row[SessionTable.id],
+                userId = row[SessionTable.userId],
+                token = row[SessionTable.token],
+                expiresAt = row[SessionTable.expiresAt],
+                createdAt = row[SessionTable.createdAt],
+                updatedAt = row[SessionTable.updatedAt],
+            )
+        }
 
     override suspend fun deleteByToken(token: String) {
         SessionTable.deleteWhere { SessionTable.token eq token }
@@ -74,11 +72,9 @@ class ExposedSessionRepository : SessionRepository {
         }
     }
 
-    override suspend fun countByUserId(userId: Long): Int {
-        return SessionTable
-            .selectAll()
-            .where { SessionTable.userId eq userId }
-            .count()
-            .toInt()
-    }
+    override suspend fun countByUserId(userId: Long): Int = SessionTable
+        .selectAll()
+        .where { SessionTable.userId eq userId }
+        .count()
+        .toInt()
 }

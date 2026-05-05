@@ -13,7 +13,7 @@ class PkceGenerator {
             codeVerifier = codeVerifier,
             codeChallenge = generateCodeChallenge(codeVerifier),
             state = generateState(),
-            nonce = generateNonce()
+            nonce = generateNonce(),
         )
     }
 

@@ -10,7 +10,8 @@ import net.kigawa.kodel.api.err.Res
 
 class SendQueueUpdateEntrypoint : ServerQueueUpdateEntrypoint<ClientCtx> {
     override fun access(
-        input: ServerQueueUpdateMsg, ctx: ClientCtx,
+        input: ServerQueueUpdateMsg,
+        ctx: ClientCtx,
     ): EntrypointDeferred<Res<Unit, KtcpClientErr>> = EntrypointDeferred {
         ctx.connection.send(ctx.serializer.serialize(input))
         Res.Ok(Unit)

@@ -9,25 +9,19 @@ actual class SecureStorage {
         userDefaults.setObject(token, KEY_USER_TOKEN)
     }
 
-    actual suspend fun getUserToken(): String? {
-        return userDefaults.stringForKey(KEY_USER_TOKEN)
-    }
+    actual suspend fun getUserToken(): String? = userDefaults.stringForKey(KEY_USER_TOKEN)
 
     actual suspend fun saveServerToken(token: String) {
         userDefaults.setObject(token, KEY_SERVER_TOKEN)
     }
 
-    actual suspend fun getServerToken(): String? {
-        return userDefaults.stringForKey(KEY_SERVER_TOKEN)
-    }
+    actual suspend fun getServerToken(): String? = userDefaults.stringForKey(KEY_SERVER_TOKEN)
 
     actual suspend fun saveOidcState(state: String) {
         userDefaults.setObject(state, KEY_OIDC_STATE)
     }
 
-    actual suspend fun getOidcState(): String? {
-        return userDefaults.stringForKey(KEY_OIDC_STATE)
-    }
+    actual suspend fun getOidcState(): String? = userDefaults.stringForKey(KEY_OIDC_STATE)
 
     actual suspend fun clearTokens() {
         userDefaults.removeObjectForKey(KEY_USER_TOKEN)

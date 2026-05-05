@@ -1,4 +1,4 @@
-package net.kigawa.keruta.ktcp.domain.provider.add_token
+package net.kigawa.keruta.ktcp.domain.provider.addtoken
 
 import kotlinx.serialization.Serializable
 import net.kigawa.keruta.ktcp.domain.msg.client.ClientMsg
