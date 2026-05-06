@@ -34,6 +34,7 @@ tasks.shadowJar {
 
 dependencies {
     implementation(project(":ktse-sdk"))
+    implementation(project(":kicp:kicp-usecase"))
     // https://mvnrepository.com/artifact/com.auth0/java-jwt
     implementation("com.auth0:java-jwt:${Version.JAVA_JWT}")
     implementation("com.auth0:jwks-rsa:${Version.JWKS_RSA}")
