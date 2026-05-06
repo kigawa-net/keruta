@@ -26,8 +26,6 @@ class KicpClientRegistrar {
         callback: (Boolean, String) -> Unit
     ) {
         // モック実装: 実際のHTTP通信は今後の課題
-        console.log("KicpClientRegistrar.register called with url: $registerUrl")
-        // 成功をシミュレート
         callback(true, "登録リクエストを受け付けました（モック）")
     }
 
@@ -36,7 +34,6 @@ class KicpClientRegistrar {
      */
     @JsName("getRegisterToken")
     fun getRegisterToken(issuerUrl: String, callback: (Boolean, String) -> Unit) {
-        console.log("KicpClientRegistrar.getRegisterToken called with issuerUrl: $issuerUrl")
         callback(true, "登録トークン要求を受け付けました（モック）")
     }
 }
