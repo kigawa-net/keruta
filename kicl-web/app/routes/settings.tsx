@@ -1,4 +1,5 @@
 import {Form, useActionData, useLoaderData} from 'react-router';
+import {useState} from 'react';
 import {type AppSettings, defaultSettings, SETTINGS_STORAGE_KEY} from '../types/settings';
 
 export async function clientLoader(): Promise<AppSettings> {
@@ -26,6 +27,72 @@ export function HydrateFallback() {
 export default function Settings() {
     const settings = useLoaderData() as AppSettings;
     const actionData = useActionData() as { saved: boolean } | undefined;
+    const [registerStatus, setRegisterStatus] = useState<{success: boolean; message: string} | null>(null);
+    const [isRegistering, setIsRegistering] = useState(false);
+
+    const handleKicpRegister = async () => {
+        setIsRegistering(true);
+        setRegisterStatus(null);
+
+        try {
+            // フォームから値を取得
+            const form = document.querySelector('form[method="post"]')?.closest('div')?.querySelector('section:last-of-type');
+            const oidcTokenInput = form?.querySelector('input[name="oidcToken"]') as HTMLInputElement;
+            const providerTokenInput = form?.querySelector('input[name="providerToken"]') as HTMLInputElement;
+            const registerTokenInput = form?.querySelector('input[name="registerToken"]') as HTMLInputElement;
+
+            const oidcToken = oidcTokenInput?.value || '';
+            const providerToken = providerTokenInput?.value || '';
+            const registerToken = registerTokenInput?.value || '';
+
+            // 入力チェック
+            if (!oidcToken || !providerToken || !registerToken) {
+                setRegisterStatus({success: false, message: 'すべてのトークンを入力してください。'});
+                return;
+            }
+
+            if (!settings.ktseUrl) {
+                setRegisterStatus({success: false, message: 'タスクサーバーURLが設定されていません。'});
+                return;
+            }
+
+            // 登録リクエストを送信
+            const registerUrl = `${settings.ktseUrl}/api/kicp/register`;
+
+            console.log('kicpクライアント登録リクエスト送信:', {
+                url: registerUrl,
+                oidcToken: oidcToken.substring(0, 20) + '...',
+                hasProviderToken: !!providerToken,
+                hasRegisterToken: !!registerToken,
+            });
+
+            // Fetch APIを使用して登録リクエストを送信
+            const response = await fetch(registerUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    oidcToken,
+                    providerToken,
+                    registerToken,
+                }),
+            });
+
+            if (response.ok) {
+                const data = await response.json().catch(() => ({ message: 'レスポンスの解析に失敗しました' }));
+                setRegisterStatus({success: true, message: `登録成功: ${JSON.stringify(data)}`});
+            } else {
+                const errorText = await response.text().catch(() => response.statusText);
+                setRegisterStatus({success: false, message: `登録失敗: ${response.status} ${errorText}`});
+            }
+        } catch (error) {
+            console.error('kicp登録エラー:', error);
+            setRegisterStatus({success: false, message: `エラー: ${error instanceof Error ? error.message : String(error)}`});
+        } finally {
+            setIsRegistering(false);
+        }
+    };
 
     return (
         <div className="max-w-2xl mx-auto p-8">
@@ -84,6 +151,57 @@ export default function Settings() {
                     保存
                 </button>
             </Form>
+
+            {/* kicpクライアント登録セクション */}
+            <section className="mt-12 pt-8 border-t border-gray-200">
+                <h2 className="text-base font-semibold text-gray-700 mb-4">kicpクライアント登録</h2>
+                <p className="text-sm text-gray-600 mb-4">
+                    kicpクライアントを登録して、クロスドメイン認証を有効化します。
+                </p>
+
+                {registerStatus && (
+                    <div className={`mb-4 rounded border px-4 py-3 text-sm ${
+                        registerStatus.success 
+                            ? 'bg-green-50 border-green-200 text-green-700' 
+                            : 'bg-red-50 border-red-200 text-red-700'
+                    }`}>
+                        {registerStatus.message}
+                    </div>
+                )}
+
+                <div className="space-y-4">
+                    <Field
+                        label="OIDCトークン"
+                        name="oidcToken"
+                        defaultValue={localStorage.getItem('oidc_token') || ''}
+                        placeholder="OIDCトークンを入力"
+                        type="text"
+                    />
+                    <Field
+                        label="プロバイダートークン"
+                        name="providerToken"
+                        defaultValue={localStorage.getItem('provider_token') || ''}
+                        placeholder="プロバイダートークンを入力"
+                        type="text"
+                    />
+                    <Field
+                        label="登録トークン"
+                        name="registerToken"
+                        defaultValue={localStorage.getItem('register_token') || ''}
+                        placeholder="登録トークンを入力"
+                        type="text"
+                    />
+                </div>
+
+                <button
+                    type="button"
+                    onClick={handleKicpRegister}
+                    disabled={isRegistering}
+                    className="mt-4 rounded bg-green-600 px-5 py-2 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50"
+                >
+                    {isRegistering ? '登録中...' : 'kicpクライアントを登録'}
+                </button>
+            </section>
         </div>
     );
 }
@@ -93,18 +211,20 @@ function Field({
     name,
     defaultValue,
     placeholder,
+    type = 'text',
 }: {
     label: string;
     name: string;
     defaultValue: string;
     placeholder: string;
+    type?: string;
 }) {
     return (
         <label className="block">
             <span className="block text-sm font-medium text-gray-600 mb-1">{label}</span>
             <input
                 name={name}
-                type="url"
+                type={type}
                 defaultValue={defaultValue}
                 placeholder={placeholder}
                 className="block w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"

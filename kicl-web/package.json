@@ -19,6 +19,8 @@
         "isbot": "^5",
         "keruta-kicl-kicl-domain": "file:../kicl/kicl-domain/build/dist/js/productionLibrary",
         "keruta-kicl-kicl-usecase": "file:../kicl/kicl-usecase/build/dist/js/productionLibrary",
+        "keruta-kicp-kicp-domain": "file:../kicp/kicp-domain/build/dist/js/productionLibrary",
+        "keruta-kicp-kicp-usecase": "file:../kicp/kicp-usecase/build/dist/js/productionLibrary",
         "react": "^19.2.0",
         "react-dom": "^19.2.0",
         "react-router": "^7.11.0"

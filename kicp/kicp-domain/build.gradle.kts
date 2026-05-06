@@ -4,6 +4,17 @@ plugins {
     id("serialize")
 }
 kotlin {
+    js {
+        binaries.library()
+        generateTypeScriptDefinitions()
+        compilerOptions {
+            moduleKind = org.jetbrains.kotlin.gradle.dsl.JsModuleKind.MODULE_ES
+        }
+        compilations["main"].packageJson {
+            customField("type", "module")
+            customField("types", "keruta-kicp-kicp-domain.d.mts")
+        }
+    }
     sourceSets["commonMain"].dependencies {
         api(project(":kodel:api"))
     }
