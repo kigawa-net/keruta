@@ -10,16 +10,28 @@ export default defineConfig({
         reactRouter(),
         tsconfigPaths()
     ],
+    resolve: {
+        preserveSymlinks: true,
+    },
     optimizeDeps: {
         include: [
             "keruta-kicl-kicl-domain",
             "keruta-kicl-kicl-usecase",
+            "keruta-kicp-kicp-domain",
+            "keruta-kicp-kicp-usecase",
         ],
     },
     ssr: {
         external: [
             "keruta-kicl-kicl-domain",
             "keruta-kicl-kicl-usecase",
+            "keruta-kicp-kicp-domain",
+            "keruta-kicp-kicp-usecase",
         ],
+    },
+    build: {
+        commonjsOptions: {
+            transformMixedEsModules: true,
+        },
     },
 })
