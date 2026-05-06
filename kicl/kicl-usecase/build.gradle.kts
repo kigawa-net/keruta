@@ -17,6 +17,7 @@ kotlin {
     }
     sourceSets["commonMain"].dependencies {
         api(project(":kicl:kicl-domain"))
+        api(project(":kicp:kicp-usecase"))
     }
     sourceSets["commonTest"].dependencies {
     }
