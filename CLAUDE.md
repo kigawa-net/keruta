@@ -2,49 +2,111 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## ⚠️ 規約遵守の重要事項
+
+**すべての作業において以下の規約を必ず遵守すること：**
+- [CONVENTION.md](CONVENTION.md) - リポジトリ全体の規約（必読）
+- [doc/pr-convention.md](doc/pr-convention.md) - PR作成規約
+- [doc/ci-convention.md](doc/ci-convention.md) - CI/CD規約
+
+### 作業前のセットアップ（初回のみ）
+```bash
+# Git hooks をセットアップして規約チェックを自動化
+cp scripts/hooks/pre-commit.template .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
+cp scripts/hooks/pre-push.template .git/hooks/pre-push
+chmod +x .git/hooks/pre-push
+```
+
+### 規約チェックコマンド
+```bash
+# ブランチ名の手動チェック
+scripts/check-branch-naming.sh [ブランチ名]
+
+# コミット前の必須チェック
+./gradlew ktlintFormat && ./gradlew ktlintCheck
+./gradlew test
+```
+
 * ユーザーには日本語で応答する
 * 大きなファイルは細分化する
 
 ## Development Commands
 
+### セットアップ（初回のみ）
 ```bash
-# ビルド
-./gradlew build                          # 全モジュール
+# Git hooks をセットアップして規約チェックを自動化
+cp scripts/hooks/pre-commit.template .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
+cp scripts/hooks/pre-push.template .git/hooks/pre-push
+chmod +x .git/hooks/pre-push
+```
+
+### ビルド
+```bash
+./gradlew build                          # 全モジュールビルド
 ./gradlew :ktse:build                    # 個別モジュール
+```
 
-# 起動
-./gradlew :ktse:run                      # タスクサーバー
-./gradlew :ktcl-k8s:run                  # K8sクライアント
-cd ktcl-front && npm run dev             # フロントエンド (react-router dev)
+### 起動
+```bash
+./gradlew :ktse:run                      # タスクサーバー起動
+./gradlew :ktcl-k8s:run                  # K8sクライアント起動
+cd ktcl-front && npm run dev             # フロントエンド起動 (react-router dev)
+```
 
-# テスト
+### テスト
+```bash
+./gradlew test                           # 全テスト実行
 ./gradlew test --tests "net.kigawa.keruta.ktse.ReceiveUnknownArgTest"  # 単一テスト
-./gradlew :ktse:test --tests "*ReceiveUnknownArgTest"
+./gradlew test --tests "*ReceiveUnknownArgTest"  # クラス名指定
 ./gradlew test --continue                # 失敗しても続行
+./gradlew cleanTest test                  # キャッシュをクリアして再実行
+```
 
-# コミット前（必須）
-./gradlew ktlintFormat && ./gradlew ktlintCheck
+### リント・フォーマット（コミット前必須）
+```bash
+./gradlew ktlintFormat                   # 自動フォーマット
+./gradlew ktlintCheck                    # リントチェック
+```
 
-# DB
-docker-compose -f compose.test.yml up -d mysql
+### DB
+```bash
+docker-compose -f compose.test.yml up -d mysql   # テスト用MySQL起動
+```
+
+### 規約チェック
+```bash
+# ブランチ名の手動チェック
+scripts/check-branch-naming.sh [ブランチ名]
+
+# PR作成時はテンプレートを使用
+# .github/pull_request_template.md を参照
 ```
 
 ## Module Map
 
-依存バージョンは `buildSrc/src/main/kotlin/Version.kt` で一元管理（Kotlin 2.3.0、Ktor 3.4.3、Exposed 0.61.0）。
+依存バージョンは `buildSrc/src/main/kotlin/Version.kt` で一元管理。
+
+**主要バージョン**（詳細は [CONVENTION.md](CONVENTION.md#6-1-環境) 参照）:
+- Kotlin: 2.3.0
+- Ktor: 3.4.0
+- Java: Eclipse Temurin 25
+- Node.js: 24
+- Gradle: 9.5.0
 
 | モジュール | 役割 |
 |---|---|
-| `kodel/api` | 共通型：`Res<T,E>`、`Entrypoint`、`Dep`（DI）、`Kogger` |
-| `ktcp-sdk` | WebSocketプロトコル定義（KMP: JVM/JS）。`ktcp-domain`でメッセージ型、`ktcp-infra`で通信基盤 |
-| `ktse` | タスクサーバー（Ktor + Exposed + Flyway + MySQL、二重トークン認証） |
-| `ktse-sdk` | ktse向けSDK（KMP） |
+| `kodel` | 共通ライブラリ（Res型、EntrypointDeferred、Kogger） |
+| `ktcp` | WebSocketプロトコル（Kotlin Multiplatform対応: domain/infra） |
+| `ktse` | Ktorタスクサーバー（Exposed/Flyway/MySQL、二重トークン認証） |
 | `ktcl-k8s` | KTCPでタスク受信→Kubernetes Jobとして実行 |
-| `ktcl-front` | React + TypeScript + Vite + react-router + Keycloak.js |
-| `ktcl-front-mobile` | モバイルフロントエンド |
-| `ktcl-claudecode` | Claude Code統合 |
-| `kicl` | スケルトン（domain/usecase） |
+| `ktcl-front` | フロントエンド（React + TypeScript + Vite + Keycloak.js） |
+| `kicl-web` | 次世代フロントエンド（React Router v7 + KMP共有ロジック） |
+| `kicl` | Kotlin Multiplatformモジュール（domain/usecase） |
 | `kicp` | クロスドメインIDフェデレーションプロトコル（domain/usecase） |
+| `ktcl-claudecode` | Claude Code統合 |
+| `ktcl-front-mobile` | モバイルフロントエンド |
 
 ## Key Architectural Patterns
 
@@ -157,8 +219,39 @@ docker build -f Dockerfile_ktcl_front -t harbor.kigawa.net/private/ktcl-front:la
 
 ## Code Style
 
+詳細は [CONVENTION.md](CONVENTION.md#4-コードスタイル) を参照。
+
 - インデント: スペース4、最大行長120文字（ktlint / intellij_idea スタイル）
 - エラー型サフィックス: `*Err`（例: `KtcpErr`、`KicpErr`）
 - パッケージ: `net.kigawa.keruta.{module}.{layer}.{feature}`
 - 完全修飾インポート（ワイルドカード禁止）
 - 純粋関数・SOLID原則
+- KDocコメントで文書化（日本語）
+- 日本語使う
+
+## 📋 規約遵守チェックリスト
+
+作業を開始する前に、以下の規約を確認すること：
+
+### ブランチ作成時
+- [ ] ブランチ名が規約に従っているか（`feature/`, `fix/`, `docs/` など）
+- [ ] チェックスクリプトで確認: `scripts/check-branch-naming.sh [ブランチ名]`
+
+### コミット前
+- [ ] コミットメッセージが [Conventional Commits](https://www.conventionalcommits.org/) 形式か
+- [ ] `./gradlew ktlintFormat && ./gradlew ktlintCheck` を実行済みか
+- [ ] `./gradlew test` ですべてのテストが通るか
+- [ ] 秘密情報（認証情報、APIキー等）が含まれていないか
+
+### PR作成前
+- [ ] PRテンプレート（`.github/pull_request_template.md`）に従って記入済みか
+- [ ] 変更の粒度は適切か（1 PR = 1 機能/修正）
+- [ ] CIが全て通過しているか
+- [ ] [doc/pr-convention.md](doc/pr-convention.md) を確認済みか
+
+### 参考ドキュメント
+- [CONVENTION.md](CONVENTION.md) - リポジトリ全体の規約（必読）
+- [doc/pr-convention.md](doc/pr-convention.md) - PR作成規約
+- [doc/ci-convention.md](doc/ci-convention.md) - CI/CD規約
+- [doc/development-setup.md](doc/development-setup.md) - 開発環境セットアップ
+- [doc/glossary.md](doc/glossary.md) - 用語集
