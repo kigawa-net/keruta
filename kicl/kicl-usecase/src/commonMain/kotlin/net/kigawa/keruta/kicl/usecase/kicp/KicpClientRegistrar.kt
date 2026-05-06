@@ -8,23 +8,23 @@ import kotlin.js.JsName
  */
 @JsExport
 class KicpClientRegistrar {
-    /**
-     * kicpクライアントを登録する（モック実装）
-     * 
-     * @param registerUrl 登録APIのURL
-     * @param oidcToken OIDCトークン
-     * @param providerToken プロバイダートークン
-     * @param registerToken 登録トークン
-     * @param callback 結果を受け取るコールバック (success: Boolean, message: String)
-     */
-    @JsName("register")
-    fun register(
-        registerUrl: String,
-        oidcToken: String,
-        providerToken: String,
-        registerToken: String,
-        callback: (Boolean, String) -> Unit
-    ) {
+     /**
+      * kicpクライアントを登録する（モック実装）
+      *
+      * @param registerUrl 登録APIのURL
+      * @param oidcToken OIDCトークン
+      * @param providerToken プロバイダートークン
+      * @param registerToken 登録トークン
+      * @param callback 結果を受け取るコールバック (success: Boolean, message: String)
+      */
+     @JsName("register")
+     fun register(
+         registerUrl: String,
+         oidcToken: String,
+         providerToken: String,
+         registerToken: String,
+         callback: (Boolean, String) -> Unit,
+     ) {
         // モック実装: 実際のHTTP通信は今後の課題
         callback(true, "登録リクエストを受け付けました（モック）")
     }
