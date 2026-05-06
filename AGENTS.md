@@ -5,6 +5,32 @@ This file provides guidance for AI agents working with this codebase.
 
 リポジトリ全体の規約は [CONVENTION.md](CONVENTION.md) を参照。
 
+## ⚠️ 規約遵守の重要事項
+
+**すべての作業において以下の規約を必ず遵守すること：**
+- [CONVENTION.md](CONVENTION.md) - リポジトリ全体の規約（必読）
+- [doc/pr-convention.md](doc/pr-convention.md) - PR作成規約
+- [doc/ci-convention.md](doc/ci-convention.md) - CI/CD規約
+
+### 作業前のセットアップ（初回のみ）
+```bash
+# Git hooks をセットアップして規約チェックを自動化
+cp scripts/hooks/pre-commit.template .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
+cp scripts/hooks/pre-push.template .git/hooks/pre-push
+chmod +x .git/hooks/pre-push
+```
+
+### 規約チェックコマンド
+```bash
+# ブランチ名の手動チェック
+scripts/check-branch-naming.sh [ブランチ名]
+
+# コミット前の必須チェック
+./gradlew ktlintFormat && ./gradlew ktlintCheck
+./gradlew test
+```
+
 ## 開発コマンド
 
 ### ビルド
@@ -12,6 +38,11 @@ This file provides guidance for AI agents working with this codebase.
 ```bash
 ./gradlew build                          # 全モジュールビルド
 ./gradlew :ktse:build                    # 個別モジュール
+```
+
+### 起動
+
+```bash
 ./gradlew :ktse:run                      # タスクサーバー起動
 ./gradlew :ktcl-k8s:run                  # K8sクライアント起動
 cd ktcl-front && npm run dev             # フロントエンド起動
@@ -24,9 +55,10 @@ cd ktcl-front && npm run dev             # フロントエンド起動
 ./gradlew test --tests "net.kigawa.keruta.ktse.ReceiveUnknownArgTest"  # 単一テスト
 ./gradlew test --tests "*ReceiveUnknownArgTest"  # クラス名指定
 ./gradlew test --continue                # 失敗しても続行
+./gradlew cleanTest test                  # キャッシュをクリアして再実行
 ```
 
-### リント・フォーマット
+### リント・フォーマット（コミット前必須）
 
 ```bash
 ./gradlew ktlintFormat                   # 自動フォーマット
@@ -37,6 +69,16 @@ cd ktcl-front && npm run dev             # フロントエンド起動
 
 ```bash
 docker-compose -f compose.test.yml up -d mysql   # テスト用MySQL起動
+```
+
+### 規約チェック
+
+```bash
+# ブランチ名の手動チェック
+scripts/check-branch-naming.sh [ブランチ名]
+
+# PR作成時はテンプレートを使用
+# .github/pull_request_template.md を参照
 ```
 
 ## コードスタイルガイドライン
@@ -121,15 +163,20 @@ net.kigawa.keruta.{module}.{layer}.{feature}
 
 マルチモジュール構成。依存性バージョンは `buildSrc/src/main/kotlin/Version.kt` で一元管理。
 
-- **kodel** - 共通ライブラリ（Res型、EntrypointDeferred、Kogger）
-- **ktcp** - WebSocketプロトコル（model/client/server、Kotlin Multiplatform対応）
-- **ktse** - KtorタスクサーバーWS（Exposed/Flyway/MySQL、二重トークン認証）
-- **ktcl-k8s** - KTCPでタスク受信しKubernetes Jobとして実行
-- **ktcl-front** - React+TypeScript+Vite+Keycloak.js（既存フロントエンド）
-- **kicl** - Kotlin Multiplatformモジュール（domain/usecase）- JSライブラリ出力
-- **kicl-web** - React Router v7 + Kotlin Multiplatform共有ロジック（次世代フロントエンド）
-- **ktcl-claudecode** - Claude Code統合
-- 詳細ドキュメント: `doc/` 配下参照（特に `doc/kicl-web.md`）
+| モジュール | 説明 |
+|-----------|------|
+| `kodel` | 共通ライブラリ（Res型、EntrypointDeferred、Kogger） |
+| `ktcp` | WebSocketプロトコル（Kotlin Multiplatform対応: domain/infra） |
+| `ktse` | Ktorタスクサーバー（Exposed/Flyway/MySQL、二重トークン認証） |
+| `ktcl-k8s` | KTCPでタスク受信しKubernetes Jobとして実行 |
+| `ktcl-front` | React+TypeScript+Vite+Keycloak.js（既存フロントエンド） |
+| `kicl` | Kotlin Multiplatformモジュール（domain/usecase）- JSライブラリ出力 |
+| `kicl-web` | React Router v7 + Kotlin Multiplatform共有ロジック（次世代フロントエンド） |
+| `kicp` | クロスドメインIDフェデレーションプロトコル（domain/usecase） |
+| `ktcl-claudecode` | Claude Code統合 |
+| `ktcl-front-mobile` | モバイルフロントエンド |
+
+詳細ドキュメント: `doc/` 配下参照（特に `doc/kicl-web.md`）
 
 ### Entrypoint Groupパターン（メッセージルーティング）
 
@@ -163,7 +210,38 @@ developブランチへのpushで `dev.yml` が自動ビルド・デプロイ（H
 
 ## 依存バージョン
 
-- Kotlin: 2.3.0
-- Ktor: 3.4.0
-- Logback: 1.5.32
-- Fritz2: 1.0-RC21
+詳細は [CONVENTION.md](CONVENTION.md#6-1-環境) 参照。
+
+- **Kotlin**: 2.3.0
+- **Ktor**: 3.4.0
+- **Java**: Eclipse Temurin 25
+- **Node.js**: 24
+- **Gradle**: 9.5.0
+- **MySQL**: 9.7
+
+## 📋 規約遵守チェックリスト
+
+作業を開始する前に、以下の規約を確認すること：
+
+### ブランチ作成時
+- [ ] ブランチ名が規約に従っているか（`feature/`, `fix/`, `docs/` など）
+- [ ] チェックスクリプトで確認: `scripts/check-branch-naming.sh [ブランチ名]`
+
+### コミット前
+- [ ] コミットメッセージが [Conventional Commits](https://www.conventionalcommits.org/) 形式か
+- [ ] `./gradlew ktlintFormat && ./gradlew ktlintCheck` を実行済みか
+- [ ] `./gradlew test` ですべてのテストが通るか
+- [ ] 秘密情報（認証情報、APIキー等）が含まれていないか
+
+### PR作成前
+- [ ] PRテンプレート（`.github/pull_request_template.md`）に従って記入済みか
+- [ ] 変更の粒度は適切か（1 PR = 1 機能/修正）
+- [ ] CIが全て通過しているか
+- [ ] [doc/pr-convention.md](doc/pr-convention.md) を確認済みか
+
+### 参考ドキュメント
+- [CONVENTION.md](CONVENTION.md) - リポジトリ全体の規約（必読）
+- [doc/pr-convention.md](doc/pr-convention.md) - PR作成規約
+- [doc/ci-convention.md](doc/ci-convention.md) - CI/CD規約
+- [doc/development-setup.md](doc/development-setup.md) - 開発環境セットアップ
+- [doc/glossary.md](doc/glossary.md) - 用語集
