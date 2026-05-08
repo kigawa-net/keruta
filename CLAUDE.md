@@ -244,6 +244,7 @@ docker build -f Dockerfile_ktcl_front -t harbor.kigawa.net/private/ktcl-front:la
 - [ ] 秘密情報（認証情報、APIキー等）が含まれていないか
 
 ### PR作成前
+- [ ] ベースブランチは `develop`（本番リリース時のみ `main`）
 - [ ] PRテンプレート（`.github/pull_request_template.md`）に従って記入済みか
 - [ ] 変更の粒度は適切か（1 PR = 1 機能/修正）
 - [ ] CIが全て通過しているか
