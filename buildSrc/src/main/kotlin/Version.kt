@@ -7,7 +7,7 @@ object Version {
     const val JWKS_RSA = "0.24.0"
 
     // Kotlinx
-    const val KOTLINX_COROUTINES = "1.10.2"
+    const val KOTLINX_COROUTINES = "1.11.0"
     const val KOTLINX_SERIALIZATION = "1.11.0"
     const val KOTLINX_DATETIME = "0.8.0-0.6.x-compat"
     const val KOTLINX_HTML = "0.12.0"
