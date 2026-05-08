@@ -44,7 +44,7 @@ kotlin {
             // TODO: Re-enable when iOS compatibility is resolved
             // implementation("org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10")
             // implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose:2.8.3")
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
             implementation("io.ktor:ktor-client-core:${Version.KTOR}")
             implementation("io.ktor:ktor-client-content-negotiation:${Version.KTOR}")
             implementation("io.ktor:ktor-serialization-kotlinx-json:${Version.KTOR}")
