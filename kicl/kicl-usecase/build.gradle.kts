@@ -22,4 +22,9 @@ kotlin {
     sourceSets["commonTest"].dependencies {
     }
     sourceSets["jvmMain"].dependencies {}
+    sourceSets["jsMain"].dependencies {
+        implementation("io.ktor:ktor-client-js:${Version.KTOR}")
+        implementation("io.ktor:ktor-client-content-negotiation:${Version.KTOR}")
+        implementation("io.ktor:ktor-serialization-kotlinx-json:${Version.KTOR}")
+    }
 }
