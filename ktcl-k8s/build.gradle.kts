@@ -21,6 +21,10 @@ dependencies {
     implementation(project(":ktcp-sdk:ktcp-infra-client"))
     implementation(project(":kodel:api"))
 
+    // KICP（idServerB実装）
+    implementation(project(":kicp:kicp-domain"))
+    implementation(project(":kicp:kicp-usecase"))
+
     // Ktor WebSocket Client
     implementation("io.ktor:ktor-client-core:${Version.KTOR}")
     implementation("io.ktor:ktor-client-cio:${Version.KTOR}")
