@@ -4,4 +4,4 @@ ENV JAVA_HOME=/opt/java/openjdk
 COPY ktcl-k8s/build/libs/ktcl-k8s.jar /app/app.jar
 WORKDIR /work
 ENTRYPOINT ["java"]
-CMD ["-jar","/app/app.jar"]
+CMD ["--enable-native-access=ALL-UNNAMED", "-jar","/app/app.jar"]
