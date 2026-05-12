@@ -9,6 +9,97 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - [doc/pr-convention.md](doc/pr-convention.md) - PR作成規約
 - [doc/ci-convention.md](doc/ci-convention.md) - CI/CD規約
 
+## 🚨 実装開始からPR作成までの必須フロー
+
+> **手順を省略・スキップすることは禁止。必ず以下の順番で実施すること。**
+
+### Step 1: ブランチ作成（実装前に必須）
+
+```bash
+# 命名規則: {prefix}/{module}-{feature}
+# 例: feat/kicp-peer-client, fix/ktse-auth-token, docs/agents-convention
+git checkout -b feat/{module}-{feature}
+scripts/check-branch-naming.sh $(git branch --show-current)
+```
+
+- ブランチ名チェックがエラーになった場合はブランチを作り直すこと
+- `develop`・`main` への直接コミットは禁止
+
+### Step 2: 実装（レイヤー順序を守ること）
+
+```
+domain層 → usecase層 → infra層 → application層
+```
+
+- 各層の実装と同時にテストを追加すること
+- バグ修正時は先に再現テストを追加してから修正すること
+
+### Step 3: コードスタイル確認（コミット前に必須）
+
+```bash
+./gradlew ktlintFormat   # 自動フォーマット
+./gradlew ktlintCheck    # 違反がないことを確認
+```
+
+ktlintCheck がエラーの状態でコミットしてはならない。
+
+### Step 4: テスト実行（コミット前に必須）
+
+```bash
+./gradlew :{module}:test    # 変更モジュールのテスト
+./gradlew test               # 影響範囲が広い場合は全テスト
+```
+
+テストが失敗している状態でコミットしてはならない。
+
+### Step 5: ビルド確認
+
+```bash
+./gradlew :{module}:build
+```
+
+### Step 6: コミット
+
+```bash
+# Conventional Commits 形式: type(scope): 説明
+git commit -m "feat(kicp): peer client を実装"
+```
+
+- `type`: feat / fix / docs / refactor / ci / chore / test / revert
+- `scope`: 対象モジュール名
+- 秘密情報（認証情報・APIキー）が含まれていないことを確認
+
+### Step 7: PR 作成（必須手順）
+
+```bash
+# ベースブランチは必ず develop を指定する
+gh pr create --base develop \
+  --title "feat(module): 変更内容の説明" \
+  --body "$(cat <<'EOF'
+## 概要
+変更の目的を1-2行で簡潔に説明。
+
+## 主な変更点
+- 変更点1
+- 変更点2
+
+## 影響範囲
+- 影響を受けるモジュール・機能
+
+## 関連
+- 関連Issue/PR番号
+EOF
+)"
+```
+
+PR作成前チェック:
+- [ ] ベースブランチが `develop` であること
+- [ ] `.github/pull_request_template.md` の全項目を記入済み
+- [ ] CI（GitHub Actions）が全て通過していること
+- [ ] 1 PR = 1 機能（または 1 修正）の粒度であること
+
+---
+
 ### 作業前のセットアップ（初回のみ）
 ```bash
 # Git hooks をセットアップして規約チェックを自動化
@@ -231,21 +322,22 @@ docker build -f Dockerfile_ktcl_front -t harbor.kigawa.net/private/ktcl-front:la
 
 ## 📋 規約遵守チェックリスト
 
-作業を開始する前に、以下の規約を確認すること：
+> 実装の各フェーズで以下を確認すること。詳細は「[実装開始からPR作成までの必須フロー](#-実装開始からpr作成までの必須フロー)」を参照。
 
-### ブランチ作成時
-- [ ] ブランチ名が規約に従っているか（`feature/`, `fix/`, `docs/` など）
-- [ ] チェックスクリプトで確認: `scripts/check-branch-naming.sh [ブランチ名]`
+### ブランチ作成時（Step 1）
+- [ ] ブランチ名が規約に従っているか（`feat/`, `fix/`, `docs/` など）
+- [ ] `scripts/check-branch-naming.sh $(git branch --show-current)` でエラーがないか
 
-### コミット前
+### コミット前（Step 3〜6）
+- [ ] `./gradlew ktlintFormat` を実行済みか
+- [ ] `./gradlew ktlintCheck` がエラーなしで通過するか
+- [ ] `./gradlew :{module}:test` ですべてのテストが通るか
 - [ ] コミットメッセージが [Conventional Commits](https://www.conventionalcommits.org/) 形式か
-- [ ] `./gradlew ktlintFormat && ./gradlew ktlintCheck` を実行済みか
-- [ ] `./gradlew test` ですべてのテストが通るか
 - [ ] 秘密情報（認証情報、APIキー等）が含まれていないか
 
-### PR作成前
-- [ ] ベースブランチは `develop`（本番リリース時のみ `main`）
-- [ ] PRテンプレート（`.github/pull_request_template.md`）に従って記入済みか
+### PR作成前（Step 7）
+- [ ] ベースブランチは `develop`（`--base develop` を明示的に指定）
+- [ ] PRテンプレート（`.github/pull_request_template.md`）の全項目を記入済みか
 - [ ] 変更の粒度は適切か（1 PR = 1 機能/修正）
 - [ ] CIが全て通過しているか
 - [ ] [doc/pr-convention.md](doc/pr-convention.md) を確認済みか

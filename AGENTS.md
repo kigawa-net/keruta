@@ -12,6 +12,8 @@ This file provides guidance for AI agents working with this codebase.
 - [doc/pr-convention.md](doc/pr-convention.md) - PR作成規約
 - [doc/ci-convention.md](doc/ci-convention.md) - CI/CD規約
 
+> **実装を開始する前に「[実装からPR作成までの必須フロー](#実装からpr作成までの必須フロー)」を確認し、手順通りに進めること。**
+
 ### 作業前のセットアップ（初回のみ）
 ```bash
 # Git hooks をセットアップして規約チェックを自動化
@@ -289,30 +291,101 @@ includeDsl {
 - 新機能追加時はテストをセットで実装する
 - バグ修正時は再現テストを先に追加してから修正する
 
-### 実装からPR作成までの流れ
+### 実装からPR作成までの必須フロー
+
+> ⚠️ **以下の手順を必ず順番通りに実行すること。手順を省略・スキップすることは禁止。**
+
+#### ステップ 1: ブランチ作成（実装開始前に必須）
+
+```bash
+# ブランチ命名規則: {prefix}/{module}-{feature}
+# 例: feat/kicp-peer-client-impl, fix/ktse-auth-token, docs/agents-convention
+git checkout -b feat/{module}-{feature}
+
+# ブランチ名が規約に従っているか確認
+scripts/check-branch-naming.sh $(git branch --show-current)
+```
+
+- ブランチ名が規約に合格しない場合はブランチを作り直すこと
+- `develop` や `main` への直接コミットは禁止
+
+#### ステップ 2: 実装
+
+Clean Architecture の原則に従い、以下の順序で実装する。順序を逆にしてはならない。
 
 ```
-1. ブランチ作成
-   feat/{module}-{feature} 形式（例: feat/kicp-peer-client-impl）
-
-2. 実装
-   domain → usecase → infra → application の順序で実装
-
-3. コードスタイル確認（必須）
-   ./gradlew ktlintFormat && ./gradlew ktlintCheck
-
-4. テスト実行
-   ./gradlew :{module}:test
-
-5. ビルド確認
-   ./gradlew :{module}:build
-
-6. コミット
-   Conventional Commits 形式（feat(module): 説明）
-
-7. PR作成
-   develop ブランチへのPR。CONVENTION.md の PR テンプレートに従う
+domain層 → usecase層 → infra層 → application層
 ```
+
+- 各層の実装と同時にテストを追加すること
+- バグ修正時は再現テストを先に追加してから修正すること
+
+#### ステップ 3: コードスタイル確認（コミット前に必須）
+
+```bash
+./gradlew ktlintFormat   # 自動フォーマット適用
+./gradlew ktlintCheck    # スタイル違反がないことを確認（エラーがあればコミット不可）
+```
+
+ktlintCheck がエラーになっている状態でのコミットは禁止。
+
+#### ステップ 4: テスト実行（コミット前に必須）
+
+```bash
+./gradlew :{module}:test           # 変更モジュールのテスト
+./gradlew test                     # 全テスト（影響範囲が広い場合）
+```
+
+テストが失敗している状態でのコミットは禁止。
+
+#### ステップ 5: ビルド確認
+
+```bash
+./gradlew :{module}:build
+```
+
+#### ステップ 6: コミット
+
+```bash
+# Conventional Commits 形式: type(scope): 説明
+git commit -m "feat(kicp): peer client を実装"
+```
+
+コミットメッセージ規則:
+- `type`: feat / fix / docs / refactor / ci / chore / test / revert
+- `scope`: 対象モジュール名（例: `ktse`, `kicl-web`, `kicp`）
+- 説明は現在形、末尾ピリオドなし
+
+秘密情報（認証情報・APIキー等）が含まれていないことを確認すること。
+
+#### ステップ 7: PR 作成（必須手順）
+
+```bash
+# ベースブランチは必ず develop を指定する
+gh pr create --base develop \
+  --title "feat(module): 変更内容の説明" \
+  --body "$(cat <<'EOF'
+## 概要
+変更の目的を1-2行で簡潔に説明。
+
+## 主な変更点
+- 変更点1
+- 変更点2
+
+## 影響範囲
+- 影響を受けるモジュール・機能
+
+## 関連
+- 関連Issue/PR番号
+EOF
+)"
+```
+
+PR 作成前のチェック:
+- [ ] ベースブランチが `develop` であること（`main` への直接 PR は本番リリース時のみ）
+- [ ] PRテンプレート（`.github/pull_request_template.md`）の全項目を記入済み
+- [ ] CI（GitHub Actions）が全て通過していること
+- [ ] 1 PR = 1 機能（または 1 修正）の粒度になっていること
 
 ## デプロイ
 
