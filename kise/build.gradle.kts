@@ -37,6 +37,10 @@ kotlin {
         api(project(":ktse-sdk"))
         implementation("com.mysql:mysql-connector-j:9.7.0")
         implementation("com.zaxxer:HikariCP:7.0.2")
+
+        // KICP（idServer実装）
+        implementation(project(":kicp:kicp-domain"))
+        implementation(project(":kicp:kicp-usecase"))
     }
     sourceSets["jvmTest"].dependencies {
         implementation("io.ktor:ktor-server-test-host-jvm:${Version.KTOR}")

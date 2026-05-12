@@ -10,6 +10,8 @@ data class KtseConfig(
     val queueId: Long,
     val providerAudience: String,
 ) {
+    val baseUrl: String get() = "${if (useTls) "https" else "http"}://$host:$port"
+
     companion object {
         fun fromEnvironment(): KtseConfig = KtseConfig(
             host = System.getenv("KTSE_HOST") ?: "localhost",
