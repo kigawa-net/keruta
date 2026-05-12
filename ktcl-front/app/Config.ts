@@ -1,8 +1,9 @@
 import {Url} from "./util/net/Url";
 
+const strWebsocketUrl = import.meta.env.VITE_WEBSOCKET_URL ?? process.env.VITE_WEBSOCKET_URL;
 const Config = {
-    websocketUrl: Url.parse(import.meta.env.VITE_WEBSOCKET_URL),
-    kiseUrl: import.meta.env.VITE_KISE_URL,
+    websocketUrl: strWebsocketUrl ? Url.parse(strWebsocketUrl) : undefined as unknown as Url,
+    kiseUrl: import.meta.env.VITE_KISE_URL ?? process.env.VITE_KISE_URL,
 } as const
 
 function validate() {
