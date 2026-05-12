@@ -7,11 +7,14 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import io.ktor.server.websocket.*
+import net.kigawa.keruta.kise.kicp.InMemoryRegisterTokenRepository
+import net.kigawa.keruta.kise.kicp.KicpFactory
 import net.kigawa.keruta.kise.oidc.IdTokenVerifier
 import net.kigawa.keruta.kise.oidc.OidcDiscoveryFetcher
 import net.kigawa.keruta.kise.oidc.PkceGenerator
 import net.kigawa.keruta.kise.oidc.model.OidcSession
 import net.kigawa.keruta.kise.route.CallbackRoute
+import net.kigawa.keruta.kise.route.KicpRoutes
 import net.kigawa.keruta.kise.route.LoginRoute
 import net.kigawa.keruta.kise.websocket.KiseWebSocketServer
 import kotlin.time.Duration.Companion.seconds
@@ -51,6 +54,16 @@ fun Application.module() {
     val callbackRoute = CallbackRoute(oidcDiscoveryFetcher, idTokenVerifier, config)
     val webSocketServer = KiseWebSocketServer(this, config)
 
+    // KICPコンポーネントの初期化
+    val kicpHttpClient = KicpFactory.createHttpClient()
+    val kicpTokenRepository = InMemoryRegisterTokenRepository()
+    val kicpRoutes = KicpRoutes(
+        loginUseCase = KicpFactory.createLoginUseCase(kicpHttpClient),
+        getRegisterTokenUseCase = KicpFactory.createGetRegisterTokenUseCase(kicpTokenRepository),
+        registerUseCase = KicpFactory.createRegisterUseCase(kicpHttpClient, config.kicpPeerServerBaseUrl),
+        verifyRegisterTokenUseCase = KicpFactory.createVerifyRegisterTokenUseCase(kicpTokenRepository),
+    )
+
     // ルーティング設定
     routing {
         // OIDCログインルート
@@ -61,5 +74,8 @@ fun Application.module() {
 
         // WebSocketエンドポイント
         webSocketServer.websocketModule(this)
+
+        // KICPエンドポイント（idServerA/B）
+        kicpRoutes.configure(this)
     }
 }

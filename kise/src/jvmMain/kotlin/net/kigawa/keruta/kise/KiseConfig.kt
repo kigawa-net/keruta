@@ -50,4 +50,8 @@ class KiseConfig(
 
     val oidcRedirectUri: String = environment.config.propertyOrNull("kise.oidc.redirectUri")?.getString()
         ?: "http://localhost:8080/callback"
+
+    // KICP設定（idServerBとして機能する際のpeerServerA URL）
+    val kicpPeerServerBaseUrl: String = environment.config.propertyOrNull("kise.kicp.peerServerBaseUrl")?.getString()
+        ?: "http://localhost:8080"
 }
