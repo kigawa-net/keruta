@@ -7,6 +7,7 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import io.ktor.server.websocket.*
+import net.kigawa.keruta.kise.jwt.JwtIssuerImpl
 import net.kigawa.keruta.kise.kicp.InMemoryRegisterTokenRepository
 import net.kigawa.keruta.kise.kicp.KicpFactory
 import net.kigawa.keruta.kise.oidc.IdTokenVerifier
@@ -14,9 +15,11 @@ import net.kigawa.keruta.kise.oidc.OidcDiscoveryFetcher
 import net.kigawa.keruta.kise.oidc.PkceGenerator
 import net.kigawa.keruta.kise.oidc.model.OidcSession
 import net.kigawa.keruta.kise.route.CallbackRoute
+import net.kigawa.keruta.kise.route.JwksRoute
 import net.kigawa.keruta.kise.route.KicpRoutes
 import net.kigawa.keruta.kise.route.LoginRoute
 import net.kigawa.keruta.kise.websocket.KiseWebSocketServer
+import net.kigawa.kodel.api.log.LoggerFactory
 import kotlin.time.Duration.Companion.seconds
 
 fun main(args: Array<String>) {
@@ -46,12 +49,34 @@ fun Application.module() {
         masking = false
     }
 
+    val logger = LoggerFactory.get("KiseMain")
+
+    // JWT発行コンポーネントの初期化（キーが設定されていない場合はnull）
+    val jwtIssuerImpl: JwtIssuerImpl? = if (config.jwtPublicKey.isNotBlank() && config.jwtPrivateKey.isNotBlank()) {
+        try {
+            JwtIssuerImpl.fromPem(
+                publicKeyPem = config.jwtPublicKey,
+                privateKeyPem = config.jwtPrivateKey,
+                issuer = config.issuer,
+                audience = config.audience,
+                expiresInMs = config.tokenExpiresInMs,
+            )
+        } catch (e: Exception) {
+            logger.severe("Failed to initialize JwtIssuerImpl: ${e.message}")
+            null
+        }
+    } else {
+        logger.warning("JWT keys not configured. Token issuance disabled.")
+        null
+    }
+
     // OIDCコンポーネントの初期化
     val oidcDiscoveryFetcher = OidcDiscoveryFetcher()
     val pkceGenerator = PkceGenerator()
     val idTokenVerifier = IdTokenVerifier()
     val loginRoute = LoginRoute(oidcDiscoveryFetcher, pkceGenerator, config)
-    val callbackRoute = CallbackRoute(oidcDiscoveryFetcher, idTokenVerifier, config)
+    val callbackRoute = CallbackRoute(oidcDiscoveryFetcher, idTokenVerifier, config, jwtIssuerImpl)
+    val jwksRoute = JwksRoute(config, jwtIssuerImpl)
     val webSocketServer = KiseWebSocketServer(this, config)
 
     // KICPコンポーネントの初期化
@@ -77,5 +102,8 @@ fun Application.module() {
 
         // KICPエンドポイント（idServerA/B）
         kicpRoutes.configure(this)
+
+        // JWKS・OIDCディスカバリエンドポイント
+        jwksRoute.configure(this)
     }
 }

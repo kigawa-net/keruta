@@ -1,23 +1,23 @@
 import type {ReactNode} from "react";
-import {useKeycloakState} from "./Keycloak";
+import {useKiseAuthState} from "./KiseAuth";
 
 interface PrivateRouteProps {
     children: ReactNode
 }
 
 const PrivateRoute = ({children}: PrivateRouteProps) => {
-    const kcState = useKeycloakState()
+    const authState = useKiseAuthState()
 
-    if (kcState.state == "unloaded") return <div>loading</div>
-    if (kcState.state == "unauthenticated") {
+    if (authState.state == "unloaded") return <div>loading</div>
+    if (authState.state == "unauthenticated") {
         return (
             <div className="private-route">
                 <h2>Authentication Required</h2>
                 <p>You need to log in to access this page.</p>
                 <button onClick={() => {
-                    kcState.login()
+                    authState.login()
                 }} className="login-btn">
-                    Login with Keycloak
+                    Login
                 </button>
             </div>
         )

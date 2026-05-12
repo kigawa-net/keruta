@@ -17,12 +17,14 @@ import net.kigawa.keruta.kise.oidc.IdTokenVerifier
 import net.kigawa.keruta.kise.oidc.OidcDiscoveryFetcher
 import net.kigawa.keruta.kise.oidc.model.OidcSession
 import net.kigawa.keruta.kise.oidc.model.TokenResponse
+import net.kigawa.keruta.kise.usecase.auth.JwtIssuer
 import net.kigawa.kodel.api.log.LoggerFactory
 
 class CallbackRoute(
     private val oidcDiscoveryFetcher: OidcDiscoveryFetcher,
     private val idTokenVerifier: IdTokenVerifier,
     private val config: KiseConfig,
+    private val jwtIssuer: JwtIssuer? = null,
 ) {
     private val logger = LoggerFactory.get("CallbackRoute")
 
@@ -87,16 +89,30 @@ class CallbackRoute(
                 return
             }
 
-            val userSubject = idTokenVerifier.verify(idToken, discoveryResponse, oidcSession)
-            if (userSubject == null) {
+            val claims = idTokenVerifier.verify(idToken, discoveryResponse, oidcSession)
+            if (claims == null) {
                 call.respond(HttpStatusCode.Unauthorized, mapOf("error" to "Invalid ID token"))
                 return
             }
 
-            logger.info("Login successful for user: $userSubject (issuer: ${oidcSession.issuer})")
+            logger.info("Login successful for user: ${claims.subject} (issuer: ${oidcSession.issuer})")
 
-            // フロントエンドにリダイレクト
-            call.respondRedirect("/")
+            if (jwtIssuer == null) {
+                logger.warning("JwtIssuer not configured, redirecting to frontend root")
+                call.respondRedirect(config.frontendBaseUrl)
+                return
+            }
+
+            val token = jwtIssuer.createToken(
+                userId = 0L,
+                issuer = config.issuer,
+                subject = claims.subject,
+                audience = config.audience,
+                preferredUsername = claims.preferredUsername ?: claims.name,
+            )
+
+            val callbackUrl = "${config.frontendBaseUrl}/auth/callback?token=${token.encodeURLParameter()}"
+            call.respondRedirect(callbackUrl)
         } catch (e: Exception) {
             logger.severe("Failed to process OIDC callback: ${e.message}")
             call.respond(

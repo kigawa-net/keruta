@@ -7,6 +7,7 @@ export namespace Auth {
 
     async function getOidcConfig() {
         if (cachedOidcConfig) return cachedOidcConfig
+        // kise の /.well-known/openid-configuration から jwks_uri を取得する
         const issuerUrl = ServerConfig.userIssuer.replace(/\/$/, "")
         const response = await fetch(`${issuerUrl}/.well-known/openid-configuration`)
         if (!response.ok) throw new Error(`Failed to fetch OIDC configuration: ${response.statusText}`)

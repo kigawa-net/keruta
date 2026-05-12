@@ -120,5 +120,11 @@ class AuthenticateUseCase(
  * JWT発行インターフェース
  */
 interface JwtIssuer {
-    fun createToken(userId: Long, issuer: String, subject: String, audience: String): String
+    fun createToken(
+        userId: Long,
+        issuer: String,
+        subject: String,
+        audience: String,
+        preferredUsername: String? = null,
+    ): String
 }

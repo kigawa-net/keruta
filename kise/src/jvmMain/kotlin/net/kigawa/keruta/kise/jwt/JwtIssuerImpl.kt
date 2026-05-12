@@ -28,21 +28,27 @@ class JwtIssuerImpl(
         issuer: String,
         subject: String,
         audience: String,
+        preferredUsername: String?,
     ): String {
         val expiresAt = Date(System.currentTimeMillis() + expiresInMs)
         val issuedAt = Date()
 
-        return JWT.create()
+        val builder = JWT.create()
             .withIssuer(issuer)
             .withAudience(audience)
-            .withSubject(userId.toString())
+            .withSubject(subject)
             .withClaim("userId", userId)
-            .withClaim("iss", issuer)
-            .withClaim("sub", subject)
             .withIssuedAt(issuedAt)
             .withExpiresAt(expiresAt)
-            .sign(algorithm)
+
+        if (preferredUsername != null) {
+            builder.withClaim("preferred_username", preferredUsername)
+        }
+
+        return builder.sign(algorithm)
     }
+
+    fun getPublicKey(): java.security.interfaces.RSAPublicKey = publicKey
 
     /**
      * 設定からJwtIssuerを生成する

@@ -10,6 +10,13 @@ import net.kigawa.keruta.kise.oidc.model.OidcSession
 import net.kigawa.kodel.api.log.LoggerFactory
 import java.util.concurrent.TimeUnit
 
+data class IdTokenClaims(
+    val subject: String,
+    val preferredUsername: String?,
+    val name: String?,
+    val email: String?,
+)
+
 class IdTokenVerifier {
     private val logger = LoggerFactory.get("IdTokenVerifier")
 
@@ -17,7 +24,7 @@ class IdTokenVerifier {
         idToken: String,
         discoveryResponse: OidcDiscoveryResponse,
         oidcSession: OidcSession,
-    ): String? = try {
+    ): IdTokenClaims? = try {
         // JWKSエンドポイントから公開鍵を取得
         val jwkProvider: JwkProvider = JwkProviderBuilder(discoveryResponse.jwksUri)
             .cached(10, 24, TimeUnit.HOURS)
@@ -41,8 +48,12 @@ class IdTokenVerifier {
 
         val verifiedJWT = verifier.verify(idToken)
 
-        // ユーザーのsubject（ユニークID）を返す
-        verifiedJWT.subject
+        IdTokenClaims(
+            subject = verifiedJWT.subject,
+            preferredUsername = verifiedJWT.getClaim("preferred_username")?.asString(),
+            name = verifiedJWT.getClaim("name")?.asString(),
+            email = verifiedJWT.getClaim("email")?.asString(),
+        )
     } catch (e: Exception) {
         logger.severe("Failed to verify ID token: ${e.message}")
         null
