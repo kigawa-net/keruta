@@ -33,6 +33,7 @@ jobs:
               \"issuer\": \"https://ktcl-k8s-dev.kigawa.net\",
               \"description\": \"ktcl-k8s\"
             }
-          ]"
+          ]",
+          "VITE_KISE_URL": "https://kise-dev.kigawa.net"
         }
 
