@@ -62,6 +62,10 @@ class KerutaTaskServer {
         routing {
             ws.websocketModule(this@routing)
 
+            get("/health") {
+                call.respond(HttpStatusCode.OK, mapOf("status" to "ok"))
+            }
+
             // kicpクライアント登録エンドポイント（idServerB側）
             post("/api/kicp/register") {
                 try {
