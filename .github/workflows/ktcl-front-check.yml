@@ -22,5 +22,6 @@ jobs:
           "VITE_KEYCLOAK_URL": "https://example.com/",
           "VITE_KEYCLOAK_REALM": "test",
           "VITE_KEYCLOAK_CLIENT_ID": "test",
-          "VITE_PROVIDER_PRESETS": "[]"
+          "VITE_PROVIDER_PRESETS": "[]",
+          "VITE_KISE_URL": "http://localhost:8080"
         }
