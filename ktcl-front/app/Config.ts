@@ -2,10 +2,7 @@ import {Url} from "./util/net/Url";
 
 const Config = {
     websocketUrl: Url.parse(import.meta.env.VITE_WEBSOCKET_URL),
-    keycloakUrl: import.meta.env.VITE_KEYCLOAK_URL,
-    keycloakRealm: import.meta.env.VITE_KEYCLOAK_REALM,
-    keycloakClientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID,
-    keycloakCheckLoginIframe: (import.meta.env.VITE_KEYCLOAK_CHECK_LOGIN_IFRAME || "true") == "true",
+    kiseUrl: import.meta.env.VITE_KISE_URL,
 } as const
 
 function validate() {
