@@ -9,7 +9,7 @@ repositories {
 }
 
 val kotlinVersion = "2.3.20"
-val composeVersion = "1.10.3"
+val composeVersion = "1.11.0"
 fun pluginId(pluginName: String, version: String) = "$pluginName:$pluginName.gradle.plugin:$version"
 fun kotlinPluginId(pluginName: String, version: String = kotlinVersion) =
     pluginId("org.jetbrains.kotlin.$pluginName", version)
