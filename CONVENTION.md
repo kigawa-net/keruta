@@ -274,6 +274,10 @@ ArgoCD 自動デプロイ
 - `doc/` ディレクトリ内の各規約（例: `doc/convention.md` 等）も遵守すること
 - 詳細は `doc/` 配下の該当規約ファイルを参照
 
+### 9-1. 開発手順規約
+
+実装着手からPRマージまでの標準フローは [`doc/development-convention.md`](doc/development-convention.md) を参照。
+
 ## 10. モジュール構成
 
 | モジュール | 説明 |
