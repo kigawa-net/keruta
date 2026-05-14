@@ -3,6 +3,7 @@ export type Language = 'ja' | 'en';
 export interface AppSettings {
     ownIssuerUrl: string;
     userIssuerUrl: string;
+    oidcClientId: string;
     ktseUrl: string;
     language: Language;
 }
@@ -10,6 +11,7 @@ export interface AppSettings {
 export const defaultSettings: AppSettings = {
     ownIssuerUrl: '',
     userIssuerUrl: '',
+    oidcClientId: '',
     ktseUrl: '',
     language: 'ja',
 };

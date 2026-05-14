@@ -13,6 +13,7 @@ export async function clientAction({request}: { request: Request }): Promise<{ s
     const settings: AppSettings = {
         ownIssuerUrl: String(formData.get('ownIssuerUrl') ?? ''),
         userIssuerUrl: String(formData.get('userIssuerUrl') ?? ''),
+        oidcClientId: String(formData.get('oidcClientId') ?? ''),
         ktseUrl: String(formData.get('ktseUrl') ?? ''),
         language: (String(formData.get('language')) as AppSettings['language']) || 'ja',
     };
@@ -115,6 +116,12 @@ export default function Settings() {
                             name="userIssuerUrl"
                             defaultValue={settings.userIssuerUrl}
                             placeholder="https://oidc.example.com"
+                        />
+                        <Field
+                            label="OIDCクライアント ID"
+                            name="oidcClientId"
+                            defaultValue={settings.oidcClientId}
+                            placeholder="my-client"
                         />
                         <Field
                             label="タスクサーバー URL"
