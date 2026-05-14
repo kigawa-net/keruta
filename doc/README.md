@@ -11,6 +11,7 @@
 | [ci-convention.md](ci-convention.md) | CI（GitHub Actions）作成・運用規約（ワークフロー命名、トリガー、可重用ワークフロー） |
 | [convention.md](convention.md) | ドキュメント作成規約（ファイル命名、構成、記法、更新ルール） |
 | [development-convention.md](development-convention.md) | 開発手順規約（ブランチ作成〜PRマージまでの標準フロー） |
+| [issue-convention.md](issue-convention.md) | Issue 作成・運用規約（作業計画の必須化、タイトル規約、ラベル） |
 | [pr-convention.md](pr-convention.md) | Pull Request 作成・運用規約（PR作成、レビュー、マージの手順） |
 | [database.md](database.md) | DBスキーマ、Flywayマイグレーション、HikariCP設定、永続化抽象化 |
 | [development.md](development.md) | ローカル開発環境セットアップ、IntelliJ設定、トラブルシューティング |

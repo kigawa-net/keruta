@@ -6,6 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **すべての作業において以下の規約を必ず遵守すること：**
 - [CONVENTION.md](CONVENTION.md) - リポジトリ全体の規約（必読）
+- [doc/issue-convention.md](doc/issue-convention.md) - Issue作成・作業計画規約
 - [doc/pr-convention.md](doc/pr-convention.md) - PR作成規約
 - [doc/ci-convention.md](doc/ci-convention.md) - CI/CD規約
 
@@ -13,33 +14,35 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 > **手順を省略・スキップすることは禁止。必ず以下の順番で実施すること。**
 
-### Step 0: Issue作成（実装前に必須）
+### Step 0: Issue 作成（実装前に必須）
 
 ```bash
-# Issue を作成してから実装を開始する
+# GitHub CLI でIssueを作成する
 gh issue create \
-  --title "type(scope): 実装内容の説明" \
+  --title "[モジュール名] 変更内容の概要" \
   --body "$(cat <<'EOF'
-## 概要
-実装する機能や修正の目的を説明。
+## 目的
+この作業で達成したいことを説明する。
 
-## 実装内容
-- 実装内容1
-- 実装内容2
+## 背景・問題
+なぜこの作業が必要なのかを説明する。
+
+## 作業計画
+- [ ] 作業ステップ1
+- [ ] 作業ステップ2
+- [ ] テスト追加
+
+## 影響範囲
+- 影響するモジュール・機能
 
 ## 完了条件
-- [ ] 条件1
-- [ ] 条件2
+この作業が「完了」とみなされる条件を明記する。
 EOF
-)" \
-  --label "enhancement"
-
-# Issue番号を確認（後でPR・ブランチに関連付ける）
-gh issue list --state open
+)"
 ```
 
-- 対応するIssueが存在しない場合、実装を開始してはならない
-- ラベルは変更種別に応じて選択: `enhancement`（新機能）、`bug`（修正）、`documentation`（ドキュメント）、`refactoring`（リファクタリング）
+- **Issueなしの作業開始は禁止**
+- 詳細は [doc/issue-convention.md](doc/issue-convention.md) を参照
 
 ### Step 1: ブランチ作成（実装前に必須）
 
@@ -359,6 +362,10 @@ docker build -f Dockerfile_ktcl_front -t harbor.kigawa.net/private/ktcl-front:la
 - [ ] `gh issue create` でタイトル・本文・ラベルを記入済みか
 - [ ] 完了条件が明確に記載されているか
 
+### 作業開始前（Step 0）
+- [ ] GitHub Issue を作成済みか
+- [ ] Issueに「目的」「作業計画」「影響範囲」「完了条件」を記載済みか
+
 ### ブランチ作成時（Step 1）
 - [ ] ブランチ名が規約に従っているか（`feat/`, `fix/`, `docs/` など）
 - [ ] `scripts/check-branch-naming.sh $(git branch --show-current)` でエラーがないか
@@ -380,6 +387,7 @@ docker build -f Dockerfile_ktcl_front -t harbor.kigawa.net/private/ktcl-front:la
 
 ### 参考ドキュメント
 - [CONVENTION.md](CONVENTION.md) - リポジトリ全体の規約（必読）
+- [doc/issue-convention.md](doc/issue-convention.md) - Issue作成・作業計画規約
 - [doc/pr-convention.md](doc/pr-convention.md) - PR作成規約
 - [doc/ci-convention.md](doc/ci-convention.md) - CI/CD規約
 - [doc/development-setup.md](doc/development-setup.md) - 開発環境セットアップ
