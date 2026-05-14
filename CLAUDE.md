@@ -10,7 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - [doc/pr-convention.md](doc/pr-convention.md) - PR作成規約
 - [doc/ci-convention.md](doc/ci-convention.md) - CI/CD規約
 
-## 🚨 実装開始からPR作成までの必須フロー
+## 🚨 Issue作成からPR作成までの必須フロー
 
 > **手順を省略・スキップすることは禁止。必ず以下の順番で実施すること。**
 
@@ -104,6 +104,7 @@ git commit -m "feat(kicp): peer client を実装"
 
 ```bash
 # ベースブランチは必ず develop を指定する
+# Closes #<Issue番号> で対応Issueを自動クローズ
 gh pr create --base develop \
   --title "feat(module): 変更内容の説明" \
   --body "$(cat <<'EOF'
@@ -118,7 +119,7 @@ gh pr create --base develop \
 - 影響を受けるモジュール・機能
 
 ## 関連
-- 関連Issue/PR番号
+- Closes #<Issue番号>
 EOF
 )"
 ```
@@ -128,6 +129,7 @@ PR作成前チェック:
 - [ ] `.github/pull_request_template.md` の全項目を記入済み
 - [ ] CI（GitHub Actions）が全て通過していること
 - [ ] 1 PR = 1 機能（または 1 修正）の粒度であること
+- [ ] `Closes #<Issue番号>` で対応Issueを関連付けていること
 
 ---
 
@@ -353,7 +355,12 @@ docker build -f Dockerfile_ktcl_front -t harbor.kigawa.net/private/ktcl-front:la
 
 ## 📋 規約遵守チェックリスト
 
-> 実装の各フェーズで以下を確認すること。詳細は「[実装開始からPR作成までの必須フロー](#-実装開始からpr作成までの必須フロー)」を参照。
+> 実装の各フェーズで以下を確認すること。詳細は「[Issue作成からPR作成までの必須フロー](#-issue作成からpr作成までの必須フロー)」を参照。
+
+### Issue作成時（Step 0）
+- [ ] 対応するIssueが存在するか（存在しない場合は先に作成）
+- [ ] `gh issue create` でタイトル・本文・ラベルを記入済みか
+- [ ] 完了条件が明確に記載されているか
 
 ### 作業開始前（Step 0）
 - [ ] GitHub Issue を作成済みか
@@ -375,6 +382,7 @@ docker build -f Dockerfile_ktcl_front -t harbor.kigawa.net/private/ktcl-front:la
 - [ ] PRテンプレート（`.github/pull_request_template.md`）の全項目を記入済みか
 - [ ] 変更の粒度は適切か（1 PR = 1 機能/修正）
 - [ ] CIが全て通過しているか
+- [ ] `Closes #<Issue番号>` で対応Issueを関連付けているか
 - [ ] [doc/pr-convention.md](doc/pr-convention.md) を確認済みか
 
 ### 参考ドキュメント
