@@ -14,15 +14,16 @@ keruta プロジェクトにおける開発作業の標準手順を定める。
 
 ```
 Step 0: Issue作成
-Step 1: ブランチ作成
-Step 2: 実装（レイヤー順）
-Step 3: コードフォーマット
-Step 4: テスト実行
-Step 5: ビルド確認
-Step 6: コミット
-Step 7: PR作成
-Step 8: レビュー対応
-Step 9: マージ
+Step 1: 実装計画書作成・PRマージ
+Step 2: 実装ブランチ作成
+Step 3: 実装（レイヤー順）
+Step 4: コードフォーマット
+Step 5: テスト実行
+Step 6: ビルド確認
+Step 7: コミット
+Step 8: PR作成
+Step 9: レビュー対応
+Step 10: マージ
 ```
 
 手順はすべて順番通りに実施すること。スキップ・省略は禁止。
@@ -65,13 +66,65 @@ EOF
 - 対応するIssueが存在しない状態で実装を開始すること
 - Issueの概要・完了条件を空白にしたまま放置すること
 
-作成したIssueの番号（`#NNN`）は後のStep 7（PR作成）で使用するため、必ず控えておくこと。
+作成したIssueの番号（`#NNN`）は後のStep 8（PR作成）で使用するため、必ず控えておくこと。
 
 ---
 
-## Step 1: ブランチ作成
+## Step 1: 実装計画書作成・PRマージ
 
-実装を開始する前に必ず作業ブランチを作成する。
+実装を開始する前に、必ず実装計画書を作成し、PRをマージすること。
+
+```bash
+git checkout develop && git pull origin develop
+git checkout -b docs/{module}-{feature}-plan
+```
+
+`doc/plan/{module}-{feature}.md` に以下の内容を記述する:
+
+```markdown
+# {機能名} 実装計画
+
+## 実装方針
+何をどのように実装するかの概要
+
+## ファイル・クラス構成
+- 追加/変更するファイル一覧
+
+## 実装順序
+1. domain層: ...
+2. usecase層: ...
+3. infra層: ...
+
+## テスト方針
+- テストするシナリオ
+```
+
+```bash
+git add doc/plan/{module}-{feature}.md
+git commit -m "docs({module}): {feature}の実装計画を追加"
+
+gh pr create --base develop \
+  --title "docs({module}): {feature}の実装計画" \
+  --body "$(cat <<'EOF'
+## 実装方針
+...
+
+## 主な変更点
+- 追加/変更するファイル
+
+## 関連
+- Issue: #番号
+EOF
+)"
+```
+
+**計画PRがマージされるまで実装ブランチを作成してはならない。**
+
+---
+
+## Step 2: 実装ブランチ作成
+
+計画PRのマージ後に実装ブランチを作成する。
 
 ```bash
 git checkout develop
@@ -97,7 +150,7 @@ scripts/check-branch-naming.sh $(git branch --show-current)
 
 ---
 
-## Step 2: 実装
+## Step 3: 実装
 
 ### レイヤー実装順序
 
@@ -125,7 +178,7 @@ domain層 → usecase層 → infra層 → application層
 
 ---
 
-## Step 3: コードフォーマット
+## Step 4: コードフォーマット
 
 コミット前に必ず実行する。
 
@@ -146,7 +199,7 @@ cd kicl-web && npm run lint
 
 ---
 
-## Step 4: テスト実行
+## Step 5: テスト実行
 
 ```bash
 # 変更モジュールのみ
@@ -169,7 +222,7 @@ docker-compose -f compose.test.yml up -d mysql
 
 ---
 
-## Step 5: ビルド確認
+## Step 6: ビルド確認
 
 ```bash
 ./gradlew :{module}:build
@@ -179,7 +232,7 @@ docker-compose -f compose.test.yml up -d mysql
 
 ---
 
-## Step 6: コミット
+## Step 7: コミット
 
 ### コミットメッセージ形式
 
@@ -215,7 +268,7 @@ git commit -m "docs: 開発手順規約を追加"
 
 ---
 
-## Step 7: PR作成
+## Step 8: PR作成
 
 ### 事前チェック
 
@@ -255,12 +308,12 @@ EOF
 
 ---
 
-## Step 8: レビュー対応
+## Step 9: レビュー対応
 
 ### レビュー指摘への対応
 
 1. 指摘内容を理解し、必要であれば質問・議論を行う
-2. 修正コミットを作成する（Step 3〜6 を再実施）
+2. 修正コミットを作成する（Step 4〜7 を再実施）
 3. コミット後にレビュアーへ再レビューを依頼する
 
 修正コミットの例:
@@ -278,7 +331,7 @@ force push はレビュアーが確認中でない場合にのみ使用してよ
 
 ---
 
-## Step 9: マージ
+## Step 10: マージ
 
 マージ条件がすべて揃ったことを確認してからマージを実施する。
 

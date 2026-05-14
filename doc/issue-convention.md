@@ -91,7 +91,19 @@ feat(ktse): WebSocket切断時のエラーハンドリングを改善 #123
 - PRの説明文に `Closes #Issue番号` を記載すると、マージ時に自動クローズされる
 - 作業途中で方針変更・中断になった場合はその理由をコメントに記載してからクローズする
 
-## 8. 禁止事項
+## 8. 実装計画PRとの連携
+
+Issueを作成した後、実装を開始する前に実装計画PRを作成・マージすること。
+
+手順:
+1. Issue を作成する（本規約）
+2. `docs/{module}-{feature}-plan` ブランチで `doc/plan/{module}-{feature}.md` を作成する
+3. 計画PRを `develop` ベースで作成してマージを待つ
+4. 計画PRのマージ後に実装ブランチを作成する
+
+詳細は [`doc/development-convention.md`](development-convention.md) の Step 1 を参照。
+
+## 9. 禁止事項
 
 以下の行為は禁止する:
 
@@ -99,8 +111,9 @@ feat(ktse): WebSocket切断時のエラーハンドリングを改善 #123
 - ❌ 作業計画を記載せずにIssueを作成して着手する
 - ❌ 複数の無関係な作業を1つのIssueにまとめる
 - ❌ 完了条件を明記しないままIssueを作成する
+- ❌ 実装計画PRをマージせずに実装ブランチを作成する
 
-## 9. 参考
+## 10. 参考
 
 - [リポジトリ全体の規約 (CONVENTION.md)](../CONVENTION.md)
 - [Pull Request 作成規約 (pr-convention.md)](pr-convention.md)

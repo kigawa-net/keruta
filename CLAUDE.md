@@ -44,11 +44,67 @@ EOF
 - **Issueなしの作業開始は禁止**
 - 詳細は [doc/issue-convention.md](doc/issue-convention.md) を参照
 
-### Step 1: ブランチ作成（実装前に必須）
+### Step 1: 実装計画書作成・PRマージ（実装前に必須）
+
+```bash
+# docs/ブランチで実装計画書を作成する
+git checkout develop && git pull origin develop
+git checkout -b docs/{module}-{feature}-plan
+
+# doc/plan/{module}-{feature}.md に実装計画を記述してコミット
+git commit -m "docs({module}): {feature}の実装計画を追加"
+
+# PRを作成してマージを待つ
+gh pr create --base develop \
+  --title "docs({module}): {feature}の実装計画" \
+  --body "$(cat <<'EOF'
+## 実装方針
+何をどのように実装するかの概要
+
+## ファイル・クラス構成
+- 追加/変更するファイル一覧
+
+## 実装順序
+1. domain層: ...
+2. usecase層: ...
+3. infra層: ...
+
+## テスト方針
+- テストするシナリオ
+
+## 関連
+- Issue: #番号
+EOF
+)"
+```
+
+計画書テンプレート（`doc/plan/{module}-{feature}.md`）:
+
+```markdown
+# {機能名} 実装計画
+
+## 実装方針
+...
+
+## ファイル・クラス構成
+...
+
+## 実装順序
+1. ...
+
+## テスト方針
+...
+```
+
+- **計画PRがマージされるまで実装ブランチを作成してはならない**
+- 詳細は [doc/development-convention.md](doc/development-convention.md) を参照
+
+### Step 2: 実装ブランチ作成（計画PRマージ後）
 
 ```bash
 # 命名規則: {prefix}/{module}-{feature}
 # 例: feat/kicp-peer-client, fix/ktse-auth-token, docs/agents-convention
+git checkout develop && git pull origin develop
 git checkout -b feat/{module}-{feature}
 scripts/check-branch-naming.sh $(git branch --show-current)
 ```
@@ -56,7 +112,7 @@ scripts/check-branch-naming.sh $(git branch --show-current)
 - ブランチ名チェックがエラーになった場合はブランチを作り直すこと
 - `develop`・`main` への直接コミットは禁止
 
-### Step 2: 実装（レイヤー順序を守ること）
+### Step 3: 実装（レイヤー順序を守ること）
 
 ```
 domain層 → usecase層 → infra層 → application層
@@ -65,7 +121,7 @@ domain層 → usecase層 → infra層 → application層
 - 各層の実装と同時にテストを追加すること
 - バグ修正時は先に再現テストを追加してから修正すること
 
-### Step 3: コードスタイル確認（コミット前に必須）
+### Step 4: コードスタイル確認（コミット前に必須）
 
 ```bash
 ./gradlew ktlintFormat   # 自動フォーマット
@@ -74,7 +130,7 @@ domain層 → usecase層 → infra層 → application層
 
 ktlintCheck がエラーの状態でコミットしてはならない。
 
-### Step 4: テスト実行（コミット前に必須）
+### Step 5: テスト実行（コミット前に必須）
 
 ```bash
 ./gradlew :{module}:test    # 変更モジュールのテスト
@@ -83,13 +139,13 @@ ktlintCheck がエラーの状態でコミットしてはならない。
 
 テストが失敗している状態でコミットしてはならない。
 
-### Step 5: ビルド確認
+### Step 6: ビルド確認
 
 ```bash
 ./gradlew :{module}:build
 ```
 
-### Step 6: コミット
+### Step 7: コミット
 
 ```bash
 # Conventional Commits 形式: type(scope): 説明
@@ -100,7 +156,7 @@ git commit -m "feat(kicp): peer client を実装"
 - `scope`: 対象モジュール名
 - 秘密情報（認証情報・APIキー）が含まれていないことを確認
 
-### Step 7: PR 作成（必須手順）
+### Step 8: PR 作成（必須手順）
 
 ```bash
 # ベースブランチは必ず develop を指定する
@@ -366,18 +422,23 @@ docker build -f Dockerfile_ktcl_front -t harbor.kigawa.net/private/ktcl-front:la
 - [ ] GitHub Issue を作成済みか
 - [ ] Issueに「目的」「作業計画」「影響範囲」「完了条件」を記載済みか
 
-### ブランチ作成時（Step 1）
+### 実装計画書作成時（Step 1）
+- [ ] `docs/{module}-{feature}-plan` ブランチで計画書を作成済みか
+- [ ] `doc/plan/{module}-{feature}.md` に実装方針・構成・順序・テスト方針を記載済みか
+- [ ] 計画PRが `develop` にマージ済みか
+
+### 実装ブランチ作成時（Step 2）
 - [ ] ブランチ名が規約に従っているか（`feat/`, `fix/`, `docs/` など）
 - [ ] `scripts/check-branch-naming.sh $(git branch --show-current)` でエラーがないか
 
-### コミット前（Step 3〜6）
+### コミット前（Step 4〜7）
 - [ ] `./gradlew ktlintFormat` を実行済みか
 - [ ] `./gradlew ktlintCheck` がエラーなしで通過するか
 - [ ] `./gradlew :{module}:test` ですべてのテストが通るか
 - [ ] コミットメッセージが [Conventional Commits](https://www.conventionalcommits.org/) 形式か
 - [ ] 秘密情報（認証情報、APIキー等）が含まれていないか
 
-### PR作成前（Step 7）
+### PR作成前（Step 8）
 - [ ] ベースブランチは `develop`（`--base develop` を明示的に指定）
 - [ ] PRテンプレート（`.github/pull_request_template.md`）の全項目を記入済みか
 - [ ] 変更の粒度は適切か（1 PR = 1 機能/修正）
