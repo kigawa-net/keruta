@@ -1,6 +1,7 @@
 import {Links, Meta, Outlet, Scripts, ScrollRestoration} from "react-router";
 import "./index.css";
 import {Nav} from "./components/Nav";
+import {AuthProvider} from "./context/AuthContext";
 
 // noinspection JSUnusedGlobalSymbols
 export function Layout({children}: { children: React.ReactNode }) {
@@ -14,8 +15,10 @@ export function Layout({children}: { children: React.ReactNode }) {
                 <title>kicl</title>
             </head>
             <body className="min-h-screen min-w-screen">
-                <Nav/>
-                {children}
+                <AuthProvider>
+                    <Nav/>
+                    {children}
+                </AuthProvider>
                 <ScrollRestoration/>
                 <Scripts/>
             </body>
