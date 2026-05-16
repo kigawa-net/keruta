@@ -44,7 +44,6 @@ kotlin {
 
     // iOS targets for mobile support
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { _ ->
