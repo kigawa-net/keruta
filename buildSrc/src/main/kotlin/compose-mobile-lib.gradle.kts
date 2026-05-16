@@ -12,7 +12,6 @@ plugins {
 kotlin {
     // iOS targets are configured by kmp plugin
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
@@ -36,11 +35,11 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation("org.jetbrains.compose.runtime:runtime:1.10.3")
-            implementation("org.jetbrains.compose.foundation:foundation:1.10.3")
+            implementation("org.jetbrains.compose.runtime:runtime:1.11.0")
+            implementation("org.jetbrains.compose.foundation:foundation:1.11.0")
             implementation("org.jetbrains.compose.material3:material3:1.9.0")
-            implementation("org.jetbrains.compose.ui:ui:1.10.3")
-            implementation("org.jetbrains.compose.components:components-resources:1.10.3")
+            implementation("org.jetbrains.compose.ui:ui:1.11.0")
+            implementation("org.jetbrains.compose.components:components-resources:1.11.0")
             // TODO: Re-enable when iOS compatibility is resolved
             // implementation("org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10")
             // implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose:2.8.3")
