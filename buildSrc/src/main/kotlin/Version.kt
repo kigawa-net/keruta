@@ -26,7 +26,7 @@ object Version {
     const val ZOOKEEPER = "3.9.5"
 
     // Testing
-    const val JUNIT_JUPITER = "6.0.3"
+    const val JUNIT_JUPITER = "6.1.0"
     const val MOCKK = "1.14.9"
     const val TESTCONTAINERS = "2.0.5"
 
