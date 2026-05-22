@@ -5,7 +5,7 @@
 set -euo pipefail
 
 # 有効なプレフィックス（CONVENTION.md 1-2より）
-VALID_PREFIXES="feature/ feat/ fix/ fixes/ doc/ docs/ refactor/ changes/ renovate/"
+VALID_PREFIXES="feature/ feat/ fix/ fixes/ doc/ docs/ refactor/ changes/ renovate/ claude/"
 
 # メインブランチと特殊ブランチは除外
 EXCLUDED_BRANCHES="main develop HEAD"
