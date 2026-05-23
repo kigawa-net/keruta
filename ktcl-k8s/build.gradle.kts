@@ -34,7 +34,7 @@ dependencies {
 
     // Ktor Server
     implementation("io.ktor:ktor-server-core-jvm:${Version.KTOR}")
-    implementation("io.ktor:ktor-server-netty:${Version.KTOR}")
+    implementation("io.ktor:ktor-server-cio:${Version.KTOR}")
     implementation("io.ktor:ktor-server-sessions:${Version.KTOR}")
     implementation("io.ktor:ktor-server-auth:${Version.KTOR}")
     implementation("io.ktor:ktor-server-content-negotiation:${Version.KTOR}")
