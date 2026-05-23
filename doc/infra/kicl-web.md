@@ -1,8 +1,16 @@
-# kicl-web: 次世代フロントエンド
+# kicl-web: ユーザー管理インターフェース
 
 ## 概要
 
-`kicl-web` は、Kotlin Multiplatform (KMP) で共有ロジックを管理する新しいフロントエンドアプリケーションです。React Router v7 をベースにサーバーサイドレンダリング (SSR) 対応のモダンなWebアプリケーションとして構築されています。
+`kicl-web` は、ユーザー管理を行うWebアプリケーション。**全ページでログインが必須**であり、kiseサーバーにkicpプロトコルで認証する。React Router v7 をベースにSSR対応で構築されており、Kotlin Multiplatform (KMP) で共有ロジックを管理する。
+
+## 認証要件
+
+**kicl-web はすべてのページにおいてログインが必須。**
+
+- 未認証ユーザーはログインページにリダイレクトされる
+- 認証先: **kiseサーバー**（kicpプロトコルで通信）
+- ログインフロー: [usecase/kise-oidc-login.md](../usecase/kise-oidc-login.md) を参照
 
 ## アーキテクチャ
 
@@ -267,7 +275,7 @@ object KiclDomain {
 | 項目 | ktcl-front | kicl-web |
 |---|---|---|
 | フレームワーク | React + Vite | React Router v7 (SSR) |
-| 認証 | Keycloak.js | 未実装（今後の予定） |
+| 認証 | Keycloak.js | **ログイン必須**（kise + kicp） |
 | 共有ロジック | なし | Kotlin Multiplatform (kicl-domain, kicl-usecase) |
 | 設定管理 | なし | localStorageベースの実装済み |
 | SSR | なし（SPA） | 対応（React Router v7） |
