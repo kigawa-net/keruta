@@ -197,14 +197,29 @@ PR を作成する前に、以下の項目を確認すること:
 
 必要に応じて以下のラベルを付与する:
 
-| ラベル | 用途 |
-|--------|------|
-| `bug` | バグ修正 |
-| `enhancement` | 新機能・機能拡張 |
-| `documentation` | ドキュメント関連 |
-| `refactoring` | リファクタリング |
-| `breaking-change` | 後方互換性のない変更 |
-| `dependencies` | 依存関係の更新 |
+| ラベル | 用途 | 付与タイミング |
+|--------|------|--------------|
+| `bug` | バグ修正 | 任意 |
+| `enhancement` | 新機能・機能拡張 | 任意 |
+| `documentation` | ドキュメント関連 | **`doc/` 配下の変更を含む PR には必須** |
+| `refactoring` | リファクタリング | 任意 |
+| `breaking-change` | 後方互換性のない変更 | 任意 |
+| `dependencies` | 依存関係の更新 | 任意 |
+
+**ドキュメントラベルの付与ルール:**
+
+`doc/` 配下のファイルを変更・追加・削除する PR には、必ず `documentation` ラベルを付与すること。
+
+```bash
+# PR作成時にラベルを付与する例
+gh pr create --base develop \
+  --label "documentation" \
+  --title "docs: ..." \
+  --body "..."
+
+# 既存PRへのラベル付与
+gh pr edit <PR番号> --add-label "documentation"
+```
 
 ### 8-2. プロジェクト
 

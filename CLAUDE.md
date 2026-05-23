@@ -205,6 +205,7 @@ PR作成前チェック:
 - [ ] CI（GitHub Actions）が全て通過していること
 - [ ] 1 PR = 1 機能（または 1 修正）の粒度であること
 - [ ] `Closes #<Issue番号>` で対応Issueを関連付けていること
+- [ ] `doc/` 配下の変更を含む場合は `documentation` ラベルを付与していること
 
 ---
 
@@ -461,6 +462,7 @@ docker build -f Dockerfile_ktcl_front -t harbor.kigawa.net/private/ktcl-front:la
 - [ ] 変更の粒度は適切か（1 PR = 1 機能/修正）
 - [ ] CIが全て通過しているか
 - [ ] `Closes #<Issue番号>` で対応Issueを関連付けているか
+- [ ] `doc/` 配下の変更を含む場合は `documentation` ラベルを付与しているか
 - [ ] [doc/convention/pull-request.md](doc/convention/pull-request.md) を確認済みか
 
 ### 参考ドキュメント
