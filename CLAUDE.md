@@ -6,9 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **すべての作業において以下の規約を必ず遵守すること：**
 - [CONVENTION.md](CONVENTION.md) - リポジトリ全体の規約（必読）
-- [doc/issue-convention.md](doc/issue-convention.md) - Issue作成・作業計画規約
-- [doc/pr-convention.md](doc/pr-convention.md) - PR作成規約
-- [doc/ci-convention.md](doc/ci-convention.md) - CI/CD規約
+- [doc/convention/issue.md](doc/convention/issue.md) - Issue作成・作業計画規約
+- [doc/convention/pull-request.md](doc/convention/pull-request.md) - PR作成規約
+- [doc/convention/ci.md](doc/convention/ci.md) - CI/CD規約
 
 ## 🚨 Issue作成からPR作成までの必須フロー
 
@@ -61,7 +61,7 @@ EOF
 ```
 
 - **Issueなしの作業開始は禁止**
-- 詳細は [doc/issue-convention.md](doc/issue-convention.md) を参照
+- 詳細は [doc/convention/issue.md](doc/convention/issue.md) を参照
 
 ### Step 1: 実装計画書作成・PRマージ（実装前に必須）
 
@@ -116,7 +116,7 @@ EOF
 ```
 
 - **計画PRがマージされるまで実装ブランチを作成してはならない**
-- 詳細は [doc/development-convention.md](doc/development-convention.md) を参照
+- 詳細は [doc/convention/development.md](doc/convention/development.md) を参照
 
 ### Step 2: 実装ブランチ作成（計画PRマージ後）
 
@@ -461,12 +461,12 @@ docker build -f Dockerfile_ktcl_front -t harbor.kigawa.net/private/ktcl-front:la
 - [ ] 変更の粒度は適切か（1 PR = 1 機能/修正）
 - [ ] CIが全て通過しているか
 - [ ] `Closes #<Issue番号>` で対応Issueを関連付けているか
-- [ ] [doc/pr-convention.md](doc/pr-convention.md) を確認済みか
+- [ ] [doc/convention/pull-request.md](doc/convention/pull-request.md) を確認済みか
 
 ### 参考ドキュメント
 - [CONVENTION.md](CONVENTION.md) - リポジトリ全体の規約（必読）
-- [doc/issue-convention.md](doc/issue-convention.md) - Issue作成・作業計画規約
-- [doc/pr-convention.md](doc/pr-convention.md) - PR作成規約
-- [doc/ci-convention.md](doc/ci-convention.md) - CI/CD規約
-- [doc/development-setup.md](doc/development-setup.md) - 開発環境セットアップ
+- [doc/convention/issue.md](doc/convention/issue.md) - Issue作成・作業計画規約
+- [doc/convention/pull-request.md](doc/convention/pull-request.md) - PR作成規約
+- [doc/convention/ci.md](doc/convention/ci.md) - CI/CD規約
+- [doc/convention/setup.md](doc/convention/setup.md) - 開発環境セットアップ
 - [doc/glossary.md](doc/glossary.md) - 用語集
