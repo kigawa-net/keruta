@@ -39,7 +39,7 @@ kotlin {
             implementation("org.jetbrains.compose.foundation:foundation:1.11.1")
             implementation("org.jetbrains.compose.material3:material3:1.9.0")
             implementation("org.jetbrains.compose.ui:ui:1.11.0")
-            implementation("org.jetbrains.compose.components:components-resources:1.11.0")
+            implementation("org.jetbrains.compose.components:components-resources:1.11.1")
             // TODO: Re-enable when iOS compatibility is resolved
             // implementation("org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10")
             // implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose:2.8.3")
