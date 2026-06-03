@@ -1,5 +1,5 @@
 import { redirect } from 'react-router';
-import { createUserManager, loadSettings } from '../lib/auth';
+import { getConfiguredUserManager } from '../lib/auth';
 import { useAuth } from '../context/AuthContext';
 
 export function HydrateFallback() {
@@ -7,11 +7,7 @@ export function HydrateFallback() {
 }
 
 export async function clientLoader(): Promise<null> {
-    const settings = loadSettings();
-    if (!settings.userIssuerUrl || !settings.oidcClientId) {
-        throw redirect('/settings');
-    }
-    const userManager = createUserManager(settings.userIssuerUrl, settings.oidcClientId);
+    const userManager = getConfiguredUserManager();
     const user = await userManager.getUser();
     if (user && !user.expired) {
         throw redirect('/');
