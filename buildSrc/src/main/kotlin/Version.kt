@@ -17,7 +17,7 @@ object Version {
     const val MYSQL_CONNECTOR = "9.7.0"
     const val MARIADB_CONNECTOR = "3.5.9"
     const val EXPOSED = "1.3.0"
-    const val HIKARI_CP = "7.0.2"
+    const val HIKARI_CP = "7.1.0"
 
     // Kubernetes
     const val KUBERNETES_CLIENT = "26.0.0"
