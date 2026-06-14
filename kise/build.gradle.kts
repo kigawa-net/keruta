@@ -36,7 +36,7 @@ kotlin {
         // For UnverifiedAuthTokens, AuthTokenDecoder interface
         api(project(":ktse-sdk"))
         implementation("com.mysql:mysql-connector-j:9.7.0")
-        implementation("com.zaxxer:HikariCP:7.0.2")
+        implementation("com.zaxxer:HikariCP:7.1.0")
 
         // KICP（idServer実装）
         implementation(project(":kicp:kicp-domain"))
