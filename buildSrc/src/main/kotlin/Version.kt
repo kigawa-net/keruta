@@ -1,6 +1,6 @@
 object Version {
     const val KTOR = "3.5.0"
-    const val LOGBACK = "1.5.36"
+    const val LOGBACK = "1.5.37"
 
     // Auth
     const val JAVA_JWT = "4.5.2"
