@@ -20,7 +20,7 @@ object Version {
     const val HIKARI_CP = "7.1.0"
 
     // Kubernetes
-    const val KUBERNETES_CLIENT = "26.0.1"
+    const val KUBERNETES_CLIENT = "27.0.0"
 
     // Other
     const val ZOOKEEPER = "3.9.5"
