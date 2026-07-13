@@ -22,7 +22,7 @@ kotlin {
         implementation("io.ktor:ktor-client-core-jvm:${Version.KTOR}")
         implementation("io.ktor:ktor-client-cio-jvm:${Version.KTOR}")
         implementation("io.ktor:ktor-client-content-negotiation-jvm:${Version.KTOR}")
-        implementation("com.auth0:java-jwt:4.5.2")
+        implementation("com.auth0:java-jwt:4.6.0")
         implementation("com.auth0:jwks-rsa:${Version.JWKS_RSA}")
         api(project(":ktcp-sdk:ktcp-domain:ktcp-domain-server"))
         api(project(":ktcp-sdk:ktcp-domain"))
