@@ -23,7 +23,7 @@ object Version {
     const val KUBERNETES_CLIENT = "27.0.0"
 
     // Other
-    const val ZOOKEEPER = "3.9.5"
+    const val ZOOKEEPER = "3.9.6"
 
     // Testing
     const val JUNIT_JUPITER = "6.1.3"
