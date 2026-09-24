@@ -10,7 +10,7 @@ import net.kigawa.keruta.ktcp.domain.msg.server.ServerMsgType
 @Serializable
 data class ClientAuthSuccessMsg(
     override val type: ServerMsgType = ServerMsgType.AUTH_SUCCESS,
-): ServerMsg {
+) : ServerMsg {
     init {
         require(type == ServerMsgType.AUTH_SUCCESS)
     }

@@ -7,5 +7,4 @@ interface PersistedUserIdp {
     val issuer: Url
     val userId: Long
     val subject: String
-
 }

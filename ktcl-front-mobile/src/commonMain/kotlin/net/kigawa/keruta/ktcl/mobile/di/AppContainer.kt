@@ -125,41 +125,27 @@ open class AppContainer(
         }
     }
 
-    fun createAuthViewModel(): AuthViewModel {
-        return AuthViewModel(authService)
-    }
+    fun createAuthViewModel(): AuthViewModel = AuthViewModel(authService)
 
-    fun createQueueListViewModel(): QueueListViewModel {
-        return QueueListViewModel(queueRepository)
-    }
+    fun createQueueListViewModel(): QueueListViewModel = QueueListViewModel(queueRepository)
 
-    fun createQueueCreateViewModel(): QueueCreateViewModel {
-        return QueueCreateViewModel(providerRepository, messageSender, authService)
-    }
+    fun createQueueCreateViewModel(): QueueCreateViewModel = QueueCreateViewModel(providerRepository, messageSender, authService)
 
-    fun createQueueDetailViewModel(): QueueDetailViewModel {
-        return QueueDetailViewModel(taskRepository, messageSender, authService)
-    }
+    fun createQueueDetailViewModel(): QueueDetailViewModel = QueueDetailViewModel(taskRepository, messageSender, authService)
 
-    fun createProviderListViewModel(): ProviderListViewModel {
-        return ProviderListViewModel(providerRepository, messageSender, authService)
-    }
+    fun createProviderListViewModel(): ProviderListViewModel = ProviderListViewModel(providerRepository, messageSender, authService)
 
-    fun createTaskDetailViewModel(): TaskDetailViewModel {
-        return TaskDetailViewModel(taskRepository, messageSender, authService)
-    }
+    fun createTaskDetailViewModel(): TaskDetailViewModel = TaskDetailViewModel(taskRepository, messageSender, authService)
 
-    suspend fun getServerToken(userToken: String): String? {
-        return try {
-            val response = httpClient.post("${config.apiBaseUrl}api/token") {
-                setBody(JsonObject(mapOf("token" to JsonPrimitive(userToken))))
-                headers.append("Content-Type", "application/json")
-            }
-            val jsonResponse = Json.parseToJsonElement(response.bodyAsText()).jsonObject
-            jsonResponse["token"]?.jsonPrimitive?.content
-        } catch (e: Exception) {
-            log("=== getServerToken error: ${e.message} ===")
-            null
+    suspend fun getServerToken(userToken: String): String? = try {
+        val response = httpClient.post("${config.apiBaseUrl}api/token") {
+            setBody(JsonObject(mapOf("token" to JsonPrimitive(userToken))))
+            headers.append("Content-Type", "application/json")
         }
+        val jsonResponse = Json.parseToJsonElement(response.bodyAsText()).jsonObject
+        jsonResponse["token"]?.jsonPrimitive?.content
+    } catch (e: Exception) {
+        log("=== getServerToken error: ${e.message} ===")
+        null
     }
 }

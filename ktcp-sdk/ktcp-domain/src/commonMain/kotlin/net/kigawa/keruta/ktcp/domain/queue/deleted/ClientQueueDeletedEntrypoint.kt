@@ -10,7 +10,8 @@ import net.kigawa.kodel.api.err.Res
 interface ClientQueueDeletedEntrypoint<C> : Entrypoint<ClientQueueDeletedMsg, EntrypointDeferred<Res<Unit, KtcpErr>>, C> {
     override val info: EntrypointInfo
         get() = EntrypointInfo(
-            ClientMsgType.QUEUE_DELETED.str, emptyList(),
-            "キュー削除済みメッセージ送信"
+            ClientMsgType.QUEUE_DELETED.str,
+            emptyList(),
+            "キュー削除済みメッセージ送信",
         )
 }

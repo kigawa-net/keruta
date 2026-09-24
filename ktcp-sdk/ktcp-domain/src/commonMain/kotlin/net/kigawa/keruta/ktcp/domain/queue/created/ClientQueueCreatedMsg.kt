@@ -8,7 +8,7 @@ import net.kigawa.keruta.ktcp.domain.msg.client.ClientMsgType
 data class ClientQueueCreatedMsg(
     override val type: ClientMsgType = ClientMsgType.QUEUE_CREATED,
     val queueId: Long,
-): ClientMsg {
+) : ClientMsg {
     init {
         require(type == ClientMsgType.QUEUE_CREATED) { "type must be QUEUE_CREATED" }
     }

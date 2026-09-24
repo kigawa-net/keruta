@@ -1,21 +1,9 @@
 name: ktcl-k8s-dev
 on:
-  push:
-    paths-ignore:
-      - README.md
-      - Dockerfile_ktse
-      - Dockerfile_ktcl_front
-      - Dockerfile_ktcl_claudecode
-      - .github/workflows/dev-ktcl-front.yml
-      - .github/workflows/dev-ktse.yml
-      - .github/workflows/renovate.yaml
-      - .github/renovate.json
-      - .idea/**
-      - ktcl-claudecode/**
-      - ktcl-front/**
-      - ktcl-front-mobile/**
-      - ktse-sdk/**
-      - ktse/**
+  pull_request:
+    paths:
+      - 'ktcl-k8s/**'
+      - 'Dockerfile_ktcl_k8s'
     branches:
       - develop
 

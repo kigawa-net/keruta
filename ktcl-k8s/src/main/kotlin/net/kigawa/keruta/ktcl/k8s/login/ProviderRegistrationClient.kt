@@ -59,8 +59,8 @@ class ProviderRegistrationClient(
                                 userAudience = oidcSession.clientId,
                                 providerAudience = ktseConfig.providerAudience,
                                 providerName = "keruta-k8s",
-                            )
-                        )
+                            ),
+                        ),
                     )
 
                     logger.info("Provider registration sent to ktse")
@@ -77,7 +77,6 @@ class ProviderRegistrationClient(
             logger.severe("Failed to register provider in ktse: ${e.message}")
         }
     }
-
 
     private fun parseType(text: String): String? {
         val jsonElement = Json.parseToJsonElement(text)

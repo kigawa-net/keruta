@@ -32,30 +32,27 @@ data class K8sConfigCompat(
         /**
          * 環境変数から直接読み込む（既存コードとの互換性のため）
          */
-        fun fromEnvironment(): K8sConfigCompat {
-            return K8sConfigCompat(
-                ktseHost = System.getenv("KTSE_HOST") ?: "localhost",
-                ktsePort = System.getenv("KTSE_PORT")?.toInt() ?: 8080,
-                ktseUseTls = System.getenv("KTSE_USE_TLS")?.toBoolean() ?: false,
-                taskExecutorKtseHost = System.getenv("TASK_EXECUTOR_KTSE_HOST")
-                    ?: System.getenv("KTSE_HOST") ?: "localhost",
-                taskExecutorKtsePort = System.getenv("TASK_EXECUTOR_KTSE_PORT")?.toInt()
-                    ?: System.getenv("KTSE_PORT")?.toInt() ?: 8080,
-                taskExecutorKtseUseTls = System.getenv("TASK_EXECUTOR_KTSE_USE_TLS")?.toBoolean()
-                    ?: System.getenv("KTSE_USE_TLS")?.toBoolean() ?: false,
-                k8sNamespace = getEnvOrProperty("K8S_NAMESPACE") ?: "default",
-                k8sUseInCluster = getEnvOrProperty("K8S_USE_IN_CLUSTER")?.toBoolean() ?: true,
-                k8sKubeConfigPath = getEnvOrProperty("K8S_KUBECONFIG_PATH"),
-                k8sJobTimeout = getEnvOrProperty("K8S_JOB_TIMEOUT")?.toLongOrNull() ?: 600,
-                pvcStorageClassName = getEnvOrProperty("K8S_PVC_STORAGE_CLASS"),
-                pvcStorageSize = getEnvOrProperty("K8S_PVC_STORAGE_SIZE") ?: "1Gi",
-                webMode = System.getenv("KTCL_K8S_WEB_MODE")?.toBoolean() ?: false,
-                webPort = System.getenv("KTCL_K8S_WEB_PORT")?.toInt() ?: 8081,
-            )
-        }
+        fun fromEnvironment(): K8sConfigCompat = K8sConfigCompat(
+            ktseHost = System.getenv("KTSE_HOST") ?: "localhost",
+            ktsePort = System.getenv("KTSE_PORT")?.toInt() ?: 8080,
+            ktseUseTls = System.getenv("KTSE_USE_TLS")?.toBoolean() ?: false,
+            taskExecutorKtseHost = System.getenv("TASK_EXECUTOR_KTSE_HOST")
+                ?: System.getenv("KTSE_HOST") ?: "localhost",
+            taskExecutorKtsePort = System.getenv("TASK_EXECUTOR_KTSE_PORT")?.toInt()
+                ?: System.getenv("KTSE_PORT")?.toInt() ?: 8080,
+            taskExecutorKtseUseTls = System.getenv("TASK_EXECUTOR_KTSE_USE_TLS")?.toBoolean()
+                ?: System.getenv("KTSE_USE_TLS")?.toBoolean() ?: false,
+            k8sNamespace = getEnvOrProperty("K8S_NAMESPACE") ?: "default",
+            k8sUseInCluster = getEnvOrProperty("K8S_USE_IN_CLUSTER")?.toBoolean() ?: true,
+            k8sKubeConfigPath = getEnvOrProperty("K8S_KUBECONFIG_PATH"),
+            k8sJobTimeout = getEnvOrProperty("K8S_JOB_TIMEOUT")?.toLongOrNull() ?: 600,
+            pvcStorageClassName = getEnvOrProperty("K8S_PVC_STORAGE_CLASS"),
+            pvcStorageSize = getEnvOrProperty("K8S_PVC_STORAGE_SIZE") ?: "1Gi",
+            webMode = System.getenv("KTCL_K8S_WEB_MODE")?.toBoolean() ?: false,
+            webPort = System.getenv("KTCL_K8S_WEB_PORT")?.toInt() ?: 8081,
+        )
 
-        private fun getEnvOrProperty(name: String): String? =
-            System.getenv(name) ?: System.getProperty(name)
+        private fun getEnvOrProperty(name: String): String? = System.getenv(name) ?: System.getProperty(name)
     }
 }
 

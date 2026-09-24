@@ -1,6 +1,6 @@
 import {createContext, ReactNode, useContext, useEffect, useState} from "react";
 import {useKtclApiState} from "./KtclApiProvider";
-import {useKeycloakState} from "../auth/Keycloak";
+import {useKiseAuthState} from "../auth/KiseAuth";
 import {useKtseApiState} from "./KtseApiProvider";
 import {useStateFlow} from "../../util/StateFlow";
 import {AuthedKtseApi} from "./AuthedKtseApi";
@@ -15,15 +15,15 @@ export function AuthedKtseProvider(
     }
 ) {
     const [AuthedKtseState, setAuthedKtseState] = useState<AuthedKtseState>({state: "unloaded"});
-    const kc = useKeycloakState()
+    const auth = useKiseAuthState()
     const ktcl = useKtclApiState()
     const ktse = useKtseApiState()
     useEffect(() => {
-        if (kc.state != "authenticated") return;
+        if (auth.state != "authenticated") return;
         if (ktcl.state != "loaded") return;
         if (ktse.state != "loaded") return;
         console.log("Sending auth request...")
-        const userToken = kc.getToken()
+        const userToken = auth.getToken()
         const serverToken = userToken.then(value => {
             return ktcl.ktclApi.getServerToken(value)
         })
@@ -32,7 +32,7 @@ export function AuthedKtseProvider(
         }).catch(reason => {
             console.error("Auth request failed:", reason)
         })
-    }, [kc, ktcl, ktse]);
+    }, [auth, ktcl, ktse]);
     useStateFlow(
         ktse.state == "loaded" ? ktse.ktclApi.auth.getAuthSuccessReceiver() : undefined,
         () => {

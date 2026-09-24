@@ -8,7 +8,7 @@ package net.kigawa.keruta.ktcl.k8s.config
  *   未設定の場合はすべてのオリジンを許可する
  */
 data class CorsConfig(
-    val allowedOrigins: List<String>?
+    val allowedOrigins: List<String>?,
 ) {
     companion object {
         fun fromEnvironment(): CorsConfig {

@@ -15,12 +15,12 @@ class AuthManager(
     suspend fun authenticate(): Res<Unit, KtcpErr> {
         val authMsg = ServerAuthRequestMsg(
             userToken = config.userToken,
-            serverToken = config.serverToken
+            serverToken = config.serverToken,
         )
 
         return ktcpClient.ktcpServerEntrypoints.authRequestEntrypoint.access(
             authMsg,
-            ctx
+            ctx,
         )?.execute() ?: Res.Err(net.kigawa.keruta.ktcl.claudecode.err.ConnectionErr("Auth entrypoint not found", null))
     }
 }

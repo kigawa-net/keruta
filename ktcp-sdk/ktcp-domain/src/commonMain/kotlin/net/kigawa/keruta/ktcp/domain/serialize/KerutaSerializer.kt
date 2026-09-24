@@ -15,9 +15,11 @@ interface KerutaSerializer {
 }
 
 inline fun <reified T> KerutaSerializer.deserialize(str: String): Res<T, KtcpErr> = deserialize(
-    serializersModule.serializer(), str
+    serializersModule.serializer(),
+    str,
 )
 
 inline fun <reified T> KerutaSerializer.serialize(msg: @Serializable T): String = serialize(
-    serializersModule.serializer(), msg
+    serializersModule.serializer(),
+    msg,
 )

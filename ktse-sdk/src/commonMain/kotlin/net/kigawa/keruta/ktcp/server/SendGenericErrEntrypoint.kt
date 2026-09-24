@@ -6,13 +6,12 @@ import net.kigawa.keruta.ktcp.domain.serialize.serialize
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.err.Res
 
-class SendGenericErrEntrypoint: ClientGenericErrEntrypoint<ServerCtx> {
+class SendGenericErrEntrypoint : ClientGenericErrEntrypoint<ServerCtx> {
     override fun access(
-        input: GenericErrMsg, ctx: ServerCtx,
-    ): EntrypointDeferred<Res<Unit, Nothing>> {
-        return EntrypointDeferred {
-            ctx.connection.send(ctx.serializer.serialize(input))
-            Res.Ok(Unit)
-        }
+        input: GenericErrMsg,
+        ctx: ServerCtx,
+    ): EntrypointDeferred<Res<Unit, Nothing>> = EntrypointDeferred {
+        ctx.connection.send(ctx.serializer.serialize(input))
+        Res.Ok(Unit)
     }
 }

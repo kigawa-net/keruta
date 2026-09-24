@@ -8,9 +8,10 @@ import net.kigawa.keruta.ktcp.domain.task.list.ServerTaskListMsg
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.err.Res
 
-class SendTaskListEntrypoint: ServerTaskListEntrypoint<ClientCtx> {
+class SendTaskListEntrypoint : ServerTaskListEntrypoint<ClientCtx> {
     override fun access(
-        input: ServerTaskListMsg, ctx: ClientCtx,
+        input: ServerTaskListMsg,
+        ctx: ClientCtx,
     ): EntrypointDeferred<Res<Unit, KtcpClientErr>> = EntrypointDeferred {
         ctx.connection.send(ctx.serializer.serialize(input))
         Res.Ok(Unit)

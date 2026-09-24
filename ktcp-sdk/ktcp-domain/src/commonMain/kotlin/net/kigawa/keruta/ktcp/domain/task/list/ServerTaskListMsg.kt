@@ -8,7 +8,7 @@ import net.kigawa.keruta.ktcp.domain.msg.server.ServerMsgType
 data class ServerTaskListMsg(
     override val type: ServerMsgType = ServerMsgType.TASK_LIST,
     val queueId: Long,
-): ServerMsg {
+) : ServerMsg {
     init {
         require(type == ServerMsgType.TASK_LIST) { "type must be TASK_LIST" }
     }

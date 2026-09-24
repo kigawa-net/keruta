@@ -41,7 +41,7 @@ class StaticRoutes(
                     val error = call.request.queryParameters["error"]
                     call.respondText(
                         HtmlGenerator.generateIndexHtml(hasGithubToken, hasClaudeToken, success, error),
-                        ContentType.Text.Html
+                        ContentType.Text.Html,
                     )
                 }
             }
@@ -62,4 +62,3 @@ class StaticRoutes(
         }
     }
 }
-

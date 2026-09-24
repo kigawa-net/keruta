@@ -48,30 +48,29 @@ actual class OidcAuthManager actual constructor(
         }
     }
 
-    suspend fun exchangeToken(response: AuthorizationResponse): Result<String> =
-        suspendCancellableCoroutine { continuation ->
-            val tokenRequest = response.createTokenExchangeRequest()
+    suspend fun exchangeToken(response: AuthorizationResponse): Result<String> = suspendCancellableCoroutine { continuation ->
+        val tokenRequest = response.createTokenExchangeRequest()
 
-            authService.performTokenRequest(tokenRequest) { tokenResponse, ex ->
-                if (ex != null) {
-                    continuation.resume(Result.failure(ex))
-                    return@performTokenRequest
-                }
+        authService.performTokenRequest(tokenRequest) { tokenResponse, ex ->
+            if (ex != null) {
+                continuation.resume(Result.failure(ex))
+                return@performTokenRequest
+            }
 
-                if (tokenResponse == null) {
-                    continuation.resume(Result.failure(Exception("トークンレスポンスがnullです")))
-                    return@performTokenRequest
-                }
+            if (tokenResponse == null) {
+                continuation.resume(Result.failure(Exception("トークンレスポンスがnullです")))
+                return@performTokenRequest
+            }
 
-                authState = AuthState(response, tokenResponse, ex)
-                val accessToken = tokenResponse.accessToken
-                if (accessToken != null) {
-                    continuation.resume(Result.success(accessToken))
-                } else {
-                    continuation.resume(Result.failure(Exception("アクセストークンがnullです")))
-                }
+            authState = AuthState(response, tokenResponse, ex)
+            val accessToken = tokenResponse.accessToken
+            if (accessToken != null) {
+                continuation.resume(Result.success(accessToken))
+            } else {
+                continuation.resume(Result.failure(Exception("アクセストークンがnullです")))
             }
         }
+    }
 
     fun handleAuthorizationResponse(intent: Intent): Result<AuthorizationResponse> {
         val response = AuthorizationResponse.fromIntent(intent)
@@ -88,9 +87,7 @@ actual class OidcAuthManager actual constructor(
         return Result.success(response)
     }
 
-    actual suspend fun login(): Result<String> {
-        return Result.failure(NotImplementedError("Androidではlogin()の代わりにgetAuthorizationIntent()を使用してください"))
-    }
+    actual suspend fun login(): Result<String> = Result.failure(NotImplementedError("Androidではlogin()の代わりにgetAuthorizationIntent()を使用してください"))
 
     actual suspend fun logout() {
         authState = null
@@ -118,15 +115,9 @@ actual class OidcAuthManager actual constructor(
         }
     }
 
-    actual suspend fun exchangeCodeForToken(code: String): Result<String> {
-        return Result.failure(NotImplementedError("AndroidではexchangeToken(response)を使用してください"))
-    }
+    actual suspend fun exchangeCodeForToken(code: String): Result<String> = Result.failure(NotImplementedError("AndroidではexchangeToken(response)を使用してください"))
 
-    actual fun isAuthenticated(): Boolean {
-        return authState?.isAuthorized == true
-    }
+    actual fun isAuthenticated(): Boolean = authState?.isAuthorized == true
 
-    actual fun getAccessToken(): String? {
-        return authState?.accessToken
-    }
+    actual fun getAccessToken(): String? = authState?.accessToken
 }

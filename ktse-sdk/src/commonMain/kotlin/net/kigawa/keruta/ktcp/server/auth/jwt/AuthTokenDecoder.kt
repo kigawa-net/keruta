@@ -7,6 +7,6 @@ import net.kigawa.kodel.api.err.Res
 
 interface AuthTokenDecoder {
     fun decodeAuthRequestMsg(
-        authRequestMsg: ServerAuthRequestMsg
+        authRequestMsg: ServerAuthRequestMsg,
     ): Res<UnverifiedAuthTokens, KtcpErr>
 }

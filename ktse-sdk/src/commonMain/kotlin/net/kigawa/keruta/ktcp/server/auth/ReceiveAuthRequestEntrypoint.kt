@@ -11,10 +11,11 @@ import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.log.LoggerFactory
 import net.kigawa.kodel.api.log.traceignore.debug
 
-class ReceiveAuthRequestEntrypoint: ServerAuthRequestEntrypoint<ServerCtx> {
+class ReceiveAuthRequestEntrypoint : ServerAuthRequestEntrypoint<ServerCtx> {
     val logger = LoggerFactory.get("net.kigawa.keruta.ktcp.server.authenticate.ReceiveAuthenticateEntrypoint")
     override fun access(
-        input: ServerAuthRequestMsg, ctx: ServerCtx,
+        input: ServerAuthRequestMsg,
+        ctx: ServerCtx,
     ): EntrypointDeferred<Res<Unit, KtcpErr>> {
         logger.debug("accessing authenticate request")
         return EntrypointDeferred {
@@ -23,14 +24,13 @@ class ReceiveAuthRequestEntrypoint: ServerAuthRequestEntrypoint<ServerCtx> {
                     .also { logger.debug("failed to verify authenticate message") }
 
                 is Res.Ok -> {
-
                     logger.debug("verified authenticate message")
                     ctx.server.clientEntrypoints.authSuccess.access(
-                        ClientAuthSuccessMsg(), ctx
+                        ClientAuthSuccessMsg(),
+                        ctx,
                     )?.execute() ?: Res.Err(UnexpectedErr("", null))
                 }
             }
         }
     }
-
 }

@@ -55,7 +55,7 @@ class LoginCallbackRoute(
         val oidcSession = getValidatedOidcSession(call, state) ?: return@get
 
         logger.info(
-            "Processing OIDC callback for issuer: ${oidcSession.issuer}, clientId: ${oidcSession.clientId}, redirectUri: ${oidcSession.redirectUri}"
+            "Processing OIDC callback for issuer: ${oidcSession.issuer}, clientId: ${oidcSession.clientId}, redirectUri: ${oidcSession.redirectUri}",
         )
 
         processOidcCallback(call, code, oidcSession)
@@ -70,7 +70,7 @@ class LoginCallbackRoute(
             if (discoveryResponse.tokenEndpoint == null) {
                 call.respond(
                     HttpStatusCode.InternalServerError,
-                    mapOf("error" to "Token endpoint not found in OIDC discovery")
+                    mapOf("error" to "Token endpoint not found in OIDC discovery"),
                 )
                 return
             }
@@ -81,7 +81,7 @@ class LoginCallbackRoute(
                 code = code,
                 redirectUri = oidcSession.redirectUri,
                 clientId = oidcSession.clientId,
-                codeVerifier = oidcSession.pkce.codeVerifier
+                codeVerifier = oidcSession.pkce.codeVerifier,
             )
 
             val idToken = tokenResponse.idToken
@@ -89,7 +89,7 @@ class LoginCallbackRoute(
                 logger.warning("No ID token received from token endpoint")
                 call.respond(
                     HttpStatusCode.InternalServerError,
-                    mapOf("error" to "No ID token received")
+                    mapOf("error" to "No ID token received"),
                 )
                 return
             }
@@ -133,7 +133,7 @@ class LoginCallbackRoute(
             logger.severe("Failed to process OIDC callback: ${e.message}")
             call.respond(
                 HttpStatusCode.InternalServerError,
-                mapOf("error" to "Failed to complete login", "message" to e.message)
+                mapOf("error" to "Failed to complete login", "message" to e.message),
             )
         }
     }
@@ -161,7 +161,7 @@ class LoginCallbackRoute(
     ) {
         call.sessions.clear<OidcSession>()
         call.sessions.set(
-            UserSession(userSubject = userSubject, userIssuer = userIssuer, userAudience = userAudience, token = accessToken)
+            UserSession(userSubject = userSubject, userIssuer = userIssuer, userAudience = userAudience, token = accessToken),
         )
     }
 
@@ -180,7 +180,7 @@ class LoginCallbackRoute(
 
         return client.use { client ->
             logger.info(
-                "Exchanging code for token: $code, redirectUri: $redirectUri, clientId: $clientId, codeVerifier: $codeVerifier"
+                "Exchanging code for token: $code, redirectUri: $redirectUri, clientId: $clientId, codeVerifier: $codeVerifier",
             )
             val response = client.submitForm(
                 url = tokenEndpoint,
@@ -190,7 +190,7 @@ class LoginCallbackRoute(
                     append("redirect_uri", redirectUri)
                     append("client_id", clientId)
                     append("code_verifier", codeVerifier)
-                }
+                },
             )
 
             if (!response.status.isSuccess()) {

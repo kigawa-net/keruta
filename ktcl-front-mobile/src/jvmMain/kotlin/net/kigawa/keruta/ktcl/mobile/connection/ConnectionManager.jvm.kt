@@ -9,9 +9,7 @@ import net.kigawa.keruta.ktcl.mobile.config.MobileConfig
 actual class ConnectionManager actual constructor(
     private val config: MobileConfig,
 ) {
-    actual suspend fun connect(): MobileKtcpConnection {
-        throw NotImplementedError("JVMターゲットではConnectionManagerは使用できません")
-    }
+    actual suspend fun connect(): MobileKtcpConnection = throw NotImplementedError("JVMターゲットではConnectionManagerは使用できません")
 
     actual fun disconnect() {}
 }

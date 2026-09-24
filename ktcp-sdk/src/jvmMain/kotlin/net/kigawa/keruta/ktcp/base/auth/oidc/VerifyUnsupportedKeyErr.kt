@@ -3,7 +3,10 @@ package net.kigawa.keruta.ktcp.base.auth.oidc
 import net.kigawa.keruta.ktcp.domain.auth.jwt.VerifyErr
 
 class VerifyUnsupportedKeyErr(
-    message: String, cause: Exception?,
-): VerifyErr(
-    "VERIFY_UNSUPPORTED_KEY", "Unsupported public key: $message", cause,
+    message: String,
+    cause: Exception?,
+) : VerifyErr(
+    "VERIFY_UNSUPPORTED_KEY",
+    "Unsupported public key: $message",
+    cause,
 )

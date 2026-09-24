@@ -59,8 +59,8 @@ class ProviderListClient(
                             ServerAuthRequestMsg(
                                 userToken = userToken,
                                 serverToken = serverToken.createdToken.rawToken,
-                            )
-                        )
+                            ),
+                        ),
                     )
 
                     withTimeout(10.seconds) {

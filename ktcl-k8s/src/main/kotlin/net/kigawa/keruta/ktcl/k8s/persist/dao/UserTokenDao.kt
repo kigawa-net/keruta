@@ -5,13 +5,12 @@ import net.kigawa.keruta.ktcl.k8s.persist.table.UserTable
 import net.kigawa.keruta.ktcl.k8s.persist.table.UserTokenTable
 import net.kigawa.kodel.api.log.getKogger
 import net.kigawa.kodel.api.log.traceignore.debug
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.update
-
+import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.jdbc.deleteWhere
+import org.jetbrains.exposed.v1.jdbc.insert
+import org.jetbrains.exposed.v1.jdbc.selectAll
+import org.jetbrains.exposed.v1.jdbc.transactions.transaction
+import org.jetbrains.exposed.v1.jdbc.update
 
 /**
  * ユーザートークンDao（refresh token管理用）
@@ -21,6 +20,7 @@ class UserTokenDao(
     private val userDao: UserDao,
 ) {
     val logger = getKogger()
+
     /**
      * ユーザーのrefresh tokenを保存または更新する
      */
@@ -59,18 +59,16 @@ class UserTokenDao(
     /**
      * DBに保存されている全ユーザーのrefresh tokenを取得する
      */
-    fun getRefreshTokens(): List<UserTokenEntry> {
-        return transaction(dbManager.db) {
-            (UserTokenTable innerJoin UserTable).selectAll()
-                .map {
-                    UserTokenEntry(
-                        userSubject = it[UserTable.userSubject],
-                        userIssuer = it[UserTable.userIssuer],
-                        userAudience = it[UserTable.userAudience],
-                        refreshToken = it[UserTokenTable.refreshToken],
-                    )
-                }
-        }
+    fun getRefreshTokens(): List<UserTokenEntry> = transaction(dbManager.db) {
+        (UserTokenTable innerJoin UserTable).selectAll()
+            .map {
+                UserTokenEntry(
+                    userSubject = it[UserTable.userSubject],
+                    userIssuer = it[UserTable.userIssuer],
+                    userAudience = it[UserTable.userAudience],
+                    refreshToken = it[UserTokenTable.refreshToken],
+                )
+            }
     }
 
     /**

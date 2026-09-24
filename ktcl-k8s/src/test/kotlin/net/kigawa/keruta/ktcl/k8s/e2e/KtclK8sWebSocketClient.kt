@@ -36,9 +36,7 @@ class KtclK8sWebSocketClient {
     /**
      * メッセージを受信（1つ）
      */
-    suspend fun receive(): String {
-        return receivedMessages.receive()
-    }
+    suspend fun receive(): String = receivedMessages.receive()
 
     /**
      * 受信ループを開始（バックグラウンド）

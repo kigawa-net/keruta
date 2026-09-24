@@ -8,7 +8,7 @@ import net.kigawa.keruta.ktcp.domain.msg.client.ClientMsgType
 data class ClientTaskListedMsg(
     override val type: ClientMsgType = ClientMsgType.TASK_LISTED,
     val tasks: List<Task>,
-): ClientMsg {
+) : ClientMsg {
     init {
         require(type == ClientMsgType.TASK_LISTED) { "type must be TASK_LISTED" }
     }

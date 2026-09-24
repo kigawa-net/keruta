@@ -89,21 +89,23 @@ spec:
           mountPath: /workspace
       containers:
       - name: github-pr
-        image: alpine/curl:latest
+        image: alpine/git:latest
         command:
         - sh
         - -c
         - |
-          apk add --no-cache jq > /dev/null 2>&1
+          apk add --no-cache curl jq > /dev/null 2>&1
           REPO=$(echo "$GIT_REPO_URL" | sed 's|https://github.com/||;s|\.git$||')
           BASE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
             "https://api.github.com/repos/$REPO" | jq -r '.default_branch // "develop"')
           BASE=${BASE:-develop}
+          DIFF_STAT=$(cd /workspace && git diff --stat "origin/$BASE" "keruta-task-$TASK_ID" 2>/dev/null || echo "")
+          PR_BODY=$(printf '## タスク\n\n%s\n\n## 変更ファイル\n\n```\n%s\n```' "$TASK_DESCRIPTION" "$DIFF_STAT")
           BODY=$(jq -n \
             --arg title "$TASK_TITLE" \
             --arg head "keruta-task-$TASK_ID" \
             --arg base "$BASE" \
-            --arg body "$TASK_DESCRIPTION" \
+            --arg body "$PR_BODY" \
             '{title: $title, head: $head, base: $base, body: $body}')
           RESULT=$(curl -s -X POST \
             -H "Authorization: token $GITHUB_TOKEN" \
@@ -127,6 +129,9 @@ spec:
           value: ""
         - name: GITHUB_TOKEN
           value: ""
+        volumeMounts:
+        - name: workspace
+          mountPath: /workspace
       volumes:
       - name: workspace
         persistentVolumeClaim:

@@ -7,7 +7,7 @@ import net.kigawa.keruta.ktcp.domain.msg.server.ServerMsgType
 @Serializable
 data class ServerQueueListMsg(
     override val type: ServerMsgType = ServerMsgType.QUEUE_LIST,
-): ServerMsg {
+) : ServerMsg {
     init {
         require(type == ServerMsgType.QUEUE_LIST) { "type must be QUEUE_LIST" }
     }

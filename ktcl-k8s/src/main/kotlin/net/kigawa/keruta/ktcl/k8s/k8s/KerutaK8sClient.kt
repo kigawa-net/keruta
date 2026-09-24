@@ -64,16 +64,22 @@ class KerutaK8sClient(
 
                             // accessTokenを使ってKTSEに接続しタスク受信ループを実行する
                             received = runTaskReceiver(
-                                it.userSubject, it.userIssuer, tokenResponse.accessToken
-                            ) || received
+                                it.userSubject,
+                                it.userIssuer,
+                                tokenResponse.accessToken,
+                            ) ||
+                                received
                         } catch (e: Exception) {
                             if (e is CancellationException) throw e
                             logger.severe { "Failed to refresh token ${e.message}" }
                             e.printStackTrace()
                         }
                     }
-                    if (received) delay(1.seconds)
-                    else delay(30.seconds)
+                    if (received) {
+                        delay(1.seconds)
+                    } else {
+                        delay(30.seconds)
+                    }
                 }
             }
         }.joinAll()
@@ -98,7 +104,7 @@ class KerutaK8sClient(
             logger.debug { "Provider token created for user $userSubject" }
             val authMsg = ServerAuthRequestMsg(
                 userToken = accessToken,
-                serverToken = providerToken.createdToken.rawToken
+                serverToken = providerToken.createdToken.rawToken,
             )
             logger.debug { "Sending authentication request for user $userSubject" }
             val authResult = ktcpClient.ktcpServerEntrypoints.authRequestEntrypoint.access(authMsg, ctx)?.execute()
@@ -121,5 +127,4 @@ class KerutaK8sClient(
             logger.debug { "Connection closed for user $userSubject" }
         }
     }
-
 }

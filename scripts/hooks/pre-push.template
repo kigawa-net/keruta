@@ -1,0 +1,25 @@
+#!/bin/bash
+# pre-push hook template: ブランチ名の規約チェックとその他のチェック
+# 使用方法: このファイルを .git/hooks/pre-push にコピーするか、
+# プロジェクトセットアップ時に以下を実行:
+#   cp scripts/hooks/pre-push.template .git/hooks/pre-push
+#   chmod +x .git/hooks/pre-push
+
+# プロジェクトルートを取得
+GIT_ROOT="$(git rev-parse --show-toplevel)"
+
+# 現在のブランチ名を取得
+BRANCH_NAME=$(git branch --show-current)
+
+# mainブランチやdevelopブランチへの直接プッシュを防ぐ
+if [ "$BRANCH_NAME" = "main" ] || [ "$BRANCH_NAME" = "develop" ]; then
+    echo "❌ 直接mainまたはdevelopブランチにプッシュすることはできません。"
+    echo "   新しいブランチを作成して、そこからPRを送ってください。"
+    exit 1
+fi
+
+# ブランチ名チェックスクリプトを実行
+"$GIT_ROOT/scripts/check-branch-naming.sh" "$BRANCH_NAME"
+
+# 終了ステータスを返す
+exit $?

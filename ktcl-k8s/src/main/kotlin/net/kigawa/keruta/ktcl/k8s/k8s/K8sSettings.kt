@@ -10,18 +10,15 @@ data class K8sSettings(
     val jobTimeout: Long,
 ) {
     companion object {
-        fun fromEnvironment(): K8sSettings {
-            return K8sSettings(
-                namespace = getEnvOrProperty("K8S_NAMESPACE") ?: throw IllegalStateException(
-                    "K8S_NAMESPACE is required"
-                ),
-                useInCluster = getEnvOrProperty("K8S_USE_IN_CLUSTER")?.toBoolean() ?: true,
-                kubeConfigPath = getEnvOrProperty("K8S_KUBECONFIG_PATH"),
-                jobTimeout = getEnvOrProperty("K8S_JOB_TIMEOUT")?.toLongOrNull() ?: 600
-            )
-        }
+        fun fromEnvironment(): K8sSettings = K8sSettings(
+            namespace = getEnvOrProperty("K8S_NAMESPACE") ?: throw IllegalStateException(
+                "K8S_NAMESPACE is required",
+            ),
+            useInCluster = getEnvOrProperty("K8S_USE_IN_CLUSTER")?.toBoolean() ?: true,
+            kubeConfigPath = getEnvOrProperty("K8S_KUBECONFIG_PATH"),
+            jobTimeout = getEnvOrProperty("K8S_JOB_TIMEOUT")?.toLongOrNull() ?: 600,
+        )
 
-        private fun getEnvOrProperty(name: String): String? =
-            System.getenv(name) ?: System.getProperty(name)
+        private fun getEnvOrProperty(name: String): String? = System.getenv(name) ?: System.getProperty(name)
     }
 }

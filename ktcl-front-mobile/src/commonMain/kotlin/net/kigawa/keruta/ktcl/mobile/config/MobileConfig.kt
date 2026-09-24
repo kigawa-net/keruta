@@ -9,15 +9,13 @@ data class MobileConfig(
     val ktseAudience: String,
 ) {
     companion object {
-        fun default(): MobileConfig {
-            return MobileConfig(
-                websocketUrl = "wss://ktse-dev.kigawa.net/ws/ktcp",
-                keycloakUrl = "https://user.kigawa.net/",
-                keycloakRealm = "develop",
-                keycloakClientId = "keruta",
-                apiBaseUrl = "https://keruta-dev.kigawa.net/",
-                ktseAudience = "keruta",
-            )
-        }
+        fun default(): MobileConfig = MobileConfig(
+            websocketUrl = "wss://ktse-dev.kigawa.net/ws/ktcp",
+            keycloakUrl = "https://user.kigawa.net/",
+            keycloakRealm = "develop",
+            keycloakClientId = "keruta",
+            apiBaseUrl = "https://keruta-dev.kigawa.net/",
+            ktseAudience = "keruta",
+        )
     }
 }

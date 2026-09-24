@@ -8,7 +8,8 @@ import java.security.interfaces.RSAPublicKey
 class Auth0AlgorithmInitializer {
     fun initPrivateKey(keyPair: KeyPair): Algorithm = when (val k = keyPair.private) {
         is RSAPrivateKey -> Algorithm.RSA256(
-            keyPair.public as RSAPublicKey, k
+            keyPair.public as RSAPublicKey,
+            k,
         )
 
         else -> throw Exception("not supported")

@@ -25,8 +25,6 @@ enum class ClientMsgType(
     ;
 
     companion object {
-        fun fromString(decodeString: String): ClientMsgType {
-            return entries.single { it.str == decodeString }
-        }
+        fun fromString(decodeString: String): ClientMsgType = entries.single { it.str == decodeString }
     }
 }

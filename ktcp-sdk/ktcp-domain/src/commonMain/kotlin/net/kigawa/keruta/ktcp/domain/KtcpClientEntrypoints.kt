@@ -5,9 +5,9 @@ import net.kigawa.keruta.ktcp.domain.err.ClientGenericErrEntrypoint
 import net.kigawa.keruta.ktcp.domain.err.EntrypointNotFoundErr
 import net.kigawa.keruta.ktcp.domain.err.KtcpErr
 import net.kigawa.keruta.ktcp.domain.msg.client.ClientUnknownArg
-import net.kigawa.keruta.ktcp.domain.provider.add_token.ClientProviderAddTokenEntrypoint
+import net.kigawa.keruta.ktcp.domain.provider.addtoken.ClientProviderAddTokenEntrypoint
 import net.kigawa.keruta.ktcp.domain.provider.deleted.ClientProviderDeletedEntrypoint
-import net.kigawa.keruta.ktcp.domain.provider.idp_added.ClientProviderIdpAddedEntrypoint
+import net.kigawa.keruta.ktcp.domain.provider.idpadded.ClientProviderIdpAddedEntrypoint
 import net.kigawa.keruta.ktcp.domain.provider.listed.ClientProviderListedEntrypoint
 import net.kigawa.keruta.ktcp.domain.queue.created.ClientQueueCreatedEntrypoint
 import net.kigawa.keruta.ktcp.domain.queue.deleted.ClientQueueDeletedEntrypoint
@@ -46,32 +46,32 @@ class KtcpClientEntrypoints<C>(
     taskMovedEntrypoint: ClientTaskMovedEntrypoint<C>,
     taskListedEntrypoint: ClientTaskListedEntrypoint<C>,
     taskShowedEntrypoint: ClientTaskShowedEntrypoint<C>,
-): EntrypointGroupBase<ClientUnknownArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C>() {
+) : EntrypointGroupBase<ClientUnknownArg, EntrypointDeferred<Res<Unit, KtcpErr>>, C>() {
     val logger = LoggerFactory.get("net.kigawa.keruta.ktcp.model.KtcpClientEntrypoints")
     override val info: EntrypointInfo = EntrypointInfo(
         "ktcp-client",
         listOf(),
-        ""
+        "",
     )
     val genericError = add(
-        genericErrEntrypoint
+        genericErrEntrypoint,
     ) { input ->
         input.tryToGenericError()?.whenErrOk(
-            { EntrypointDeferred { Res.Err(it) } }
+            { EntrypointDeferred { Res.Err(it) } },
         ) {
             this(it)
         }
     }
     val authSuccess = add(authSuccessEntrypoint) { input ->
         input.tryToAuthSuccess()?.whenErrOk(
-            { EntrypointDeferred { Res.Err(it) } }
+            { EntrypointDeferred { Res.Err(it) } },
         ) {
             this(it)
         }
     }
     val providerList = add(providerListEntrypoint) { input ->
         input.tryToProviderList()?.whenErrOk(
-            { EntrypointDeferred { Res.Err(it) } }
+            { EntrypointDeferred { Res.Err(it) } },
         ) {
             this(it)
         }
@@ -79,7 +79,7 @@ class KtcpClientEntrypoints<C>(
 
     val providerAddToken = add(providerAddTokenEntrypoint) { input ->
         input.tryToProviderAddToken()?.whenErrOk(
-            { EntrypointDeferred { Res.Err(it) } }
+            { EntrypointDeferred { Res.Err(it) } },
         ) {
             this(it)
         }
@@ -87,7 +87,7 @@ class KtcpClientEntrypoints<C>(
 
     val providerIdpAdded = add(providerIdpAddedEntrypoint) { input ->
         input.tryToProviderIdpAdded()?.whenErrOk(
-            { EntrypointDeferred { Res.Err(it) } }
+            { EntrypointDeferred { Res.Err(it) } },
         ) {
             this(it)
         }
@@ -95,7 +95,7 @@ class KtcpClientEntrypoints<C>(
 
     val providerDeleted = add(providerDeletedEntrypoint) { input ->
         input.tryToProviderDeleted()?.whenErrOk(
-            { EntrypointDeferred { Res.Err(it) } }
+            { EntrypointDeferred { Res.Err(it) } },
         ) {
             this(it)
         }
@@ -103,70 +103,70 @@ class KtcpClientEntrypoints<C>(
 
     val queueCreated = add(queueCreatedEntrypoint) { input ->
         input.tryToQueueCreated()?.whenErrOk(
-            { EntrypointDeferred { Res.Err(it) } }
+            { EntrypointDeferred { Res.Err(it) } },
         ) {
             this(it)
         }
     }
     val queueListed = add(queueListedEntrypoint) { input ->
         input.tryToQueueListed()?.whenErrOk(
-            { EntrypointDeferred { Res.Err(it) } }
+            { EntrypointDeferred { Res.Err(it) } },
         ) {
             this(it)
         }
     }
     val queueShowed = add(queueShowedEntrypoint) { input ->
         input.tryToQueueShowed()?.whenErrOk(
-            { EntrypointDeferred { Res.Err(it) } }
+            { EntrypointDeferred { Res.Err(it) } },
         ) {
             this(it)
         }
     }
     val queueUpdated = add(queueUpdatedEntrypoint) { input ->
         input.tryToQueueUpdated()?.whenErrOk(
-            { EntrypointDeferred { Res.Err(it) } }
+            { EntrypointDeferred { Res.Err(it) } },
         ) {
             this(it)
         }
     }
     val queueDeleted = add(queueDeletedEntrypoint) { input ->
         input.tryToQueueDeleted()?.whenErrOk(
-            { EntrypointDeferred { Res.Err(it) } }
+            { EntrypointDeferred { Res.Err(it) } },
         ) {
             this(it)
         }
     }
     val taskCreated = add(taskCreatedEntrypoint) { input ->
         input.tryToTaskCreated()?.whenErrOk(
-            { EntrypointDeferred { Res.Err(it) } }
+            { EntrypointDeferred { Res.Err(it) } },
         ) {
             this(it)
         }
     }
     val taskUpdated = add(taskUpdatedEntrypoint) { input ->
         input.tryToTaskUpdated()?.whenErrOk(
-            { EntrypointDeferred { Res.Err(it) } }
+            { EntrypointDeferred { Res.Err(it) } },
         ) {
             this(it)
         }
     }
     val taskMoved = add(taskMovedEntrypoint) { input ->
         input.tryToTaskMoved()?.whenErrOk(
-            { EntrypointDeferred { Res.Err(it) } }
+            { EntrypointDeferred { Res.Err(it) } },
         ) {
             this(it)
         }
     }
     val taskShowed = add(taskShowedEntrypoint) { input ->
         input.tryToTaskShowed()?.whenErrOk(
-            { EntrypointDeferred { Res.Err(it) } }
+            { EntrypointDeferred { Res.Err(it) } },
         ) {
             this(it)
         }
     }
     val taskListed = add(taskListedEntrypoint) { input ->
         input.tryToTaskListed()?.whenErrOk(
-            { EntrypointDeferred { Res.Err(it) } }
+            { EntrypointDeferred { Res.Err(it) } },
         ) {
             this(it)
         }
@@ -181,11 +181,9 @@ class KtcpClientEntrypoints<C>(
             Res.Err(
                 EntrypointNotFoundErr(
                     "No entrypoint found for message type: $input",
-                    null
-                )
+                    null,
+                ),
             )
         }
     }
-
-
 }

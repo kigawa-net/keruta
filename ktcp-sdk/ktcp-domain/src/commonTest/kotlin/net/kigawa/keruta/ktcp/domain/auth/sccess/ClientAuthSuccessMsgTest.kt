@@ -10,7 +10,7 @@ class ClientAuthSuccessMsgTest {
     fun testCreateClientAuthSuccessMsg() {
         // Arrange & Act
         val msg = ClientAuthSuccessMsg(
-            type = ServerMsgType.AUTH_SUCCESS
+            type = ServerMsgType.AUTH_SUCCESS,
         )
 
         // Assert
@@ -31,7 +31,7 @@ class ClientAuthSuccessMsgTest {
         // Arrange & Act & Assert
         assertFailsWith<IllegalArgumentException> {
             ClientAuthSuccessMsg(
-                type = ServerMsgType.TASK_CREATE
+                type = ServerMsgType.TASK_CREATE,
             )
         }
     }
@@ -41,7 +41,7 @@ class ClientAuthSuccessMsgTest {
         // Arrange & Act & Assert
         assertFailsWith<IllegalArgumentException> {
             ClientAuthSuccessMsg(
-                type = ServerMsgType.GENERIC_ERROR
+                type = ServerMsgType.GENERIC_ERROR,
             )
         }
     }

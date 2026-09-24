@@ -6,7 +6,7 @@ import net.kigawa.keruta.ktse.persist.db.table.ProviderTable
 import net.kigawa.kodel.api.dump.Dumper
 import net.kigawa.kodel.api.dump.withStr
 import net.kigawa.kodel.api.net.Url
-import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.v1.core.ResultRow
 
 data class IdpData(val issuer: String, val subject: String, val audience: String)
 

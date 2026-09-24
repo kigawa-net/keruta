@@ -10,9 +10,10 @@ import net.kigawa.keruta.ktcp.server.err.UnauthenticatedErr
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.err.Res
 
-class ReceiveTaskCreateEntrypoint: ServerTaskCreateEntrypoint<ServerCtx> {
+class ReceiveTaskCreateEntrypoint : ServerTaskCreateEntrypoint<ServerCtx> {
     override fun access(
-        input: ServerTaskCreateMsg, ctx: ServerCtx,
+        input: ServerTaskCreateMsg,
+        ctx: ServerCtx,
     ): EntrypointDeferred<Res<Unit, KtcpErr>> = EntrypointDeferred {
         val session = ctx.session.authenticated()
             ?: return@EntrypointDeferred Res.Err(UnauthenticatedErr("", null))
@@ -25,7 +26,8 @@ class ReceiveTaskCreateEntrypoint: ServerTaskCreateEntrypoint<ServerCtx> {
         ctx.server.clientEntrypoints.taskCreated.access(
             ClientTaskCreatedMsg(
                 id = task.id,
-            ), ctx
+            ),
+            ctx,
         )?.execute() ?: Res.Err(ResponseErr("", null))
     }
 }

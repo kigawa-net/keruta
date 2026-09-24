@@ -15,12 +15,16 @@ interface VerifyTablesPersister {
     fun getVerifyTables(unverifiedTokens: UnverifiedAuthTokens): Res<PersistedVerifyTables, KtcpErr>?
     fun createVerifyTables(token: VerifiedAuthToken, providerName: String): Res<PersistedVerifyTables, KtcpErr>
     fun getUserTables(
-        issuer: Url, subject: String,
+        issuer: Url,
+        subject: String,
     ): Res<Pair<PersistedUser, PersistedUserIdp>, KtcpErr>
 
     fun saveProviderForUser(
-        user: PersistedUser, providerToken: VerifiedToken, ktclAudience: KtclAudience,
+        user: PersistedUser,
+        providerToken: VerifiedToken,
+        ktclAudience: KtclAudience,
         userAudience: String,
-        providerName: String, userIssuer: UserIssuer,
+        providerName: String,
+        userIssuer: UserIssuer,
     ): Res<PersistedProvider, KtcpErr>
 }

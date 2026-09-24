@@ -3,9 +3,9 @@ package net.kigawa.keruta.ktcp.domain.err
 abstract class KtcpErr(
     message: String?,
     cause: Exception?,
-): Exception(
+) : Exception(
     message,
-    cause
+    cause,
 ) {
     abstract val code: String
 }

@@ -8,8 +8,8 @@ import kotlin.test.assertTrue
  * KTCL-K8s e2e接続テスト
  * KTSEサーバーが起動している必要がある
  */
-class KtclK8sConnectionTest: KtclK8sE2eTestBase() {
-    
+class KtclK8sConnectionTest : KtclK8sE2eTestBase() {
+
     @Test
     fun `KTSEサーバーに接続できる`() = runBlocking {
         val client = KtclK8sWebSocketClient()

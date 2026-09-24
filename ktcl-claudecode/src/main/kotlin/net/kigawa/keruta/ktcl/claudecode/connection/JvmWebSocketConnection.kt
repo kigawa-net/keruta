@@ -12,15 +12,13 @@ class JvmWebSocketConnection(
         session.send(Frame.Text(msg))
     }
 
-    suspend fun receive(): String? {
-        return try {
-            when (val frame = session.incoming.receive()) {
-                is Frame.Text -> frame.readText()
-                else -> null
-            }
-        } catch (_: ClosedReceiveChannelException) {
-            null
+    suspend fun receive(): String? = try {
+        when (val frame = session.incoming.receive()) {
+            is Frame.Text -> frame.readText()
+            else -> null
         }
+    } catch (_: ClosedReceiveChannelException) {
+        null
     }
 
     suspend fun close() {

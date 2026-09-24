@@ -11,14 +11,15 @@ import net.kigawa.keruta.ktse.persist.db.table.UserIdpTable
 import net.kigawa.keruta.ktse.persist.model.ExposedPersistedProvider
 import net.kigawa.keruta.ktse.persist.model.IdpData
 import net.kigawa.kodel.api.err.Res
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.Transaction
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.v1.core.and
+import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.jdbc.JdbcTransaction
+import org.jetbrains.exposed.v1.jdbc.deleteWhere
+import org.jetbrains.exposed.v1.jdbc.selectAll
 
+@Suppress("DEPRECATION")
 class DbProviderPersisterDsl(
-    val transaction: Transaction,
+    private val transaction: JdbcTransaction,
 ) {
 
     fun getAll(user: PersistedUser): Res<List<PersistedProvider>, KtcpErr> = Res.Ok(

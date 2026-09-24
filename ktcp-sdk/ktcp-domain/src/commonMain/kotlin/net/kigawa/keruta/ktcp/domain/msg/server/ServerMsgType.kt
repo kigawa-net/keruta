@@ -6,7 +6,7 @@ import net.kigawa.keruta.ktcp.domain.msg.MsgType
 @Serializable(ServerMsgTypeSerializer::class)
 enum class ServerMsgType(
     val str: String,
-): MsgType {
+) : MsgType {
     GENERIC_ERROR("generic_error"),
     AUTH_REQUEST("auth_request"),
     AUTH_SUCCESS("auth_success"),
@@ -29,9 +29,7 @@ enum class ServerMsgType(
     ;
 
     companion object {
-        fun fromString(decodeString: String): ServerMsgType {
-            return entries.singleOrNull { it.str == decodeString }
-                ?: throw IllegalArgumentException("unknown msg type $decodeString")
-        }
+        fun fromString(decodeString: String): ServerMsgType = entries.singleOrNull { it.str == decodeString }
+            ?: throw IllegalArgumentException("unknown msg type $decodeString")
     }
 }

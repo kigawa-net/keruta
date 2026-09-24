@@ -13,7 +13,5 @@ class ProviderTokenCreator(
     private val ktclAudience: KtclAudience,
     private val tokenCreator: JwtTokenCreator,
 ) {
-    fun create(userSubject: UserSubject): CreatedKtclToken =
-        CreatedKtclToken(tokenCreator.create(privateKey, ktclIssuer, ktclAudience, userSubject))
-
+    fun create(userSubject: UserSubject): CreatedKtclToken = CreatedKtclToken(tokenCreator.create(privateKey, ktclIssuer, ktclAudience, userSubject))
 }

@@ -9,9 +9,9 @@ import net.kigawa.keruta.ktcp.domain.err.KtcpErr
 import net.kigawa.keruta.ktcp.domain.msg.client.ClientMsgType
 import net.kigawa.keruta.ktcp.domain.msg.client.ClientUnknownArg
 import net.kigawa.keruta.ktcp.domain.msg.server.ServerMsgType
-import net.kigawa.keruta.ktcp.domain.provider.add_token.ClientProviderAddTokenMsg
+import net.kigawa.keruta.ktcp.domain.provider.addtoken.ClientProviderAddTokenMsg
 import net.kigawa.keruta.ktcp.domain.provider.deleted.ClientProviderDeletedMsg
-import net.kigawa.keruta.ktcp.domain.provider.idp_added.ClientProviderIdpAddedMsg
+import net.kigawa.keruta.ktcp.domain.provider.idpadded.ClientProviderIdpAddedMsg
 import net.kigawa.keruta.ktcp.domain.provider.listed.ClientProviderListedMsg
 import net.kigawa.keruta.ktcp.domain.queue.created.ClientQueueCreatedMsg
 import net.kigawa.keruta.ktcp.domain.queue.deleted.ClientQueueDeletedMsg
@@ -31,7 +31,7 @@ class ReceiveClientUnknownArg(
     private val typeStr: String,
     private val serializer: KerutaSerializer,
     private val text: String,
-): ClientUnknownArg {
+) : ClientUnknownArg {
 
     override fun tryToGenericError(): Res<GenericErrMsg, KtcpErr>? {
         if (typeStr != ClientMsgType.GENERIC_ERROR.str) return null

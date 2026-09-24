@@ -18,5 +18,4 @@ data class GenericErrMsg(
     init {
         require(type == ServerMsgType.GENERIC_ERROR) { "invalid type: ${type.name}" }
     }
-
 }

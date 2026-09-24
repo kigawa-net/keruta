@@ -16,7 +16,7 @@ object K8sClientFactory {
             val kubeConfigPath = config.k8sKubeConfigPath
                 ?: "${System.getProperty("user.home")}/.kube/config"
             ClientBuilder.kubeconfig(
-                KubeConfig.loadKubeConfig(FileReader(kubeConfigPath))
+                KubeConfig.loadKubeConfig(FileReader(kubeConfigPath)),
             ).build()
         }
 

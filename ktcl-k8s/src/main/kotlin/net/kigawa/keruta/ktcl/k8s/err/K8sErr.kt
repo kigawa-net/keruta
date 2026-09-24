@@ -12,5 +12,4 @@ sealed class K8sErr(message: String, cause: Throwable?) : KtcpErr(message, cause
     class JobWatchErr(message: String, cause: Throwable?) : K8sErr(message, cause) {
         override val code = "JOB_WATCH_ERR"
     }
-
 }

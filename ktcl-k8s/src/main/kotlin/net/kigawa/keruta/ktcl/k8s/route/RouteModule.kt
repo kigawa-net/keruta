@@ -7,6 +7,7 @@ import net.kigawa.keruta.ktcl.k8s.auth.AuthenticationHelper
 import net.kigawa.keruta.ktcl.k8s.auth.OidcDiscoveryFetcher
 import net.kigawa.keruta.ktcl.k8s.auth.PkceGenerator
 import net.kigawa.keruta.ktcl.k8s.config.AppConfig
+import net.kigawa.keruta.ktcl.k8s.kicp.KicpFactory
 import net.kigawa.keruta.ktcl.k8s.login.*
 import net.kigawa.keruta.ktcl.k8s.persist.DbModule
 import net.kigawa.keruta.ktcp.base.auth.jwks.JwksProvider
@@ -27,19 +28,28 @@ class RouteModule(
     private val auth0AlgorithmInitializer = Auth0AlgorithmInitializer()
 
     fun configure(
-        application: Application, appConfig: AppConfig, providerTokenCreator: ProviderTokenCreator,
+        application: Application,
+        appConfig: AppConfig,
+        providerTokenCreator: ProviderTokenCreator,
         javaKeyPairInitializer: JavaKeyPairInitializer,
     ) {
         val providerRegistrationClient = ProviderRegistrationClient(
-            appConfig.ktse, providerTokenCreator
+            appConfig.ktse,
+            providerTokenCreator,
         )
         val oidcConfigProvider = OidcConfigProvider(httpClient)
         val jwksProvider = JwksProvider()
         val auth0JwtVerifier = Auth0JwtVerifier(
-            oidcConfigProvider, jwksProvider, auth0AlgorithmInitializer, javaKeyPairInitializer
+            oidcConfigProvider,
+            jwksProvider,
+            auth0AlgorithmInitializer,
+            javaKeyPairInitializer,
         )
         val loginCallbackRoute = LoginCallbackRoute(
-            oidcDiscoveryFetcher, userTokenDao, providerRegistrationClient, auth0JwtVerifier
+            oidcDiscoveryFetcher,
+            userTokenDao,
+            providerRegistrationClient,
+            auth0JwtVerifier,
         )
         val idpConfig = appConfig.idp
         val authConfig = appConfig.auth
@@ -49,15 +59,25 @@ class RouteModule(
         val staticRoutes = StaticRoutes(authenticationHelper, userTokenDao, dbModule.userClaudeConfigDao, providerListClient)
         val configRoutes = ConfigRoutes(
             appConfig,
-            authConfig.privateKey, dbModule.userClaudeConfigDao, userTokenDao,
-            javaKeyPairInitializer, authenticationHelper,
-            providerListClient
+            authConfig.privateKey,
+            dbModule.userClaudeConfigDao,
+            userTokenDao,
+            javaKeyPairInitializer,
+            authenticationHelper,
+            providerListClient,
         )
         val kerutaEndpoints = KerutaEndpoints(appConfig.keruta)
         val loginRoute = LoginRoute(
-            oidcDiscoveryFetcher, pkceGenerator, idpConfig, kerutaEndpoints
+            oidcDiscoveryFetcher,
+            pkceGenerator,
+            idpConfig,
+            kerutaEndpoints,
         )
         val tokenRoute = TokenRoute(oidcDiscoveryFetcher, idpConfig)
+
+        val kicpHttpClient = KicpFactory.createHttpClient()
+        val kicpRegisterUseCase = KicpFactory.createRegisterUseCase(kicpHttpClient, appConfig.ktse.baseUrl)
+        val kicpRoutes = KicpRoutes(kicpRegisterUseCase)
 
         application.routing {
             configRoutes.configureConfigRoutes(this)
@@ -65,6 +85,7 @@ class RouteModule(
             loginRoute.configure(this)
             tokenRoute.configure(this)
             loginCallbackRoute.configure(this)
+            kicpRoutes.configure(this)
         }
     }
 }

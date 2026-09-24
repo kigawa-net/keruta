@@ -53,14 +53,12 @@ class TaskExecutor(
         status: String,
         ctx: ClientCtx,
         log: String? = null,
-    ): Res<Unit, KtcpErr> {
-        return ktcpClient.ktcpServerEntrypoints.taskUpdateEntrypoint.access(
-            ServerTaskUpdateMsg(
-                taskId = taskId,
-                status = status,
-                log = log,
-            ),
-            ctx
-        )?.execute() ?: Res.Err(ClaudeApiErr("TaskUpdate entrypoint not found", null))
-    }
+    ): Res<Unit, KtcpErr> = ktcpClient.ktcpServerEntrypoints.taskUpdateEntrypoint.access(
+        ServerTaskUpdateMsg(
+            taskId = taskId,
+            status = status,
+            log = log,
+        ),
+        ctx,
+    )?.execute() ?: Res.Err(ClaudeApiErr("TaskUpdate entrypoint not found", null))
 }

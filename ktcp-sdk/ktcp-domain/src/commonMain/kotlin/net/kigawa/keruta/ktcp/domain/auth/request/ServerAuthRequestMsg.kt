@@ -13,7 +13,7 @@ data class ServerAuthRequestMsg(
     val userToken: AuthToken,
     override val type: ServerMsgType = ServerMsgType.AUTH_REQUEST,
     val serverToken: String,
-): ServerMsg {
+) : ServerMsg {
     init {
         require(type == ServerMsgType.AUTH_REQUEST)
     }

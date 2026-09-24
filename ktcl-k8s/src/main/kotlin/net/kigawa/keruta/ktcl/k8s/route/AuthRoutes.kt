@@ -33,10 +33,9 @@ class AuthRoutes(
                         "userSubject" to user.userSubject,
                         "userIssuer" to user.userIssuer,
                         "userAudience" to user.userAudience,
-                    )
+                    ),
                 )
             }
         }
     }
 }
-

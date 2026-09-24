@@ -1,0 +1,18 @@
+#!/bin/bash
+# pre-commit hook template: ブランチ名の規約チェック
+# 使用方法: このファイルを .git/hooks/pre-commit にコピーするか、
+# プロジェクトセットアップ時に以下を実行:
+#   cp scripts/hooks/pre-commit.template .git/hooks/pre-commit
+#   chmod +x .git/hooks/pre-commit
+
+# プロジェクトルートを取得
+GIT_ROOT="$(git rev-parse --show-toplevel)"
+
+# 現在のブランチ名を取得
+BRANCH_NAME=$(git branch --show-current)
+
+# ブランチ名チェックスクリプトを実行
+"$GIT_ROOT/scripts/check-branch-naming.sh" "$BRANCH_NAME"
+
+# 終了ステータスを返す
+exit $?

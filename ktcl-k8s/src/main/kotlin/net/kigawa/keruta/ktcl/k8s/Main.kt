@@ -21,6 +21,6 @@ object Main {
     @JvmStatic
     fun main(args: Array<String>) {
         // EngineMainを使用してKtorサーバーを起動
-        io.ktor.server.netty.EngineMain.main(args)
+        io.ktor.server.cio.EngineMain.main(args)
     }
 }

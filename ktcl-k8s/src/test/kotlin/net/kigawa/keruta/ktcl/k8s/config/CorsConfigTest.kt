@@ -47,7 +47,7 @@ class CorsConfigTest {
         // Then
         assertEquals(
             listOf("https://example.com", "http://localhost:3000"),
-            config.allowedOrigins
+            config.allowedOrigins,
         )
     }
 
@@ -62,7 +62,7 @@ class CorsConfigTest {
         // Then
         assertEquals(
             listOf("https://example.com", "http://localhost:3000"),
-            config.allowedOrigins
+            config.allowedOrigins,
         )
     }
 
@@ -77,7 +77,7 @@ class CorsConfigTest {
         // Then
         assertEquals(
             listOf("https://example.com", "http://localhost:3000"),
-            config.allowedOrigins
+            config.allowedOrigins,
         )
     }
 
@@ -92,7 +92,7 @@ class CorsConfigTest {
         // Then
         assertEquals(
             listOf("http://localhost:3000", "http://127.0.0.1:8080"),
-            config.allowedOrigins
+            config.allowedOrigins,
         )
     }
 
@@ -107,7 +107,7 @@ class CorsConfigTest {
         // Then
         assertEquals(
             listOf("https://prod.example.com", "http://dev.example.com:3000"),
-            config.allowedOrigins
+            config.allowedOrigins,
         )
     }
 

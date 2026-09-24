@@ -7,5 +7,5 @@ enum class ServerErrCode {
     RESPONSE_ERR,
     UNAUTHENTICATED,
     MULTIPLE_RECORD,
-    NO_SINGLE_RECORD
+    NO_SINGLE_RECORD,
 }

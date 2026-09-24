@@ -7,15 +7,14 @@ import net.kigawa.keruta.ktcp.server.ServerCtx
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.err.Res
 
-class SendProviderListedEntrypoint: ClientProviderListedEntrypoint<ServerCtx> {
+class SendProviderListedEntrypoint : ClientProviderListedEntrypoint<ServerCtx> {
     override fun access(
-        input: ClientProviderListedMsg, ctx: ServerCtx,
-    ): EntrypointDeferred<Res<Unit, Nothing>> {
-        return EntrypointDeferred {
-            ctx.connection.send(
-                ctx.serializer.serialize(input)
-            )
-            Res.Ok(Unit)
-        }
+        input: ClientProviderListedMsg,
+        ctx: ServerCtx,
+    ): EntrypointDeferred<Res<Unit, Nothing>> = EntrypointDeferred {
+        ctx.connection.send(
+            ctx.serializer.serialize(input),
+        )
+        Res.Ok(Unit)
     }
 }

@@ -9,7 +9,7 @@ data class ClientTaskMovedMsg(
     override val type: ClientMsgType = ClientMsgType.TASK_MOVED,
     val taskId: Long,
     val queueId: Long,
-): ClientMsg {
+) : ClientMsg {
     init {
         require(type == ClientMsgType.TASK_MOVED) { "type must be TASK_MOVED" }
     }

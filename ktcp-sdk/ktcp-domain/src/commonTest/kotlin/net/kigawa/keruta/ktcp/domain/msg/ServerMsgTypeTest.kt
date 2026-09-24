@@ -76,5 +76,4 @@ class ServerMsgTypeTest {
         assertEquals("task_create", ServerMsgType.TASK_CREATE.str)
         assertEquals("provider_list", ServerMsgType.PROVIDER_LIST.str)
     }
-
 }

@@ -19,14 +19,12 @@ import net.kigawa.keruta.ktcp.domain.auth.jwt.JwtVerifier as KtcpJwtVerifier
 class JwtVerifier(
     val keycloakConfig: KeycloakConfig,
     private val auth0JwtVerifier: Auth0JwtVerifier,
-): KtcpJwtVerifier {
+) : KtcpJwtVerifier {
     private val logger = LoggerFactory.get("JwtVerifier")
 
-    override fun createToken(jwtVerifyValues: JwtVerifyValues): Res<AuthToken, KtcpErr> =
-        Res.Err(VerifyErr("not_supported", "Token creation is not supported in web JwtVerifier", null))
+    override fun createToken(jwtVerifyValues: JwtVerifyValues): Res<AuthToken, KtcpErr> = Res.Err(VerifyErr("not_supported", "Token creation is not supported in web JwtVerifier", null))
 
-    override fun decodeUnverified(userToken: AuthToken): Res<UnverifiedToken, VerifyErr> =
-        auth0JwtVerifier.decodeUnverified(userToken)
+    override fun decodeUnverified(userToken: AuthToken): Res<UnverifiedToken, VerifyErr> = auth0JwtVerifier.decodeUnverified(userToken)
 
     fun verify(token: String): String? {
         val verifyValues = JwtVerifyValues(
@@ -58,27 +56,25 @@ class JwtVerifier(
         issuer: String,
         clientId: String,
         nonce: String?,
-    ): DecodedJWT? {
-        return try {
-            val jwt = JWT.decode(idToken)
-            val jwk = jwkProvider.get(jwt.keyId)
-            val publicKey = jwk.publicKey as RSAPublicKey
-            val algorithm = Algorithm.RSA256(publicKey, null)
+    ): DecodedJWT? = try {
+        val jwt = JWT.decode(idToken)
+        val jwk = jwkProvider.get(jwt.keyId)
+        val publicKey = jwk.publicKey as RSAPublicKey
+        val algorithm = Algorithm.RSA256(publicKey, null)
 
-            val verifier = JWT.require(algorithm)
-                .withIssuer(issuer)
-                .withAudience(clientId)
-                .apply {
-                    if (nonce != null) {
-                        withClaim("nonce", nonce)
-                    }
+        val verifier = JWT.require(algorithm)
+            .withIssuer(issuer)
+            .withAudience(clientId)
+            .apply {
+                if (nonce != null) {
+                    withClaim("nonce", nonce)
                 }
-                .build()
+            }
+            .build()
 
-            verifier.verify(idToken)
-        } catch (e: Exception) {
-            logger.severe("ID token verification failed: ${e.message}")
-            null
-        }
+        verifier.verify(idToken)
+    } catch (e: Exception) {
+        logger.severe("ID token verification failed: ${e.message}")
+        null
     }
 }

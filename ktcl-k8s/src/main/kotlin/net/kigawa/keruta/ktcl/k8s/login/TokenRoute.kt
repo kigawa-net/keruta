@@ -10,8 +10,8 @@ import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import net.kigawa.keruta.ktcl.k8s.config.IdpConfig
 import net.kigawa.keruta.ktcl.k8s.auth.OidcDiscoveryFetcher
+import net.kigawa.keruta.ktcl.k8s.config.IdpConfig
 import net.kigawa.kodel.api.log.LoggerFactory
 
 /**
@@ -21,7 +21,7 @@ import net.kigawa.kodel.api.log.LoggerFactory
  */
 class TokenRoute(
     private val oidcDiscoveryFetcher: OidcDiscoveryFetcher,
-    val idpConfig: IdpConfig
+    val idpConfig: IdpConfig,
 ) {
     private val logger = LoggerFactory.get("TokenRoute")
 
@@ -38,7 +38,7 @@ class TokenRoute(
             if (grantType != "authorization_code") {
                 call.respond(
                     HttpStatusCode.BadRequest,
-                    mapOf("error" to "unsupported_grant_type", "error_description" to "Only authorization_code is supported")
+                    mapOf("error" to "unsupported_grant_type", "error_description" to "Only authorization_code is supported"),
                 )
                 return@post
             }
@@ -46,7 +46,7 @@ class TokenRoute(
             if (code == null || redirectUri == null || clientId == null) {
                 call.respond(
                     HttpStatusCode.BadRequest,
-                    mapOf("error" to "invalid_request", "error_description" to "Missing required parameters")
+                    mapOf("error" to "invalid_request", "error_description" to "Missing required parameters"),
                 )
                 return@post
             }
@@ -62,7 +62,7 @@ class TokenRoute(
                     tokenEndpoint = tokenEndpoint,
                     code = code,
                     redirectUri = redirectUri,
-                    clientId = clientId
+                    clientId = clientId,
                 )
 
                 call.respondText(tokenResponse, ContentType.Application.Json)
@@ -70,7 +70,7 @@ class TokenRoute(
                 logger.severe("Token exchange failed: ${e.message}")
                 call.respond(
                     HttpStatusCode.InternalServerError,
-                    mapOf("error" to "server_error", "error_description" to e.message)
+                    mapOf("error" to "server_error", "error_description" to e.message),
                 )
             }
         }
@@ -80,7 +80,7 @@ class TokenRoute(
         tokenEndpoint: String,
         code: String,
         redirectUri: String,
-        clientId: String
+        clientId: String,
     ): String {
         val client = HttpClient(CIO) {
             install(ContentNegotiation) {
@@ -96,7 +96,7 @@ class TokenRoute(
                     append("code", code)
                     append("redirect_uri", redirectUri)
                     append("client_id", clientId)
-                }
+                },
             )
             response.body<String>()
         }

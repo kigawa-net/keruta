@@ -20,19 +20,22 @@ class Auth0JwtVerifier(
     val jwksProvider: JwksProvider,
     val auth0AlgorithmInitializer: Auth0AlgorithmInitializer = Auth0AlgorithmInitializer(),
     private val javaKeyPairInitializer: JavaKeyPairInitializer,
-): JwtVerifier {
+) : JwtVerifier {
 
-    override fun createToken(jwtVerifyValues: JwtVerifyValues): Res<AuthToken, KtcpErr> =
-        Res.Err(VerifyFailErr("Token creation is not supported in Auth0JwtVerifier", null))
+    override fun createToken(jwtVerifyValues: JwtVerifyValues): Res<AuthToken, KtcpErr> = Res.Err(VerifyFailErr("Token creation is not supported in Auth0JwtVerifier", null))
 
     override fun decodeUnverified(
         userToken: AuthToken,
     ): Res<UnverifiedToken, VerifyErr> = try {
         Res.Ok(
             Auth0UnverifiedToken(
-                JWT.decode(userToken), userToken,
-                oidcConfigProvider, jwksProvider, auth0AlgorithmInitializer, javaKeyPairInitializer
-            )
+                JWT.decode(userToken),
+                userToken,
+                oidcConfigProvider,
+                jwksProvider,
+                auth0AlgorithmInitializer,
+                javaKeyPairInitializer,
+            ),
         )
     } catch (e: Exception) {
         Res.Err(VerifyFailErr("decode", e))

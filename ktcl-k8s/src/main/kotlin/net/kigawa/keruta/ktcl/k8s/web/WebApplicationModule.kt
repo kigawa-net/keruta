@@ -38,12 +38,19 @@ class WebApplicationModule {
         val javaKeyPairInitializer = JavaKeyPairInitializer()
         val auth0JwtTokenCreator = Auth0JwtTokenCreator(javaKeyPairInitializer)
         val providerTokenCreator = ProviderTokenCreator(
-            appConfig.auth.privateKey, appConfig.keruta.ownIssuer, appConfig.ktse.providerAudience,
-            auth0JwtTokenCreator
+            appConfig.auth.privateKey,
+            appConfig.keruta.ownIssuer,
+            appConfig.ktse.providerAudience,
+            auth0JwtTokenCreator,
         )
         k8sModule.configure(
-            application, dbModule.userTokenDao, dbModule.userClaudeConfigDao, appConfig.idp, oidcDiscoveryFetcher,
-            providerTokenCreator, appConfig.keruta.ownIssuer
+            application,
+            dbModule.userTokenDao,
+            dbModule.userClaudeConfigDao,
+            appConfig.idp,
+            oidcDiscoveryFetcher,
+            providerTokenCreator,
+            appConfig.keruta.ownIssuer,
         )
         serializeModule.configure(application)
         authModule.configure(application)
@@ -53,7 +60,6 @@ class WebApplicationModule {
         logger.info("ktcl-k8s Web Module started successfully")
     }
 
-
     private fun configureErrorHandling(application: Application) {
         application.install(StatusPages) {
             exception<Throwable> { call, cause ->
@@ -61,11 +67,9 @@ class WebApplicationModule {
                 errorLogger.severe("Unhandled error: ${cause.message}")
                 call.respond(
                     HttpStatusCode.InternalServerError,
-                    ErrorResponse("Internal Server Error", cause.message ?: "Unknown error")
+                    ErrorResponse("Internal Server Error", cause.message ?: "Unknown error"),
                 )
             }
         }
     }
-
-
 }

@@ -6,16 +6,16 @@ import net.kigawa.keruta.ktcp.server.auth.VerifyTablesPersister
 import net.kigawa.keruta.ktse.KtseConfig
 import net.kigawa.keruta.ktse.persist.accessor.ExposedVerifyTablesPersister
 import net.kigawa.keruta.ktse.persist.db.dsl.DbPersisterDsl
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.v1.jdbc.Database
+import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 class DbPersister(
     ktseConfig: KtseConfig,
 ) {
 
     fun <R> execTransaction(block: (DbPersisterDsl) -> R): R {
-        return transaction(db = db) {
-            val dsl = DbPersisterDsl(this@transaction)
+        return transaction {
+            val dsl = DbPersisterDsl(this)
             val res = block(dsl)
             res
         }

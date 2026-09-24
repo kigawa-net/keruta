@@ -10,12 +10,11 @@ class AuthenticatedSession(
     val persisterSession: AuthenticatedPersisterSession,
     val session: KtcpSession,
 ) {
-    fun createProviderRegisterToken(): Res<AuthToken, KtcpErr> =
-        session.server.jwtVerifier.createToken(
-            JwtVerifyValues(
-                persisterSession.verifyTables.userIdp.issuer,
-                "provider_register",
-                persisterSession.verifyTables.userIdp.subject
-            )
-        )
+    fun createProviderRegisterToken(): Res<AuthToken, KtcpErr> = session.server.jwtVerifier.createToken(
+        JwtVerifyValues(
+            persisterSession.verifyTables.userIdp.issuer,
+            "provider_register",
+            persisterSession.verifyTables.userIdp.subject,
+        ),
+    )
 }

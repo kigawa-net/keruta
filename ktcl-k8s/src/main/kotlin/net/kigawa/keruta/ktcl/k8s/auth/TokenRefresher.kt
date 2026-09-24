@@ -38,7 +38,7 @@ class TokenRefresher(
                     append("grant_type", "refresh_token")
                     append("refresh_token", refreshToken)
                     append("client_id", idpConfig.clientId)
-                }
+                },
             )
             if (!response.status.isSuccess()) {
                 val errorBody = response.bodyAsText()

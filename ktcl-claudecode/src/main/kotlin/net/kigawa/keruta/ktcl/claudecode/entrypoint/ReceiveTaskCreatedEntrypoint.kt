@@ -25,7 +25,7 @@ class ReceiveTaskCreatedEntrypoint(
         // タスク詳細を取得
         ktcpClient.ktcpServerEntrypoints.taskShow.access(
             ServerTaskShowMsg(queueId = queueId, id = input.id),
-            ctx
+            ctx,
         )?.execute() ?: Res.Ok(Unit)
     }
 }

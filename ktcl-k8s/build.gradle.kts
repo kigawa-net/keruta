@@ -21,6 +21,10 @@ dependencies {
     implementation(project(":ktcp-sdk:ktcp-infra-client"))
     implementation(project(":kodel:api"))
 
+    // KICP（idServerB実装）
+    implementation(project(":kicp:kicp-domain"))
+    implementation(project(":kicp:kicp-usecase"))
+
     // Ktor WebSocket Client
     implementation("io.ktor:ktor-client-core:${Version.KTOR}")
     implementation("io.ktor:ktor-client-cio:${Version.KTOR}")
@@ -29,14 +33,15 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:${Version.KTOR}")
 
     // Ktor Server
-    implementation("io.ktor:ktor-server-core:${Version.KTOR}")
-    implementation("io.ktor:ktor-server-netty:${Version.KTOR}")
+    implementation("io.ktor:ktor-server-core-jvm:${Version.KTOR}")
+    implementation("io.ktor:ktor-server-cio:${Version.KTOR}")
     implementation("io.ktor:ktor-server-sessions:${Version.KTOR}")
     implementation("io.ktor:ktor-server-auth:${Version.KTOR}")
     implementation("io.ktor:ktor-server-content-negotiation:${Version.KTOR}")
     implementation("io.ktor:ktor-server-cors:${Version.KTOR}")
     implementation("io.ktor:ktor-server-status-pages:${Version.KTOR}")
     implementation("io.ktor:ktor-server-config-yaml:${Version.KTOR}")
+    implementation("ch.qos.logback:logback-classic:${Version.LOGBACK}")
 
     // Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Version.KOTLINX_SERIALIZATION}")

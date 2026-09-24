@@ -1,9 +1,9 @@
 package net.kigawa.keruta.ktcl.mobile.storage
 
 import android.content.Context
+import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import androidx.core.content.edit
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual class SecureStorage {
@@ -29,25 +29,19 @@ actual class SecureStorage {
         sharedPreferences.edit { putString(KEY_USER_TOKEN, token) }
     }
 
-    actual suspend fun getUserToken(): String? {
-        return sharedPreferences.getString(KEY_USER_TOKEN, null)
-    }
+    actual suspend fun getUserToken(): String? = sharedPreferences.getString(KEY_USER_TOKEN, null)
 
     actual suspend fun saveServerToken(token: String) {
         sharedPreferences.edit { putString(KEY_SERVER_TOKEN, token) }
     }
 
-    actual suspend fun getServerToken(): String? {
-        return sharedPreferences.getString(KEY_SERVER_TOKEN, null)
-    }
+    actual suspend fun getServerToken(): String? = sharedPreferences.getString(KEY_SERVER_TOKEN, null)
 
     actual suspend fun saveOidcState(state: String) {
         sharedPreferences.edit { putString(KEY_OIDC_STATE, state) }
     }
 
-    actual suspend fun getOidcState(): String? {
-        return sharedPreferences.getString(KEY_OIDC_STATE, null)
-    }
+    actual suspend fun getOidcState(): String? = sharedPreferences.getString(KEY_OIDC_STATE, null)
 
     actual suspend fun clearTokens() {
         sharedPreferences.edit {

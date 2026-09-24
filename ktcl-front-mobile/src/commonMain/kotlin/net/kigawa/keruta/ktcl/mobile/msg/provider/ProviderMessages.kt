@@ -20,4 +20,3 @@ data class ClientProviderListMsg(
     val type: String = "provider_listed",
     val providers: List<Provider>,
 )
-

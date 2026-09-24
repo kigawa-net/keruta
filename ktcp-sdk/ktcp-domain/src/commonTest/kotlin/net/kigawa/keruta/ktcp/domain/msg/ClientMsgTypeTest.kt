@@ -46,5 +46,4 @@ class ClientMsgTypeTest {
         assertEquals("generic_error", ClientMsgType.GENERIC_ERROR.str)
         assertEquals("provider_listed", ClientMsgType.PROVIDER_LISTED.str)
     }
-
 }

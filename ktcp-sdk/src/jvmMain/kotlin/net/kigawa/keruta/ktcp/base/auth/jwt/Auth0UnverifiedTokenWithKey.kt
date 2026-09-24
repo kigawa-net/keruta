@@ -11,8 +11,9 @@ import net.kigawa.kodel.api.err.Res
 import net.kigawa.kodel.api.err.ok
 
 class Auth0UnverifiedTokenWithKey(
-    override val unverifiedToken: Auth0UnverifiedToken, val algorithm: Algorithm,
-): UnverifiedTokenWithKey {
+    override val unverifiedToken: Auth0UnverifiedToken,
+    val algorithm: Algorithm,
+) : UnverifiedTokenWithKey {
     override fun verify(
         verifyValues: JwtVerifyValues,
     ): Res<VerifiedToken, KtcpErr> = try {
@@ -28,5 +29,4 @@ class Auth0UnverifiedTokenWithKey(
     } catch (e: Exception) {
         return Res.Err(VerifyFailErr("decoded: $unverifiedToken", e))
     }
-
 }

@@ -23,11 +23,9 @@ class LoginRoute(
     private val logger = LoggerFactory.get("LoginRoute")
 
     fun configure(route: Route) = route.get("/login") {
-
         val issuer = call.queryParameters["issuer"]?.let { URI(it) } ?: idpConfig.issuer
         val clientId = call.queryParameters["clientId"] ?: idpConfig.clientId
         val registerToken = call.queryParameters["token"]
-
 
         logger.info("Starting OIDC login flow for issuer: $issuer, clientId: $clientId")
 
@@ -42,13 +40,17 @@ class LoginRoute(
             logger.severe("Failed to start OIDC login flow: ${e.message}")
             call.respond(
                 HttpStatusCode.InternalServerError,
-                mapOf("error" to "Failed to start login flow", "message" to e.message)
+                mapOf("error" to "Failed to start login flow", "message" to e.message),
             )
         }
     }
 
     fun RoutingContext.saveSession(
-        pkce: Pkce, redirectUri: Url, issuer: URI, clientId: String, registerToken: String?,
+        pkce: Pkce,
+        redirectUri: Url,
+        issuer: URI,
+        clientId: String,
+        registerToken: String?,
     ) {
         // セッションにOIDC情報を保存
         val oidcSession = OidcSession(
@@ -62,7 +64,10 @@ class LoginRoute(
     }
 
     suspend fun RoutingContext.respondRedirectIssuer(
-        discoveryResponse: OidcDiscoveryResponse, clientId: String, redirectUri: Url, pkce: Pkce,
+        discoveryResponse: OidcDiscoveryResponse,
+        clientId: String,
+        redirectUri: Url,
+        pkce: Pkce,
     ) {
         val authUrl = URLBuilder(discoveryResponse.authorizationEndpoint).apply {
             parameters.append("client_id", clientId)

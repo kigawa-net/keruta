@@ -1,34 +1,34 @@
 object Version {
-    const val KTOR = "3.4.1"
-    const val LOGBACK = "1.5.32"
+    const val KTOR = "3.5.0"
+    const val LOGBACK = "1.6.3"
 
     // Auth
-    const val JAVA_JWT = "4.5.1"
-    const val JWKS_RSA = "0.23.0"
+    const val JAVA_JWT = "4.6.1"
+    const val JWKS_RSA = "0.24.1"
 
     // Kotlinx
-    const val KOTLINX_COROUTINES = "1.10.2"
-    const val KOTLINX_SERIALIZATION = "1.10.0"
-    const val KOTLINX_DATETIME = "0.7.1-0.6.x-compat"
+    const val KOTLINX_COROUTINES = "1.11.0"
+    const val KOTLINX_SERIALIZATION = "1.11.0"
+    const val KOTLINX_DATETIME = "0.8.0-0.6.x-compat"
     const val KOTLINX_HTML = "0.12.0"
 
     // Database
-    const val FLYWAY = "12.1.0"
-    const val MYSQL_CONNECTOR = "9.6.0"
-    const val MARIADB_CONNECTOR = "3.5.7"
-    const val EXPOSED = "0.61.0"
-    const val HIKARI_CP = "7.0.2"
+    const val FLYWAY = "13.7.0"
+    const val MYSQL_CONNECTOR = "26.7.0"
+    const val MARIADB_CONNECTOR = "3.5.10"
+    const val EXPOSED = "1.5.0"
+    const val HIKARI_CP = "7.1.0"
 
     // Kubernetes
-    const val KUBERNETES_CLIENT = "25.0.0"
+    const val KUBERNETES_CLIENT = "27.0.0"
 
     // Other
-    const val ZOOKEEPER = "3.9.5"
+    const val ZOOKEEPER = "3.9.6"
 
     // Testing
-    const val JUNIT_JUPITER = "6.0.3"
-    const val MOCKK = "1.14.9"
-    const val TESTCONTAINERS = "1.21.4"
+    const val JUNIT_JUPITER = "6.1.3"
+    const val MOCKK = "1.14.11"
+    const val TESTCONTAINERS = "2.0.5"
 
     // Mobile
     const val ACTIVITY_COMPOSE = "1.13.0"

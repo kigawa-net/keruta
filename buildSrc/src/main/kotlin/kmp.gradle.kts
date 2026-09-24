@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 plugins {
     kotlin("multiplatform")
+    id("ktlint")
 }
 
 repositories {
@@ -43,7 +44,6 @@ kotlin {
 
     // iOS targets for mobile support
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { _ ->

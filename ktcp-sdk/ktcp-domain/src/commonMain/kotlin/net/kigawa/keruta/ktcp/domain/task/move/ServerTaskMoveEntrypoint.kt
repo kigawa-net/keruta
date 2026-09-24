@@ -7,10 +7,11 @@ import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.entrypoint.EntrypointInfo
 import net.kigawa.kodel.api.err.Res
 
-interface ServerTaskMoveEntrypoint<C>: Entrypoint<ServerTaskMoveMsg, EntrypointDeferred<Res<Unit, KtcpErr>>, C> {
+interface ServerTaskMoveEntrypoint<C> : Entrypoint<ServerTaskMoveMsg, EntrypointDeferred<Res<Unit, KtcpErr>>, C> {
     override val info: EntrypointInfo
         get() = EntrypointInfo(
             ServerMsgType.TASK_MOVE.str,
-            emptyList(), "タスク移動メッセージ処理"
+            emptyList(),
+            "タスク移動メッセージ処理",
         )
 }

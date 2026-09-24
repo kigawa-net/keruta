@@ -8,7 +8,7 @@ import net.kigawa.keruta.ktcp.domain.auth.key.PemKey
 import net.kigawa.keruta.ktcp.domain.auth.request.ServerAuthRequestMsg
 import net.kigawa.keruta.ktcp.domain.err.KtcpErr
 import net.kigawa.keruta.ktcp.domain.provider.complete.ServerProviderCompleteMsg
-import net.kigawa.keruta.ktcp.domain.provider.idp_added.ClientProviderIdpAddedMsg
+import net.kigawa.keruta.ktcp.domain.provider.idpadded.ClientProviderIdpAddedMsg
 import net.kigawa.keruta.ktcp.domain.serialize.serialize
 import net.kigawa.keruta.ktcp.server.KtcpConnection
 import net.kigawa.keruta.ktcp.server.KtcpServer
@@ -41,19 +41,30 @@ class KtcpSession private constructor(
     private val isClosed = MutableStateFlow(false)
     private val authenticatedSession = MutableStateFlow<AuthenticatedSession?>(null)
     private val sessionAuthenticator = SessionAuthenticator(
-        this, userIdpConfig, providerIdpConfig
+        this,
+        userIdpConfig,
+        providerIdpConfig,
     )
 
     companion object {
         suspend fun startSession(
-            connection: KtcpConnection, persisterSession: PersisterSession, authTokenDecoder: AuthTokenDecoder,
-            verifyTablesPersister: VerifyTablesPersister, userIdpConfig: UserIdpConfig,
-            providerIdpConfig: ProviderIdpConfig, pemKey: PemKey,
+            connection: KtcpConnection,
+            persisterSession: PersisterSession,
+            authTokenDecoder: AuthTokenDecoder,
+            verifyTablesPersister: VerifyTablesPersister,
+            userIdpConfig: UserIdpConfig,
+            providerIdpConfig: ProviderIdpConfig,
+            pemKey: PemKey,
             block: suspend (KtcpSession) -> Unit,
         ) {
             KtcpSession(
-                connection, persisterSession, authTokenDecoder, verifyTablesPersister, userIdpConfig,
-                providerIdpConfig, pemKey
+                connection,
+                persisterSession,
+                authTokenDecoder,
+                verifyTablesPersister,
+                userIdpConfig,
+                providerIdpConfig,
+                pemKey,
             ).also {
                 coroutineScope {
 //                    launch {
@@ -76,7 +87,7 @@ class KtcpSession private constructor(
 
     suspend fun authenticate(authRequestMsg: ServerAuthRequestMsg): Res<AuthenticatedSession, KtcpErr> = when (
         val res = sessionAuthenticator.authenticate(
-            authRequestMsg
+            authRequestMsg,
         )
     ) {
         is Res.Err -> res
@@ -109,7 +120,7 @@ class KtcpSession private constructor(
         }
         val userTables = persisterSession.verifyTablesPersister.getUserTables(
             unverifiedRegisterToken.unverifiedToken.issuer,
-            unverifiedRegisterToken.unverifiedToken.subject
+            unverifiedRegisterToken.unverifiedToken.subject,
         ).unwrap {
             return Res.Err(it)
         }
@@ -117,14 +128,16 @@ class KtcpSession private constructor(
             JwtVerifyValues(
                 userTables.second.issuer,
                 "provider_register",
-                userTables.second.subject
-            )
+                userTables.second.subject,
+            ),
         ).flatConvertOk {
             server.jwtVerifier.decodeUnverified(input.userToken).flatConvertOk {
                 it.verifyWithOidcJwks(
                     JwtVerifyValues(
-                        it.issuer, input.userAudience, it.subject
-                    )
+                        it.issuer,
+                        input.userAudience,
+                        it.subject,
+                    ),
                 )
             }
         }.unwrap {
@@ -134,20 +147,25 @@ class KtcpSession private constructor(
         val providerToken = server.jwtVerifier.decodeUnverified(input.serverToken).flatConvertOk {
             it.verifyWithJwks(
                 JwtVerifyValues(
-                    it.issuer, input.providerAudience, userToken.subject
-                )
+                    it.issuer,
+                    input.providerAudience,
+                    userToken.subject,
+                ),
             )
         }.unwrap {
             return Res.Err(it)
         }
         persisterSession.verifyTablesPersister.saveProviderForUser(
-            userTables.first, providerToken,input.providerAudience,
-            input.userAudience,input.providerName, userToken.issuer
+            userTables.first,
+            providerToken,
+            input.providerAudience,
+            input.userAudience,
+            input.providerName,
+            userToken.issuer,
         )
 
-
         connection.send(
-            server.serializer.serialize(ClientProviderIdpAddedMsg())
+            server.serializer.serialize(ClientProviderIdpAddedMsg()),
         )
         return Res.Ok(Unit)
     }

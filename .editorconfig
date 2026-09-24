@@ -19,6 +19,8 @@ max_line_length = 120
 ktlint_standard_no-wildcard-imports = disabled
 ktlint_standard_filename = disabled
 ktlint_standard_max-line-length = disabled
+ktlint_standard_function-naming = disabled
+ktlint_standard_backing-property-naming = disabled
 ktlint_standard_trailing-comma-on-call-site = true
 ktlint_standard_trailing-comma-on-declaration-site = true
 

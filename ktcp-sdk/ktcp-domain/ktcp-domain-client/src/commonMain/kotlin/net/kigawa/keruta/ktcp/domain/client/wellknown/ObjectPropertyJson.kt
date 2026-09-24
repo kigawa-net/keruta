@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ObjectPropertyJson(
     val fields: List<Field>,
-): KtclPropertyJson {
+) : KtclPropertyJson {
     @Serializable
     data class Field(
         val fieldId: String,

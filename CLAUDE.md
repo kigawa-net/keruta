@@ -2,74 +2,410 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## ⚠️ 規約遵守の重要事項
+
+**すべての作業において以下の規約を必ず遵守すること：**
+- [CONVENTION.md](CONVENTION.md) - リポジトリ全体の規約（必読）
+- [doc/convention/issue.md](doc/convention/issue.md) - Issue作成・作業計画規約
+- [doc/convention/pull-request.md](doc/convention/pull-request.md) - PR作成規約
+- [doc/convention/ci.md](doc/convention/ci.md) - CI/CD規約
+
+## 🚨 Issue作成からPR作成までの必須フロー
+
+> **手順を省略・スキップすることは禁止。必ず以下の順番で実施すること。**
+
+### Step 0: 計画作成 & Issue 作成（作業開始前に必須）
+
+> **実装・ファイル変更・コマンド実行を一切行う前に、必ず計画を PR として作成し、PR マージをもって承認とする。**
+
+#### 0-1. 計画 PR の作成
+
+以下の内容を含む計画を Issue に記載し、対応する**計画専用 PR**（実装なし）をドラフトで作成する：
+
+1. **目的**: 何を・なぜ行うのか
+2. **アプローチ**: どのように実装するか（設計・方針）
+3. **影響範囲**: 変更するファイル・モジュール・レイヤー
+4. **実装手順**: 具体的な作業ステップ（順序付き）
+5. **懸念事項**: リスク・考慮が必要な点（あれば）
+
+- **PR がマージされるまで実装作業を開始してはならない**
+- PR マージ = 計画の承認
+
+#### 0-2. Issue 作成
+
+計画 PR と合わせて GitHub Issue を作成する：
+
+```bash
+# GitHub CLI でIssueを作成する
+gh issue create \
+  --title "[モジュール名] 変更内容の概要" \
+  --body "$(cat <<'EOF'
+## 目的
+この作業で達成したいことを説明する。
+
+## 背景・問題
+なぜこの作業が必要なのかを説明する。
+
+## 作業計画
+- [ ] 作業ステップ1
+- [ ] 作業ステップ2
+- [ ] テスト追加
+
+## 影響範囲
+- 影響するモジュール・機能
+
+## 完了条件
+この作業が「完了」とみなされる条件を明記する。
+EOF
+)"
+```
+
+- **Issueなしの作業開始は禁止**
+- 詳細は [doc/convention/issue.md](doc/convention/issue.md) を参照
+
+### Step 1: 実装計画書作成・PRマージ（実装前に必須）
+
+```bash
+# docs/ブランチで実装計画書を作成する
+git checkout develop && git pull origin develop
+git checkout -b docs/{module}-{feature}-plan
+
+# doc/plan/{module}-{feature}.md に実装計画を記述してコミット
+git commit -m "docs({module}): {feature}の実装計画を追加"
+
+# PRを作成してマージを待つ
+gh pr create --base develop \
+  --title "docs({module}): {feature}の実装計画" \
+  --body "$(cat <<'EOF'
+## 実装方針
+何をどのように実装するかの概要
+
+## ファイル・クラス構成
+- 追加/変更するファイル一覧
+
+## 実装順序
+1. domain層: ...
+2. usecase層: ...
+3. infra層: ...
+
+## テスト方針
+- テストするシナリオ
+
+## 関連
+- Issue: #番号
+EOF
+)"
+```
+
+計画書テンプレート（`doc/plan/{module}-{feature}.md`）:
+
+```markdown
+# {機能名} 実装計画
+
+## 実装方針
+...
+
+## ファイル・クラス構成
+...
+
+## 実装順序
+1. ...
+
+## テスト方針
+...
+```
+
+- **計画PRがマージされるまで実装ブランチを作成してはならない**
+- 詳細は [doc/convention/development.md](doc/convention/development.md) を参照
+
+### Step 2: 実装ブランチ作成（計画PRマージ後）
+
+```bash
+# 命名規則: {prefix}/{module}-{feature}
+# 例: feat/kicp-peer-client, fix/ktse-auth-token, docs/agents-convention
+git checkout develop && git pull origin develop
+git checkout -b feat/{module}-{feature}
+scripts/check-branch-naming.sh $(git branch --show-current)
+```
+
+- ブランチ名チェックがエラーになった場合はブランチを作り直すこと
+- `develop`・`main` への直接コミットは禁止
+
+### Step 3: 実装（レイヤー順序を守ること）
+
+```
+domain層 → usecase層 → infra層 → application層
+```
+
+- 各層の実装と同時にテストを追加すること
+- バグ修正時は先に再現テストを追加してから修正すること
+
+### Step 4: コードスタイル確認（コミット前に必須）
+
+```bash
+./gradlew ktlintFormat   # 自動フォーマット
+./gradlew ktlintCheck    # 違反がないことを確認
+```
+
+ktlintCheck がエラーの状態でコミットしてはならない。
+
+### Step 5: テスト実行（コミット前に必須）
+
+```bash
+./gradlew :{module}:test    # 変更モジュールのテスト
+./gradlew test               # 影響範囲が広い場合は全テスト
+```
+
+テストが失敗している状態でコミットしてはならない。
+
+### Step 6: ビルド確認
+
+```bash
+./gradlew :{module}:build
+```
+
+### Step 7: コミット
+
+```bash
+# Conventional Commits 形式: type(scope): 説明
+git commit -m "feat(kicp): peer client を実装"
+```
+
+- `type`: feat / fix / docs / refactor / ci / chore / test / revert
+- `scope`: 対象モジュール名
+- 秘密情報（認証情報・APIキー）が含まれていないことを確認
+
+### Step 8: PR 作成（必須手順）
+
+```bash
+# ベースブランチは必ず develop を指定する
+# Closes #<Issue番号> で対応Issueを自動クローズ
+gh pr create --base develop \
+  --title "feat(module): 変更内容の説明" \
+  --body "$(cat <<'EOF'
+## 概要
+変更の目的を1-2行で簡潔に説明。
+
+## 主な変更点
+- 変更点1
+- 変更点2
+
+## 影響範囲
+- 影響を受けるモジュール・機能
+
+## 関連
+- Closes #<Issue番号>
+EOF
+)"
+```
+
+PR作成前チェック:
+- [ ] ベースブランチが `develop` であること
+- [ ] `.github/pull_request_template.md` の全項目を記入済み
+- [ ] CI（GitHub Actions）が全て通過していること
+- [ ] 1 PR = 1 機能（または 1 修正）の粒度であること
+- [ ] `Closes #<Issue番号>` で対応Issueを関連付けていること
+- [ ] `doc/` 配下の変更を含む場合は `documentation` ラベルを付与していること
+
+---
+
+### 作業前のセットアップ（初回のみ）
+```bash
+# Git hooks をセットアップして規約チェックを自動化
+cp scripts/hooks/pre-commit.template .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
+cp scripts/hooks/pre-push.template .git/hooks/pre-push
+chmod +x .git/hooks/pre-push
+```
+
+### 規約チェックコマンド
+```bash
+# ブランチ名の手動チェック
+scripts/check-branch-naming.sh [ブランチ名]
+
+# コミット前の必須チェック
+./gradlew ktlintFormat && ./gradlew ktlintCheck
+./gradlew test
+```
+
 * ユーザーには日本語で応答する
 * 大きなファイルは細分化する
 
-## Programs
-
-* 純粋関数を使う
-* SOLID原則に従う
-* Kotlin Multiplatform対応（JVM、JS両対応）
-
 ## Development Commands
 
+### セットアップ（初回のみ）
+```bash
+# Git hooks をセットアップして規約チェックを自動化
+cp scripts/hooks/pre-commit.template .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
+cp scripts/hooks/pre-push.template .git/hooks/pre-push
+chmod +x .git/hooks/pre-push
+```
+
+### ビルド
 ```bash
 ./gradlew build                          # 全モジュールビルド
 ./gradlew :ktse:build                    # 個別モジュール
-./gradlew :ktse:run                      # タスクサーバー起動
-./gradlew :ktcl-k8s:run                  # K8sクライアント起動
-cd ktcl-front && npm run dev             # フロントエンド起動
-./gradlew test --tests "net.kigawa.keruta.ktse.ReceiveUnknownArgTest"  # 単一テスト
-./gradlew test --continue                # 失敗しても続行
-./gradlew ktlintFormat && ./gradlew ktlintCheck  # コミット前
-docker-compose -f compose.test.yml up -d mysql   # DB起動
 ```
 
-## Architecture Overview
+### 起動
+```bash
+./gradlew :ktse:run                      # タスクサーバー起動
+./gradlew :ktcl-k8s:run                  # K8sクライアント起動
+cd ktcl-front && npm run dev             # フロントエンド起動 (react-router dev)
+```
 
-マルチモジュール構成。依存性バージョンは `buildSrc/src/main/kotlin/Version.kt` で一元管理。
+### テスト
+```bash
+./gradlew test                           # 全テスト実行
+./gradlew test --tests "net.kigawa.keruta.ktse.ReceiveUnknownArgTest"  # 単一テスト
+./gradlew test --tests "*ReceiveUnknownArgTest"  # クラス名指定
+./gradlew test --continue                # 失敗しても続行
+./gradlew cleanTest test                  # キャッシュをクリアして再実行
+```
 
-- **kodel** - 共通ライブラリ（Res型、EntrypointDeferred、Kogger）
-- **ktcp-sdk** - WebSocketプロトコル（model/client/server、Kotlin Multiplatform対応）
-- **ktse** - KtorタスクサーバーWS（Exposed/Flyway/MySQL、二重トークン認証）
-- **ktcl-k8s** - KTCPでタスク受信しKubernetes Jobとして実行
-- **ktcl-front** - React+TypeScript+Vite+Keycloak.js
-- **ktcl-claudecode** - Claude Code統合（開発中）
-- 詳細ドキュメント: `doc/` 配下参照
+### リント・フォーマット（コミット前必須）
+```bash
+./gradlew ktlintFormat                   # 自動フォーマット
+./gradlew ktlintCheck                    # リントチェック
+```
+
+### DB
+```bash
+docker-compose -f compose.test.yml up -d mysql   # テスト用MySQL起動
+```
+
+### 規約チェック
+```bash
+# ブランチ名の手動チェック
+scripts/check-branch-naming.sh [ブランチ名]
+
+# PR作成時はテンプレートを使用
+# .github/pull_request_template.md を参照
+```
+
+## Module Map
+
+依存バージョンは `buildSrc/src/main/kotlin/Version.kt` で一元管理。
+
+**主要バージョン**（詳細は [CONVENTION.md](CONVENTION.md#6-1-環境) 参照）:
+- Kotlin: 2.3.0
+- Ktor: 3.4.0
+- Java: Eclipse Temurin 25
+- Node.js: 24
+- Gradle: 9.5.0
+
+| モジュール | 役割 |
+|---|---|
+| `kodel` | 共通ライブラリ（Res型、EntrypointDeferred、Kogger） |
+| `ktcp` | WebSocketプロトコル（Kotlin Multiplatform対応: domain/infra） |
+| `ktse` | Ktorタスクサーバー（Exposed/Flyway/MySQL、二重トークン認証） |
+| `ktcl-k8s` | KTCPでタスク受信→Kubernetes Jobとして実行 |
+| `ktcl-front` | フロントエンド（React + TypeScript + Vite + Keycloak.js） |
+| `kicl-web` | 次世代フロントエンド（React Router v7 + KMP共有ロジック） |
+| `kicl` | Kotlin Multiplatformモジュール（domain/usecase） |
+| `kicp` | クロスドメインIDフェデレーションプロトコル（domain/usecase） |
+| `ktcl-claudecode` | Claude Code統合 |
+| `ktcl-front-mobile` | モバイルフロントエンド |
 
 ## Key Architectural Patterns
 
-### Entrypoint Groupパターン（メッセージルーティング）
-KTCPの中核。`KtcpClientEntrypoints<C>` が受信メッセージを14種類の型に分類してハンドラにルーティング。
+### Entrypoint Group パターン（KTCPメッセージルーティング）
 
 ```
-受信テキスト → ReceiveClientUnknownArg.fromText() → tryTo*()で型判定
-           → clientEntrypoints.access(unknownArg, ctx)?.execute()
+受信テキスト → ReceiveUnknownArg.fromText() → tryTo*() で型判定
+            → entrypoints.access(unknownArg, ctx)?.execute()
 ```
 
-### Res<T, E> パターン（エラーハンドリング）
-例外を使わない型安全なエラーハンドリング。`Res.Ok<T>` / `Res.Err<E>` の sealed interface。
+- `KtcpServerEntrypoints<C>` / `KtcpClientEntrypoints<C>` が14種のメッセージタイプをルーティング
+- `Entrypoint<I, O, C>` は入力・出力・コンテキスト型でサーバー/クライアントを区別
+
+### Res\<T, E\> パターン（エラーハンドリング）
+
+例外を使わない型安全なエラーハンドリング。`Err`はすべて`Throwable`サブクラス。
+
+```kotlin
+// 基本パターン
+when (val r = someOperation()) {
+    is Res.Err -> return r.convert()   // エラー型を伝搬
+    is Res.Ok -> r.value               // 成功値を取得
+}
+
+// ユーティリティ
+.convertOk { transform(it) }          // 成功値変換
+.flatConvertOk { suspendOp(it) }      // Res<Res<T,E>,E> → Res<T,E> (非suspend専用)
+.whenOkErr(onOk, onErr)               // 分岐
+```
+
+suspend関数のチェーンには `flatConvertOk` が使えないため、`when` を使う。
 
 ### 手動DIとFactoryパターン
-DIフレームワーク不使用。Kotlin Multiplatform対応のため手動Factoryで依存性を構成。
-- `TaskExecutorFactory` - K8s実行コンポーネントを組み立て
-- `ClientEntrypointsFactory` - 14個のメッセージハンドラを初期化
-- `K8sClientFactory` (object) - K8sクライアントのシングルトン生成
 
-## KTCL-K8s パッケージ構成
+DIフレームワーク不使用（KMP対応のため）。`{Component}Factory` クラスで依存性を手動組み立て。
 
-- `connection` - ConnectionContext（接続コンテキスト）、ReceiveClientUnknownArg（型判定）
-- `entrypoint` - ClientEntrypointsFactory
-- `task` - TaskReceiver（受信ループ）、TaskExecutor、TaskExecutorFactory
-- `k8s` - K8sJobExecutor、K8sJobWatcher、K8sClientFactory
-- `auth` - AuthManager（KTCP認証）
-- `web` - Webモード（`KTCL_K8S_WEB_MODE=true` で有効化）
+### Clean Architecture（domain/usecase分離）
+
+KMPライブラリモジュール（ktcp-sdk、kicp、kicl等）の標準構造：
+- `domain`: エンティティ、値オブジェクト、リポジトリ/ポートインターフェース
+- `usecase`: アプリケーションサービス（インターフェース + `*Impl`クラス）
+- インフラ実装は別モジュール（`*-infra`）
+
+## ktse（タスクサーバー）パッケージ構成
+
+```
+auth/     - 二重トークン認証（UserVerifier: OIDC JWT、ProviderVerifier: プロバイダーJWT）
+persist/  - Exposed + Flyway によるDB永続化
+websocket/- KtcpSession、WebsocketModule
+err/      - KtseErr階層
+```
+
+**二重トークン認証フロー**: ユーザーJWT（OIDC）+ プロバイダーJWT を両方検証 → `AuthenticatedPersisterSession` 確立。JWKはLRUキャッシュ（最大8発行者）、OIDC Discovery で jwks_url を自動取得。
+
+## ktcl-k8s パッケージ構成
+
+```
+connection/ - ConnectionContext、ReceiveClientUnknownArg（型判定）
+entrypoint/ - ClientEntrypointsFactory
+task/       - TaskReceiver（受信ループ）、TaskExecutor、TaskExecutorFactory
+k8s/        - K8sJobExecutor、K8sJobWatcher、K8sClientFactory
+auth/       - AuthManager
+web/        - KTCL_K8S_WEB_MODE=true で有効化
+```
 
 接続フロー: `connectAndCreateSession()` → `authenticate()` → `requestInitialTaskList()` → TaskReceiverループ
 
+## kicp（クロスドメインIDフェデレーション）
+
+`kicp-domain` のポート定義:
+
+| インターフェース | 役割 |
+|---|---|
+| `JwksRepository` | URL からJWKS取得（キャッシュはinfra実装） |
+| `JwtVerifier` | JWTをJWKSで検証 → `TokenClaims` |
+| `RegisterTokenRepository` | 登録トークンの保存・検索・削除 |
+| `RegisterTokenGenerator` | ランダムな`RegisterToken`生成 |
+| `CurrentTimeMs` | 現在時刻（epoch ms）取得 |
+| `PeerServerClient` | 相手サーバーへの登録トークン検証呼び出し |
+
+`kicp-usecase` の4ユースケース:
+
+| ユースケース | サーバー側 | 処理 |
+|---|---|---|
+| `LoginUseCase` | 両方 | providerToken + oidcToken 検証 → `IdentityId` |
+| `GetRegisterTokenUseCase` | idServerA | 認証済みIDに登録トークン発行（有効期限付き） |
+| `RegisterUseCase` | idServerB | トークン検証 + ピアサーバーへ確認 |
+| `VerifyRegisterTokenUseCase` | idServerA | ピアからの登録トークン検証 → 元`IdentityId`返却 |
+
+`IdentityId` は OIDC `issuer:subject` で構成。登録トークンは1回使用で削除（リプレイ防止）。
+
 ## Testing
 
-JUnit 5 + Kotlin Test + MockK。テスト関数名はバッククオート形式。
+JUnit 5 + Kotlin Test + MockK。テスト関数名はバッククォート形式。
+
+```bash
+./gradlew :ktse:test --tests "net.kigawa.keruta.ktse.*Test"
+./gradlew cleanTest test  # キャッシュをクリアして再実行
+```
 
 ## Deployment
 
@@ -79,7 +415,60 @@ docker build -f Dockerfile_ktcl_k8s -t harbor.kigawa.net/library/ktcl-k8s:latest
 docker build -f Dockerfile_ktcl_front -t harbor.kigawa.net/private/ktcl-front:latest .
 ```
 
-developブランチへのpushで `dev.yml` が自動ビルド・デプロイ（Harbor Registry → kigawa-net-k8s マニフェスト更新）
+`develop` ブランチへの push で `dev.yml` が自動ビルド・デプロイ（Harbor Registry → kigawa-net-k8s マニフェスト更新）。
 
-## important-instruction-reminders
-Do what has been asked; nothing more, nothing less.
+## Code Style
+
+詳細は [CONVENTION.md](CONVENTION.md#4-コードスタイル) を参照。
+
+- インデント: スペース4、最大行長120文字（ktlint / intellij_idea スタイル）
+- エラー型サフィックス: `*Err`（例: `KtcpErr`、`KicpErr`）
+- パッケージ: `net.kigawa.keruta.{module}.{layer}.{feature}`
+- 完全修飾インポート（ワイルドカード禁止）
+- 純粋関数・SOLID原則
+- KDocコメントで文書化（日本語）
+- 日本語使う
+
+## 📋 規約遵守チェックリスト
+
+> 実装の各フェーズで以下を確認すること。詳細は「[Issue作成からPR作成までの必須フロー](#-issue作成からpr作成までの必須フロー)」を参照。
+
+### 作業開始前（Step 0）
+- [ ] 目的・アプローチ・影響範囲・実装手順を含む計画を作成したか
+- [ ] 計画を PR（ドラフト）として作成したか
+- [ ] 計画 PR がマージされたか（マージ前に実装を開始していないか）
+- [ ] 対応するIssueを作成済みか（`gh issue create` でタイトル・本文・ラベルを記入）
+- [ ] Issueに「目的」「作業計画」「影響範囲」「完了条件」を記載済みか
+
+### 実装計画書作成時（Step 1）
+- [ ] `docs/{module}-{feature}-plan` ブランチで計画書を作成済みか
+- [ ] `doc/plan/{module}-{feature}.md` に実装方針・構成・順序・テスト方針を記載済みか
+- [ ] 計画PRが `develop` にマージ済みか
+
+### 実装ブランチ作成時（Step 2）
+- [ ] ブランチ名が規約に従っているか（`feat/`, `fix/`, `docs/` など）
+- [ ] `scripts/check-branch-naming.sh $(git branch --show-current)` でエラーがないか
+
+### コミット前（Step 4〜7）
+- [ ] `./gradlew ktlintFormat` を実行済みか
+- [ ] `./gradlew ktlintCheck` がエラーなしで通過するか
+- [ ] `./gradlew :{module}:test` ですべてのテストが通るか
+- [ ] コミットメッセージが [Conventional Commits](https://www.conventionalcommits.org/) 形式か
+- [ ] 秘密情報（認証情報、APIキー等）が含まれていないか
+
+### PR作成前（Step 8）
+- [ ] ベースブランチは `develop`（`--base develop` を明示的に指定）
+- [ ] PRテンプレート（`.github/pull_request_template.md`）の全項目を記入済みか
+- [ ] 変更の粒度は適切か（1 PR = 1 機能/修正）
+- [ ] CIが全て通過しているか
+- [ ] `Closes #<Issue番号>` で対応Issueを関連付けているか
+- [ ] `doc/` 配下の変更を含む場合は `documentation` ラベルを付与しているか
+- [ ] [doc/convention/pull-request.md](doc/convention/pull-request.md) を確認済みか
+
+### 参考ドキュメント
+- [CONVENTION.md](CONVENTION.md) - リポジトリ全体の規約（必読）
+- [doc/convention/issue.md](doc/convention/issue.md) - Issue作成・作業計画規約
+- [doc/convention/pull-request.md](doc/convention/pull-request.md) - PR作成規約
+- [doc/convention/ci.md](doc/convention/ci.md) - CI/CD規約
+- [doc/convention/setup.md](doc/convention/setup.md) - 開発環境セットアップ
+- [doc/glossary.md](doc/glossary.md) - 用語集

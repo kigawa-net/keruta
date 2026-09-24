@@ -6,12 +6,10 @@ data class AuthConfig(
     val privateKey: PemKey,
 ) {
     companion object {
-        fun load(): AuthConfig {
-            return AuthConfig(
-                privateKey = System.getenv("PRIVATE_KEY")
-                    ?: throw IllegalStateException("PRIVATE_KEY is required"),
+        fun load(): AuthConfig = AuthConfig(
+            privateKey = System.getenv("PRIVATE_KEY")
+                ?: throw IllegalStateException("PRIVATE_KEY is required"),
 
-                )
-        }
+        )
     }
 }

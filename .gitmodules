@@ -1,0 +1,3 @@
+[submodule "kigawa-net-k8s"]
+	path = kigawa-net-k8s
+	url = https://github.com/kigawa-net/kigawa-net-k8s.git

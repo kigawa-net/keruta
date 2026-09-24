@@ -1,6 +1,5 @@
 import {createContext, type ReactNode, useContext, useEffect, useState} from "react";
-import {useKeycloakState} from "../auth/Keycloak";
-import type {KeycloakProfile} from "keycloak-js";
+import {useKiseAuthState} from "../auth/KiseAuth";
 
 
 const Context = createContext<UserProfileState>({state: "unloaded"});
@@ -12,13 +11,17 @@ export function UserProfileProvider(
         children: ReactNode
     }) {
     const [userProfile, setUserProfile] = useState<UserProfileState>({state: "unloaded"})
-    const kcState = useKeycloakState()
+    const authState = useKiseAuthState()
     useEffect(() => {
-        if (kcState.state != "authenticated") return
-        kcState.keycloak.loadUserProfile().then(value => {
-            setUserProfile({state: "loaded", value})
+        if (authState.state != "authenticated") return
+        setUserProfile({
+            state: "loaded",
+            value: {
+                username: authState.preferredUsername ?? authState.sub,
+                sub: authState.sub,
+            },
         })
-    }, [kcState.state]);
+    }, [authState.state]);
     return <Context.Provider
         value={userProfile}
         {...props}
@@ -35,5 +38,5 @@ export type UserProfileState = {
     state: "unloaded"
 } | {
     state: "loaded",
-    value: KeycloakProfile
+    value: { username: string; sub: string }
 }

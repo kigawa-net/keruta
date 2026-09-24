@@ -14,7 +14,8 @@ class UnverifiedAuthTokens(
     val subject: String by userToken::subject
 
     suspend fun verify(
-        userVerifyValues: JwtVerifyValues, providerVerifyValues: JwtVerifyValues,
+        userVerifyValues: JwtVerifyValues,
+        providerVerifyValues: JwtVerifyValues,
     ): Res<VerifiedAuthToken, KtcpErr> = userToken.verifyWithOidcJwks(userVerifyValues)
         .with(providerToken.verifyWithJwks(providerVerifyValues))
         .convertOk {

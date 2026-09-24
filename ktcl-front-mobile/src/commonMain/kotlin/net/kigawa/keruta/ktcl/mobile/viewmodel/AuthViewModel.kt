@@ -38,5 +38,4 @@ class AuthViewModel(
         authService.logout()
         updateState { AuthViewState() }
     }
-
 }

@@ -21,7 +21,7 @@ class QueueCreateViewModel(
     private val providerRepository: ProviderRepository,
     private val messageSender: MessageSender,
     private val authService: AuthService,
-): BaseViewModel<QueueCreateViewState>(QueueCreateViewState()) {
+) : BaseViewModel<QueueCreateViewState>(QueueCreateViewState()) {
 
     init {
         viewModelScope.launch {

@@ -10,9 +10,10 @@ import net.kigawa.keruta.ktcp.server.err.UnauthenticatedErr
 import net.kigawa.kodel.api.entrypoint.EntrypointDeferred
 import net.kigawa.kodel.api.err.Res
 
-class ReceiveQueueShowEntrypoint: ServerQueueShowEntrypoint<ServerCtx> {
+class ReceiveQueueShowEntrypoint : ServerQueueShowEntrypoint<ServerCtx> {
     override fun access(
-        input: ServerQueueShowMsg, ctx: ServerCtx,
+        input: ServerQueueShowMsg,
+        ctx: ServerCtx,
     ): EntrypointDeferred<Res<Unit, KtcpErr>> {
         return EntrypointDeferred {
             val session = ctx.session.authenticated()
@@ -28,9 +29,9 @@ class ReceiveQueueShowEntrypoint: ServerQueueShowEntrypoint<ServerCtx> {
                     name = queues.name,
                     id = queues.id,
                     setting = queues.setting,
-                ), ctx
+                ),
+                ctx,
             )?.execute() ?: Res.Err(ResponseErr("", null))
         }
     }
-
 }

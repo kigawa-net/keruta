@@ -70,3 +70,14 @@ deployments:
             name: ktcl-front
             ports:
               - containerPort: 80
+            env:
+              - name: VITE_KISE_URL
+                value: https://kise-dev.kigawa.net
+              - name: VITE_WEBSOCKET_URL
+                value: wss://ktse-dev.kigawa.net/ws/ktcp
+              - name: USER_ISSUER
+                value: https://user.kigawa.net/realms/develop
+              - name: OWN_ISSUER
+                value: https://keruta-dev.kigawa.net
+              - name: KTSE_AUD
+                value: keruta
