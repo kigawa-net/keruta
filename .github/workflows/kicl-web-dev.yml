@@ -1,6 +1,6 @@
 name: kicl-web-dev
 on:
-  push:
+  pull_request:
     paths:
       - 'kicl-web/**'
       - 'kicl/**'

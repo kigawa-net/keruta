@@ -1,10 +1,6 @@
 name: ktcl-claudecode-main
 on:
-  push:
-    paths:
-      - 'ktcl-claudecode/**'
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
 

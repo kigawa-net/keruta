@@ -1,13 +1,6 @@
 name: kicl-web-main
 on:
-  push:
-    paths:
-      - 'kicl-web/**'
-      - 'kicl/**'
-      - Dockerfile_kicl_web
-      - .github/workflows/kicl-web-main.yml
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   kicl-web:

@@ -1,6 +1,6 @@
 name: ktcl-claudecode-dev
 on:
-  push:
+  pull_request:
     paths:
       - 'ktcl-claudecode/**'
     branches:
