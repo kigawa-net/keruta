@@ -1,10 +1,6 @@
 name: ktcl-front-main
 on:
-  push:
-    paths:
-      - 'ktcl-front/**'
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   ktcl-front:

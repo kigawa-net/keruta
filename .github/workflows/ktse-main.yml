@@ -1,10 +1,6 @@
 name: ktse-main
 on:
-  push:
-    paths:
-      - 'ktse/**'
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   ktse:

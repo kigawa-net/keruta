@@ -1,6 +1,6 @@
 name: ktcl-front-dev
 on:
-  push:
+  pull_request:
     paths:
       - 'ktcl-front/**'
     branches:

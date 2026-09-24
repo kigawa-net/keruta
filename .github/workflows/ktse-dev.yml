@@ -1,6 +1,6 @@
 name: ktse-dev
 on:
-  push:
+  pull_request:
     paths:
       - 'ktse/**'
     branches:

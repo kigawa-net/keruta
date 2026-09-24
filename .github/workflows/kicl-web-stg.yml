@@ -7,7 +7,7 @@ on:
       - Dockerfile_kicl_web
       - .github/workflows/kicl-web-stg.yml
     branches:
-      - staging
+      - main
 
 jobs:
   kicl-web:

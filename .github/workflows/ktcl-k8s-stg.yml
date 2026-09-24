@@ -5,7 +5,7 @@ on:
       - 'ktcl-k8s/**'
       - 'Dockerfile_ktcl_k8s'
     branches:
-      - staging
+      - main
 
 jobs:
   ktcl-k8s:
