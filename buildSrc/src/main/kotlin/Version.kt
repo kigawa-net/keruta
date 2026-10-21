@@ -13,7 +13,7 @@ object Version {
     const val KOTLINX_HTML = "0.12.0"
 
     // Database
-    const val FLYWAY = "13.10.3"
+    const val FLYWAY = "13.11.1"
     const val MYSQL_CONNECTOR = "26.10.0"
     const val MARIADB_CONNECTOR = "3.5.11"
     const val EXPOSED = "1.6.0"
