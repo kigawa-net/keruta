@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import type { User, UserManager } from 'oidc-client-ts';
-import { createUserManager } from '../lib/auth';
-import { SETTINGS_STORAGE_KEY, defaultSettings, type AppSettings } from '../types/settings';
+import { createUserManager, loadSettings } from '../lib/auth';
 
 interface AuthContextType {
     user: User | null;
@@ -16,11 +15,6 @@ const AuthContext = createContext<AuthContextType>({
     login: () => {},
     logout: () => {},
 });
-
-function loadSettings(): AppSettings {
-    const stored = localStorage.getItem(SETTINGS_STORAGE_KEY);
-    return stored ? { ...defaultSettings, ...(JSON.parse(stored) as Partial<AppSettings>) } : defaultSettings;
-}
 
 function buildManager(): UserManager | null {
     const settings = loadSettings();
