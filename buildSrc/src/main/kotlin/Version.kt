@@ -4,7 +4,7 @@ object Version {
 
     // Auth
     const val JAVA_JWT = "4.6.2"
-    const val JWKS_RSA = "0.24.1"
+    const val JWKS_RSA = "0.24.2"
 
     // Kotlinx
     const val KOTLINX_COROUTINES = "1.11.0"
