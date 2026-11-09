@@ -41,6 +41,9 @@ on:
 
 jobs:
   release:
+    # Fail closed for pull requests: never publish images or mutate GitOps before merge.
+    # Trusted publish events are a branch push or an explicit workflow dispatch.
+    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     env:
       harborUser: robot$kigawa-net
