@@ -27,7 +27,7 @@ object Version {
 
     // Testing
     const val JUNIT_JUPITER = "6.1.3"
-    const val MOCKK = "1.14.11"
+    const val MOCKK = "1.14.12"
     const val TESTCONTAINERS = "2.0.5"
 
     // Mobile
